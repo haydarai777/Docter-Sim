@@ -45,6 +45,7 @@ Perintah lain:
 |---|---|
 | `npm test` | Menjalankan semua unit test (Vitest) |
 | `npm run build` | Typecheck + build statis ke `dist/` (bisa di-hosting di mana saja) |
+| `npm run build:single` | Build seluruh game menjadi satu file HTML di `dist-single/` (lihat di bawah) |
 | `npm run preview` | Menyajikan hasil build |
 | `npm run validate-content` | Memeriksa integritas semua file data (id, rentang, placeholder, harga) |
 | `npm run sample-cases` | Mencetak contoh kasus hasil generator (untuk review dokter). Opsi: `-- --n 5 --disease malaria --seed 123` |
@@ -67,6 +68,32 @@ Perintah lain:
 
 27 alat pemeriksaan (fisik, laboratorium, penunjang), 40 gejala, 5 kepribadian pasien.
 Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
+
+## Main tanpa GitHub: satu file HTML
+
+```bash
+npm run build:single
+```
+
+Hasilnya di `dist-single/`:
+
+| File | Kegunaan |
+|---|---|
+| `meja-praktek.html` | Seluruh game dalam **satu file** (± 220 KB). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
+| `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai. |
+
+Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.
+Di HP, cara paling andal adalah membuka versi yang di-hosting (Artifact/Netlify/dll.); sebagian
+aplikasi pengelola file di HP membuka HTML lokal tanpa menjalankan JavaScript.
+
+## Pindah ke layanan git lain
+
+Seluruh riwayat ada di folder `.git`. Untuk memindahkan proyek ke GitLab, Codeberg, Bitbucket, dsb.:
+
+```bash
+git remote set-url origin <URL-repo-baru>
+git push -u origin --all
+```
 
 ## Hosting di GitHub Pages (main di HP tanpa komputer)
 

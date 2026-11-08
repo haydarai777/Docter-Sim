@@ -16,14 +16,18 @@ if (import.meta.env.DEV) {
   }
 }
 
+// Bahasa halaman (versi Artifact dibungkus kerangka HTML dari luar).
+document.documentElement.lang = 'id';
+
 const root = document.getElementById('app');
 if (!root) throw new Error('Elemen #app tidak ditemukan');
 
 const app = new App(root, content, GAME_CONFIG);
 app.mount();
 
-// PWA: daftarkan service worker (hanya di build produksi) agar bisa dimainkan offline.
-if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+// PWA: daftarkan service worker (hanya di build produksi web) agar bisa dimainkan offline.
+// Versi file tunggal (mode "single") tidak memakai service worker: file-nya sendiri sudah offline.
+if (import.meta.env.PROD && import.meta.env.MODE !== 'single' && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(() => {
       // Abaikan: game tetap berjalan tanpa mode offline.
