@@ -13,7 +13,8 @@
     "typecheck": "tsc --noEmit",
     "validate-content": "tsx scripts/validate-content.ts",
     "sample-cases": "tsx scripts/sample-cases.ts",
-    "format-data": "tsx scripts/format-data.ts"
+    "format-data": "tsx scripts/format-data.ts",
+    "review-sheet": "tsx scripts/review-sheet.ts"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",

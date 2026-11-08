@@ -1,0 +1,257 @@
+{
+  "id": "angina_stabil",
+  "name": "Angina Pektoris Stabil",
+  "aliases": ["Angina", "Angina pektoris", "Penyakit jantung koroner", "PJK", "Angin duduk", "Nyeri dada jantung"],
+  "system": "Jantung & pembuluh darah",
+  "skdiLevel": "3A",
+  "danger": "kritis",
+  "prevalenceWeight": 0.8,
+  "summary": "Nyeri dada akibat iskemia miokard yang dipicu aktivitas fisik atau emosi dan membaik dengan istirahat (atau nitrat) dalam beberapa menit. Rasa berat/tertekan/diremas di belakang tulang dada, dapat menjalar ke lengan kiri, leher, atau rahang, kadang disertai sesak dan keringat dingin. Faktor risiko: laki-laki usia lanjut, merokok, hipertensi, diabetes, dislipidemia, obesitas, riwayat keluarga. EKG istirahat sering normal. Dokter umum perlu mengenali dan merujuk (SKDI 3A) karena dapat berkembang menjadi sindrom koroner akut.",
+  "presentationDay": [7, 90],
+  "demographics": {
+    "ageBands": [
+      { "min": 38, "max": 45, "weight": 1 },
+      { "min": 46, "max": 55, "weight": 3 },
+      { "min": 56, "max": 65, "weight": 4 },
+      { "min": 66, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.75,
+    "occupations": [
+      { "id": "pensiunan", "weight": 3 },
+      { "id": "pengusaha", "weight": 2 },
+      { "id": "sopir_truk", "weight": 2 },
+      { "id": "manajer", "weight": 2 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "pns", "weight": 1 }
+    ],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "perokok", "when": { "sex": "male" }, "probability": 0.7 },
+    { "id": "perokok", "probability": 0.1 },
+    { "id": "hipertensi", "probability": 0.55 },
+    { "id": "diabetes", "probability": 0.25 },
+    { "id": "dislipidemia", "probability": 0.6 },
+    { "id": "obesitas", "probability": 0.4 },
+    { "id": "riwayat_keluarga_pjk", "probability": 0.35 },
+    { "id": "ekg_iskemia", "probability": 0.4 },
+    { "id": "lvh", "when": { "traits": ["hipertensi"] }, "probability": 0.3 },
+    { "id": "kardiomegali", "when": { "traits": ["hipertensi"] }, "probability": 0.25 }
+  ],
+  "traitLabels": {
+    "perokok": "Faktor risiko: merokok.",
+    "hipertensi": "Faktor risiko: hipertensi.",
+    "diabetes": "Faktor risiko: diabetes melitus.",
+    "dislipidemia": "Faktor risiko: dislipidemia.",
+    "obesitas": "Faktor risiko: obesitas.",
+    "riwayat_keluarga_pjk": "Faktor risiko: riwayat keluarga penyakit jantung koroner dini.",
+    "ekg_iskemia": "EKG istirahat menunjukkan tanda iskemia (pada banyak pasien angina stabil EKG istirahat justru normal).",
+    "lvh": "Hipertrofi ventrikel kiri akibat hipertensi lama.",
+    "kardiomegali": "Kardiomegali ringan pada foto toraks."
+  },
+  "symptoms": [
+    { "id": "nyeri_dada", "probability": 1 },
+    { "id": "nyeri_menjalar", "probability": 0.55 },
+    { "id": "sesak_napas", "probability": 0.45 },
+    { "id": "keringat_dingin", "probability": 0.35 },
+    { "id": "mual_muntah", "probability": 0.15 },
+    { "id": "lemas", "probability": 0.2 },
+    { "id": "heartburn", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_dada"], "extraPool": ["sesak_napas", "keringat_dingin"] },
+  "clueSymptoms": ["nyeri_menjalar", "keringat_dingin"],
+  "misattributions": ["masuk angin", "maag", "angin duduk", "kecapekan"],
+  "fears": ["serangan jantung", "penyakit jantung", "angin duduk"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah sekitar {lamaSakit}, Dok. Awalnya jarang, sekarang lebih sering." }],
+    "lokasi": [
+      {
+        "text": "Di tengah dada, Dok, di belakang tulang dada. Kadang sampai ke lengan kiri dan rahang.",
+        "when": { "symptoms": ["nyeri_menjalar"] },
+        "reveals": ["nyeri_menjalar"],
+        "clue": "Nyeri retrosternal yang menjalar ke lengan kiri/rahang"
+      },
+      {
+        "text": "Di tengah dada, Dok, di belakang tulang dada.",
+        "when": { "notSymptoms": ["nyeri_menjalar"] },
+        "clue": "Nyeri retrosternal"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Rasanya berat, kayak ditindih atau diremas, Dok. Bukan perih.",
+        "clue": "Nyeri seperti ditekan/diremas (bukan rasa terbakar)"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Munculnya kalau saya jalan cepat atau naik tangga, Dok. Paling lama lima sampai sepuluh menit.",
+        "clue": "Dipicu aktivitas fisik, berlangsung < 15 menit"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau berhenti dan istirahat sebentar, hilang sendiri, Dok. Kalau lagi marah atau stres juga bisa muncul.",
+        "clue": "Membaik dengan istirahat; bisa dipicu emosi"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya punya darah tinggi, Dok, tapi jarang minum obat.",
+        "when": { "traits": ["hipertensi"] },
+        "weight": 3,
+        "clue": "Hipertensi tidak terkontrol"
+      },
+      {
+        "text": "Saya kencing manis, Dok, sudah lima tahun.",
+        "when": { "traits": ["diabetes"] },
+        "weight": 2,
+        "clue": "Diabetes melitus"
+      },
+      {
+        "text": "Kata dokter dulu kolesterol saya tinggi, Dok.",
+        "when": { "traits": ["dislipidemia"] },
+        "weight": 2,
+        "clue": "Dislipidemia"
+      },
+      { "text": "Nggak ada penyakit apa-apa, Dok. Tapi memang jarang periksa.", "weight": 1 }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah minum obat maag sama pakai balsem, Dok. Nggak ngaruh.",
+        "clue": "Tidak membaik dengan obat maag"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Bapak saya meninggal karena serangan jantung umur lima puluhan, Dok.",
+        "when": { "traits": ["riwayat_keluarga_pjk"] },
+        "clue": "Riwayat keluarga penyakit jantung koroner dini"
+      },
+      { "text": "Nggak ada, Dok.", "when": { "notTraits": ["riwayat_keluarga_pjk"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya merokok sebungkus sehari, Dok, sudah dari muda. Olahraga jarang.",
+        "when": { "traits": ["perokok"] },
+        "clue": "Perokok berat dan kurang aktivitas fisik"
+      },
+      {
+        "text": "Nggak merokok, Dok, tapi jarang olahraga. Makan suka yang bersantan dan gorengan.",
+        "when": { "notTraits": ["perokok"] },
+        "clue": "Kurang aktivitas fisik, pola makan tinggi lemak"
+      }
+    ]
+  },
+  "findings": [
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi"] }, "range": [145, 175] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi"] }, "range": [90, 105] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [68, 92] },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas"] }, "range": [25.5, 33] },
+    {
+      "tool": "timbangan",
+      "param": "lingkar_perut",
+      "when": { "traits": ["obesitas"], "sex": "male" },
+      "range": [92, 110]
+    },
+    {
+      "tool": "timbangan",
+      "param": "lingkar_perut",
+      "when": { "traits": ["obesitas"], "sex": "female" },
+      "range": [82, 100]
+    },
+    {
+      "tool": "ekg",
+      "param": "segmen_st",
+      "when": { "traits": ["ekg_iskemia"] },
+      "values": ["Depresi ST horizontal 1 mm di V4–V6"]
+    },
+    {
+      "tool": "ekg",
+      "param": "gelombang_t",
+      "when": { "traits": ["ekg_iskemia"] },
+      "values": ["Inversi gelombang T di V4–V6"]
+    },
+    {
+      "tool": "ekg",
+      "param": "qrs",
+      "when": { "traits": ["lvh"] },
+      "values": ["Voltase QRS meningkat (kriteria LVH Sokolow–Lyon)"]
+    },
+    {
+      "tool": "ekg",
+      "param": "kesan",
+      "when": { "traits": ["ekg_iskemia", "lvh"] },
+      "values": ["Hipertrofi ventrikel kiri dengan iskemia anterolateral"]
+    },
+    { "tool": "ekg", "param": "kesan", "when": { "traits": ["ekg_iskemia"] }, "values": ["Iskemia anterolateral"] },
+    { "tool": "ekg", "param": "kesan", "when": { "traits": ["lvh"] }, "values": ["Hipertrofi ventrikel kiri (LVH)"] },
+    { "tool": "profil_lipid", "param": "kolesterol", "when": { "traits": ["dislipidemia"] }, "range": [215, 290] },
+    { "tool": "profil_lipid", "param": "ldl", "when": { "traits": ["dislipidemia"] }, "range": [140, 210] },
+    { "tool": "profil_lipid", "param": "hdl", "when": { "traits": ["dislipidemia"], "sex": "male" }, "range": [28, 39] },
+    {
+      "tool": "profil_lipid",
+      "param": "hdl",
+      "when": { "traits": ["dislipidemia"], "sex": "female" },
+      "range": [35, 49]
+    },
+    {
+      "tool": "profil_lipid",
+      "param": "tg",
+      "when": { "traits": ["dislipidemia"] },
+      "probability": 0.6,
+      "range": [155, 280]
+    },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["diabetes"] }, "range": [200, 320] },
+    { "tool": "hba1c", "param": "hba1c", "when": { "traits": ["diabetes"] }, "range": [7, 9.5] },
+    {
+      "tool": "rontgen_thorax",
+      "param": "cor",
+      "when": { "traits": ["kardiomegali"] },
+      "values": ["Membesar ringan (CTR 53%)"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["kardiomegali"] },
+      "values": ["Kardiomegali ringan"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "gerd",
+      "howToDistinguish": "GERD: rasa terbakar di dada terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat, faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang."
+    },
+    {
+      "id": "dispepsia",
+      "howToDistinguish": "Dispepsia: nyeri/perih ulu hati terkait makan, kembung, nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko."
+    },
+    {
+      "id": "asma",
+      "howToDistinguish": "Asma: sesak dengan mengi episodik sejak muda, ada pemicu alergen/udara dingin, membaik dengan bronkodilator. Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko, tanpa mengi."
+    }
+  ],
+  "otherDifferentials": ["Sindrom koroner akut", "Nyeri dada muskuloskeletal", "Spasme esofagus", "Kolik bilier"],
+  "keyFindings": [
+    "Nyeri dada retrosternal seperti ditekan/diremas",
+    "Dipicu aktivitas fisik atau emosi, membaik dengan istirahat dalam < 15 menit",
+    "Dapat menjalar ke lengan kiri, leher, atau rahang; disertai sesak atau keringat dingin",
+    "Faktor risiko: laki-laki > 45 tahun, merokok, hipertensi, DM, dislipidemia, obesitas, riwayat keluarga",
+    "EKG istirahat sering normal; bisa tampak depresi ST/inversi T. Konfirmasi dengan uji latih jantung (rujuk)"
+  ],
+  "teachingPoints": [
+    "Nyeri dada pada pasien dengan faktor risiko harus dianggap jantung sampai terbukti bukan. 'Masuk angin' atau 'angin duduk' adalah istilah awam yang sering menutupi angina.",
+    "EKG istirahat yang normal TIDAK menyingkirkan angina stabil — anamnesis adalah kuncinya.",
+    "Nyeri dada saat istirahat, makin sering/berat, atau lebih dari 20 menit → curigai sindrom koroner akut (gawat darurat)."
+  ],
+  "idealWorkup": ["tanda_vital", "timbangan", "ekg"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Level SKDI angina pektoris stabil (3A) mohon diverifikasi.", "Proporsi EKG istirahat abnormal disederhanakan."],
+    "references": [
+      "PERKI. Pedoman Tatalaksana Sindrom Koroner Kronis (2022)",
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Angina Pektoris Stabil",
+      "ESC Guidelines for the management of chronic coronary syndromes (2019)"
+    ]
+  }
+}

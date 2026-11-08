@@ -1,0 +1,134 @@
+{
+  "id": "dispepsia",
+  "name": "Dispepsia / Gastritis",
+  "aliases": ["Maag", "Sakit maag", "Gastritis", "Dispepsia fungsional", "Radang lambung"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.1,
+  "summary": "Kumpulan keluhan nyeri atau rasa tidak nyaman di ulu hati, rasa penuh setelah makan, cepat kenyang, kembung, dan mual. Gastritis (peradangan mukosa lambung) sering dipicu obat antinyeri golongan OAINS, alkohol, stres, pola makan tidak teratur, atau infeksi H. pylori. Pemeriksaan penunjang umumnya normal. Waspadai tanda alarm (berat badan turun, muntah darah, BAB hitam, anemia, usia > 55 tahun dengan keluhan baru) yang memerlukan rujukan untuk endoskopi.",
+  "presentationDay": [3, 60],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.45,
+    "occupations": [
+      { "id": "mahasiswa", "weight": 3 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "ojek_online", "weight": 2 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "pekerja_proyek", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "oains", "probability": 0.35 },
+    { "id": "makan_tidak_teratur", "probability": 0.6 },
+    { "id": "stres", "probability": 0.4 }
+  ],
+  "traitLabels": {
+    "oains": "Pemicu: konsumsi obat antinyeri (OAINS/jamu pegal linu) rutin.",
+    "makan_tidak_teratur": "Pemicu: pola makan tidak teratur dan kopi berlebihan.",
+    "stres": "Pemicu: stres psikologis."
+  },
+  "symptoms": [
+    { "id": "nyeri_ulu_hati", "probability": 1 },
+    { "id": "kembung", "probability": 0.75 },
+    { "id": "mual_muntah", "probability": 0.55 },
+    { "id": "nafsu_makan_turun", "probability": 0.4 },
+    { "id": "heartburn", "probability": 0.25 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_ulu_hati"], "extraPool": ["kembung", "mual_muntah"] },
+  "clueSymptoms": ["kembung"],
+  "misattributions": ["masuk angin", "asam lambung", "kecapekan", "maag"],
+  "fears": ["kanker lambung", "usus buntu", "penyakit jantung"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang timbul." }],
+    "lokasi": [{ "text": "Di ulu hati, Dok, perut atas bagian tengah.", "clue": "Nyeri terlokalisasi di epigastrium" }],
+    "karakter": [
+      {
+        "text": "Perih, Dok, kayak ditusuk-tusuk. Perut juga begah.",
+        "when": { "symptoms": ["kembung"] },
+        "reveals": ["kembung"],
+        "clue": "Perih ulu hati disertai rasa penuh/begah"
+      },
+      { "text": "Perih, Dok, kayak ditusuk-tusuk.", "when": { "notSymptoms": ["kembung"] } }
+    ],
+    "pola": [
+      {
+        "text": "Kalau telat makan langsung kambuh, Dok. Tapi habis makan sedikit sudah kenyang.",
+        "clue": "Terkait waktu makan; cepat kenyang"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Makan pedas, kopi, atau telat makan bikin kambuh. Minum obat maag biasanya mendingan, Dok.",
+        "clue": "Dipicu makanan pedas/kopi/telat makan; membaik dengan antasida"
+      }
+    ],
+    "riwayat_penyakit": [{ "text": "Sudah lama punya maag, Dok.", "weight": 2 }, { "text": "Nggak ada, Dok.", "weight": 1 }],
+    "riwayat_obat": [
+      {
+        "text": "Saya sering minum obat pegal linu, Dok, hampir tiap hari. Habis kerja badan pegal semua.",
+        "when": { "traits": ["oains"] },
+        "clue": "Konsumsi obat antinyeri (OAINS) rutin"
+      },
+      { "text": "Minum obat maag dari warung, Dok, enakan sebentar.", "when": { "notTraits": ["oains"] } }
+    ],
+    "riwayat_keluarga": [{ "text": "Nggak ada yang sakit berat, Dok." }],
+    "kebiasaan": [
+      {
+        "text": "Makan saya nggak teratur, Dok. Sering nggak sarapan, kopi tiga gelas sehari.",
+        "when": { "traits": ["makan_tidak_teratur"] },
+        "weight": 2,
+        "clue": "Pola makan tidak teratur, kopi berlebihan"
+      },
+      {
+        "text": "Lagi banyak pikiran, Dok, kerjaan numpuk.",
+        "when": { "traits": ["stres"] },
+        "weight": 2,
+        "clue": "Stres psikologis"
+      },
+      { "text": "Biasa saja, Dok. Suka sambal sih.", "weight": 1 }
+    ]
+  },
+  "findings": [{ "tool": "palpasi_abdomen", "param": "nyeri_tekan", "probability": 0.8, "values": ["Nyeri tekan epigastrium"] }],
+  "differentials": [
+    {
+      "id": "gerd",
+      "howToDistinguish": "GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang, nyeri tekan epigastrium."
+    },
+    {
+      "id": "angina_stabil",
+      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan, ada nyeri tekan epigastrium."
+    },
+    {
+      "id": "demam_tifoid",
+      "howToDistinguish": "Tifoid: keluhan perut disertai DEMAM lebih dari seminggu (sore–malam) dan lidah kotor. Dispepsia: tanpa demam."
+    }
+  ],
+  "otherDifferentials": ["Tukak peptik", "Kolelitiasis", "Pankreatitis", "Keganasan lambung (bila ada tanda alarm)"],
+  "keyFindings": [
+    "Nyeri/perih ulu hati, kembung, cepat kenyang, mual",
+    "Dipicu telat makan, makanan pedas/asam, kopi, stres, atau obat antinyeri (OAINS)",
+    "Nyeri tekan epigastrium; pemeriksaan lain umumnya normal",
+    "Tanpa tanda alarm (BB turun, muntah darah, BAB hitam, anemia, sulit menelan)"
+  ],
+  "teachingPoints": [
+    "Dispepsia adalah diagnosis klinis — pemeriksaan mahal biasanya tidak diperlukan bila tanpa tanda alarm.",
+    "Selalu tanyakan obat antinyeri dan jamu pegal linu: OAINS adalah penyebab gastritis yang sering."
+  ],
+  "idealWorkup": ["tanda_vital", "palpasi_abdomen"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Dispepsia dan gastritis digabung menjadi satu diagnosis di game."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia & Gastritis",
+      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)"
+    ]
+  }
+}

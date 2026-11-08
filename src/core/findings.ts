@@ -98,10 +98,15 @@ function generateParam(
   ctx: ConditionContext,
   config: GameConfig,
   rng: Rng,
+  earlier: readonly ParamResult[],
 ): ParamResult {
   const realistic = config.tests.realisticAccuracy;
   const rule = disease.findings.find(
-    (f) => f.tool === tool.id && f.param === param.id && matchesCondition(f.when, ctx),
+    (f) =>
+      f.tool === tool.id &&
+      f.param === param.id &&
+      matchesCondition(f.when, ctx) &&
+      (!f.requires || earlier.some((r) => r.paramId === f.requires && r.source === 'disease')),
   );
 
   if (rule) {
@@ -152,6 +157,48 @@ function applyGroups(tool: ToolDef, results: ParamResult[], sex: Sex): void {
   }
 }
 
+/**
+ * Hitung parameter turunan dalam satu alat:
+ *  - compute (mis. berat badan = IMT × tinggi²)
+ *  - bands   (teks dari angka, hanya jika parameter teks itu tidak diatur penyakit)
+ */
+function applyDerived(tool: ToolDef, results: ParamResult[], sex: Sex): void {
+  const byId = new Map(results.map((r) => [r.paramId, r]));
+  for (const param of tool.params) {
+    const target = byId.get(param.id)!;
+    if (param.kind === 'numeric' && param.compute?.type === 'weightFromBmi') {
+      const bmi = byId.get(param.compute.bmi)?.value as number;
+      const heightM = (byId.get(param.compute.heightCm)?.value as number) / 100;
+      Object.assign(target, makeResult(param, roundToStep(bmi * heightM * heightM, param), 'normal', sex));
+    }
+    if (param.kind === 'text' && param.bands && target.source === 'normal') {
+      const source = byId.get(param.bands.from)?.value as number;
+      const band = param.bands.ranges.find((b) => b.max === undefined || source <= b.max);
+      if (band) Object.assign(target, makeResult(param, band.value, 'normal', sex));
+    }
+  }
+}
+
+/**
+ * Tautkan nilai antar-alat (copyFrom), lalu hitung ulang parameter turunan.
+ * Dipanggil setelah semua alat di-generate.
+ */
+export function linkFindings(tools: readonly ToolDef[], findings: Record<string, ParamResult[]>, sex: Sex): void {
+  for (const tool of tools) {
+    let changed = false;
+    for (const param of tool.params) {
+      if (param.kind !== 'numeric' || !param.copyFrom) continue;
+      const [srcTool, srcParam] = param.copyFrom.split('.');
+      const src = findings[srcTool!]?.find((r) => r.paramId === srcParam);
+      const target = findings[tool.id]?.find((r) => r.paramId === param.id);
+      if (!src || !target) continue;
+      Object.assign(target, makeResult(param, src.value as number, src.source, sex));
+      changed = true;
+    }
+    if (changed) applyDerived(tool, findings[tool.id]!, sex);
+  }
+}
+
 /** Hasilkan semua parameter satu alat. */
 export function generateToolFindings(
   tool: ToolDef,
@@ -160,7 +207,11 @@ export function generateToolFindings(
   config: GameConfig,
   rng: Rng,
 ): ParamResult[] {
-  const results = tool.params.map((param) => generateParam(param, tool, disease, ctx, config, rng.fork(param.id)));
+  const results: ParamResult[] = [];
+  for (const param of tool.params) {
+    results.push(generateParam(param, tool, disease, ctx, config, rng.fork(param.id), results));
+  }
   applyGroups(tool, results, ctx.sex);
+  applyDerived(tool, results, ctx.sex);
   return results;
 }

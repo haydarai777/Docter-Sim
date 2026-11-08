@@ -33,7 +33,11 @@
     { "id": "leukopenia", "probability": 0.7 },
     { "id": "perdarahan_spontan", "when": { "traits": ["trombositopenia"] }, "probability": 0.35 },
     { "id": "hepatomegali", "when": { "traits": ["fase_kritis"] }, "probability": 0.3 },
-    { "id": "tanda_bahaya", "when": { "traits": ["fase_kritis"] }, "probability": 0.25 }
+    { "id": "tanda_bahaya", "when": { "traits": ["fase_kritis"] }, "probability": 0.25 },
+    { "id": "efusi_pleura", "when": { "traits": ["kebocoran_plasma"] }, "probability": 0.25 },
+    { "id": "usg_kebocoran", "when": { "traits": ["kebocoran_plasma"] }, "probability": 0.6 },
+    { "id": "transaminitis", "probability": 0.7 },
+    { "id": "infeksi_sekunder", "probability": 0.5 }
   ],
   "traitLabels": {
     "fase_kritis": "Pasien datang pada fase kritis: demam mulai turun, tetapi risiko kebocoran plasma dan syok justru paling tinggi.",
@@ -42,7 +46,11 @@
     "leukopenia": "Leukopenia.",
     "perdarahan_spontan": "Ada manifestasi perdarahan spontan (petekie / mimisan / gusi berdarah).",
     "hepatomegali": "Hepatomegali.",
-    "tanda_bahaya": "Ada tanda bahaya (nyeri perut hebat / muntah terus-menerus) — perlu rawat inap."
+    "tanda_bahaya": "Ada tanda bahaya (nyeri perut hebat / muntah terus-menerus) — perlu rawat inap.",
+    "efusi_pleura": "Efusi pleura minimal akibat kebocoran plasma.",
+    "usg_kebocoran": "USG: penebalan dinding kandung empedu dan asites minimal — tanda kebocoran plasma.",
+    "transaminitis": "Peningkatan SGOT/SGPT (sering pada dengue, SGOT > SGPT).",
+    "infeksi_sekunder": "Infeksi dengue sekunder (IgG positif sejak awal) — risiko DBD lebih tinggi."
   },
   "symptoms": [
     { "id": "demam", "probability": 1 },
@@ -265,19 +273,86 @@
       "probability": 0.6,
       "values": ["Nyeri tekan ringan kuadran kanan atas"]
     },
-    {
-      "tool": "stetoskop",
-      "param": "paru",
-      "when": { "traits": ["kebocoran_plasma"] },
-      "probability": 0.15,
-      "values": ["Suara napas menurun di basal paru kanan (curiga efusi pleura)"]
-    },
     { "tool": "senter", "param": "faring", "probability": 0.3, "values": ["Faring hiperemis ringan, tonsil T1–T1"] },
     {
       "tool": "senter",
       "param": "konjungtiva",
       "probability": 0.2,
       "values": ["Tidak anemis, tampak hiperemis (kemerahan)"]
+    },
+    {
+      "tool": "stetoskop",
+      "param": "paru",
+      "when": { "traits": ["efusi_pleura"] },
+      "values": ["Suara napas menurun di basal paru kanan"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "sinus_diafragma",
+      "when": { "traits": ["efusi_pleura"] },
+      "values": ["Sinus kostofrenikus kanan tumpul"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["efusi_pleura"] },
+      "values": ["Efusi pleura kanan minimal"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kandung_empedu",
+      "when": { "traits": ["usg_kebocoran"] },
+      "values": ["Dinding kandung empedu menebal (edema)"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "cairan_bebas",
+      "when": { "traits": ["usg_kebocoran"] },
+      "values": ["Cairan bebas minimal di Morison pouch"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan, ekogenisitas normal"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["usg_kebocoran"] },
+      "values": ["Penebalan dinding kandung empedu dan asites minimal, sesuai kebocoran plasma"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    { "tool": "fungsi_hati", "param": "sgot", "when": { "traits": ["transaminitis"] }, "range": [60, 250] },
+    { "tool": "fungsi_hati", "param": "sgpt", "when": { "traits": ["transaminitis"] }, "range": [45, 160] },
+    {
+      "tool": "serologi_dengue",
+      "param": "igm",
+      "when": { "dayMin": 5 },
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "serologi_dengue",
+      "param": "igm",
+      "when": { "dayMin": 4 },
+      "probability": 0.5,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    { "tool": "serologi_dengue", "param": "igm", "probability": 0.15, "diagnostic": true, "values": ["Positif"] },
+    {
+      "tool": "serologi_dengue",
+      "param": "igg",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "probability": 0.9,
+      "values": ["Positif"]
     }
   ],
   "differentials": [
@@ -288,6 +363,10 @@
     {
       "id": "malaria",
       "howToDistinguish": "Malaria: riwayat tinggal/bepergian ke daerah endemis, demam menggigil–berkeringat berkala, anemia dan splenomegali; RDT/mikroskopis positif. Trombositopenia bisa terjadi pada keduanya, jadi riwayat bepergian sangat menentukan."
+    },
+    {
+      "id": "pneumonia",
+      "howToDistinguish": "Pneumonia: batuk berdahak, sesak, ronkhi/konsolidasi, leukositosis. Dengue: tanpa keluhan napas yang menonjol, leukopenia dan trombositopenia."
     }
   ],
   "otherDifferentials": ["Chikungunya", "Leptospirosis", "Influenza", "Infeksi virus lain"],
@@ -297,11 +376,13 @@
     "Uji tourniquet positif atau perdarahan spontan (petekie, mimisan, gusi berdarah)",
     "Trombosit ≤ 100.000/µL dan leukopenia",
     "Hematokrit meningkat ≥ 20% (kebocoran plasma) pada DBD",
-    "NS1 positif pada hari 1–5 demam"
+    "NS1 positif pada hari 1–5 demam",
+    "Serologi IgM positif mulai hari ke-4–5; USG dapat menunjukkan penebalan dinding kandung empedu/asites (kebocoran plasma)"
   ],
   "teachingPoints": [
     "Fase kritis dengue terjadi saat demam turun (sekitar hari ke-3–7). Demam yang turun BUKAN berarti sudah sembuh.",
-    "NS1 paling sensitif pada hari 1–5; setelah itu bisa negatif palsu. Darah lengkap (trombosit, hematokrit) tetap kunci."
+    "NS1 paling sensitif pada hari 1–5; setelah itu bisa negatif palsu. Darah lengkap (trombosit, hematokrit) tetap kunci.",
+    "Bila NS1 sudah negatif (hari ≥ 5), serologi IgM/IgG dan darah lengkap serial lebih membantu."
   ],
   "idealWorkup": ["termometer", "uji_tourniquet", "darah_lengkap", "ns1_dengue"],
   "review": {

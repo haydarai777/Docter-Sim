@@ -34,6 +34,23 @@ Perintah lain:
 | `npm run validate-content` | Memeriksa integritas semua file data (id, rentang, placeholder, harga) |
 | `npm run sample-cases` | Mencetak contoh kasus hasil generator (untuk review dokter). Opsi: `-- --n 5 --disease malaria --seed 123` |
 | `npm run format-data` | Merapikan format file JSON di `src/data` |
+| `npm run review-sheet` | Membuat ulang `REVIEW.md` (lembar tinjauan untuk dokter) dari file data |
+
+## Konten saat ini
+
+12 penyakit dalam 4 klaster yang sengaja saling mengecoh:
+
+| Klaster | Penyakit | Contoh jebakan |
+|---|---|---|
+| Demam akut | Infeksi dengue, demam tifoid, malaria | Trombosit turun pada dengue **dan** malaria; Widal sering positif palsu |
+| Nyeri dada / ulu hati | GERD, angina pektoris stabil*, dispepsia/gastritis | "Dada nggak enak, kayak masuk angin"; EKG istirahat angina sering normal |
+| Berkemih / pinggang | ISK bawah, batu saluran kemih*, DM tipe 2 | "Sering kencing" bisa ISK (sedikit-sedikit, perih) atau poliuria DM |
+| Batuk / sesak | TB paru, pneumonia komunitas, asma | Batuk + BB turun: TB atau DM? |
+
+\* Tingkat SKDI 3A (bukan 4A) — sengaja dimasukkan karena dokter umum wajib mengenalinya.
+
+27 alat pemeriksaan (fisik, laboratorium, penunjang), 40 gejala, 5 kepribadian pasien.
+Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
 
 ## Struktur kode
 

@@ -34,7 +34,8 @@
     { "id": "konstipasi", "probability": 0.45 },
     { "id": "diare", "when": { "notTraits": ["konstipasi"] }, "probability": 0.35 },
     { "id": "aneosinofilia", "probability": 0.55 },
-    { "id": "meteorismus", "probability": 0.3 }
+    { "id": "meteorismus", "probability": 0.3 },
+    { "id": "transaminitis", "probability": 0.5 }
   ],
   "traitLabels": {
     "bradikardia_relatif": "Bradikardia relatif: nadi tidak naik sebanding dengan suhu.",
@@ -45,7 +46,8 @@
     "konstipasi": "Keluhan cerna berupa konstipasi (lebih sering pada dewasa).",
     "diare": "Keluhan cerna berupa diare.",
     "aneosinofilia": "Aneosinofilia (eosinofil 0%).",
-    "meteorismus": "Meteorismus (perut kembung)."
+    "meteorismus": "Meteorismus (perut kembung).",
+    "transaminitis": "Peningkatan ringan SGOT/SGPT (hepatitis tifosa ringan)."
   },
   "symptoms": [
     { "id": "demam", "probability": 1 },
@@ -223,6 +225,38 @@
       "probability": 0.8,
       "diagnostic": true,
       "values": ["4 (positif lemah)", "6 (positif)", "6 (positif)", "8 (positif kuat)", "10 (positif kuat)"]
+    },
+    { "tool": "fungsi_hati", "param": "sgot", "when": { "traits": ["transaminitis"] }, "range": [42, 110] },
+    { "tool": "fungsi_hati", "param": "sgpt", "when": { "traits": ["transaminitis"] }, "range": [42, 100] },
+    {
+      "tool": "usg_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan, ekogenisitas normal"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "lien",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Splenomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali", "splenomegali"] },
+      "values": ["Hepatosplenomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Splenomegali ringan"]
     }
   ],
   "differentials": [

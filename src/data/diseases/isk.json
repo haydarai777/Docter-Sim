@@ -1,0 +1,168 @@
+{
+  "id": "isk",
+  "name": "Infeksi Saluran Kemih Bawah (Sistitis)",
+  "aliases": ["ISK", "Infeksi saluran kemih", "Sistitis", "Anyang-anyangan", "Kencing perih", "UTI"],
+  "system": "Saluran kemih",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Infeksi bakteri (tersering E. coli) pada kandung kemih. Gejala khas: nyeri/perih saat berkemih (disuria), sering dan anyang-anyangan dengan volume sedikit (frekuensi & urgensi), nyeri suprapubik, kadang urin keruh/berbau atau kemerahan. Jauh lebih sering pada perempuan (uretra pendek), terutama usia aktif seksual, kehamilan, dan kurang minum. Biasanya tanpa demam tinggi; demam tinggi dengan nyeri pinggang mengarah ke pielonefritis.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.15,
+    "occupations": [
+      { "id": "ibu_rumah_tangga", "weight": 2 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "guru", "weight": 1 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "pedagang_pasar", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "kurang_minum", "probability": 0.5 },
+    { "id": "menahan_kencing", "probability": 0.4 },
+    { "id": "hematuria", "probability": 0.35 },
+    { "id": "demam_ringan", "probability": 0.2 },
+    { "id": "nitrit_positif", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "kurang_minum": "Faktor risiko: kurang minum.",
+    "menahan_kencing": "Faktor risiko: kebiasaan menahan berkemih.",
+    "hematuria": "Hematuria (sistitis hemoragik ringan).",
+    "demam_ringan": "Demam ringan — bila demam tinggi + nyeri pinggang, pikirkan pielonefritis."
+  },
+  "symptoms": [
+    { "id": "disuria", "probability": 1 },
+    { "id": "sering_kencing", "probability": 0.9 },
+    { "id": "nyeri_suprapubik", "probability": 0.6 },
+    { "id": "urin_keruh", "probability": 0.5 },
+    { "id": "kencing_merah", "when": { "traits": ["hematuria"] }, "probability": 0.4 },
+    { "id": "demam", "when": { "traits": ["demam_ringan"] }, "probability": 1 },
+    { "id": "mual_muntah", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["disuria"], "extraPool": ["sering_kencing", "nyeri_suprapubik"] },
+  "clueSymptoms": ["sering_kencing", "nyeri_suprapubik", "urin_keruh"],
+  "misattributions": ["panas dalam", "kurang minum", "masuk angin", "kecapekan"],
+  "fears": ["penyakit kelamin", "batu ginjal", "kencing manis"],
+  "anamnesis": {
+    "onset": [{ "text": "Baru {hariTeks} hari, Dok, mendadak.", "clue": "Onset akut (hari)" }],
+    "lokasi": [
+      {
+        "text": "Di perut bawah, di atas kemaluan, Dok. Pinggang sih nggak sakit.",
+        "when": { "symptoms": ["nyeri_suprapubik"] },
+        "reveals": ["nyeri_suprapubik"],
+        "clue": "Nyeri suprapubik tanpa nyeri pinggang"
+      },
+      {
+        "text": "Perihnya pas kencing saja, Dok. Pinggang nggak sakit.",
+        "when": { "notSymptoms": ["nyeri_suprapubik"] },
+        "clue": "Tanpa nyeri pinggang/kolik"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Perih dan panas kalau kencing, Dok, terus rasanya nggak tuntas.",
+        "clue": "Disuria dan rasa tidak tuntas (anyang-anyangan)"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Sebentar-sebentar mau kencing, Dok, tapi keluarnya sedikit-sedikit.",
+        "when": { "symptoms": ["sering_kencing"] },
+        "reveals": ["sering_kencing"],
+        "clue": "Sering kencing dengan volume sedikit (bukan poliuria)"
+      },
+      { "text": "Setiap kencing perih, Dok.", "when": { "notSymptoms": ["sering_kencing"] } }
+    ],
+    "pemberat_peringan": [{ "text": "Kalau kurang minum makin perih, Dok. Banyak minum agak mendingan." }],
+    "riwayat_penyakit": [
+      { "text": "Dulu pernah kayak gini juga, Dok, setahun lalu.", "weight": 1 },
+      { "text": "Nggak ada, Dok.", "weight": 2 }
+    ],
+    "riwayat_obat": [{ "text": "Belum minum obat, Dok. Cuma banyakin minum air putih." }],
+    "riwayat_keluarga": [{ "text": "Nggak ada, Dok." }],
+    "kebiasaan": [
+      {
+        "text": "Saya jarang minum, Dok, paling dua gelas sehari.",
+        "when": { "traits": ["kurang_minum"] },
+        "weight": 2,
+        "clue": "Kurang minum"
+      },
+      {
+        "text": "Di tempat kerja saya sering menahan kencing, Dok, toiletnya jauh.",
+        "when": { "traits": ["menahan_kencing"] },
+        "weight": 2,
+        "clue": "Kebiasaan menahan berkemih"
+      },
+      { "text": "Biasa saja, Dok.", "weight": 1 }
+    ]
+  },
+  "findings": [
+    { "tool": "termometer", "param": "suhu", "when": { "traits": ["demam_ringan"] }, "range": [37.6, 38.2] },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "symptoms": ["nyeri_suprapubik"] },
+      "probability": 0.8,
+      "values": ["Nyeri tekan suprapubik"]
+    },
+    { "tool": "urinalisis", "param": "warna", "when": { "symptoms": ["urin_keruh"] }, "values": ["Kuning keruh"] },
+    {
+      "tool": "urinalisis",
+      "param": "leukosit_esterase",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["+1", "+2", "+3"]
+    },
+    { "tool": "urinalisis", "param": "nitrit", "when": { "traits": ["nitrit_positif"] }, "values": ["Positif"] },
+    { "tool": "urinalisis", "param": "sedimen_leukosit", "probability": 0.9, "diagnostic": true, "range": [10, 50] },
+    {
+      "tool": "urinalisis",
+      "param": "bakteri",
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Positif (+)", "Positif (++)"]
+    },
+    { "tool": "urinalisis", "param": "darah", "when": { "traits": ["hematuria"] }, "values": ["+1", "+2"] },
+    { "tool": "urinalisis", "param": "sedimen_eritrosit", "when": { "traits": ["hematuria"] }, "range": [5, 25] },
+    { "tool": "urinalisis", "param": "protein", "probability": 0.3, "values": ["Trace", "+1"] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.25, "range": [9500, 12000] }
+  ],
+  "differentials": [
+    {
+      "id": "batu_saluran_kemih",
+      "howToDistinguish": "Batu: nyeri kolik hebat hilang-timbul di pinggang yang menjalar ke perut bawah/lipat paha, pasien gelisah, hematuria; nyeri ketok CVA positif, USG tampak batu/hidronefrosis. ISK: disuria dan anyang-anyangan tanpa kolik; leukosituria, nitrit dan bakteri positif."
+    },
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "DM: kencing BANYAK (poliuria) terutama malam tanpa perih, disertai haus, lapar, BB turun; gula darah tinggi, glukosuria. ISK: kencing sering tapi SEDIKIT-SEDIKIT dan perih."
+    }
+  ],
+  "otherDifferentials": ["Pielonefritis akut", "Uretritis (infeksi menular seksual)", "Vaginitis", "Prostatitis (laki-laki)"],
+  "keyFindings": [
+    "Disuria, frekuensi, urgensi, rasa tidak tuntas (anyang-anyangan)",
+    "Nyeri suprapubik; tanpa nyeri pinggang/kolik dan tanpa demam tinggi",
+    "Lebih sering pada perempuan; faktor risiko kurang minum, menahan kencing",
+    "Urinalisis: leukosit esterase (+), leukosituria (> 5/LPB), bakteriuria, nitrit (+)"
+  ],
+  "teachingPoints": [
+    "'Sering kencing' bisa berarti volume sedikit tapi sering (ISK) atau volume banyak (poliuria, mis. DM). Tanyakan pola dan volumenya!",
+    "Nitrit negatif tidak menyingkirkan ISK — sensitivitasnya hanya sekitar 50%."
+  ],
+  "idealWorkup": ["termometer", "palpasi_abdomen", "urinalisis"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas temuan urinalisis adalah estimasi pengembang; mohon diverifikasi."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Infeksi Saluran Kemih",
+      "IAUI. Guideline Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)"
+    ]
+  }
+}

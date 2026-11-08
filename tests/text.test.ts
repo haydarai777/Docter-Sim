@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { capitalize, fillTemplate, findUnfilledPlaceholders, formatNumber, formatRupiah, joinList, numberToWords } from '../src/core/text';
+import { capitalize, durationText, fillTemplate, findUnfilledPlaceholders, formatNumber, formatRupiah, joinList, numberToWords } from '../src/core/text';
 
 describe('format & teks', () => {
   it('formatNumber memakai gaya Indonesia', () => {
@@ -27,6 +27,12 @@ describe('format & teks', () => {
     expect(numberToWords(14)).toBe('empat belas');
     expect(numberToWords(20)).toBe('dua puluh');
     expect(numberToWords(21)).toBe('dua puluh satu');
+  });
+
+  it('durationText', () => {
+    expect(durationText(4)).toBe('empat hari');
+    expect(durationText(21)).toBe('tiga minggu');
+    expect(durationText(75)).toBe('tiga bulan');
   });
 
   it('fillTemplate mengisi placeholder, termasuk versi kapital', () => {

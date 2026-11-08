@@ -87,6 +87,13 @@ export interface NumericParamDef {
    */
   falsePositiveRate?: number;
   falsePositiveRange?: Range;
+  /**
+   * Salin nilai dari parameter alat lain ("alat.parameter"), mis. frekuensi EKG
+   * = nadi pada tanda vital, agar hasil antar-alat konsisten.
+   */
+  copyFrom?: string;
+  /** Nilai dihitung dari parameter lain di alat yang sama (tidak boleh diatur oleh aturan penyakit). */
+  compute?: { type: 'weightFromBmi'; bmi: string; heightCm: string };
 }
 
 /** Parameter hasil pemeriksaan berupa teks (mis. "Negatif", deskripsi auskultasi). */
@@ -100,6 +107,12 @@ export interface TextParamDef {
   /** Lihat NumericParamDef.falsePositiveRate. */
   falsePositiveRate?: number;
   falsePositiveValues?: string[];
+  /**
+   * Bila tidak ada aturan penyakit yang berlaku, nilai diturunkan dari parameter
+   * numerik di alat yang sama, mis. irama EKG dari frekuensi:
+   * [{ max: 59, value: "Sinus bradikardia" }, { max: 100, value: "Sinus ritme" }, { value: "Sinus takikardia" }]
+   */
+  bands?: { from: string; ranges: { max?: number; value: string }[] };
 }
 
 export type ParamDef = NumericParamDef | TextParamDef;
@@ -289,6 +302,12 @@ export interface FindingRule {
    * probability aturan diagnostik dianggap 1 (tes selalu akurat).
    */
   diagnostic?: boolean;
+  /**
+   * Aturan hanya berlaku jika parameter lain DI ALAT YANG SAMA (yang tercantum
+   * lebih awal) bernilai abnormal karena penyakit. Dipakai agar "Kesan" selalu
+   * konsisten dengan temuan detailnya.
+   */
+  requires?: string;
   /** Untuk parameter numerik. */
   range?: Range;
   /** Untuk parameter teks (dipilih acak). */
@@ -337,7 +356,7 @@ export interface DiseaseTemplate {
   traitLabels?: Record<string, string>;
   symptoms: SymptomRule[];
   chiefComplaint: {
-    /** Gejala yang pasti disebut duluan (jika ada pada kasus). */
+    /** Urutan prioritas gejala utama: gejala PERTAMA yang ada pada kasus disebut duluan. */
     primary: string[];
     /** Kumpulan gejala tambahan yang mungkin ikut disebut. */
     extraPool?: string[];

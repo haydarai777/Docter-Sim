@@ -15,9 +15,9 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { buildCategoryAnswer, buildComplaint } from './dialogue';
-import { generateToolFindings } from './findings';
+import { generateToolFindings, linkFindings } from './findings';
 import { createRng, type Rng } from './rng';
-import { fillTemplate, numberToWords } from './text';
+import { durationText, fillTemplate, numberToWords } from './text';
 import type {
   DiseaseTemplate,
   EconomyClass,
@@ -156,6 +156,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   Object.assign(context, {
     hari: String(day),
     hariTeks: numberToWords(day),
+    lamaSakit: durationText(day),
     nama: name,
     sapaan: patient.address,
     usia: String(age),
@@ -166,10 +167,12 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
 
   // --- Keluhan utama (sengaja tidak lengkap) ------------------------------
   const ccRng = rng.fork('keluhan');
-  const primary = disease.chiefComplaint.primary.filter((id) => symptoms.has(id));
+  const primary = disease.chiefComplaint.primary.filter((id) => symptoms.has(id)).slice(0, 1);
+  // Sisakan minimal satu gejala yang harus digali (keluhan tidak pernah lengkap di awal).
+  const maxExtra = Math.max(0, Math.min(personality.complaintExtra, symptoms.size - primary.length - 1));
   const extras = ccRng
     .shuffle((disease.chiefComplaint.extraPool ?? []).filter((id) => symptoms.has(id) && !primary.includes(id)))
-    .slice(0, personality.complaintExtra);
+    .slice(0, maxExtra);
   let chiefComplaintSymptoms = [...primary, ...extras];
   if (chiefComplaintSymptoms.length === 0) chiefComplaintSymptoms = [...symptoms].slice(0, 1);
 
@@ -204,6 +207,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   for (const tool of content.tools) {
     findings[tool.id] = generateToolFindings(tool, disease, fullCtx, config, rng.fork(`temuan:${tool.id}`));
   }
+  linkFindings(content.tools, findings, sex);
 
   return {
     seed: options.seed >>> 0,

@@ -121,7 +121,7 @@
       "system": "Pencernaan",
       "question": "Apakah perutnya sakit?",
       "phrases": {
-        "lay": ["perut saya sakit", "ulu hati saya perih"],
+        "lay": ["perut saya sakit", "perut saya sakit melilit-melilit"],
         "vague": ["perut rasanya nggak enak, begah"],
         "exaggerated": ["perut saya sakit sekali, melilit"],
         "downplayed": ["perut agak nggak enak sedikit"]
@@ -197,6 +197,294 @@
         "vague": ["tenggorokan saya gatal"],
         "exaggerated": ["batuknya nggak berhenti-berhenti"],
         "downplayed": ["batuk sedikit"]
+      }
+    },
+    {
+      "id": "nyeri_ulu_hati",
+      "label": "Nyeri/perih ulu hati (epigastrium)",
+      "system": "Pencernaan",
+      "question": "Apakah ada nyeri atau perih di ulu hati?",
+      "phrases": {
+        "lay": ["ulu hati saya perih", "perut bagian atas saya sakit, perih"],
+        "vague": ["perut saya rasanya nggak enak"],
+        "exaggerated": ["ulu hati saya perih sekali, kayak disayat"],
+        "downplayed": ["ulu hati agak perih sedikit"]
+      }
+    },
+    {
+      "id": "kembung",
+      "label": "Kembung / cepat kenyang",
+      "system": "Pencernaan",
+      "question": "Apakah perut sering kembung, begah, atau cepat kenyang?",
+      "phrases": {
+        "lay": ["perut saya kembung, cepat kenyang", "perut saya begah, sering sendawa"],
+        "vague": ["perut rasanya penuh terus"],
+        "exaggerated": ["perut saya kembung sekali kayak mau meledak"],
+        "downplayed": ["perut agak begah"]
+      }
+    },
+    {
+      "id": "heartburn",
+      "label": "Rasa terbakar di dada (heartburn)",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa panas atau terbakar di dada?",
+      "phrases": {
+        "lay": ["dada saya rasanya panas, kayak terbakar", "ada rasa panas naik dari ulu hati ke dada"],
+        "vague": ["dada saya rasanya nggak enak, kayak masuk angin"],
+        "exaggerated": ["dada saya panas sekali kayak disiram air mendidih"],
+        "downplayed": ["dada agak panas sedikit"]
+      }
+    },
+    {
+      "id": "regurgitasi",
+      "label": "Regurgitasi asam",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa asam atau pahit yang naik ke mulut?",
+      "phrases": {
+        "lay": ["sering ada rasa asam naik ke mulut", "mulut saya suka pahit, kayak ada yang naik dari perut"],
+        "vague": ["mulut saya rasanya aneh"],
+        "exaggerated": ["asamnya naik terus sampai tenggorokan perih"],
+        "downplayed": ["kadang mulut agak asam"]
+      }
+    },
+    {
+      "id": "nyeri_dada",
+      "label": "Nyeri dada (berat/tertekan)",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah ada nyeri dada, rasa berat atau seperti ditekan?",
+      "phrases": {
+        "lay": ["dada saya rasanya berat, kayak ditekan", "dada saya sakit di tengah"],
+        "vague": ["dada saya rasanya nggak enak, kayak masuk angin", "dada saya kayak kena angin duduk"],
+        "exaggerated": ["dada saya sakit sekali kayak ditindih batu besar"],
+        "downplayed": ["dada agak berat sedikit"]
+      }
+    },
+    {
+      "id": "nyeri_menjalar",
+      "label": "Nyeri menjalar ke lengan kiri/leher/rahang",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah nyerinya menjalar ke lengan, leher, atau rahang?",
+      "phrases": {
+        "lay": ["sakitnya kadang menjalar ke lengan kiri", "nyerinya sampai ke leher dan rahang"],
+        "vague": ["lengan kiri saya suka kesemutan"],
+        "exaggerated": ["sakitnya menjalar sampai lengan kiri lemas semua"],
+        "downplayed": ["lengan kiri agak pegal"]
+      }
+    },
+    {
+      "id": "keringat_dingin",
+      "label": "Keringat dingin",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah keluar keringat dingin saat keluhan muncul?",
+      "phrases": {
+        "lay": ["keluar keringat dingin"],
+        "vague": ["badan saya suka dingin-dingin"],
+        "exaggerated": ["keringat dinginnya sampai basah kuyup"],
+        "downplayed": ["agak keringetan sedikit"]
+      }
+    },
+    {
+      "id": "sesak_napas",
+      "label": "Sesak napas",
+      "system": "Pernapasan",
+      "question": "Apakah ada sesak napas?",
+      "phrases": {
+        "lay": ["napas saya sesak", "saya gampang ngos-ngosan"],
+        "vague": ["dada saya rasanya sempit", "napas saya nggak lega"],
+        "exaggerated": ["sesak sekali, kayak nggak bisa napas"],
+        "downplayed": ["agak ngos-ngosan dikit"]
+      }
+    },
+    {
+      "id": "mengi",
+      "label": "Mengi (wheezing)",
+      "system": "Pernapasan",
+      "question": "Apakah napasnya berbunyi 'ngik-ngik'?",
+      "phrases": {
+        "lay": ["napas saya bunyi ngik-ngik"],
+        "vague": ["dada saya ada bunyinya kalau napas"],
+        "exaggerated": ["bunyinya keras sekali sampai kedengaran orang serumah"],
+        "downplayed": ["kadang napas agak bunyi"]
+      }
+    },
+    {
+      "id": "nyeri_dada_pleuritik",
+      "label": "Nyeri dada saat bernapas/batuk (pleuritik)",
+      "system": "Pernapasan",
+      "question": "Apakah dadanya sakit saat menarik napas dalam atau batuk?",
+      "phrases": {
+        "lay": ["dada saya sakit kalau tarik napas atau batuk"],
+        "vague": ["dada saya nyeri-nyeri"],
+        "exaggerated": ["dada saya sakit sekali sampai takut napas dalam"],
+        "downplayed": ["dada agak nyeri kalau batuk"]
+      }
+    },
+    {
+      "id": "batuk_darah",
+      "label": "Batuk darah (hemoptisis)",
+      "system": "Pernapasan",
+      "question": "Apakah batuknya pernah keluar darah?",
+      "phrases": {
+        "lay": ["dahak saya ada darahnya"],
+        "vague": ["dahak saya warnanya aneh, kemerahan"],
+        "exaggerated": ["batuk saya keluar darah banyak"],
+        "downplayed": ["ada bercak darah sedikit di dahak"]
+      }
+    },
+    {
+      "id": "keringat_malam",
+      "label": "Keringat malam",
+      "system": "Umum",
+      "question": "Apakah sering berkeringat di malam hari tanpa beraktivitas?",
+      "phrases": {
+        "lay": ["malam-malam saya keringetan padahal nggak gerah"],
+        "vague": ["tidur saya nggak nyenyak, badan basah"],
+        "exaggerated": ["tiap malam keringatnya banjir sampai ganti baju"],
+        "downplayed": ["malam agak keringetan"]
+      }
+    },
+    {
+      "id": "berat_badan_turun",
+      "label": "Berat badan turun",
+      "system": "Umum",
+      "question": "Apakah berat badannya turun akhir-akhir ini?",
+      "phrases": {
+        "lay": ["berat badan saya turun, celana jadi longgar", "saya makin kurus"],
+        "vague": ["baju saya kok jadi longgar ya"],
+        "exaggerated": ["saya kurus kering, turun banyak sekali"],
+        "downplayed": ["berat badan agak turun sedikit"]
+      }
+    },
+    {
+      "id": "haus",
+      "label": "Sering haus (polidipsia)",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah sering merasa haus?",
+      "phrases": {
+        "lay": ["saya gampang haus, minum terus"],
+        "vague": ["tenggorokan saya kering terus"],
+        "exaggerated": ["hausnya nggak ketulungan, minum segalon sehari"],
+        "downplayed": ["agak sering haus"]
+      }
+    },
+    {
+      "id": "lapar",
+      "label": "Sering lapar (polifagia)",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah jadi sering lapar atau makan lebih banyak?",
+      "phrases": {
+        "lay": ["saya cepat lapar, makannya jadi banyak"],
+        "vague": ["perut saya kosong terus rasanya"],
+        "exaggerated": ["laparnya terus-terusan, baru makan sudah lapar lagi"],
+        "downplayed": ["agak sering lapar"]
+      }
+    },
+    {
+      "id": "kesemutan",
+      "label": "Kesemutan/kebas di tangan atau kaki",
+      "system": "Kepala & saraf",
+      "question": "Apakah sering kesemutan atau kebas di tangan atau kaki?",
+      "phrases": {
+        "lay": ["kaki saya sering kesemutan", "telapak kaki saya kebas"],
+        "vague": ["kaki saya rasanya aneh"],
+        "exaggerated": ["kaki saya kebas sekali kayak bukan kaki sendiri"],
+        "downplayed": ["kadang kesemutan sedikit"]
+      }
+    },
+    {
+      "id": "pandangan_kabur",
+      "label": "Pandangan kabur",
+      "system": "Kepala & saraf",
+      "question": "Apakah penglihatannya jadi kabur?",
+      "phrases": {
+        "lay": ["mata saya kabur"],
+        "vague": ["mata saya agak kurang jelas"],
+        "exaggerated": ["mata saya kabur sekali sampai nggak bisa baca"],
+        "downplayed": ["mata agak buram sedikit"]
+      }
+    },
+    {
+      "id": "luka_sulit_sembuh",
+      "label": "Luka lama sembuh",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada luka yang lama sembuh?",
+      "phrases": {
+        "lay": ["ada luka di kaki saya yang nggak sembuh-sembuh"],
+        "vague": ["kulit saya gampang luka"],
+        "exaggerated": ["lukanya sudah sebulan nggak kering-kering"],
+        "downplayed": ["ada luka kecil yang agak lama sembuh"]
+      }
+    },
+    {
+      "id": "disuria",
+      "label": "Nyeri/perih saat berkemih (disuria)",
+      "system": "Saluran kemih",
+      "question": "Apakah sakit atau perih saat buang air kecil?",
+      "phrases": {
+        "lay": ["kencing saya perih, anyang-anyangan", "pas pipis rasanya panas"],
+        "vague": ["pipis saya rasanya nggak enak"],
+        "exaggerated": ["kencingnya perih sekali kayak ditusuk-tusuk"],
+        "downplayed": ["kencing agak perih sedikit"]
+      }
+    },
+    {
+      "id": "sering_kencing",
+      "label": "Sering berkemih",
+      "system": "Saluran kemih",
+      "question": "Apakah jadi lebih sering buang air kecil?",
+      "phrases": {
+        "lay": ["saya jadi sering kencing", "bolak-balik ke kamar mandi buat pipis"],
+        "vague": ["saya sering ke belakang"],
+        "exaggerated": ["tiap lima menit pengin kencing terus"],
+        "downplayed": ["agak sering pipis"]
+      }
+    },
+    {
+      "id": "nyeri_suprapubik",
+      "label": "Nyeri perut bawah (suprapubik)",
+      "system": "Saluran kemih",
+      "question": "Apakah ada nyeri di perut bagian bawah, di atas kemaluan?",
+      "phrases": {
+        "lay": ["perut bagian bawah saya nyeri", "bawah pusar rasanya sakit"],
+        "vague": ["perut bawah rasanya nggak enak"],
+        "exaggerated": ["perut bawah sakit sekali"],
+        "downplayed": ["perut bawah agak nyeri"]
+      }
+    },
+    {
+      "id": "nyeri_pinggang",
+      "label": "Nyeri pinggang",
+      "system": "Saluran kemih",
+      "question": "Apakah ada nyeri di pinggang?",
+      "phrases": {
+        "lay": ["pinggang saya sakit sekali", "sakit di pinggang sampai ke perut bawah"],
+        "vague": ["pinggang saya pegal, mungkin salah urat"],
+        "exaggerated": ["pinggang saya sakit sekali sampai guling-guling"],
+        "downplayed": ["pinggang agak pegal"]
+      }
+    },
+    {
+      "id": "kencing_merah",
+      "label": "Kencing berwarna merah (hematuria)",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya berwarna merah atau kemerahan?",
+      "phrases": {
+        "lay": ["air kencing saya kemerahan"],
+        "vague": ["warna pipis saya agak lain"],
+        "exaggerated": ["kencing saya merah kayak darah"],
+        "downplayed": ["kencing agak kemerahan sedikit"]
+      }
+    },
+    {
+      "id": "urin_keruh",
+      "label": "Urin keruh/berbau",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya keruh atau berbau menyengat?",
+      "phrases": {
+        "lay": ["kencing saya keruh dan bau"],
+        "vague": ["warna pipis saya agak beda"],
+        "exaggerated": ["kencingnya bau sekali dan keruh pekat"],
+        "downplayed": ["kencing agak keruh"]
       }
     }
   ]

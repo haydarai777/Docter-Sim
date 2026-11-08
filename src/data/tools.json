@@ -7,7 +7,9 @@
     ],
     "references": [
       "Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (Kemenkes RI)",
-      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)"
+      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus Tipe 2 Dewasa di Indonesia (2021)",
+      "Kemenkes RI. Petunjuk Teknis Penatalaksanaan Tuberkulosis / pemeriksaan TCM"
     ]
   },
   "tools": [
@@ -139,6 +141,96 @@
           "refText": "Positif jika ≥ 10 petekie per 2,5 × 2,5 cm",
           "falsePositiveRate": 0.08,
           "falsePositiveValues": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+        }
+      ]
+    },
+    {
+      "id": "timbangan",
+      "name": "Timbangan & pita ukur",
+      "category": "fisik",
+      "description": "Tinggi badan, berat badan, IMT, dan lingkar perut.",
+      "action": "Anda menimbang pasien, mengukur tinggi badan dan lingkar perutnya.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "tb",
+          "label": "Tinggi badan",
+          "unit": "cm",
+          "decimals": 0,
+          "ref": [140, 195],
+          "refFemale": [135, 185],
+          "normal": [158, 176],
+          "normalFemale": [147, 163],
+          "refText": "—"
+        },
+        {
+          "kind": "numeric",
+          "id": "imt",
+          "label": "Indeks massa tubuh (IMT)",
+          "unit": "kg/m²",
+          "decimals": 1,
+          "ref": [18.5, 22.9],
+          "normal": [19, 22.8],
+          "refText": "18,5–22,9 (kriteria Asia-Pasifik)"
+        },
+        {
+          "kind": "numeric",
+          "id": "bb",
+          "label": "Berat badan",
+          "unit": "kg",
+          "decimals": 1,
+          "ref": [30, 200],
+          "refText": "—",
+          "compute": { "type": "weightFromBmi", "bmi": "imt", "heightCm": "tb" }
+        },
+        {
+          "kind": "numeric",
+          "id": "lingkar_perut",
+          "label": "Lingkar perut",
+          "unit": "cm",
+          "decimals": 0,
+          "ref": [60, 89],
+          "refFemale": [55, 79],
+          "normal": [70, 88],
+          "normalFemale": [62, 79],
+          "refText": "< 90 (L) / < 80 (P)"
+        }
+      ]
+    },
+    {
+      "id": "oksimeter",
+      "name": "Oksimeter nadi (SpO₂)",
+      "category": "fisik",
+      "description": "Saturasi oksigen perifer dengan klip jari.",
+      "action": "Anda memasang oksimeter di ujung jari pasien.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "spo2",
+          "label": "Saturasi oksigen (SpO₂)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [95, 100],
+          "normal": [96, 99]
+        }
+      ]
+    },
+    {
+      "id": "peak_flow",
+      "name": "Peak flow meter (APE)",
+      "category": "fisik",
+      "description": "Arus puncak ekspirasi dibandingkan nilai prediksi sesuai usia, jenis kelamin, dan tinggi badan.",
+      "action": "Anda meminta pasien meniup peak flow meter sekuat-kuatnya tiga kali dan mencatat nilai terbaik.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "ape",
+          "label": "APE (% nilai prediksi)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [80, 120],
+          "normal": [85, 105],
+          "refText": "≥ 80%"
         }
       ]
     },
@@ -349,6 +441,416 @@
           "refText": "≤ 2 negatif · 3 meragukan · ≥ 4 positif",
           "falsePositiveRate": 0.05,
           "falsePositiveValues": ["3 (meragukan)", "4 (positif lemah)"]
+        }
+      ]
+    },
+    {
+      "id": "gula_darah",
+      "name": "Gula darah sewaktu (GDS)",
+      "category": "lab",
+      "description": "Glukosa darah kapiler tanpa puasa.",
+      "action": "Anda menusuk ujung jari pasien dan memeriksa gula darah dengan glukometer.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "gds",
+          "label": "Glukosa darah sewaktu",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [70, 139],
+          "normal": [80, 135],
+          "refText": "< 140 · ≥ 200 + gejala klasik = DM"
+        }
+      ]
+    },
+    {
+      "id": "hba1c",
+      "name": "HbA1c",
+      "category": "lab",
+      "description": "Rerata kadar gula darah 2–3 bulan terakhir.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan HbA1c.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "hba1c",
+          "label": "HbA1c",
+          "unit": "%",
+          "decimals": 1,
+          "ref": [4, 5.6],
+          "normal": [4.6, 5.5],
+          "refText": "< 5,7 normal · ≥ 6,5 = DM"
+        }
+      ]
+    },
+    {
+      "id": "urinalisis",
+      "name": "Urinalisis (urin lengkap)",
+      "category": "lab",
+      "description": "Dipstik urin dan pemeriksaan sedimen mikroskopis.",
+      "action": "Pasien diminta menampung urin porsi tengah untuk diperiksa.",
+      "params": [
+        { "kind": "text", "id": "warna", "label": "Warna & kejernihan", "normal": ["Kuning jernih"] },
+        {
+          "kind": "numeric",
+          "id": "bj",
+          "label": "Berat jenis",
+          "unit": "",
+          "decimals": 3,
+          "ref": [1.005, 1.03],
+          "step": 0.005,
+          "normal": [1.01, 1.025]
+        },
+        {
+          "kind": "numeric",
+          "id": "ph",
+          "label": "pH",
+          "unit": "",
+          "decimals": 1,
+          "ref": [4.5, 8],
+          "step": 0.5,
+          "normal": [5, 7]
+        },
+        { "kind": "text", "id": "protein", "label": "Protein", "normal": ["Negatif"] },
+        { "kind": "text", "id": "glukosa", "label": "Glukosa", "normal": ["Negatif"] },
+        { "kind": "text", "id": "keton", "label": "Keton", "normal": ["Negatif"] },
+        {
+          "kind": "text",
+          "id": "darah",
+          "label": "Darah (dipstik)",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.04,
+          "falsePositiveValues": ["+1"]
+        },
+        {
+          "kind": "text",
+          "id": "leukosit_esterase",
+          "label": "Leukosit esterase",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.05,
+          "falsePositiveValues": ["+1"]
+        },
+        {
+          "kind": "text",
+          "id": "nitrit",
+          "label": "Nitrit",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.02,
+          "falsePositiveValues": ["Positif"]
+        },
+        {
+          "kind": "numeric",
+          "id": "sedimen_leukosit",
+          "label": "Sedimen leukosit",
+          "unit": "/LPB",
+          "decimals": 0,
+          "ref": [0, 5],
+          "normal": [0, 4],
+          "falsePositiveRate": 0.04,
+          "falsePositiveRange": [6, 10]
+        },
+        {
+          "kind": "numeric",
+          "id": "sedimen_eritrosit",
+          "label": "Sedimen eritrosit",
+          "unit": "/LPB",
+          "decimals": 0,
+          "ref": [0, 2],
+          "normal": [0, 2]
+        },
+        {
+          "kind": "text",
+          "id": "bakteri",
+          "label": "Bakteri",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.04,
+          "falsePositiveValues": ["Positif (+)"]
+        },
+        {
+          "kind": "text",
+          "id": "kristal",
+          "label": "Kristal",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.05,
+          "falsePositiveValues": ["Kalsium oksalat (+)"]
+        }
+      ]
+    },
+    {
+      "id": "fungsi_hati",
+      "name": "Fungsi hati",
+      "category": "lab",
+      "description": "SGOT, SGPT, dan bilirubin total.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan fungsi hati.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "sgot",
+          "label": "SGOT (AST)",
+          "unit": "U/L",
+          "decimals": 0,
+          "ref": [5, 40],
+          "normal": [12, 32]
+        },
+        {
+          "kind": "numeric",
+          "id": "sgpt",
+          "label": "SGPT (ALT)",
+          "unit": "U/L",
+          "decimals": 0,
+          "ref": [5, 41],
+          "normal": [10, 35]
+        },
+        {
+          "kind": "numeric",
+          "id": "bilirubin",
+          "label": "Bilirubin total",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [0.2, 1.2],
+          "normal": [0.3, 1]
+        }
+      ]
+    },
+    {
+      "id": "fungsi_ginjal",
+      "name": "Fungsi ginjal",
+      "category": "lab",
+      "description": "Ureum dan kreatinin serum.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan fungsi ginjal.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "ureum",
+          "label": "Ureum",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [10, 50],
+          "normal": [15, 40]
+        },
+        {
+          "kind": "numeric",
+          "id": "kreatinin",
+          "label": "Kreatinin",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [0.7, 1.3],
+          "refFemale": [0.5, 1.1],
+          "normal": [0.8, 1.2],
+          "normalFemale": [0.6, 1]
+        }
+      ]
+    },
+    {
+      "id": "profil_lipid",
+      "name": "Profil lipid",
+      "category": "lab",
+      "description": "Kolesterol total, LDL, HDL, dan trigliserida.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan profil lipid.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "kolesterol",
+          "label": "Kolesterol total",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 199],
+          "normal": [150, 195],
+          "refText": "< 200"
+        },
+        {
+          "kind": "numeric",
+          "id": "ldl",
+          "label": "Kolesterol LDL",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 129],
+          "normal": [80, 125],
+          "refText": "< 130"
+        },
+        {
+          "kind": "numeric",
+          "id": "hdl",
+          "label": "Kolesterol HDL",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [40, 100],
+          "refFemale": [50, 100],
+          "normal": [42, 65],
+          "normalFemale": [52, 75]
+        },
+        {
+          "kind": "numeric",
+          "id": "tg",
+          "label": "Trigliserida",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 149],
+          "normal": [70, 145],
+          "refText": "< 150"
+        }
+      ]
+    },
+    {
+      "id": "serologi_dengue",
+      "name": "Serologi dengue IgM/IgG",
+      "category": "lab",
+      "description": "Antibodi IgM (infeksi baru, positif mulai hari ke-4–5) dan IgG (infeksi sekunder/lampau).",
+      "action": "Serum pasien diperiksa dengan tes cepat IgM/IgG dengue.",
+      "params": [
+        { "kind": "text", "id": "igm", "label": "IgM anti-dengue", "normal": ["Negatif"] },
+        { "kind": "text", "id": "igg", "label": "IgG anti-dengue", "normal": ["Negatif"] }
+      ]
+    },
+    {
+      "id": "mikroskopis_malaria",
+      "name": "Apusan darah tebal–tipis (malaria)",
+      "category": "lab",
+      "description": "Baku emas diagnosis malaria: menemukan parasit dan menentukan spesiesnya.",
+      "action": "Darah ujung jari dibuat sediaan apus tebal dan tipis, diwarnai Giemsa, lalu diperiksa di mikroskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Tidak ditemukan parasit malaria"],
+          "falsePositiveRate": 0.005,
+          "falsePositiveValues": ["Ditemukan bentuk menyerupai parasit, meragukan — ulangi"]
+        }
+      ]
+    },
+    {
+      "id": "bta_sputum",
+      "name": "BTA sputum (mikroskopis)",
+      "category": "lab",
+      "description": "Pewarnaan Ziehl–Neelsen dahak sewaktu–pagi. Murah, sensitivitas sedang.",
+      "action": "Pasien diminta mengeluarkan dahak ke pot untuk pemeriksaan BTA.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil BTA",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.01,
+          "falsePositiveValues": ["Scanty (1–9 BTA/100 lapang pandang)"]
+        }
+      ]
+    },
+    {
+      "id": "tcm_tb",
+      "name": "Tes Cepat Molekuler (TCM) TB",
+      "category": "lab",
+      "description": "Xpert MTB/RIF dari dahak: deteksi M. tuberculosis dan resistansi rifampisin. Lebih sensitif dari BTA.",
+      "action": "Dahak pasien dikirim untuk pemeriksaan TCM.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil TCM", "normal": ["MTB not detected"] }]
+    },
+    {
+      "id": "ekg",
+      "name": "Elektrokardiografi (EKG) 12 sadapan",
+      "category": "penunjang",
+      "description": "Rekam listrik jantung saat istirahat.",
+      "action": "Anda memasang elektroda di dada dan anggota gerak pasien, lalu merekam EKG.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "irama",
+          "label": "Irama",
+          "normal": ["Sinus ritme"],
+          "bands": {
+            "from": "frekuensi",
+            "ranges": [
+              { "max": 59, "value": "Sinus bradikardia" },
+              { "max": 100, "value": "Sinus ritme" },
+              { "value": "Sinus takikardia" }
+            ]
+          }
+        },
+        {
+          "kind": "numeric",
+          "id": "frekuensi",
+          "label": "Frekuensi",
+          "unit": "×/menit",
+          "decimals": 0,
+          "ref": [60, 100],
+          "copyFrom": "tanda_vital.nadi"
+        },
+        { "kind": "text", "id": "aksis", "label": "Aksis", "normal": ["Normal"] },
+        { "kind": "text", "id": "gelombang_p_pr", "label": "Gelombang P & interval PR", "normal": ["Normal"] },
+        { "kind": "text", "id": "qrs", "label": "Kompleks QRS", "normal": ["Normal"] },
+        { "kind": "text", "id": "segmen_st", "label": "Segmen ST", "normal": ["Isoelektrik"] },
+        { "kind": "text", "id": "gelombang_t", "label": "Gelombang T", "normal": ["Normal"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["EKG dalam batas normal"],
+          "bands": {
+            "from": "frekuensi",
+            "ranges": [
+              { "max": 59, "value": "Sinus bradikardia, tanpa kelainan lain" },
+              { "max": 100, "value": "EKG dalam batas normal" },
+              { "value": "Sinus takikardia, tanpa kelainan lain" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "rontgen_thorax",
+      "name": "Rontgen thorax (PA)",
+      "category": "penunjang",
+      "description": "Foto dada posteroanterior.",
+      "action": "Pasien difoto rontgen dada posisi berdiri.",
+      "params": [
+        { "kind": "text", "id": "cor", "label": "Cor", "normal": ["Tidak membesar (CTR < 50%)"] },
+        {
+          "kind": "text",
+          "id": "pulmo",
+          "label": "Pulmo",
+          "normal": ["Corakan bronkovaskular normal, tidak tampak infiltrat"]
+        },
+        {
+          "kind": "text",
+          "id": "sinus_diafragma",
+          "label": "Sinus & diafragma",
+          "normal": ["Sinus kostofrenikus tajam, diafragma licin"]
+        },
+        { "kind": "text", "id": "tulang", "label": "Tulang", "normal": ["Tulang-tulang intak"] },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Cor dan pulmo dalam batas normal"] }
+      ]
+    },
+    {
+      "id": "usg_abdomen",
+      "name": "USG abdomen",
+      "category": "penunjang",
+      "description": "Ultrasonografi hati, kandung empedu, limpa, ginjal, kandung kemih, dan cairan bebas.",
+      "action": "Anda mengoleskan gel di perut pasien dan melakukan pemeriksaan USG.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hepar",
+          "label": "Hepar",
+          "normal": ["Ukuran dan ekogenisitas normal, tidak tampak lesi"]
+        },
+        {
+          "kind": "text",
+          "id": "kandung_empedu",
+          "label": "Kandung empedu",
+          "normal": ["Dinding tidak menebal, tidak tampak batu"]
+        },
+        { "kind": "text", "id": "lien", "label": "Lien", "normal": ["Ukuran normal"] },
+        {
+          "kind": "text",
+          "id": "ginjal",
+          "label": "Ginjal kanan & kiri",
+          "normal": ["Ukuran normal, tidak tampak batu maupun hidronefrosis"]
+        },
+        { "kind": "text", "id": "vesika", "label": "Vesika urinaria", "normal": ["Dinding licin, tidak tampak batu"] },
+        { "kind": "text", "id": "cairan_bebas", "label": "Cairan bebas", "normal": ["Tidak tampak"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["Tidak tampak kelainan pada organ intraabdomen yang terperiksa"]
         }
       ]
     }

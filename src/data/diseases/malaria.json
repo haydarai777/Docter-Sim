@@ -297,6 +297,50 @@
       "when": { "traits": ["trombositopenia"] },
       "probability": 0.15,
       "values": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+    },
+    {
+      "tool": "mikroskopis_malaria",
+      "param": "hasil",
+      "when": { "traits": ["falciparum"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": [
+        "Ditemukan P. falciparum stadium tropozoit (bentuk cincin), ± 2.400 parasit/µL",
+        "Ditemukan P. falciparum stadium tropozoit dan gametosit (bentuk pisang)"
+      ]
+    },
+    {
+      "tool": "mikroskopis_malaria",
+      "param": "hasil",
+      "when": { "traits": ["vivax"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": [
+        "Ditemukan P. vivax stadium tropozoit (amoeboid) dan skizon",
+        "Ditemukan P. vivax stadium tropozoit, eritrosit terinfeksi membesar"
+      ]
+    },
+    { "tool": "fungsi_hati", "param": "bilirubin", "when": { "traits": ["ikterik_ringan"] }, "range": [1.6, 3.2] },
+    { "tool": "fungsi_hati", "param": "sgot", "probability": 0.3, "range": [42, 80] },
+    { "tool": "usg_abdomen", "param": "lien", "when": { "traits": ["splenomegali"] }, "values": ["Splenomegali"] },
+    {
+      "tool": "usg_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali", "splenomegali"] },
+      "values": ["Hepatosplenomegali"]
+    },
+    { "tool": "usg_abdomen", "param": "kesan", "when": { "traits": ["splenomegali"] }, "values": ["Splenomegali"] },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
     }
   ],
   "differentials": [
@@ -315,7 +359,7 @@
     "Riwayat tinggal/bepergian ke daerah endemis (Papua, NTT, Maluku, dsb.)",
     "Anemia (konjungtiva pucat), splenomegali, kadang subikterik",
     "Trombositopenia juga sering pada malaria — jangan langsung menyimpulkan dengue",
-    "RDT malaria atau mikroskopis apusan darah tebal–tipis positif (baku emas: mikroskopis)"
+    "Apusan darah tebal–tipis (baku emas, sekaligus menentukan spesies) atau RDT malaria positif"
   ],
   "teachingPoints": [
     "Selalu tanyakan riwayat bepergian pada pasien demam: satu pertanyaan gratis ini bisa mengarah ke malaria.",

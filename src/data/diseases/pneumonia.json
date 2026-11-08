@@ -1,0 +1,214 @@
+{
+  "id": "pneumonia",
+  "name": "Pneumonia Komunitas",
+  "aliases": ["Pneumonia", "Radang paru", "Paru-paru basah", "Bronkopneumonia", "CAP"],
+  "system": "Pernapasan",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi akut parenkim paru yang didapat di masyarakat (tersering Streptococcus pneumoniae). Demam tinggi, menggigil, batuk berdahak purulen (kuning-hijau atau seperti karat), sesak napas, dan nyeri dada pleuritik. Pemeriksaan: takipnea, takikardia, ronkhi basah halus atau suara napas bronkial di daerah konsolidasi; saturasi O₂ dapat turun. Leukositosis dengan pergeseran ke kiri; foto toraks menunjukkan infiltrat/konsolidasi. Nilai derajat keparahan (mis. CURB-65) untuk menentukan perlunya rujuk/rawat inap.",
+  "presentationDay": [2, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 40, "weight": 2 },
+      { "min": 41, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 4 }
+    ],
+    "maleRatio": 0.6,
+    "occupations": [
+      { "id": "pensiunan", "weight": 3 },
+      { "id": "pekerja_proyek", "weight": 1 },
+      { "id": "sopir_truk", "weight": 1 },
+      { "id": "petani", "weight": 1 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "perokok", "when": { "sex": "male" }, "probability": 0.5 },
+    { "id": "lobus_kanan", "probability": 0.6 },
+    { "id": "lobus_kiri", "when": { "notTraits": ["lobus_kanan"] }, "probability": 1 },
+    { "id": "hipoksia", "probability": 0.45 },
+    { "id": "leukositosis", "probability": 0.8 }
+  ],
+  "traitLabels": {
+    "perokok": "Faktor risiko: merokok.",
+    "lobus_kanan": "Konsolidasi di lobus bawah paru kanan.",
+    "lobus_kiri": "Konsolidasi di lobus bawah paru kiri.",
+    "hipoksia": "Hipoksemia (SpO₂ < 94%) — tanda pneumonia berat, pertimbangkan rujuk.",
+    "leukositosis": "Leukositosis dengan pergeseran ke kiri (infeksi bakteri)."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1 },
+    { "id": "batuk", "probability": 1 },
+    { "id": "sesak_napas", "probability": 0.75 },
+    { "id": "nyeri_dada_pleuritik", "probability": 0.5 },
+    { "id": "menggigil", "probability": 0.6 },
+    { "id": "lemas", "probability": 0.8 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 },
+    { "id": "nyeri_kepala", "probability": 0.3 },
+    { "id": "nyeri_otot_sendi", "probability": 0.3 },
+    { "id": "mual_muntah", "probability": 0.15 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["batuk", "sesak_napas"] },
+  "clueSymptoms": ["sesak_napas", "nyeri_dada_pleuritik"],
+  "misattributions": ["masuk angin", "flu", "tipes", "bronkitis"],
+  "fears": ["paru-paru basah", "TBC", "COVID"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru {hariTeks} hari, Dok. Mendadak demam tinggi pakai menggigil, terus batuk.",
+        "when": { "symptoms": ["menggigil", "batuk"] },
+        "reveals": ["menggigil", "batuk"],
+        "clue": "Demam tinggi akut dengan menggigil dan batuk"
+      },
+      {
+        "text": "Baru {hariTeks} hari, Dok. Demam tinggi, terus batuk.",
+        "when": { "symptoms": ["batuk"], "notSymptoms": ["menggigil"] },
+        "reveals": ["batuk"],
+        "clue": "Demam tinggi akut disertai batuk"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Dada kanan bawah sakit kalau tarik napas dalam atau batuk, Dok.",
+        "when": { "traits": ["lobus_kanan"], "symptoms": ["nyeri_dada_pleuritik"] },
+        "reveals": ["nyeri_dada_pleuritik"],
+        "clue": "Nyeri dada pleuritik"
+      },
+      {
+        "text": "Dada kiri bawah sakit kalau tarik napas dalam atau batuk, Dok.",
+        "when": { "traits": ["lobus_kiri"], "symptoms": ["nyeri_dada_pleuritik"] },
+        "reveals": ["nyeri_dada_pleuritik"],
+        "clue": "Nyeri dada pleuritik"
+      },
+      { "text": "Di dada, Dok, kalau batuk rasanya berat.", "when": { "notSymptoms": ["nyeri_dada_pleuritik"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Batuknya berdahak, Dok, warnanya kuning kehijauan, kadang kayak karat.",
+        "when": { "symptoms": ["batuk"] },
+        "reveals": ["batuk"],
+        "clue": "Dahak purulen / berwarna karat"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Makin hari makin sesak, Dok, napasnya pendek-pendek.",
+        "when": { "symptoms": ["sesak_napas"] },
+        "reveals": ["sesak_napas"],
+        "clue": "Sesak napas progresif"
+      },
+      { "text": "Demamnya terus tinggi, Dok, batuknya makin sering.", "when": { "notSymptoms": ["sesak_napas"] } }
+    ],
+    "pemberat_peringan": [{ "text": "Minum obat panas cuma turun sebentar, Dok. Obat batuk warung juga nggak mempan." }],
+    "riwayat_penyakit": [
+      {
+        "text": "Seminggu sebelumnya sempat pilek-pilek biasa, Dok.",
+        "weight": 2,
+        "clue": "Didahului infeksi saluran napas atas"
+      },
+      { "text": "Nggak ada sakit berat, Dok.", "weight": 1 }
+    ],
+    "riwayat_obat": [{ "text": "Minum obat flu dan obat batuk dari warung, Dok." }],
+    "riwayat_keluarga": [
+      { "text": "Nggak ada, Dok. Cucu saya kemarin juga pilek sih.", "weight": 1, "when": { "ageMin": 55 } },
+      { "text": "Nggak ada, Dok.", "weight": 2 }
+    ],
+    "bepergian_lingkungan": [
+      { "text": "Kemarin sempat kehujanan pulang kerja, Dok.", "weight": 1 },
+      { "text": "Nggak ke mana-mana, Dok.", "weight": 2 }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Merokok, Dok, sehari sebungkus.",
+        "when": { "traits": ["perokok"] },
+        "clue": "Merokok (faktor risiko)"
+      },
+      { "text": "Biasa saja, Dok.", "when": { "notTraits": ["perokok"] } }
+    ]
+  },
+  "findings": [
+    { "tool": "termometer", "param": "suhu", "range": [38.5, 40] },
+    { "tool": "tanda_vital", "param": "napas", "range": [24, 30] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [100, 120] },
+    { "tool": "oksimeter", "param": "spo2", "when": { "traits": ["hipoksia"] }, "range": [88, 93] },
+    { "tool": "oksimeter", "param": "spo2", "range": [94, 96] },
+    {
+      "tool": "stetoskop",
+      "param": "paru",
+      "when": { "traits": ["lobus_kanan"] },
+      "probability": 0.9,
+      "values": ["Ronkhi basah halus dan suara napas bronkial di basal paru kanan"]
+    },
+    {
+      "tool": "stetoskop",
+      "param": "paru",
+      "when": { "traits": ["lobus_kiri"] },
+      "probability": 0.9,
+      "values": ["Ronkhi basah halus dan suara napas bronkial di basal paru kiri"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "when": { "traits": ["leukositosis"] }, "range": [12000, 20000] },
+    { "tool": "darah_lengkap", "param": "neutrofil_batang", "when": { "traits": ["leukositosis"] }, "range": [7, 12] },
+    { "tool": "darah_lengkap", "param": "limfosit", "when": { "traits": ["leukositosis"] }, "range": [8, 17] },
+    { "tool": "darah_lengkap", "param": "led", "probability": 0.6, "range": [30, 70] },
+    {
+      "tool": "rontgen_thorax",
+      "param": "pulmo",
+      "when": { "traits": ["lobus_kanan"] },
+      "values": ["Konsolidasi di lobus bawah paru kanan dengan air bronchogram"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "pulmo",
+      "when": { "traits": ["lobus_kiri"] },
+      "values": ["Konsolidasi di lobus bawah paru kiri dengan air bronchogram"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["lobus_kanan"] },
+      "values": ["Pneumonia lobus bawah kanan"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["lobus_kiri"] },
+      "values": ["Pneumonia lobus bawah kiri"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "tb_paru",
+      "howToDistinguish": "TB: batuk ≥ 2 minggu, keringat malam, BB turun, demam subfebris, infiltrat/kavitas lapangan atas, BTA/TCM positif. Pneumonia: akut, demam tinggi, sesak, konsolidasi lobus bawah, leukositosis."
+    },
+    {
+      "id": "asma",
+      "howToDistinguish": "Asma: sesak dengan mengi, tanpa demam tinggi, riwayat serangan berulang, membaik dengan bronkodilator. Pneumonia: demam tinggi, dahak purulen, ronkhi basah lokal, konsolidasi pada foto toraks."
+    },
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam tinggi tanpa batuk produktif/sesak yang menonjol, leukopenia dan trombositopenia. Pneumonia: batuk berdahak, sesak, ronkhi lokal, leukositosis."
+    }
+  ],
+  "otherDifferentials": ["Bronkitis akut", "Influenza", "COVID-19", "Gagal jantung (edema paru)"],
+  "keyFindings": [
+    "Demam tinggi akut, menggigil, batuk berdahak purulen",
+    "Sesak napas dan nyeri dada pleuritik",
+    "Takipnea, takikardia, SpO₂ dapat menurun",
+    "Ronkhi basah halus / suara napas bronkial lokal",
+    "Leukositosis dengan pergeseran ke kiri; foto toraks: konsolidasi/infiltrat"
+  ],
+  "teachingPoints": [
+    "Frekuensi napas dan saturasi O₂ adalah tanda vital penting pada pasien batuk-demam — sering terlupa.",
+    "Nilai CURB-65 (Confusion, Urea, Respiratory rate ≥ 30, Blood pressure rendah, usia ≥ 65) untuk menentukan perlu rujuk/rawat."
+  ],
+  "idealWorkup": ["termometer", "tanda_vital", "oksimeter", "stetoskop", "rontgen_thorax"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Level SKDI pneumonia komunitas mohon diverifikasi.", "Pneumonia berat/sepsis tidak dimodelkan terpisah."],
+    "references": [
+      "PDPI. Pneumonia Komuniti: Pedoman Diagnosis dan Penatalaksanaan di Indonesia (2022)",
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Pneumonia"
+    ]
+  }
+}

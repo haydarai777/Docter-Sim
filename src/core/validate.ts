@@ -22,6 +22,7 @@ import { DANGER_LEVELS, ECONOMY_CLASSES, TOOL_CATEGORIES } from './types';
 export const BUILTIN_PLACEHOLDERS = [
   'hari',
   'hariTeks',
+  'lamaSakit',
   'nama',
   'sapaan',
   'usia',
@@ -105,6 +106,25 @@ function validateTools(content: GameContent, config: GameConfig, err: ErrFn): vo
       if (paramIds.has(param.id)) err(pPath, 'id parameter ganda');
       paramIds.add(param.id);
       validateParam(param, pPath, err);
+    }
+    for (const param of tool.params) {
+      const pPath = `${path}.${param.id}`;
+      if (param.kind === 'numeric' && param.copyFrom) {
+        const [t, pid] = param.copyFrom.split('.');
+        const src = content.toolsById.get(t ?? '')?.params.find((x) => x.id === pid);
+        if (!src || src.kind !== 'numeric') err(pPath, `copyFrom "${param.copyFrom}" tidak menunjuk parameter numerik`);
+      }
+      if (param.kind === 'numeric' && param.compute) {
+        for (const ref of [param.compute.bmi, param.compute.heightCm]) {
+          const src = tool.params.find((x) => x.id === ref);
+          if (!src || src.kind !== 'numeric') err(pPath, `compute merujuk "${ref}" yang bukan parameter numerik di alat ini`);
+        }
+      }
+      if (param.kind === 'text' && param.bands) {
+        const src = tool.params.find((x) => x.id === param.bands!.from);
+        if (!src || src.kind !== 'numeric') err(pPath, `bands.from "${param.bands.from}" bukan parameter numerik di alat ini`);
+        if (!param.bands.ranges.length || param.bands.ranges.at(-1)!.max !== undefined) err(pPath, 'bands.ranges harus diakhiri rentang tanpa max');
+      }
     }
     for (const group of tool.groups ?? []) {
       for (const id of group.params) if (!paramIds.has(id)) err(`${path}.groups`, `parameter "${id}" tidak ada`);
@@ -314,6 +334,7 @@ function validateDisease(
     if (!param) return err(fPath, 'parameter tidak ada');
     if (f.probability !== undefined && !isProbability(f.probability)) err(fPath, 'probability harus 0..1');
     checkCond(fPath, f.when, true);
+    if (param.kind === 'numeric' && (param.compute || param.copyFrom)) err(fPath, 'parameter turunan (compute/copyFrom) tidak boleh diatur penyakit');
     if (param.kind === 'numeric') {
       if (!isRange(f.range)) err(fPath, 'parameter numerik butuh range yang valid');
       if (f.values) err(fPath, 'parameter numerik tidak boleh memakai values');
@@ -321,9 +342,13 @@ function validateDisease(
       if (!f.values?.length) err(fPath, 'parameter teks butuh values');
       if (f.range) err(fPath, 'parameter teks tidak boleh memakai range');
     }
+    if (f.requires) {
+      const idx = tool.params.findIndex((p) => p.id === f.requires);
+      if (idx < 0 || idx >= tool.params.indexOf(param)) err(fPath, `requires "${f.requires}" harus parameter alat yang sama dan tercantum lebih awal`);
+    }
     const key = `${f.tool}.${f.param}`;
     if (defaultSeen.has(key)) err(fPath, 'aturan tidak akan pernah terpakai (ada aturan tanpa kondisi sebelumnya)');
-    if (!f.when) defaultSeen.add(key);
+    if (!f.when && !f.requires) defaultSeen.add(key);
   });
 
   // Diagnosis banding & pemeriksaan ideal
