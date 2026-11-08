@@ -128,12 +128,13 @@ export function renderSummary(app: App): HTMLElement {
           'div',
           { class: 'summary__actions' },
           h('p', { class: 'banner banner--warn' }, `Reputasi Anda turun di bawah ${R.gameOverBelow}. Praktek ditutup.`),
-          h('button', { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.startGame() }, 'Mulai praktek baru'),
+          h('button', { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.showFinal() }, 'Lihat hasil akhir'),
         )
       : h(
           'div',
-          { class: 'summary__actions' },
+          { class: 'summary__actions summary__actions--row' },
           h('button', { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.nextPatient() }, 'Pasien berikutnya →'),
+          h('button', { class: 'btn', type: 'button', onclick: () => app.retire() }, 'Akhiri praktek'),
         ),
     h('p', { class: 'muted case-code' }, `Kode kasus: ${enc.case.seed}`),
     disclaimer(true),

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { chooseNextDisease, createRun, diagnoseCurrent, runStats, startNextPatient } from '../src/core/run';
+import { chooseNextDisease, createRun, diagnoseCurrent, retireRun, runStats, startNextPatient } from '../src/core/run';
 import type { RunState } from '../src/core/types';
 import { config, configWith, content } from './helpers';
 
@@ -92,10 +92,22 @@ describe('sesi permainan', () => {
     run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, config);
     run = startNextPatient(run, content, config);
     run = diagnoseCurrent(run, wrongAnswer(run), content, config);
-    const stats = runStats(run, content);
+    const stats = runStats(run, content, config);
     expect(stats.patientsSeen).toBe(2);
     expect(stats.correct).toBe(1);
     expect(stats.accuracy).toBe(0.5);
     expect(stats.bestStreak).toBe(1);
+    expect(stats.reputationHistory).toEqual([config.reputation.initial, run.history[0]!.reputationAfter, run.reputation]);
+    expect(stats.perDisease.reduce((s, d) => s + d.seen, 0)).toBe(2);
+    expect(stats.averageSpent).toBe(0);
+  });
+
+  it('pemain bisa mengakhiri praktek di antara pasien, tidak saat memeriksa', () => {
+    let run = startNextPatient(createRun(41, config), content, config);
+    expect(() => retireRun(run)).toThrow();
+    run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, config);
+    run = retireRun(run);
+    expect(run.status).toBe('retired');
+    expect(() => startNextPatient(run, content, config)).toThrow();
   });
 });

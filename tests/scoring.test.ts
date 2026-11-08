@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { applyReputation, efficiencyBonus, evaluateDiagnosis, idealWorkupCost, isGameOver, wrongPenalty } from '../src/core/scoring';
+import { applyReputation, efficiencyBonus, evaluateDiagnosis, idealWorkupCost, isGameOver, reputationTitle, wrongPenalty } from '../src/core/scoring';
 import type { DiseaseTemplate } from '../src/core/types';
 import { config, configWith, content } from './helpers';
 
@@ -63,5 +63,12 @@ describe('reputasi & penilaian', () => {
   it('angka reputasi diambil dari config (bisa di-balance)', () => {
     const custom = configWith({ reputation: { correctBase: 20, efficiencyBonusMax: 0 } });
     expect(evaluateDiagnosis('malaria', 'malaria', 0, content, custom).reputationDelta).toBe(20);
+  });
+
+  it('gelar reputasi mengikuti ambang di config', () => {
+    const sorted = [...R.titles].sort((a, b) => b.min - a.min);
+    expect(reputationTitle(R.max, config)).toBe(sorted[0]!.label);
+    expect(reputationTitle(R.min, config)).toBe(sorted.at(-1)!.label);
+    for (const t of sorted) expect(reputationTitle(t.min, config)).toBe(t.label);
   });
 });

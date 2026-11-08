@@ -6,13 +6,15 @@
  */
 import { askCategory, askSymptom, EncounterError, performExam } from '../core/encounter';
 import { randomSeed } from '../core/rng';
-import { createRun, diagnoseCurrent, startNextPatient, updateEncounter } from '../core/run';
+import { createRun, diagnoseCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
 import type { EncounterState, GameConfig, GameContent, RunState, ToolCategory } from '../core/types';
 import { renderConsult } from './screens/consult';
+import { renderFinal } from './screens/final';
 import { renderSummary } from './screens/summary';
 import { renderTitle } from './screens/title';
+import { type Records, updateRecords } from './storage';
 
-export type Screen = 'title' | 'consult' | 'summary';
+export type Screen = 'title' | 'consult' | 'summary' | 'final';
 export type ActionTab = 'anamnesis' | ToolCategory | 'diagnosis';
 
 export interface UiState {
@@ -40,6 +42,8 @@ const INITIAL_UI: UiState = {
 export class App {
   run: RunState | null = null;
   ui: UiState = { ...INITIAL_UI };
+  /** Rekor setelah sesi berakhir (diisi sekali saat layar akhir dibuka). */
+  finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
   /** Jumlah entri log saat render terakhir (untuk auto-scroll percakapan). */
   private renderedLogLength = 0;
 
@@ -65,6 +69,7 @@ export class App {
     const run = createRun(randomSeed(), this.config);
     this.run = startNextPatient(run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult' };
+    this.finalRecords = null;
     this.renderedLogLength = 0;
     this.render();
   }
@@ -126,6 +131,25 @@ export class App {
     this.render();
   }
 
+  /** Akhiri praktek secara sukarela (di antara pasien) dan tampilkan hasil akhir. */
+  retire(): void {
+    if (!this.run || this.run.status !== 'playing') return;
+    this.run = retireRun(this.run);
+    this.showFinal();
+  }
+
+  /** Tampilkan layar hasil akhir dan perbarui rekor (sekali per sesi). */
+  showFinal(): void {
+    if (!this.run || this.run.status === 'playing') return;
+    if (!this.finalRecords) {
+      const stats = runStats(this.run, this.content, this.config);
+      this.finalRecords = updateRecords({ correct: stats.correct, bestStreak: stats.bestStreak, patients: stats.patientsSeen });
+    }
+    this.ui = { ...INITIAL_UI, screen: 'final' };
+    this.render();
+    window.scrollTo({ top: 0 });
+  }
+
   backToTitle(): void {
     this.ui = { ...INITIAL_UI };
     this.render();
@@ -164,6 +188,9 @@ export class App {
         break;
       case 'summary':
         view = renderSummary(this);
+        break;
+      case 'final':
+        view = renderFinal(this);
         break;
     }
     this.root.replaceChildren(view);

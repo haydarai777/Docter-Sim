@@ -3,7 +3,7 @@
  * (anamnesis, pemeriksaan per kategori, diagnosis).
  */
 import { canAskCategory, canAskSymptom, canPerformExam, isBudgetExhausted, questionsLeft } from '../../core/encounter';
-import { toolPrice } from '../../core/scoring';
+import { reputationTitle, toolPrice } from '../../core/scoring';
 import { formatRupiah, normalizeForSearch } from '../../core/text';
 import type { EncounterState, LogEntry } from '../../core/types';
 import type { ActionTab, App } from '../app';
@@ -36,6 +36,7 @@ function topBar(app: App): HTMLElement {
     { class: 'topbar' },
     h('span', { class: 'topbar__brand' }, '🩺 Meja Praktek'),
     h('span', { class: 'topbar__patient' }, `Pasien #${run.patientIndex}`),
+    h('span', { class: 'topbar__title' }, reputationTitle(run.reputation, app.config)),
     h(
       'div',
       { class: cx('rep', danger && 'rep--danger'), title: `Game over jika reputasi di bawah ${reputation.gameOverBelow}` },

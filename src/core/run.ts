@@ -75,17 +75,32 @@ export function diagnoseCurrent(run: RunState, diseaseId: string, content: GameC
   };
 }
 
+/**
+ * Pemain mengakhiri praktek secara sukarela (hanya di antara pasien).
+ * Statistik akhir tetap ditampilkan seperti game over.
+ */
+export function retireRun(run: RunState): RunState {
+  if (run.status !== 'playing') return run;
+  if (run.encounter && run.encounter.status === 'active') throw new Error('Selesaikan pasien yang sedang diperiksa dulu.');
+  return { ...run, status: 'retired' };
+}
+
 export interface RunStats {
   patientsSeen: number;
   correct: number;
   accuracy: number;
   totalSpent: number;
+  averageSpent: number;
   /** Penyakit berbahaya (tinggi/kritis) yang terlewat. */
   dangerousMisses: number;
   bestStreak: number;
+  /** Reputasi awal lalu reputasi setelah tiap pasien. */
+  reputationHistory: number[];
+  /** Rekap per penyakit (hanya penyakit yang pernah muncul). */
+  perDisease: { diseaseId: string; seen: number; correct: number }[];
 }
 
-export function runStats(run: RunState, content: GameContent): RunStats {
+export function runStats(run: RunState, content: GameContent, config: GameConfig): RunStats {
   let best = 0;
   let current = 0;
   let dangerousMisses = 0;
@@ -100,12 +115,25 @@ export function runStats(run: RunState, content: GameContent): RunStats {
     }
   }
   const correct = run.history.filter((r) => r.correct).length;
+  const totalSpent = run.history.reduce((s, r) => s + r.spent, 0);
+
+  const perDiseaseMap = new Map<string, { diseaseId: string; seen: number; correct: number }>();
+  for (const r of run.history) {
+    const entry = perDiseaseMap.get(r.diseaseId) ?? { diseaseId: r.diseaseId, seen: 0, correct: 0 };
+    entry.seen++;
+    if (r.correct) entry.correct++;
+    perDiseaseMap.set(r.diseaseId, entry);
+  }
+
   return {
     patientsSeen: run.history.length,
     correct,
     accuracy: run.history.length ? correct / run.history.length : 0,
-    totalSpent: run.history.reduce((s, r) => s + r.spent, 0),
+    totalSpent,
+    averageSpent: run.history.length ? totalSpent / run.history.length : 0,
     dangerousMisses,
     bestStreak: best,
+    reputationHistory: [config.reputation.initial, ...run.history.map((r) => r.reputationAfter)],
+    perDisease: [...perDiseaseMap.values()].sort((a, b) => b.seen - a.seen || a.diseaseId.localeCompare(b.diseaseId)),
   };
 }

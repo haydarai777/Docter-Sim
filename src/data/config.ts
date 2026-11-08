@@ -97,6 +97,15 @@ export const GAME_CONFIG: GameConfig = {
       tinggi: 2.5,
       kritis: 3.5,
     },
+
+    // Gelar dokter sesuai reputasi (dipakai di UI). min = batas bawah inklusif.
+    titles: [
+      { min: 85, label: 'Dokter teladan' },
+      { min: 65, label: 'Dokter terpercaya' },
+      { min: 45, label: 'Dokter umum' },
+      { min: 20, label: 'Dokter diragukan' },
+      { min: 0, label: 'Izin praktek terancam' },
+    ],
   },
 
   queue: {

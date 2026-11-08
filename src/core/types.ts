@@ -410,6 +410,8 @@ export interface GameConfig {
     efficiencyZeroAtMultiplier: number;
     wrongBase: number;
     dangerMultiplier: Record<DangerLevel, number>;
+    /** Gelar sesuai reputasi (min = batas bawah inklusif). */
+    titles: { min: number; label: string }[];
   };
   queue: {
     /** Hindari penyakit yang sama dua kali berturut-turut. */
@@ -558,5 +560,6 @@ export interface RunState {
   reputation: number;
   history: PatientRecord[];
   encounter: EncounterState | null;
-  status: 'playing' | 'game_over';
+  /** playing = berjalan · game_over = reputasi di bawah ambang · retired = pemain mengakhiri praktek. */
+  status: 'playing' | 'game_over' | 'retired';
 }

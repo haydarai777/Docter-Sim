@@ -35,6 +35,7 @@ Perintah lain:
 | `npm run sample-cases` | Mencetak contoh kasus hasil generator (untuk review dokter). Opsi: `-- --n 5 --disease malaria --seed 123` |
 | `npm run format-data` | Merapikan format file JSON di `src/data` |
 | `npm run review-sheet` | Membuat ulang `REVIEW.md` (lembar tinjauan untuk dokter) dari file data |
+| `npm run balance-report` | Laporan keseimbangan: biaya vs budget per penyakit + simulasi bot pemain |
 
 ## Konten saat ini
 
@@ -82,6 +83,21 @@ scripts/                alat bantu pengembang (validasi, contoh kasus, format da
 
 Aturan main: **UI tidak berisi aturan permainan.** Semua aturan ada di `src/core`,
 semua angka di `src/data/config.ts`, semua konten medis di file JSON.
+
+## Reputasi & balancing
+
+Semua angka ada di `src/data/config.ts`. Nilai saat ini:
+
+- Reputasi awal **50** (0–100). **Game over jika < 20.**
+- Diagnosis tepat: **+8**, plus bonus hemat **0–4** (penuh bila biaya ≤ biaya pemeriksaan
+  ideal penyakit itu, turun linear hingga 0 pada 2× biaya ideal).
+- Diagnosis salah: **−6 × pengali bahaya** penyakit yang terlewat
+  (rendah ×1, sedang ×1,5, tinggi ×2,5, kritis ×3,5 → −6, −9, −15, −21).
+- Gelar dokter berdasarkan reputasi (Dokter teladan, terpercaya, umum, diragukan, …).
+
+Hasil simulasi (`npm run balance-report`): penebak acak game over di sekitar pasien ke-4;
+akurasi ±60% kira-kira impas; akurasi ≥ 70% hampir selalu bertahan. Tes `tests/balance.test.ts`
+menjaga agar perubahan config tidak merusak keseimbangan ini tanpa disadari.
 
 ## Cara kerja kasus pasien
 

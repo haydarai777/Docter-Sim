@@ -83,3 +83,9 @@ export function applyReputation(current: number, delta: number, config: GameConf
 export function isGameOver(reputation: number, config: GameConfig): boolean {
   return reputation < config.reputation.gameOverBelow;
 }
+
+/** Gelar dokter untuk nilai reputasi tertentu (dari config.reputation.titles). */
+export function reputationTitle(reputation: number, config: GameConfig): string {
+  const sorted = [...config.reputation.titles].sort((a, b) => b.min - a.min);
+  return (sorted.find((t) => reputation >= t.min) ?? sorted[sorted.length - 1])?.label ?? '';
+}

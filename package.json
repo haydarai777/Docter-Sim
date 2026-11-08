@@ -14,7 +14,8 @@
     "validate-content": "tsx scripts/validate-content.ts",
     "sample-cases": "tsx scripts/sample-cases.ts",
     "format-data": "tsx scripts/format-data.ts",
-    "review-sheet": "tsx scripts/review-sheet.ts"
+    "review-sheet": "tsx scripts/review-sheet.ts",
+    "balance-report": "tsx scripts/balance-report.ts"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",
