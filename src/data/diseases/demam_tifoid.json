@@ -1,0 +1,263 @@
+{
+  "id": "demam_tifoid",
+  "name": "Demam Tifoid",
+  "aliases": ["Tifoid", "Tifus", "Tipes", "Typhoid fever", "Enteric fever"],
+  "system": "Infeksi tropis",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Infeksi sistemik oleh Salmonella enterica serotipe Typhi yang ditularkan lewat makanan/minuman tercemar (fekal–oral). Demam meningkat bertahap terutama sore–malam dan berlangsung lebih dari seminggu, disertai keluhan saluran cerna (konstipasi atau diare, nyeri perut), lidah kotor, dan kadang bradikardia relatif. Komplikasi berbahaya: perdarahan dan perforasi usus (biasanya minggu ke-2–3).",
+  "presentationDay": [5, 14],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 25, "weight": 5 },
+      { "min": 26, "max": 35, "weight": 3 },
+      { "min": 36, "max": 50, "weight": 2 },
+      { "min": 51, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "mahasiswa", "weight": 4 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "ojek_online", "weight": 1 },
+      { "id": "pedagang_kaki_lima", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "demam_saat_periksa", "probability": 0.8 },
+    { "id": "bradikardia_relatif", "probability": 0.35 },
+    { "id": "lidah_kotor", "probability": 0.6 },
+    { "id": "hepatomegali", "probability": 0.3 },
+    { "id": "splenomegali", "probability": 0.2 },
+    { "id": "leukopenia", "probability": 0.25 },
+    { "id": "konstipasi", "probability": 0.45 },
+    { "id": "diare", "when": { "notTraits": ["konstipasi"] }, "probability": 0.35 },
+    { "id": "aneosinofilia", "probability": 0.55 },
+    { "id": "meteorismus", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "bradikardia_relatif": "Bradikardia relatif: nadi tidak naik sebanding dengan suhu.",
+    "lidah_kotor": "Lidah kotor (coated tongue).",
+    "hepatomegali": "Hepatomegali ringan.",
+    "splenomegali": "Splenomegali ringan.",
+    "leukopenia": "Leukopenia.",
+    "konstipasi": "Keluhan cerna berupa konstipasi (lebih sering pada dewasa).",
+    "diare": "Keluhan cerna berupa diare.",
+    "aneosinofilia": "Aneosinofilia (eosinofil 0%).",
+    "meteorismus": "Meteorismus (perut kembung)."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1 },
+    { "id": "nyeri_kepala", "probability": 0.75 },
+    { "id": "lemas", "probability": 0.85 },
+    { "id": "nafsu_makan_turun", "probability": 0.85 },
+    { "id": "nyeri_perut", "probability": 0.55 },
+    { "id": "mual_muntah", "probability": 0.5 },
+    { "id": "konstipasi", "when": { "traits": ["konstipasi"] }, "probability": 1 },
+    { "id": "diare", "when": { "traits": ["diare"] }, "probability": 1 },
+    { "id": "nyeri_otot_sendi", "probability": 0.3 },
+    { "id": "batuk", "probability": 0.2 },
+    { "id": "menggigil", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["nyeri_perut", "nafsu_makan_turun", "lemas", "nyeri_kepala"] },
+  "clueSymptoms": ["konstipasi", "diare", "nyeri_perut"],
+  "misattributions": ["masuk angin", "maag", "kecapekan", "DBD"],
+  "fears": ["tipes", "demam berdarah", "usus bocor"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah sekitar {hariTeks} hari, Dok. Awalnya cuma meriang biasa, lama-lama makin panas.",
+        "weight": 3,
+        "clue": "Demam yang naik bertahap, lebih dari 5 hari"
+      },
+      {
+        "text": "Kurang lebih {hariTeks} hari, Dok. Pelan-pelan, tiap hari rasanya makin parah.",
+        "weight": 2,
+        "clue": "Demam yang naik bertahap, lebih dari 5 hari"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Perut bagian tengah sama ulu hati nggak enak, Dok.",
+        "when": { "symptoms": ["nyeri_perut"] },
+        "clue": "Nyeri perut/ulu hati yang menyertai demam",
+        "reveals": ["nyeri_perut"]
+      },
+      {
+        "text": "Nggak di satu tempat, Dok. Pokoknya badan nggak enak semua.",
+        "when": { "notSymptoms": ["nyeri_perut"] }
+      }
+    ],
+    "karakter": [
+      { "text": "Panasnya nggak setinggi waktu kena flu, Dok, tapi nggak sembuh-sembuh.", "weight": 2 },
+      { "text": "Panasnya naik turun, tapi nggak pernah benar-benar hilang, Dok.", "weight": 2 }
+    ],
+    "pola": [
+      {
+        "text": "Pagi sampai siang agak mendingan, Dok. Tapi sore sampai malam panasnya naik lagi.",
+        "weight": 4,
+        "clue": "Demam terutama sore–malam hari"
+      },
+      {
+        "text": "Panasnya kayak naik tangga, Dok, tiap hari naik sedikit. Paling tinggi malam hari.",
+        "weight": 2,
+        "clue": "Demam terutama sore–malam hari"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Habis makan perut jadi begah, Dok. Minum obat panas cuma turun sebentar.", "weight": 1 }],
+    "riwayat_penyakit": [
+      { "text": "Dulu pernah kena tipes, Dok, waktu SMA.", "weight": 1 },
+      { "text": "Nggak ada sakit berat, Dok. Paling maag.", "weight": 3 }
+    ],
+    "riwayat_obat": [
+      { "text": "Minum parasetamol sama obat maag, Dok, tapi nggak sembuh juga.", "weight": 3 },
+      { "text": "Sudah minum obat warung, Dok. Panasnya turun sebentar, terus naik lagi.", "weight": 2 }
+    ],
+    "riwayat_keluarga": [
+      { "text": "Nggak ada, Dok.", "weight": 4 },
+      {
+        "text": "Teman satu kos ada yang sakit tipes bulan lalu, Dok.",
+        "weight": 2,
+        "when": { "occupations": ["mahasiswa", "buruh_pabrik"] },
+        "clue": "Kontak dengan penderita tifoid"
+      }
+    ],
+    "bepergian_lingkungan": [
+      { "text": "Nggak ke mana-mana, Dok.", "weight": 2 },
+      {
+        "text": "Dua minggu lalu sempat mudik ke kampung, Dok. Di sana air sumurnya agak keruh, diminum juga.",
+        "weight": 1,
+        "clue": "Kemungkinan sumber air minum tercemar"
+      },
+      { "text": "Minggu lalu ke {kotaWisata}, Dok, wisata kuliner.", "weight": 1 }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya sering jajan di pinggir jalan, Dok. Es campur, gorengan, apa saja.",
+        "weight": 4,
+        "clue": "Sering jajan makanan/minuman yang kebersihannya kurang terjamin"
+      },
+      {
+        "text": "Makan siang di warung dekat tempat kerja tiap hari, Dok. Cuci tangan? Jarang sih.",
+        "weight": 3,
+        "clue": "Higiene makanan dan cuci tangan kurang"
+      },
+      { "text": "Biasa saja, Dok. Makan di rumah.", "weight": 1 }
+    ]
+  },
+  "findings": [
+    { "tool": "termometer", "param": "suhu", "when": { "traits": ["demam_saat_periksa"] }, "range": [38, 39.6] },
+    { "tool": "termometer", "param": "suhu", "range": [37.4, 38] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["bradikardia_relatif"] }, "range": [68, 84] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [90, 108] },
+    {
+      "tool": "senter",
+      "param": "lidah",
+      "when": { "traits": ["lidah_kotor"] },
+      "values": [
+        "Lidah kotor (selaput putih di tengah), tepi dan ujung hiperemis",
+        "Lidah kotor (coated tongue), ujung hiperemis, tremor halus"
+      ]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "symptoms": ["nyeri_perut"] },
+      "probability": 0.7,
+      "values": ["Nyeri tekan epigastrium", "Nyeri tekan periumbilikal", "Nyeri tekan ringan regio epigastrium dan periumbilikal"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Teraba 1–2 jari di bawah arkus kosta, kenyal, nyeri tekan ringan"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "lien",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Teraba Schuffner I"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "inspeksi_perkusi",
+      "when": { "traits": ["meteorismus"] },
+      "values": ["Sedikit cembung, meteorismus (hipertimpani)"]
+    },
+    {
+      "tool": "stetoskop",
+      "param": "bising_usus",
+      "when": { "traits": ["diare"] },
+      "values": ["Bising usus meningkat"]
+    },
+    {
+      "tool": "stetoskop",
+      "param": "bising_usus",
+      "when": { "traits": ["konstipasi"] },
+      "probability": 0.5,
+      "values": ["Bising usus menurun"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "when": { "traits": ["leukopenia"] }, "range": [2800, 3900] },
+    { "tool": "darah_lengkap", "param": "leukosit", "range": [4200, 8500] },
+    { "tool": "darah_lengkap", "param": "trombosit", "probability": 0.2, "range": [110000, 149000] },
+    { "tool": "darah_lengkap", "param": "eosinofil", "when": { "traits": ["aneosinofilia"] }, "range": [0, 0] },
+    { "tool": "darah_lengkap", "param": "limfosit", "probability": 0.4, "range": [38, 48] },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "sex": "male" }, "probability": 0.15, "range": [11.5, 12.9] },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "sex": "female" }, "probability": 0.15, "range": [10.5, 11.9] },
+    { "tool": "darah_lengkap", "param": "led", "when": { "sex": "male" }, "probability": 0.5, "range": [16, 30] },
+    { "tool": "darah_lengkap", "param": "led", "when": { "sex": "female" }, "probability": 0.5, "range": [21, 35] },
+    {
+      "tool": "widal",
+      "param": "so",
+      "when": { "dayMin": 7 },
+      "probability": 0.7,
+      "diagnostic": true,
+      "values": ["1/320", "1/320", "1/640"]
+    },
+    { "tool": "widal", "param": "so", "probability": 0.45, "diagnostic": true, "values": ["1/160", "1/320"] },
+    { "tool": "widal", "param": "sh", "probability": 0.5, "diagnostic": true, "values": ["1/160", "1/320"] },
+    {
+      "tool": "tubex",
+      "param": "skor",
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["4 (positif lemah)", "6 (positif)", "6 (positif)", "8 (positif kuat)", "10 (positif kuat)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam tinggi mendadak dengan nyeri otot/sendi dan belakang mata, trombositopenia nyata dan hemokonsentrasi; NS1 positif di awal. Tifoid: demam bertahap lebih dari seminggu, keluhan cerna, lidah kotor, trombosit umumnya normal."
+    },
+    {
+      "id": "malaria",
+      "howToDistinguish": "Malaria: riwayat ke daerah endemis, demam menggigil–berkeringat berkala, anemia dan splenomegali, RDT positif. Tifoid: tanpa riwayat daerah endemis malaria, demam sore–malam, keluhan cerna, Tubex positif."
+    }
+  ],
+  "otherDifferentials": ["Gastroenteritis akut", "Leptospirosis", "Hepatitis A", "Pielonefritis", "Tuberkulosis (demam lama)"],
+  "keyFindings": [
+    "Demam ≥ 5–7 hari yang naik bertahap, terutama sore–malam",
+    "Keluhan saluran cerna: konstipasi (dewasa) atau diare, mual, nyeri perut",
+    "Lidah kotor (coated tongue), bradikardia relatif, hepato/splenomegali ringan",
+    "Leukosit normal atau rendah, aneosinofilia, limfositosis relatif",
+    "Tubex TF / IgM anti-Salmonella positif; baku emas: kultur darah"
+  ],
+  "teachingPoints": [
+    "Widal murah tetapi sering positif palsu di daerah endemis dan bisa negatif di minggu pertama. Jangan mendiagnosis tifoid hanya dari titer Widal tunggal.",
+    "Bradikardia relatif = nadi tidak naik sebanding dengan suhu (umumnya nadi naik sekitar 10×/menit tiap kenaikan 1 °C)."
+  ],
+  "idealWorkup": ["termometer", "tanda_vital", "senter", "darah_lengkap", "tubex"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
+      "Sensitivitas Tubex/Widal di game disederhanakan."
+    ],
+    "references": [
+      "Kemenkes RI. Pedoman Pengendalian Demam Tifoid (2006)",
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Demam Tifoid",
+      "WHO. Background document: the diagnosis, treatment and prevention of typhoid fever (2003)"
+    ]
+  }
+}

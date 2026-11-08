@@ -1,0 +1,320 @@
+{
+  "id": "dengue",
+  "name": "Infeksi Dengue (Demam Dengue / DBD)",
+  "aliases": ["Demam berdarah dengue", "DBD", "Demam dengue", "Demam berdarah", "DHF", "Dengue fever"],
+  "system": "Infeksi tropis",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 1.2,
+  "summary": "Infeksi virus dengue yang ditularkan nyamuk Aedes aegypti. Ditandai demam tinggi mendadak 2–7 hari, nyeri kepala, nyeri belakang bola mata, nyeri otot/sendi, dan manifestasi perdarahan (uji tourniquet positif, petekie, mimisan). Pada DBD terjadi kebocoran plasma (hematokrit meningkat). Fase kritis biasanya justru saat demam mulai turun (sekitar hari ke-3 sampai ke-7), sehingga pasien perlu dipantau ketat.",
+  "presentationDay": [2, 6],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 5 },
+      { "min": 31, "max": 45, "weight": 3 },
+      { "min": 46, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "mahasiswa", "weight": 3 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "ibu_rumah_tangga", "weight": 2 },
+      { "id": "buruh_pabrik", "weight": 2 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "fase_kritis", "when": { "dayMin": 4 }, "probability": 0.85 },
+    { "id": "fase_kritis", "when": { "dayMin": 3, "dayMax": 3 }, "probability": 0.35 },
+    { "id": "trombositopenia", "when": { "dayMin": 3 }, "probability": 0.9 },
+    { "id": "trombositopenia", "probability": 0.3 },
+    { "id": "kebocoran_plasma", "when": { "traits": ["fase_kritis"] }, "probability": 0.75 },
+    { "id": "leukopenia", "probability": 0.7 },
+    { "id": "perdarahan_spontan", "when": { "traits": ["trombositopenia"] }, "probability": 0.35 },
+    { "id": "hepatomegali", "when": { "traits": ["fase_kritis"] }, "probability": 0.3 },
+    { "id": "tanda_bahaya", "when": { "traits": ["fase_kritis"] }, "probability": 0.25 }
+  ],
+  "traitLabels": {
+    "fase_kritis": "Pasien datang pada fase kritis: demam mulai turun, tetapi risiko kebocoran plasma dan syok justru paling tinggi.",
+    "trombositopenia": "Trombositopenia (trombosit < 150.000/µL; pada fase kritis sering ≤ 100.000/µL).",
+    "kebocoran_plasma": "Ada tanda kebocoran plasma (hemokonsentrasi) — memenuhi kriteria DBD.",
+    "leukopenia": "Leukopenia.",
+    "perdarahan_spontan": "Ada manifestasi perdarahan spontan (petekie / mimisan / gusi berdarah).",
+    "hepatomegali": "Hepatomegali.",
+    "tanda_bahaya": "Ada tanda bahaya (nyeri perut hebat / muntah terus-menerus) — perlu rawat inap."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1 },
+    { "id": "nyeri_kepala", "probability": 0.8 },
+    { "id": "nyeri_retroorbital", "probability": 0.5 },
+    { "id": "nyeri_otot_sendi", "probability": 0.8 },
+    { "id": "lemas", "probability": 0.8 },
+    { "id": "nafsu_makan_turun", "probability": 0.7 },
+    { "id": "mual_muntah", "when": { "traits": ["tanda_bahaya"] }, "probability": 0.95 },
+    { "id": "mual_muntah", "probability": 0.5 },
+    { "id": "nyeri_perut", "when": { "traits": ["tanda_bahaya"] }, "probability": 0.9 },
+    { "id": "nyeri_perut", "probability": 0.25 },
+    { "id": "bintik_merah", "when": { "traits": ["perdarahan_spontan"] }, "probability": 0.6 },
+    { "id": "bintik_merah", "when": { "traits": ["trombositopenia"], "dayMin": 3 }, "probability": 0.25 },
+    { "id": "perdarahan_mukosa", "when": { "traits": ["perdarahan_spontan"] }, "probability": 0.8 },
+    { "id": "menggigil", "probability": 0.2 },
+    { "id": "diare", "probability": 0.1 },
+    { "id": "batuk", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["nyeri_kepala", "nyeri_otot_sendi", "lemas", "mual_muntah"] },
+  "clueSymptoms": ["nyeri_retroorbital", "nyeri_otot_sendi", "bintik_merah", "perdarahan_mukosa"],
+  "misattributions": ["masuk angin", "tipes", "kecapekan"],
+  "fears": ["demam berdarah", "tipes", "penyakit yang parah"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Panasnya mulai {hariTeks} hari yang lalu, Dok. Datangnya mendadak, langsung tinggi.",
+        "weight": 3,
+        "clue": "Demam tinggi yang muncul mendadak"
+      },
+      {
+        "text": "Sudah {hariTeks} hari, Dok. Tiba-tiba saja badan panas tinggi, padahal paginya masih sehat.",
+        "weight": 2,
+        "clue": "Demam tinggi yang muncul mendadak"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Paling terasa di belakang bola mata, Dok, pegal sekali kalau melirik.",
+        "when": { "symptoms": ["nyeri_retroorbital"] },
+        "clue": "Nyeri belakang bola mata (retro-orbital)",
+        "reveals": ["nyeri_retroorbital"]
+      },
+      {
+        "text": "Nggak di satu tempat, Dok. Seluruh badan rasanya sakit.",
+        "when": { "notSymptoms": ["nyeri_retroorbital"] }
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Panasnya tinggi, Dok. Badan kayak remuk, linu-linu semua sampai ke tulang.",
+        "when": { "symptoms": ["nyeri_otot_sendi"] },
+        "clue": "Nyeri otot/sendi hebat ('break-bone fever')",
+        "reveals": ["nyeri_otot_sendi"]
+      },
+      {
+        "text": "Panasnya tinggi sekali, Dok. Pokoknya nggak enak semua.",
+        "when": { "notSymptoms": ["nyeri_otot_sendi"] }
+      }
+    ],
+    "pola": [
+      {
+        "text": "Panasnya terus-terusan, Dok. Minum obat turun sebentar, nanti naik lagi.",
+        "when": { "notTraits": ["fase_kritis"] }
+      },
+      {
+        "text": "Kemarin-kemarin panasnya tinggi, Dok. Hari ini sudah agak turun, tapi badan malah makin lemas.",
+        "when": { "traits": ["fase_kritis"] },
+        "clue": "Demam turun tetapi pasien makin lemas — curiga fase kritis"
+      }
+    ],
+    "pemberat_peringan": [
+      { "text": "Kalau minum parasetamol agak enakan, Dok, tapi nanti panas lagi.", "weight": 2 },
+      { "text": "Nggak ada yang bikin enakan, Dok. Tiduran saja juga tetap pegal.", "weight": 1 }
+    ],
+    "riwayat_penyakit": [
+      { "text": "Belum pernah sakit kayak gini, Dok.", "weight": 3 },
+      { "text": "Dulu waktu SD katanya pernah dirawat karena demam berdarah, Dok.", "weight": 1 }
+    ],
+    "riwayat_obat": [
+      { "text": "Cuma minum parasetamol dari warung, Dok.", "weight": 3 },
+      { "text": "Minum obat panas sama jamu, Dok.", "weight": 1 },
+      { "text": "Minum obat sakit kepala yang ada di rumah, Dok. Lupa namanya.", "weight": 1 }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Tetangga sebelah rumah baru dirawat karena demam berdarah minggu lalu, Dok.",
+        "weight": 3,
+        "clue": "Ada kasus DBD di lingkungan sekitar"
+      },
+      {
+        "text": "Di kantor ada yang kena DBD juga katanya, Dok.",
+        "weight": 2,
+        "when": { "occupations": ["pegawai_kantor", "karyawan_bank", "pns", "guru", "manajer"] },
+        "clue": "Ada kasus DBD di lingkungan sekitar"
+      },
+      { "text": "Nggak ada, Dok. Keluarga sehat semua.", "weight": 3 }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Nggak ke mana-mana, Dok. Di sekitar rumah banyak nyamuk, apalagi sekarang musim hujan, banyak genangan.",
+        "weight": 4,
+        "clue": "Lingkungan banyak nyamuk dan genangan air (musim hujan)"
+      },
+      {
+        "text": "Di rumah saja, Dok. Bak mandi memang jarang dikuras sih.",
+        "weight": 2,
+        "clue": "Tempat perindukan nyamuk di rumah (bak mandi jarang dikuras)"
+      },
+      { "text": "Minggu lalu sempat liburan ke {kotaWisata}, Dok. Selain itu di rumah saja.", "weight": 1 }
+    ],
+    "kebiasaan": [
+      { "text": "Biasa saja, Dok. Makan di rumah, nggak merokok.", "weight": 2 },
+      { "text": "Saya merokok, Dok, sehari setengah bungkus.", "weight": 1, "when": { "sex": "male" } },
+      { "text": "Kerja terus, Dok, jarang istirahat.", "weight": 1 }
+    ]
+  },
+  "findings": [
+    { "tool": "termometer", "param": "suhu", "when": { "traits": ["fase_kritis"] }, "range": [36.9, 38] },
+    { "tool": "termometer", "param": "suhu", "range": [38.4, 40] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["kebocoran_plasma"] }, "range": [96, 118] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [88, 110] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["kebocoran_plasma"] }, "range": [98, 112] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["kebocoran_plasma"] }, "range": [65, 78] },
+    {
+      "tool": "uji_tourniquet",
+      "param": "hasil",
+      "when": { "traits": ["trombositopenia"] },
+      "probability": 0.65,
+      "diagnostic": true,
+      "values": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+    },
+    {
+      "tool": "uji_tourniquet",
+      "param": "hasil",
+      "probability": 0.45,
+      "diagnostic": true,
+      "values": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "trombosit",
+      "when": { "traits": ["trombositopenia"], "dayMin": 3 },
+      "range": [20000, 100000]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "trombosit",
+      "when": { "traits": ["trombositopenia"] },
+      "range": [105000, 148000]
+    },
+    { "tool": "darah_lengkap", "param": "trombosit", "range": [150000, 230000] },
+    { "tool": "darah_lengkap", "param": "leukosit", "when": { "traits": ["leukopenia"] }, "range": [1800, 3900] },
+    { "tool": "darah_lengkap", "param": "leukosit", "range": [4000, 6500] },
+    {
+      "tool": "darah_lengkap",
+      "param": "hematokrit",
+      "when": { "traits": ["kebocoran_plasma"], "sex": "male" },
+      "range": [51, 56]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hematokrit",
+      "when": { "traits": ["kebocoran_plasma"], "sex": "female" },
+      "range": [47, 52]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["kebocoran_plasma"], "sex": "male" },
+      "range": [16.8, 18.8]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["kebocoran_plasma"], "sex": "female" },
+      "range": [15.6, 17]
+    },
+    { "tool": "darah_lengkap", "param": "limfosit", "probability": 0.6, "range": [38, 52] },
+    {
+      "tool": "ns1_dengue",
+      "param": "ns1",
+      "when": { "dayMax": 3 },
+      "probability": 0.9,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "ns1_dengue",
+      "param": "ns1",
+      "when": { "dayMin": 4, "dayMax": 5 },
+      "probability": 0.65,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "ns1_dengue",
+      "param": "ns1",
+      "when": { "dayMin": 6 },
+      "probability": 0.35,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Teraba 2 jari di bawah arkus kosta, tepi tajam, nyeri tekan (+)"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "traits": ["tanda_bahaya"] },
+      "values": ["Nyeri tekan epigastrium dan kuadran kanan atas"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "traits": ["hepatomegali"] },
+      "probability": 0.6,
+      "values": ["Nyeri tekan ringan kuadran kanan atas"]
+    },
+    {
+      "tool": "stetoskop",
+      "param": "paru",
+      "when": { "traits": ["kebocoran_plasma"] },
+      "probability": 0.15,
+      "values": ["Suara napas menurun di basal paru kanan (curiga efusi pleura)"]
+    },
+    { "tool": "senter", "param": "faring", "probability": 0.3, "values": ["Faring hiperemis ringan, tonsil T1–T1"] },
+    {
+      "tool": "senter",
+      "param": "konjungtiva",
+      "probability": 0.2,
+      "values": ["Tidak anemis, tampak hiperemis (kemerahan)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "demam_tifoid",
+      "howToDistinguish": "Tifoid: demam naik bertahap lebih dari 5–7 hari terutama sore–malam, keluhan saluran cerna, dan lidah kotor; trombosit biasanya normal atau hanya sedikit turun. Dengue: demam tinggi mendadak, nyeri otot/sendi dan belakang mata, trombositopenia nyata, hemokonsentrasi, NS1 positif di awal sakit."
+    },
+    {
+      "id": "malaria",
+      "howToDistinguish": "Malaria: riwayat tinggal/bepergian ke daerah endemis, demam menggigil–berkeringat berkala, anemia dan splenomegali; RDT/mikroskopis positif. Trombositopenia bisa terjadi pada keduanya, jadi riwayat bepergian sangat menentukan."
+    }
+  ],
+  "otherDifferentials": ["Chikungunya", "Leptospirosis", "Influenza", "Infeksi virus lain"],
+  "keyFindings": [
+    "Demam tinggi mendadak 2–7 hari",
+    "Nyeri kepala, nyeri belakang bola mata, nyeri otot/sendi",
+    "Uji tourniquet positif atau perdarahan spontan (petekie, mimisan, gusi berdarah)",
+    "Trombosit ≤ 100.000/µL dan leukopenia",
+    "Hematokrit meningkat ≥ 20% (kebocoran plasma) pada DBD",
+    "NS1 positif pada hari 1–5 demam"
+  ],
+  "teachingPoints": [
+    "Fase kritis dengue terjadi saat demam turun (sekitar hari ke-3–7). Demam yang turun BUKAN berarti sudah sembuh.",
+    "NS1 paling sensitif pada hari 1–5; setelah itu bisa negatif palsu. Darah lengkap (trombosit, hematokrit) tetap kunci."
+  ],
+  "idealWorkup": ["termometer", "uji_tourniquet", "darah_lengkap", "ns1_dengue"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
+      "Level SKDI perlu dicek: demam dengue/DBD tanpa syok vs sindrom syok dengue.",
+      "Penyederhanaan: DD dan DBD digabung menjadi satu diagnosis di game."
+    ],
+    "references": [
+      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)",
+      "WHO SEARO. Comprehensive guidelines for prevention and control of dengue and dengue haemorrhagic fever (2011)",
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Demam Dengue dan DBD"
+    ]
+  }
+}

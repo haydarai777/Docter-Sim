@@ -1,0 +1,120 @@
+{
+  "personalities": [
+    {
+      "id": "kooperatif",
+      "label": "Kooperatif",
+      "impression": "Kooperatif, menjawab dengan cukup jelas",
+      "weight": 3,
+      "complaintStyle": "lay",
+      "vagueRate": 0.25,
+      "complaintExtra": 1,
+      "otherComplaintCount": 2,
+      "uncertainAbsentRate": 0,
+      "greetings": [
+        "Selamat {waktu}, Dok. Saya {nama}, umur {usia} tahun. Saya {pekerjaan}.",
+        "Permisi, Dok. Perkenalkan, saya {nama}, {usia} tahun. Saya {pekerjaan}."
+      ],
+      "complaintFrames": ["Begini, Dok, {keluhan}.", "Dok, {keluhan}."],
+      "symptomYes": ["Iya, Dok, {gejala}.", "Ada, Dok. {Gejala}."],
+      "symptomNo": ["Nggak ada, Dok.", "Tidak, Dok."],
+      "affixRate": 0
+    },
+    {
+      "id": "cemas",
+      "label": "Cemas",
+      "impression": "Tampak gelisah dan sangat khawatir",
+      "weight": 2,
+      "complaintStyle": "exaggerated",
+      "vagueRate": 0.15,
+      "complaintExtra": 1,
+      "otherComplaintCount": 2,
+      "uncertainAbsentRate": 0.25,
+      "greetings": [
+        "Dok, selamat {waktu}... Saya {nama}, {usia} tahun. Saya {pekerjaan}. Maaf, Dok, saya deg-degan.",
+        "Selamat {waktu}, Dok. Saya {nama}, umur {usia}. Saya {pekerjaan}. Tolong saya, Dok."
+      ],
+      "complaintFrames": [
+        "Dok, tolong... {keluhan}. Saya takut ini {ketakutan}.",
+        "Aduh, Dok, {keluhan}. Saya sampai nggak bisa tidur, takut kena {ketakutan}."
+      ],
+      "symptomYes": ["Iya, Dok! {Gejala}. Itu bahaya nggak, Dok?", "Ada, Dok... {gejala}. Saya makin takut."],
+      "symptomNo": ["Kayaknya nggak, Dok... eh, nggak, nggak ada."],
+      "symptomUncertain": [
+        "Hmm... kayaknya iya juga, Dok. Eh, saya jadi ragu. Mungkin ada sedikit?",
+        "Duh, saya nggak yakin, Dok. Mungkin iya..."
+      ],
+      "answerSuffixes": ["Saya takut kenapa-kenapa, Dok.", "Ini parah nggak, Dok?"],
+      "affixRate": 0.4,
+      "affixCategories": ["onset", "lokasi", "karakter", "pola", "pemberat_peringan"]
+    },
+    {
+      "id": "meremehkan",
+      "label": "Meremehkan",
+      "impression": "Santai, terkesan menganggap enteng keluhannya",
+      "weight": 2,
+      "complaintStyle": "downplayed",
+      "vagueRate": 0.3,
+      "complaintExtra": 0,
+      "otherComplaintCount": 1,
+      "uncertainAbsentRate": 0,
+      "greetings": [
+        "{Waktu}, Dok. Saya {nama}, {usia} tahun, {pekerjaan}. Sebentar saja ya, Dok.",
+        "Selamat {waktu}, Dok. {nama}, {usia} tahun. Saya {pekerjaan}."
+      ],
+      "complaintFrames": [
+        "Sebenarnya nggak apa-apa sih, Dok. Cuma {keluhan}. Ini disuruh keluarga periksa.",
+        "Ah, cuma {keluhan}, Dok. Paling {salahKira}."
+      ],
+      "symptomYes": ["Ada sih, Dok, {gejala}, tapi dikit aja.", "Iya, sedikit. {Gejala}. Biasa itu, Dok."],
+      "symptomNo": ["Nggak ada, Dok."],
+      "answerPrefixes": ["Biasa aja sih, Dok.", "Nggak parah kok, Dok."],
+      "affixRate": 0.35,
+      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"]
+    },
+    {
+      "id": "pelupa",
+      "label": "Pelupa",
+      "impression": "Sering terlihat bingung mengingat-ingat",
+      "weight": 2,
+      "complaintStyle": "vague",
+      "vagueRate": 1,
+      "complaintExtra": 0,
+      "otherComplaintCount": 1,
+      "uncertainAbsentRate": 0,
+      "greetings": [
+        "Selamat {waktu}, Dok. Saya {nama}... umur {usia} tahun. Saya {pekerjaan}.",
+        "Eh, selamat {waktu}, Dok. Nama saya {nama}, {usia} tahun. Saya {pekerjaan}."
+      ],
+      "complaintFrames": ["Dok, {keluhan}... terus apa lagi ya. Aduh, lupa, Dok.", "Anu, Dok... {keluhan}. Yang lain saya lupa."],
+      "symptomYes": ["Oh iya! Baru ingat, Dok, {gejala}.", "Eh, iya, ada, Dok. {Gejala}. Tadi lupa bilang."],
+      "symptomNo": ["Kayaknya nggak ada, Dok."],
+      "answerPrefixes": ["Sebentar, saya ingat-ingat dulu, Dok...", "Aduh, apa ya... oh iya."],
+      "affixRate": 0.5,
+      "affixCategories": ["onset", "riwayat_penyakit", "riwayat_obat", "riwayat_keluarga", "bepergian_lingkungan"]
+    },
+    {
+      "id": "sok_tahu",
+      "label": "Sok tahu",
+      "impression": "Bersemangat, banyak membaca dari internet",
+      "weight": 2,
+      "complaintStyle": "lay",
+      "vagueRate": 0.2,
+      "complaintExtra": 1,
+      "otherComplaintCount": 2,
+      "uncertainAbsentRate": 0,
+      "greetings": [
+        "Selamat {waktu}, Dok! Saya {nama}, {usia} tahun. Saya {pekerjaan}.",
+        "Halo, Dok, selamat {waktu}. Saya {nama}, {usia} tahun, {pekerjaan}."
+      ],
+      "complaintFrames": [
+        "Dok, kayaknya saya kena {salahKira}. {Keluhan}.",
+        "Saya sudah cek di internet, Dok, ini pasti {salahKira}. {Keluhan}."
+      ],
+      "symptomYes": ["Iya, Dok, {gejala}. Itu tanda {salahKira} kan?", "Ada, Dok. {Gejala}. Persis kayak di artikel yang saya baca."],
+      "symptomNo": ["Nggak ada, Dok. Tapi di internet katanya harusnya ada?"],
+      "answerSuffixes": ["Itu gejala {salahKira} kan, Dok?", "Kalau di internet, itu katanya ciri-ciri {salahKira}."],
+      "affixRate": 0.35,
+      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"]
+    }
+  ]
+}

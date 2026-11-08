@@ -1,0 +1,203 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Frasa berupa potongan kalimat huruf kecil, sudut pandang pasien (orang pertama).",
+      "lay = bahasa awam biasa; vague = kabur; exaggerated = dilebih-lebihkan; downplayed = diremehkan."
+    ]
+  },
+  "symptoms": [
+    {
+      "id": "demam",
+      "label": "Demam",
+      "system": "Umum",
+      "question": "Apakah badannya terasa demam atau panas?",
+      "phrases": {
+        "lay": ["badan saya panas", "saya meriang", "badan saya panas-dingin"],
+        "vague": ["badan rasanya nggak enak, kayak masuk angin", "badan saya nggak karuan rasanya"],
+        "exaggerated": ["panasnya tinggi banget, kayak terbakar", "badan saya panas sekali sampai nggak kuat bangun"],
+        "downplayed": ["badan agak anget sedikit", "sumeng sedikit"]
+      }
+    },
+    {
+      "id": "menggigil",
+      "label": "Menggigil",
+      "system": "Umum",
+      "question": "Apakah demamnya disertai menggigil?",
+      "phrases": {
+        "lay": ["saya menggigil kedinginan", "badan saya gemetar kedinginan"],
+        "vague": ["kadang badan dingin semua"],
+        "exaggerated": ["menggigilnya hebat sampai gigi gemeletuk, pakai selimut tebal juga masih dingin"],
+        "downplayed": ["kadang agak kedinginan sedikit"]
+      }
+    },
+    {
+      "id": "berkeringat",
+      "label": "Berkeringat banyak",
+      "system": "Umum",
+      "question": "Apakah sering berkeringat banyak, misalnya setelah demam?",
+      "phrases": {
+        "lay": ["habis panas keringat saya banyak sekali", "saya keringetan sampai baju basah"],
+        "vague": ["badan saya suka basah"],
+        "exaggerated": ["keringatnya banjir, sampai kasur basah semua"],
+        "downplayed": ["agak keringetan sedikit"]
+      }
+    },
+    {
+      "id": "lemas",
+      "label": "Lemas",
+      "system": "Umum",
+      "question": "Apakah badannya terasa lemas?",
+      "phrases": {
+        "lay": ["badan saya lemas", "saya nggak bertenaga"],
+        "vague": ["badan rasanya loyo"],
+        "exaggerated": ["lemasnya sampai nggak kuat jalan"],
+        "downplayed": ["agak capek sedikit"]
+      }
+    },
+    {
+      "id": "nafsu_makan_turun",
+      "label": "Nafsu makan menurun",
+      "system": "Pencernaan",
+      "question": "Apakah nafsu makannya berkurang?",
+      "phrases": {
+        "lay": ["nafsu makan saya hilang", "makan rasanya nggak enak"],
+        "vague": ["mulut saya rasanya pahit"],
+        "exaggerated": ["sama sekali nggak bisa makan, dipaksa juga mau muntah"],
+        "downplayed": ["makannya agak berkurang"]
+      }
+    },
+    {
+      "id": "nyeri_kepala",
+      "label": "Nyeri kepala",
+      "system": "Kepala & saraf",
+      "question": "Apakah ada sakit kepala?",
+      "phrases": {
+        "lay": ["kepala saya pusing", "kepala saya sakit cekot-cekot"],
+        "vague": ["kepala rasanya berat"],
+        "exaggerated": ["kepala saya sakit sekali kayak mau pecah"],
+        "downplayed": ["kepala agak pusing sedikit"]
+      }
+    },
+    {
+      "id": "nyeri_retroorbital",
+      "label": "Nyeri belakang bola mata (retro-orbital)",
+      "system": "Kepala & saraf",
+      "question": "Apakah ada nyeri di belakang bola mata?",
+      "phrases": {
+        "lay": ["mata saya pegal, sakit di belakang bola mata", "mata saya sakit kalau dilirikkan"],
+        "vague": ["mata rasanya berat"],
+        "exaggerated": ["mata saya sakit sekali kayak mau copot"],
+        "downplayed": ["mata agak pegal"]
+      }
+    },
+    {
+      "id": "nyeri_otot_sendi",
+      "label": "Nyeri otot/sendi (mialgia/artralgia)",
+      "system": "Otot & sendi",
+      "question": "Apakah ada pegal atau nyeri di otot dan sendi?",
+      "phrases": {
+        "lay": ["badan saya pegal-pegal, linu semua", "otot dan sendi saya sakit semua"],
+        "vague": ["badan rasanya remuk"],
+        "exaggerated": ["sendi saya sakit semua kayak tulang mau patah"],
+        "downplayed": ["agak pegal-pegal"]
+      }
+    },
+    {
+      "id": "mual_muntah",
+      "label": "Mual/muntah",
+      "system": "Pencernaan",
+      "question": "Apakah ada mual atau muntah?",
+      "phrases": {
+        "lay": ["saya mual, sempat muntah juga", "perut saya eneg"],
+        "vague": ["perut rasanya nggak enak"],
+        "exaggerated": ["muntah terus, apa saja yang masuk keluar lagi"],
+        "downplayed": ["agak mual sedikit"]
+      }
+    },
+    {
+      "id": "nyeri_perut",
+      "label": "Nyeri perut",
+      "system": "Pencernaan",
+      "question": "Apakah perutnya sakit?",
+      "phrases": {
+        "lay": ["perut saya sakit", "ulu hati saya perih"],
+        "vague": ["perut rasanya nggak enak, begah"],
+        "exaggerated": ["perut saya sakit sekali, melilit"],
+        "downplayed": ["perut agak nggak enak sedikit"]
+      }
+    },
+    {
+      "id": "diare",
+      "label": "Diare",
+      "system": "Pencernaan",
+      "question": "Bagaimana buang air besarnya, apakah mencret?",
+      "phrases": {
+        "lay": ["saya mencret", "BAB saya cair"],
+        "vague": ["perut saya mules terus"],
+        "exaggerated": ["mencret terus, bolak-balik ke WC"],
+        "downplayed": ["BAB agak lembek"]
+      }
+    },
+    {
+      "id": "konstipasi",
+      "label": "Sulit buang air besar (konstipasi)",
+      "system": "Pencernaan",
+      "question": "Apakah susah buang air besar?",
+      "phrases": {
+        "lay": ["sudah beberapa hari saya belum BAB", "saya susah BAB"],
+        "vague": ["perut saya kembung, BAB nggak lancar"],
+        "exaggerated": ["sudah lama sekali nggak bisa BAB, perut penuh rasanya"],
+        "downplayed": ["BAB agak jarang"]
+      }
+    },
+    {
+      "id": "bintik_merah",
+      "label": "Bintik merah di kulit (petekie)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bintik-bintik merah di kulit?",
+      "phrases": {
+        "lay": ["ada bintik-bintik merah di kulit saya, kayak bekas digigit nyamuk", "kulit saya ada bintik merahnya"],
+        "vague": ["kulit saya ada yang merah-merah"],
+        "exaggerated": ["bintik merahnya banyak sekali di tangan dan kaki"],
+        "downplayed": ["ada bintik merah sedikit, paling digigit nyamuk"]
+      }
+    },
+    {
+      "id": "perdarahan_mukosa",
+      "label": "Mimisan / gusi berdarah",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada mimisan atau gusi berdarah?",
+      "phrases": {
+        "lay": ["saya sempat mimisan", "gusi saya berdarah waktu sikat gigi"],
+        "vague": ["ada darah sedikit waktu sikat gigi"],
+        "exaggerated": ["mimisannya banyak, sampai tisu sekotak habis"],
+        "downplayed": ["gusi berdarah sedikit, paling karena sikat gigi kekerasan"]
+      }
+    },
+    {
+      "id": "kuning",
+      "label": "Mata/kulit kuning (ikterus)",
+      "system": "Pencernaan",
+      "question": "Apakah mata atau kulitnya terlihat kuning?",
+      "phrases": {
+        "lay": ["kata keluarga mata saya agak kuning", "mata saya kelihatan kekuningan"],
+        "vague": ["warna mata saya agak lain"],
+        "exaggerated": ["mata saya kuning sekali, saya takut liver"],
+        "downplayed": ["mata agak kuning sedikit, mungkin kurang tidur"]
+      }
+    },
+    {
+      "id": "batuk",
+      "label": "Batuk",
+      "system": "Pernapasan",
+      "question": "Apakah ada batuk?",
+      "phrases": {
+        "lay": ["saya batuk-batuk"],
+        "vague": ["tenggorokan saya gatal"],
+        "exaggerated": ["batuknya nggak berhenti-berhenti"],
+        "downplayed": ["batuk sedikit"]
+      }
+    }
+  ]
+}

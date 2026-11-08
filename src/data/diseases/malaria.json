@@ -1,0 +1,339 @@
+{
+  "id": "malaria",
+  "name": "Malaria (tanpa komplikasi)",
+  "aliases": ["Malaria", "Malaria falciparum", "Malaria tropika", "Malaria vivax", "Malaria tertiana"],
+  "system": "Infeksi tropis",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi parasit Plasmodium yang ditularkan nyamuk Anopheles. Khas dengan demam paroksismal (menggigil → panas tinggi → berkeringat), riwayat tinggal atau bepergian ke daerah endemis (mis. Papua, NTT, Maluku), anemia, dan splenomegali. Malaria falciparum dapat cepat berkembang menjadi malaria berat, sehingga diagnosis dini penting.",
+  "presentationDay": [2, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 0.5 }
+    ],
+    "maleRatio": 0.75,
+    "occupations": [
+      { "id": "pekerja_tambang", "weight": 4 },
+      { "id": "tni", "weight": 3 },
+      { "id": "pekerja_proyek", "weight": 3 },
+      { "id": "pekerja_sawit", "weight": 3 },
+      { "id": "sopir_truk", "weight": 1 },
+      { "id": "nelayan", "weight": 1 },
+      { "id": "pegawai_kantor", "weight": 1 }
+    ],
+    "occupationBias": 0.7
+  },
+  "context": {
+    "daerahEndemis": [
+      "Timika, Papua",
+      "Merauke, Papua",
+      "Jayapura",
+      "Teluk Bintuni, Papua Barat",
+      "Sumba, NTT",
+      "Halmahera, Maluku Utara",
+      "Pulau Seram, Maluku"
+    ]
+  },
+  "traits": [
+    { "id": "falciparum", "probability": 0.55 },
+    { "id": "vivax", "when": { "notTraits": ["falciparum"] }, "probability": 1 },
+    { "id": "sedang_demam", "probability": 0.7 },
+    { "id": "di_sela_serangan", "when": { "notTraits": ["sedang_demam"] }, "probability": 1 },
+    { "id": "anemia", "when": { "traits": ["falciparum"] }, "probability": 0.55 },
+    { "id": "anemia", "probability": 0.35 },
+    { "id": "splenomegali", "probability": 0.5 },
+    { "id": "hepatomegali", "probability": 0.25 },
+    { "id": "trombositopenia", "probability": 0.6 },
+    { "id": "ikterik_ringan", "when": { "traits": ["falciparum"] }, "probability": 0.15 },
+    { "id": "riwayat_malaria", "when": { "traits": ["vivax"] }, "probability": 0.35 },
+    { "id": "riwayat_malaria", "probability": 0.15 }
+  ],
+  "traitLabels": {
+    "falciparum": "Spesies: Plasmodium falciparum (malaria tropika) — berisiko berkembang menjadi malaria berat.",
+    "vivax": "Spesies: Plasmodium vivax (malaria tertiana) — dapat kambuh (relaps) dari hipnozoit di hati.",
+    "di_sela_serangan": "Pasien datang di sela serangan demam, sehingga suhu bisa normal saat diperiksa.",
+    "anemia": "Anemia akibat hemolisis eritrosit terinfeksi.",
+    "splenomegali": "Splenomegali.",
+    "hepatomegali": "Hepatomegali.",
+    "trombositopenia": "Trombositopenia — juga sering pada malaria, bukan hanya dengue.",
+    "ikterik_ringan": "Subikterik.",
+    "riwayat_malaria": "Pernah sakit malaria sebelumnya."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1 },
+    { "id": "menggigil", "probability": 0.9 },
+    { "id": "berkeringat", "probability": 0.75 },
+    { "id": "nyeri_kepala", "probability": 0.8 },
+    { "id": "nyeri_otot_sendi", "probability": 0.6 },
+    { "id": "lemas", "probability": 0.8 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 },
+    { "id": "mual_muntah", "probability": 0.4 },
+    { "id": "nyeri_perut", "probability": 0.15 },
+    { "id": "diare", "probability": 0.15 },
+    { "id": "kuning", "when": { "traits": ["ikterik_ringan"] }, "probability": 0.6 },
+    { "id": "batuk", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["menggigil", "nyeri_kepala", "lemas"] },
+  "clueSymptoms": ["menggigil", "berkeringat", "kuning"],
+  "misattributions": ["masuk angin", "tipes", "DBD", "kecapekan"],
+  "fears": ["malaria", "demam berdarah", "penyakit yang parah"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {hariTeks} hari ini, Dok. Mulainya menggigil hebat, terus panas tinggi.",
+        "weight": 3,
+        "when": { "symptoms": ["menggigil"] },
+        "clue": "Demam yang diawali menggigil hebat",
+        "reveals": ["menggigil"]
+      },
+      { "text": "Sekitar {hariTeks} hari, Dok. Tiba-tiba demam tinggi.", "weight": 1 }
+    ],
+    "lokasi": [
+      {
+        "text": "Kepala sakit, badan pegal semua, Dok.",
+        "when": { "symptoms": ["nyeri_kepala", "nyeri_otot_sendi"] },
+        "reveals": ["nyeri_kepala", "nyeri_otot_sendi"]
+      },
+      {
+        "text": "Kepalanya yang paling sakit, Dok.",
+        "when": { "symptoms": ["nyeri_kepala"], "notSymptoms": ["nyeri_otot_sendi"] },
+        "reveals": ["nyeri_kepala"]
+      },
+      { "text": "Seluruh badan rasanya nggak enak, Dok.", "when": { "notSymptoms": ["nyeri_kepala"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Menggigilnya sampai gemetaran, Dok. Pakai selimut tebal juga masih dingin, habis itu panas tinggi.",
+        "when": { "symptoms": ["menggigil"] },
+        "clue": "Menggigil hebat (rigor)",
+        "reveals": ["menggigil"]
+      },
+      { "text": "Panasnya tinggi sekali, Dok.", "when": { "notSymptoms": ["menggigil"] } }
+    ],
+    "pola": [
+      {
+        "text": "Panasnya nggak tentu, Dok, kadang tiap hari. Menggigil dulu, terus panas, habis itu keringetan banyak, lalu agak enakan.",
+        "when": { "traits": ["falciparum"], "symptoms": ["menggigil", "berkeringat"] },
+        "clue": "Demam paroksismal: menggigil → panas → berkeringat",
+        "reveals": ["menggigil", "berkeringat"]
+      },
+      {
+        "text": "Kayak ada jadwalnya, Dok. Selang sehari kumat: menggigil, panas tinggi, terus keringat banjir, habis itu enakan.",
+        "when": { "traits": ["vivax"], "symptoms": ["menggigil", "berkeringat"] },
+        "clue": "Demam paroksismal berselang sehari (pola tertiana)",
+        "reveals": ["menggigil", "berkeringat"]
+      },
+      {
+        "text": "Hilang timbul, Dok. Kalau kumat, menggigil dulu, terus panas tinggi.",
+        "when": { "symptoms": ["menggigil"], "notSymptoms": ["berkeringat"] },
+        "clue": "Demam hilang-timbul yang diawali menggigil",
+        "reveals": ["menggigil"]
+      },
+      {
+        "text": "Hari ini panas, besok agak mendingan, lusa panas lagi, Dok.",
+        "when": { "traits": ["vivax"], "notSymptoms": ["menggigil"] },
+        "clue": "Demam berselang sehari (pola tertiana)"
+      },
+      {
+        "text": "Panasnya naik turun, Dok, hilang timbul.",
+        "when": { "traits": ["falciparum"], "notSymptoms": ["menggigil"] },
+        "clue": "Demam hilang-timbul"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Habis keringetan biasanya badan enakan, Dok. Nanti kumat lagi.",
+        "when": { "symptoms": ["berkeringat"] },
+        "clue": "Membaik setelah berkeringat, lalu kambuh lagi"
+      },
+      { "text": "Minum obat panas agak turun, Dok, tapi kumat lagi.", "when": { "notSymptoms": ["berkeringat"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu waktu kerja di sana pernah kena malaria juga, Dok. Sudah diobati.",
+        "when": { "traits": ["riwayat_malaria"] },
+        "clue": "Riwayat malaria sebelumnya"
+      },
+      { "text": "Belum pernah sakit kayak gini, Dok.", "when": { "notTraits": ["riwayat_malaria"] } }
+    ],
+    "riwayat_obat": [
+      { "text": "Minum parasetamol, Dok. Panasnya turun, tapi balik lagi.", "weight": 3 },
+      { "text": "Minum obat panas dari warung sama jamu, Dok.", "weight": 1 }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Teman-teman satu barak di sana ada yang sakit kayak gini juga, Dok.",
+        "weight": 2,
+        "when": { "occupations": ["pekerja_tambang", "tni", "pekerja_proyek", "pekerja_sawit"] },
+        "clue": "Rekan di daerah endemis mengalami sakit serupa"
+      },
+      {
+        "text": "Rekan kerja di sana ada yang pernah sakit kayak gini, Dok.",
+        "weight": 1,
+        "clue": "Rekan di daerah endemis mengalami sakit serupa"
+      },
+      { "text": "Keluarga di rumah sehat semua, Dok.", "weight": 2 }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Saya baru pulang kerja dari {daerahEndemis}, Dok, kira-kira dua minggu lalu.",
+        "weight": 4,
+        "clue": "Riwayat bepergian/bekerja di daerah endemis malaria"
+      },
+      {
+        "text": "Saya kerja di {daerahEndemis}, Dok. Ini lagi pulang cuti seminggu.",
+        "weight": 3,
+        "clue": "Riwayat bepergian/bekerja di daerah endemis malaria"
+      },
+      {
+        "text": "Bulan lalu saya tugas tiga minggu di {daerahEndemis}, Dok.",
+        "weight": 2,
+        "clue": "Riwayat bepergian/bekerja di daerah endemis malaria"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Di sana tidurnya di barak, Dok, jarang pakai kelambu. Nyamuknya banyak sekali kalau malam.",
+        "weight": 3,
+        "when": { "occupations": ["pekerja_tambang", "tni", "pekerja_proyek", "pekerja_sawit"] },
+        "clue": "Tidak memakai kelambu di daerah endemis"
+      },
+      {
+        "text": "Di sana nginap di mes, Dok. Kalau malam sering duduk-duduk di luar, nyamuknya banyak, nggak pakai obat nyamuk.",
+        "weight": 2,
+        "clue": "Tidak memakai pelindung dari gigitan nyamuk di daerah endemis"
+      },
+      {
+        "text": "Saya merokok, Dok. Di sana sering kerja sampai malam di luar.",
+        "weight": 2,
+        "when": { "sex": "male" },
+        "clue": "Sering beraktivitas di luar rumah pada malam hari (jam gigit Anopheles)"
+      }
+    ]
+  },
+  "findings": [
+    { "tool": "termometer", "param": "suhu", "when": { "traits": ["sedang_demam"] }, "range": [38.5, 40.2] },
+    { "tool": "termometer", "param": "suhu", "range": [36.6, 37.4] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["sedang_demam"] }, "range": [96, 118] },
+    {
+      "tool": "senter",
+      "param": "konjungtiva",
+      "when": { "traits": ["anemia"] },
+      "probability": 0.8,
+      "values": ["Anemis (pucat)"]
+    },
+    { "tool": "senter", "param": "sklera", "when": { "traits": ["ikterik_ringan"] }, "values": ["Subikterik"] },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "lien",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Teraba Schuffner I", "Teraba Schuffner II"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Teraba 1–2 jari di bawah arkus kosta"]
+    },
+    {
+      "tool": "palpasi_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "traits": ["splenomegali"] },
+      "probability": 0.3,
+      "values": ["Nyeri tekan ringan kuadran kiri atas"]
+    },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["anemia"], "sex": "male" }, "range": [9, 12.5] },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["anemia"], "sex": "female" }, "range": [8.5, 11.5] },
+    {
+      "tool": "darah_lengkap",
+      "param": "hematokrit",
+      "when": { "traits": ["anemia"], "sex": "male" },
+      "range": [28, 38]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hematokrit",
+      "when": { "traits": ["anemia"], "sex": "female" },
+      "range": [26, 35]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "trombosit",
+      "when": { "traits": ["trombositopenia"] },
+      "range": [50000, 140000]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.3, "range": [3200, 4500] },
+    {
+      "tool": "rdt_malaria",
+      "param": "pf",
+      "when": { "traits": ["falciparum"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "rdt_malaria",
+      "param": "pan",
+      "when": { "traits": ["falciparum"] },
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "rdt_malaria",
+      "param": "pan",
+      "when": { "traits": ["vivax"] },
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    {
+      "tool": "uji_tourniquet",
+      "param": "hasil",
+      "when": { "traits": ["trombositopenia"] },
+      "probability": 0.15,
+      "values": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: tanpa riwayat ke daerah endemis malaria, nyeri otot/sendi dan belakang mata menonjol, hemokonsentrasi, NS1 positif. Malaria: menggigil–berkeringat berkala, anemia, splenomegali, RDT/mikroskopis positif."
+    },
+    {
+      "id": "demam_tifoid",
+      "howToDistinguish": "Tifoid: demam naik bertahap terutama sore–malam lebih dari seminggu, dengan keluhan cerna dan lidah kotor. Malaria: demam paroksismal dengan menggigil hebat dan riwayat daerah endemis."
+    }
+  ],
+  "otherDifferentials": ["Leptospirosis", "Influenza", "Sepsis", "Pielonefritis"],
+  "keyFindings": [
+    "Demam paroksismal: menggigil, panas tinggi, lalu berkeringat",
+    "Riwayat tinggal/bepergian ke daerah endemis (Papua, NTT, Maluku, dsb.)",
+    "Anemia (konjungtiva pucat), splenomegali, kadang subikterik",
+    "Trombositopenia juga sering pada malaria — jangan langsung menyimpulkan dengue",
+    "RDT malaria atau mikroskopis apusan darah tebal–tipis positif (baku emas: mikroskopis)"
+  ],
+  "teachingPoints": [
+    "Selalu tanyakan riwayat bepergian pada pasien demam: satu pertanyaan gratis ini bisa mengarah ke malaria.",
+    "Suhu bisa normal bila pasien datang di sela serangan demam.",
+    "Diagnosis malaria harus dikonfirmasi dengan pemeriksaan parasit (mikroskopis atau RDT)."
+  ],
+  "idealWorkup": ["termometer", "palpasi_abdomen", "rdt_malaria"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
+      "Proporsi spesies (falciparum vs vivax) disederhanakan; kenyataannya berbeda antar wilayah.",
+      "Malaria berat sengaja tidak dimodelkan (pasien selalu tanpa komplikasi)."
+    ],
+    "references": [
+      "Kemenkes RI. Pedoman Nasional Pelayanan Kedokteran Tata Laksana Malaria",
+      "Kemenkes RI. Buku Saku Tatalaksana Kasus Malaria",
+      "WHO. Guidelines for malaria"
+    ]
+  }
+}

@@ -1,0 +1,280 @@
+{
+  "names": {
+    "male": [
+      "Budi Santoso",
+      "Agus Setiawan",
+      "Slamet Purnomo",
+      "Asep Saepudin",
+      "Ujang Supriatna",
+      "Dedi Kurniawan",
+      "Hendra Wijaya",
+      "Rudi Hermawan",
+      "Togar Simanjuntak",
+      { "name": "Parlindungan Siregar", "call": "Lindung" },
+      { "name": "Andi Syamsul Alam", "call": "Andi" },
+      { "name": "Muhammad Rizki", "call": "Rizki" },
+      "Ahmad Fauzi",
+      "Eko Prasetyo",
+      "Bambang Sutrisno",
+      "Joko Susilo",
+      "Wahyu Hidayat",
+      "Arif Rahman",
+      "Fajar Nugroho",
+      "Rizal Effendi",
+      "Hasan Basri",
+      "Yusuf Maulana",
+      "Iwan Gunawan",
+      "Teguh Wibowo",
+      "Sugeng Haryanto",
+      "Bayu Aditya",
+      "Gilang Permana",
+      "Ilham Ramadhan",
+      "Rahmat Hidayat",
+      "Daniel Sihombing",
+      "Herman Manurung",
+      "Kevin Halim",
+      { "name": "I Made Suarta", "call": "Made" },
+      { "name": "I Ketut Darma", "call": "Ketut" },
+      { "name": "I Nyoman Sudarsana", "call": "Nyoman" },
+      { "name": "Komang Arya Wiguna", "call": "Komang" },
+      { "name": "Johny Rumengan", "call": "Johny" },
+      { "name": "Fransiskus Laka", "call": "Frans" },
+      { "name": "Markus Rumbewas", "call": "Markus" },
+      { "name": "Yosef Bria", "call": "Yosef" },
+      { "name": "La Ode Hamid", "call": "Hamid" },
+      { "name": "Stevan Lumowa", "call": "Stevan" }
+    ],
+    "female": [
+      "Siti Aminah",
+      "Sri Wahyuni",
+      "Dewi Kartika",
+      "Nur Aisyah",
+      "Rina Marlina",
+      "Neneng Sumiati",
+      "Euis Komalasari",
+      "Lina Gunawan",
+      "Ratna Sari",
+      "Fitri Handayani",
+      "Wulan Septiani",
+      "Indah Permatasari",
+      "Ani Suryani",
+      "Yanti Rahayu",
+      "Tuti Nurhayati",
+      "Endang Lestari",
+      "Mega Utami",
+      "Putri Anggraini",
+      "Eka Susanti",
+      "Lia Amelia",
+      "Anisa Rahma",
+      "Mirna Tahir",
+      "Desi Kurniasih",
+      "Sulastri",
+      "Ponirah",
+      "Hartini",
+      "Sumarni",
+      { "name": "Rosmawati", "call": "Rosma" },
+      { "name": "Yuliana Simbolon", "call": "Yuli" },
+      { "name": "Maria Goreti Seran", "call": "Maria" },
+      { "name": "Ni Luh Putu Ayu", "call": "Putu" },
+      { "name": "Ni Kadek Sinta", "call": "Sinta" },
+      { "name": "Andi Nurul Fadhilah", "call": "Nurul" },
+      { "name": "Wa Ode Nirmala", "call": "Nirmala" },
+      { "name": "Novita Lumban Gaol", "call": "Novi" },
+      { "name": "Theresia Watu", "call": "Theresia" },
+      { "name": "Grace Pangemanan", "call": "Grace" },
+      { "name": "Yohana Wanggai", "call": "Yohana" },
+      { "name": "Febriani Saragih", "call": "Febri" }
+    ]
+  },
+  "occupations": [
+    {
+      "id": "mahasiswa",
+      "label": "Mahasiswa",
+      "intro": "masih kuliah",
+      "age": [18, 25],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 6
+    },
+    {
+      "id": "buruh_pabrik",
+      "label": "Buruh pabrik",
+      "intro": "kerja sebagai buruh pabrik",
+      "age": [18, 55],
+      "economy": ["miskin", "menengah"],
+      "weight": 8
+    },
+    {
+      "id": "pekerja_proyek",
+      "label": "Pekerja proyek bangunan",
+      "intro": "kerja sebagai tukang di proyek bangunan",
+      "age": [20, 60],
+      "sex": "male",
+      "economy": ["miskin"],
+      "weight": 5
+    },
+    {
+      "id": "petani",
+      "label": "Petani",
+      "intro": "bertani",
+      "age": [25, 75],
+      "economy": ["miskin", "menengah"],
+      "weight": 6
+    },
+    {
+      "id": "nelayan",
+      "label": "Nelayan",
+      "intro": "nelayan",
+      "age": [20, 65],
+      "sex": "male",
+      "economy": ["miskin"],
+      "weight": 2
+    },
+    {
+      "id": "pedagang_pasar",
+      "label": "Pedagang pasar",
+      "intro": "jualan di pasar",
+      "age": [25, 70],
+      "economy": ["miskin", "menengah"],
+      "weight": 6
+    },
+    {
+      "id": "pedagang_kaki_lima",
+      "label": "Pedagang kaki lima",
+      "intro": "jualan makanan keliling",
+      "age": [20, 65],
+      "economy": ["miskin"],
+      "weight": 3
+    },
+    {
+      "id": "ojek_online",
+      "label": "Pengemudi ojek online",
+      "intro": "narik ojek online",
+      "age": [20, 55],
+      "sex": "male",
+      "economy": ["miskin", "menengah"],
+      "weight": 5
+    },
+    {
+      "id": "sopir_truk",
+      "label": "Sopir truk",
+      "intro": "sopir truk antarkota",
+      "age": [25, 60],
+      "sex": "male",
+      "economy": ["miskin", "menengah"],
+      "weight": 3
+    },
+    {
+      "id": "satpam",
+      "label": "Satpam",
+      "intro": "kerja sebagai satpam",
+      "age": [20, 55],
+      "sex": "male",
+      "economy": ["miskin", "menengah"],
+      "weight": 3
+    },
+    {
+      "id": "penjahit",
+      "label": "Penjahit",
+      "intro": "menjahit di rumah",
+      "age": [25, 70],
+      "sex": "female",
+      "economy": ["miskin", "menengah"],
+      "weight": 2
+    },
+    {
+      "id": "ibu_rumah_tangga",
+      "label": "Ibu rumah tangga",
+      "intro": "ibu rumah tangga",
+      "age": [20, 75],
+      "sex": "female",
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 8
+    },
+    {
+      "id": "pegawai_kantor",
+      "label": "Pegawai kantor swasta",
+      "intro": "kerja kantoran di perusahaan swasta",
+      "age": [22, 58],
+      "economy": ["menengah", "kaya"],
+      "weight": 8
+    },
+    {
+      "id": "guru",
+      "label": "Guru",
+      "intro": "guru di sekolah dasar",
+      "age": [23, 60],
+      "economy": ["menengah"],
+      "weight": 4
+    },
+    {
+      "id": "pns",
+      "label": "Pegawai negeri",
+      "intro": "pegawai negeri di kantor kecamatan",
+      "age": [23, 58],
+      "economy": ["menengah"],
+      "weight": 4
+    },
+    {
+      "id": "karyawan_bank",
+      "label": "Karyawan bank",
+      "intro": "kerja di bank",
+      "age": [22, 55],
+      "economy": ["menengah", "kaya"],
+      "weight": 3
+    },
+    {
+      "id": "pengusaha",
+      "label": "Pengusaha",
+      "intro": "punya usaha sendiri",
+      "age": [28, 70],
+      "economy": ["menengah", "kaya"],
+      "weight": 3
+    },
+    {
+      "id": "manajer",
+      "label": "Manajer perusahaan",
+      "intro": "manajer di sebuah perusahaan",
+      "age": [30, 58],
+      "economy": ["kaya"],
+      "weight": 2
+    },
+    {
+      "id": "pensiunan",
+      "label": "Pensiunan",
+      "intro": "sudah pensiun",
+      "age": [56, 75],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 5
+    },
+    {
+      "id": "pekerja_tambang",
+      "label": "Pekerja tambang",
+      "intro": "kerja di pertambangan",
+      "age": [20, 55],
+      "sex": "male",
+      "economy": ["miskin", "menengah"],
+      "weight": 1
+    },
+    {
+      "id": "tni",
+      "label": "Anggota TNI",
+      "intro": "anggota TNI",
+      "age": [20, 53],
+      "sex": "male",
+      "economy": ["menengah"],
+      "weight": 1
+    },
+    {
+      "id": "pekerja_sawit",
+      "label": "Pekerja perkebunan sawit",
+      "intro": "kerja di perkebunan sawit",
+      "age": [20, 55],
+      "economy": ["miskin"],
+      "weight": 1
+    }
+  ],
+  "context": {
+    "waktu": ["pagi", "siang", "sore"],
+    "kotaWisata": ["Bali", "Yogyakarta", "Bandung", "Malang", "Semarang", "Danau Toba"]
+  }
+}

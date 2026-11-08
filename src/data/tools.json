@@ -1,0 +1,356 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Nilai rujukan memakai angka umum laboratorium klinik di Indonesia (dewasa). Tiap laboratorium bisa berbeda.",
+      "Harga alat TIDAK di file ini, melainkan di src/data/config.ts (toolPrices)."
+    ],
+    "references": [
+      "Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (Kemenkes RI)",
+      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)"
+    ]
+  },
+  "tools": [
+    {
+      "id": "termometer",
+      "name": "Termometer",
+      "category": "fisik",
+      "description": "Mengukur suhu tubuh (aksila).",
+      "action": "Anda mengukur suhu tubuh pasien dengan termometer.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "suhu",
+          "label": "Suhu aksila",
+          "unit": "°C",
+          "decimals": 1,
+          "ref": [36.5, 37.5],
+          "normal": [36.5, 37.3]
+        }
+      ]
+    },
+    {
+      "id": "tanda_vital",
+      "name": "Tensimeter & tanda vital",
+      "category": "fisik",
+      "description": "Tekanan darah, nadi, dan frekuensi napas.",
+      "action": "Anda memasang manset tensimeter, lalu menghitung nadi dan napas pasien.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "td_sistolik",
+          "label": "Tekanan darah sistolik",
+          "unit": "mmHg",
+          "decimals": 0,
+          "ref": [90, 139],
+          "normal": [105, 128]
+        },
+        {
+          "kind": "numeric",
+          "id": "td_diastolik",
+          "label": "Tekanan darah diastolik",
+          "unit": "mmHg",
+          "decimals": 0,
+          "ref": [60, 89],
+          "normal": [68, 84]
+        },
+        {
+          "kind": "numeric",
+          "id": "nadi",
+          "label": "Nadi",
+          "unit": "×/menit",
+          "decimals": 0,
+          "ref": [60, 100],
+          "normal": [68, 92]
+        },
+        {
+          "kind": "numeric",
+          "id": "napas",
+          "label": "Frekuensi napas",
+          "unit": "×/menit",
+          "decimals": 0,
+          "ref": [12, 20],
+          "normal": [14, 20]
+        }
+      ]
+    },
+    {
+      "id": "stetoskop",
+      "name": "Stetoskop (auskultasi)",
+      "category": "fisik",
+      "description": "Mendengarkan bunyi jantung, paru, dan bising usus.",
+      "action": "Anda mendengarkan dada dan perut pasien dengan stetoskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "jantung",
+          "label": "Jantung",
+          "normal": ["Bunyi jantung I–II reguler, murmur (−), gallop (−)"]
+        },
+        { "kind": "text", "id": "paru", "label": "Paru", "normal": ["Suara napas vesikuler, ronkhi −/−, wheezing −/−"] },
+        { "kind": "text", "id": "bising_usus", "label": "Bising usus", "normal": ["Bising usus normal"] }
+      ]
+    },
+    {
+      "id": "senter",
+      "name": "Senter (mata, pupil, tenggorok, lidah)",
+      "category": "fisik",
+      "description": "Inspeksi konjungtiva, sklera, pupil, faring, dan lidah.",
+      "action": "Anda menyinari mata dan rongga mulut pasien dengan senter.",
+      "params": [
+        { "kind": "text", "id": "konjungtiva", "label": "Konjungtiva", "normal": ["Tidak anemis"] },
+        { "kind": "text", "id": "sklera", "label": "Sklera", "normal": ["Tidak ikterik"] },
+        { "kind": "text", "id": "pupil", "label": "Pupil", "normal": ["Isokor, refleks cahaya +/+"] },
+        {
+          "kind": "text",
+          "id": "faring",
+          "label": "Faring & tonsil",
+          "normal": ["Faring tidak hiperemis, tonsil T1–T1"]
+        },
+        { "kind": "text", "id": "lidah", "label": "Lidah", "normal": ["Bersih, tidak ada kelainan"] }
+      ]
+    },
+    {
+      "id": "palpasi_abdomen",
+      "name": "Pemeriksaan abdomen (palpasi & perkusi)",
+      "category": "fisik",
+      "description": "Inspeksi, palpasi hati–limpa, nyeri tekan, dan nyeri ketok sudut kostovertebra (CVA).",
+      "action": "Anda meminta pasien berbaring, lalu meraba dan mengetuk perut serta pinggangnya.",
+      "params": [
+        { "kind": "text", "id": "inspeksi_perkusi", "label": "Inspeksi & perkusi", "normal": ["Datar, supel, timpani"] },
+        { "kind": "text", "id": "nyeri_tekan", "label": "Nyeri tekan", "normal": ["Tidak ada nyeri tekan"] },
+        { "kind": "text", "id": "hepar", "label": "Hepar", "normal": ["Tidak teraba"] },
+        { "kind": "text", "id": "lien", "label": "Lien (limpa)", "normal": ["Tidak teraba"] },
+        { "kind": "text", "id": "ketok_cva", "label": "Nyeri ketok CVA", "normal": ["Negatif kanan dan kiri"] }
+      ]
+    },
+    {
+      "id": "uji_tourniquet",
+      "name": "Uji tourniquet (Rumple–Leede)",
+      "category": "fisik",
+      "description": "Manset dipompa di antara sistolik–diastolik selama 5 menit, lalu petekie dihitung.",
+      "action": "Anda memompa manset di lengan pasien selama lima menit, lalu menghitung bintik merah yang muncul.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Negatif (petekie < 10 per 2,5 × 2,5 cm)"],
+          "refText": "Positif jika ≥ 10 petekie per 2,5 × 2,5 cm",
+          "falsePositiveRate": 0.08,
+          "falsePositiveValues": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+        }
+      ]
+    },
+    {
+      "id": "darah_lengkap",
+      "name": "Darah lengkap + hitung jenis",
+      "category": "lab",
+      "description": "Hemoglobin, hematokrit, leukosit, trombosit, LED, dan hitung jenis leukosit.",
+      "action": "Darah pasien diambil dan dikirim ke laboratorium untuk pemeriksaan darah lengkap.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "hb",
+          "label": "Hemoglobin",
+          "unit": "g/dL",
+          "decimals": 1,
+          "ref": [13, 17],
+          "refFemale": [12, 15.5],
+          "normal": [13.5, 16.5],
+          "normalFemale": [12.3, 15]
+        },
+        {
+          "kind": "numeric",
+          "id": "hematokrit",
+          "label": "Hematokrit",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [40, 50],
+          "refFemale": [36, 46],
+          "normal": [41, 48],
+          "normalFemale": [37, 44]
+        },
+        {
+          "kind": "numeric",
+          "id": "leukosit",
+          "label": "Leukosit",
+          "unit": "/µL",
+          "decimals": 0,
+          "step": 100,
+          "ref": [4000, 10000],
+          "normal": [5000, 9500]
+        },
+        {
+          "kind": "numeric",
+          "id": "trombosit",
+          "label": "Trombosit",
+          "unit": "/µL",
+          "decimals": 0,
+          "step": 1000,
+          "ref": [150000, 400000],
+          "normal": [170000, 380000]
+        },
+        {
+          "kind": "numeric",
+          "id": "led",
+          "label": "LED",
+          "unit": "mm/jam",
+          "decimals": 0,
+          "ref": [0, 15],
+          "refFemale": [0, 20],
+          "normal": [2, 12],
+          "normalFemale": [3, 16]
+        },
+        {
+          "kind": "numeric",
+          "id": "basofil",
+          "label": "Basofil",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [0, 1],
+          "normal": [0, 1]
+        },
+        {
+          "kind": "numeric",
+          "id": "eosinofil",
+          "label": "Eosinofil",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [1, 3],
+          "normal": [1, 3]
+        },
+        {
+          "kind": "numeric",
+          "id": "neutrofil_batang",
+          "label": "Neutrofil batang",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [2, 6],
+          "normal": [2, 5]
+        },
+        {
+          "kind": "numeric",
+          "id": "neutrofil_segmen",
+          "label": "Neutrofil segmen",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [50, 70],
+          "normal": [50, 70]
+        },
+        {
+          "kind": "numeric",
+          "id": "limfosit",
+          "label": "Limfosit",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [20, 40],
+          "normal": [25, 35]
+        },
+        {
+          "kind": "numeric",
+          "id": "monosit",
+          "label": "Monosit",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [2, 8],
+          "normal": [3, 6]
+        }
+      ],
+      "groups": [
+        {
+          "params": ["basofil", "eosinofil", "neutrofil_batang", "neutrofil_segmen", "limfosit", "monosit"],
+          "sumTo": 100,
+          "remainder": "neutrofil_segmen"
+        }
+      ]
+    },
+    {
+      "id": "ns1_dengue",
+      "name": "Tes cepat NS1 dengue",
+      "category": "lab",
+      "description": "Antigen NS1 virus dengue. Paling sensitif pada hari 1–5 demam.",
+      "action": "Sampel darah diteteskan pada kaset tes cepat NS1.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "ns1",
+          "label": "Antigen NS1 dengue",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.02,
+          "falsePositiveValues": ["Positif"]
+        }
+      ]
+    },
+    {
+      "id": "rdt_malaria",
+      "name": "Tes cepat (RDT) malaria",
+      "category": "lab",
+      "description": "Mendeteksi antigen HRP-2 (P. falciparum) dan pLDH (semua spesies).",
+      "action": "Darah ujung jari pasien diteteskan pada kaset RDT malaria.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "pf",
+          "label": "P. falciparum (HRP-2)",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.01,
+          "falsePositiveValues": ["Positif"]
+        },
+        {
+          "kind": "text",
+          "id": "pan",
+          "label": "Pan-malaria (pLDH)",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.01,
+          "falsePositiveValues": ["Positif"]
+        }
+      ]
+    },
+    {
+      "id": "widal",
+      "name": "Tes Widal",
+      "category": "lab",
+      "description": "Titer aglutinin O dan H Salmonella typhi. Murah, tetapi kurang spesifik di daerah endemis.",
+      "action": "Serum pasien diperiksa dengan tes aglutinasi Widal.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "so",
+          "label": "S. typhi O",
+          "normal": ["Negatif", "1/40", "1/80"],
+          "refText": "≤ 1/80",
+          "falsePositiveRate": 0.12,
+          "falsePositiveValues": ["1/160", "1/160", "1/320"]
+        },
+        {
+          "kind": "text",
+          "id": "sh",
+          "label": "S. typhi H",
+          "normal": ["Negatif", "1/40", "1/80"],
+          "refText": "≤ 1/80",
+          "falsePositiveRate": 0.1,
+          "falsePositiveValues": ["1/160", "1/320"]
+        }
+      ]
+    },
+    {
+      "id": "tubex",
+      "name": "Tubex TF (IgM anti-Salmonella)",
+      "category": "lab",
+      "description": "Deteksi antibodi IgM terhadap antigen O9 S. typhi. Lebih spesifik daripada Widal.",
+      "action": "Serum pasien diperiksa dengan tes Tubex TF.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "skor",
+          "label": "Skor Tubex TF",
+          "normal": ["0 (negatif)", "1 (negatif)", "2 (negatif)"],
+          "refText": "≤ 2 negatif · 3 meragukan · ≥ 4 positif",
+          "falsePositiveRate": 0.05,
+          "falsePositiveValues": ["3 (meragukan)", "4 (positif lemah)"]
+        }
+      ]
+    }
+  ]
+}

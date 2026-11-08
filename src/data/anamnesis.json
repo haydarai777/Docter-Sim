@@ -1,0 +1,104 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Kategori anamnesis terarah. Setiap pertanyaan memakai 1 jatah (lihat config.anamnesis.maxQuestions).",
+      "Jawaban spesifik per penyakit ada di file penyakit (field anamnesis). Jawaban di sini hanya cadangan (fallback)."
+    ]
+  },
+  "categories": [
+    {
+      "id": "onset",
+      "label": "Onset",
+      "question": "Sejak kapan keluhannya mulai, {sapaan}? Mendadak atau perlahan?",
+      "type": "static",
+      "fallback": [{ "text": "Mulainya sekitar {hariTeks} hari yang lalu, Dok." }]
+    },
+    {
+      "id": "lokasi",
+      "label": "Lokasi",
+      "question": "Di bagian mana yang paling terasa?",
+      "type": "static",
+      "fallback": [{ "text": "Nggak di satu tempat, Dok. Rasanya seluruh badan." }]
+    },
+    {
+      "id": "karakter",
+      "label": "Sifat keluhan",
+      "question": "Rasanya seperti apa, {sapaan}? Coba diceritakan.",
+      "type": "static",
+      "fallback": [{ "text": "Gimana ya, Dok... pokoknya nggak enak." }]
+    },
+    {
+      "id": "pola",
+      "label": "Pola & durasi",
+      "question": "Keluhannya terus-menerus atau hilang-timbul? Ada waktu tertentu yang lebih berat?",
+      "type": "static",
+      "fallback": [{ "text": "Terus-terusan, Dok. Nggak ada jam-jamnya." }]
+    },
+    {
+      "id": "pemberat_peringan",
+      "label": "Pemberat/peringan",
+      "question": "Apa yang membuat keluhannya bertambah berat atau lebih ringan?",
+      "type": "static",
+      "fallback": [{ "text": "Kalau istirahat agak mendingan, Dok." }]
+    },
+    {
+      "id": "keluhan_lain",
+      "label": "Keluhan lain",
+      "question": "Selain itu, ada keluhan lain, {sapaan}?",
+      "type": "dynamic",
+      "fallback": [],
+      "dynamicTemplates": {
+        "found": ["Oh iya, Dok, {daftar}.", "Ada, Dok. {Daftar}.", "Hmm... {daftar}, Dok."],
+        "none": ["Sepertinya itu saja, Dok.", "Nggak ada lagi, Dok. Itu saja."]
+      }
+    },
+    {
+      "id": "riwayat_penyakit",
+      "label": "Riwayat penyakit",
+      "question": "Sebelumnya pernah sakit seperti ini, atau punya penyakit lain?",
+      "type": "static",
+      "fallback": [
+        { "text": "Nggak ada penyakit apa-apa, Dok.", "weight": 3 },
+        { "text": "Paling maag kadang kambuh, Dok.", "weight": 1 }
+      ]
+    },
+    {
+      "id": "riwayat_obat",
+      "label": "Riwayat obat",
+      "question": "Sudah minum obat apa saja untuk keluhan ini?",
+      "type": "static",
+      "fallback": [
+        { "text": "Belum minum obat apa-apa, Dok.", "weight": 1 },
+        { "text": "Cuma minum obat dari warung, Dok.", "weight": 2 }
+      ]
+    },
+    {
+      "id": "riwayat_keluarga",
+      "label": "Riwayat keluarga",
+      "question": "Di keluarga atau orang sekitar ada yang sakit serupa, atau punya penyakit tertentu?",
+      "type": "static",
+      "fallback": [
+        { "text": "Nggak ada yang sakit kayak gini, Dok.", "weight": 3 },
+        { "text": "Bapak saya darah tinggi, Dok. Yang lain sehat.", "weight": 1 }
+      ]
+    },
+    {
+      "id": "bepergian_lingkungan",
+      "label": "Bepergian & lingkungan",
+      "question": "Akhir-akhir ini bepergian ke mana? Bagaimana lingkungan rumah dan tempat kerja?",
+      "type": "static",
+      "fallback": [{ "text": "Nggak ke mana-mana, Dok. Di rumah dan tempat kerja saja." }]
+    },
+    {
+      "id": "kebiasaan",
+      "label": "Kebiasaan",
+      "question": "Bagaimana kebiasaan sehari-harinya: makan, minum, merokok, olahraga?",
+      "type": "static",
+      "fallback": [
+        { "text": "Biasa saja, Dok. Nggak merokok, makan juga teratur." },
+        { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male" } }
+      ]
+    }
+  ]
+}
