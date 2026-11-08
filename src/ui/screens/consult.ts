@@ -9,7 +9,8 @@ import type { EncounterState, LogEntry } from '../../core/types';
 import type { ActionTab, App } from '../app';
 import { resultCard } from '../components/resultCard';
 import { cx, h, replaceChildren } from '../dom';
-import { avatarEmoji, CATEGORY_LABEL, ECONOMY_LABEL, SEX_LABEL } from '../labels';
+import { avatarElement } from '../components/avatar';
+import { CATEGORY_LABEL, ECONOMY_LABEL, SEX_LABEL } from '../labels';
 
 export function renderConsult(app: App): HTMLElement {
   const enc = app.encounter!;
@@ -34,7 +35,7 @@ function topBar(app: App): HTMLElement {
   return h(
     'header',
     { class: 'topbar' },
-    h('span', { class: 'topbar__brand' }, '🩺 Meja Praktek'),
+    h('span', { class: 'topbar__brand' }, '🩺', h('span', { class: 'topbar__brand-text' }, ' Meja Praktek')),
     h('span', { class: 'topbar__patient' }, `Pasien #${run.patientIndex}`),
     h('span', { class: 'topbar__title' }, reputationTitle(run.reputation, app.config)),
     h(
@@ -49,6 +50,8 @@ function topBar(app: App): HTMLElement {
       ),
       h('strong', { class: 'rep__value' }, String(run.reputation)),
     ),
+    h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Panduan bermain', title: 'Panduan bermain', onclick: () => app.openDialog('tutorial') }, '?'),
+    h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'Pengaturan', title: 'Pengaturan', onclick: () => app.openDialog('settings') }, '⚙'),
   );
 }
 
@@ -59,13 +62,18 @@ function patientStrip(app: App, enc: EncounterState): HTMLElement {
   return h(
     'section',
     { class: 'patient', 'aria-label': 'Data pasien' },
-    h('div', { class: 'patient__avatar', 'aria-hidden': 'true' }, avatarEmoji(p.sex, p.age)),
+    h('div', { class: 'patient__avatar' }, avatarElement(p, enc.case.seed, 52)),
     h(
       'div',
       { class: 'patient__info' },
       h('h2', { class: 'patient__name' }, p.name),
       h('p', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
-      h('p', { class: 'patient__meta' }, h('span', { class: cx('badge', `badge--${p.economy}`) }, ECONOMY_LABEL[p.economy])),
+      h(
+        'p',
+        { class: 'patient__meta' },
+        h('span', { class: cx('badge', `badge--${p.economy}`) }, ECONOMY_LABEL[p.economy]),
+        h('button', { class: 'btn btn--small btn--ghost', type: 'button', onclick: () => app.openDialog('record') }, '📋 Rekam medis'),
+      ),
     ),
     h(
       'div',
@@ -102,7 +110,11 @@ function chatLog(app: App, enc: EncounterState): HTMLElement {
       `${enc.case.patient.name} masuk ke ruang praktek.`,
       personality ? ` Kesan umum: ${personality.impression.toLowerCase()}.` : null,
     ),
-    enc.log.map((entry) => chatEntry(app, enc, entry)),
+    enc.log.map((entry, i) => {
+      const el = chatEntry(app, enc, entry);
+      if (i >= app.newLogFrom) el.classList.add('is-new');
+      return el;
+    }),
   );
 }
 

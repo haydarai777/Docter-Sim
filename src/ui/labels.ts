@@ -27,9 +27,3 @@ export const FLAG_LABEL: Record<'H' | 'L' | '+', string> = {
   L: '↓ rendah',
   '+': '• abnormal',
 };
-
-/** Emoji avatar sederhana sesuai jenis kelamin & usia. */
-export function avatarEmoji(sex: Sex, age: number): string {
-  if (age >= 60) return sex === 'male' ? '👴' : '👵';
-  return sex === 'male' ? '👨' : '👩';
-}

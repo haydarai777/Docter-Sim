@@ -1,0 +1,14 @@
+{
+  "name": "Meja Praktek — Simulasi Diagnosis Dokter",
+  "short_name": "Meja Praktek",
+  "description": "Game simulasi diagnosis dokter umum. Hiburan & edukasi, bukan alat medis.",
+  "lang": "id",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#0f6e6e",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

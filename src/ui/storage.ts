@@ -63,3 +63,62 @@ export function updateRecords(result: { correct: number; bestStreak: number; pat
   writeJson('rekor', records);
   return { records, broken };
 }
+
+// ---------------------------------------------------------------------------
+// Pengaturan
+// ---------------------------------------------------------------------------
+
+export type ThemeSetting = 'system' | 'light' | 'dark';
+
+export interface Settings {
+  theme: ThemeSetting;
+  /** false = mode latihan: tes diagnostik selalu akurat. */
+  realisticTests: boolean;
+  tutorialSeen: boolean;
+}
+
+const DEFAULT_SETTINGS: Settings = { theme: 'system', realisticTests: true, tutorialSeen: false };
+
+export function loadSettings(): Settings {
+  return { ...DEFAULT_SETTINGS, ...readJson<Partial<Settings>>('pengaturan', {}) };
+}
+
+export function saveSettings(settings: Settings): void {
+  writeJson('pengaturan', settings);
+}
+
+/** Terapkan tema: 'system' mengikuti preferensi OS (via media query di CSS). */
+export function applyTheme(theme: ThemeSetting): void {
+  const root = document.documentElement;
+  if (theme === 'system') root.removeAttribute('data-theme');
+  else root.setAttribute('data-theme', theme);
+}
+
+// ---------------------------------------------------------------------------
+// Simpan & lanjutkan sesi
+// ---------------------------------------------------------------------------
+
+const SESSION_VERSION = 1;
+
+export interface SavedSession<TRun> {
+  version: number;
+  /** Sidik jari konten; sesi lama dibuang bila konten (penyakit/alat) berubah. */
+  contentKey: string;
+  savedAt: string;
+  run: TRun;
+}
+
+export function saveSession<TRun>(run: TRun, contentKey: string): void {
+  const data: SavedSession<TRun> = { version: SESSION_VERSION, contentKey, savedAt: new Date().toISOString(), run };
+  writeJson('sesi', data);
+}
+
+export function loadSession<TRun>(contentKey: string): SavedSession<TRun> | null {
+  const data = readJson<SavedSession<TRun> | null>('sesi', null);
+  if (!data || data.version !== SESSION_VERSION || data.contentKey !== contentKey || !data.run) return null;
+  return data;
+}
+
+export function clearSession(): void {
+  removeKey('sesi');
+}

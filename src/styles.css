@@ -336,8 +336,12 @@ h3 {
   white-space: nowrap;
 }
 @media (max-width: 480px) {
-  .rep__label {
+  .rep__label,
+  .topbar__brand-text {
     display: none;
+  }
+  .topbar {
+    gap: 0.5rem;
   }
   .rep .meter {
     width: 64px;
@@ -986,4 +990,186 @@ h3 {
 }
 .history-table .is-wrong td {
   background: var(--bad-soft);
+}
+
+/* ---------- Polish: ikon, dialog, avatar, animasi ---------- */
+.icon-btn {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 1;
+}
+.icon-btn:hover {
+  background: var(--surface-2);
+}
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--primary);
+}
+.btn--ghost:hover {
+  background: var(--primary-soft);
+}
+.patient__meta .btn--ghost {
+  margin-left: 0.35rem;
+  min-height: 28px;
+  padding: 0.1rem 0.5rem;
+}
+.avatar {
+  display: block;
+  line-height: 0;
+}
+.avatar svg {
+  border-radius: 50%;
+}
+.title-actions {
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+}
+.title-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+}
+.modal--wide {
+  max-width: 560px;
+  max-height: min(86dvh, 720px);
+  display: flex;
+  flex-direction: column;
+}
+.modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.modal__body {
+  overflow-y: auto;
+  min-height: 0;
+  margin-top: 0.5rem;
+}
+.modal__body h3 {
+  font-size: 0.95rem;
+  margin: 1rem 0 0.4rem;
+}
+.tutorial {
+  text-align: left;
+}
+.tutorial__icon {
+  font-size: 2.5rem;
+  text-align: center;
+}
+.tutorial h3 {
+  text-align: center;
+  margin-top: 0.25rem;
+}
+.tutorial__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 1rem 0 0;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.dot.is-active {
+  background: var(--primary);
+}
+.settings fieldset {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin: 0 0 0.75rem;
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+.settings legend {
+  font-weight: 700;
+  padding: 0 0.25rem;
+}
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 36px;
+  cursor: pointer;
+}
+.radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+.tag {
+  list-style: none;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  font-size: 0.85rem;
+}
+.record ul.chip-row {
+  padding: 0;
+}
+.record-qa {
+  margin: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+.record-qa dt {
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.record-qa dd {
+  margin: 0 0 0.4rem;
+}
+.record-exams {
+  padding-left: 1.1rem;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.record-abnormal {
+  margin: 0.2rem 0 0;
+  padding-left: 1rem;
+  font-size: 0.88rem;
+}
+.abnormal {
+  color: var(--abnormal);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .is-new {
+    animation: enter 0.28s ease-out both;
+  }
+  .modal {
+    animation: pop 0.18s ease-out both;
+  }
+  @keyframes enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }

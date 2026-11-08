@@ -21,3 +21,12 @@ if (!root) throw new Error('Elemen #app tidak ditemukan');
 
 const app = new App(root, content, GAME_CONFIG);
 app.mount();
+
+// PWA: daftarkan service worker (hanya di build produksi) agar bisa dimainkan offline.
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      // Abaikan: game tetap berjalan tanpa mode offline.
+    });
+  });
+}

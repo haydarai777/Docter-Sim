@@ -9,6 +9,21 @@ lalu tetapkan diagnosis. Reputasi naik jika tepat, turun jika salah.
 > Seluruh konten medis **belum ditinjau dokter** (status `BELUM_DITINJAU_DOKTER` di setiap
 > file data) dan tidak boleh dirilis ke publik sebelum ditinjau. Lihat `src/data/README.md`.
 
+## Fitur
+
+- **Pasien NPC** dengan bahasa awam yang kabur/menyesatkan dan 5 gaya bicara
+  (kooperatif, cemas, meremehkan, pelupa, sok tahu), avatar unik, dan demografi
+  yang konsisten dengan faktor risiko penyakitnya.
+- **Anamnesis** terbatas (11 kategori + tanya gejala spesifik), **27 pemeriksaan**
+  berbayar dengan hasil objektif (nilai lab + rujukan, auskultasi, EKG, rontgen, USG).
+- **Hasil realistis**: bergantung hari sakit, bisa negatif/positif palsu (bisa dimatikan
+  di Pengaturan → mode latihan).
+- **Ringkasan edukatif** setelah diagnosis: petunjuk yang ditemukan/terlewat, pemeriksaan
+  paling berguna, cara membedakan dengan diagnosis Anda.
+- **Reputasi & game over**, gelar dokter, layar akhir dengan grafik & statistik, rekor.
+- **Rekam medis** (ringkasan temuan dengan istilah medis), panduan bermain, tema
+  terang/gelap, simpan & lanjutkan sesi otomatis, bisa dipasang & dimainkan offline (PWA).
+
 ## Menjalankan
 
 Butuh Node.js ≥ 20.19.
@@ -52,6 +67,16 @@ Perintah lain:
 
 27 alat pemeriksaan (fisik, laboratorium, penunjang), 40 gejala, 5 kepribadian pasien.
 Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
+
+## Hosting di GitHub Pages (main di HP tanpa komputer)
+
+Workflow `.github/workflows/ci.yml` menjalankan validasi konten, tes, dan build di setiap push.
+Saat ada push ke branch `main`, hasil build otomatis dipublikasikan ke GitHub Pages:
+
+1. Gabungkan (merge) branch pengembangan ke `main`.
+2. Di GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Setelah workflow selesai, game tersedia di `https://<username>.github.io/<nama-repo>/`.
+   (Untuk repo privat, GitHub Pages membutuhkan paket berbayar.)
 
 ## Struktur kode
 
