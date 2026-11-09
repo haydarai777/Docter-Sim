@@ -4,7 +4,6 @@ import { h } from '../dom';
 import { loadRecords } from '../storage';
 
 export function renderTitle(app: App): HTMLElement {
-  const { config } = app;
   const records = loadRecords();
   const saved = app.savedSession;
   return h(
@@ -15,13 +14,13 @@ export function renderTitle(app: App): HTMLElement {
       { class: 'title-card' },
       h('div', { class: 'title-logo', 'aria-hidden': 'true' }, '🩺'),
       h('h1', { class: 'title-name' }, 'Meja Praktek'),
-      h('p', { class: 'title-tagline' }, 'Simulasi diagnosis dokter umum'),
+      h('p', { class: 'title-tagline' }, 'Simulator praktik klinis dokter umum'),
       h(
         'ol',
         { class: 'title-howto' },
-        h('li', null, 'Dengarkan keluhan pasien — sering kabur, tidak lengkap, bahkan menyesatkan.'),
-        h('li', null, `Gali informasi lewat anamnesis (gratis, maks. ${config.anamnesis.maxQuestions} pertanyaan) dan pemeriksaan (berbayar, memotong budget pasien).`),
-        h('li', null, 'Tetapkan diagnosis. Reputasi naik jika tepat, turun jika salah — lebih besar bila penyakit berbahaya terlewat.'),
+        h('li', null, 'Wawancarai pasien dengan pertanyaan bebas — keluhannya kabur, tidak lengkap, dan sering lebih dari satu masalah.'),
+        h('li', null, 'Periksa fisik (gratis) dan pilih pemeriksaan penunjang sesuai tujuan (memotong budget pasien).'),
+        h('li', null, 'Susun diagnosis banding, nilai komplikasi, lalu putuskan diagnosis & disposisi. Seluruh proses klinis Anda dinilai.'),
       ),
       saved
         ? h(
@@ -39,7 +38,7 @@ export function renderTitle(app: App): HTMLElement {
         ? h(
             'p',
             { class: 'title-records' },
-            `Rekor: ${records.bestCorrect} diagnosis tepat · rentetan terbaik ${records.bestStreak} · ${records.runsPlayed} sesi dimainkan`,
+            `Rekor: ${records.bestCorrect} diagnosis tepat · rentetan terbaik ${records.bestStreak}${records.bestAverageScore ? ` · skor rata-rata terbaik ${records.bestAverageScore}` : ''} · ${records.runsPlayed} sesi dimainkan`,
           )
         : null,
       h(

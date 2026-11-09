@@ -160,7 +160,9 @@ export function conversationReply(kind: SmallTalk, c: PatientCase, content: Game
 
 /** Mengulang keluhan utama ("apa keluhannya?"). */
 export function chiefComplaintReply(c: PatientCase, content: GameContent): string {
-  return pickConversation(content.conversation.chief, c, 'chief', { keluhanAwal: c.complaint });
+  // "Dok, tolong..." → hindari "Itu tadi, Dok. Dok, tolong..."
+  const keluhanAwal = capitalize(c.complaint.replace(/^(dok(ter)?)[,.!…\s]+/i, ''));
+  return pickConversation(content.conversation.chief, c, 'chief', { keluhanAwal });
 }
 
 /**

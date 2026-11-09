@@ -36,17 +36,19 @@ export interface Records {
   bestCorrect: number;
   bestStreak: number;
   bestPatients: number;
+  /** Rata-rata skor klinis terbaik dalam satu sesi (minimal 3 pasien). */
+  bestAverageScore: number;
   runsPlayed: number;
 }
 
-const EMPTY_RECORDS: Records = { bestCorrect: 0, bestStreak: 0, bestPatients: 0, runsPlayed: 0 };
+const EMPTY_RECORDS: Records = { bestCorrect: 0, bestStreak: 0, bestPatients: 0, bestAverageScore: 0, runsPlayed: 0 };
 
 export function loadRecords(): Records {
   return { ...EMPTY_RECORDS, ...readJson<Partial<Records>>('rekor', {}) };
 }
 
 /** Perbarui rekor dengan hasil satu sesi. Mengembalikan rekor baru + daftar rekor yang terpecahkan. */
-export function updateRecords(result: { correct: number; bestStreak: number; patients: number }): {
+export function updateRecords(result: { correct: number; bestStreak: number; patients: number; bestScore?: number }): {
   records: Records;
   broken: (keyof Records)[];
 } {
@@ -55,11 +57,13 @@ export function updateRecords(result: { correct: number; bestStreak: number; pat
     bestCorrect: Math.max(old.bestCorrect, result.correct),
     bestStreak: Math.max(old.bestStreak, result.bestStreak),
     bestPatients: Math.max(old.bestPatients, result.patients),
+    bestAverageScore: Math.max(old.bestAverageScore, result.patients >= 3 ? Math.round(result.bestScore ?? 0) : 0),
     runsPlayed: old.runsPlayed + 1,
   };
   const broken: (keyof Records)[] = [];
   if (result.correct > old.bestCorrect) broken.push('bestCorrect');
   if (result.bestStreak > old.bestStreak) broken.push('bestStreak');
+  if (records.bestAverageScore > old.bestAverageScore) broken.push('bestAverageScore');
   writeJson('rekor', records);
   return { records, broken };
 }
@@ -75,9 +79,11 @@ export interface Settings {
   /** false = mode latihan: tes diagnostik selalu akurat. */
   realisticTests: boolean;
   tutorialSeen: boolean;
+  /** true = pasien diperankan Claude (bila tersedia); false = pemahaman bahasa lokal. */
+  aiPatient: boolean;
 }
 
-const DEFAULT_SETTINGS: Settings = { theme: 'system', realisticTests: true, tutorialSeen: false };
+const DEFAULT_SETTINGS: Settings = { theme: 'system', realisticTests: true, tutorialSeen: false, aiPatient: true };
 
 export function loadSettings(): Settings {
   return { ...DEFAULT_SETTINGS, ...readJson<Partial<Settings>>('pengaturan', {}) };
@@ -98,7 +104,7 @@ export function applyTheme(theme: ThemeSetting): void {
 // Simpan & lanjutkan sesi
 // ---------------------------------------------------------------------------
 
-const SESSION_VERSION = 1;
+const SESSION_VERSION = 2;
 
 export interface SavedSession<TRun> {
   version: number;

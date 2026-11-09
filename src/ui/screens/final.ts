@@ -26,7 +26,7 @@ export function renderFinal(app: App): HTMLElement {
       sub ? h('span', { class: 'stat__sub' }, sub) : null,
     );
 
-  const name = (id: string) => content.diseasesById.get(id)?.name ?? id;
+  const name = (id: string) => content.catalogById.get(id)?.name ?? id;
 
   return h(
     'main',
@@ -53,6 +53,7 @@ export function renderFinal(app: App): HTMLElement {
       'div',
       { class: 'sum-stats sum-stats--4' },
       stat('Pasien', String(stats.patientsSeen)),
+      stat('Skor klinis rata-rata', stats.patientsSeen ? stats.averageScore.toFixed(0) : '—', 'dari 100', records?.broken.includes('bestAverageScore')),
       stat('Diagnosis tepat', `${stats.correct} (${Math.round(stats.accuracy * 100)}%)`, undefined, records?.broken.includes('bestCorrect')),
       stat('Rentetan tepat terbaik', String(stats.bestStreak), undefined, records?.broken.includes('bestStreak')),
       stat('Penyakit berbahaya terlewat', String(stats.dangerousMisses), 'tingkat bahaya tinggi/kritis'),
@@ -69,10 +70,10 @@ export function renderFinal(app: App): HTMLElement {
         threshold: config.reputation.gameOverBelow,
         pointLabel: (i) => {
           const r = run.history[i - 1]!;
-          return `${r.correct ? 'Tepat' : 'Salah'}: ${name(r.diseaseId)}`;
+          return `${r.correct ? 'Tepat' : 'Salah'}: ${name(r.diseaseId)} · skor ${r.score}`;
         },
       }),
-      h('p', { class: 'hint' }, `Biaya pemeriksaan rata-rata ${formatRupiah(stats.averageSpent)} per pasien.`),
+      h('p', { class: 'hint' }, `Biaya pemeriksaan penunjang rata-rata ${formatRupiah(stats.averageSpent)} per pasien.`),
     ),
 
     stats.perDisease.length
@@ -109,7 +110,7 @@ export function renderFinal(app: App): HTMLElement {
               h(
                 'thead',
                 null,
-                h('tr', null, ['#', 'Pasien', 'Sebenarnya', 'Diagnosis Anda', 'Biaya', 'Reputasi'].map((t) => h('th', { scope: 'col' }, t))),
+                h('tr', null, ['#', 'Pasien', 'Sebenarnya', 'Diagnosis Anda', 'Skor', 'Biaya', 'Reputasi'].map((t) => h('th', { scope: 'col' }, t))),
               ),
               h(
                 'tbody',
@@ -122,6 +123,7 @@ export function renderFinal(app: App): HTMLElement {
                     h('td', null, r.patientName),
                     h('td', null, name(r.diseaseId)),
                     h('td', null, `${r.correct ? '✓' : '✗'} ${name(r.chosenId)}`),
+                    h('td', { class: 'num' }, String(r.score ?? '—')),
                     h('td', { class: 'num' }, formatRupiah(r.spent)),
                     h('td', { class: 'num' }, `${r.reputationDelta >= 0 ? '+' : '−'}${Math.abs(r.reputationDelta)} → ${r.reputationAfter}`),
                   ),
@@ -141,6 +143,7 @@ export function renderFinal(app: App): HTMLElement {
             'p',
             null,
             `Diagnosis tepat terbanyak: ${records.records.bestCorrect} · Rentetan terbaik: ${records.records.bestStreak} · ` +
+              `Skor rata-rata terbaik: ${records.records.bestAverageScore || '—'} · ` +
               `Pasien terbanyak: ${records.records.bestPatients} · Sesi dimainkan: ${records.records.runsPlayed}`,
           ),
         )

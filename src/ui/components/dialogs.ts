@@ -3,7 +3,6 @@
  */
 import { formatRupiah } from '../../core/text';
 import type { App } from '../app';
-import { doctorQuestion } from '../../core/dialogue';
 import { type Child, cx, h } from '../dom';
 import { modal } from './modal';
 import { SEX_LABEL } from '../labels';
@@ -20,52 +19,55 @@ interface TutorialStep {
 
 export function tutorialSteps(app: App): TutorialStep[] {
   const { config } = app;
+  const w = config.evaluation.weights;
   return [
     {
       icon: '🩺',
       title: 'Selamat datang di meja praktek',
       points: [
-        'Anda adalah dokter umum. Pasien datang satu per satu dengan keluhan sehari-hari.',
-        'Tugas Anda: menemukan diagnosis yang tepat dengan informasi yang terbatas.',
+        'Anda adalah dokter umum di layanan primer. Pasien datang satu per satu — sering dengan lebih dari satu masalah.',
+        'Yang dinilai bukan hanya diagnosis akhir, tetapi seluruh proses penalaran klinis Anda.',
         'Game ini hiburan & edukasi, bukan alat medis. Kontennya belum ditinjau dokter.',
       ],
     },
     {
       icon: '💬',
-      title: 'Dengarkan pasien',
+      title: '1 · Anamnesis bebas',
       points: [
-        'Pasien bicara dengan bahasa awam yang sering kabur atau menyesatkan, misalnya "dada nggak enak, kayak masuk angin".',
-        'Gaya bicara berbeda: ada yang cemas, meremehkan, pelupa, atau sok tahu. Perhatikan "kesan umum" di awal percakapan.',
-        'Keluhan pertama TIDAK pernah lengkap — Anda harus menggali.',
+        'Ketik pertanyaan dengan bahasa Anda sendiri, tanpa batas jumlah. Pasien hanya menjawab yang ditanyakan dan ingat jawaban sebelumnya.',
+        'Keluhan awal TIDAK pernah lengkap. Gali onset, lokasi, karakter, durasi, keparahan, pola, perjalanan, pemberat/peringan, keluhan lain, episode sebelumnya, riwayat penyakit/obat/alergi/keluarga, lingkungan, dan kebiasaan.',
+        'Beberapa gejala tidak disebut sukarela (mis. BAB hitam) — tanyakan spesifik atau lewat tinjauan sistem ("BAB-nya bagaimana?").',
+        app.ai === 'ready'
+          ? 'Di claude.ai, pasien diperankan Claude (bisa dimatikan di Pengaturan).'
+          : 'Di luar claude.ai, pasien memakai pemahaman bahasa lokal: gunakan kata kunci yang jelas.',
       ],
     },
     {
-      icon: '❓',
-      title: 'Anamnesis (gratis, terbatas)',
+      icon: '🩻',
+      title: '2–3 · Pemeriksaan',
       points: [
-        `Anda hanya punya ${config.anamnesis.maxQuestions} pertanyaan per pasien. Pilih kategori (onset, pola, bepergian, kebiasaan, …) atau tanyakan gejala spesifik.`,
-        '"Keluhan lain" bisa mengungkap beberapa gejala sekaligus.',
-        'Tips: pada pasien demam, riwayat bepergian sering menentukan.',
+        'Pemeriksaan fisik gratis, dikelompokkan per sistem. Tanda vital lengkap (TD, nadi, napas, suhu, SpO₂) wajib pada setiap pasien.',
+        'Penunjang memotong budget pasien. Pilih sesuai tujuan: identifikasi penyakit, fungsi organ, struktur, atau komplikasi.',
+        'Hasil normal tidak selalu menyingkirkan penyakit (mis. fungsi ginjal normal pada batu saluran kemih). Tes bisa positif/negatif palsu.',
       ],
     },
     {
-      icon: '🧪',
-      title: 'Pemeriksaan (berbayar)',
+      icon: '🧠',
+      title: '4 · Penalaran',
       points: [
-        'Setiap pemeriksaan memotong budget pasien. Pasien ekonomi lemah hanya mampu sedikit pemeriksaan — pilih yang paling berguna.',
-        'Pemeriksaan yang tidak relevan tetap memberi hasil (biasanya normal) — budget bisa terbuang.',
-        'Seperti di dunia nyata, tes bisa negatif palsu atau positif palsu (bisa dimatikan di Pengaturan → mode latihan).',
-        'Buka "Rekam medis" untuk melihat ringkasan temuan dengan istilah medis.',
+        'Susun diagnosis banding di tab Penalaran, termasuk yang berbahaya. Tandai satu sebagai diagnosis kerja.',
+        'Singkirkan diagnosis lain DENGAN bukti — menyingkirkan tanpa data pembeda akan dikoreksi.',
+        'Pertimbangkan komorbiditas (mis. hipertensi, diabetes) dan temuan insidental yang Anda temukan.',
       ],
     },
     {
-      icon: '⭐',
-      title: 'Diagnosis & reputasi',
+      icon: '⚖️',
+      title: '5 · Keputusan & penilaian',
       points: [
-        `Diagnosis tepat: +${config.reputation.correctBase} reputasi, plus bonus bila hemat biaya.`,
-        'Diagnosis salah: reputasi turun — jauh lebih besar bila penyakit berbahaya yang terlewat.',
-        `Reputasi di bawah ${config.reputation.gameOverBelow}: praktek ditutup (game over).`,
-        'Setelah diagnosis, pelajari ringkasannya: petunjuk yang terlewat dan cara membedakan penyakit.',
+        'Tentukan diagnosis kerja, komplikasi (atau tanpa komplikasi), masalah lain, dan disposisi: rawat jalan, observasi, rujuk spesialis, atau rujuk segera.',
+        `Bobot nilai: anamnesis ${w.anamnesis}% · fisik ${w.fisik}% · penunjang ${w.penunjang}% · diagnosis banding ${w.banding}% · komplikasi ${w.komplikasi}% · diagnosis & tata laksana ${w.keputusan}%.`,
+        `Reputasi naik bila skor di atas ${config.reputation.neutralScore}; turun lebih besar bila penyakit berbahaya terlewat atau pasien gawat dipulangkan. Di bawah ${config.reputation.gameOverBelow}: game over.`,
+        'Pelajari umpan baliknya: yang terlewat, asumsi yang keliru, dan pendekatan yang dianjurkan.',
       ],
     },
   ];
@@ -136,6 +138,31 @@ export function settingsDialog(app: App): HTMLElement {
         ),
         h('p', { class: 'hint' }, 'Matikan untuk mode latihan: tes diagnostik selalu akurat. Berlaku mulai pasien berikutnya.'),
       ),
+      h(
+        'fieldset',
+        null,
+        h('legend', null, 'Pasien AI'),
+        h(
+          'label',
+          { class: 'radio' },
+          h('input', {
+            type: 'checkbox',
+            checked: s.aiPatient,
+            disabled: app.ai === 'unavailable',
+            onchange: (e: Event) => app.updateSettings({ aiPatient: (e.target as HTMLInputElement).checked }),
+          }),
+          ' Pasien diperankan Claude',
+        ),
+        h(
+          'p',
+          { class: 'hint' },
+          app.ai === 'ready'
+            ? 'Claude memahami pertanyaan bebas & menjawab dengan gaya pasien. Fakta medis tetap dari mesin kasus (tidak dikarang). Memakai kuota Claude akun Anda.'
+            : app.ai === 'checking'
+              ? 'Memeriksa ketersediaan…'
+              : 'Tidak tersedia di sini (hanya saat dibuka di claude.ai dengan izin Claude). Mode lokal dipakai.',
+        ),
+      ),
       h('button', { class: 'btn btn--small', type: 'button', onclick: () => app.openTutorial() }, 'Lihat panduan bermain'),
     ),
     h('button', { class: 'btn btn--primary', type: 'button', 'data-autofocus': true, onclick: () => app.closeDialog() }, 'Selesai'),
@@ -154,16 +181,8 @@ export function medicalRecordDialog(app: App): HTMLElement {
   const personality = content.personalitiesById.get(p.personalityId);
 
   const symptomLabel = (id: string) => content.symptomsById.get(id)?.label ?? id;
-  // Jawaban = entri pasien tepat setelah pertanyaan dokter untuk kategori tersebut.
-  const answerFor = (catId: string): string => {
-    const cat = content.anamnesisById.get(catId);
-    if (!cat) return '';
-    const question = doctorQuestion(cat.question, c);
-    const i = enc.log.findIndex((e) => e.kind === 'doctor' && e.text === question);
-    const next = enc.log[i + 1];
-    return i >= 0 && next?.kind === 'patient' ? next.text : '';
-  };
   const denied = enc.askedSymptoms.filter((id) => !enc.revealedSymptoms.includes(id));
+  const topics = content.anamnesis.filter((t) => enc.askedTopics.includes(t.id));
 
   const exams = enc.examsDone.map((toolId) => {
     const tool = content.toolsById.get(toolId)!;
@@ -183,6 +202,7 @@ export function medicalRecordDialog(app: App): HTMLElement {
     );
   });
 
+  const conversation = enc.log.filter((e) => e.kind === 'doctor' || e.kind === 'patient');
   return modalShell(
     app,
     'Rekam medis',
@@ -191,24 +211,35 @@ export function medicalRecordDialog(app: App): HTMLElement {
       { class: 'record' },
       h('p', null, h('strong', null, p.name), ` · ${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
       personality ? h('p', { class: 'muted' }, `Kesan umum: ${personality.impression.toLowerCase()}.`) : null,
+      h('h3', null, 'Keluhan utama'),
+      h('p', null, c.complaint),
       h('h3', null, 'Gejala yang diketahui'),
       enc.revealedSymptoms.length
         ? h('ul', { class: 'chip-row' }, enc.revealedSymptoms.map((id) => h('li', { class: 'tag' }, symptomLabel(id))))
         : h('p', { class: 'muted' }, 'Belum ada.'),
       denied.length ? h('p', { class: 'muted' }, `Disangkal / tidak jelas: ${denied.map(symptomLabel).join(', ')}.`) : null,
-      h('h3', null, 'Anamnesis'),
-      enc.askedCategories.length
+      h('h3', null, `Topik anamnesis yang sudah ditanyakan (${topics.length})`),
+      topics.length ? h('p', null, topics.map((t) => t.label).join(' · ')) : h('p', { class: 'muted' }, 'Belum ada.'),
+      conversation.length > 2
         ? h(
-            'dl',
-            { class: 'record-qa' },
-            enc.askedCategories.map((catId) => {
-              const cat = content.anamnesisById.get(catId);
-              return [h('dt', null, cat?.label ?? catId), h('dd', null, answerFor(catId))];
-            }),
+            'details',
+            { class: 'frame' },
+            h('summary', null, 'Transkrip percakapan'),
+            h(
+              'dl',
+              { class: 'record-qa' },
+              conversation.slice(2).map((e) => [h('dt', null, e.kind === 'doctor' ? 'Dokter' : p.callName), h('dd', null, 'text' in e ? e.text : '')]),
+            ),
           )
-        : h('p', { class: 'muted' }, 'Belum ada pertanyaan kategori.'),
+        : null,
       h('h3', null, 'Pemeriksaan'),
       exams.length ? h('ul', { class: 'record-exams' }, exams) : h('p', { class: 'muted' }, 'Belum ada pemeriksaan.'),
+      enc.ddx.length
+        ? [
+            h('h3', null, 'Diagnosis banding'),
+            h('p', null, enc.ddx.map((d) => `${content.catalogById.get(d.id)?.name ?? d.id} (${d.status})`).join(' · ')),
+          ]
+        : null,
       h('p', { class: 'hint' }, `Biaya terpakai ${formatRupiah(enc.spent)} · sisa budget ${formatRupiah(enc.budgetRemaining)}.`),
     ),
     h('button', { class: 'btn btn--primary', type: 'button', 'data-autofocus': true, onclick: () => app.closeDialog() }, 'Tutup'),

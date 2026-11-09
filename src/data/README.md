@@ -18,10 +18,25 @@ Setiap file punya blok `review` dengan `status`:
 | `traits` | Variabel laten. Aturan **pertama** yang kondisinya cocok untuk suatu id menentukan peluangnya |
 | `symptoms` | Gejala + probabilitas (+ kondisi opsional). Aturan pertama yang cocok per id dipakai |
 | `chiefComplaint` | Gejala yang disebut pertama (sisanya harus digali) |
-| `anamnesis` | Varian jawaban per kategori. `clue` = petunjuk diagnostik (dinilai di ringkasan). `reveals` = gejala yang ikut terungkap |
+| `anamnesis` | Varian jawaban per topik anamnesis. `clue` = petunjuk diagnostik (topik ini jadi "kunci" saat penilaian). `reveals` = gejala yang ikut terungkap |
 | `findings` | Nilai abnormal per (alat, parameter). Aturan pertama yang cocok dipakai; `probability` = sensitivitas/prevalensi tanda; `diagnostic: true` = sensitivitas tes (selalu 100% jika akurasi realistis dimatikan) |
-| `differentials` | Diagnosis banding yang ada di game + cara membedakannya |
-| `keyFindings`, `teachingPoints`, `idealWorkup` | Bahan layar edukasi; `idealWorkup` juga dasar bonus hemat |
+| `differentials` | Diagnosis banding (id katalog: penyakit, komorbiditas, atau `conditions.json`) + `howToDistinguish`, `mustNotMiss` (berbahaya), `excludeBy` (bukti sah untuk menyingkirkan: topik/gejala/alat) |
+| `plan` | Rencana pemeriksaan sesuai indikasi: `keyTopics`, `exams` (fisik) & `tests` (penunjang) dengan peran `kunci`/`pendukung`/`komplikasi`, `group` (saling menggantikan), `when`; `unnecessary` = pemeriksaan yang tidak tepat + alasan |
+| `complications` | Komplikasi/tanda bahaya: `trait` (ada bila trait ada), `redFlag`, `assess` (cara menilainya), `explanation` |
+| `disposition` | Aturan disposisi berurutan (`when` → `value`, `alsoAccept`, `reason`); aturan terakhir tanpa kondisi |
+| `management`, `approach` | Prinsip tata laksana (tanpa dosis) & langkah penalaran yang dianjurkan |
+| `pitfalls` | Umpan balik asumsi keliru (mis. menyingkirkan batu karena fungsi ginjal normal) |
+| `traitComorbidities` | Trait yang sebenarnya komorbiditas (mis. `hipertensi` pada angina) — diharapkan dicatat sebagai masalah lain |
+| `keyFindings`, `teachingPoints` | Bahan layar edukasi |
+
+## File lain
+
+| File | Isi |
+|---|---|
+| `comorbidities.json` | Komorbiditas (peluang, syarat usia, gejala, temuan, riwayat yang diketahui pasien, `detectBy`, tata laksana) & temuan insidental |
+| `conditions.json` | Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah menjadi pasien) |
+| `anamnesis.json` | Topik anamnesis (kata kunci untuk pertanyaan bebas, bobot, alasan), templat percakapan, tinjauan sistem |
+| `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang) |
 
 Parameter yang **tidak** disebut di `findings` otomatis bernilai normal.
 

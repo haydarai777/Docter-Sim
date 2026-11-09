@@ -1,9 +1,10 @@
 # 🩺 Meja Praktek
 
-Game simulasi single-player: Anda adalah dokter umum di meja praktek. Pasien datang
-satu per satu dengan keluhan yang sering kabur, tidak lengkap, atau menyesatkan.
-Gali informasi lewat anamnesis dan pemeriksaan (berbayar, memotong budget pasien),
-lalu tetapkan diagnosis. Reputasi naik jika tepat, turun jika salah.
+Simulator praktik klinis dokter umum (single-player). Pasien datang satu per satu dengan
+keluhan yang kabur, tidak lengkap, dan sering lebih dari satu masalah. Alurnya mengikuti
+praktik nyata: **anamnesis → pemeriksaan fisik → penunjang → diagnosis banding → penyingkiran
+→ penilaian komplikasi → diagnosis akhir & disposisi**. Yang dinilai adalah **proses penalaran
+klinis**, bukan sekadar tebakan diagnosis.
 
 > ⚠️ **Penafian.** Game ini untuk **hiburan dan edukasi**, **bukan alat diagnosis medis**.
 > Seluruh konten medis **belum ditinjau dokter** (status `BELUM_DITINJAU_DOKTER` di setiap
@@ -11,18 +12,29 @@ lalu tetapkan diagnosis. Reputasi naik jika tepat, turun jika salah.
 
 ## Fitur
 
-- **Pasien NPC** dengan bahasa awam yang kabur/menyesatkan dan 5 gaya bicara
-  (kooperatif, cemas, meremehkan, pelupa, sok tahu), avatar unik, dan demografi
-  yang konsisten dengan faktor risiko penyakitnya.
-- **Anamnesis** terbatas (11 kategori + tanya gejala spesifik), **27 pemeriksaan**
-  berbayar dengan hasil objektif (nilai lab + rujukan, auskultasi, EKG, rontgen, USG).
-- **Hasil realistis**: bergantung hari sakit, bisa negatif/positif palsu (bisa dimatikan
-  di Pengaturan → mode latihan).
-- **Ringkasan edukatif** setelah diagnosis: petunjuk yang ditemukan/terlewat, pemeriksaan
-  paling berguna, cara membedakan dengan diagnosis Anda.
-- **Reputasi & game over**, gelar dokter, layar akhir dengan grafik & statistik, rekor.
-- **Rekam medis** (ringkasan temuan dengan istilah medis), panduan bermain, tema
-  terang/gelap, simpan & lanjutkan sesi otomatis, bisa dipasang & dimainkan offline (PWA).
+- **Anamnesis bebas tanpa batas.** Ketik pertanyaan dengan bahasa sendiri. Pasien hanya menjawab
+  yang ditanyakan, mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang), dan memahami
+  rumusan berbeda, slang, akhiran *-nya*, serta tinjauan sistem ("BAB-nya bagaimana?").
+  - **Pasien AI (opsional):** saat dibuka sebagai Artifact di claude.ai, Claude memerankan pasien.
+    Claude **tidak diberi kunci kasus** — fakta hanya bisa diambil lewat alat halaman yang memakai
+    mesin yang sama, sehingga pengungkapan tetap bertahap dan penilaian tetap sama.
+  - **Mode lokal:** di luar claude.ai (atau bila ditolak/gagal), pemahaman bahasa memakai NLU lokal.
+- **Pasien kompleks:** komorbiditas (hipertensi, DM, obesitas, anemia, dislipidemia — kadang belum
+  diketahui pasien), temuan insidental (batu empedu, fatty liver, kista ginjal), komplikasi
+  tersembunyi, gejala yang tidak disebut sukarela (mis. BAB hitam), alergi.
+- **Pemeriksaan fisik per sistem (gratis)** dengan **paket tanda vital** (TD, nadi, napas, suhu, SpO₂).
+- **Penunjang dengan tujuan klinis** (identifikasi, fungsi organ, struktur, komplikasi, skrining),
+  termasuk eGFR CKD-EPI 2021, USG, BNO, CT. Hasil bergantung hari sakit; bisa negatif/positif palsu.
+- **Papan diagnosis banding** (diagnosis kerja / dipertimbangkan / disingkirkan) dan **keputusan akhir**
+  (diagnosis kerja, komplikasi, masalah lain, disposisi: rawat jalan · observasi · rujuk spesialis · rujuk segera).
+- **Penilaian berbobot** — anamnesis 25 · fisik 15 · penunjang 20 · diagnosis banding 20 ·
+  komplikasi/tanda bahaya 10 · diagnosis akhir & tata laksana 10 — dengan umpan balik rinci: topik
+  yang terlewat, keluhan yang tidak digali, pemeriksaan yang kurang/tidak perlu, banding yang
+  terlewat atau disingkirkan tanpa bukti, komplikasi yang tidak dinilai, asumsi keliru (mis. "fungsi
+  ginjal normal menyingkirkan batu"), pendekatan yang dianjurkan, dan rekomendasi.
+- **Reputasi & game over** dari skor klinis, penalti bila penyakit berbahaya terlewat atau pasien
+  gawat dipulangkan. Layar akhir dengan grafik, statistik, rekor.
+- Rekam medis & transkrip, panduan bermain, tema terang/gelap, simpan & lanjutkan sesi, PWA offline.
 
 ## Menjalankan
 
@@ -66,7 +78,9 @@ Perintah lain:
 
 \* Tingkat SKDI 3A (bukan 4A) — sengaja dimasukkan karena dokter umum wajib mengenalinya.
 
-27 alat pemeriksaan (fisik, laboratorium, penunjang), 40 gejala, 5 kepribadian pasien.
+32 alat pemeriksaan (11 fisik, 14 lab, 4 pencitraan, EKG, spirometri), 43 gejala, 16 topik anamnesis
++ 6 tinjauan sistem, 5 komorbiditas, 3 temuan insidental, 23 kondisi khusus diagnosis banding
+(mis. leptospirosis, sindrom koroner akut, pielonefritis, massa saluran kemih, kanker paru), 5 kepribadian.
 Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
 
 ## Main tanpa GitHub: satu file HTML
@@ -79,8 +93,8 @@ Hasilnya di `dist-single/`:
 
 | File | Kegunaan |
 |---|---|
-| `meja-praktek.html` | Seluruh game dalam **satu file** (± 220 KB). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
-| `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai. |
+| `meja-praktek.html` | Seluruh game dalam **satu file** (± 380 KB). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
+| `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI aktif). |
 
 Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.
 Di HP, cara paling andal adalah membuka versi yang di-hosting (Artifact/Netlify/dll.); sebagian
@@ -113,7 +127,9 @@ src/
     config.ts           ← SEMUA angka balancing: harga alat, budget, reputasi, ambang game over
     tools.json          alat pemeriksaan + parameter + nilai rujukan
     symptoms.json       kosakata gejala + frasa awam (biasa/kabur/dilebihkan/diremehkan)
-    anamnesis.json      kategori pertanyaan anamnesis + jawaban cadangan
+    anamnesis.json      topik anamnesis (kata kunci, alasan), templat percakapan, tinjauan sistem
+    comorbidities.json  komorbiditas & temuan insidental
+    conditions.json     kondisi khusus diagnosis banding (tidak muncul sebagai pasien)
     personalities.json  gaya bicara pasien (kooperatif, cemas, meremehkan, pelupa, sok tahu)
     population.json     nama, pekerjaan, konteks teks
     diseases/*.json     satu file per penyakit
@@ -123,12 +139,15 @@ src/
     generator.ts        generator kasus pasien dari templat penyakit
     findings.ts         hasil pemeriksaan (normal / abnormal / positif palsu)
     dialogue.ts         keluhan & jawaban pasien sesuai kepribadian
-    encounter.ts        satu konsultasi: anamnesis, potong budget, diagnosis
-    scoring.ts          penilaian diagnosis & reputasi
+    nlu.ts              pemahaman pertanyaan bebas (normalisasi, frasa terpanjang, intent)
+    encounter.ts        satu konsultasi: anamnesis bebas, pemeriksaan, papan banding, keputusan
+    evaluation.ts       penilaian proses klinis berbobot + umpan balik
+    scoring.ts          harga alat & reputasi
     run.ts              sesi permainan: antrean pasien, game over, statistik
-    summary.ts          ringkasan edukatif setelah diagnosis
+    simulate.ts         bot pemain berbasis kemampuan (untuk balancing)
     validate.ts         validator integritas konten
   ui/                   TAMPILAN (DOM tanpa framework)
+    ai/patientAi.ts     pasien AI lewat kapabilitas `sample` claude.ai (dengan fallback lokal)
 tests/                  unit test
 scripts/                alat bantu pengembang (validasi, contoh kasus, format data)
 ```
@@ -136,20 +155,29 @@ scripts/                alat bantu pengembang (validasi, contoh kasus, format da
 Aturan main: **UI tidak berisi aturan permainan.** Semua aturan ada di `src/core`,
 semua angka di `src/data/config.ts`, semua konten medis di file JSON.
 
-## Reputasi & balancing
+## Penilaian, reputasi & balancing
 
-Semua angka ada di `src/data/config.ts`. Nilai saat ini:
+Semua angka ada di `src/data/config.ts`. Ekspektasi tiap kasus berasal dari data penyakit
+(`plan`, `differentials`, `complications`, `disposition`, `pitfalls`), jadi penilaian spesifik kasus:
 
-- Reputasi awal **50** (0–100). **Game over jika < 20.**
-- Diagnosis tepat: **+8**, plus bonus hemat **0–4** (penuh bila biaya ≤ biaya pemeriksaan
-  ideal penyakit itu, turun linear hingga 0 pada 2× biaya ideal).
-- Diagnosis salah: **−6 × pengali bahaya** penyakit yang terlewat
-  (rendah ×1, sedang ×1,5, tinggi ×2,5, kritis ×3,5 → −6, −9, −15, −21).
-- Gelar dokter berdasarkan reputasi (Dokter teladan, terpercaya, umum, diragukan, …).
+- **Anamnesis (25):** topik inti (bobot ekstra untuk topik kunci kasus, keluhan lain, episode
+  sebelumnya) + keluhan tambahan yang berhasil digali (gejala tersembunyi bernilai lebih).
+- **Fisik (15):** tanda vital + pemeriksaan terarah sesuai rencana kasus & komorbiditas.
+- **Penunjang (20):** pemeriksaan kunci/pendukung/komplikasi sesuai indikasi, **disesuaikan budget
+  pasien**; pemeriksaan tidak perlu dikurangi; catatan interpretasi positif/negatif palsu.
+- **Diagnosis banding (20):** diagnosis benar ada di papan; banding penting (terutama yang
+  berbahaya) dipertimbangkan dan disingkirkan **dengan bukti**.
+- **Komplikasi (10):** tanda bahaya dinilai dan komplikasi diklasifikasikan dengan benar.
+- **Keputusan (10):** diagnosis kerja, masalah lain yang sudah ditemukan, disposisi
+  (under-triage = 0; pasien gawat tidak dirujuk = penalti keselamatan).
 
-Hasil simulasi (`npm run balance-report`): penebak acak game over di sekitar pasien ke-4;
-akurasi ±60% kira-kira impas; akurasi ≥ 70% hampir selalu bertahan. Tes `tests/balance.test.ts`
-menjaga agar perubahan config tidak merusak keseimbangan ini tanpa disadari.
+Reputasi awal **50** (0–100), **game over < 20**. Per pasien: `(skor − 50) × 0,25`, lalu
+−4 × pengali bahaya bila diagnosis utama salah (×1 / ×1,5 / ×2,5 / ×3,5) dan −6 bila pasien
+yang perlu rujuk segera tidak dirujuk.
+
+Simulasi bot (`npm run balance-report`): kemampuan 0,4 hampir selalu game over; 0,5 bertahan
+± 15 pasien; ≥ 0,7 hampir selalu bertahan; bot sempurna rata-rata skor ≥ 90.
+`tests/balance.test.ts` menjaga keseimbangan ini.
 
 ## Cara kerja kasus pasien
 
@@ -160,9 +188,10 @@ Setiap penyakit adalah *templat*. Dari templat + seed acak, generator membuat pa
 2. **Hari sakit** (mis. dengue hari 2–6) — memengaruhi hasil (NS1 makin sering negatif setelah hari 5).
 3. **Trait laten** (mis. `fase_kritis`, `falciparum`, `anemia`) — menghubungkan gejala dan temuan agar konsisten.
 4. **Gejala** dengan probabilitas.
-5. **Dialog**: keluhan utama hanya menyebut sebagian gejala, dengan gaya kepribadian.
-6. **Hasil semua pemeriksaan** — alat yang tidak relevan tetap memberi hasil (biasanya normal,
-   kadang positif palsu bila "akurasi realistis" aktif di config).
+5. **Komorbiditas, temuan insidental, komplikasi, alergi** — ikut mengubah jawaban riwayat dan hasil pemeriksaan.
+6. **Dialog**: keluhan utama hanya menyebut sebagian gejala; sebagian gejala tidak pernah disebut sukarela.
+7. **Hasil semua pemeriksaan** — tiap kelainan mencatat asalnya (penyakit utama / komorbiditas /
+   insidental); alat yang tidak relevan tetap memberi hasil (biasanya normal, kadang positif palsu).
 
 Setiap kasus punya **kode kasus** (seed) yang tampil di layar ringkasan, sehingga kasus aneh bisa direproduksi.
 
