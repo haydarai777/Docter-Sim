@@ -276,5 +276,6 @@
   "context": {
     "waktu": ["pagi", "siang", "sore"],
     "kotaWisata": ["Bali", "Yogyakarta", "Bandung", "Malang", "Semarang", "Danau Toba"]
-  }
+  },
+  "allergies": ["amoksisilin", "antalgin (metamizol)", "kotrimoksazol", "ibuprofen", "udang dan makanan laut", "debu"]
 }

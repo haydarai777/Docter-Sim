@@ -5,8 +5,9 @@
  * Jalankan: npm run review-sheet
  */
 import { writeFileSync } from 'node:fs';
-import type { Condition, DiseaseTemplate, FindingRule, GameContent, ParamDef } from '../src/core/types';
-import { idealWorkupCost } from '../src/core/scoring';
+import { DISPOSITION_LABEL } from '../src/core/evaluation';
+import { planTestCost } from '../src/core/scoring';
+import type { Condition, DiseaseTemplate, EvidenceRef, FindingRule, GameContent, ParamDef } from '../src/core/types';
 import { formatNumber, formatRupiah } from '../src/core/text';
 import { GAME_CONFIG, loadDefaultContent } from '../src/data';
 
@@ -30,6 +31,18 @@ function cond(c: Condition | undefined): string {
   return parts.join('; ');
 }
 
+const toolName = (id: string) => content.toolsById.get(id)?.name ?? id;
+const catalogName = (id: string) => content.catalogById.get(id)?.name ?? id;
+
+function evidence(ref: EvidenceRef | undefined): string {
+  if (!ref) return '—';
+  return [
+    ...(ref.topics ?? []).map((t) => `anamnesis: ${content.anamnesisById.get(t)?.label ?? t}`),
+    ...(ref.symptoms ?? []).map((x) => `gejala: ${content.symptomsById.get(x)?.label ?? x}`),
+    ...(ref.tools ?? []).map(toolName),
+  ].join('; ');
+}
+
 function findingValue(f: FindingRule, param: ParamDef | undefined): string {
   if (f.range) {
     const dec = param?.kind === 'numeric' ? param.decimals : 0;
@@ -48,7 +61,7 @@ function diseaseSection(d: DiseaseTemplate): void {
   if (d.demographics.occupations?.length) {
     line(`- **Pekerjaan berisiko** (bias ${pct(d.demographics.occupationBias ?? 0)}): ${d.demographics.occupations.map((o) => content.occupationsById.get(o.id)?.label ?? o.id).join(', ')}`);
   }
-  line(`- **Pemeriksaan ideal**: ${d.idealWorkup.map((t) => content.toolsById.get(t)?.name ?? t).join(', ')} (${formatRupiah(idealWorkupCost(d, GAME_CONFIG))})`);
+  line(`- **Biaya penunjang kunci**: ${formatRupiah(planTestCost(d, GAME_CONFIG))} · semua sesuai rencana: ${formatRupiah(planTestCost(d, GAME_CONFIG, ['kunci', 'pendukung', 'komplikasi']))}`);
   line();
   line(`> ${d.summary}`);
   line();
@@ -90,6 +103,54 @@ function diseaseSection(d: DiseaseTemplate): void {
     for (const v of variants.filter((x) => x.clue)) line(`- _${cat}_: "${v.text}" → **${v.clue}**`);
   }
   line();
+  line('**Rencana pemeriksaan sesuai indikasi** (dasar penilaian)');
+  line();
+  line('| Jenis | Pemeriksaan | Peran | Kondisi | Alasan |');
+  line('|---|---|---|---|---|');
+  for (const it of d.plan.exams) line(`| Fisik | ${toolName(it.tool)} | ${it.role} | ${esc(cond(it.when))} | ${esc(it.reason)} |`);
+  for (const it of d.plan.tests) line(`| Penunjang | ${toolName(it.tool)}${it.group ? ` _(grup ${it.group})_` : ''} | ${it.role} | ${esc(cond(it.when))} | ${esc(it.reason)} |`);
+  for (const u of d.plan.unnecessary ?? []) line(`| Tidak perlu | ${toolName(u.tool)} | — | — | ${esc(u.reason)} |`);
+  if (d.plan.keyTopics?.length) line(`\nTopik anamnesis kunci: ${d.plan.keyTopics.map((t) => content.anamnesisById.get(t)?.label ?? t).join(', ')}.`);
+  line();
+
+  line('**Diagnosis banding**');
+  line();
+  line('| Kondisi | Wajib disingkirkan | Bukti untuk menyingkirkan | Cara membedakan |');
+  line('|---|---|---|---|');
+  for (const x of d.differentials) line(`| ${catalogName(x.id)} | ${x.mustNotMiss ? 'Ya' : '—'} | ${esc(evidence(x.excludeBy))} | ${esc(x.howToDistinguish)} |`);
+  line();
+
+  if (d.complications?.length) {
+    line('**Komplikasi & tanda bahaya**');
+    line();
+    line('| Komplikasi | Trait | Tanda bahaya | Cara menilai | Penjelasan |');
+    line('|---|---|---|---|---|');
+    for (const x of d.complications) line(`| ${x.name} | ${x.trait} | ${x.redFlag ? 'Ya' : '—'} | ${esc(evidence(x.assess))} | ${esc(x.explanation)} |`);
+    line();
+  }
+
+  line('**Disposisi** (aturan pertama yang cocok)');
+  line();
+  for (const r of d.disposition) {
+    const also = r.alsoAccept?.length ? ` (juga diterima: ${r.alsoAccept.map((a) => DISPOSITION_LABEL[a]).join(', ')})` : '';
+    line(`- ${cond(r.when)} → **${DISPOSITION_LABEL[r.value]}**${also}: ${r.reason}`);
+  }
+  line();
+  line('**Prinsip tata laksana** (tanpa dosis)');
+  line();
+  for (const m of d.management) line(`- ${m}`);
+  line();
+  line('**Langkah penalaran yang dianjurkan**');
+  line();
+  d.approach.forEach((a, i) => line(`${i + 1}. ${a}`));
+  line();
+  if (d.pitfalls?.length) {
+    line('**Jebakan penalaran (umpan balik)**');
+    line();
+    for (const p of d.pitfalls) line(`- \`${JSON.stringify(p.when)}\` → ${p.text}`);
+    line();
+  }
+
   line('**Temuan khas (layar edukasi)**');
   line();
   for (const k of d.keyFindings) line(`- ${k}`);
@@ -115,6 +176,9 @@ function diseaseSection(d: DiseaseTemplate): void {
     'Rentang nilai lab & sensitivitas tes sesuai literatur',
     'Jawaban anamnesis & petunjuk realistis (bahasa awam)',
     'Temuan khas, catatan pembelajaran, dan cara membedakan akurat',
+    'Rencana pemeriksaan (kunci/pendukung/komplikasi) & pemeriksaan "tidak perlu" sesuai praktik layanan primer',
+    'Komplikasi, tanda bahaya, dan aturan disposisi/rujukan tepat',
+    'Prinsip tata laksana & jebakan penalaran akurat',
   ]) {
     line(`- [ ] ${item}`);
   }
@@ -139,8 +203,8 @@ for (const d of content.diseases) line(`| ${d.name} | ${d.skdiLevel} | ${d.dange
 line();
 line('## Alat pemeriksaan, harga, dan nilai rujukan');
 line();
-line('| Alat | Kategori | Harga | Parameter (rujukan) | Positif palsu |');
-line('|---|---|---|---|---|');
+line('| Alat | Kategori | Tujuan | Harga | Parameter (rujukan) | Positif palsu |');
+line('|---|---|---|---|---|---|');
 for (const t of content.tools) {
   const params = t.params
     .map((p) => {
@@ -149,8 +213,40 @@ for (const t of content.tools) {
     })
     .join('<br>');
   const fp = t.params.filter((p) => p.falsePositiveRate).map((p) => `${p.label} ${pct(p.falsePositiveRate)}`).join('<br>') || '—';
-  line(`| ${t.name} | ${t.category} | ${formatRupiah(GAME_CONFIG.toolPrices[t.id] ?? 0)} | ${esc(params)} | ${esc(fp)} |`);
+  const purpose = [t.objectives?.join(', '), t.purpose].filter(Boolean).join(' — ') || '—';
+  line(`| ${t.name} | ${t.category} | ${esc(purpose)} | ${formatRupiah(GAME_CONFIG.toolPrices[t.id] ?? 0)} | ${esc(params)} | ${esc(fp)} |`);
 }
+line();
+line('## Komorbiditas (dapat menyertai penyakit utama)');
+line();
+line('| Kondisi | Peluang | Syarat | Pasien tahu | Gejala | Temuan | Dideteksi dengan |');
+line('|---|---|---|---|---|---|---|');
+for (const c of content.comorbidities) {
+  const findings = c.findings.map((f) => `${toolName(f.tool)} · ${f.param}: ${findingValue(f, content.toolsById.get(f.tool)?.params.find((p) => p.id === f.param))}`).join('<br>');
+  const syarat = [c.when ? cond(c.when) : '', c.excludePrimary?.length ? `bukan pada ${c.excludePrimary.join(', ')}` : ''].filter(Boolean).join('; ') || '—';
+  line(`| ${c.name} | ${pct(c.probability)} | ${esc(syarat)} | ${pct(c.knownProbability)} | ${(c.symptoms ?? []).map((x) => `${x.id} ${pct(x.probability)}`).join(', ') || '—'} | ${esc(findings)} | ${esc(evidence(c.detectBy))} |`);
+}
+line();
+line('## Temuan insidental');
+line();
+line('| Kondisi | Peluang | Syarat | Temuan | Catatan |');
+line('|---|---|---|---|---|');
+for (const i of content.incidentals) {
+  const findings = i.findings.map((f) => `${toolName(f.tool)} · ${f.param}: ${findingValue(f, content.toolsById.get(f.tool)?.params.find((p) => p.id === f.param))}`).join('<br>');
+  line(`| ${i.name} | ${pct(i.probability)} | ${esc(i.when ? cond(i.when) : '—')} | ${esc(findings)} | ${esc(i.note)} |`);
+}
+line();
+line('## Kondisi khusus diagnosis banding (tidak muncul sebagai pasien)');
+line();
+line('| Kondisi | Sistem | Bahaya | Ringkasan |');
+line('|---|---|---|---|');
+for (const c of content.conditions) line(`| ${c.name} | ${c.system} | ${c.danger} | ${esc(c.summary)} |`);
+line();
+line('## Topik anamnesis');
+line();
+line('| Topik | Rubrik | Inti | Bobot | Mengapa penting |');
+line('|---|---|---|---|---|');
+for (const a of content.anamnesis) line(`| ${a.label} | ${a.rubric} | ${a.core ? 'Ya' : '—'} | ${a.weight ?? 1} | ${esc(a.why)} |`);
 line();
 for (const d of content.diseases) diseaseSection(d);
 

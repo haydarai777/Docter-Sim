@@ -25,11 +25,12 @@
     "occupationBias": 0.3
   },
   "traits": [
+    { "id": "serangan_berat", "probability": 0.1 },
     { "id": "atopi", "probability": 0.6 },
     { "id": "riwayat_keluarga_asma", "probability": 0.5 },
     { "id": "pemicu_debu", "probability": 0.45 },
     { "id": "pemicu_dingin", "when": { "notTraits": ["pemicu_debu"] }, "probability": 0.5 },
-    { "id": "serangan_sedang", "probability": 0.5 },
+    { "id": "serangan_sedang", "probability": 0.5, "when": { "notTraits": ["serangan_berat"] } },
     { "id": "eosinofilia", "when": { "traits": ["atopi"] }, "probability": 0.6 },
     { "id": "hiperinflasi", "probability": 0.25 }
   ],
@@ -39,7 +40,8 @@
     "pemicu_debu": "Pemicu serangan: debu/asap.",
     "pemicu_dingin": "Pemicu serangan: udara dingin/kehujanan.",
     "serangan_sedang": "Serangan derajat sedang (APE 50–69% prediksi).",
-    "eosinofilia": "Eosinofilia ringan (latar belakang alergi)."
+    "eosinofilia": "Eosinofilia ringan (latar belakang alergi).",
+    "serangan_berat": "Serangan asma berat — rujuk segera."
   },
   "symptoms": [
     { "id": "sesak_napas", "probability": 1 },
@@ -132,28 +134,78 @@
       },
       { "text": "Nggak ke mana-mana, Dok.", "when": { "notTraits": ["pemicu_debu"] } }
     ],
-    "kebiasaan": [{ "text": "Saya nggak merokok, Dok, tapi orang rumah ada yang merokok.", "clue": "Paparan asap rokok" }]
+    "kebiasaan": [{ "text": "Saya nggak merokok, Dok, tapi orang rumah ada yang merokok.", "clue": "Paparan asap rokok" }],
+    "durasi": [
+      {
+        "text": "Kalau kambuh bisa berjam-jam, Dok. Kalau pakai obat semprot cepat hilang.",
+        "clue": "Serangan reda dengan bronkodilator"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Berat... sekali... Dok.",
+        "when": { "traits": ["serangan_berat"] },
+        "clue": "Bicara terputus per kata (serangan berat)"
+      },
+      {
+        "text": "Lumayan berat, Dok, ngomong panjang jadi ngos-ngosan, semalam tidur harus duduk.",
+        "when": { "traits": ["serangan_sedang"] }
+      },
+      {
+        "text": "Masih bisa ngomong biasa, Dok, tapi jalan cepat jadi sesak.",
+        "when": { "notTraits": ["serangan_berat", "serangan_sedang"] }
+      }
+    ],
+    "progresi": [{ "text": "Dari kemarin makin sesak, Dok, obat semprotnya habis." }],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering, Dok. Dari kecil sudah begini, setahun bisa beberapa kali kambuh.",
+        "clue": "Serangan berulang sejak kecil (penyakit episodik)"
+      }
+    ]
   },
   "findings": [
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["serangan_berat"] }, "range": [88, 91] },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["serangan_berat"] }, "range": [30, 34] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["serangan_berat"] }, "range": [121, 130] },
+    { "tool": "spirometri", "param": "ape", "when": { "traits": ["serangan_berat"] }, "range": [35, 49] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["serangan_berat"] },
+      "values": ["Tampak sesak berat, duduk membungkuk, bicara per kata"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["serangan_berat"] },
+      "values": ["Wheezing di kedua lapang paru, suara napas melemah"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "inspeksi",
+      "when": { "traits": ["serangan_berat"] },
+      "values": ["Retraksi interkostal & penggunaan otot bantu napas"]
+    },
     { "tool": "tanda_vital", "param": "napas", "range": [22, 28] },
     { "tool": "tanda_vital", "param": "nadi", "range": [96, 115] },
-    { "tool": "oksimeter", "param": "spo2", "when": { "traits": ["serangan_sedang"] }, "range": [92, 95] },
-    { "tool": "oksimeter", "param": "spo2", "range": [95, 97] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["serangan_sedang"] }, "range": [92, 95] },
+    { "tool": "tanda_vital", "param": "spo2", "range": [95, 97] },
     {
-      "tool": "stetoskop",
-      "param": "paru",
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
       "probability": 0.9,
       "values": ["Wheezing ekspirasi di kedua lapang paru, ekspirasi memanjang"]
     },
     {
-      "tool": "peak_flow",
+      "tool": "spirometri",
       "param": "ape",
       "when": { "traits": ["serangan_sedang"] },
       "probability": 0.95,
       "diagnostic": true,
       "range": [50, 69]
     },
-    { "tool": "peak_flow", "param": "ape", "probability": 0.9, "diagnostic": true, "range": [65, 79] },
+    { "tool": "spirometri", "param": "ape", "probability": 0.9, "diagnostic": true, "range": [65, 79] },
     { "tool": "darah_lengkap", "param": "eosinofil", "when": { "traits": ["eosinofilia"] }, "range": [5, 9] },
     {
       "tool": "rontgen_thorax",
@@ -166,20 +218,69 @@
       "param": "kesan",
       "when": { "traits": ["hiperinflasi"] },
       "values": ["Hiperinflasi paru ringan"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["serangan_sedang"] },
+      "values": ["Tampak sesak, bicara per frasa"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "values": ["Tampak sesak ringan, masih bisa bicara dalam kalimat"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "inspeksi",
+      "when": { "traits": ["serangan_sedang"] },
+      "values": ["Penggunaan otot bantu napas ringan"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "perkusi",
+      "probability": 0.3,
+      "values": ["Hipersonor di kedua lapang paru"]
+    },
+    {
+      "tool": "spirometri",
+      "param": "reversibilitas",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Meningkat 18% setelah bronkodilator (reversibel)", "Meningkat 25% setelah bronkodilator (reversibel)"]
     }
   ],
   "differentials": [
     {
       "id": "pneumonia",
-      "howToDistinguish": "Pneumonia: demam tinggi, dahak purulen, ronkhi basah lokal, leukositosis, konsolidasi pada foto toraks. Asma: sesak dengan mengi difus, riwayat serangan berulang, ada pemicu, tanpa demam tinggi."
+      "howToDistinguish": "Pneumonia: demam tinggi, dahak purulen, ronkhi basah lokal, leukositosis, konsolidasi pada foto toraks. Asma: sesak dengan mengi difus, riwayat serangan berulang, ada pemicu, tanpa demam tinggi.",
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"] }
     },
     {
       "id": "tb_paru",
-      "howToDistinguish": "TB: batuk ≥ 2 minggu dengan keringat malam dan BB turun. Asma: serangan sesak episodik dengan pemicu, di luar serangan normal."
+      "howToDistinguish": "TB: batuk ≥ 2 minggu dengan keringat malam dan BB turun. Asma: serangan sesak episodik dengan pemicu, di luar serangan normal.",
+      "excludeBy": { "topics": ["onset", "episode_sebelumnya"] }
     },
     {
       "id": "angina_stabil",
-      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko kardiovaskular, tanpa mengi. Asma: mengi, riwayat atopi, sejak muda, membaik dengan bronkodilator."
+      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko kardiovaskular, tanpa mengi. Asma: mengi, riwayat atopi, sejak muda, membaik dengan bronkodilator.",
+      "excludeBy": { "topics": ["pemberat_peringan"], "tools": ["pemeriksaan_paru"] }
+    },
+    {
+      "id": "ppok",
+      "howToDistinguish": "PPOK: perokok lama usia > 40, sesak progresif, obstruksi tidak reversibel penuh.",
+      "excludeBy": { "tools": ["spirometri"], "topics": ["kebiasaan"] }
+    },
+    {
+      "id": "gagal_jantung",
+      "howToDistinguish": "Gagal jantung (\"asma kardiale\"): ortopnea, edema, JVP meningkat, ronkhi basal, usia lanjut.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["kepala_leher", "ekstremitas_kulit", "pemeriksaan_jantung"] }
+    },
+    {
+      "id": "bronkitis_akut",
+      "howToDistinguish": "Bronkitis akut: batuk pasca-ISPA tanpa riwayat serangan berulang.",
+      "excludeBy": { "topics": ["episode_sebelumnya"] }
     }
   ],
   "otherDifferentials": ["PPOK", "Gagal jantung (asma kardiale)", "Disfungsi pita suara", "Bronkitis akut"],
@@ -194,7 +295,6 @@
     "Riwayat episodik sejak kecil + pemicu + respons terhadap bronkodilator adalah kunci diagnosis asma.",
     "APE yang membaik ≥ 20% setelah bronkodilator mendukung asma. Peak flow meter murah dan sangat berguna di layanan primer."
   ],
-  "idealWorkup": ["tanda_vital", "oksimeter", "stetoskop", "peak_flow"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Serangan berat / status asmatikus tidak dimodelkan."],
@@ -203,5 +303,99 @@
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Asma Bronkial",
       "Global Initiative for Asthma (GINA) report"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "serangan_berat",
+      "name": "Serangan asma berat",
+      "trait": "serangan_berat",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "keadaan_umum", "spirometri"] },
+      "explanation": "Bicara per kata, napas ≥ 30×/menit, nadi > 120, SpO₂ < 92%, APE < 50% → rujuk segera."
+    },
+    {
+      "id": "serangan_sedang",
+      "name": "Serangan derajat sedang",
+      "trait": "serangan_sedang",
+      "redFlag": false,
+      "assess": { "tools": ["tanda_vital", "keadaan_umum", "spirometri"] },
+      "explanation": "Bicara per frasa, APE 50–69%; tangani di klinik dan nilai respons."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "episode_sebelumnya", "pemberat_peringan", "riwayat_obat", "riwayat_penyakit", "riwayat_keluarga"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_paru",
+        "role": "kunci",
+        "reason": "Wheezing, ekspirasi memanjang; singkirkan tanda pneumotoraks/konsolidasi."
+      },
+      { "tool": "keadaan_umum", "role": "komplikasi", "reason": "Derajat serangan (cara bicara, posisi)." }
+    ],
+    "tests": [
+      {
+        "tool": "spirometri",
+        "role": "kunci",
+        "reason": "APE untuk derajat serangan dan reversibilitas setelah bronkodilator."
+      },
+      {
+        "tool": "rontgen_thorax",
+        "role": "komplikasi",
+        "reason": "Singkirkan pneumotoraks/pneumonia pada serangan berat.",
+        "when": { "traits": ["serangan_berat"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada keluhan perut." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Serangan asma berat memerlukan penanganan di rumah sakit.",
+      "when": { "traits": ["serangan_berat"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Serangan ringan–sedang yang membaik dengan bronkodilator: rawat jalan, rencana aksi asma, dan kontrol.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Bronkodilator inhalasi segera dan nilai respons — keputusan dokter.",
+    "Rencana aksi asma tertulis dan teknik inhaler yang benar.",
+    "Hindari pemicu (debu, asap rokok, udara dingin); kontrol rutin.",
+    "Rujuk segera bila serangan berat atau tidak membaik."
+  ],
+  "approach": [
+    "Sesak + mengi: tanyakan episode sebelumnya, pemicu, respons inhaler, riwayat atopi & keluarga.",
+    "Nilai derajat serangan: cara bicara, posisi, frekuensi napas, nadi, SpO₂, APE.",
+    "Spirometri/APE untuk obstruksi dan reversibilitas.",
+    "Singkirkan pneumonia (demam, ronkhi lokal), gagal jantung, dan PPOK (perokok tua)."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "asma", "toolNormal": "rontgen_thorax" },
+      "text": "Foto toraks normal tidak menyingkirkan asma; diagnosis asma bersifat klinis + spirometri."
+    },
+    {
+      "when": { "topicNotAsked": "episode_sebelumnya" },
+      "text": "Riwayat serangan serupa sebelumnya adalah kunci diagnosis asma — selalu tanyakan episode sebelumnya."
+    }
+  ]
 }

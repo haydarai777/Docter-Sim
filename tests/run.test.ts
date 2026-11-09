@@ -1,12 +1,26 @@
 import { describe, expect, it } from 'vitest';
-import { chooseNextDisease, createRun, diagnoseCurrent, retireRun, runStats, startNextPatient } from '../src/core/run';
-import type { RunState } from '../src/core/types';
+import { createRng } from '../src/core/rng';
+import { chooseNextDisease, createRun, finishCurrent, retireRun, runStats, startNextPatient } from '../src/core/run';
+import { playEncounterBot } from '../src/core/simulate';
+import type { ClinicalDecision, GameConfig, RunState } from '../src/core/types';
 import { config, configWith, content } from './helpers';
 
-/** Jawab diagnosis salah dengan penyakit lain selain yang benar. */
-function wrongAnswer(run: RunState): string {
+/** Pemeriksaan teliti & diagnosis tepat (bot skill penuh). */
+function playWell(run: RunState, cfg: GameConfig = config): RunState {
+  const played = playEncounterBot(run.encounter!, { skill: 1 }, createRng(run.patientIndex), content, cfg);
+  return finishCurrent({ ...run, encounter: played.state }, played.decision, content, cfg);
+}
+
+/** Tanpa anamnesis/pemeriksaan, diagnosis salah, dipulangkan. */
+function playBadly(run: RunState): RunState {
   const trueId = run.encounter!.case.diseaseId;
-  return content.diseases.find((d) => d.id !== trueId)!.id;
+  const decision: ClinicalDecision = {
+    primary: content.diseases.find((d) => d.id !== trueId)!.id,
+    secondary: [],
+    complications: [],
+    disposition: 'rawat_jalan',
+  };
+  return finishCurrent(run, decision, content, config);
 }
 
 describe('sesi permainan', () => {
@@ -23,54 +37,51 @@ describe('sesi permainan', () => {
     expect(a.patientIndex).toBe(1);
   });
 
-  it('tidak bisa memanggil pasien baru saat pasien lama belum didiagnosis', () => {
+  it('tidak bisa memanggil pasien baru saat pasien lama belum selesai', () => {
     const run = startNextPatient(createRun(3, config), content, config);
     expect(() => startNextPatient(run, content, config)).toThrow();
   });
 
-  it('diagnosis memperbarui reputasi & riwayat', () => {
-    let run = startNextPatient(createRun(5, config), content, config);
-    const trueId = run.encounter!.case.diseaseId;
-    run = diagnoseCurrent(run, trueId, content, config);
+  it('keputusan memperbarui reputasi, skor & riwayat', () => {
+    const run = playWell(startNextPatient(createRun(5, config), content, config));
     expect(run.reputation).toBeGreaterThan(config.reputation.initial);
     expect(run.history).toHaveLength(1);
-    expect(run.history[0]!.correct).toBe(true);
-    expect(run.history[0]!.reputationAfter).toBe(run.reputation);
+    const rec = run.history[0]!;
+    expect(rec.correct).toBe(true);
+    expect(rec.score).toBe(run.encounter!.evaluation!.total);
+    expect(rec.reputationAfter).toBe(run.reputation);
+    expect(rec.reputationDelta).toBe(run.reputation - config.reputation.initial);
   });
 
-  it('game over setelah cukup banyak diagnosis salah', () => {
+  it('game over cepat bila asal menebak tanpa memeriksa', () => {
     let run = createRun(9, config);
     let turns = 0;
     while (run.status === 'playing' && turns < 50) {
-      run = startNextPatient(run, content, config);
-      run = diagnoseCurrent(run, wrongAnswer(run), content, config);
+      run = playBadly(startNextPatient(run, content, config));
       turns++;
     }
     expect(run.status).toBe('game_over');
     expect(run.reputation).toBeLessThan(config.reputation.gameOverBelow);
     expect(() => startNextPatient(run, content, config)).toThrow();
-    expect(turns).toBeLessThan(10);
+    expect(turns).toBeLessThan(8);
   });
 
-  it('tidak game over selama diagnosis benar', () => {
+  it('pemeriksaan teliti dan tepat tidak pernah game over', () => {
     let run = createRun(11, config);
-    for (let i = 0; i < 20; i++) {
-      run = startNextPatient(run, content, config);
-      run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, config);
-    }
+    for (let i = 0; i < 20; i++) run = playWell(startNextPatient(run, content, config));
     expect(run.status).toBe('playing');
-    expect(run.reputation).toBe(config.reputation.max);
+    expect(run.reputation).toBeGreaterThanOrEqual(90);
   });
 
   it('menghindari penyakit yang sama berturut-turut', () => {
     let run = createRun(21, config);
     let prev: string | null = null;
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 30; i++) {
       run = startNextPatient(run, content, config);
       const id = run.encounter!.case.diseaseId;
       expect(id).not.toBe(prev);
       prev = id;
-      run = diagnoseCurrent(run, id, content, config);
+      run = playWell(run);
     }
   });
 
@@ -80,32 +91,29 @@ describe('sesi permainan', () => {
     const ids: string[] = [];
     for (let i = 0; i < 60; i++) {
       ids.push(chooseNextDisease(run, content, cfg));
-      run = startNextPatient(run, content, cfg);
-      run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, cfg);
+      run = playWell(startNextPatient(run, content, cfg), cfg);
     }
     expect(ids.some((id, i) => i > 0 && ids[i - 1] === id)).toBe(true);
   });
 
   it('statistik sesi', () => {
     let run = createRun(31, config);
-    run = startNextPatient(run, content, config);
-    run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, config);
-    run = startNextPatient(run, content, config);
-    run = diagnoseCurrent(run, wrongAnswer(run), content, config);
+    run = playWell(startNextPatient(run, content, config));
+    run = playBadly(startNextPatient(run, content, config));
     const stats = runStats(run, content, config);
     expect(stats.patientsSeen).toBe(2);
     expect(stats.correct).toBe(1);
     expect(stats.accuracy).toBe(0.5);
     expect(stats.bestStreak).toBe(1);
+    expect(stats.averageScore).toBeCloseTo((run.history[0]!.score + run.history[1]!.score) / 2);
     expect(stats.reputationHistory).toEqual([config.reputation.initial, run.history[0]!.reputationAfter, run.reputation]);
     expect(stats.perDisease.reduce((s, d) => s + d.seen, 0)).toBe(2);
-    expect(stats.averageSpent).toBe(0);
   });
 
   it('pemain bisa mengakhiri praktek di antara pasien, tidak saat memeriksa', () => {
     let run = startNextPatient(createRun(41, config), content, config);
     expect(() => retireRun(run)).toThrow();
-    run = diagnoseCurrent(run, run.encounter!.case.diseaseId, content, config);
+    run = playWell(run);
     run = retireRun(run);
     expect(run.status).toBe('retired');
     expect(() => startNextPatient(run, content, config)).toThrow();

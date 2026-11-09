@@ -17,7 +17,8 @@
         "vague": ["badan rasanya nggak enak, kayak masuk angin", "badan saya nggak karuan rasanya"],
         "exaggerated": ["panasnya tinggi banget, kayak terbakar", "badan saya panas sekali sampai nggak kuat bangun"],
         "downplayed": ["badan agak anget sedikit", "sumeng sedikit"]
-      }
+      },
+      "keywords": ["demam", "panas", "meriang", "badan panas", "suhu tinggi", "febris", "sumeng", "anget"]
     },
     {
       "id": "menggigil",
@@ -29,7 +30,8 @@
         "vague": ["kadang badan dingin semua"],
         "exaggerated": ["menggigilnya hebat sampai gigi gemeletuk, pakai selimut tebal juga masih dingin"],
         "downplayed": ["kadang agak kedinginan sedikit"]
-      }
+      },
+      "keywords": ["menggigil", "kedinginan", "gemetar", "gigi gemeletuk"]
     },
     {
       "id": "berkeringat",
@@ -41,7 +43,8 @@
         "vague": ["badan saya suka basah"],
         "exaggerated": ["keringatnya banjir, sampai kasur basah semua"],
         "downplayed": ["agak keringetan sedikit"]
-      }
+      },
+      "keywords": ["berkeringat", "keringat banyak", "keringetan", "keringat dingin habis panas", "banjir keringat"]
     },
     {
       "id": "lemas",
@@ -53,7 +56,8 @@
         "vague": ["badan rasanya loyo"],
         "exaggerated": ["lemasnya sampai nggak kuat jalan"],
         "downplayed": ["agak capek sedikit"]
-      }
+      },
+      "keywords": ["lemas", "lemes", "lelah", "capek", "loyo", "tidak bertenaga", "nggak bertenaga", "lesu"]
     },
     {
       "id": "nafsu_makan_turun",
@@ -65,7 +69,8 @@
         "vague": ["mulut saya rasanya pahit"],
         "exaggerated": ["sama sekali nggak bisa makan, dipaksa juga mau muntah"],
         "downplayed": ["makannya agak berkurang"]
-      }
+      },
+      "keywords": ["nafsu makan", "tidak nafsu", "nggak nafsu", "tidak mau makan", "mulut pahit", "selera makan"]
     },
     {
       "id": "nyeri_kepala",
@@ -77,7 +82,8 @@
         "vague": ["kepala rasanya berat"],
         "exaggerated": ["kepala saya sakit sekali kayak mau pecah"],
         "downplayed": ["kepala agak pusing sedikit"]
-      }
+      },
+      "keywords": ["sakit kepala", "pusing", "nyeri kepala", "kepala sakit", "sefalgia", "kepala berat", "pening"]
     },
     {
       "id": "nyeri_retroorbital",
@@ -89,7 +95,16 @@
         "vague": ["mata rasanya berat"],
         "exaggerated": ["mata saya sakit sekali kayak mau copot"],
         "downplayed": ["mata agak pegal"]
-      }
+      },
+      "keywords": [
+        "belakang mata",
+        "bola mata",
+        "mata pegal",
+        "nyeri mata",
+        "sakit mata kalau melirik",
+        "retroorbital",
+        "retro orbital"
+      ]
     },
     {
       "id": "nyeri_otot_sendi",
@@ -101,7 +116,8 @@
         "vague": ["badan rasanya remuk"],
         "exaggerated": ["sendi saya sakit semua kayak tulang mau patah"],
         "downplayed": ["agak pegal-pegal"]
-      }
+      },
+      "keywords": ["pegal", "linu", "nyeri otot", "nyeri sendi", "sakit sendi", "otot sakit", "mialgia", "artralgia", "badan remuk"]
     },
     {
       "id": "mual_muntah",
@@ -113,7 +129,8 @@
         "vague": ["perut rasanya nggak enak"],
         "exaggerated": ["muntah terus, apa saja yang masuk keluar lagi"],
         "downplayed": ["agak mual sedikit"]
-      }
+      },
+      "keywords": ["mual", "muntah", "eneg", "enek", "muntah muntah"]
     },
     {
       "id": "nyeri_perut",
@@ -125,7 +142,8 @@
         "vague": ["perut rasanya nggak enak, begah"],
         "exaggerated": ["perut saya sakit sekali, melilit"],
         "downplayed": ["perut agak nggak enak sedikit"]
-      }
+      },
+      "keywords": ["sakit perut", "nyeri perut", "perut sakit", "perut melilit", "mules perut"]
     },
     {
       "id": "diare",
@@ -137,7 +155,8 @@
         "vague": ["perut saya mules terus"],
         "exaggerated": ["mencret terus, bolak-balik ke WC"],
         "downplayed": ["BAB agak lembek"]
-      }
+      },
+      "keywords": ["mencret", "diare", "bab cair", "buang air besar cair", "berak cair", "bab encer"]
     },
     {
       "id": "konstipasi",
@@ -149,7 +168,17 @@
         "vague": ["perut saya kembung, BAB nggak lancar"],
         "exaggerated": ["sudah lama sekali nggak bisa BAB, perut penuh rasanya"],
         "downplayed": ["BAB agak jarang"]
-      }
+      },
+      "keywords": [
+        "susah bab",
+        "sulit bab",
+        "sembelit",
+        "tidak bab",
+        "belum bab",
+        "sulit buang air besar",
+        "susah buang air besar",
+        "konstipasi"
+      ]
     },
     {
       "id": "bintik_merah",
@@ -161,7 +190,8 @@
         "vague": ["kulit saya ada yang merah-merah"],
         "exaggerated": ["bintik merahnya banyak sekali di tangan dan kaki"],
         "downplayed": ["ada bintik merah sedikit, paling digigit nyamuk"]
-      }
+      },
+      "keywords": ["bintik merah", "bintik bintik", "ruam", "bercak merah", "petekie", "bintik di kulit"]
     },
     {
       "id": "perdarahan_mukosa",
@@ -173,7 +203,8 @@
         "vague": ["ada darah sedikit waktu sikat gigi"],
         "exaggerated": ["mimisannya banyak, sampai tisu sekotak habis"],
         "downplayed": ["gusi berdarah sedikit, paling karena sikat gigi kekerasan"]
-      }
+      },
+      "keywords": ["mimisan", "gusi berdarah", "berdarah gusi", "hidung berdarah", "perdarahan gusi", "epistaksis"]
     },
     {
       "id": "kuning",
@@ -185,7 +216,8 @@
         "vague": ["warna mata saya agak lain"],
         "exaggerated": ["mata saya kuning sekali, saya takut liver"],
         "downplayed": ["mata agak kuning sedikit, mungkin kurang tidur"]
-      }
+      },
+      "keywords": ["kuning", "mata kuning", "kulit kuning", "ikterus", "jaundice"]
     },
     {
       "id": "batuk",
@@ -197,7 +229,8 @@
         "vague": ["tenggorokan saya gatal"],
         "exaggerated": ["batuknya nggak berhenti-berhenti"],
         "downplayed": ["batuk sedikit"]
-      }
+      },
+      "keywords": ["batuk", "batuk batuk", "berdahak", "dahak"]
     },
     {
       "id": "nyeri_ulu_hati",
@@ -209,7 +242,8 @@
         "vague": ["perut saya rasanya nggak enak"],
         "exaggerated": ["ulu hati saya perih sekali, kayak disayat"],
         "downplayed": ["ulu hati agak perih sedikit"]
-      }
+      },
+      "keywords": ["ulu hati", "epigastrium", "perut atas", "perih di perut", "maag", "lambung"]
     },
     {
       "id": "kembung",
@@ -221,7 +255,8 @@
         "vague": ["perut rasanya penuh terus"],
         "exaggerated": ["perut saya kembung sekali kayak mau meledak"],
         "downplayed": ["perut agak begah"]
-      }
+      },
+      "keywords": ["kembung", "begah", "cepat kenyang", "sendawa", "perut penuh", "sebah"]
     },
     {
       "id": "heartburn",
@@ -233,7 +268,8 @@
         "vague": ["dada saya rasanya nggak enak, kayak masuk angin"],
         "exaggerated": ["dada saya panas sekali kayak disiram air mendidih"],
         "downplayed": ["dada agak panas sedikit"]
-      }
+      },
+      "keywords": ["dada panas", "dada terbakar", "rasa terbakar di dada", "heartburn", "panas di dada", "perih di dada"]
     },
     {
       "id": "regurgitasi",
@@ -245,7 +281,8 @@
         "vague": ["mulut saya rasanya aneh"],
         "exaggerated": ["asamnya naik terus sampai tenggorokan perih"],
         "downplayed": ["kadang mulut agak asam"]
-      }
+      },
+      "keywords": ["asam naik", "pahit di mulut", "rasa asam", "regurgitasi", "naik ke tenggorokan", "naik ke mulut"]
     },
     {
       "id": "nyeri_dada",
@@ -257,7 +294,19 @@
         "vague": ["dada saya rasanya nggak enak, kayak masuk angin", "dada saya kayak kena angin duduk"],
         "exaggerated": ["dada saya sakit sekali kayak ditindih batu besar"],
         "downplayed": ["dada agak berat sedikit"]
-      }
+      },
+      "keywords": [
+        "nyeri dada",
+        "sakit dada",
+        "dada sakit",
+        "dada berat",
+        "dada ditekan",
+        "dada tertekan",
+        "dada sesak",
+        "angin duduk",
+        "dada tidak enak",
+        "dada nggak enak"
+      ]
     },
     {
       "id": "nyeri_menjalar",
@@ -269,7 +318,8 @@
         "vague": ["lengan kiri saya suka kesemutan"],
         "exaggerated": ["sakitnya menjalar sampai lengan kiri lemas semua"],
         "downplayed": ["lengan kiri agak pegal"]
-      }
+      },
+      "keywords": ["menjalar ke lengan", "lengan kiri", "rahang", "menjalar ke leher", "tangan kiri", "penjalaran ke lengan"]
     },
     {
       "id": "keringat_dingin",
@@ -281,7 +331,8 @@
         "vague": ["badan saya suka dingin-dingin"],
         "exaggerated": ["keringat dinginnya sampai basah kuyup"],
         "downplayed": ["agak keringetan sedikit"]
-      }
+      },
+      "keywords": ["keringat dingin", "keringetan dingin", "dingin berkeringat"]
     },
     {
       "id": "sesak_napas",
@@ -293,7 +344,18 @@
         "vague": ["dada saya rasanya sempit", "napas saya nggak lega"],
         "exaggerated": ["sesak sekali, kayak nggak bisa napas"],
         "downplayed": ["agak ngos-ngosan dikit"]
-      }
+      },
+      "keywords": [
+        "sesak",
+        "sesak napas",
+        "napas berat",
+        "ngos ngosan",
+        "susah napas",
+        "sulit bernapas",
+        "napas pendek",
+        "engap",
+        "dispnea"
+      ]
     },
     {
       "id": "mengi",
@@ -305,7 +367,8 @@
         "vague": ["dada saya ada bunyinya kalau napas"],
         "exaggerated": ["bunyinya keras sekali sampai kedengaran orang serumah"],
         "downplayed": ["kadang napas agak bunyi"]
-      }
+      },
+      "keywords": ["mengi", "ngik ngik", "bengek", "napas bunyi", "wheezing", "bunyi saat napas"]
     },
     {
       "id": "nyeri_dada_pleuritik",
@@ -317,7 +380,15 @@
         "vague": ["dada saya nyeri-nyeri"],
         "exaggerated": ["dada saya sakit sekali sampai takut napas dalam"],
         "downplayed": ["dada agak nyeri kalau batuk"]
-      }
+      },
+      "keywords": [
+        "sakit kalau tarik napas",
+        "nyeri saat napas",
+        "nyeri kalau batuk",
+        "sakit dada kalau batuk",
+        "dada sakit saat menarik napas",
+        "pleuritik"
+      ]
     },
     {
       "id": "batuk_darah",
@@ -329,7 +400,8 @@
         "vague": ["dahak saya warnanya aneh, kemerahan"],
         "exaggerated": ["batuk saya keluar darah banyak"],
         "downplayed": ["ada bercak darah sedikit di dahak"]
-      }
+      },
+      "keywords": ["batuk darah", "dahak berdarah", "batuk berdarah", "hemoptisis", "darah saat batuk", "dahak ada darah"]
     },
     {
       "id": "keringat_malam",
@@ -341,7 +413,8 @@
         "vague": ["tidur saya nggak nyenyak, badan basah"],
         "exaggerated": ["tiap malam keringatnya banjir sampai ganti baju"],
         "downplayed": ["malam agak keringetan"]
-      }
+      },
+      "keywords": ["keringat malam", "berkeringat malam", "keringetan malam", "malam berkeringat"]
     },
     {
       "id": "berat_badan_turun",
@@ -353,7 +426,16 @@
         "vague": ["baju saya kok jadi longgar ya"],
         "exaggerated": ["saya kurus kering, turun banyak sekali"],
         "downplayed": ["berat badan agak turun sedikit"]
-      }
+      },
+      "keywords": [
+        "berat badan turun",
+        "bb turun",
+        "makin kurus",
+        "kurus",
+        "turun berat",
+        "celana longgar",
+        "berat badan berkurang"
+      ]
     },
     {
       "id": "haus",
@@ -365,7 +447,8 @@
         "vague": ["tenggorokan saya kering terus"],
         "exaggerated": ["hausnya nggak ketulungan, minum segalon sehari"],
         "downplayed": ["agak sering haus"]
-      }
+      },
+      "keywords": ["haus", "sering minum", "banyak minum", "polidipsia", "tenggorokan kering"]
     },
     {
       "id": "lapar",
@@ -377,7 +460,8 @@
         "vague": ["perut saya kosong terus rasanya"],
         "exaggerated": ["laparnya terus-terusan, baru makan sudah lapar lagi"],
         "downplayed": ["agak sering lapar"]
-      }
+      },
+      "keywords": ["lapar", "banyak makan", "sering makan", "polifagia", "cepat lapar"]
     },
     {
       "id": "kesemutan",
@@ -389,7 +473,8 @@
         "vague": ["kaki saya rasanya aneh"],
         "exaggerated": ["kaki saya kebas sekali kayak bukan kaki sendiri"],
         "downplayed": ["kadang kesemutan sedikit"]
-      }
+      },
+      "keywords": ["kesemutan", "kebas", "baal", "mati rasa", "semutan"]
     },
     {
       "id": "pandangan_kabur",
@@ -401,7 +486,8 @@
         "vague": ["mata saya agak kurang jelas"],
         "exaggerated": ["mata saya kabur sekali sampai nggak bisa baca"],
         "downplayed": ["mata agak buram sedikit"]
-      }
+      },
+      "keywords": ["pandangan kabur", "penglihatan kabur", "mata kabur", "buram", "rabun"]
     },
     {
       "id": "luka_sulit_sembuh",
@@ -413,7 +499,8 @@
         "vague": ["kulit saya gampang luka"],
         "exaggerated": ["lukanya sudah sebulan nggak kering-kering"],
         "downplayed": ["ada luka kecil yang agak lama sembuh"]
-      }
+      },
+      "keywords": ["luka", "luka lama sembuh", "luka tidak sembuh", "borok", "luka di kaki"]
     },
     {
       "id": "disuria",
@@ -425,7 +512,19 @@
         "vague": ["pipis saya rasanya nggak enak"],
         "exaggerated": ["kencingnya perih sekali kayak ditusuk-tusuk"],
         "downplayed": ["kencing agak perih sedikit"]
-      }
+      },
+      "keywords": [
+        "perih saat kencing",
+        "nyeri saat kencing",
+        "sakit kencing",
+        "kencing perih",
+        "anyang anyangan",
+        "anyang-anyangan",
+        "pipis perih",
+        "disuria",
+        "panas saat pipis",
+        "sakit pipis"
+      ]
     },
     {
       "id": "sering_kencing",
@@ -437,7 +536,17 @@
         "vague": ["saya sering ke belakang"],
         "exaggerated": ["tiap lima menit pengin kencing terus"],
         "downplayed": ["agak sering pipis"]
-      }
+      },
+      "keywords": [
+        "sering kencing",
+        "sering pipis",
+        "bolak balik kamar mandi",
+        "kencing terus",
+        "sering buang air kecil",
+        "beser",
+        "kencing malam",
+        "sering bak"
+      ]
     },
     {
       "id": "nyeri_suprapubik",
@@ -449,7 +558,8 @@
         "vague": ["perut bawah rasanya nggak enak"],
         "exaggerated": ["perut bawah sakit sekali"],
         "downplayed": ["perut bawah agak nyeri"]
-      }
+      },
+      "keywords": ["perut bawah", "bawah pusar", "atas kemaluan", "suprapubik", "perut bagian bawah"]
     },
     {
       "id": "nyeri_pinggang",
@@ -461,7 +571,8 @@
         "vague": ["pinggang saya pegal, mungkin salah urat"],
         "exaggerated": ["pinggang saya sakit sekali sampai guling-guling"],
         "downplayed": ["pinggang agak pegal"]
-      }
+      },
+      "keywords": ["pinggang", "punggung bawah", "nyeri pinggang", "sakit pinggang", "kolik", "encok"]
     },
     {
       "id": "kencing_merah",
@@ -473,7 +584,8 @@
         "vague": ["warna pipis saya agak lain"],
         "exaggerated": ["kencing saya merah kayak darah"],
         "downplayed": ["kencing agak kemerahan sedikit"]
-      }
+      },
+      "keywords": ["kencing merah", "kencing berdarah", "pipis merah", "air kencing merah", "hematuria", "kencing darah"]
     },
     {
       "id": "urin_keruh",
@@ -485,7 +597,73 @@
         "vague": ["warna pipis saya agak beda"],
         "exaggerated": ["kencingnya bau sekali dan keruh pekat"],
         "downplayed": ["kencing agak keruh"]
-      }
+      },
+      "keywords": ["kencing keruh", "pipis keruh", "air kencing keruh", "kencing bau", "urin keruh"]
+    },
+    {
+      "id": "bab_hitam",
+      "label": "BAB hitam (melena)",
+      "system": "Pencernaan",
+      "question": "Apakah BAB-nya pernah berwarna hitam seperti aspal atau ada darahnya?",
+      "phrases": {
+        "lay": ["BAB saya hitam kayak aspal", "kotoran saya warnanya hitam pekat"],
+        "vague": ["BAB saya warnanya agak gelap"],
+        "exaggerated": ["BAB saya hitam pekat, saya takut sekali"],
+        "downplayed": ["BAB agak gelap sedikit, mungkin karena makanan"]
+      },
+      "keywords": [
+        "bab hitam",
+        "berak hitam",
+        "tinja hitam",
+        "feses hitam",
+        "kotoran hitam",
+        "melena",
+        "bab berdarah",
+        "berak darah",
+        "bab warna hitam",
+        "warna bab",
+        "warna tinja",
+        "warna feses"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "sulit_menelan",
+      "label": "Sulit menelan (disfagia)",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa sulit atau nyangkut saat menelan?",
+      "phrases": {
+        "lay": ["makanan saya kayak nyangkut kalau menelan", "saya susah menelan"],
+        "vague": ["tenggorokan saya rasanya ada yang ganjal"],
+        "exaggerated": ["saya hampir nggak bisa menelan apa pun"],
+        "downplayed": ["kadang agak seret kalau menelan"]
+      },
+      "keywords": ["susah menelan", "sulit menelan", "nyangkut", "tersangkut", "disfagia", "sakit menelan", "nyeri menelan"],
+      "volunteer": false
+    },
+    {
+      "id": "urin_gelap",
+      "label": "Urin gelap seperti teh",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya berwarna gelap seperti teh?",
+      "phrases": {
+        "lay": ["air kencing saya gelap kayak teh"],
+        "vague": ["warna pipis saya agak beda"],
+        "exaggerated": ["kencing saya hitam kayak kopi"],
+        "downplayed": ["kencing agak gelap sedikit, kurang minum mungkin"]
+      },
+      "keywords": [
+        "kencing seperti teh",
+        "air kencing gelap",
+        "pipis coklat",
+        "kencing coklat",
+        "urin gelap",
+        "kencing pekat",
+        "warna kencing",
+        "warna pipis",
+        "warna urin"
+      ],
+      "volunteer": false
     }
   ]
 }

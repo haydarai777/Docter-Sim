@@ -14,29 +14,11 @@
   },
   "tools": [
     {
-      "id": "termometer",
-      "name": "Termometer",
-      "category": "fisik",
-      "description": "Mengukur suhu tubuh (aksila).",
-      "action": "Anda mengukur suhu tubuh pasien dengan termometer.",
-      "params": [
-        {
-          "kind": "numeric",
-          "id": "suhu",
-          "label": "Suhu aksila",
-          "unit": "°C",
-          "decimals": 1,
-          "ref": [36.5, 37.5],
-          "normal": [36.5, 37.3]
-        }
-      ]
-    },
-    {
       "id": "tanda_vital",
-      "name": "Tensimeter & tanda vital",
+      "name": "Tanda vital lengkap",
       "category": "fisik",
-      "description": "Tekanan darah, nadi, dan frekuensi napas.",
-      "action": "Anda memasang manset tensimeter, lalu menghitung nadi dan napas pasien.",
+      "description": "Tekanan darah, nadi, frekuensi napas, suhu, dan saturasi oksigen (SpO₂) — standar setiap pasien.",
+      "action": "Anda mengukur tekanan darah, nadi, napas, suhu, dan saturasi oksigen pasien.",
       "params": [
         {
           "kind": "numeric",
@@ -73,80 +55,50 @@
           "decimals": 0,
           "ref": [12, 20],
           "normal": [14, 20]
-        }
-      ]
-    },
-    {
-      "id": "stetoskop",
-      "name": "Stetoskop (auskultasi)",
-      "category": "fisik",
-      "description": "Mendengarkan bunyi jantung, paru, dan bising usus.",
-      "action": "Anda mendengarkan dada dan perut pasien dengan stetoskop.",
-      "params": [
-        {
-          "kind": "text",
-          "id": "jantung",
-          "label": "Jantung",
-          "normal": ["Bunyi jantung I–II reguler, murmur (−), gallop (−)"]
         },
-        { "kind": "text", "id": "paru", "label": "Paru", "normal": ["Suara napas vesikuler, ronkhi −/−, wheezing −/−"] },
-        { "kind": "text", "id": "bising_usus", "label": "Bising usus", "normal": ["Bising usus normal"] }
-      ]
-    },
-    {
-      "id": "senter",
-      "name": "Senter (mata, pupil, tenggorok, lidah)",
-      "category": "fisik",
-      "description": "Inspeksi konjungtiva, sklera, pupil, faring, dan lidah.",
-      "action": "Anda menyinari mata dan rongga mulut pasien dengan senter.",
-      "params": [
-        { "kind": "text", "id": "konjungtiva", "label": "Konjungtiva", "normal": ["Tidak anemis"] },
-        { "kind": "text", "id": "sklera", "label": "Sklera", "normal": ["Tidak ikterik"] },
-        { "kind": "text", "id": "pupil", "label": "Pupil", "normal": ["Isokor, refleks cahaya +/+"] },
         {
-          "kind": "text",
-          "id": "faring",
-          "label": "Faring & tonsil",
-          "normal": ["Faring tidak hiperemis, tonsil T1–T1"]
+          "kind": "numeric",
+          "id": "suhu",
+          "label": "Suhu aksila",
+          "unit": "°C",
+          "decimals": 1,
+          "ref": [36.5, 37.5],
+          "normal": [36.5, 37.3]
         },
-        { "kind": "text", "id": "lidah", "label": "Lidah", "normal": ["Bersih, tidak ada kelainan"] }
-      ]
+        {
+          "kind": "numeric",
+          "id": "spo2",
+          "label": "Saturasi oksigen (SpO₂)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [95, 100],
+          "normal": [96, 99]
+        }
+      ],
+      "group": "umum"
     },
     {
-      "id": "palpasi_abdomen",
-      "name": "Pemeriksaan abdomen (palpasi & perkusi)",
+      "id": "keadaan_umum",
+      "name": "Keadaan umum",
       "category": "fisik",
-      "description": "Inspeksi, palpasi hati–limpa, nyeri tekan, dan nyeri ketok sudut kostovertebra (CVA).",
-      "action": "Anda meminta pasien berbaring, lalu meraba dan mengetuk perut serta pinggangnya.",
+      "description": "Kesadaran, kesan sakit, status hidrasi, dan status gizi.",
+      "action": "Anda mengamati keadaan umum pasien sejak ia masuk ruang praktek.",
       "params": [
-        { "kind": "text", "id": "inspeksi_perkusi", "label": "Inspeksi & perkusi", "normal": ["Datar, supel, timpani"] },
-        { "kind": "text", "id": "nyeri_tekan", "label": "Nyeri tekan", "normal": ["Tidak ada nyeri tekan"] },
-        { "kind": "text", "id": "hepar", "label": "Hepar", "normal": ["Tidak teraba"] },
-        { "kind": "text", "id": "lien", "label": "Lien (limpa)", "normal": ["Tidak teraba"] },
-        { "kind": "text", "id": "ketok_cva", "label": "Nyeri ketok CVA", "normal": ["Negatif kanan dan kiri"] }
-      ]
-    },
-    {
-      "id": "uji_tourniquet",
-      "name": "Uji tourniquet (Rumple–Leede)",
-      "category": "fisik",
-      "description": "Manset dipompa di antara sistolik–diastolik selama 5 menit, lalu petekie dihitung.",
-      "action": "Anda memompa manset di lengan pasien selama lima menit, lalu menghitung bintik merah yang muncul.",
-      "params": [
+        { "kind": "text", "id": "kesadaran", "label": "Kesadaran", "normal": ["Compos mentis (GCS 15)"] },
+        { "kind": "text", "id": "kesan_sakit", "label": "Kesan sakit", "normal": ["Tampak sakit ringan"] },
         {
           "kind": "text",
-          "id": "hasil",
-          "label": "Hasil",
-          "normal": ["Negatif (petekie < 10 per 2,5 × 2,5 cm)"],
-          "refText": "Positif jika ≥ 10 petekie per 2,5 × 2,5 cm",
-          "falsePositiveRate": 0.08,
-          "falsePositiveValues": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
-        }
-      ]
+          "id": "hidrasi",
+          "label": "Status hidrasi",
+          "normal": ["Mukosa bibir lembap, turgor kulit baik"]
+        },
+        { "kind": "text", "id": "gizi", "label": "Status gizi (kesan)", "normal": ["Kesan gizi cukup"] }
+      ],
+      "group": "umum"
     },
     {
       "id": "timbangan",
-      "name": "Timbangan & pita ukur",
+      "name": "Antropometri (timbangan & pita ukur)",
       "category": "fisik",
       "description": "Tinggi badan, berat badan, IMT, dan lingkar perut.",
       "action": "Anda menimbang pasien, mengukur tinggi badan dan lingkar perutnya.",
@@ -195,44 +147,179 @@
           "normalFemale": [62, 79],
           "refText": "< 90 (L) / < 80 (P)"
         }
-      ]
+      ],
+      "group": "umum"
     },
     {
-      "id": "oksimeter",
-      "name": "Oksimeter nadi (SpO₂)",
+      "id": "kepala_leher",
+      "name": "Kepala & leher",
       "category": "fisik",
-      "description": "Saturasi oksigen perifer dengan klip jari.",
-      "action": "Anda memasang oksimeter di ujung jari pasien.",
+      "description": "Mata (konjungtiva, sklera, pupil), mulut, faring, lidah, kelenjar getah bening, dan JVP.",
+      "action": "Anda memeriksa mata, mulut, tenggorok, dan leher pasien dengan senter.",
       "params": [
+        { "kind": "text", "id": "konjungtiva", "label": "Konjungtiva", "normal": ["Tidak anemis"] },
+        { "kind": "text", "id": "sklera", "label": "Sklera", "normal": ["Tidak ikterik"] },
+        { "kind": "text", "id": "pupil", "label": "Pupil", "normal": ["Isokor, refleks cahaya +/+"] },
         {
-          "kind": "numeric",
-          "id": "spo2",
-          "label": "Saturasi oksigen (SpO₂)",
-          "unit": "%",
-          "decimals": 0,
-          "ref": [95, 100],
-          "normal": [96, 99]
+          "kind": "text",
+          "id": "faring",
+          "label": "Faring & tonsil",
+          "normal": ["Faring tidak hiperemis, tonsil T1–T1"]
+        },
+        { "kind": "text", "id": "lidah", "label": "Lidah", "normal": ["Bersih, tidak ada kelainan"] },
+        { "kind": "text", "id": "kgb", "label": "Kelenjar getah bening leher", "normal": ["Tidak teraba pembesaran"] },
+        {
+          "kind": "text",
+          "id": "jvp",
+          "label": "Tekanan vena jugularis (JVP)",
+          "normal": ["Tidak meningkat (5 − 2 cmH₂O)"]
         }
-      ]
+      ],
+      "group": "kepala_leher"
     },
     {
-      "id": "peak_flow",
-      "name": "Peak flow meter (APE)",
+      "id": "pemeriksaan_paru",
+      "name": "Thorax — paru",
       "category": "fisik",
-      "description": "Arus puncak ekspirasi dibandingkan nilai prediksi sesuai usia, jenis kelamin, dan tinggi badan.",
-      "action": "Anda meminta pasien meniup peak flow meter sekuat-kuatnya tiga kali dan mencatat nilai terbaik.",
+      "description": "Inspeksi, palpasi (fremitus), perkusi, dan auskultasi paru.",
+      "action": "Anda memeriksa dada pasien: melihat gerak napas, meraba fremitus, mengetuk, lalu mendengarkan dengan stetoskop.",
+      "params": [
+        { "kind": "text", "id": "inspeksi", "label": "Inspeksi", "normal": ["Gerak dada simetris, tidak ada retraksi"] },
+        { "kind": "text", "id": "palpasi", "label": "Palpasi", "normal": ["Fremitus taktil simetris kanan dan kiri"] },
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Sonor di kedua lapang paru"] },
+        {
+          "kind": "text",
+          "id": "auskultasi",
+          "label": "Auskultasi",
+          "normal": ["Suara napas vesikuler, ronkhi −/−, wheezing −/−"]
+        }
+      ],
+      "group": "thorax"
+    },
+    {
+      "id": "pemeriksaan_jantung",
+      "name": "Thorax — jantung",
+      "category": "fisik",
+      "description": "Iktus kordis, batas jantung, dan bunyi jantung.",
+      "action": "Anda meraba iktus kordis, mengetuk batas jantung, lalu mendengarkan bunyi jantung.",
       "params": [
         {
-          "kind": "numeric",
-          "id": "ape",
-          "label": "APE (% nilai prediksi)",
-          "unit": "%",
-          "decimals": 0,
-          "ref": [80, 120],
-          "normal": [85, 105],
-          "refText": "≥ 80%"
+          "kind": "text",
+          "id": "iktus",
+          "label": "Inspeksi & palpasi",
+          "normal": ["Iktus kordis teraba di ICS V linea midklavikula kiri"]
+        },
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Batas jantung dalam batas normal"] },
+        {
+          "kind": "text",
+          "id": "auskultasi",
+          "label": "Auskultasi",
+          "normal": ["Bunyi jantung I–II reguler, murmur (−), gallop (−)"]
         }
-      ]
+      ],
+      "group": "thorax"
+    },
+    {
+      "id": "pemeriksaan_abdomen",
+      "name": "Abdomen",
+      "category": "fisik",
+      "description": "Inspeksi, auskultasi, palpasi (nyeri tekan, hepar, lien), perkusi, ketok sudut kostovertebra (CVA), dan tanda khusus.",
+      "action": "Anda meminta pasien berbaring, lalu melihat, mendengar, meraba, dan mengetuk perut serta pinggangnya.",
+      "params": [
+        { "kind": "text", "id": "inspeksi", "label": "Inspeksi", "normal": ["Datar, tidak tampak distensi"] },
+        { "kind": "text", "id": "auskultasi", "label": "Bising usus", "normal": ["Bising usus normal"] },
+        {
+          "kind": "text",
+          "id": "nyeri_tekan",
+          "label": "Palpasi — nyeri tekan",
+          "normal": ["Supel, tidak ada nyeri tekan"]
+        },
+        { "kind": "text", "id": "hepar", "label": "Hepar", "normal": ["Tidak teraba"] },
+        { "kind": "text", "id": "lien", "label": "Lien (limpa)", "normal": ["Tidak teraba"] },
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Timpani, shifting dullness (−)"] },
+        { "kind": "text", "id": "ketok_cva", "label": "Nyeri ketok CVA", "normal": ["Negatif kanan dan kiri"] },
+        {
+          "kind": "text",
+          "id": "tanda_khusus",
+          "label": "Tanda khusus",
+          "normal": ["Murphy (−), McBurney (−), defans muskular (−)"]
+        }
+      ],
+      "group": "abdomen"
+    },
+    {
+      "id": "ekstremitas_kulit",
+      "name": "Ekstremitas & kulit",
+      "category": "fisik",
+      "description": "Akral, waktu pengisian kapiler (CRT), edema, dan kelainan kulit.",
+      "action": "Anda memeriksa tangan, kaki, dan kulit pasien.",
+      "params": [
+        { "kind": "text", "id": "akral", "label": "Akral", "normal": ["Hangat, kering"] },
+        { "kind": "text", "id": "crt", "label": "Capillary refill time (CRT)", "normal": ["< 2 detik"] },
+        { "kind": "text", "id": "edema", "label": "Edema", "normal": ["Tidak ada edema"] },
+        { "kind": "text", "id": "kulit", "label": "Kulit", "normal": ["Tidak tampak petekie, ruam, atau luka"] }
+      ],
+      "group": "ekstremitas"
+    },
+    {
+      "id": "kaki_diabetik",
+      "name": "Pemeriksaan kaki diabetik",
+      "category": "fisik",
+      "description": "Inspeksi kaki, sensibilitas monofilamen 10 g, dan pulsasi arteri kaki — menilai komplikasi DM.",
+      "action": "Anda memeriksa kedua kaki pasien, menguji rasa raba dengan monofilamen, dan meraba nadi di kaki.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "inspeksi",
+          "label": "Inspeksi kaki",
+          "normal": ["Kulit utuh, tidak ada luka atau kalus"]
+        },
+        {
+          "kind": "text",
+          "id": "monofilamen",
+          "label": "Monofilamen 10 g",
+          "normal": ["Sensibilitas normal (10/10 titik)"]
+        },
+        {
+          "kind": "text",
+          "id": "pulsasi",
+          "label": "Pulsasi a. dorsalis pedis & tibialis posterior",
+          "normal": ["Teraba kuat, simetris"]
+        }
+      ],
+      "group": "khusus"
+    },
+    {
+      "id": "neurologis",
+      "name": "Neurologis singkat",
+      "category": "fisik",
+      "description": "Rangsang meningeal, kekuatan motorik, dan sensibilitas.",
+      "action": "Anda memeriksa kaku kuduk, kekuatan otot, dan rasa raba pasien.",
+      "params": [
+        { "kind": "text", "id": "meningeal", "label": "Rangsang meningeal", "normal": ["Kaku kuduk (−)"] },
+        { "kind": "text", "id": "motorik", "label": "Motorik", "normal": ["Kekuatan 5 di keempat ekstremitas"] },
+        { "kind": "text", "id": "sensorik", "label": "Sensorik", "normal": ["Sensibilitas raba normal"] }
+      ],
+      "group": "khusus"
+    },
+    {
+      "id": "uji_tourniquet",
+      "name": "Uji tourniquet (Rumple–Leede)",
+      "category": "fisik",
+      "description": "Manset dipompa di antara sistolik–diastolik selama 5 menit, lalu petekie dihitung.",
+      "action": "Anda memompa manset di lengan pasien selama lima menit, lalu menghitung bintik merah yang muncul.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Negatif (petekie < 10 per 2,5 × 2,5 cm)"],
+          "refText": "Positif jika ≥ 10 petekie per 2,5 × 2,5 cm",
+          "falsePositiveRate": 0.08,
+          "falsePositiveValues": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+        }
+      ],
+      "group": "khusus"
     },
     {
       "id": "darah_lengkap",
@@ -251,6 +338,15 @@
           "refFemale": [12, 15.5],
           "normal": [13.5, 16.5],
           "normalFemale": [12.3, 15]
+        },
+        {
+          "kind": "numeric",
+          "id": "mcv",
+          "label": "MCV",
+          "unit": "fL",
+          "decimals": 0,
+          "ref": [80, 100],
+          "normal": [82, 96]
         },
         {
           "kind": "numeric",
@@ -355,7 +451,9 @@
           "sumTo": 100,
           "remainder": "neutrofil_segmen"
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Infeksi/peradangan (leukosit, hitung jenis), anemia (Hb, MCV), trombositopenia, dan hemokonsentrasi (hematokrit)."
     },
     {
       "id": "ns1_dengue",
@@ -372,7 +470,22 @@
           "falsePositiveRate": 0.02,
           "falsePositiveValues": ["Positif"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antigen dengue untuk diagnosis dini (hari 1–5). Negatif setelah hari ke-5 TIDAK menyingkirkan dengue."
+    },
+    {
+      "id": "serologi_dengue",
+      "name": "Serologi dengue IgM/IgG",
+      "category": "lab",
+      "description": "Antibodi IgM (infeksi baru, positif mulai hari ke-4–5) dan IgG (infeksi sekunder/lampau).",
+      "action": "Serum pasien diperiksa dengan tes cepat IgM/IgG dengue.",
+      "params": [
+        { "kind": "text", "id": "igm", "label": "IgM anti-dengue", "normal": ["Negatif"] },
+        { "kind": "text", "id": "igg", "label": "IgG anti-dengue", "normal": ["Negatif"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antibodi dengue: IgM positif mulai hari ke-4–5; IgG menandakan infeksi sekunder/lampau."
     },
     {
       "id": "rdt_malaria",
@@ -397,7 +510,28 @@
           "falsePositiveRate": 0.01,
           "falsePositiveValues": ["Positif"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antigen Plasmodium (tes cepat). Positif mendukung malaria; konfirmasi spesies dengan mikroskopis."
+    },
+    {
+      "id": "mikroskopis_malaria",
+      "name": "Apusan darah tebal–tipis (malaria)",
+      "category": "lab",
+      "description": "Baku emas diagnosis malaria: menemukan parasit dan menentukan spesiesnya.",
+      "action": "Darah ujung jari dibuat sediaan apus tebal dan tipis, diwarnai Giemsa, lalu diperiksa di mikroskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Tidak ditemukan parasit malaria"],
+          "falsePositiveRate": 0.005,
+          "falsePositiveValues": ["Ditemukan bentuk menyerupai parasit, meragukan — ulangi"]
+        }
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Baku emas malaria: spesies dan kepadatan parasit (hiperparasitemia = tanda malaria berat)."
     },
     {
       "id": "widal",
@@ -424,7 +558,9 @@
           "falsePositiveRate": 0.1,
           "falsePositiveValues": ["1/160", "1/320"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Titer antibodi Salmonella. Murah tetapi spesifisitas rendah di daerah endemis; titer tunggal kurang dapat diandalkan."
     },
     {
       "id": "tubex",
@@ -442,7 +578,9 @@
           "falsePositiveRate": 0.05,
           "falsePositiveValues": ["3 (meragukan)", "4 (positif lemah)"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "IgM anti-Salmonella O9 — lebih spesifik daripada Widal untuk demam tifoid."
     },
     {
       "id": "gula_darah",
@@ -461,7 +599,9 @@
           "normal": [80, 135],
           "refText": "< 140 · ≥ 200 + gejala klasik = DM"
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Hiperglikemia/DM; juga skrining komorbid pada pasien berisiko."
     },
     {
       "id": "hba1c",
@@ -480,7 +620,9 @@
           "normal": [4.6, 5.5],
           "refText": "< 5,7 normal · ≥ 6,5 = DM"
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Rerata glukosa 2–3 bulan: diagnosis DM dan menilai kendali gula."
     },
     {
       "id": "urinalisis",
@@ -573,7 +715,9 @@
           "falsePositiveRate": 0.05,
           "falsePositiveValues": ["Kalsium oksalat (+)"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Kelainan urin: infeksi (leukosit esterase, nitrit, bakteri), hematuria, glukosuria, dan proteinuria (tanda kerusakan ginjal)."
     },
     {
       "id": "fungsi_hati",
@@ -609,7 +753,9 @@
           "ref": [0.2, 1.2],
           "normal": [0.3, 1]
         }
-      ]
+      ],
+      "objectives": ["fungsi_organ", "komplikasi"],
+      "purpose": "Fungsi & kerusakan hati (SGOT, SGPT, bilirubin)."
     },
     {
       "id": "fungsi_ginjal",
@@ -637,8 +783,20 @@
           "refFemale": [0.5, 1.1],
           "normal": [0.8, 1.2],
           "normalFemale": [0.6, 1]
+        },
+        {
+          "kind": "numeric",
+          "id": "egfr",
+          "label": "eGFR (CKD-EPI 2021)",
+          "unit": "mL/menit/1,73 m²",
+          "decimals": 0,
+          "ref": [60, 200],
+          "refText": "≥ 90 normal · 60–89 menurun ringan · < 60 penurunan fungsi ginjal",
+          "compute": { "type": "egfrCkdEpi2021", "creatinine": "kreatinin" }
         }
-      ]
+      ],
+      "objectives": ["fungsi_organ", "komplikasi"],
+      "purpose": "Fungsi ginjal (ureum, kreatinin, eGFR). Fungsi ginjal NORMAL tidak menyingkirkan batu atau infeksi saluran kemih."
     },
     {
       "id": "profil_lipid",
@@ -688,35 +846,9 @@
           "normal": [70, 145],
           "refText": "< 150"
         }
-      ]
-    },
-    {
-      "id": "serologi_dengue",
-      "name": "Serologi dengue IgM/IgG",
-      "category": "lab",
-      "description": "Antibodi IgM (infeksi baru, positif mulai hari ke-4–5) dan IgG (infeksi sekunder/lampau).",
-      "action": "Serum pasien diperiksa dengan tes cepat IgM/IgG dengue.",
-      "params": [
-        { "kind": "text", "id": "igm", "label": "IgM anti-dengue", "normal": ["Negatif"] },
-        { "kind": "text", "id": "igg", "label": "IgG anti-dengue", "normal": ["Negatif"] }
-      ]
-    },
-    {
-      "id": "mikroskopis_malaria",
-      "name": "Apusan darah tebal–tipis (malaria)",
-      "category": "lab",
-      "description": "Baku emas diagnosis malaria: menemukan parasit dan menentukan spesiesnya.",
-      "action": "Darah ujung jari dibuat sediaan apus tebal dan tipis, diwarnai Giemsa, lalu diperiksa di mikroskop.",
-      "params": [
-        {
-          "kind": "text",
-          "id": "hasil",
-          "label": "Hasil",
-          "normal": ["Tidak ditemukan parasit malaria"],
-          "falsePositiveRate": 0.005,
-          "falsePositiveValues": ["Ditemukan bentuk menyerupai parasit, meragukan — ulangi"]
-        }
-      ]
+      ],
+      "objectives": ["skrining"],
+      "purpose": "Faktor risiko kardiovaskular (kolesterol, LDL, HDL, trigliserida)."
     },
     {
       "id": "bta_sputum",
@@ -733,7 +865,9 @@
           "falsePositiveRate": 0.01,
           "falsePositiveValues": ["Scanty (1–9 BTA/100 lapang pandang)"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Mikroskopis BTA dahak. Murah; sensitivitas sedang — negatif tidak menyingkirkan TB."
     },
     {
       "id": "tcm_tb",
@@ -741,12 +875,115 @@
       "category": "lab",
       "description": "Xpert MTB/RIF dari dahak: deteksi M. tuberculosis dan resistansi rifampisin. Lebih sensitif dari BTA.",
       "action": "Dahak pasien dikirim untuk pemeriksaan TCM.",
-      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil TCM", "normal": ["MTB not detected"] }]
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil TCM", "normal": ["MTB not detected"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA."
+    },
+    {
+      "id": "rontgen_thorax",
+      "name": "Rontgen thorax (PA)",
+      "category": "pencitraan",
+      "description": "Foto dada posteroanterior.",
+      "action": "Pasien difoto rontgen dada posisi berdiri.",
+      "params": [
+        { "kind": "text", "id": "cor", "label": "Cor", "normal": ["Tidak membesar (CTR < 50%)"] },
+        {
+          "kind": "text",
+          "id": "pulmo",
+          "label": "Pulmo",
+          "normal": ["Corakan bronkovaskular normal, tidak tampak infiltrat"]
+        },
+        {
+          "kind": "text",
+          "id": "sinus_diafragma",
+          "label": "Sinus & diafragma",
+          "normal": ["Sinus kostofrenikus tajam, diafragma licin"]
+        },
+        { "kind": "text", "id": "tulang", "label": "Tulang", "normal": ["Tulang-tulang intak"] },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Cor dan pulmo dalam batas normal"] }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Infiltrat/konsolidasi, kavitas, efusi pleura, hiperinflasi, kardiomegali."
+    },
+    {
+      "id": "usg_abdomen",
+      "name": "USG abdomen (termasuk ginjal)",
+      "category": "pencitraan",
+      "description": "Ultrasonografi hati, kandung empedu, limpa, ginjal, kandung kemih, dan cairan bebas.",
+      "action": "Anda mengoleskan gel di perut pasien dan melakukan pemeriksaan USG.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hepar",
+          "label": "Hepar",
+          "normal": ["Ukuran dan ekogenisitas normal, tidak tampak lesi"]
+        },
+        {
+          "kind": "text",
+          "id": "kandung_empedu",
+          "label": "Kandung empedu",
+          "normal": ["Dinding tidak menebal, tidak tampak batu"]
+        },
+        { "kind": "text", "id": "lien", "label": "Lien", "normal": ["Ukuran normal"] },
+        {
+          "kind": "text",
+          "id": "ginjal",
+          "label": "Ginjal kanan & kiri",
+          "normal": ["Ukuran normal, tidak tampak batu maupun hidronefrosis"]
+        },
+        { "kind": "text", "id": "vesika", "label": "Vesika urinaria", "normal": ["Dinding licin, tidak tampak batu"] },
+        { "kind": "text", "id": "cairan_bebas", "label": "Cairan bebas", "normal": ["Tidak tampak"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["Tidak tampak kelainan pada organ intraabdomen yang terperiksa"],
+          "combine": true
+        }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Batu, sumbatan (hidronefrosis), massa, ukuran organ, dan cairan bebas. Batu ureter distal kadang sulit terlihat."
+    },
+    {
+      "id": "foto_bno",
+      "name": "Foto polos abdomen (BNO/KUB)",
+      "category": "pencitraan",
+      "description": "Rontgen polos ginjal–ureter–kandung kemih.",
+      "action": "Pasien difoto rontgen polos abdomen posisi berbaring.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "batu",
+          "label": "Bayangan batu",
+          "normal": ["Tidak tampak bayangan radioopak sepanjang traktus urinarius"]
+        },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Tidak tampak kelainan"] }
+      ],
+      "objectives": ["struktur"],
+      "purpose": "Batu radioopak (± 75–90% batu saluran kemih). Batu radiolusen (mis. asam urat) tidak tampak, jadi BNO normal tidak menyingkirkan batu."
+    },
+    {
+      "id": "ct_abdomen",
+      "name": "CT-scan abdomen non-kontras (rujukan)",
+      "category": "pencitraan",
+      "description": "CT tanpa kontras ginjal–ureter–kandung kemih. Biasanya melalui rujukan ke rumah sakit.",
+      "action": "Pasien dirujuk untuk CT-scan abdomen tanpa kontras.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "ginjal_ureter",
+          "label": "Ginjal & ureter",
+          "normal": ["Tidak tampak batu, sumbatan, maupun massa"]
+        },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Tidak tampak kelainan pada traktus urinarius"] }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Baku emas batu saluran kemih (sensitivitas > 95%): ukuran & letak batu, sumbatan, dan penyebab lain seperti massa."
     },
     {
       "id": "ekg",
       "name": "Elektrokardiografi (EKG) 12 sadapan",
-      "category": "penunjang",
+      "category": "lainnya",
       "description": "Rekam listrik jantung saat istirahat.",
       "action": "Anda memasang elektroda di dada dan anggota gerak pasien, lalu merekam EKG.",
       "params": [
@@ -792,67 +1029,36 @@
             ]
           }
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Iskemia, aritmia, dan hipertrofi ventrikel kiri (kerusakan organ target hipertensi). EKG istirahat normal tidak menyingkirkan angina."
     },
     {
-      "id": "rontgen_thorax",
-      "name": "Rontgen thorax (PA)",
-      "category": "penunjang",
-      "description": "Foto dada posteroanterior.",
-      "action": "Pasien difoto rontgen dada posisi berdiri.",
-      "params": [
-        { "kind": "text", "id": "cor", "label": "Cor", "normal": ["Tidak membesar (CTR < 50%)"] },
-        {
-          "kind": "text",
-          "id": "pulmo",
-          "label": "Pulmo",
-          "normal": ["Corakan bronkovaskular normal, tidak tampak infiltrat"]
-        },
-        {
-          "kind": "text",
-          "id": "sinus_diafragma",
-          "label": "Sinus & diafragma",
-          "normal": ["Sinus kostofrenikus tajam, diafragma licin"]
-        },
-        { "kind": "text", "id": "tulang", "label": "Tulang", "normal": ["Tulang-tulang intak"] },
-        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Cor dan pulmo dalam batas normal"] }
-      ]
-    },
-    {
-      "id": "usg_abdomen",
-      "name": "USG abdomen",
-      "category": "penunjang",
-      "description": "Ultrasonografi hati, kandung empedu, limpa, ginjal, kandung kemih, dan cairan bebas.",
-      "action": "Anda mengoleskan gel di perut pasien dan melakukan pemeriksaan USG.",
+      "id": "spirometri",
+      "name": "Spirometri sederhana (APE & reversibilitas)",
+      "category": "lainnya",
+      "description": "Pemeriksaan fungsi paru: arus puncak ekspirasi (APE) dibandingkan nilai prediksi, diulang setelah bronkodilator.",
+      "action": "Anda meminta pasien meniup alat sekuat-kuatnya, lalu mengulanginya setelah inhalasi bronkodilator.",
       "params": [
         {
-          "kind": "text",
-          "id": "hepar",
-          "label": "Hepar",
-          "normal": ["Ukuran dan ekogenisitas normal, tidak tampak lesi"]
+          "kind": "numeric",
+          "id": "ape",
+          "label": "APE (% nilai prediksi)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [80, 120],
+          "normal": [85, 105],
+          "refText": "≥ 80%"
         },
         {
           "kind": "text",
-          "id": "kandung_empedu",
-          "label": "Kandung empedu",
-          "normal": ["Dinding tidak menebal, tidak tampak batu"]
-        },
-        { "kind": "text", "id": "lien", "label": "Lien", "normal": ["Ukuran normal"] },
-        {
-          "kind": "text",
-          "id": "ginjal",
-          "label": "Ginjal kanan & kiri",
-          "normal": ["Ukuran normal, tidak tampak batu maupun hidronefrosis"]
-        },
-        { "kind": "text", "id": "vesika", "label": "Vesika urinaria", "normal": ["Dinding licin, tidak tampak batu"] },
-        { "kind": "text", "id": "cairan_bebas", "label": "Cairan bebas", "normal": ["Tidak tampak"] },
-        {
-          "kind": "text",
-          "id": "kesan",
-          "label": "Kesan",
-          "normal": ["Tidak tampak kelainan pada organ intraabdomen yang terperiksa"]
+          "id": "reversibilitas",
+          "label": "Reversibilitas setelah bronkodilator",
+          "normal": ["Tidak bermakna (kenaikan < 12%)"]
         }
-      ]
+      ],
+      "objectives": ["fungsi_organ", "identifikasi"],
+      "purpose": "Obstruksi saluran napas dan reversibilitasnya (kenaikan ≥ 12–20% mendukung asma). Bukan tanda vital."
     }
   ]
 }

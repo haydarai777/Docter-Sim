@@ -15,7 +15,7 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { buildCategoryAnswer, buildComplaint } from './dialogue';
-import { generateToolFindings, linkFindings } from './findings';
+import { type FindingSource, generateToolFindings, linkFindings } from './findings';
 import { createRng, type Rng } from './rng';
 import { durationText, fillTemplate, numberToWords } from './text';
 import type {
@@ -34,6 +34,8 @@ import type {
 
 /** Usia di bawah ini disapa "Mas/Mbak", selebihnya "Pak/Bu". */
 const YOUNG_ADDRESS_MAX_AGE = 29;
+/** Maksimal komorbiditas tambahan per pasien (selain yang sudah dimodelkan oleh penyakit utama). */
+const MAX_COMORBIDITIES = 2;
 
 interface Demographics {
   sex: Sex;
@@ -143,9 +145,23 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, traits };
   sampleRules(disease.traits ?? [], baseCtx, rng.fork('trait'), traits);
 
+  // --- Komorbiditas & temuan insidental (id-nya ikut menjadi trait) -------
+  const comorbidities = sampleComorbidities(disease, content, baseCtx, rng.fork('komorbid'));
+  for (const c of comorbidities) traits.add(c.id);
+  const incidentals = sampleIncidentals(content, baseCtx, rng.fork('insidental'));
+  for (const id of incidentals) traits.add(id);
+
   const symptoms = new Set<string>();
   sampleRules(disease.symptoms, baseCtx, rng.fork('gejala'), symptoms);
+  for (const c of comorbidities) {
+    const def = content.comorbiditiesById.get(c.id)!;
+    sampleRules(def.symptoms ?? [], baseCtx, rng.fork(`gejala:${c.id}`), symptoms);
+  }
   const fullCtx: ConditionContext = { ...baseCtx, symptoms };
+  const complications = (disease.complications ?? []).filter((x) => traits.has(x.trait)).map((x) => x.id);
+  const allergyRng = rng.fork('alergi');
+  const allergy =
+    content.allergies.length > 0 && allergyRng.chance(config.patient.allergyRate) ? allergyRng.pick(content.allergies) : null;
 
   // --- Nilai placeholder teks --------------------------------------------
   const ctxRng = rng.fork('konteks');
@@ -184,13 +200,23 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   );
   const greeting = fillTemplate(ccRng.pick(personality.greetings), context);
 
-  // Gejala lain akan disebut (sebagian) saat ditanya "keluhan lain".
-  const revealOrder = rng.fork('urutan').shuffle([...symptoms].filter((id) => !chiefComplaintSymptoms.includes(id)));
+  // Gejala lain akan disebut (sebagian) saat ditanya "keluhan lain"; gejala yang
+  // tidak disebut sukarela (mis. BAB hitam) hanya terungkap bila ditanya spesifik.
+  const others = [...symptoms].filter((id) => !chiefComplaintSymptoms.includes(id));
+  const volunteers = (id: string) => content.symptomsById.get(id)?.volunteer !== false;
+  const revealOrder = rng.fork('urutan').shuffle(others.filter(volunteers));
+  const hiddenSymptoms = others.filter((id) => !volunteers(id));
 
   // --- Jawaban anamnesis --------------------------------------------------
   const answers: PatientCase['answers'] = {};
   for (const cat of content.anamnesis) {
     if (cat.type !== 'static') continue;
+    if (cat.id === 'alergi') {
+      answers[cat.id] = allergy
+        ? { text: `Saya alergi ${allergy}, Dok. Dulu pernah gatal-gatal dan bengkak.`, clue: `Alergi ${allergy}` }
+        : { text: 'Nggak ada alergi, Dok.' };
+      continue;
+    }
     answers[cat.id] = buildCategoryAnswer(
       cat.id,
       disease.anamnesis[cat.id],
@@ -202,12 +228,19 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     );
   }
 
+  mergeComorbidityHistory(answers, comorbidities, content, rng.fork('riwayat_komorbid'));
+
   // --- Hasil semua pemeriksaan --------------------------------------------
+  const ruleSets: FindingSource[] = [
+    { origin: disease.id, rules: disease.findings },
+    ...comorbidities.map((c) => ({ origin: c.id, rules: content.comorbiditiesById.get(c.id)!.findings })),
+    ...incidentals.map((id) => ({ origin: id, rules: content.incidentalsById.get(id)!.findings })),
+  ];
   const findings: PatientCase['findings'] = {};
   for (const tool of content.tools) {
-    findings[tool.id] = generateToolFindings(tool, disease, fullCtx, config, rng.fork(`temuan:${tool.id}`));
+    findings[tool.id] = generateToolFindings(tool, ruleSets, fullCtx, config, rng.fork(`temuan:${tool.id}`));
   }
-  linkFindings(content.tools, findings, sex);
+  linkFindings(content.tools, findings, { sex, age });
 
   return {
     seed: options.seed >>> 0,
@@ -218,10 +251,84 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     symptoms: [...symptoms],
     chiefComplaintSymptoms,
     revealOrder,
+    hiddenSymptoms,
     greeting,
     complaint,
     answers,
     findings,
     context,
+    comorbidities,
+    incidentals,
+    complications,
+    allergy,
   };
+}
+
+/** Komorbiditas yang memenuhi syarat usia/jenis kelamin & tidak bertabrakan dengan penyakit utama (maks. 2). */
+function sampleComorbidities(
+  disease: DiseaseTemplate,
+  content: GameContent,
+  ctx: ConditionContext,
+  rng: Rng,
+): { id: string; known: boolean }[] {
+  const out: { id: string; known: boolean }[] = [];
+  for (const c of rng.shuffle(content.comorbidities)) {
+    if (out.length >= MAX_COMORBIDITIES) break;
+    if (!fitsPopulation(c.when, ctx)) continue;
+    if (c.excludePrimary?.includes(disease.id)) continue;
+    if (c.excludeTraits?.some((t) => ctx.traits.has(t))) continue;
+    const cRng = rng.fork(c.id);
+    if (!cRng.chance(c.probability)) continue;
+    out.push({ id: c.id, known: cRng.chance(c.knownProbability) });
+  }
+  return out.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function sampleIncidentals(content: GameContent, ctx: ConditionContext, rng: Rng): string[] {
+  for (const inc of rng.shuffle(content.incidentals)) {
+    if (!fitsPopulation(inc.when, ctx)) continue;
+    if (rng.fork(inc.id).chance(inc.probability)) return [inc.id];
+  }
+  return [];
+}
+
+function fitsPopulation(when: { ageMin?: number; ageMax?: number; sex?: Sex } | undefined, ctx: ConditionContext): boolean {
+  if (!when) return true;
+  if (when.ageMin !== undefined && ctx.age < when.ageMin) return false;
+  if (when.ageMax !== undefined && ctx.age > when.ageMax) return false;
+  if (when.sex && when.sex !== ctx.sex) return false;
+  return true;
+}
+
+/** Jawaban "negatif" (tidak ada / belum) yang harus DIGANTI, bukan ditambah, bila ada riwayat komorbid. */
+const NEGATIVE_ANSWER = /^(nggak|tidak|belum)\b/i;
+
+/**
+ * Tambahkan riwayat komorbiditas ke jawaban anamnesis agar konsisten:
+ * riwayat penyakit & obat hanya bila pasien TAHU; kebiasaan & keluarga selalu.
+ */
+function mergeComorbidityHistory(
+  answers: PatientCase['answers'],
+  comorbidities: { id: string; known: boolean }[],
+  content: GameContent,
+  rng: Rng,
+): void {
+  const add = (topic: string, sentence: string | undefined, clue: string) => {
+    if (!sentence) return;
+    const current = answers[topic];
+    if (!current || NEGATIVE_ANSWER.test(current.text)) {
+      answers[topic] = { text: sentence, clue };
+    } else {
+      answers[topic] = { ...current, text: `${current.text} ${sentence}`, clue: current.clue ?? clue };
+    }
+  };
+  for (const c of comorbidities) {
+    const def = content.comorbiditiesById.get(c.id)!;
+    if (c.known) {
+      add('riwayat_penyakit', def.history.known || undefined, `Riwayat ${def.name.toLowerCase()}`);
+      add('riwayat_obat', def.history.medication, `Obat rutin untuk ${def.name.toLowerCase()}`);
+    }
+    add('kebiasaan', def.history.habit, `Faktor risiko ${def.name.toLowerCase()}`);
+    if (rng.fork(c.id).chance(0.5)) add('riwayat_keluarga', def.history.family, `Riwayat keluarga ${def.name.toLowerCase()}`);
+  }
 }

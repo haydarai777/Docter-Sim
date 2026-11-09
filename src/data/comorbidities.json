@@ -1,0 +1,189 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Probabilitas komorbiditas & temuan insidental adalah estimasi pengembang untuk keperluan permainan; mohon diverifikasi."
+    ],
+    "references": [
+      "Kemenkes RI. Riset Kesehatan Dasar / Survei Kesehatan Indonesia (prevalensi hipertensi, DM, obesitas, anemia)",
+      "PERKI/InaSH: Konsensus Penatalaksanaan Hipertensi",
+      "PERKENI: Pedoman Pengelolaan DM Tipe 2"
+    ]
+  },
+  "comorbidities": [
+    {
+      "id": "hipertensi",
+      "name": "Hipertensi",
+      "aliases": ["Darah tinggi", "Tekanan darah tinggi", "HT"],
+      "system": "Jantung & pembuluh darah",
+      "summary": "Tekanan darah ≥ 140/90 mmHg pada pengukuran berulang. Sering tanpa gejala; ditemukan saat tanda vital diukur.",
+      "probability": 0.3,
+      "when": { "ageMin": 40 },
+      "excludeTraits": ["hipertensi"],
+      "knownProbability": 0.55,
+      "findings": [
+        { "tool": "tanda_vital", "param": "td_sistolik", "range": [142, 168] },
+        { "tool": "tanda_vital", "param": "td_diastolik", "range": [90, 102] }
+      ],
+      "history": {
+        "known": "Saya punya darah tinggi, Dok, sudah beberapa tahun.",
+        "medication": "Ada obat darah tinggi dari puskesmas, tapi sering lupa diminum.",
+        "family": "Orang tua saya juga darah tinggi."
+      },
+      "detectBy": { "tools": ["tanda_vital"] },
+      "management": [
+        "Konfirmasi dengan pengukuran ulang pada kunjungan berbeda.",
+        "Modifikasi gaya hidup: kurangi garam, aktivitas fisik, berhenti merokok.",
+        "Evaluasi kerusakan organ target: EKG, fungsi ginjal, urinalisis (protein)."
+      ]
+    },
+    {
+      "id": "dm_tipe2",
+      "name": "Diabetes Melitus Tipe 2",
+      "aliases": ["Kencing manis", "Diabetes", "DM", "Gula darah tinggi"],
+      "system": "Endokrin & metabolik",
+      "summary": "Hiperglikemia kronik; sering tidak terdiagnosis dan ditemukan saat pemeriksaan gula darah.",
+      "probability": 0.12,
+      "when": { "ageMin": 40 },
+      "excludePrimary": ["dm_tipe2"],
+      "excludeTraits": ["diabetes", "dm_komorbid"],
+      "knownProbability": 0.5,
+      "symptoms": [{ "id": "sering_kencing", "probability": 0.4 }, { "id": "haus", "probability": 0.35 }],
+      "findings": [
+        { "tool": "gula_darah", "param": "gds", "range": [210, 330] },
+        { "tool": "hba1c", "param": "hba1c", "range": [7.2, 10] },
+        { "tool": "urinalisis", "param": "glukosa", "probability": 0.7, "values": ["+1", "+2"] }
+      ],
+      "history": {
+        "known": "Saya kencing manis, Dok.",
+        "medication": "Minum obat gula (metformin), kadang-kadang.",
+        "family": "Ibu saya juga kencing manis."
+      },
+      "detectBy": { "tools": ["gula_darah", "hba1c", "urinalisis"] },
+      "management": [
+        "Konfirmasi diagnosis (GDP/HbA1c) dan edukasi.",
+        "Skrining komplikasi: kaki diabetik, fungsi ginjal, mata.",
+        "Kendali gula darah memengaruhi penyembuhan penyakit utama (mis. infeksi)."
+      ]
+    },
+    {
+      "id": "obesitas",
+      "name": "Obesitas",
+      "aliases": ["Kegemukan", "Berat badan berlebih"],
+      "system": "Endokrin & metabolik",
+      "summary": "IMT ≥ 25 kg/m² (kriteria Asia-Pasifik). Faktor risiko hipertensi, DM, PJK, GERD, dan perlemakan hati.",
+      "probability": 0.22,
+      "excludeTraits": ["obesitas"],
+      "knownProbability": 0,
+      "findings": [
+        { "tool": "timbangan", "param": "imt", "range": [25.5, 33] },
+        { "tool": "timbangan", "param": "lingkar_perut", "when": { "sex": "male" }, "range": [92, 110] },
+        { "tool": "timbangan", "param": "lingkar_perut", "when": { "sex": "female" }, "range": [82, 100] },
+        { "tool": "keadaan_umum", "param": "gizi", "values": ["Kesan gizi lebih (obesitas)"] }
+      ],
+      "history": { "known": "", "habit": "Saya juga suka ngemil dan jarang olahraga." },
+      "detectBy": { "tools": ["timbangan", "keadaan_umum"] },
+      "management": ["Target penurunan berat badan 5–10% dalam 6 bulan.", "Diet seimbang dan aktivitas fisik 150 menit/minggu."]
+    },
+    {
+      "id": "anemia_defisiensi_besi",
+      "name": "Anemia Defisiensi Besi",
+      "aliases": ["Anemia", "Kurang darah", "Kurang zat besi"],
+      "system": "Darah",
+      "summary": "Anemia mikrositik (MCV rendah) akibat kekurangan besi; pada perempuan usia subur sering karena haid berlebih.",
+      "probability": 0.18,
+      "when": { "sex": "female", "ageMax": 50 },
+      "excludePrimary": ["malaria"],
+      "knownProbability": 0.3,
+      "symptoms": [{ "id": "lemas", "probability": 0.6 }, { "id": "nyeri_kepala", "probability": 0.25 }],
+      "findings": [
+        { "tool": "darah_lengkap", "param": "hb", "range": [9, 11.4] },
+        { "tool": "darah_lengkap", "param": "mcv", "range": [63, 77] },
+        { "tool": "darah_lengkap", "param": "hematokrit", "range": [28, 35] },
+        { "tool": "kepala_leher", "param": "konjungtiva", "probability": 0.75, "values": ["Anemis (pucat)"] }
+      ],
+      "history": { "known": "Kata bidan dulu saya kurang darah, Dok.", "habit": "Haid saya banyak, Dok, bisa sampai seminggu." },
+      "detectBy": { "tools": ["darah_lengkap", "kepala_leher"] },
+      "management": [
+        "Cari penyebab (perdarahan haid, saluran cerna, asupan).",
+        "Suplementasi besi dan edukasi gizi; evaluasi ulang Hb."
+      ]
+    },
+    {
+      "id": "dislipidemia",
+      "name": "Dislipidemia",
+      "aliases": ["Kolesterol tinggi", "Lemak darah tinggi"],
+      "system": "Endokrin & metabolik",
+      "summary": "Kolesterol LDL/trigliserida tinggi atau HDL rendah; faktor risiko utama penyakit jantung koroner.",
+      "probability": 0.15,
+      "when": { "ageMin": 35 },
+      "excludeTraits": ["dislipidemia"],
+      "knownProbability": 0.3,
+      "findings": [
+        { "tool": "profil_lipid", "param": "kolesterol", "range": [215, 280] },
+        { "tool": "profil_lipid", "param": "ldl", "range": [140, 200] },
+        { "tool": "profil_lipid", "param": "tg", "probability": 0.5, "range": [155, 260] }
+      ],
+      "history": { "known": "Kata dokter dulu kolesterol saya agak tinggi." },
+      "detectBy": { "tools": ["profil_lipid"] },
+      "management": ["Nilai risiko kardiovaskular total.", "Diet rendah lemak jenuh, aktivitas fisik; terapi sesuai risiko."]
+    }
+  ],
+  "incidentals": [
+    {
+      "id": "kolelitiasis_asimtomatik",
+      "name": "Batu Empedu Asimtomatik",
+      "aliases": ["Kolelitiasis", "Batu empedu"],
+      "system": "Pencernaan",
+      "probability": 0.07,
+      "when": { "ageMin": 35 },
+      "findings": [
+        {
+          "tool": "usg_abdomen",
+          "param": "kandung_empedu",
+          "values": ["Tampak batu multipel di kandung empedu (± 8 mm), dinding tidak menebal"]
+        },
+        {
+          "tool": "usg_abdomen",
+          "param": "kesan",
+          "requires": "kandung_empedu",
+          "values": ["Kolelitiasis (batu kandung empedu) tanpa tanda radang"]
+        }
+      ],
+      "detectBy": { "tools": ["usg_abdomen"] },
+      "note": "Temuan insidental yang tidak menjelaskan keluhan saat ini. Batu empedu tanpa gejala umumnya cukup edukasi dan observasi; rujuk bila timbul kolik bilier atau komplikasi."
+    },
+    {
+      "id": "perlemakan_hati",
+      "name": "Perlemakan Hati (Fatty Liver)",
+      "aliases": ["Fatty liver", "NAFLD", "Hati berlemak"],
+      "system": "Pencernaan",
+      "probability": 0.1,
+      "when": { "ageMin": 30 },
+      "findings": [
+        { "tool": "usg_abdomen", "param": "hepar", "values": ["Ukuran normal, ekogenisitas meningkat (fatty liver)"] },
+        { "tool": "usg_abdomen", "param": "kesan", "requires": "hepar", "values": ["Fatty liver (perlemakan hati)"] }
+      ],
+      "detectBy": { "tools": ["usg_abdomen"] },
+      "note": "Sering berkaitan dengan obesitas, DM, dan dislipidemia. Bukan penyebab keluhan akut; perlu modifikasi gaya hidup dan evaluasi faktor risiko metabolik."
+    },
+    {
+      "id": "kista_ginjal",
+      "name": "Kista Ginjal Sederhana",
+      "aliases": ["Kista ginjal"],
+      "system": "Saluran kemih",
+      "probability": 0.05,
+      "when": { "ageMin": 40 },
+      "findings": [
+        {
+          "tool": "usg_abdomen",
+          "param": "ginjal",
+          "values": ["Kista sederhana ± 1,5 cm di kutub atas ginjal kiri; tidak tampak batu maupun hidronefrosis"]
+        },
+        { "tool": "usg_abdomen", "param": "kesan", "requires": "ginjal", "values": ["Kista ginjal sederhana"] }
+      ],
+      "detectBy": { "tools": ["usg_abdomen"] },
+      "note": "Kista ginjal sederhana sering ditemukan pada usia > 40 tahun dan umumnya tidak berbahaya; tidak memerlukan tindakan bila memenuhi kriteria kista sederhana."
+    }
+  ]
+}

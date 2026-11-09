@@ -7,16 +7,21 @@
  *
  * Mengembalikan daftar pesan kesalahan (kosong = valid).
  */
+import { ADDRESS_WORDS, normalizeQuestion } from './nlu';
 import { findUnfilledPlaceholders } from './text';
 import type {
   Condition,
   DiseaseTemplate,
+  EvidenceRef,
+  FindingRule,
   GameConfig,
   GameContent,
   ParamDef,
+  PlanItem,
   Range,
+  ToolDef,
 } from './types';
-import { DANGER_LEVELS, ECONOMY_CLASSES, TOOL_CATEGORIES } from './types';
+import { DANGER_LEVELS, DISPOSITIONS, ECONOMY_CLASSES, OBJECTIVES, TOOL_CATEGORIES } from './types';
 
 /** Placeholder yang selalu tersedia di teks kasus (diisi oleh generator). */
 export const BUILTIN_PLACEHOLDERS = [
@@ -52,6 +57,9 @@ export function validateContent(content: GameContent, config: GameConfig): strin
   validateAnamnesis(content, err);
   validatePersonalities(content, err);
   validatePopulation(content, config, err);
+  validateConversation(content, err);
+  validateExtras(content, err);
+  validateEvaluationConfig(config, err);
 
   const globalPlaceholders = new Set<string>([
     ...BUILTIN_PLACEHOLDERS,
@@ -98,7 +106,15 @@ function validateTools(content: GameContent, config: GameConfig, err: ErrFn): vo
     if (tool.params.length === 0) err(path, 'tidak punya parameter');
     const price = config.toolPrices[tool.id];
     if (price === undefined) err(path, 'harga belum diatur di config.toolPrices');
-    else if (!Number.isInteger(price) || price <= 0) err(path, `harga tidak valid (${price})`);
+    else if (!Number.isInteger(price) || price < 0) err(path, `harga tidak valid (${price})`);
+    else if (tool.category !== 'fisik' && price === 0) err(path, 'pemeriksaan penunjang harus berbayar (harga > 0)');
+    else if (tool.category === 'fisik' && price !== 0) err(path, 'pemeriksaan fisik seharusnya gratis (harga 0)');
+    if (tool.category === 'fisik' && !tool.group) err(path, 'pemeriksaan fisik butuh group (sistem organ)');
+    if (tool.category !== 'fisik') {
+      if (!tool.objectives?.length) err(path, 'pemeriksaan penunjang butuh objectives (tujuan klinis)');
+      if (!tool.purpose) err(path, 'pemeriksaan penunjang butuh purpose');
+    }
+    for (const o of tool.objectives ?? []) if (!OBJECTIVES.includes(o)) err(path, `objective tidak dikenal "${o}"`);
 
     const paramIds = new Set<string>();
     for (const param of tool.params) {
@@ -115,9 +131,11 @@ function validateTools(content: GameContent, config: GameConfig, err: ErrFn): vo
         if (!src || src.kind !== 'numeric') err(pPath, `copyFrom "${param.copyFrom}" tidak menunjuk parameter numerik`);
       }
       if (param.kind === 'numeric' && param.compute) {
-        for (const ref of [param.compute.bmi, param.compute.heightCm]) {
+        const refs = param.compute.type === 'weightFromBmi' ? [param.compute.bmi, param.compute.heightCm] : [param.compute.creatinine];
+        for (const ref of refs) {
           const src = tool.params.find((x) => x.id === ref);
           if (!src || src.kind !== 'numeric') err(pPath, `compute merujuk "${ref}" yang bukan parameter numerik di alat ini`);
+          else if (tool.params.indexOf(src) > tool.params.indexOf(param)) err(pPath, `compute merujuk "${ref}" yang tercantum sesudahnya`);
         }
       }
       if (param.kind === 'text' && param.bands) {
@@ -174,6 +192,7 @@ function validateSymptoms(content: GameContent, err: ErrFn): void {
     if (!s.question) err(path, 'pertanyaan kosong');
     if (!s.system) err(path, 'sistem kosong');
     if (!s.phrases?.lay?.length) err(path, 'frasa awam (lay) kosong');
+    if (!s.keywords?.length) err(path, 'keywords kosong (gejala tidak bisa dikenali dari pertanyaan bebas)');
     for (const [style, list] of Object.entries(s.phrases ?? {})) {
       if (!PHRASE_STYLES.includes(style)) err(path, `gaya frasa tidak dikenal "${style}"`);
       if (!Array.isArray(list) || list.length === 0) err(path, `frasa "${style}" kosong`);
@@ -182,6 +201,7 @@ function validateSymptoms(content: GameContent, err: ErrFn): void {
 }
 
 function validateAnamnesis(content: GameContent, err: ErrFn): void {
+  if (!content.anamnesisById.has('keluhan_lain')) err('anamnesis', 'topik "keluhan_lain" wajib ada');
   for (const cat of content.anamnesis) {
     const path = `anamnesis.${cat.id}`;
     if (cat.type === 'static' && cat.fallback.length === 0) err(path, 'kategori statis harus punya fallback');
@@ -190,8 +210,119 @@ function validateAnamnesis(content: GameContent, err: ErrFn): void {
         err(path, 'kategori dinamis harus punya dynamicTemplates.found & none');
       }
     }
-    if (cat.type !== 'static' && cat.type !== 'dynamic') err(path, `tipe tidak valid "${cat.type}"`);
+    if (!['static', 'dynamic', 'chief'].includes(cat.type)) err(path, `tipe tidak valid "${cat.type}"`);
+    if (!cat.keywords?.length) err(path, 'keywords kosong (topik tidak bisa dikenali dari pertanyaan bebas)');
+    for (const k of cat.keywords ?? []) if (ADDRESS_WORDS.has(normalizeQuestion(k))) err(path, `kata kunci "${k}" sama dengan sapaan (salah tangkap)`);
+    if (!cat.label || !cat.rubric || !cat.why) err(path, 'label/rubric/why wajib diisi');
+    if (cat.weight !== undefined && !(cat.weight > 0)) err(path, 'weight harus > 0');
+    for (const v of cat.fallback) for (const r of v.reveals ?? []) err(path, `fallback tidak boleh mengungkap gejala ("${r}")`);
   }
+}
+
+function validateConversation(content: GameContent, err: ErrFn): void {
+  for (const r of content.reviews) {
+    const path = `anamnesis.reviews.${r.id}`;
+    if (!r.keywords.length || !r.normal.length || !r.symptoms.length) err(path, 'keywords/normal/symptoms wajib diisi');
+    for (const s of r.symptoms) if (!content.symptomsById.has(s)) err(path, `gejala "${s}" tidak ada`);
+  }
+  const conv = content.conversation;
+  for (const key of ['greeting', 'thanks', 'consent', 'unknown', 'repeat', 'alreadySaid', 'chief'] as const) {
+    if (!conv?.[key]?.length) err(`anamnesis.conversation.${key}`, 'kosong');
+  }
+  if (!conv?.detail?.default?.length) err('anamnesis.conversation.detail.default', 'kosong');
+  for (const [topic, list] of Object.entries(conv?.detail ?? {})) {
+    if (topic !== 'default' && !content.anamnesisById.has(topic)) err(`anamnesis.conversation.detail.${topic}`, 'topik tidak ada');
+    for (const t of list) if (!t.includes('{gejala}')) err(`anamnesis.conversation.detail.${topic}`, `templat harus memuat {gejala}: "${t}"`);
+  }
+  for (const t of conv?.chief ?? []) {
+    if (!t.includes('{keluhanAwal}')) err('anamnesis.conversation.chief', `templat harus memuat {keluhanAwal}: "${t}"`);
+  }
+}
+
+/** Bukti (topik/gejala/alat) yang dirujuk harus ada. */
+function checkEvidence(path: string, ref: EvidenceRef | undefined, content: GameContent, err: ErrFn, required = true): void {
+  if (!ref) {
+    if (required) err(path, 'bukti kosong');
+    return;
+  }
+  const count = (ref.topics?.length ?? 0) + (ref.symptoms?.length ?? 0) + (ref.tools?.length ?? 0);
+  if (required && count === 0) err(path, 'bukti kosong');
+  for (const t of ref.topics ?? []) if (!content.anamnesisById.has(t)) err(path, `topik "${t}" tidak ada`);
+  for (const s of ref.symptoms ?? []) if (!content.symptomsById.has(s)) err(path, `gejala "${s}" tidak ada`);
+  for (const t of ref.tools ?? []) if (!content.toolsById.has(t)) err(path, `alat "${t}" tidak ada`);
+}
+
+/** Aturan temuan (penyakit, komorbiditas, insidental) harus menunjuk parameter yang benar. */
+function checkFindingRule(fPath: string, f: FindingRule, content: GameContent, err: ErrFn): ToolDef | undefined {
+  const tool = content.toolsById.get(f.tool);
+  if (!tool) {
+    err(fPath, 'alat tidak ada');
+    return undefined;
+  }
+  const param = tool.params.find((p) => p.id === f.param);
+  if (!param) {
+    err(fPath, 'parameter tidak ada');
+    return undefined;
+  }
+  if (f.probability !== undefined && !isProbability(f.probability)) err(fPath, 'probability harus 0..1');
+  if (param.kind === 'numeric' && (param.compute || param.copyFrom)) err(fPath, 'parameter turunan (compute/copyFrom) tidak boleh diatur aturan');
+  if (param.kind === 'numeric') {
+    if (!isRange(f.range)) err(fPath, 'parameter numerik butuh range yang valid');
+    if (f.values) err(fPath, 'parameter numerik tidak boleh memakai values');
+  } else {
+    if (!f.values?.length) err(fPath, 'parameter teks butuh values');
+    if (f.range) err(fPath, 'parameter teks tidak boleh memakai range');
+  }
+  if (f.requires) {
+    const idx = tool.params.findIndex((p) => p.id === f.requires);
+    if (idx < 0 || idx >= tool.params.indexOf(param)) err(fPath, `requires "${f.requires}" harus parameter alat yang sama dan tercantum lebih awal`);
+  }
+  return tool;
+}
+
+function validateExtras(content: GameContent, err: ErrFn): void {
+  const diseaseIds = new Set(content.diseases.map((d) => d.id));
+  for (const c of content.comorbidities) {
+    const path = `komorbiditas.${c.id}`;
+    if (!c.name || !c.summary) err(path, 'nama/summary kosong');
+    if (!isProbability(c.probability) || !isProbability(c.knownProbability)) err(path, 'probability/knownProbability harus 0..1');
+    for (const id of c.excludePrimary ?? []) if (!diseaseIds.has(id)) err(path, `excludePrimary "${id}" bukan penyakit kasus`);
+    for (const s of c.symptoms ?? []) {
+      if (!content.symptomsById.has(s.id)) err(path, `gejala "${s.id}" tidak ada`);
+      if (!isProbability(s.probability)) err(path, `probability gejala "${s.id}" harus 0..1`);
+    }
+    if (!c.findings.length) err(path, 'findings kosong');
+    c.findings.forEach((f, i) => {
+      checkFindingRule(`${path}.findings[${i}] (${f.tool}.${f.param})`, f, content, err);
+      if (f.when?.traits || f.when?.symptoms) err(`${path}.findings[${i}]`, 'kondisi komorbiditas hanya boleh demografi/hari');
+    });
+    checkEvidence(`${path}.detectBy`, c.detectBy, content, err);
+    if (!c.management.length) err(path, 'management kosong');
+    if (!c.history) err(path, 'history wajib ada');
+  }
+  for (const inc of content.incidentals) {
+    const path = `insidental.${inc.id}`;
+    if (!isProbability(inc.probability)) err(path, 'probability harus 0..1');
+    if (!inc.findings.length) err(path, 'findings kosong');
+    inc.findings.forEach((f, i) => checkFindingRule(`${path}.findings[${i}] (${f.tool}.${f.param})`, f, content, err));
+    checkEvidence(`${path}.detectBy`, inc.detectBy, content, err);
+    if (!inc.note) err(path, 'note kosong');
+  }
+  const seen = new Set<string>([...diseaseIds, ...content.comorbidities.map((c) => c.id), ...content.incidentals.map((i) => i.id)]);
+  for (const c of content.conditions) {
+    const path = `kondisi.${c.id}`;
+    if (seen.has(c.id)) err(path, 'id sudah dipakai penyakit/komorbiditas/insidental');
+    if (!c.name || !c.summary) err(path, 'nama/summary kosong');
+    if (!DANGER_LEVELS.includes(c.danger)) err(path, `tingkat bahaya tidak valid "${c.danger}"`);
+  }
+  for (const e of content.catalog) if (!e.aliases) err(`katalog.${e.id}`, 'aliases wajib ada (boleh kosong)');
+}
+
+function validateEvaluationConfig(config: GameConfig, err: ErrFn): void {
+  const w = config.evaluation.weights;
+  const sum = Object.values(w).reduce((a, b) => a + b, 0);
+  if (Math.abs(sum - 100) > 1e-9) err('config.evaluation.weights', `total bobot harus 100 (sekarang ${sum})`);
+  if (!config.evaluation.grades.length) err('config.evaluation.grades', 'kosong');
 }
 
 function validatePersonalities(content: GameContent, err: ErrFn): void {
@@ -328,36 +459,95 @@ function validateDisease(
   const defaultSeen = new Set<string>();
   d.findings.forEach((f, i) => {
     const fPath = `${path}.findings[${i}] (${f.tool}.${f.param})`;
-    const tool = content.toolsById.get(f.tool);
-    if (!tool) return err(fPath, 'alat tidak ada');
-    const param = tool.params.find((p) => p.id === f.param);
-    if (!param) return err(fPath, 'parameter tidak ada');
-    if (f.probability !== undefined && !isProbability(f.probability)) err(fPath, 'probability harus 0..1');
+    if (!checkFindingRule(fPath, f, content, err)) return;
     checkCond(fPath, f.when, true);
-    if (param.kind === 'numeric' && (param.compute || param.copyFrom)) err(fPath, 'parameter turunan (compute/copyFrom) tidak boleh diatur penyakit');
-    if (param.kind === 'numeric') {
-      if (!isRange(f.range)) err(fPath, 'parameter numerik butuh range yang valid');
-      if (f.values) err(fPath, 'parameter numerik tidak boleh memakai values');
-    } else {
-      if (!f.values?.length) err(fPath, 'parameter teks butuh values');
-      if (f.range) err(fPath, 'parameter teks tidak boleh memakai range');
-    }
-    if (f.requires) {
-      const idx = tool.params.findIndex((p) => p.id === f.requires);
-      if (idx < 0 || idx >= tool.params.indexOf(param)) err(fPath, `requires "${f.requires}" harus parameter alat yang sama dan tercantum lebih awal`);
-    }
     const key = `${f.tool}.${f.param}`;
     if (defaultSeen.has(key)) err(fPath, 'aturan tidak akan pernah terpakai (ada aturan tanpa kondisi sebelumnya)');
     if (!f.when && !f.requires) defaultSeen.add(key);
   });
 
-  // Diagnosis banding & pemeriksaan ideal
+  // Diagnosis banding
+  if (d.differentials.length < 2) err(`${path}.differentials`, 'minimal dua diagnosis banding');
+  const diffIds = new Set<string>();
   for (const diff of d.differentials) {
-    if (diff.id === d.id) err(`${path}.differentials`, 'tidak boleh merujuk diri sendiri');
-    else if (!content.diseasesById.has(diff.id)) err(`${path}.differentials`, `penyakit "${diff.id}" tidak ada`);
-    if (!diff.howToDistinguish) err(`${path}.differentials`, `howToDistinguish untuk "${diff.id}" kosong`);
+    const dp = `${path}.differentials.${diff.id}`;
+    if (diffIds.has(diff.id)) err(dp, 'ganda');
+    diffIds.add(diff.id);
+    if (diff.id === d.id) err(dp, 'tidak boleh merujuk diri sendiri');
+    else if (!content.catalogById.has(diff.id)) err(dp, 'kondisi tidak ada di katalog');
+    if (!diff.howToDistinguish) err(dp, 'howToDistinguish kosong');
+    checkEvidence(`${dp}.excludeBy`, diff.excludeBy, content, err);
   }
-  if (!d.idealWorkup.length) err(`${path}.idealWorkup`, 'kosong');
-  if (new Set(d.idealWorkup).size !== d.idealWorkup.length) err(`${path}.idealWorkup`, 'ada duplikat');
-  for (const t of d.idealWorkup) if (!content.toolsById.has(t)) err(`${path}.idealWorkup`, `alat "${t}" tidak ada`);
+  if (!d.differentials.some((x) => x.mustNotMiss)) err(`${path}.differentials`, 'minimal satu diagnosis "mustNotMiss"');
+
+  // Komplikasi
+  const cxIds = new Set<string>();
+  for (const cx of d.complications ?? []) {
+    const cp = `${path}.complications.${cx.id}`;
+    if (cxIds.has(cx.id)) err(cp, 'id ganda');
+    cxIds.add(cx.id);
+    if (!traitIds.has(cx.trait)) err(cp, `trait "${cx.trait}" tidak didefinisikan`);
+    if (!cx.name || !cx.explanation) err(cp, 'nama/explanation kosong');
+    checkEvidence(`${cp}.assess`, cx.assess, content, err);
+  }
+
+  // Rencana pemeriksaan
+  const checkPlan = (kind: 'exams' | 'tests', items: PlanItem[]) => {
+    const seen = new Set<string>();
+    items.forEach((it, i) => {
+      const ip = `${path}.plan.${kind}[${i}] (${it.tool})`;
+      const tool = content.toolsById.get(it.tool);
+      if (!tool) return err(ip, 'alat tidak ada');
+      if (kind === 'exams' && tool.category !== 'fisik') err(ip, 'plan.exams hanya untuk pemeriksaan fisik');
+      if (kind === 'tests' && tool.category === 'fisik') err(ip, 'plan.tests hanya untuk pemeriksaan penunjang');
+      if (!['kunci', 'pendukung', 'komplikasi'].includes(it.role)) err(ip, `role tidak valid "${it.role}"`);
+      if (!it.reason) err(ip, 'reason kosong');
+      if (seen.has(it.tool) && !it.when) err(ip, 'alat ganda tanpa kondisi');
+      seen.add(it.tool);
+      checkCond(ip, it.when, true);
+    });
+  };
+  if (!d.plan) err(path, 'plan wajib diisi');
+  else {
+    checkPlan('exams', d.plan.exams ?? []);
+    checkPlan('tests', d.plan.tests ?? []);
+    if (!d.plan.exams.length && !d.plan.tests.length) err(`${path}.plan`, 'exams & tests kosong');
+    for (const t of d.plan.keyTopics ?? []) {
+      if (!content.anamnesisById.get(t)?.core) err(`${path}.plan.keyTopics`, `topik "${t}" tidak ada / bukan topik inti`);
+    }
+    const planned = new Set(d.plan.tests.map((t) => t.tool));
+    for (const u of d.plan.unnecessary ?? []) {
+      if (!content.toolsById.has(u.tool)) err(`${path}.plan.unnecessary`, `alat "${u.tool}" tidak ada`);
+      if (planned.has(u.tool)) err(`${path}.plan.unnecessary`, `alat "${u.tool}" juga ada di plan.tests`);
+      if (!u.reason) err(`${path}.plan.unnecessary`, `alasan "${u.tool}" kosong`);
+    }
+  }
+
+  // Disposisi, tata laksana, pendekatan
+  if (!d.disposition?.length) err(`${path}.disposition`, 'kosong');
+  else {
+    d.disposition.forEach((r, i) => {
+      const rp = `${path}.disposition[${i}]`;
+      if (!DISPOSITIONS.includes(r.value)) err(rp, `disposisi tidak valid "${r.value}"`);
+      for (const a of r.alsoAccept ?? []) if (!DISPOSITIONS.includes(a)) err(rp, `alsoAccept tidak valid "${a}"`);
+      if (!r.reason) err(rp, 'reason kosong');
+      checkCond(rp, r.when, true);
+    });
+    if (d.disposition.at(-1)!.when) err(`${path}.disposition`, 'aturan terakhir harus tanpa kondisi (default)');
+  }
+  if (!d.management?.length) err(`${path}.management`, 'kosong');
+  if (!d.approach?.length) err(`${path}.approach`, 'kosong');
+  for (const [trait, id] of Object.entries(d.traitComorbidities ?? {})) {
+    if (!traitIds.has(trait)) err(`${path}.traitComorbidities`, `trait "${trait}" tidak ada`);
+    if (!content.comorbiditiesById.has(id)) err(`${path}.traitComorbidities`, `komorbiditas "${id}" tidak ada`);
+  }
+  (d.pitfalls ?? []).forEach((pf, i) => {
+    const pp = `${path}.pitfalls[${i}]`;
+    const w = pf.when;
+    if (!pf.text) err(pp, 'text kosong');
+    for (const id of [w.excluded, w.primaryIs, w.notConsidered]) if (id && !content.catalogById.has(id)) err(pp, `kondisi "${id}" tidak ada di katalog`);
+    for (const t of [w.toolDone, w.toolNormal]) if (t && !content.toolsById.has(t)) err(pp, `alat "${t}" tidak ada`);
+    if (w.topicNotAsked && !content.anamnesisById.has(w.topicNotAsked)) err(pp, `topik "${w.topicNotAsked}" tidak ada`);
+    for (const t of [...(w.traits ?? []), ...(w.notTraits ?? [])]) if (!traitIds.has(t)) err(pp, `trait "${t}" tidak ada`);
+  });
 }

@@ -1,13 +1,33 @@
 /**
- * Satu konsultasi (encounter): anamnesis, pemeriksaan berbayar, dan diagnosis.
+ * Satu konsultasi (encounter): anamnesis bebas, pemeriksaan, penalaran, dan keputusan.
  *
  * Semua fungsi murni: menerima state lama dan mengembalikan state BARU
  * (state lama tidak diubah). Aksi yang tidak sah melempar EncounterError;
  * UI sebaiknya memeriksa dulu dengan fungsi can*() untuk menampilkan alasannya.
+ *
+ * Anamnesis tidak dibatasi jumlahnya. Pasien "ingat" apa yang sudah ditanyakan:
+ * pertanyaan yang diulang dijawab konsisten dengan awalan "seperti tadi saya bilang".
  */
-import { answerOtherComplaints, answerSymptomQuestion, doctorQuestion } from './dialogue';
-import { evaluateDiagnosis, toolPrice } from './scoring';
-import type { EncounterState, GameConfig, GameContent, LogEntry, PatientCase } from './types';
+import {
+  answerOtherComplaints,
+  answerReview,
+  answerSymptomDetail,
+  answerSymptomQuestion,
+  chiefComplaintReply,
+  conversationReply,
+} from './dialogue';
+import { evaluateEncounter } from './evaluation';
+import { type Intent, interpretQuestion } from './nlu';
+import { toolPrice } from './scoring';
+import type {
+  ClinicalDecision,
+  DdxStatus,
+  EncounterState,
+  GameConfig,
+  GameContent,
+  LogEntry,
+  PatientCase,
+} from './types';
 
 export class EncounterError extends Error {
   constructor(message: string) {
@@ -29,11 +49,12 @@ export function startEncounter(c: PatientCase): EncounterState {
     case: c,
     budgetRemaining: c.patient.budget,
     spent: 0,
-    questionsUsed: 0,
-    askedCategories: [],
+    questionCount: 0,
+    askedTopics: [],
     askedSymptoms: [],
     revealedSymptoms: [...c.chiefComplaintSymptoms],
     examsDone: [],
+    ddx: [],
     log: [
       { kind: 'patient', text: c.greeting },
       { kind: 'patient', text: c.complaint },
@@ -42,94 +63,143 @@ export function startEncounter(c: PatientCase): EncounterState {
   };
 }
 
-// ---------------------------------------------------------------------------
-// Anamnesis (gratis, dibatasi jumlah pertanyaan)
-// ---------------------------------------------------------------------------
-
-export function questionsLeft(state: EncounterState, config: GameConfig): number {
-  return Math.max(0, config.anamnesis.maxQuestions - state.questionsUsed);
-}
-
 function checkActive(state: EncounterState): Check {
   return state.status === 'active' ? OK : { ok: false, reason: 'Konsultasi sudah selesai.' };
-}
-
-export function canAskCategory(state: EncounterState, categoryId: string, config: GameConfig): Check {
-  const active = checkActive(state);
-  if (!active.ok) return active;
-  if (state.askedCategories.includes(categoryId)) return { ok: false, reason: 'Sudah ditanyakan.' };
-  if (questionsLeft(state, config) <= 0) return { ok: false, reason: 'Jatah pertanyaan anamnesis habis.' };
-  return OK;
-}
-
-export function canAskSymptom(state: EncounterState, symptomId: string, config: GameConfig): Check {
-  const active = checkActive(state);
-  if (!active.ok) return active;
-  if (state.askedSymptoms.includes(symptomId)) return { ok: false, reason: 'Sudah ditanyakan.' };
-  if (state.revealedSymptoms.includes(symptomId)) return { ok: false, reason: 'Pasien sudah menyebutkan gejala ini.' };
-  if (questionsLeft(state, config) <= 0) return { ok: false, reason: 'Jatah pertanyaan anamnesis habis.' };
-  return OK;
 }
 
 function assertOk(check: Check): void {
   if (!check.ok) throw new EncounterError(check.reason ?? 'Aksi tidak diizinkan.');
 }
 
-export function askCategory(
-  state: EncounterState,
-  categoryId: string,
-  content: GameContent,
-  config: GameConfig,
-): EncounterState {
-  assertOk(canAskCategory(state, categoryId, config));
-  const category = content.anamnesisById.get(categoryId);
-  if (!category) throw new EncounterError(`Kategori anamnesis tidak dikenal: ${categoryId}`);
+// ---------------------------------------------------------------------------
+// Anamnesis bebas
+// ---------------------------------------------------------------------------
 
-  const question = doctorQuestion(category.question, state.case);
-  let answer: string;
-  let revealed: string[] = [];
-  if (category.type === 'dynamic') {
-    const result = answerOtherComplaints(state.case, state.revealedSymptoms, content);
-    answer = result.text;
-    revealed = result.revealed;
-  } else {
-    const result = state.case.answers[categoryId];
-    answer = result?.text ?? 'Hmm, saya kurang tahu, Dok.';
-    // Gejala yang ikut disebut di jawaban ini dianggap sudah diketahui dokter.
-    revealed = (result?.reveals ?? []).filter((id) => !state.revealedSymptoms.includes(id));
-  }
-
-  return {
-    ...state,
-    questionsUsed: state.questionsUsed + 1,
-    askedCategories: [...state.askedCategories, categoryId],
-    revealedSymptoms: [...state.revealedSymptoms, ...revealed],
-    log: [...state.log, { kind: 'doctor', text: question }, { kind: 'patient', text: answer }],
-  };
+export interface IntentAnswer {
+  state: EncounterState;
+  /** Potongan jawaban pasien, satu per intent. */
+  parts: string[];
 }
 
-export function askSymptom(
-  state: EncounterState,
-  symptomId: string,
-  content: GameContent,
-  config: GameConfig,
-): EncounterState {
-  assertOk(canAskSymptom(state, symptomId, config));
-  const symptom = content.symptomsById.get(symptomId);
-  if (!symptom) throw new EncounterError(`Gejala tidak dikenal: ${symptomId}`);
-  const result = answerSymptomQuestion(state.case, symptomId, content);
+const uniq = (items: string[]) => [...new Set(items)];
 
-  return {
-    ...state,
-    questionsUsed: state.questionsUsed + 1,
-    askedSymptoms: [...state.askedSymptoms, symptomId],
-    revealedSymptoms: result.revealed ? [...state.revealedSymptoms, symptomId] : state.revealedSymptoms,
-    log: [...state.log, { kind: 'doctor', text: symptom.question }, { kind: 'patient', text: result.text }],
+/**
+ * Terapkan satu atau beberapa intent ke state: tandai topik/gejala yang ditanyakan,
+ * ungkap gejala, dan susun potongan jawaban pasien. Dipakai oleh jalur lokal (NLU)
+ * maupun pasien AI (tool calls) agar keduanya mencatat hal yang sama.
+ */
+export function applyIntents(state: EncounterState, intents: readonly Intent[], content: GameContent): IntentAnswer {
+  const c = state.case;
+  let askedTopics = [...state.askedTopics];
+  let askedSymptoms = [...state.askedSymptoms];
+  let revealed = [...state.revealedSymptoms];
+  const parts: string[] = [];
+  const salt = String(state.questionCount);
+
+  const answerTopic = (topic: string) => {
+    const cat = content.anamnesisById.get(topic);
+    if (!cat) return;
+    const repeated = askedTopics.includes(topic);
+    if (cat.type === 'chief') {
+      parts.push(chiefComplaintReply(c, content));
+    } else if (cat.type === 'dynamic') {
+      const result = answerOtherComplaints(c, revealed, content);
+      revealed = uniq([...revealed, ...result.revealed]);
+      parts.push(result.text);
+    } else {
+      const answer = c.answers[topic];
+      const text = answer?.text ?? 'Hmm, saya kurang tahu, Dok.';
+      parts.push(repeated ? `${conversationReply('repeat', c, content, `${topic}:${salt}`)} ${text}` : text);
+      revealed = uniq([...revealed, ...(answer?.reveals ?? [])]);
+    }
+    askedTopics = uniq([...askedTopics, topic]);
   };
+
+  for (const intent of intents) {
+    switch (intent.kind) {
+      case 'topic':
+        answerTopic(intent.topic);
+        break;
+      case 'symptom': {
+        if (revealed.includes(intent.symptom)) {
+          parts.push(conversationReply('alreadySaid', c, content, `${intent.symptom}:${salt}`));
+        } else {
+          const r = answerSymptomQuestion(c, intent.symptom, content);
+          parts.push(r.text);
+          if (r.revealed) revealed = uniq([...revealed, intent.symptom]);
+        }
+        askedSymptoms = uniq([...askedSymptoms, intent.symptom]);
+        break;
+      }
+      case 'symptom_detail': {
+        if (c.chiefComplaintSymptoms.includes(intent.symptom)) {
+          answerTopic(intent.topic);
+        } else {
+          const r = answerSymptomDetail(c, intent.topic, intent.symptom, content);
+          parts.push(r.text);
+          if (r.revealed) revealed = uniq([...revealed, intent.symptom]);
+          askedSymptoms = uniq([...askedSymptoms, intent.symptom]);
+        }
+        break;
+      }
+      case 'review': {
+        const group = content.reviewsById.get(intent.group);
+        if (!group) break;
+        const r = answerReview(c, intent.group, content);
+        const repeatedAll = r.revealed.length > 0 && r.revealed.every((id) => revealed.includes(id));
+        parts.push(repeatedAll ? `${conversationReply('repeat', c, content, `${intent.group}:${salt}`)} ${r.text}` : r.text);
+        revealed = uniq([...revealed, ...r.revealed]);
+        askedSymptoms = uniq([...askedSymptoms, ...group.symptoms]);
+        break;
+      }
+      case 'greeting':
+      case 'thanks':
+      case 'consent':
+        parts.push(conversationReply(intent.kind, c, content, salt));
+        break;
+    }
+  }
+  return { state: { ...state, askedTopics, askedSymptoms, revealedSymptoms: revealed }, parts };
+}
+
+/** Catat satu pertukaran tanya-jawab di log percakapan. */
+export function recordExchange(state: EncounterState, question: string, answer: string): EncounterState {
+  const entries: LogEntry[] = [
+    { kind: 'doctor', text: question },
+    { kind: 'patient', text: answer },
+  ];
+  return { ...state, questionCount: state.questionCount + 1, log: [...state.log, ...entries] };
+}
+
+export interface QuestionResult {
+  state: EncounterState;
+  reply: string;
+  intents: Intent[];
+  understood: boolean;
+}
+
+/** Ajukan pertanyaan bebas (pemahaman bahasa lokal tanpa AI). */
+export function askQuestion(state: EncounterState, question: string, content: GameContent, config: GameConfig): QuestionResult {
+  assertOk(checkActive(state));
+  const text = question.trim();
+  if (!text) throw new EncounterError('Pertanyaan masih kosong.');
+  const { intents } = interpretQuestion(text, content, config.anamnesis.maxIntentsPerQuestion);
+  if (intents.length === 0) {
+    const reply = conversationReply('unknown', state.case, content, String(state.questionCount));
+    return { state: recordExchange(state, text, reply), reply, intents, understood: false };
+  }
+  const answered = applyIntents(state, intents, content);
+  const reply = answered.parts.join(' ');
+  return { state: recordExchange(answered.state, text, reply), reply, intents, understood: true };
+}
+
+/** Topik inti yang belum ditanyakan (untuk saran pertanyaan di UI). */
+export function unaskedCoreTopics(state: EncounterState, content: GameContent): string[] {
+  return content.anamnesis.filter((t) => t.core && !state.askedTopics.includes(t.id)).map((t) => t.id);
 }
 
 // ---------------------------------------------------------------------------
-// Pemeriksaan berbayar (memotong budget pasien)
+// Pemeriksaan (fisik gratis; penunjang memotong budget pasien)
 // ---------------------------------------------------------------------------
 
 export function canPerformExam(state: EncounterState, toolId: string, content: GameContent, config: GameConfig): Check {
@@ -159,34 +229,65 @@ export function performExam(
   };
 }
 
-/**
- * true jika tidak ada lagi pemeriksaan yang terjangkau budget.
- * Pada kondisi ini pemain wajib memutuskan diagnosis (anamnesis gratis tetap boleh).
- */
+/** true jika tidak ada lagi pemeriksaan BERBAYAR yang terjangkau budget. */
 export function isBudgetExhausted(state: EncounterState, content: GameContent, config: GameConfig): boolean {
-  return content.tools.every(
-    (t) => state.examsDone.includes(t.id) || toolPrice(t.id, config) > state.budgetRemaining,
-  );
+  return content.tools
+    .filter((t) => toolPrice(t.id, config) > 0)
+    .every((t) => state.examsDone.includes(t.id) || toolPrice(t.id, config) > state.budgetRemaining);
 }
 
 // ---------------------------------------------------------------------------
-// Diagnosis
+// Penalaran: papan diagnosis banding
 // ---------------------------------------------------------------------------
 
-export function submitDiagnosis(
+/**
+ * Tambah/ubah/hapus kondisi di papan diagnosis banding. Hanya satu kondisi
+ * boleh berstatus "utama"; menandai yang baru sebagai utama menurunkan yang lama
+ * menjadi "mungkin". status null = hapus dari papan.
+ */
+export function setDdx(state: EncounterState, conditionId: string, status: DdxStatus | null, content: GameContent): EncounterState {
+  assertOk(checkActive(state));
+  if (!content.catalogById.has(conditionId)) throw new EncounterError(`Kondisi tidak dikenal: ${conditionId}`);
+  if (status === null) return { ...state, ddx: state.ddx.filter((d) => d.id !== conditionId) };
+  const ddx = state.ddx.map((d) => (status === 'utama' && d.status === 'utama' && d.id !== conditionId ? { ...d, status: 'mungkin' as const } : d));
+  const index = ddx.findIndex((d) => d.id === conditionId);
+  if (index >= 0) ddx[index] = { id: conditionId, status };
+  else ddx.push({ id: conditionId, status });
+  return { ...state, ddx };
+}
+
+// ---------------------------------------------------------------------------
+// Keputusan akhir
+// ---------------------------------------------------------------------------
+
+export function canSubmitDecision(state: EncounterState, decision: Partial<ClinicalDecision>, content: GameContent): Check {
+  const active = checkActive(state);
+  if (!active.ok) return active;
+  if (!decision.primary) return { ok: false, reason: 'Tentukan diagnosis kerja (utama).' };
+  if (!content.catalogById.has(decision.primary)) return { ok: false, reason: 'Diagnosis utama tidak dikenal.' };
+  if (!decision.disposition) return { ok: false, reason: 'Pilih tata laksana/disposisi pasien.' };
+  return OK;
+}
+
+export function submitDecision(
   state: EncounterState,
-  diseaseId: string,
+  decision: ClinicalDecision,
   content: GameContent,
   config: GameConfig,
 ): EncounterState {
-  assertOk(checkActive(state));
-  const disease = content.diseasesById.get(diseaseId);
-  if (!disease) throw new EncounterError(`Diagnosis tidak dikenal: ${diseaseId}`);
-  const outcome = evaluateDiagnosis(state.case.diseaseId, diseaseId, state.spent, content, config);
+  assertOk(canSubmitDecision(state, decision, content));
+  const finalDecision: ClinicalDecision = {
+    ...decision,
+    secondary: uniq(decision.secondary.filter((id) => id !== decision.primary && content.catalogById.has(id))),
+    complications: uniq(decision.complications),
+  };
+  const evaluation = evaluateEncounter(state, finalDecision, content, config);
+  const name = content.catalogById.get(finalDecision.primary)!.name;
   return {
     ...state,
-    status: 'diagnosed',
-    outcome,
-    log: [...state.log, { kind: 'system', text: `Diagnosis Anda: ${disease.name}.` }],
+    status: 'finished',
+    decision: finalDecision,
+    evaluation,
+    log: [...state.log, { kind: 'system', text: `Diagnosis kerja: ${name}.` }],
   };
 }

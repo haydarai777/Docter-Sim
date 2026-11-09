@@ -36,7 +36,8 @@
     { "id": "riwayat_keluarga_pjk", "probability": 0.35 },
     { "id": "ekg_iskemia", "probability": 0.4 },
     { "id": "lvh", "when": { "traits": ["hipertensi"] }, "probability": 0.3 },
-    { "id": "kardiomegali", "when": { "traits": ["hipertensi"] }, "probability": 0.25 }
+    { "id": "kardiomegali", "when": { "traits": ["hipertensi"] }, "probability": 0.25 },
+    { "id": "kresendo", "probability": 0.12 }
   ],
   "traitLabels": {
     "perokok": "Faktor risiko: merokok.",
@@ -47,7 +48,8 @@
     "riwayat_keluarga_pjk": "Faktor risiko: riwayat keluarga penyakit jantung koroner dini.",
     "ekg_iskemia": "EKG istirahat menunjukkan tanda iskemia (pada banyak pasien angina stabil EKG istirahat justru normal).",
     "lvh": "Hipertrofi ventrikel kiri akibat hipertensi lama.",
-    "kardiomegali": "Kardiomegali ringan pada foto toraks."
+    "kardiomegali": "Kardiomegali ringan pada foto toraks.",
+    "kresendo": "Pola angina memburuk (kresendo / saat istirahat) — curiga angina tidak stabil."
   },
   "symptoms": [
     { "id": "nyeri_dada", "probability": 1 },
@@ -141,7 +143,40 @@
         "when": { "notTraits": ["perokok"] },
         "clue": "Kurang aktivitas fisik, pola makan tinggi lemak"
       }
-    ]
+    ],
+    "durasi": [
+      {
+        "text": "Sekarang bisa lima belas menit lebih, Dok.",
+        "when": { "traits": ["kresendo"] },
+        "clue": "Episode makin lama (curiga angina tidak stabil)"
+      },
+      {
+        "text": "Paling lama lima sampai sepuluh menit, Dok. Habis istirahat hilang.",
+        "when": { "notTraits": ["kresendo"] },
+        "clue": "Episode singkat < 15 menit yang reda dengan istirahat"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Makin berat, Dok. Kemarin malam muncul waktu saya lagi tiduran.",
+        "when": { "traits": ["kresendo"] },
+        "clue": "Nyeri muncul saat istirahat (curiga angina tidak stabil)"
+      },
+      { "text": "Lumayan, Dok, sampai harus berhenti jalan.", "when": { "notTraits": ["kresendo"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Makin sering, Dok. Dulu seminggu sekali, sekarang hampir tiap hari, jalan dekat saja sudah muncul.",
+        "when": { "traits": ["kresendo"] },
+        "clue": "Angina kresendo: makin sering dan makin berat (tanda bahaya)"
+      },
+      {
+        "text": "Sama saja, Dok. Munculnya selalu kalau capek.",
+        "when": { "notTraits": ["kresendo"] },
+        "clue": "Pola stabil: selalu dipicu aktivitas dengan ambang yang sama"
+      }
+    ],
+    "episode_sebelumnya": [{ "text": "Ini sudah berkali-kali, Dok, selalu kalau jalan cepat. Sebelum beberapa minggu ini nggak pernah." }]
   },
   "findings": [
     { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi"] }, "range": [145, 175] },
@@ -215,20 +250,57 @@
       "param": "kesan",
       "when": { "traits": ["kardiomegali"] },
       "values": ["Kardiomegali ringan"]
+    },
+    {
+      "tool": "pemeriksaan_jantung",
+      "param": "perkusi",
+      "when": { "traits": ["kardiomegali"] },
+      "values": ["Batas jantung kiri melebar ke lateral"]
+    },
+    {
+      "tool": "pemeriksaan_jantung",
+      "param": "iktus",
+      "when": { "traits": ["kardiomegali"] },
+      "values": ["Iktus kordis bergeser ke lateral (ICS VI)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "gizi",
+      "when": { "traits": ["obesitas"] },
+      "values": ["Kesan gizi lebih (obesitas)"]
     }
   ],
   "differentials": [
     {
+      "id": "sindrom_koroner_akut",
+      "howToDistinguish": "SKA: nyeri saat istirahat > 20 menit, makin berat, perubahan EKG akut. Angina stabil: dipicu aktivitas, < 15 menit, reda dengan istirahat.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["progresi", "durasi"], "tools": ["ekg"] }
+    },
+    {
       "id": "gerd",
-      "howToDistinguish": "GERD: rasa terbakar di dada terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat, faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang."
+      "howToDistinguish": "GERD: rasa terbakar di dada terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat, faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang.",
+      "excludeBy": { "topics": ["pemberat_peringan", "karakter"] }
     },
     {
       "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: nyeri/perih ulu hati terkait makan, kembung, nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko."
+      "howToDistinguish": "Dispepsia: nyeri/perih ulu hati terkait makan, kembung, nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko.",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"], "topics": ["lokasi"] }
+    },
+    {
+      "id": "nyeri_muskuloskeletal",
+      "howToDistinguish": "Nyeri muskuloskeletal: terlokalisasi, bertambah saat ditekan atau bergerak, tidak terkait aktivitas berat.",
+      "excludeBy": { "topics": ["karakter", "pemberat_peringan"] }
+    },
+    {
+      "id": "gagal_jantung",
+      "howToDistinguish": "Gagal jantung: sesak saat berbaring, edema tungkai, JVP meningkat, ronkhi basal, kardiomegali.",
+      "excludeBy": { "tools": ["kepala_leher", "ekstremitas_kulit", "pemeriksaan_paru"] }
     },
     {
       "id": "asma",
-      "howToDistinguish": "Asma: sesak dengan mengi episodik sejak muda, ada pemicu alergen/udara dingin, membaik dengan bronkodilator. Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko, tanpa mengi."
+      "howToDistinguish": "Asma: sesak dengan mengi episodik sejak muda, ada pemicu alergen/udara dingin, membaik dengan bronkodilator. Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko, tanpa mengi.",
+      "excludeBy": { "topics": ["pemberat_peringan", "episode_sebelumnya"], "tools": ["pemeriksaan_paru", "spirometri"] }
     }
   ],
   "otherDifferentials": ["Sindrom koroner akut", "Nyeri dada muskuloskeletal", "Spasme esofagus", "Kolik bilier"],
@@ -244,7 +316,6 @@
     "EKG istirahat yang normal TIDAK menyingkirkan angina stabil — anamnesis adalah kuncinya.",
     "Nyeri dada saat istirahat, makin sering/berat, atau lebih dari 20 menit → curigai sindrom koroner akut (gawat darurat)."
   ],
-  "idealWorkup": ["tanda_vital", "timbangan", "ekg"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Level SKDI angina pektoris stabil (3A) mohon diverifikasi.", "Proporsi EKG istirahat abnormal disederhanakan."],
@@ -253,5 +324,104 @@
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Angina Pektoris Stabil",
       "ESC Guidelines for the management of chronic coronary syndromes (2019)"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "kresendo",
+      "name": "Angina tidak stabil (pola memburuk)",
+      "trait": "kresendo",
+      "redFlag": true,
+      "assess": { "topics": ["progresi", "pola", "durasi", "keparahan"] },
+      "explanation": "Nyeri saat istirahat, makin sering/berat, atau > 20 menit → curiga sindrom koroner akut, rujuk segera."
+    },
+    {
+      "id": "lvh",
+      "name": "Kerusakan organ target: hipertrofi ventrikel kiri",
+      "trait": "lvh",
+      "redFlag": false,
+      "assess": { "tools": ["ekg"] },
+      "explanation": "Hipertensi lama menyebabkan LVH; menambah risiko kardiovaskular."
+    },
+    {
+      "id": "kardiomegali",
+      "name": "Kardiomegali",
+      "trait": "kardiomegali",
+      "redFlag": false,
+      "assess": { "tools": ["rontgen_thorax", "pemeriksaan_jantung"] },
+      "explanation": "Pembesaran jantung; nilai kemungkinan gagal jantung."
+    }
+  ],
+  "traitComorbidities": { "hipertensi": "hipertensi", "diabetes": "dm_tipe2", "dislipidemia": "dislipidemia", "obesitas": "obesitas" },
+  "plan": {
+    "keyTopics": ["lokasi", "karakter", "durasi", "pemberat_peringan", "progresi", "riwayat_keluarga", "kebiasaan"],
+    "exams": [
+      { "tool": "pemeriksaan_jantung", "role": "kunci", "reason": "Bunyi jantung, murmur, pembesaran jantung." },
+      { "tool": "pemeriksaan_paru", "role": "pendukung", "reason": "Ronkhi basal (tanda gagal jantung)." },
+      { "tool": "ekstremitas_kulit", "role": "pendukung", "reason": "Edema tungkai." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "IMT & lingkar perut (faktor risiko)." }
+    ],
+    "tests": [
+      { "tool": "ekg", "role": "kunci", "reason": "Tanda iskemia/LVH; EKG normal tidak menyingkirkan angina." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM sebagai faktor risiko." },
+      { "tool": "profil_lipid", "role": "pendukung", "reason": "Faktor risiko kardiovaskular." },
+      {
+        "tool": "rontgen_thorax",
+        "role": "komplikasi",
+        "reason": "Kardiomegali / bendungan paru.",
+        "when": { "traits": ["kardiomegali"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "USG abdomen tidak menilai nyeri dada iskemik." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Pola angina memburuk atau muncul saat istirahat: curiga sindrom koroner akut.",
+      "when": { "traits": ["kresendo"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Angina stabil (SKDI 3A): tata laksana awal & modifikasi faktor risiko, lalu rujuk spesialis jantung untuk stratifikasi risiko."
+    }
+  ],
+  "management": [
+    "Kendalikan faktor risiko: berhenti merokok, tekanan darah, gula darah, lipid, berat badan.",
+    "Edukasi: hentikan aktivitas saat nyeri; segera ke IGD bila nyeri > 20 menit atau muncul saat istirahat.",
+    "Terapi antiangina dan pencegahan sekunder sesuai pedoman — keputusan dokter.",
+    "Rujuk spesialis jantung untuk stratifikasi risiko (uji latih jantung)."
+  ],
+  "approach": [
+    "Nyeri dada: karakter (ditekan vs terbakar), lokasi & penjalaran, pemicu (aktivitas/emosi), durasi, dan pereda (istirahat).",
+    "Gali faktor risiko kardiovaskular dan riwayat keluarga.",
+    "Tanda vital lengkap, pemeriksaan jantung–paru, dan EKG istirahat.",
+    "Singkirkan sindrom koroner akut: nyeri saat istirahat, makin sering, atau > 20 menit.",
+    "Catat kerusakan organ target dan komorbid (hipertensi, DM, dislipidemia, obesitas)."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "angina_stabil", "toolNormal": "ekg" },
+      "text": "EKG istirahat normal TIDAK menyingkirkan angina stabil — anamnesis yang khas lebih menentukan."
+    },
+    {
+      "when": { "primaryIs": "gerd" },
+      "text": "Keluhan \"masuk angin/angin duduk\" yang dipicu aktivitas dan reda dengan istirahat pada pasien berisiko harus dianggap angina."
+    },
+    {
+      "when": { "primaryIs": "dispepsia" },
+      "text": "Nyeri dada/epigastrium yang dipicu aktivitas pada pasien berisiko harus dianggap jantung sampai terbukti bukan."
+    }
+  ]
 }

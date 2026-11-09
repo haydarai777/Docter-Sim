@@ -28,14 +28,21 @@
     { "id": "lobus_kanan", "probability": 0.6 },
     { "id": "lobus_kiri", "when": { "notTraits": ["lobus_kanan"] }, "probability": 1 },
     { "id": "hipoksia", "probability": 0.45 },
-    { "id": "leukositosis", "probability": 0.8 }
+    { "id": "leukositosis", "probability": 0.8 },
+    { "id": "curb_berat", "when": { "ageMin": 65 }, "probability": 0.5 },
+    { "id": "curb_berat", "probability": 0.15 },
+    { "id": "efusi_parapneumonik", "probability": 0.1 },
+    { "id": "bingung", "when": { "traits": ["curb_berat"] }, "probability": 0.4 }
   ],
   "traitLabels": {
     "perokok": "Faktor risiko: merokok.",
     "lobus_kanan": "Konsolidasi di lobus bawah paru kanan.",
     "lobus_kiri": "Konsolidasi di lobus bawah paru kiri.",
     "hipoksia": "Hipoksemia (SpO₂ < 94%) — tanda pneumonia berat, pertimbangkan rujuk.",
-    "leukositosis": "Leukositosis dengan pergeseran ke kiri (infeksi bakteri)."
+    "leukositosis": "Leukositosis dengan pergeseran ke kiri (infeksi bakteri).",
+    "curb_berat": "Pneumonia berat: CURB-65 ≥ 2.",
+    "efusi_parapneumonik": "Efusi parapneumonik.",
+    "bingung": "Kebingungan (komponen C pada CURB-65)."
   },
   "symptoms": [
     { "id": "demam", "probability": 1 },
@@ -125,24 +132,80 @@
         "clue": "Merokok (faktor risiko)"
       },
       { "text": "Biasa saja, Dok.", "when": { "notTraits": ["perokok"] } }
-    ]
+    ],
+    "durasi": [{ "text": "Demamnya terus-terusan, Dok, batuknya juga hampir tiap saat." }],
+    "keparahan": [
+      {
+        "text": "Berat, Dok. Napas sesak, ngomong panjang saja capek.",
+        "when": { "traits": ["hipoksia"], "symptoms": ["sesak_napas"] },
+        "reveals": ["sesak_napas"],
+        "clue": "Sesak berat (curiga hipoksemia)"
+      },
+      { "text": "Lumayan berat, Dok, dua hari ini nggak bisa ke mana-mana.", "when": { "notTraits": ["hipoksia"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Makin parah, Dok. Awalnya pilek biasa, sekarang demam tinggi dan batuk berdahak.",
+        "clue": "Perburukan akut setelah ISPA"
+      }
+    ],
+    "episode_sebelumnya": [{ "text": "Belum pernah separah ini, Dok." }]
   },
   "findings": [
-    { "tool": "termometer", "param": "suhu", "range": [38.5, 40] },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["curb_berat"] }, "range": [45, 75] },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["curb_berat"] }, "range": [30, 34] },
+    {
+      "tool": "tanda_vital",
+      "param": "td_sistolik",
+      "when": { "traits": ["curb_berat"] },
+      "probability": 0.3,
+      "range": [85, 89]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesadaran",
+      "when": { "traits": ["bingung"] },
+      "values": ["Somnolen ringan, sedikit bingung (GCS 14)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["hipoksia"] },
+      "values": ["Tampak sesak, napas cuping hidung"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "inspeksi",
+      "when": { "traits": ["hipoksia"] },
+      "values": ["Napas cepat, retraksi interkostal ringan"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["efusi_parapneumonik", "lobus_kanan"] },
+      "values": ["Pneumonia lobus bawah kanan dengan efusi parapneumonik"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["efusi_parapneumonik", "lobus_kiri"] },
+      "values": ["Pneumonia lobus bawah kiri dengan efusi parapneumonik"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "range": [38.5, 40] },
     { "tool": "tanda_vital", "param": "napas", "range": [24, 30] },
     { "tool": "tanda_vital", "param": "nadi", "range": [100, 120] },
-    { "tool": "oksimeter", "param": "spo2", "when": { "traits": ["hipoksia"] }, "range": [88, 93] },
-    { "tool": "oksimeter", "param": "spo2", "range": [94, 96] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["hipoksia"] }, "range": [88, 93] },
+    { "tool": "tanda_vital", "param": "spo2", "range": [94, 96] },
     {
-      "tool": "stetoskop",
-      "param": "paru",
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
       "when": { "traits": ["lobus_kanan"] },
       "probability": 0.9,
       "values": ["Ronkhi basah halus dan suara napas bronkial di basal paru kanan"]
     },
     {
-      "tool": "stetoskop",
-      "param": "paru",
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
       "when": { "traits": ["lobus_kiri"] },
       "probability": 0.9,
       "values": ["Ronkhi basah halus dan suara napas bronkial di basal paru kiri"]
@@ -174,20 +237,71 @@
       "param": "kesan",
       "when": { "traits": ["lobus_kiri"] },
       "values": ["Pneumonia lobus bawah kiri"]
-    }
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "perkusi",
+      "when": { "traits": ["lobus_kanan"] },
+      "values": ["Redup di basal paru kanan"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "perkusi",
+      "when": { "traits": ["lobus_kiri"] },
+      "values": ["Redup di basal paru kiri"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "palpasi",
+      "when": { "traits": ["lobus_kanan"] },
+      "values": ["Fremitus meningkat di basal paru kanan"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "palpasi",
+      "when": { "traits": ["lobus_kiri"] },
+      "values": ["Fremitus meningkat di basal paru kiri"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "sinus_diafragma",
+      "when": { "traits": ["efusi_parapneumonik"] },
+      "values": ["Sinus kostofrenikus sisi yang sakit tumpul"]
+    },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak sakit sedang"] }
   ],
   "differentials": [
     {
       "id": "tb_paru",
-      "howToDistinguish": "TB: batuk ≥ 2 minggu, keringat malam, BB turun, demam subfebris, infiltrat/kavitas lapangan atas, BTA/TCM positif. Pneumonia: akut, demam tinggi, sesak, konsolidasi lobus bawah, leukositosis."
+      "howToDistinguish": "TB: batuk ≥ 2 minggu, keringat malam, BB turun, demam subfebris, infiltrat/kavitas lapangan atas, BTA/TCM positif. Pneumonia: akut, demam tinggi, sesak, konsolidasi lobus bawah, leukositosis.",
+      "excludeBy": { "topics": ["onset"], "tools": ["rontgen_thorax"] }
     },
     {
       "id": "asma",
-      "howToDistinguish": "Asma: sesak dengan mengi, tanpa demam tinggi, riwayat serangan berulang, membaik dengan bronkodilator. Pneumonia: demam tinggi, dahak purulen, ronkhi basah lokal, konsolidasi pada foto toraks."
+      "howToDistinguish": "Asma: sesak dengan mengi, tanpa demam tinggi, riwayat serangan berulang, membaik dengan bronkodilator. Pneumonia: demam tinggi, dahak purulen, ronkhi basah lokal, konsolidasi pada foto toraks.",
+      "excludeBy": { "topics": ["episode_sebelumnya"], "tools": ["pemeriksaan_paru"] }
     },
     {
       "id": "dengue",
-      "howToDistinguish": "Dengue: demam tinggi tanpa batuk produktif/sesak yang menonjol, leukopenia dan trombositopenia. Pneumonia: batuk berdahak, sesak, ronkhi lokal, leukositosis."
+      "howToDistinguish": "Dengue: demam tinggi tanpa batuk produktif/sesak yang menonjol, leukopenia dan trombositopenia. Pneumonia: batuk berdahak, sesak, ronkhi lokal, leukositosis.",
+      "excludeBy": { "tools": ["darah_lengkap"] }
+    },
+    {
+      "id": "bronkitis_akut",
+      "howToDistinguish": "Bronkitis akut: batuk tanpa tanda konsolidasi, foto toraks normal.",
+      "excludeBy": { "tools": ["pemeriksaan_paru", "rontgen_thorax"] }
+    },
+    {
+      "id": "gagal_jantung",
+      "howToDistinguish": "Gagal jantung: ortopnea, edema tungkai, JVP meningkat, kardiomegali; demam tidak menonjol.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["kepala_leher", "ekstremitas_kulit", "pemeriksaan_jantung"] }
+    },
+    {
+      "id": "sepsis",
+      "howToDistinguish": "Sepsis: infeksi dengan hipotensi, takikardia, dan penurunan kesadaran.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "keadaan_umum"] }
     }
   ],
   "otherDifferentials": ["Bronkitis akut", "Influenza", "COVID-19", "Gagal jantung (edema paru)"],
@@ -202,7 +316,6 @@
     "Frekuensi napas dan saturasi O₂ adalah tanda vital penting pada pasien batuk-demam — sering terlupa.",
     "Nilai CURB-65 (Confusion, Urea, Respiratory rate ≥ 30, Blood pressure rendah, usia ≥ 65) untuk menentukan perlu rujuk/rawat."
   ],
-  "idealWorkup": ["termometer", "tanda_vital", "oksimeter", "stetoskop", "rontgen_thorax"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Level SKDI pneumonia komunitas mohon diverifikasi.", "Pneumonia berat/sepsis tidak dimodelkan terpisah."],
@@ -210,5 +323,100 @@
       "PDPI. Pneumonia Komuniti: Pedoman Diagnosis dan Penatalaksanaan di Indonesia (2022)",
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Pneumonia"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "hipoksia",
+      "name": "Hipoksemia (SpO₂ < 94%)",
+      "trait": "hipoksia",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital"] },
+      "explanation": "Saturasi oksigen rendah adalah indikasi rawat inap."
+    },
+    {
+      "id": "curb_berat",
+      "name": "Pneumonia berat (CURB-65 ≥ 2)",
+      "trait": "curb_berat",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "fungsi_ginjal", "keadaan_umum"] },
+      "explanation": "CURB-65: Confusion, Urea > 42 mg/dL, Respiratory rate ≥ 30, Blood pressure < 90/60, usia ≥ 65. Skor ≥ 2 → rawat inap."
+    },
+    {
+      "id": "efusi_parapneumonik",
+      "name": "Efusi parapneumonik",
+      "trait": "efusi_parapneumonik",
+      "redFlag": false,
+      "assess": { "tools": ["pemeriksaan_paru", "rontgen_thorax"] },
+      "explanation": "Cairan pleura menyertai pneumonia; dapat berkembang menjadi empiema."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "keluhan_lain", "kebiasaan"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_paru",
+        "role": "kunci",
+        "reason": "Tanda konsolidasi: redup, fremitus meningkat, ronkhi/suara bronkial."
+      },
+      { "tool": "keadaan_umum", "role": "komplikasi", "reason": "Kesadaran (komponen CURB-65)." }
+    ],
+    "tests": [
+      { "tool": "rontgen_thorax", "role": "kunci", "reason": "Konfirmasi infiltrat/konsolidasi dan efusi." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Leukositosis dengan pergeseran ke kiri." },
+      { "tool": "fungsi_ginjal", "role": "komplikasi", "reason": "Ureum untuk CURB-65." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada keluhan perut." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Hipoksemia memerlukan oksigen dan rawat inap.",
+      "when": { "traits": ["hipoksia"] }
+    },
+    {
+      "value": "rujuk_segera",
+      "reason": "CURB-65 ≥ 2: pneumonia berat, rawat inap.",
+      "when": { "traits": ["curb_berat"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "CURB-65 0–1 tanpa hipoksemia: rawat jalan dengan kontrol 48–72 jam.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Nilai derajat keparahan (CURB-65, SpO₂) untuk menentukan tempat perawatan.",
+    "Antibiotik empiris sesuai pedoman — keputusan dokter.",
+    "Hidrasi, antipiretik, edukasi tanda perburukan; kontrol 48–72 jam.",
+    "Berhenti merokok; vaksinasi pada kelompok risiko."
+  ],
+  "approach": [
+    "Batuk + demam akut + sesak: tanyakan onset, dahak, nyeri dada pleuritik, ISPA sebelumnya, dan rokok.",
+    "Tanda vital lengkap termasuk frekuensi napas dan SpO₂ — sering terlupa.",
+    "Pemeriksaan paru untuk tanda konsolidasi; foto toraks untuk konfirmasi.",
+    "Hitung CURB-65 (kesadaran, ureum, napas, tekanan darah, usia) dan nilai hipoksemia.",
+    "Bedakan dengan TB (kronik), asma (mengi episodik), dan gagal jantung."
+  ],
+  "pitfalls": [
+    {
+      "when": { "primaryIs": "tb_paru" },
+      "text": "Onset akut beberapa hari dengan demam tinggi dan konsolidasi lobus bawah lebih sesuai pneumonia; TB berlangsung ≥ 2 minggu."
+    },
+    {
+      "when": { "traits": ["curb_berat"], "toolDone": "tanda_vital" },
+      "text": "Frekuensi napas ≥ 30 dan ureum tinggi adalah komponen CURB-65 — pneumonia ini termasuk berat."
+    }
+  ]
 }

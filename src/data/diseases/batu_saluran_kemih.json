@@ -48,7 +48,12 @@
     },
     { "id": "riwayat_batu", "probability": 0.3 },
     { "id": "batu_distal", "probability": 0.3 },
-    { "id": "hematuria_makro", "probability": 0.3 }
+    { "id": "hematuria_makro", "probability": 0.3 },
+    { "id": "batu_tampak_usg", "when": { "traits": ["hidronefrosis"] }, "probability": 0.8 },
+    { "id": "batu_tampak_usg", "probability": 0.6 },
+    { "id": "radioopak", "probability": 0.8 },
+    { "id": "infeksi_obstruktif", "when": { "traits": ["hidronefrosis"] }, "probability": 0.1 },
+    { "id": "gangguan_fungsi_ginjal", "when": { "traits": ["hidronefrosis"] }, "probability": 0.2 }
   ],
   "traitLabels": {
     "sisi_kanan": "Batu di sisi kanan.",
@@ -57,9 +62,15 @@
     "kurang_minum": "Faktor risiko: kurang minum.",
     "kerja_panas": "Faktor risiko: bekerja di lingkungan panas (dehidrasi kronik).",
     "riwayat_batu": "Pernah mengalami batu sebelumnya (risiko kambuh tinggi).",
-    "batu_distal": "Batu di ureter distal — dapat menimbulkan keluhan berkemih (frekuensi/urgensi)."
+    "batu_distal": "Batu di ureter distal — dapat menimbulkan keluhan berkemih (frekuensi/urgensi).",
+    "batu_tampak_usg": "Batu terlihat jelas pada USG.",
+    "radioopak": "Batu radioopak (tampak pada foto polos BNO).",
+    "infeksi_obstruktif": "Infeksi pada saluran kemih yang tersumbat — kegawatan urologi.",
+    "gangguan_fungsi_ginjal": "Gangguan fungsi ginjal akibat sumbatan."
   },
   "symptoms": [
+    { "id": "demam", "when": { "traits": ["infeksi_obstruktif"] }, "probability": 1 },
+    { "id": "menggigil", "when": { "traits": ["infeksi_obstruktif"] }, "probability": 0.7 },
     { "id": "nyeri_pinggang", "probability": 1 },
     { "id": "mual_muntah", "probability": 0.6 },
     { "id": "kencing_merah", "when": { "traits": ["hematuria_makro"] }, "probability": 1 },
@@ -92,14 +103,6 @@
     ],
     "pola": [{ "text": "Hilang timbul, Dok. Tiap setengah jam kambuh lagi.", "clue": "Kolik hilang-timbul" }],
     "pemberat_peringan": [{ "text": "Nggak ada posisi yang enak, Dok. Minum obat pereda nyeri dari warung juga nggak mempan." }],
-    "riwayat_penyakit": [
-      {
-        "text": "Dua tahun lalu pernah keluar batu kecil waktu kencing, Dok.",
-        "when": { "traits": ["riwayat_batu"] },
-        "clue": "Riwayat batu saluran kemih sebelumnya"
-      },
-      { "text": "Belum pernah sakit kayak gini, Dok.", "when": { "notTraits": ["riwayat_batu"] } }
-    ],
     "riwayat_obat": [{ "text": "Minum obat sakit kepala sama obat pegal linu, Dok, nggak ngaruh." }],
     "riwayat_keluarga": [
       {
@@ -123,34 +126,112 @@
         "clue": "Kurang minum air putih"
       },
       { "text": "Biasa saja, Dok.", "when": { "notTraits": ["kurang_minum"] }, "weight": 1 }
-    ]
+    ],
+    "durasi": [
+      {
+        "text": "Sekali serangan bisa setengah jam sampai sejam, Dok, lalu reda, terus datang lagi.",
+        "clue": "Nyeri kolik hilang-timbul"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sakit sekali, Dok, paling sakit seumur hidup. Sampai muntah-muntah.",
+        "when": { "symptoms": ["mual_muntah"] },
+        "reveals": ["mual_muntah"],
+        "clue": "Nyeri sangat hebat disertai muntah"
+      },
+      { "text": "Sakit sekali, Dok, paling sakit seumur hidup.", "when": { "notSymptoms": ["mual_muntah"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Dari semalam badan juga panas menggigil, Dok.",
+        "when": { "traits": ["infeksi_obstruktif"], "symptoms": ["demam"] },
+        "reveals": ["demam"],
+        "clue": "Demam pada sumbatan saluran kemih (curiga infeksi obstruktif — gawat)"
+      },
+      { "text": "Hilang timbul dari kemarin, Dok, belum berkurang.", "when": { "notTraits": ["infeksi_obstruktif"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Dua tahun lalu pernah keluar batu kecil waktu kencing, Dok.",
+        "when": { "traits": ["riwayat_batu"] },
+        "clue": "Riwayat batu sebelumnya (penyakit kambuhan)"
+      },
+      { "text": "Belum pernah, Dok.", "when": { "notTraits": ["riwayat_batu"] } }
+    ],
+    "riwayat_penyakit": [{ "text": "Nggak ada penyakit apa-apa, Dok." }]
   },
   "findings": [
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["infeksi_obstruktif"] }, "range": [38.3, 39.4] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["infeksi_obstruktif"] }, "range": [105, 120] },
+    {
+      "tool": "darah_lengkap",
+      "param": "leukosit",
+      "when": { "traits": ["infeksi_obstruktif"] },
+      "range": [14000, 19000]
+    },
+    {
+      "tool": "urinalisis",
+      "param": "leukosit_esterase",
+      "when": { "traits": ["infeksi_obstruktif"] },
+      "values": ["+2", "+3"]
+    },
+    {
+      "tool": "urinalisis",
+      "param": "sedimen_leukosit",
+      "when": { "traits": ["infeksi_obstruktif"] },
+      "range": [20, 50]
+    },
+    {
+      "tool": "urinalisis",
+      "param": "bakteri",
+      "when": { "traits": ["infeksi_obstruktif"] },
+      "values": ["Positif (++)"]
+    },
+    {
+      "tool": "fungsi_ginjal",
+      "param": "kreatinin",
+      "when": { "traits": ["gangguan_fungsi_ginjal"], "sex": "male" },
+      "range": [1.5, 2.2]
+    },
+    {
+      "tool": "fungsi_ginjal",
+      "param": "kreatinin",
+      "when": { "traits": ["gangguan_fungsi_ginjal"], "sex": "female" },
+      "range": [1.3, 1.9]
+    },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["gangguan_fungsi_ginjal"] }, "range": [55, 80] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["infeksi_obstruktif"] },
+      "values": ["Tampak sakit berat, menggigil"]
+    },
     { "tool": "tanda_vital", "param": "nadi", "range": [88, 108] },
     { "tool": "tanda_vital", "param": "td_sistolik", "probability": 0.5, "range": [130, 150] },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "ketok_cva",
       "when": { "traits": ["sisi_kanan"] },
       "probability": 0.85,
       "values": ["Positif kanan"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "ketok_cva",
       "when": { "traits": ["sisi_kiri"] },
       "probability": 0.85,
       "values": ["Positif kiri"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "nyeri_tekan",
       "when": { "traits": ["sisi_kanan"] },
       "probability": 0.4,
       "values": ["Nyeri tekan ringan regio lumbal–inguinal kanan"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "nyeri_tekan",
       "when": { "traits": ["sisi_kiri"] },
       "probability": 0.4,
@@ -174,63 +255,139 @@
     { "tool": "urinalisis", "param": "kristal", "probability": 0.4, "values": ["Kalsium oksalat (+)", "Asam urat (+)"] },
     { "tool": "urinalisis", "param": "sedimen_leukosit", "probability": 0.3, "range": [6, 12] },
     { "tool": "urinalisis", "param": "bj", "when": { "traits": ["kurang_minum"] }, "range": [1.025, 1.03] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.3, "range": [10500, 13000] },
     {
       "tool": "usg_abdomen",
       "param": "ginjal",
-      "when": { "traits": ["sisi_kanan", "hidronefrosis"] },
-      "probability": 0.9,
-      "diagnostic": true,
+      "when": { "traits": ["sisi_kanan", "hidronefrosis", "batu_tampak_usg"] },
       "values": ["Hidronefrosis ringan ginjal kanan; tampak batu di ureter proksimal kanan ± 6 mm"]
     },
     {
       "tool": "usg_abdomen",
       "param": "ginjal",
-      "when": { "traits": ["sisi_kiri", "hidronefrosis"] },
-      "probability": 0.9,
-      "diagnostic": true,
-      "values": ["Hidronefrosis ringan ginjal kiri; tampak batu di ureter proksimal kiri ± 6 mm"]
+      "when": { "traits": ["sisi_kanan", "hidronefrosis"] },
+      "values": ["Hidronefrosis ringan ginjal kanan; penyebab sumbatan tidak tampak (ureter distal sulit dinilai)"]
     },
     {
       "tool": "usg_abdomen",
       "param": "ginjal",
-      "when": { "traits": ["sisi_kanan"] },
-      "probability": 0.7,
-      "diagnostic": true,
+      "when": { "traits": ["sisi_kanan", "batu_tampak_usg"] },
       "values": ["Tampak batu di pelvis ginjal kanan ± 5 mm, tanpa hidronefrosis"]
     },
     {
       "tool": "usg_abdomen",
       "param": "ginjal",
-      "when": { "traits": ["sisi_kiri"] },
-      "probability": 0.7,
-      "diagnostic": true,
+      "when": { "traits": ["sisi_kiri", "hidronefrosis", "batu_tampak_usg"] },
+      "values": ["Hidronefrosis ringan ginjal kiri; tampak batu di ureter proksimal kiri ± 6 mm"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "ginjal",
+      "when": { "traits": ["sisi_kiri", "hidronefrosis"] },
+      "values": ["Hidronefrosis ringan ginjal kiri; penyebab sumbatan tidak tampak (ureter distal sulit dinilai)"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "ginjal",
+      "when": { "traits": ["sisi_kiri", "batu_tampak_usg"] },
       "values": ["Tampak batu di pelvis ginjal kiri ± 5 mm, tanpa hidronefrosis"]
     },
     {
       "tool": "usg_abdomen",
       "param": "kesan",
-      "when": { "traits": ["hidronefrosis"] },
-      "requires": "ginjal",
+      "when": { "traits": ["hidronefrosis", "batu_tampak_usg"] },
       "values": ["Urolitiasis dengan hidronefrosis ringan"]
     },
-    { "tool": "usg_abdomen", "param": "kesan", "requires": "ginjal", "values": ["Nefrolitiasis tanpa hidronefrosis"] },
     {
-      "tool": "fungsi_ginjal",
-      "param": "kreatinin",
-      "when": { "traits": ["hidronefrosis"], "sex": "male" },
-      "probability": 0.2,
-      "range": [1.4, 1.7]
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hidronefrosis"] },
+      "values": ["Hidronefrosis ringan; penyebab sumbatan belum tampak — pertimbangkan batu ureter distal atau massa"]
     },
-    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.3, "range": [10500, 13000] }
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["batu_tampak_usg"] },
+      "values": ["Nefrolitiasis tanpa hidronefrosis"]
+    },
+    {
+      "tool": "foto_bno",
+      "param": "batu",
+      "when": { "traits": ["sisi_kanan", "radioopak"] },
+      "values": ["Bayangan radioopak ± 6 mm pada proyeksi ureter/ginjal kanan"]
+    },
+    {
+      "tool": "foto_bno",
+      "param": "batu",
+      "when": { "traits": ["sisi_kiri", "radioopak"] },
+      "values": ["Bayangan radioopak ± 6 mm pada proyeksi ureter/ginjal kiri"]
+    },
+    {
+      "tool": "foto_bno",
+      "param": "kesan",
+      "when": { "traits": ["radioopak"] },
+      "values": ["Suspek batu saluran kemih radioopak"]
+    },
+    {
+      "tool": "ct_abdomen",
+      "param": "ginjal_ureter",
+      "when": { "traits": ["sisi_kanan", "hidronefrosis"] },
+      "values": ["Batu ureter kanan ± 6 mm dengan hidronefrosis ringan; tidak tampak massa"]
+    },
+    {
+      "tool": "ct_abdomen",
+      "param": "ginjal_ureter",
+      "when": { "traits": ["sisi_kanan"] },
+      "values": ["Batu pelvis ginjal kanan ± 5 mm tanpa sumbatan; tidak tampak massa"]
+    },
+    {
+      "tool": "ct_abdomen",
+      "param": "ginjal_ureter",
+      "when": { "traits": ["sisi_kiri", "hidronefrosis"] },
+      "values": ["Batu ureter kiri ± 6 mm dengan hidronefrosis ringan; tidak tampak massa"]
+    },
+    {
+      "tool": "ct_abdomen",
+      "param": "ginjal_ureter",
+      "when": { "traits": ["sisi_kiri"] },
+      "values": ["Batu pelvis ginjal kiri ± 5 mm tanpa sumbatan; tidak tampak massa"]
+    },
+    { "tool": "ct_abdomen", "param": "kesan", "values": ["Urolitiasis"] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak kesakitan, gelisah berganti-ganti posisi"] }
   ],
   "differentials": [
     {
       "id": "isk",
-      "howToDistinguish": "ISK: disuria dan anyang-anyangan dengan nyeri suprapubik, tanpa kolik pinggang; leukosituria dan bakteriuria. Batu: kolik hebat hilang-timbul di pinggang yang menjalar ke lipat paha, hematuria, nyeri ketok CVA, USG tampak batu/hidronefrosis."
+      "howToDistinguish": "ISK: disuria dan anyang-anyangan dengan nyeri suprapubik, tanpa kolik pinggang; leukosituria dan bakteriuria. Batu: kolik hebat hilang-timbul di pinggang yang menjalar ke lipat paha, hematuria, nyeri ketok CVA, USG tampak batu/hidronefrosis.",
+      "excludeBy": { "topics": ["lokasi", "karakter"], "tools": ["urinalisis"] }
+    },
+    {
+      "id": "pielonefritis",
+      "howToDistinguish": "Pielonefritis: demam tinggi, menggigil, leukosituria berat; nyeri pinggang tumpul menetap, bukan kolik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "urinalisis"] }
+    },
+    {
+      "id": "apendisitis_akut",
+      "howToDistinguish": "Apendisitis: nyeri berpindah ke kanan bawah, McBurney (+), demam ringan; urinalisis umumnya normal.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "kolik_bilier",
+      "howToDistinguish": "Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+); USG tampak batu empedu.",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen", "usg_abdomen"] }
+    },
+    {
+      "id": "massa_saluran_kemih",
+      "howToDistinguish": "Massa saluran kemih: hematuria tanpa nyeri pada usia lanjut/perokok, sumbatan tanpa batu yang jelas; perlu CT.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["usg_abdomen", "ct_abdomen"] }
     },
     {
       "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: perih ulu hati terkait makan dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria."
+      "howToDistinguish": "Dispepsia: perih ulu hati terkait makan dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria.",
+      "excludeBy": { "topics": ["lokasi", "karakter"], "tools": ["urinalisis"] }
     }
   ],
   "otherDifferentials": [
@@ -252,10 +409,134 @@
     "Hematuria mikroskopis sangat mendukung, tetapi tidak selalu ada.",
     "Batu dengan sumbatan + demam = kegawatan (pionefrosis/urosepsis), segera rujuk."
   ],
-  "idealWorkup": ["palpasi_abdomen", "urinalisis", "usg_abdomen"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Level SKDI batu saluran kemih (3A) mohon diverifikasi.", "Sensitivitas USG untuk batu ureter disederhanakan."],
     "references": ["IAUI. Panduan Penatalaksanaan Klinis Batu Saluran Kemih (2018)", "EAU Guidelines on Urolithiasis"]
-  }
+  },
+  "complications": [
+    {
+      "id": "hidronefrosis",
+      "name": "Sumbatan / hidronefrosis",
+      "trait": "hidronefrosis",
+      "redFlag": false,
+      "assess": { "tools": ["usg_abdomen", "ct_abdomen"] },
+      "explanation": "Batu menyumbat aliran urin; perlu evaluasi urologi. Sumbatan tanpa batu yang tampak → cari batu distal atau massa."
+    },
+    {
+      "id": "infeksi_obstruktif",
+      "name": "Infeksi pada saluran kemih yang tersumbat",
+      "trait": "infeksi_obstruktif",
+      "redFlag": true,
+      "assess": { "symptoms": ["demam"], "tools": ["tanda_vital", "darah_lengkap", "urinalisis"] },
+      "explanation": "Demam + sumbatan = kegawatan (pionefrosis/urosepsis); perlu dekompresi segera."
+    },
+    {
+      "id": "gangguan_fungsi_ginjal",
+      "name": "Gangguan fungsi ginjal",
+      "trait": "gangguan_fungsi_ginjal",
+      "redFlag": false,
+      "assess": { "tools": ["fungsi_ginjal"] },
+      "explanation": "Kreatinin naik/eGFR turun akibat sumbatan. Fungsi ginjal normal TIDAK menyingkirkan batu."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["lokasi", "karakter", "durasi", "episode_sebelumnya", "kebiasaan"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "reason": "Nyeri ketok CVA; singkirkan apendisitis (McBurney) dan kolik bilier (Murphy)."
+      },
+      { "tool": "keadaan_umum", "role": "pendukung", "reason": "Pasien kolik tampak gelisah berganti posisi." }
+    ],
+    "tests": [
+      { "tool": "urinalisis", "role": "kunci", "reason": "Hematuria, kristal, dan tanda infeksi." },
+      { "tool": "usg_abdomen", "role": "kunci", "reason": "Batu, hidronefrosis (sumbatan), dan massa." },
+      {
+        "tool": "fungsi_ginjal",
+        "role": "komplikasi",
+        "reason": "Menilai komplikasi pada fungsi ginjal (normal tidak menyingkirkan batu)."
+      },
+      { "tool": "foto_bno", "role": "pendukung", "reason": "Batu radioopak." },
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "reason": "Leukositosis pada infeksi obstruktif.",
+        "when": { "traits": ["infeksi_obstruktif"] }
+      },
+      {
+        "tool": "ct_abdomen",
+        "role": "pendukung",
+        "reason": "Sumbatan tanpa batu yang tampak: cari batu ureter distal atau massa.",
+        "when": { "traits": ["hidronefrosis"], "notTraits": ["batu_tampak_usg"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ekg", "reason": "Tidak ada keluhan yang mengarah ke jantung." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Sumbatan dengan infeksi adalah kegawatan urologi.",
+      "when": { "traits": ["infeksi_obstruktif"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Sumbatan/hidronefrosis atau gangguan fungsi ginjal: rujuk urologi.",
+      "when": { "traits": ["hidronefrosis"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Batu saluran kemih (SKDI 3A): atasi nyeri, lalu rujuk urologi untuk evaluasi; batu kecil tanpa sumbatan dapat diobservasi.",
+      "alsoAccept": ["observasi", "rawat_jalan"]
+    }
+  ],
+  "management": [
+    "Atasi nyeri kolik (analgesik) — keputusan dokter.",
+    "Minum air cukup; saring urin untuk menangkap batu.",
+    "Rujuk urologi untuk evaluasi; segera bila demam/infeksi, gangguan fungsi ginjal, atau nyeri tidak teratasi."
+  ],
+  "approach": [
+    "Nyeri pinggang kolik: tanyakan penjalaran, pola hilang-timbul, hematuria, episode sebelumnya, dan kebiasaan minum.",
+    "Periksa nyeri ketok CVA dan singkirkan akut abdomen (apendisitis, kolik bilier; pada perempuan, kehamilan ektopik).",
+    "Urinalisis (hematuria, kristal, infeksi) dan USG (batu, hidronefrosis, massa).",
+    "Fungsi ginjal menilai komplikasi — hasil normal TIDAK menyingkirkan batu.",
+    "Sumbatan tanpa batu yang tampak → pikirkan batu ureter distal atau massa; lanjutkan dengan BNO/CT."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "batu_saluran_kemih", "toolNormal": "fungsi_ginjal" },
+      "text": "Fungsi ginjal normal tidak menyingkirkan batu saluran kemih — ginjal sisi lain mengompensasi."
+    },
+    {
+      "when": { "excluded": "batu_saluran_kemih", "toolNormal": "foto_bno" },
+      "text": "BNO normal tidak menyingkirkan batu: batu radiolusen (mis. asam urat) tidak tampak."
+    },
+    {
+      "when": {
+        "traits": ["hidronefrosis"],
+        "notTraits": ["batu_tampak_usg"],
+        "toolDone": "usg_abdomen",
+        "notConsidered": "massa_saluran_kemih"
+      },
+      "text": "Sumbatan (hidronefrosis) tanpa batu yang tampak harus memicu pertimbangan penyebab lain, termasuk massa — lanjutkan dengan pencitraan."
+    }
+  ]
 }

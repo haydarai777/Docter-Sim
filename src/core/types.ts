@@ -17,11 +17,20 @@
 export type Sex = 'male' | 'female';
 export type EconomyClass = 'miskin' | 'menengah' | 'kaya';
 export type DangerLevel = 'rendah' | 'sedang' | 'tinggi' | 'kritis';
-export type ToolCategory = 'fisik' | 'lab' | 'penunjang';
+/** fisik = pemeriksaan fisik (gratis) · lab = laboratorium · pencitraan = imaging · lainnya = EKG, spirometri, dll. */
+export type ToolCategory = 'fisik' | 'lab' | 'pencitraan' | 'lainnya';
+/** Tujuan klinis pemeriksaan penunjang. */
+export type Objective = 'identifikasi' | 'fungsi_organ' | 'struktur' | 'komplikasi' | 'skrining';
+/** Keputusan tata laksana/disposisi di akhir konsultasi. */
+export type Disposition = 'rawat_jalan' | 'observasi' | 'rujuk_spesialis' | 'rujuk_segera';
+/** Status satu kondisi di papan diagnosis banding pemain. */
+export type DdxStatus = 'utama' | 'mungkin' | 'disingkirkan';
 
 export const ECONOMY_CLASSES: readonly EconomyClass[] = ['miskin', 'menengah', 'kaya'];
 export const DANGER_LEVELS: readonly DangerLevel[] = ['rendah', 'sedang', 'tinggi', 'kritis'];
-export const TOOL_CATEGORIES: readonly ToolCategory[] = ['fisik', 'lab', 'penunjang'];
+export const TOOL_CATEGORIES: readonly ToolCategory[] = ['fisik', 'lab', 'pencitraan', 'lainnya'];
+export const OBJECTIVES: readonly Objective[] = ['identifikasi', 'fungsi_organ', 'struktur', 'komplikasi', 'skrining'];
+export const DISPOSITIONS: readonly Disposition[] = ['rawat_jalan', 'observasi', 'rujuk_spesialis', 'rujuk_segera'];
 
 /** Rentang angka inklusif [min, max]. */
 export type Range = [number, number];
@@ -93,7 +102,10 @@ export interface NumericParamDef {
    */
   copyFrom?: string;
   /** Nilai dihitung dari parameter lain di alat yang sama (tidak boleh diatur oleh aturan penyakit). */
-  compute?: { type: 'weightFromBmi'; bmi: string; heightCm: string };
+  compute?:
+    | { type: 'weightFromBmi'; bmi: string; heightCm: string }
+    /** eGFR (mL/menit/1,73 m²) dengan persamaan CKD-EPI 2021 dari kreatinin serum, usia, jenis kelamin. */
+    | { type: 'egfrCkdEpi2021'; creatinine: string };
 }
 
 /** Parameter hasil pemeriksaan berupa teks (mis. "Negatif", deskripsi auskultasi). */
@@ -113,6 +125,11 @@ export interface TextParamDef {
    * [{ max: 59, value: "Sinus bradikardia" }, { max: 100, value: "Sinus ritme" }, { value: "Sinus takikardia" }]
    */
   bands?: { from: string; ranges: { max?: number; value: string }[] };
+  /**
+   * true = nilai dari SEMUA sumber kelainan (penyakit utama, komorbiditas, insidental)
+   * digabung dengan "; " — dipakai untuk "Kesan" laporan pencitraan.
+   */
+  combine?: boolean;
 }
 
 export type ParamDef = NumericParamDef | TextParamDef;
@@ -132,6 +149,12 @@ export interface ToolDef {
   id: string;
   name: string;
   category: ToolCategory;
+  /** Kelompok pemeriksaan fisik (umum, kepala & leher, thorax, abdomen, ekstremitas, khusus). */
+  group?: string;
+  /** Tujuan klinis (untuk pemeriksaan penunjang). */
+  objectives?: Objective[];
+  /** Kalimat singkat: apa yang dinilai pemeriksaan ini dan batas interpretasinya. */
+  purpose?: string;
   /** Penjelasan singkat untuk pemain. */
   description: string;
   /** Kalimat narasi saat pemeriksaan dilakukan. */
@@ -166,6 +189,13 @@ export interface SymptomDef {
   /** Pertanyaan dokter saat menanyakan gejala ini secara spesifik. */
   question: string;
   phrases: SymptomPhrases;
+  /** Kata/frasa (awam & medis) untuk mengenali gejala ini di pertanyaan bebas pemain. */
+  keywords: string[];
+  /**
+   * false = pasien tidak menyebutnya secara sukarela (mis. malu, dianggap tidak
+   * penting); hanya terungkap bila ditanya spesifik. Default true.
+   */
+  volunteer?: boolean;
 }
 
 export interface SymptomsFile {
@@ -195,13 +225,23 @@ export interface AnamnesisCategoryDef {
   id: string;
   /** Label tombol di UI. */
   label: string;
+  /** Kelompok rubrik penilaian (mis. "Keluhan utama", "Riwayat"). */
+  rubric: string;
+  /** true = topik yang diharapkan ditanyakan pada SETIAP pasien (anamnesis lengkap). */
+  core: boolean;
+  /** Bobot dasar dalam penilaian anamnesis (default 1). */
+  weight?: number;
+  /** Kata/frasa untuk mengenali topik ini di pertanyaan bebas pemain. */
+  keywords: string[];
+  /** Penjelasan singkat untuk umpan balik ("mengapa topik ini penting"). */
+  why: string;
   /** Pertanyaan dokter. Boleh memakai {sapaan}. */
   question: string;
   /**
    * 'static'  : jawaban dipilih dari varian penyakit (atau fallback).
    * 'dynamic' : jawaban disusun dari gejala yang belum disebut (Keluhan lain).
    */
-  type: 'static' | 'dynamic';
+  type: 'static' | 'dynamic' | 'chief';
   /** Jawaban umum jika penyakit tidak mendefinisikan kategori ini (kategori statis). */
   fallback: AnswerVariant[];
   /**
@@ -211,9 +251,40 @@ export interface AnamnesisCategoryDef {
   dynamicTemplates?: { found: string[]; none: string[] };
 }
 
+/** Templat percakapan umum pasien (di luar jawaban kasus). */
+export interface ConversationTemplates {
+  greeting: string[];
+  thanks: string[];
+  consent: string[];
+  unknown: string[];
+  /** Awalan saat pertanyaan yang sama diulang. */
+  repeat: string[];
+  /** Gejala yang sudah disebut ditanyakan lagi. */
+  alreadySaid: string[];
+  /** Mengulang keluhan utama. {keluhanAwal} = kalimat keluhan pertama. */
+  chief: string[];
+  /** Detail (onset/keparahan/...) gejala yang BUKAN keluhan utama. {gejala} = frasa gejala. */
+  detail: Record<string, string[]> & { default: string[] };
+}
+
+/**
+ * Tinjauan sistem (review of systems): pertanyaan umum seperti "BAB-nya bagaimana?"
+ * yang mencakup beberapa gejala sekaligus. Pasien menyebut yang ada, atau menjawab normal.
+ */
+export interface ReviewGroupDef {
+  id: string;
+  label: string;
+  keywords: string[];
+  symptoms: string[];
+  /** Jawaban bila tidak ada satu pun gejala kelompok ini. */
+  normal: string[];
+}
+
 export interface AnamnesisFile {
   review: ReviewInfo;
   categories: AnamnesisCategoryDef[];
+  conversation: ConversationTemplates;
+  reviews: ReviewGroupDef[];
 }
 
 export type PhraseStyle = keyof SymptomPhrases;
@@ -321,9 +392,91 @@ export interface AgeBand {
 }
 
 export interface DifferentialNote {
+  /** Id kondisi di katalog (penyakit kasus, komorbiditas, atau kondisi banding). */
   id: string;
   /** Cara membedakan penyakit ini dengan diagnosis banding tersebut. */
   howToDistinguish: string;
+  /** Diagnosis berbahaya yang wajib dipertimbangkan & disingkirkan. */
+  mustNotMiss?: boolean;
+  /** Bukti yang sah untuk menyingkirkan diagnosis banding ini. */
+  excludeBy?: EvidenceRef;
+}
+
+/** Rujukan ke bukti yang dikumpulkan pemain: topik anamnesis, gejala yang ditanyakan, atau pemeriksaan. */
+export interface EvidenceRef {
+  topics?: string[];
+  symptoms?: string[];
+  /** Id alat (pemeriksaan fisik maupun penunjang). */
+  tools?: string[];
+}
+
+/** Komplikasi / tanda bahaya yang harus dinilai pada penyakit ini. */
+export interface ComplicationDef {
+  id: string;
+  name: string;
+  /** Komplikasi dianggap ADA pada kasus jika trait ini ada. */
+  trait: string;
+  /** true = tanda bahaya yang mengubah tata laksana (biasanya perlu rujuk). */
+  redFlag: boolean;
+  /** Cara menilainya: salah satu bukti ini harus dikumpulkan agar dianggap "sudah dinilai". */
+  assess: EvidenceRef;
+  /** Penjelasan edukatif singkat. */
+  explanation: string;
+}
+
+/** Item rencana pemeriksaan kasus (fisik atau penunjang). */
+export interface PlanItem {
+  tool: string;
+  /** kunci = paling menentukan · pendukung = membantu · komplikasi = menilai komplikasi/fungsi organ. */
+  role: 'kunci' | 'pendukung' | 'komplikasi';
+  /** Hanya diharapkan bila kondisi ini terpenuhi (mis. ada tanda bahaya). */
+  when?: Condition;
+  /** Item dengan group sama saling menggantikan (cukup salah satu, mis. RDT atau mikroskopis). */
+  group?: string;
+  reason: string;
+}
+
+export interface CasePlan {
+  /** Topik anamnesis tambahan yang kunci untuk penyakit ini (selain topik berpetunjuk). */
+  keyTopics?: string[];
+  /** Pemeriksaan fisik yang diharapkan (tanda vital selalu diharapkan otomatis). */
+  exams: PlanItem[];
+  /** Pemeriksaan penunjang yang sesuai indikasi. */
+  tests: PlanItem[];
+  /** Pemeriksaan yang tidak tepat untuk kasus ini, beserta alasannya. */
+  unnecessary?: { tool: string; reason: string }[];
+}
+
+export interface DispositionRule {
+  when?: Condition;
+  value: Disposition;
+  /** Disposisi lain yang juga dapat diterima penuh. */
+  alsoAccept?: Disposition[];
+  reason: string;
+}
+
+/** Jebakan penalaran: umpan balik bila pemain mengambil asumsi keliru. */
+export interface PitfallDef {
+  when: {
+    /** Pemain menyingkirkan kondisi ini. */
+    excluded?: string;
+    /** Diagnosis utama pemain salah. */
+    wrongPrimary?: boolean;
+    /** Diagnosis utama pemain adalah kondisi ini. */
+    primaryIs?: string;
+    /** Pemeriksaan ini sudah dilakukan. */
+    toolDone?: string;
+    /** Semua parameter alat ini normal pada kasus. */
+    toolNormal?: string;
+    /** Topik ini tidak ditanyakan. */
+    topicNotAsked?: string;
+    /** Trait kasus. */
+    traits?: string[];
+    notTraits?: string[];
+    /** Kondisi ini tidak ada di papan diagnosis banding pemain. */
+    notConsidered?: string;
+  };
+  text: string;
 }
 
 export interface DiseaseTemplate {
@@ -374,11 +527,99 @@ export interface DiseaseTemplate {
   otherDifferentials?: string[];
   keyFindings: string[];
   teachingPoints?: string[];
-  /** Pemeriksaan paling berguna (urut prioritas). Dipakai untuk bonus hemat & edukasi. */
-  idealWorkup: string[];
+  /** Rencana pemeriksaan sesuai indikasi (dasar penilaian fisik & penunjang). */
+  plan: CasePlan;
+  /** Komplikasi / tanda bahaya yang perlu dinilai. */
+  complications?: ComplicationDef[];
+  /** Trait yang sebenarnya merupakan komorbiditas (diharapkan dicatat sebagai masalah lain). */
+  traitComorbidities?: Record<string, string>;
+  /** Disposisi yang tepat (aturan pertama yang cocok dipakai). */
+  disposition: DispositionRule[];
+  /** Prinsip tata laksana (edukatif, tanpa dosis obat). */
+  management: string[];
+  /** Langkah penalaran klinis yang dianjurkan (untuk umpan balik). */
+  approach: string[];
+  pitfalls?: PitfallDef[];
   /** Nilai placeholder khusus penyakit, mis. {daerahEndemis}. */
   context?: Record<string, string[]>;
   review: ReviewInfo;
+}
+
+/** Komorbiditas: masalah kesehatan lain yang bisa menyertai penyakit utama. */
+export interface ComorbidityDef {
+  id: string;
+  name: string;
+  aliases: string[];
+  system: string;
+  summary: string;
+  probability: number;
+  when?: { ageMin?: number; ageMax?: number; sex?: Sex };
+  /** Tidak dipakai bila penyakit utama adalah salah satu id ini. */
+  excludePrimary?: string[];
+  /** Tidak dipakai bila penyakit utama sudah punya trait ini (mis. angina dengan trait hipertensi). */
+  excludeTraits?: string[];
+  /** Peluang pasien sudah tahu & menyebutkannya saat ditanya riwayat penyakit. */
+  knownProbability: number;
+  symptoms?: SymptomRule[];
+  findings: FindingRule[];
+  history: {
+    /** Disebut di riwayat penyakit bila pasien tahu. */
+    known: string;
+    /** Disebut di riwayat obat bila pasien tahu. */
+    medication?: string;
+    /** Ditambahkan ke jawaban kebiasaan. */
+    habit?: string;
+    /** Ditambahkan ke riwayat keluarga. */
+    family?: string;
+  };
+  /** Pemeriksaan yang mendeteksi/menilai komorbiditas ini. */
+  detectBy: EvidenceRef;
+  management: string[];
+}
+
+/** Temuan insidental: kelainan yang tidak berkaitan dengan keluhan utama. */
+export interface IncidentalDef {
+  id: string;
+  name: string;
+  aliases: string[];
+  system: string;
+  probability: number;
+  when?: { ageMin?: number; ageMax?: number; sex?: Sex };
+  findings: FindingRule[];
+  /** Pemeriksaan yang bisa menemukannya. */
+  detectBy: EvidenceRef;
+  note: string;
+}
+
+/** Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah jadi pasien). */
+export interface ConditionDef {
+  id: string;
+  name: string;
+  aliases: string[];
+  system: string;
+  danger: DangerLevel;
+  summary: string;
+}
+
+export interface ConditionsFile {
+  review: ReviewInfo;
+  conditions: ConditionDef[];
+}
+
+export interface ComorbiditiesFile {
+  review: ReviewInfo;
+  comorbidities: ComorbidityDef[];
+  incidentals: IncidentalDef[];
+}
+
+/** Entri katalog terpadu untuk papan diagnosis banding & keputusan akhir. */
+export interface CatalogEntry {
+  id: string;
+  name: string;
+  aliases: string[];
+  system: string;
+  kind: 'penyakit' | 'komorbiditas' | 'insidental' | 'banding';
+  danger: DangerLevel;
 }
 
 // ---------------------------------------------------------------------------
@@ -386,8 +627,27 @@ export interface DiseaseTemplate {
 // ---------------------------------------------------------------------------
 
 export interface GameConfig {
-  patient: { minAge: number; maxAge: number };
-  anamnesis: { maxQuestions: number };
+  patient: { minAge: number; maxAge: number; allergyRate: number };
+  anamnesis: {
+    /** Maksimal topik/gejala yang dijawab dari satu pertanyaan bebas. */
+    maxIntentsPerQuestion: number;
+  };
+  /** Bobot komponen penilaian klinis (total 100). */
+  evaluation: {
+    weights: {
+      anamnesis: number;
+      fisik: number;
+      penunjang: number;
+      banding: number;
+      komplikasi: number;
+      keputusan: number;
+    };
+    /** Pengurangan skor penunjang per pemeriksaan yang tidak perlu / kurang relevan. */
+    unnecessaryTestPenalty: number;
+    irrelevantTestPenalty: number;
+    /** Ambang nilai huruf. */
+    grades: { min: number; grade: string; label: string }[];
+  };
   economy: {
     classes: Record<EconomyClass, { weight: number; budget: Range }>;
     budgetRounding: number;
@@ -404,11 +664,14 @@ export interface GameConfig {
     max: number;
     /** Game over jika reputasi < nilai ini. */
     gameOverBelow: number;
-    correctBase: number;
-    efficiencyBonusMax: number;
-    /** Bonus hemat = 0 saat biaya >= kelipatan ini × biaya ideal. */
-    efficiencyZeroAtMultiplier: number;
+    /** Skor klinis yang tidak menaikkan/menurunkan reputasi. */
+    neutralScore: number;
+    /** Perubahan reputasi per 1 poin skor di atas/bawah netral. */
+    perScorePoint: number;
+    /** Penalti tambahan bila diagnosis utama salah: wrongBase × pengali bahaya. */
     wrongBase: number;
+    /** Penalti keselamatan bila pasien yang perlu rujuk segera dipulangkan. */
+    unsafeDispositionPenalty: number;
     dangerMultiplier: Record<DangerLevel, number>;
     /** Gelar sesuai reputasi (min = batas bawah inklusif). */
     titles: { min: number; label: string }[];
@@ -427,12 +690,24 @@ export interface GameContent {
   symptomsById: Map<string, SymptomDef>;
   anamnesis: AnamnesisCategoryDef[];
   anamnesisById: Map<string, AnamnesisCategoryDef>;
+  conversation: ConversationTemplates;
+  reviews: ReviewGroupDef[];
+  reviewsById: Map<string, ReviewGroupDef>;
   personalities: PersonalityDef[];
   personalitiesById: Map<string, PersonalityDef>;
   population: PopulationFile;
   occupationsById: Map<string, OccupationDef>;
   diseases: DiseaseTemplate[];
   diseasesById: Map<string, DiseaseTemplate>;
+  comorbidities: ComorbidityDef[];
+  comorbiditiesById: Map<string, ComorbidityDef>;
+  incidentals: IncidentalDef[];
+  incidentalsById: Map<string, IncidentalDef>;
+  conditions: ConditionDef[];
+  /** Katalog terpadu: penyakit kasus + komorbiditas + insidental + kondisi banding. */
+  catalog: CatalogEntry[];
+  catalogById: Map<string, CatalogEntry>;
+  allergies: string[];
 }
 
 // ---------------------------------------------------------------------------
@@ -468,6 +743,8 @@ export interface ParamResult {
   /** H = tinggi, L = rendah, '+' = abnormal (teks), null = normal. */
   flag: 'H' | 'L' | '+' | null;
   source: ResultSource;
+  /** Untuk source 'disease': id sumber kelainan (penyakit utama / komorbiditas / insidental). */
+  origin?: string;
 }
 
 export interface AnswerResult {
@@ -489,6 +766,8 @@ export interface PatientCase {
   chiefComplaintSymptoms: string[];
   /** Urutan gejala lain yang akan disebut saat ditanya "keluhan lain". */
   revealOrder: string[];
+  /** Gejala yang ada tetapi TIDAK disebut sukarela — hanya terungkap bila ditanya spesifik. */
+  hiddenSymptoms: string[];
   greeting: string;
   complaint: string;
   /** Jawaban per kategori anamnesis statis. */
@@ -497,6 +776,14 @@ export interface PatientCase {
   findings: Record<string, ParamResult[]>;
   /** Nilai placeholder yang sudah ditetapkan untuk kasus ini. */
   context: Record<string, string>;
+  /** Komorbiditas yang ada (known = pasien tahu & akan menyebutkannya bila ditanya). */
+  comorbidities: { id: string; known: boolean }[];
+  /** Temuan insidental yang ada pada kasus. */
+  incidentals: string[];
+  /** Komplikasi penyakit utama yang ada (id dari ComplicationDef). */
+  complications: string[];
+  /** Alergi pasien (null = tidak ada). */
+  allergy: string | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -509,34 +796,77 @@ export type LogEntry =
   | { kind: 'system'; text: string }
   | { kind: 'exam'; toolId: string; cost: number };
 
-export interface DiagnosisOutcome {
-  chosenId: string;
+export interface DdxEntry {
+  id: string;
+  status: DdxStatus;
+}
+
+/** Keputusan akhir pemain. */
+export interface ClinicalDecision {
+  /** Diagnosis utama (kerja). */
+  primary: string;
+  /** Masalah lain: komorbiditas, temuan insidental, dsb. */
+  secondary: string[];
+  /** Komplikasi yang dinilai ada (id ComplicationDef dari diagnosis utama pilihan pemain). */
+  complications: string[];
+  disposition: Disposition;
+}
+
+export interface FeedbackItem {
+  text: string;
+  /** Penjelasan tambahan (mengapa penting / cara membedakan). */
+  detail?: string;
+}
+
+export interface ComponentScore {
+  key: keyof GameConfig['evaluation']['weights'];
+  label: string;
+  score: number;
+  max: number;
+  /** Yang sudah baik. */
+  good: FeedbackItem[];
+  /** Yang terlewat / keliru. */
+  missed: FeedbackItem[];
+}
+
+export interface EvaluationResult {
+  total: number;
+  grade: string;
+  gradeLabel: string;
+  components: ComponentScore[];
+  primaryCorrect: boolean;
   trueId: string;
-  correct: boolean;
-  spent: number;
-  idealCost: number;
+  chosenId: string;
+  /** Disposisi yang tepat untuk kasus ini. */
+  expectedDisposition: Disposition;
+  dispositionReason: string;
+  /** Pasien yang perlu rujuk segera justru dipulangkan / hanya diobservasi. */
+  unsafe: boolean;
+  /** Asumsi klinis keliru yang terdeteksi. */
+  pitfalls: string[];
+  recommendations: string[];
   reputationDelta: number;
-  breakdown: {
-    base: number;
-    efficiencyBonus: number;
-    penalty: number;
-    dangerMultiplier: number;
-  };
+  reputationBreakdown: { fromScore: number; wrongPrimary: number; unsafe: number };
+  spent: number;
 }
 
 export interface EncounterState {
   case: PatientCase;
   budgetRemaining: number;
   spent: number;
-  questionsUsed: number;
-  askedCategories: string[];
+  /** Jumlah pertanyaan yang diajukan (tanpa batas; untuk statistik). */
+  questionCount: number;
+  /** Topik anamnesis yang sudah ditanyakan. */
+  askedTopics: string[];
   askedSymptoms: string[];
   /** Gejala yang sudah diketahui dokter (disebut pasien / dijawab "ya"). */
   revealedSymptoms: string[];
   examsDone: string[];
+  ddx: DdxEntry[];
   log: LogEntry[];
-  status: 'active' | 'diagnosed';
-  outcome?: DiagnosisOutcome;
+  status: 'active' | 'finished';
+  decision?: ClinicalDecision;
+  evaluation?: EvaluationResult;
 }
 
 /** Catatan ringkas satu pasien yang sudah selesai. */
@@ -546,6 +876,8 @@ export interface PatientRecord {
   diseaseId: string;
   chosenId: string;
   correct: boolean;
+  /** Skor klinis 0–100. */
+  score: number;
   spent: number;
   budget: number;
   reputationDelta: number;

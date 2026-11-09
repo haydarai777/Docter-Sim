@@ -28,14 +28,19 @@
   "traits": [
     { "id": "oains", "probability": 0.35 },
     { "id": "makan_tidak_teratur", "probability": 0.6 },
-    { "id": "stres", "probability": 0.4 }
+    { "id": "stres", "probability": 0.4 },
+    { "id": "perdarahan_saluran_cerna", "when": { "traits": ["oains"] }, "probability": 0.15 },
+    { "id": "perdarahan_saluran_cerna", "probability": 0.05 }
   ],
   "traitLabels": {
     "oains": "Pemicu: konsumsi obat antinyeri (OAINS/jamu pegal linu) rutin.",
     "makan_tidak_teratur": "Pemicu: pola makan tidak teratur dan kopi berlebihan.",
-    "stres": "Pemicu: stres psikologis."
+    "stres": "Pemicu: stres psikologis.",
+    "perdarahan_saluran_cerna": "Komplikasi: perdarahan saluran cerna atas (melena, anemia)."
   },
   "symptoms": [
+    { "id": "bab_hitam", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 0.95 },
+    { "id": "lemas", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 1 },
     { "id": "nyeri_ulu_hati", "probability": 1 },
     { "id": "kembung", "probability": 0.75 },
     { "id": "mual_muntah", "probability": 0.55 },
@@ -94,21 +99,91 @@
         "clue": "Stres psikologis"
       },
       { "text": "Biasa saja, Dok. Suka sambal sih.", "weight": 1 }
+    ],
+    "durasi": [{ "text": "Kadang sebentar, kadang sampai berjam-jam, Dok, apalagi kalau telat makan." }],
+    "keparahan": [
+      {
+        "text": "Lemas sekali, Dok, kepala kliyengan kalau berdiri.",
+        "when": { "traits": ["perdarahan_saluran_cerna"] },
+        "clue": "Lemas & pusing saat berdiri (curiga perdarahan saluran cerna)"
+      },
+      { "text": "Lumayan perih, Dok, tapi masih bisa kerja.", "when": { "notTraits": ["perdarahan_saluran_cerna"] } }
+    ],
+    "progresi": [{ "text": "Hilang timbul, Dok. Kalau lagi banyak pikiran makin sering." }],
+    "episode_sebelumnya": [
+      {
+        "text": "Sudah sering kambuh, Dok, dari zaman sekolah.",
+        "weight": 2,
+        "clue": "Keluhan berulang lama (dispepsia kronik)"
+      },
+      { "text": "Baru kali ini separah ini, Dok.", "weight": 1 }
     ]
   },
-  "findings": [{ "tool": "palpasi_abdomen", "param": "nyeri_tekan", "probability": 0.8, "values": ["Nyeri tekan epigastrium"] }],
+  "findings": [
+    { "tool": "pemeriksaan_abdomen", "param": "nyeri_tekan", "probability": 0.8, "values": ["Nyeri tekan epigastrium"] },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "male" },
+      "range": [8, 10.5]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "female" },
+      "range": [7.5, 10]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "konjungtiva",
+      "when": { "traits": ["perdarahan_saluran_cerna"] },
+      "values": ["Anemis (pucat)"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["perdarahan_saluran_cerna"] }, "range": [102, 116] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["perdarahan_saluran_cerna"] },
+      "values": ["Tampak pucat dan lemas"]
+    }
+  ],
   "differentials": [
     {
       "id": "gerd",
-      "howToDistinguish": "GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang, nyeri tekan epigastrium."
+      "howToDistinguish": "GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang, nyeri tekan epigastrium.",
+      "excludeBy": { "topics": ["lokasi", "karakter"] }
     },
     {
       "id": "angina_stabil",
-      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan, ada nyeri tekan epigastrium."
+      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan, ada nyeri tekan epigastrium.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["pemberat_peringan"], "tools": ["ekg"] }
     },
     {
       "id": "demam_tifoid",
-      "howToDistinguish": "Tifoid: keluhan perut disertai DEMAM lebih dari seminggu (sore–malam) dan lidah kotor. Dispepsia: tanpa demam."
+      "howToDistinguish": "Tifoid: keluhan perut disertai DEMAM lebih dari seminggu (sore–malam) dan lidah kotor. Dispepsia: tanpa demam.",
+      "excludeBy": { "tools": ["tanda_vital"] }
+    },
+    {
+      "id": "tukak_peptik",
+      "howToDistinguish": "Tukak peptik: nyeri ulu hati lebih menetap, sering pada pengguna OAINS; dapat berdarah (BAB hitam).",
+      "excludeBy": { "symptoms": ["bab_hitam"], "topics": ["riwayat_obat"] }
+    },
+    {
+      "id": "kolik_bilier",
+      "howToDistinguish": "Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+).",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "pankreatitis_akut",
+      "howToDistinguish": "Pankreatitis: nyeri epigastrium sangat hebat menjalar ke punggung, muntah.",
+      "excludeBy": { "topics": ["keparahan", "lokasi"] }
+    },
+    {
+      "id": "keganasan_lambung",
+      "howToDistinguish": "Keganasan lambung: usia > 55 tahun, BB turun, anemia, muntah, disfagia.",
+      "mustNotMiss": true,
+      "excludeBy": { "symptoms": ["berat_badan_turun", "bab_hitam"] }
     }
   ],
   "otherDifferentials": ["Tukak peptik", "Kolelitiasis", "Pankreatitis", "Keganasan lambung (bila ada tanda alarm)"],
@@ -122,7 +197,6 @@
     "Dispepsia adalah diagnosis klinis — pemeriksaan mahal biasanya tidak diperlukan bila tanpa tanda alarm.",
     "Selalu tanyakan obat antinyeri dan jamu pegal linu: OAINS adalah penyebab gastritis yang sering."
   ],
-  "idealWorkup": ["tanda_vital", "palpasi_abdomen"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Dispepsia dan gastritis digabung menjadi satu diagnosis di game."],
@@ -130,5 +204,91 @@
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia & Gastritis",
       "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "perdarahan_saluran_cerna",
+      "name": "Perdarahan saluran cerna atas",
+      "trait": "perdarahan_saluran_cerna",
+      "redFlag": true,
+      "assess": { "symptoms": ["bab_hitam"], "tools": ["darah_lengkap", "kepala_leher", "tanda_vital"] },
+      "explanation": "BAB hitam (melena), anemia, takikardia → rujuk segera untuk endoskopi."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["lokasi", "pemberat_peringan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "reason": "Nyeri tekan epigastrium; singkirkan kolik bilier dan apendisitis."
+      },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Konjungtiva anemis (tanda alarm)." }
+    ],
+    "tests": [
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "reason": "Anemia akibat perdarahan.",
+        "when": { "traits": ["perdarahan_saluran_cerna"] }
+      },
+      {
+        "tool": "ekg",
+        "role": "pendukung",
+        "reason": "Pada usia > 45 tahun, nyeri epigastrium bisa berasal dari iskemia inferior.",
+        "when": { "ageMin": 45 }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "Tanpa tanda alarm atau nyeri kanan atas, USG tidak diperlukan." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Perdarahan saluran cerna atas memerlukan penanganan di rumah sakit.",
+      "when": { "traits": ["perdarahan_saluran_cerna"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Dispepsia baru pada usia > 55 tahun perlu endoskopi.",
+      "when": { "ageMin": 56 },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    { "value": "rawat_jalan", "reason": "Dispepsia tanpa tanda alarm dikelola di layanan primer." }
+  ],
+  "management": [
+    "Hindari pemicu: OAINS/jamu pegal linu, kopi, makanan pedas/asam; makan teratur porsi kecil.",
+    "Terapi simptomatik/penekan asam — keputusan dokter.",
+    "Rujuk endoskopi bila ada tanda alarm atau usia > 55 tahun dengan keluhan baru."
+  ],
+  "approach": [
+    "Nyeri ulu hati: lokasi, karakter, hubungan dengan makan, dan obat antinyeri.",
+    "Cari tanda alarm: BAB hitam, muntah darah, BB turun, anemia, disfagia.",
+    "Pemeriksaan abdomen; pada usia > 45 tahun dengan faktor risiko, pikirkan iskemia (EKG).",
+    "Tanpa tanda alarm, diagnosis klinis — tidak perlu pemeriksaan mahal."
+  ],
+  "pitfalls": [
+    {
+      "when": { "topicNotAsked": "riwayat_obat", "traits": ["oains"] },
+      "text": "Konsumsi OAINS/jamu pegal linu tidak ditanyakan — penyebab gastritis yang sering dan meningkatkan risiko perdarahan."
+    },
+    {
+      "when": { "traits": ["perdarahan_saluran_cerna"], "topicNotAsked": "keluhan_lain" },
+      "text": "BAB hitam jarang disebut spontan — tanyakan gejala penyerta dan warna BAB secara spesifik."
+    }
+  ]
 }

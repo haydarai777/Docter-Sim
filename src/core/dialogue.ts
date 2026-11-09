@@ -144,3 +144,58 @@ export function answerSymptomQuestion(
 export function doctorQuestion(template: string, c: PatientCase): string {
   return capitalize(fillTemplate(template, caseValues(c)));
 }
+
+/** Pilih satu templat percakapan secara deterministik (salt membedakan kejadian). */
+function pickConversation(list: readonly string[], c: PatientCase, salt: string, values: Record<string, string> = {}): string {
+  const rng = createRng(deriveSeed(c.seed, `percakapan:${salt}`));
+  return fillTemplate(rng.pick(list), caseValues(c, values));
+}
+
+export type SmallTalk = 'greeting' | 'thanks' | 'consent' | 'unknown' | 'repeat' | 'alreadySaid';
+
+/** Balasan basa-basi / pertanyaan tidak dipahami / awalan pengulangan. */
+export function conversationReply(kind: SmallTalk, c: PatientCase, content: GameContent, salt: string): string {
+  return pickConversation(content.conversation[kind], c, `${kind}:${salt}`);
+}
+
+/** Mengulang keluhan utama ("apa keluhannya?"). */
+export function chiefComplaintReply(c: PatientCase, content: GameContent): string {
+  return pickConversation(content.conversation.chief, c, 'chief', { keluhanAwal: c.complaint });
+}
+
+/**
+ * Pertanyaan detail (onset/keparahan/...) tentang gejala yang BUKAN keluhan utama.
+ * Gejala ada → konfirmasi + detail umum; tidak ada → penyangkalan seperti pertanyaan gejala.
+ */
+export function answerSymptomDetail(
+  c: PatientCase,
+  topic: string,
+  symptomId: string,
+  content: GameContent,
+): { text: string; revealed: boolean } {
+  if (!c.symptoms.includes(symptomId)) return answerSymptomQuestion(c, symptomId, content);
+  const symptom = content.symptomsById.get(symptomId)!;
+  const rng = createRng(deriveSeed(c.seed, `detail:${topic}:${symptomId}`));
+  const templates = content.conversation.detail[topic] ?? content.conversation.detail.default;
+  const phrase = symptomPhrase(symptom, 'lay', rng);
+  return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase })), revealed: true };
+}
+
+/**
+ * Jawaban tinjauan sistem ("BAB-nya bagaimana?"): sebutkan gejala kelompok itu yang ADA
+ * (termasuk yang tidak disebut sukarela), atau jawaban normal bila tidak ada.
+ */
+export function answerReview(
+  c: PatientCase,
+  groupId: string,
+  content: GameContent,
+): { text: string; revealed: string[] } {
+  const group = content.reviewsById.get(groupId);
+  if (!group) throw new Error(`Tinjauan sistem tidak dikenal: ${groupId}`);
+  const personality = content.personalitiesById.get(c.patient.personalityId)!;
+  const rng = createRng(deriveSeed(c.seed, `tinjauan:${groupId}`));
+  const present = group.symptoms.filter((id) => c.symptoms.includes(id));
+  if (present.length === 0) return { text: fillTemplate(rng.pick(group.normal), caseValues(c)), revealed: [] };
+  const phrases = present.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng));
+  return { text: fillTemplate(rng.pick(personality.symptomYes), caseValues(c, { gejala: joinList(phrases) })), revealed: present };
+}

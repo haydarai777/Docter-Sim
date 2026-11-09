@@ -29,14 +29,18 @@
     { "id": "obesitas", "probability": 0.35 },
     { "id": "makan_larut", "probability": 0.6 },
     { "id": "batuk_kronik", "probability": 0.25 },
-    { "id": "perokok", "when": { "sex": "male" }, "probability": 0.45 }
+    { "id": "perokok", "when": { "sex": "male" }, "probability": 0.45 },
+    { "id": "alarm", "probability": 0.1 }
   ],
   "traitLabels": {
     "obesitas": "Obesitas — meningkatkan tekanan intraabdomen dan refluks.",
     "makan_larut": "Kebiasaan makan larut malam lalu langsung berbaring.",
-    "batuk_kronik": "Manifestasi ekstraesofageal: batuk kronik."
+    "batuk_kronik": "Manifestasi ekstraesofageal: batuk kronik.",
+    "alarm": "Tanda alarm (disfagia, BB turun) → perlu endoskopi."
   },
   "symptoms": [
+    { "id": "sulit_menelan", "when": { "traits": ["alarm"] }, "probability": 0.9 },
+    { "id": "berat_badan_turun", "when": { "traits": ["alarm"] }, "probability": 0.6 },
     { "id": "heartburn", "probability": 1 },
     { "id": "regurgitasi", "probability": 0.75 },
     { "id": "nyeri_ulu_hati", "probability": 0.4 },
@@ -105,6 +109,34 @@
         "clue": "Merokok dan kopi memperberat refluks"
       },
       { "text": "Biasa saja, Dok. Suka makanan pedas dan bersantan.", "weight": 1 }
+    ],
+    "durasi": [{ "text": "Kadang setengah jam, kadang sampai sejam, Dok, terutama habis makan." }],
+    "keparahan": [
+      {
+        "text": "Berat badan saya turun, Dok, makan juga makin susah ditelan.",
+        "when": { "traits": ["alarm"], "symptoms": ["sulit_menelan"] },
+        "reveals": ["sulit_menelan"],
+        "clue": "Disfagia (tanda alarm)"
+      },
+      {
+        "text": "Mengganggu, Dok, apalagi malam sering kebangun. Tapi kerja masih bisa.",
+        "when": { "notTraits": ["alarm"] }
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Makin parah, Dok, sekarang menelan juga kadang nyangkut.",
+        "when": { "traits": ["alarm"], "symptoms": ["sulit_menelan"] },
+        "reveals": ["sulit_menelan"],
+        "clue": "Disfagia progresif (tanda alarm)"
+      },
+      { "text": "Hilang timbul, Dok, sama saja dari dulu.", "when": { "notTraits": ["alarm"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering kambuh begini, Dok, sudah lama. Kalau minum obat maag mendingan.",
+        "clue": "Keluhan berulang lama yang membaik dengan antasida"
+      }
     ]
   },
   "findings": [
@@ -122,13 +154,13 @@
       "range": [82, 98]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "nyeri_tekan",
       "probability": 0.3,
       "values": ["Nyeri tekan ringan epigastrium"]
     },
     {
-      "tool": "senter",
+      "tool": "kepala_leher",
       "param": "faring",
       "when": { "traits": ["batuk_kronik"] },
       "probability": 0.5,
@@ -138,11 +170,30 @@
   "differentials": [
     {
       "id": "angina_stabil",
-      "howToDistinguish": "Angina: rasa berat/tertekan di dada saat aktivitas fisik atau emosi, membaik dengan istirahat dalam beberapa menit, sering pada pasien dengan faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang. GERD: rasa terbakar terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida."
+      "howToDistinguish": "Angina: rasa berat/tertekan di dada saat aktivitas fisik atau emosi, membaik dengan istirahat dalam beberapa menit, sering pada pasien dengan faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang. GERD: rasa terbakar terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["pemberat_peringan"], "tools": ["ekg"] }
     },
     {
       "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk."
+      "howToDistinguish": "Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk.",
+      "excludeBy": { "topics": ["lokasi", "karakter"] }
+    },
+    {
+      "id": "sindrom_koroner_akut",
+      "howToDistinguish": "SKA: nyeri dada saat istirahat > 20 menit, keringat dingin, perubahan EKG. GERD: rasa terbakar terkait makan, membaik dengan antasida.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["durasi", "pemberat_peringan"], "tools": ["ekg"] }
+    },
+    {
+      "id": "tukak_peptik",
+      "howToDistinguish": "Tukak peptik: nyeri ulu hati terkait makan, dapat disertai BAB hitam.",
+      "excludeBy": { "symptoms": ["bab_hitam"] }
+    },
+    {
+      "id": "kolik_bilier",
+      "howToDistinguish": "Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+).",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
     }
   ],
   "otherDifferentials": ["Esofagitis", "Spasme esofagus", "Tukak peptik", "Asma (pada batuk kronik)"],
@@ -157,7 +208,6 @@
     "Pada nyeri dada, singkirkan dulu penyebab jantung — terutama pada pasien dengan faktor risiko. EKG normal mendukung, tetapi tidak sepenuhnya menyingkirkan angina.",
     "Gaya hidup (makan larut malam, obesitas, kopi, rokok) memperberat refluks."
   ],
-  "idealWorkup": ["tanda_vital", "timbangan", "ekg"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Probabilitas gejala adalah estimasi pengembang; mohon diverifikasi."],
@@ -165,5 +215,73 @@
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Penyakit Refluks Gastroesofageal",
       "PGI. Revisi Konsensus Nasional Penatalaksanaan GERD di Indonesia (2022)"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "alarm",
+      "name": "Tanda alarm (disfagia, BB turun, perdarahan)",
+      "trait": "alarm",
+      "redFlag": true,
+      "assess": { "symptoms": ["sulit_menelan", "berat_badan_turun", "bab_hitam"] },
+      "explanation": "Disfagia, penurunan berat badan, anemia, atau perdarahan saluran cerna → rujuk untuk endoskopi."
+    }
+  ],
+  "traitComorbidities": { "obesitas": "obesitas" },
+  "plan": {
+    "keyTopics": ["karakter", "pemberat_peringan", "pola", "lokasi"],
+    "exams": [
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Pemeriksaan jantung pada keluhan dada." },
+      { "tool": "pemeriksaan_abdomen", "role": "pendukung", "reason": "Nyeri tekan epigastrium." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "IMT (obesitas memperberat refluks)." }
+    ],
+    "tests": [
+      {
+        "tool": "ekg",
+        "role": "kunci",
+        "reason": "Singkirkan iskemia pada keluhan dada, terutama bila ada faktor risiko."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "USG tidak menilai refluks esofagus." }
+    ]
+  },
+  "disposition": [
+    { "value": "rujuk_spesialis", "reason": "Tanda alarm → rujuk untuk endoskopi.", "when": { "traits": ["alarm"] } },
+    {
+      "value": "rawat_jalan",
+      "reason": "GERD tanpa tanda alarm: terapi empiris dan modifikasi gaya hidup di layanan primer."
+    }
+  ],
+  "management": [
+    "Modifikasi gaya hidup: makan porsi kecil, jangan berbaring 2–3 jam setelah makan, tinggikan kepala tempat tidur, turunkan berat badan, kurangi kopi dan rokok.",
+    "Terapi empiris penekan asam selama beberapa minggu — keputusan dokter.",
+    "Rujuk untuk endoskopi bila ada tanda alarm atau tidak membaik."
+  ],
+  "approach": [
+    "Keluhan dada: bedakan sumber jantung dan esofagus lewat karakter, pemicu (makan vs aktivitas), dan faktor risiko.",
+    "Singkirkan penyebab jantung bila ada faktor risiko (EKG).",
+    "Cari tanda alarm: disfagia, BB turun, anemia, perdarahan.",
+    "GERD adalah diagnosis klinis; tata laksana dengan modifikasi gaya hidup dan terapi empiris."
+  ],
+  "pitfalls": [
+    {
+      "when": { "primaryIs": "angina_stabil", "toolNormal": "ekg" },
+      "text": "Rasa terbakar yang dipicu makan/berbaring dan membaik dengan antasida lebih mengarah ke GERD, bukan angina."
+    },
+    {
+      "when": { "notConsidered": "angina_stabil" },
+      "text": "Pada keluhan dada, penyebab jantung (angina/SKA) wajib dipertimbangkan dan disingkirkan."
+    }
+  ]
 }

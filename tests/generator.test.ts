@@ -77,12 +77,12 @@ describe('generator kasus', () => {
         expect(c.chiefComplaintSymptoms.length).toBeGreaterThan(0);
         for (const s of c.chiefComplaintSymptoms) expect(c.symptoms).toContain(s);
         // revealOrder = gejala sisanya
-        expect([...c.chiefComplaintSymptoms, ...c.revealOrder].sort()).toEqual([...c.symptoms].sort());
+        expect([...c.chiefComplaintSymptoms, ...c.revealOrder, ...c.hiddenSymptoms].sort()).toEqual([...c.symptoms].sort());
       }
     }
     // Gejala tidak pernah disebut lengkap di awal (kecuali pasien hanya punya satu gejala).
     for (const c of DISEASE_IDS.flatMap((id) => many(id, 100))) {
-      if (c.symptoms.length > 1) expect(c.revealOrder.length).toBeGreaterThan(0);
+      if (c.symptoms.length > 1) expect(c.revealOrder.length + c.hiddenSymptoms.length).toBeGreaterThan(0);
     }
   });
 
@@ -190,12 +190,30 @@ describe('generator kasus', () => {
     }
   });
 
-  it('kesan USG pada batu saluran kemih selalu konsisten dengan temuan ginjal', () => {
-    for (const c of many('batu_saluran_kemih', 300)) {
-      const usg = c.findings.usg_abdomen!;
-      const ginjal = usg.find((r) => r.paramId === 'ginjal')!;
-      const kesan = usg.find((r) => r.paramId === 'kesan')!;
-      expect(kesan.flag !== null).toBe(ginjal.flag !== null);
+  it('kesan USG selalu konsisten dengan temuan organ (termasuk temuan insidental)', () => {
+    for (const id of ['batu_saluran_kemih', 'dispepsia', 'demam_tifoid', 'dm_tipe2']) {
+      for (const c of many(id, 250)) {
+        const usg = c.findings.usg_abdomen!;
+        const organs = usg.filter((r) => r.paramId !== 'kesan');
+        const kesan = usg.find((r) => r.paramId === 'kesan')!;
+        expect(kesan.flag !== null, `${id}: ${JSON.stringify(usg.map((r) => r.display))}`).toBe(organs.some((r) => r.flag !== null));
+        // Setiap sumber kelainan organ tercermin di kesan.
+        if (c.incidentals.length && organs.some((r) => r.origin === c.incidentals[0])) {
+          const label = content.incidentalsById.get(c.incidentals[0]!)!.findings.find((f) => f.param === 'kesan')!.values![0]!;
+          expect(kesan.display).toContain(label);
+        }
+      }
+    }
+  });
+
+  it('temuan mencatat asal kelainan (penyakit utama / komorbiditas / insidental)', () => {
+    for (const c of many('dengue', 200)) {
+      for (const results of Object.values(c.findings)) {
+        for (const r of results) {
+          if (r.source !== 'disease') continue;
+          expect([c.diseaseId, ...c.comorbidities.map((x) => x.id), ...c.incidentals]).toContain(r.origin);
+        }
+      }
     }
   });
 

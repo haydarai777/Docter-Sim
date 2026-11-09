@@ -35,7 +35,11 @@
     { "id": "hemoptisis", "probability": 0.2 },
     { "id": "lesi_rontgen", "probability": 0.92 },
     { "id": "kavitas", "when": { "traits": ["lesi_rontgen"] }, "probability": 0.35 },
-    { "id": "ronkhi_apeks", "probability": 0.6 }
+    { "id": "ronkhi_apeks", "probability": 0.6 },
+    { "id": "efusi_pleura_tb", "probability": 0.1 },
+    { "id": "gizi_buruk", "probability": 0.3 },
+    { "id": "riwayat_oat", "probability": 0.1 },
+    { "id": "kgb_leher", "probability": 0.15 }
   ],
   "traitLabels": {
     "kontak_tb": "Ada kontak serumah dengan penderita TB.",
@@ -43,7 +47,10 @@
     "perokok": "Faktor risiko: merokok.",
     "dm_komorbid": "Komorbid DM — meningkatkan risiko TB dan memperberat perjalanannya.",
     "hemoptisis": "Hemoptisis (batuk darah).",
-    "kavitas": "Foto toraks menunjukkan kavitas — biasanya sangat menular (BTA sering positif)."
+    "kavitas": "Foto toraks menunjukkan kavitas — biasanya sangat menular (BTA sering positif).",
+    "efusi_pleura_tb": "Efusi pleura TB.",
+    "gizi_buruk": "Malnutrisi (IMT < 17).",
+    "riwayat_oat": "Riwayat pengobatan TB tidak tuntas — curiga TB resistan obat."
   },
   "symptoms": [
     { "id": "batuk", "probability": 1 },
@@ -132,16 +139,54 @@
         "when": { "notTraits": ["perokok"] },
         "clue": "Asupan gizi kurang"
       }
+    ],
+    "durasi": [{ "text": "Batuknya hampir sepanjang hari, Dok, paling sering malam." }],
+    "keparahan": [{ "text": "Lumayan, Dok, badan jadi lemas, kerja berat sudah nggak kuat." }],
+    "progresi": [
+      {
+        "text": "Makin lama makin kurus, Dok, batuk juga nggak berkurang.",
+        "when": { "symptoms": ["berat_badan_turun"] },
+        "reveals": ["berat_badan_turun"],
+        "clue": "Batuk kronik dengan berat badan turun progresif"
+      },
+      { "text": "Batuknya nggak berkurang, Dok, malah makin sering.", "when": { "notSymptoms": ["berat_badan_turun"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Dulu pernah minum obat paru enam bulan, Dok, tapi berhenti di bulan ketiga.",
+        "when": { "traits": ["riwayat_oat"] },
+        "clue": "Riwayat pengobatan TB tidak tuntas (risiko TB resistan obat)"
+      },
+      { "text": "Belum pernah, Dok.", "when": { "notTraits": ["riwayat_oat"] } }
     ]
   },
   "findings": [
-    { "tool": "termometer", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["gizi_buruk"] }, "range": [14.8, 16.9] },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["efusi_pleura_tb", "ronkhi_apeks"] },
+      "values": ["Ronkhi di apeks kanan; suara napas menurun di basal paru kanan"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "values": ["Suara napas menurun di basal paru kanan"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "kesan",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "values": ["TB paru aktif dengan efusi pleura kanan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },
     { "tool": "timbangan", "param": "imt", "when": { "symptoms": ["berat_badan_turun"] }, "range": [15.8, 18.4] },
     { "tool": "tanda_vital", "param": "napas", "probability": 0.3, "range": [21, 24] },
     { "tool": "tanda_vital", "param": "nadi", "range": [84, 100] },
     {
-      "tool": "stetoskop",
-      "param": "paru",
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
       "when": { "traits": ["ronkhi_apeks"] },
       "values": [
         "Ronkhi basah kasar di apeks paru kanan",
@@ -149,7 +194,7 @@
         "Suara napas bronkial dan ronkhi di apeks kanan"
       ]
     },
-    { "tool": "senter", "param": "konjungtiva", "probability": 0.3, "values": ["Anemis (pucat)"] },
+    { "tool": "kepala_leher", "param": "konjungtiva", "probability": 0.3, "values": ["Anemis (pucat)"] },
     { "tool": "darah_lengkap", "param": "led", "probability": 0.8, "range": [40, 90] },
     { "tool": "darah_lengkap", "param": "hb", "when": { "sex": "male" }, "probability": 0.4, "range": [10.5, 12.8] },
     { "tool": "darah_lengkap", "param": "hb", "when": { "sex": "female" }, "probability": 0.4, "range": [9.8, 11.8] },
@@ -200,24 +245,70 @@
       "when": { "traits": ["lesi_rontgen"] },
       "values": ["Gambaran TB paru aktif"]
     },
-    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_komorbid"] }, "range": [210, 320] }
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_komorbid"] }, "range": [210, 320] },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "perkusi",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "values": ["Redup di basal paru kanan"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "palpasi",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "values": ["Fremitus menurun di basal paru kanan"]
+    },
+    {
+      "tool": "rontgen_thorax",
+      "param": "sinus_diafragma",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "values": ["Sinus kostofrenikus kanan tumpul"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["kgb_leher"] },
+      "values": ["Teraba KGB leher kanan multipel, kenyal, tidak nyeri"]
+    },
+    { "tool": "keadaan_umum", "param": "gizi", "when": { "traits": ["gizi_buruk"] }, "values": ["Kesan gizi kurang"] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "symptoms": ["berat_badan_turun"] },
+      "values": ["Tampak sakit kronik, kurus"]
+    }
   ],
   "differentials": [
     {
       "id": "pneumonia",
-      "howToDistinguish": "Pneumonia: akut (beberapa hari), demam tinggi, sesak, nyeri dada pleuritik, ronkhi/konsolidasi lobus bawah, leukositosis. TB: kronik (≥ 2 minggu), keringat malam, BB turun, infiltrat/kavitas di lapangan atas, BTA/TCM positif."
+      "howToDistinguish": "Pneumonia: akut (beberapa hari), demam tinggi, sesak, nyeri dada pleuritik, ronkhi/konsolidasi lobus bawah, leukositosis. TB: kronik (≥ 2 minggu), keringat malam, BB turun, infiltrat/kavitas di lapangan atas, BTA/TCM positif.",
+      "excludeBy": { "topics": ["onset"], "tools": ["rontgen_thorax"] }
     },
     {
       "id": "asma",
-      "howToDistinguish": "Asma: sesak dan mengi episodik dengan pemicu, sejak muda, di luar serangan normal; tanpa demam atau BB turun. TB: batuk terus-menerus ≥ 2 minggu dengan gejala sistemik."
+      "howToDistinguish": "Asma: sesak dan mengi episodik dengan pemicu, sejak muda, di luar serangan normal; tanpa demam atau BB turun. TB: batuk terus-menerus ≥ 2 minggu dengan gejala sistemik.",
+      "excludeBy": { "topics": ["episode_sebelumnya", "pola"] }
     },
     {
       "id": "dm_tipe2",
-      "howToDistinguish": "DM: BB turun disertai poliuria, polidipsia, polifagia; gula darah tinggi. TB: BB turun disertai batuk lama dan keringat malam. Keduanya sering bersamaan — periksa gula darah pada pasien TB."
+      "howToDistinguish": "DM: BB turun disertai poliuria, polidipsia, polifagia; gula darah tinggi. TB: BB turun disertai batuk lama dan keringat malam. Keduanya sering bersamaan — periksa gula darah pada pasien TB.",
+      "excludeBy": { "tools": ["gula_darah"] }
     },
     {
       "id": "gerd",
-      "howToDistinguish": "GERD dapat menyebabkan batuk kronik, tetapi disertai heartburn/regurgitasi, tanpa demam, keringat malam, atau BB turun."
+      "howToDistinguish": "GERD dapat menyebabkan batuk kronik, tetapi disertai heartburn/regurgitasi, tanpa demam, keringat malam, atau BB turun.",
+      "excludeBy": { "topics": ["pemberat_peringan", "karakter"], "tools": ["rontgen_thorax"] }
+    },
+    {
+      "id": "kanker_paru",
+      "howToDistinguish": "Kanker paru: perokok usia lanjut, batuk darah, BB turun; massa pada foto toraks, bakteriologis TB negatif.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["rontgen_thorax", "tcm_tb"] }
+    },
+    {
+      "id": "ppok",
+      "howToDistinguish": "PPOK: perokok lama, sesak progresif, obstruksi tidak reversibel penuh pada spirometri.",
+      "excludeBy": { "tools": ["spirometri"] }
     }
   ],
   "otherDifferentials": ["Bronkitis kronik / PPOK", "Kanker paru", "Bronkiektasis"],
@@ -233,7 +324,6 @@
     "Setiap batuk ≥ 2 minggu di Indonesia adalah terduga TB sampai terbukti bukan.",
     "TCM lebih sensitif daripada BTA mikroskopis; BTA negatif tidak menyingkirkan TB."
   ],
-  "idealWorkup": ["timbangan", "stetoskop", "tcm_tb"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": ["Sensitivitas BTA/TCM disederhanakan.", "TB ekstraparu dan TB resistan obat tidak dimodelkan."],
@@ -242,5 +332,121 @@
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Tuberkulosis Paru",
       "WHO consolidated guidelines on tuberculosis: diagnosis"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "efusi_pleura_tb",
+      "name": "Efusi pleura",
+      "trait": "efusi_pleura_tb",
+      "redFlag": false,
+      "assess": { "tools": ["pemeriksaan_paru", "rontgen_thorax"] },
+      "explanation": "Redup & suara napas menurun di basal; foto toraks tampak sinus tumpul."
+    },
+    {
+      "id": "gizi_buruk",
+      "name": "Malnutrisi",
+      "trait": "gizi_buruk",
+      "redFlag": false,
+      "assess": { "tools": ["timbangan"] },
+      "explanation": "IMT < 17 memperburuk prognosis dan perlu dukungan nutrisi."
+    },
+    {
+      "id": "hemoptisis",
+      "name": "Hemoptisis",
+      "trait": "hemoptisis",
+      "redFlag": false,
+      "assess": { "symptoms": ["batuk_darah"] },
+      "explanation": "Batuk darah; hemoptisis masif adalah kegawatan."
+    },
+    {
+      "id": "riwayat_oat",
+      "name": "Curiga TB resistan obat",
+      "trait": "riwayat_oat",
+      "redFlag": true,
+      "assess": { "topics": ["episode_sebelumnya", "riwayat_obat"] },
+      "explanation": "Riwayat OAT tidak tuntas → periksa TCM (resistansi rifampisin) dan rujuk ke layanan TB resistan obat."
+    }
+  ],
+  "traitComorbidities": { "dm_komorbid": "dm_tipe2" },
+  "plan": {
+    "keyTopics": ["onset", "keluhan_lain", "episode_sebelumnya", "riwayat_keluarga", "bepergian_lingkungan"],
+    "exams": [
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Ronkhi apeks dan tanda efusi." },
+      { "tool": "timbangan", "role": "kunci", "reason": "Status gizi (IMT)." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Pembesaran KGB leher." }
+    ],
+    "tests": [
+      {
+        "tool": "tcm_tb",
+        "role": "kunci",
+        "reason": "Diagnosis bakteriologis + resistansi rifampisin.",
+        "group": "bakteriologis"
+      },
+      {
+        "tool": "bta_sputum",
+        "role": "kunci",
+        "reason": "Diagnosis bakteriologis bila TCM tidak tersedia.",
+        "group": "bakteriologis"
+      },
+      { "tool": "rontgen_thorax", "role": "pendukung", "reason": "Infiltrat/kavitas dan efusi." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM pada pasien TB." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "LED, anemia." }
+    ],
+    "unnecessary": [
+      { "tool": "ekg", "reason": "Tidak ada keluhan yang mengarah ke jantung." },
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "usg_abdomen", "reason": "Tidak ada keluhan perut." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Curiga TB resistan obat: TCM dan rujuk ke fasyankes rujukan TB-RO.",
+      "when": { "traits": ["riwayat_oat"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "TB dengan efusi pleura: OAT di layanan primer, evaluasi efusi dapat dirujuk.",
+      "when": { "traits": ["efusi_pleura_tb"] },
+      "alsoAccept": ["rujuk_spesialis"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "TB paru tanpa komplikasi diobati di layanan primer (program TB); lapor dan investigasi kontak serumah."
+    }
+  ],
+  "management": [
+    "Konfirmasi bakteriologis (TCM) dan pengobatan OAT sesuai program nasional — keputusan dokter.",
+    "Pengawas menelan obat (PMO) dan edukasi kepatuhan.",
+    "Investigasi kontak serumah; skrining DM dan HIV.",
+    "Etika batuk dan ventilasi rumah untuk mencegah penularan."
+  ],
+  "approach": [
+    "Batuk ≥ 2 minggu = terduga TB: tanyakan dahak/darah, keringat malam, BB turun, kontak serumah, riwayat OAT.",
+    "Nilai status gizi dan periksa paru.",
+    "Konfirmasi bakteriologis (TCM lebih sensitif daripada BTA); foto toraks mendukung.",
+    "Skrining komorbid DM; tanyakan pengobatan sebelumnya (TB resistan obat).",
+    "Bedakan dengan pneumonia (akut), asma (episodik), dan keganasan paru."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "tb_paru", "toolNormal": "bta_sputum" },
+      "text": "BTA negatif tidak menyingkirkan TB — gunakan TCM yang lebih sensitif."
+    },
+    {
+      "when": { "topicNotAsked": "episode_sebelumnya", "traits": ["riwayat_oat"] },
+      "text": "Riwayat pengobatan TB sebelumnya tidak ditanyakan — penting untuk mendeteksi TB resistan obat."
+    }
+  ]
 }
