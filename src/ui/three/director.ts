@@ -57,8 +57,11 @@ export class Director implements StageUpdatable {
     stage.setFocusProvider(() => {
       if (!this.actor) return null;
       this.actor.headPosition(this.focus);
-      // Pandang sedikit di bawah wajah agar badan & meja ikut terlihat.
-      this.focus.y -= this.actor.mode === 'seated' ? 0.22 : 0.32;
+      // Pandang sedikit di bawah wajah agar badan ikut terlihat; makin dekat pasien berdiri,
+      // makin ke wajah (dokter mendongak menatap pasien yang berdiri di depan meja).
+      const dist = this.focus.distanceTo(LAYOUT.eye);
+      const drop = this.actor.mode === 'seated' ? 0.2 : 0.08 + 0.34 * Math.max(0, Math.min(1, (dist - 1.7) / 1.5));
+      this.focus.y -= drop;
       return this.focus;
     });
   }
@@ -145,10 +148,11 @@ export class Director implements StageUpdatable {
     });
     await this.until(() => gone, token);
     if (token !== this.token) return;
+    // Pintu menutup dulu; pasien (sudah di lorong) baru dihapus setelah tidak terlihat.
     this.doorTarget = 0;
-    this.removeActor();
-    await this.until(() => this.door < 0.06, token);
+    await this.until(() => this.door < 0.08, token);
     if (token !== this.token) return;
+    this.removeActor();
     this.phase = 'kosong';
     this.hooks.onLeft();
   }

@@ -1,0 +1,72 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;overflow:hidden}#stage{position:fixed;inset:0}canvas{width:100%;height:100%;display:block}#info{position:fixed;left:8px;top:8px;font:12px system-ui;background:#000a;color:#fff;padding:4px 8px;border-radius:6px;max-width:60%}</style></head>
+<body><div id="stage"></div><div id="info"></div>
+<script type="module">
+import { Vector3 } from 'three';
+import { Stage } from '/src/ui/three/stage.ts';
+import { Actor } from '/src/ui/three/actor.ts';
+import { LAYOUT } from '/src/ui/three/room.ts';
+import { loadDefaultContent, GAME_CONFIG } from '/src/data/index.ts';
+import { generateCase } from '/src/core/generator.ts';
+import { buildAppearance, speechTimeline } from '/src/core/appearance.ts';
+const q = new URLSearchParams(location.search);
+const stage = Stage.create(document.getElementById('stage'));
+window.stage = stage;
+const W = innerWidth, H = innerHeight;
+if (q.get('layout') === 'desktop') stage.setFreeRect({ left: 0, top: 56, right: W - 476, bottom: H });
+else if (q.get('layout') === 'mobile') stage.setFreeRect({ left: 0, top: 52, right: W, bottom: H * 0.44 });
+else if (q.get('layout') === 'close') stage.setFreeRect({ left: 0, top: 0, right: W, bottom: H * 0.42 });
+else stage.setFreeRect({ left: 0, top: 0, right: W, bottom: H });
+stage.room.setDoor(Number(q.get('door') ?? 0));
+const content = loadDefaultContent();
+const disease = q.get('disease') ?? 'dengue';
+let seed = Number(q.get('seed') ?? 1);
+const want = q.get('want'); // e.g. trait:serangan_berat or age:child or sex:female or hijab
+let c, app;
+for (let i = 0; i < 3000; i++) {
+  c = generateCase(content, GAME_CONFIG, { diseaseId: disease, seed: seed + i });
+  app = buildAppearance(c, content);
+  if (!want) break;
+  const ok = want.split(',').every((w) => {
+    const [k, v] = w.split(':');
+    if (k === 'trait') return c.traits.includes(v);
+    if (k === 'sym') return c.symptoms.includes(v);
+    if (k === 'group') return app.ageGroup === v;
+    if (k === 'sex') return c.patient.sex === v;
+    if (k === 'hijab') return !!app.hijab === (v !== '0');
+    if (k === 'cue') return (app.cues[v] ?? 0) > 0;
+    if (k === 'hair') return app.hairStyle === v && !app.hijab;
+    if (k === 'pers') return c.patient.personalityId === v;
+    return true;
+  });
+  if (ok) break;
+}
+document.getElementById('info').textContent = `${c.patient.name}, ${c.patient.age} th, ${c.patient.sex}, ${c.patient.occupationLabel} · ${c.patient.personalityId} · ${app.hairStyle}${app.hijab ? ' (hijab)' : ''} · IMT ${app.bmi} TB ${app.heightCm} · RR ${app.breathsPerMinute} · cues ${JSON.stringify(app.cues)} · hold ${JSON.stringify(app.hold)} · ${app.emotion}`;
+const actor = new Actor(app, c.seed);
+window.actor = actor;
+stage.scene.add(actor.character.root);
+stage.add(actor);
+const head = new Vector3();
+stage.setFocusProvider(() => { actor.headPosition(head); head.y -= 0.2; return head; });
+const mode = q.get('mode') ?? 'seated';
+if (mode === 'seated') actor.placeSeated();
+else if (mode === 'stand') actor.placeAt(actor.standPoint(), 0);
+else if (mode === 'walk') {
+  actor.placeAt(LAYOUT.pathIn[0], 0);
+  stage.room.setDoor(1);
+  const pts = [...LAYOUT.pathIn.slice(1, -1), actor.standPoint()];
+  actor.walkPath(pts, 0, () => { window.arrived = true; if (q.get('sit') !== '0') actor.sit(() => { window.seated = true; }); });
+} else if (mode === 'leave') {
+  actor.placeSeated();
+  setTimeout(() => actor.stand(() => { stage.room.setDoor(1); actor.walkPath([...LAYOUT.pathIn].reverse().slice(1), null, () => {}); }), 300);
+}
+const g = q.get('gesture');
+if (g) setTimeout(() => actor.gesture(JSON.parse(g)), Number(q.get('gdelay') ?? 300));
+const say = q.get('say');
+if (say) setTimeout(() => actor.say(speechTimeline(say, app.talkRate)), 300);
+const react = q.get('react');
+if (react) setTimeout(() => actor.react(react), 300);
+stage.start();
+window.ready = true;
+</script></body></html>

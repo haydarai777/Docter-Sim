@@ -1,6 +1,8 @@
 # 🩺 Meja Praktek
 
-Simulator praktik klinis dokter umum (single-player). Pasien datang satu per satu dengan
+Simulator praktik klinis dokter umum (single-player) dengan **ruang praktik 3D sudut pandang
+orang pertama**: Anda duduk di belakang meja periksa, pasien masuk lewat pintu, menyapa, lalu duduk
+di hadapan Anda. Pasien datang satu per satu dengan
 keluhan yang kabur, tidak lengkap, dan sering lebih dari satu masalah. Alurnya mengikuti
 praktik nyata: **anamnesis → pemeriksaan fisik → penunjang → diagnosis banding → penyingkiran
 → penilaian komplikasi → diagnosis akhir & disposisi**. Yang dinilai adalah **proses penalaran
@@ -12,6 +14,24 @@ klinis**, bukan sekadar tebakan diagnosis.
 
 ## Fitur
 
+- **Ruang praktik 3D first-person** (three.js, seluruhnya prosedural tanpa berkas aset): meja dokter di
+  latar depan, kursi pasien, pintu, lemari alat, tempat tidur periksa, jendela, jam dinding yang
+  berjalan, kipas, tirai, dan bayangan. Seret layar untuk melihat sekeliling.
+- **Pasien NPC hidup**: masuk lewat pintu, berjalan ke kursi, menyapa, duduk, dan setelah konsultasi
+  berdiri, berpamitan, lalu keluar. Saat duduk pasien bernapas, berkedip, melirik, dan mengubah posisi.
+- **Karakter modular** dari satu kerangka: gender, kelompok usia (anak, remaja, dewasa, lansia), tinggi &
+  bentuk badan (dari antropometri kasus), warna kulit, gaya/warna rambut atau hijab, kacamata, pakaian
+  sesuai pekerjaan (mis. seragam sekolah, jaket ojek).
+- **Manifestasi klinis yang terlihat — selalu konsisten dengan kasus**: napas cepat/berat (laju napas =
+  tanda vital), batuk, memegang perut/pinggang, gelisah karena kolik, menggigil, lemas, pucat, ikterik,
+  mata merah, petekie, pincang, badan kurus/gemuk. Gejala yang tidak tampak tetap harus ditanyakan.
+- **Ekspresi & bahasa tubuh kontekstual**: mulut bergerak sinkron dengan teks jawaban; pasien menunjuk
+  lokasi nyeri, memperagakan batuk/sesak, mengangguk, menggeleng, berpikir, atau tampak bingung sesuai
+  isi jawaban; ekspresi cemas, kesakitan, lesu, tenang mengikuti kepribadian & kondisi.
+- **Monitor RME di meja** memuat seluruh tindakan (riwayat percakapan, pemeriksaan, penalaran,
+  keputusan); jawaban pasien juga tampil sebagai teks berjalan di ruangan.
+- **Ringan**: ± 15 ribu segitiga, satu pasien dalam satu waktu (sumber daya dibuang saat pasien pergi),
+  resolusi & bayangan menyesuaikan kemampuan perangkat; tanpa WebGL game tetap bisa dimainkan (2D).
 - **Anamnesis bebas tanpa batas.** Ketik pertanyaan dengan bahasa sendiri. Pasien hanya menjawab
   yang ditanyakan, mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang), dan memahami
   rumusan berbeda, slang, akhiran *-nya*, serta tinjauan sistem ("BAB-nya bagaimana?").
@@ -93,7 +113,7 @@ Hasilnya di `dist-single/`:
 
 | File | Kegunaan |
 |---|---|
-| `meja-praktek.html` | Seluruh game dalam **satu file** (± 380 KB). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
+| `meja-praktek.html` | Seluruh game dalam **satu file** (± 1 MB, termasuk mesin 3D). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
 | `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI aktif). |
 
 Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.
@@ -128,6 +148,7 @@ src/
     tools.json          alat pemeriksaan + parameter + nilai rujukan
     symptoms.json       kosakata gejala + frasa awam (biasa/kabur/dilebihkan/diremehkan)
     anamnesis.json      topik anamnesis (kata kunci, alasan), templat percakapan, tinjauan sistem
+    appearance.json     penampilan pasien 3D: palet, pakaian per pekerjaan, aturan isyarat yang terlihat
     comorbidities.json  komorbiditas & temuan insidental
     conditions.json     kondisi khusus diagnosis banding (tidak muncul sebagai pasien)
     personalities.json  gaya bicara pasien (kooperatif, cemas, meremehkan, pelupa, sok tahu)
@@ -139,6 +160,7 @@ src/
     generator.ts        generator kasus pasien dari templat penyakit
     findings.ts         hasil pemeriksaan (normal / abnormal / positif palsu)
     dialogue.ts         keluhan & jawaban pasien sesuai kepribadian
+    appearance.ts       penampilan & bahasa tubuh pasien dari kasus (isyarat terlihat, gestur, gerak mulut)
     nlu.ts              pemahaman pertanyaan bebas (normalisasi, frasa terpanjang, intent)
     encounter.ts        satu konsultasi: anamnesis bebas, pemeriksaan, papan banding, keputusan
     evaluation.ts       penilaian proses klinis berbobot + umpan balik
@@ -148,9 +170,15 @@ src/
     validate.ts         validator integritas konten
   ui/                   TAMPILAN (DOM tanpa framework)
     ai/patientAi.ts     pasien AI lewat kapabilitas `sample` claude.ai (dengan fallback lokal)
+    three/              tampilan 3D: stage (kamera/loop), room (ruang praktik), character & face
+                        (karakter modular), actor (animasi prosedural), director (adegan datang/pamit)
 tests/                  unit test
 scripts/                alat bantu pengembang (validasi, contoh kasus, format data)
 ```
+
+Pratinjau pasien 3D untuk pengembang/reviewer (saat `npm run dev`):
+`http://localhost:5173/dev3d.html?disease=asma&want=trait:serangan_berat` — parameter lain: `seed`,
+`mode=seated|walk|leave`, `want=group:anak,sex:female,hijab:1,cue:kuning,…`, `gesture=[…]`, `say=…`.
 
 Aturan main: **UI tidak berisi aturan permainan.** Semua aturan ada di `src/core`,
 semua angka di `src/data/config.ts`, semua konten medis di file JSON.
@@ -189,9 +217,13 @@ Setiap penyakit adalah *templat*. Dari templat + seed acak, generator membuat pa
 3. **Trait laten** (mis. `fase_kritis`, `falciparum`, `anemia`) — menghubungkan gejala dan temuan agar konsisten.
 4. **Gejala** dengan probabilitas.
 5. **Komorbiditas, temuan insidental, komplikasi, alergi** — ikut mengubah jawaban riwayat dan hasil pemeriksaan.
+   Pasien anak (10–12 th) & remaja muncul pada dengue, tifoid, dan asma, dengan rujukan tanda vital &
+   antropometri menurut usia (`refByAge`, disederhanakan — perlu tinjauan pediatri).
 6. **Dialog**: keluhan utama hanya menyebut sebagian gejala; sebagian gejala tidak pernah disebut sukarela.
 7. **Hasil semua pemeriksaan** — tiap kelainan mencatat asalnya (penyakit utama / komorbiditas /
    insidental); alat yang tidak relevan tetap memberi hasil (biasanya normal, kadang positif palsu).
+8. **Penampilan 3D** diturunkan dari kasus yang sama (`core/appearance.ts`): yang terlihat tidak pernah
+   bertentangan dengan gejala & hasil pemeriksaan (dijaga oleh `tests/appearance.test.ts`).
 
 Setiap kasus punya **kode kasus** (seed) yang tampil di layar ringkasan, sehingga kasus aneh bisa direproduksi.
 

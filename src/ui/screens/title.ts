@@ -18,7 +18,7 @@ export function renderTitle(app: App): HTMLElement {
       h(
         'ol',
         { class: 'title-howto' },
-        h('li', null, 'Wawancarai pasien dengan pertanyaan bebas — keluhannya kabur, tidak lengkap, dan sering lebih dari satu masalah.'),
+        h('li', null, 'Pasien masuk ke ruang praktik Anda. Amati penampilan dan bahasa tubuhnya, lalu wawancarai dengan pertanyaan bebas.'),
         h('li', null, 'Periksa fisik (gratis) dan pilih pemeriksaan penunjang sesuai tujuan (memotong budget pasien).'),
         h('li', null, 'Susun diagnosis banding, nilai komplikasi, lalu putuskan diagnosis & disposisi. Seluruh proses klinis Anda dinilai.'),
       ),

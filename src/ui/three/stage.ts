@@ -178,7 +178,7 @@ export class Stage {
     this.raf = requestAnimationFrame(this.tick);
     const rawDt = (now - this.last) / 1000;
     this.last = now;
-    const dt = Math.min(0.05, Math.max(0, rawDt));
+    const dt = Math.min(0.1, Math.max(0, rawDt));
     this.time += dt;
     this.frame++;
     this.room.update(dt, this.time);

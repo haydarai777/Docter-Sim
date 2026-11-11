@@ -232,6 +232,8 @@ export class App {
       this.ui = { ...this.ui, phase: 'konsultasi', intro: 2 };
       return;
     }
+    // Hormati preferensi "kurangi gerakan": tanpa adegan berjalan masuk.
+    instant ||= this.reducedMotion;
     this.ui = { ...this.ui, phase: instant ? 'konsultasi' : 'datang', intro: instant ? 2 : 0 };
     const site = chiefSite(c, this.content);
     const complaintGestures: GestureCue[] = site ? [{ kind: 'tunjuk', site, side: bodySide(c, this.content) }] : [];
@@ -413,13 +415,18 @@ export class App {
     this.aiAbort?.abort();
     this.run = finishCurrent(this.run, decision, this.content, this.config);
     const farewell = this.run.encounter!.log.at(-1);
-    if (this.director && farewell?.kind === 'patient') {
+    if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
       this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: null, actionTab: 'anamnesis', monitorSmall: true };
       this.render();
       void this.director.leave(farewell.text);
     } else {
+      this.director?.clear();
       this.afterPatientLeft();
     }
+  }
+
+  private get reducedMotion(): boolean {
+    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
   }
 
   private afterPatientLeft(): void {

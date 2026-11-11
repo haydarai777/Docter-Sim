@@ -191,10 +191,9 @@ export class Character {
     const waistHalf = (male ? 0.132 : 0.122) * s * dims.bw;
     torso(spine, 0.1 * s, 0.31 * s, waistHalf, dims.bd, 0.07 * s);
     if (fat > 0.2) ball(spine, top, waistHalf * (0.86 + 0.2 * fat), 0.125 * s * (1 + 0.2 * fat), 0.1 * s * (1 + 0.75 * fat), 0, 0.03 * s, 0.03 * s + 0.05 * s * fat);
-    const chestDepth = 1 + 0.32 * fat - 0.1 * thin;
+    const chestDepth = 1 + 0.32 * fat - 0.1 * thin + (!male && a.ageGroup !== 'anak' ? 0.1 : 0);
     this.chestMesh = torso(chest, 0.098 * s, 0.31 * s, dims.shoulderHalf * 0.97, chestDepth, 0.088 * s);
     this.chestBase = { x: this.chestMesh.scale.x, z: chestDepth };
-    if (!male && a.ageGroup !== 'anak') ball(chest, top, dims.shoulderHalf * 0.66, 0.052 * s, 0.05 * s, 0, 0.085 * s, 0.062 * s * chestDepth, 14);
     for (const sh of [this.shoulderL, this.shoulderR]) ball(sh, top, 0.047 * s, 0.046 * s, 0.05 * s, sh === this.shoulderL ? -0.012 * s : 0.012 * s, -0.012 * s, 0, 12);
     // Kerah / ritsleting jaket.
     if (jacket) {
@@ -397,17 +396,12 @@ export class Character {
     const inner = std(new Color(color).multiplyScalar(0.82), { roughness: 0.95, side: DoubleSide });
     const rim = new Mesh(this.track(new SphereGeometry(R * 1.045, 14, 6, Math.PI / 2 - open, open * 2, 0.45, 0.36)), inner);
     hb.add(rim);
-    // Juntai kain di leher sampai bahu/dada.
+    // Juntai kain dari leher menutup bahu & dada atas (seperti kerudung instan).
     const s = this.dims.s;
-    const drape = new Mesh(this.track(new CylinderGeometry(0.075 * s, this.dims.shoulderHalf * 1.02, 0.2 * s, 20, 1, true)), m);
-    drape.position.y = this.dims.shoulderY - 0.02 * s;
-    drape.scale.z = 0.72;
+    const drape = new Mesh(this.track(new CylinderGeometry(0.07 * s, this.dims.shoulderHalf * 1.12, 0.27 * s, 24, 1, true)), m);
+    drape.position.y = this.dims.shoulderY - 0.065 * s;
+    drape.scale.z = 0.8 * this.chestBase.z;
     drape.castShadow = true;
     this.chest.add(drape);
-    // Bagian depan kain yang jatuh tipis di dada atas.
-    const bib = new Mesh(this.track(new SphereGeometry(1, 16, 10)), m);
-    bib.scale.set(this.dims.shoulderHalf * 0.78, 0.085 * s, 0.03 * s);
-    bib.position.set(0, 0.15 * s, 0.092 * s * this.chestBase.z);
-    this.chest.add(bib);
   }
 }

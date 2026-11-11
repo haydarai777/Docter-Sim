@@ -36,6 +36,8 @@ if (!stage) stageEl.remove();
 
 const app = new App(root, content, GAME_CONFIG, stage, stage ? stageUi : null);
 app.mount();
+// Mode pengembangan: akses dari konsol/tes untuk memantau kinerja (stage.stats()).
+if (import.meta.env.DEV) (window as unknown as { mejaPraktek?: unknown }).mejaPraktek = { app, stage };
 
 // PWA: daftarkan service worker (hanya di build produksi web) agar bisa dimainkan offline.
 // Versi file tunggal (mode "single") tidak memakai service worker: file-nya sendiri sudah offline.

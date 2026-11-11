@@ -50,7 +50,8 @@ describe('keseimbangan ekonomi', () => {
   });
 });
 
-describe('keseimbangan reputasi (simulasi bot)', () => {
+// Simulasi ratusan sesi cukup berat; beri batas waktu longgar agar tidak gagal di mesin yang sibuk.
+describe('keseimbangan reputasi (simulasi bot)', { timeout: 30_000 }, () => {
   const sim = (skill: number) => simulateBot(content, config, { skill, runs: 80, maxPatients: 40, seed: 2024 });
 
   it('asal menebak cepat berujung game over', () => {

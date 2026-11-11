@@ -1778,15 +1778,17 @@ body {
 }
 .patient__row .patient__name {
   font-size: 1rem;
-}
-.patient__row .patient__meta {
-  margin: 0;
   flex: 1 1 auto;
   min-width: 0;
+}
+.monitor .patient > .patient__meta {
+  margin: 0;
 }
 .patient__record {
   margin-left: auto;
   flex: none;
+  min-height: 32px;
+  padding-block: 0.1rem;
 }
 .patient__row--stats {
   align-items: center;
@@ -1923,6 +1925,12 @@ body {
   color: #fff;
   font-size: 0.88rem;
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.25);
+}
+.scene-note__text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 .scene-note .btn {
   background: #ffffff;

@@ -30,7 +30,7 @@ export function renderConsult(app: App): HTMLElement {
       ? h(
           'div',
           { class: 'scene-note', role: 'status' },
-          h('span', null, app.ui.phase === 'datang' ? `${enc.case.patient.name} memasuki ruang praktik…` : `${enc.case.patient.address} berpamitan…`),
+          h('span', { class: 'scene-note__text' }, app.ui.phase === 'datang' ? `${enc.case.patient.address} masuk…` : `${enc.case.patient.address} berpamitan…`),
           h('button', { class: 'btn btn--small', type: 'button', onclick: () => app.skipScene() }, 'Lewati ▸'),
         )
       : null,
@@ -156,9 +156,9 @@ function patientStrip(app: App, enc: EncounterState): HTMLElement {
       'div',
       { class: 'patient__row' },
       h('h2', { class: 'patient__name' }, p.name),
-      h('span', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
       h('button', { class: 'btn btn--small btn--ghost patient__record', type: 'button', onclick: () => app.openDialog('record') }, '📋 Rekam medis'),
     ),
+    h('p', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
     h(
       'div',
       { class: 'patient__row patient__row--stats' },

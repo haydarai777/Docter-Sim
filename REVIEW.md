@@ -128,12 +128,69 @@ JSON penyakit menjadi `DISETUJUI` dan isi `reviewer` serta `date`.
 | Bepergian, pekerjaan & lingkungan | Sosial & lingkungan | Ya | 1 | Riwayat bepergian, pekerjaan, dan lingkungan mengarahkan ke penyakit endemis atau paparan tertentu. |
 | Kebiasaan & gaya hidup | Sosial & lingkungan | Ya | 1 | Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit. |
 
+## Penampilan pasien 3D: isyarat klinis yang TERLIHAT
+
+Yang terlihat pada pasien (postur, perilaku, warna kulit) hanya muncul bila gejala/temuannya ada pada kasus.
+Gejala yang tidak tercantum di sini hanya bisa diketahui lewat anamnesis atau pemeriksaan.
+
+| Sumber | Syarat | Isyarat yang terlihat | Kekuatan |
+|---|---|---|---|
+| Gejala | Batuk | sesekali batuk | 60% |
+| Gejala | Batuk darah (hemoptisis) | sesekali batuk | 70% |
+| Gejala | Sesak napas | napas tampak cepat/berat | 30% |
+| Gejala | Mengi (wheezing) | napas tampak cepat/berat | 30% |
+| Gejala | Lemas | tampak lemas, postur kurang tegap | 35% |
+| Gejala | Berkeringat banyak | berkeringat | 60% |
+| Gejala | Keringat dingin | berkeringat | 30% |
+| Gejala | Nyeri otot/sendi (mialgia/artralgia) | bergerak pelan dan kaku | 50% |
+| Gejala | Nyeri pinggang | sesekali memegang pinggang | 90% |
+| Gejala | Nyeri perut | sesekali memegang perut | 60% |
+| Gejala | Nyeri/perih ulu hati (epigastrium) | sesekali memegang ulu hati | 45% |
+| Gejala | Nyeri perut bawah (suprapubik) | sesekali memegang perut bawah | 40% |
+| Gejala | Nyeri dada saat bernapas/batuk (pleuritik) | sesekali memegang dada | 35% |
+| Gejala | Nyeri kepala | sesekali memegang kepala | 30% |
+| Gejala | Nyeri belakang bola mata (retro-orbital) | sesekali memegang mata | 25% |
+| Gejala | Rasa terbakar di dada (heartburn) | sesekali memegang dada | 20% |
+| Gejala | Mual/muntah | sesekali memegang mulut | 15% |
+| Temuan: Tanda vital lengkap · Suhu aksila | ≥ 38 | wajah kemerahan seperti demam | 70% |
+| Temuan: Tanda vital lengkap · Frekuensi napas | ≥ 25 | napas tampak cepat/berat | 100% |
+| Temuan: Tanda vital lengkap · Frekuensi napas | ≥ 21 | napas tampak cepat/berat | 60% |
+| Temuan: Tanda vital lengkap · Saturasi oksigen (SpO₂) | ≤ 93 | napas tampak cepat/berat | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "membungkuk" | duduk membungkuk bertumpu pada tangan | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "sesak berat" | napas tampak cepat/berat | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "cuping hidung" | napas tampak cepat/berat | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "tampak sesak" | napas tampak cepat/berat | 60% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "napas agak cepat" | napas tampak cepat/berat | 50% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "menggigil" | menggigil | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "gelisah" | gelisah, sering berganti posisi | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "enggan bergerak" | duduk kaku menahan nyeri, enggan bergerak | 100% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "sakit berat" | tampak lemas, postur kurang tegap | 90% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "lemas" | tampak lemas, postur kurang tegap | 70% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "sakit kronik" | tampak lemas, postur kurang tegap | 50% |
+| Temuan: Keadaan umum · Kesan sakit | hasil abnormal memuat "pucat" | tampak pucat | 100% |
+| Temuan: Keadaan umum · Kesadaran | abnormal | tampak mengantuk, respons lambat | 100% |
+| Temuan: Kepala & leher · Konjungtiva | hasil abnormal memuat "anemis (pucat)" | tampak pucat | 100% |
+| Temuan: Kepala & leher · Konjungtiva | hasil abnormal memuat "hiperemis" | mata tampak kemerahan | 100% |
+| Temuan: Kepala & leher · Sklera | hasil abnormal memuat "subikterik" | mata/kulit tampak kekuningan | 50% |
+| Temuan: Kepala & leher · Sklera | hasil abnormal memuat "ikterik" | mata/kulit tampak kekuningan | 100% |
+| Temuan: Ekstremitas & kulit · Kulit | hasil abnormal memuat "kekuningan" | mata/kulit tampak kekuningan | 60% |
+| Temuan: Ekstremitas & kulit · Kulit | hasil abnormal memuat "petekie" | bintik-bintik merah di lengan dan tungkai | 100% |
+| Temuan: Ekstremitas & kulit · Kulit | hasil abnormal memuat "luka di telapak kaki kanan" | berjalan pincang (kaki kanan) | 100% |
+| Temuan: Ekstremitas & kulit · Edema | abnormal | kedua pergelangan kaki tampak bengkak | 100% |
+
+Selain itu: tinggi & bentuk badan mengikuti hasil antropometri kasus (TB, IMT); laju napas mengikuti frekuensi napas pada tanda vital;
+pakaian mengikuti pekerjaan (mis. seragam sekolah); pasien demam/menggigil cenderung datang berjaket.
+
+**Lokasi yang ditunjuk pasien saat membicarakan gejala**
+
+Nyeri kepala → kepala · Nyeri belakang bola mata (retro-orbital) → mata · Mata/kulit kuning (ikterus) → mata · Pandangan kabur → mata · Mimisan / gusi berdarah → mulut · Mual/muntah → ulu hati · Sulit menelan (disfagia) → tenggorokan · Regurgitasi asam → tenggorokan · Batuk → dada · Batuk darah (hemoptisis) → dada · Sesak napas → dada · Mengi (wheezing) → dada · Nyeri dada (berat/tertekan) → dada · Nyeri dada saat bernapas/batuk (pleuritik) → dada · Rasa terbakar di dada (heartburn) → dada · Nyeri menjalar ke lengan kiri/leher/rahang → lengan · Nyeri/perih ulu hati (epigastrium) → ulu hati · Kembung / cepat kenyang → perut · Nyeri perut → perut · Diare → perut · Sulit buang air besar (konstipasi) → perut · Nyeri perut bawah (suprapubik) → perut bawah · Nyeri/perih saat berkemih (disuria) → perut bawah · Nyeri pinggang → pinggang · Bintik merah di kulit (petekie) → lengan · Nyeri otot/sendi (mialgia/artralgia) → lengan · Kesemutan/kebas di tangan atau kaki → kaki · Luka lama sembuh → kaki
+
 ## Infeksi Dengue (Demam Dengue / DBD)
 
 - **id**: `dengue` · **SKDI**: 4A · **bahaya**: tinggi · **sistem**: Infeksi tropis · **status**: `BELUM_DITINJAU_DOKTER`
 - **Hari sakit saat datang**: 2–6
-- **Demografi**: laki-laki 50%; usia 18–30 (bobot 5), 31–45 (bobot 3), 46–60 (bobot 2), 61–75 (bobot 1)
-- **Pekerjaan berisiko** (bias 30%): Mahasiswa, Pegawai kantor swasta, Ibu rumah tangga, Buruh pabrik
+- **Demografi**: laki-laki 50%; usia 10–12 (bobot 1.5), 13–17 (bobot 2.5), 18–30 (bobot 5), 31–45 (bobot 3), 46–60 (bobot 2), 61–75 (bobot 1)
+- **Pekerjaan berisiko** (bias 30%): Mahasiswa, Pegawai kantor swasta, Ibu rumah tangga, Buruh pabrik, Pelajar SMP/SMA, Pelajar SD
 - **Biaya penunjang kunci**: Rp70.000 · semua sesuai rencana: Rp70.000
 
 > Infeksi virus dengue yang ditularkan nyamuk Aedes aegypti. Ditandai demam tinggi mendadak 2–7 hari, nyeri kepala, nyeri belakang bola mata, nyeri otot/sendi, dan manifestasi perdarahan (uji tourniquet positif, petekie, mimisan). Pada DBD terjadi kebocoran plasma (hematokrit meningkat). Fase kritis biasanya justru saat demam mulai turun (sekitar hari ke-3 sampai ke-7), sehingga pasien perlu dipantau ketat.
@@ -335,6 +392,7 @@ Topik anamnesis kunci: Onset, Pola & waktu, Perjalanan penyakit, Keluhan lain, B
 - Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.
 - Level SKDI perlu dicek: demam dengue/DBD tanpa syok vs sindrom syok dengue.
 - Penyederhanaan: DD dan DBD digabung menjadi satu diagnosis di game.
+- Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri.
 
 **Rujukan**
 
@@ -360,8 +418,8 @@ Topik anamnesis kunci: Onset, Pola & waktu, Perjalanan penyakit, Keluhan lain, B
 
 - **id**: `demam_tifoid` · **SKDI**: 4A · **bahaya**: sedang · **sistem**: Infeksi tropis · **status**: `BELUM_DITINJAU_DOKTER`
 - **Hari sakit saat datang**: 5–14
-- **Demografi**: laki-laki 50%; usia 18–25 (bobot 5), 26–35 (bobot 3), 36–50 (bobot 2), 51–75 (bobot 1)
-- **Pekerjaan berisiko** (bias 40%): Mahasiswa, Buruh pabrik, Pengemudi ojek online, Pedagang kaki lima
+- **Demografi**: laki-laki 50%; usia 10–12 (bobot 1.2), 13–17 (bobot 2.5), 18–25 (bobot 5), 26–35 (bobot 3), 36–50 (bobot 2), 51–75 (bobot 1)
+- **Pekerjaan berisiko** (bias 40%): Mahasiswa, Buruh pabrik, Pengemudi ojek online, Pedagang kaki lima, Pelajar SMP/SMA, Pelajar SD
 - **Biaya penunjang kunci**: Rp220.000 · semua sesuai rencana: Rp110.000
 
 > Infeksi sistemik oleh Salmonella enterica serotipe Typhi yang ditularkan lewat makanan/minuman tercemar (fekal–oral). Demam meningkat bertahap terutama sore–malam dan berlangsung lebih dari seminggu, disertai keluhan saluran cerna (konstipasi atau diare, nyeri perut), lidah kotor, dan kadang bradikardia relatif. Komplikasi berbahaya: perdarahan dan perforasi usus (biasanya minggu ke-2–3).
@@ -461,6 +519,7 @@ Keluhan utama (prioritas): demam; tambahan: nyeri_perut, nafsu_makan_turun, lema
 - _bepergian_lingkungan_: "Dua minggu lalu sempat mudik ke kampung, Dok. Di sana air sumurnya agak keruh, diminum juga." → **Kemungkinan sumber air minum tercemar**
 - _kebiasaan_: "Saya sering jajan di pinggir jalan, Dok. Es campur, gorengan, apa saja." → **Sering jajan makanan/minuman yang kebersihannya kurang terjamin**
 - _kebiasaan_: "Makan siang di warung dekat tempat kerja tiap hari, Dok. Cuci tangan? Jarang sih." → **Higiene makanan dan cuci tangan kurang**
+- _kebiasaan_: "Sering jajan di kantin sama pinggir jalan dekat sekolah, Dok. Cuci tangan? Jarang sih." → **Higiene makanan dan cuci tangan kurang**
 - _keparahan_: "Berat, Dok. Kemarin sempat pusing mau pingsan waktu berdiri." → **Pusing saat berdiri (curiga perdarahan saluran cerna)**
 - _keparahan_: "Sakit sekali, Dok, perut keras dan nggak bisa bergerak." → **Nyeri perut hebat (curiga perforasi usus)**
 - _progresi_: "Dari tadi pagi perut tiba-tiba sakit sekali, Dok, makin parah." → **Nyeri perut hebat mendadak pada minggu ke-2–3 (curiga perforasi)**
@@ -545,6 +604,7 @@ Topik anamnesis kunci: Onset, Pola & waktu, Perjalanan penyakit, Kebiasaan & gay
 
 - Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.
 - Sensitivitas Tubex/Widal di game disederhanakan.
+- Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri.
 
 **Rujukan**
 
@@ -2240,8 +2300,8 @@ Topik anamnesis kunci: Onset, Sifat keluhan, Keluhan lain, Kebiasaan & gaya hidu
 
 - **id**: `asma` · **SKDI**: 4A · **bahaya**: sedang · **sistem**: Pernapasan · **status**: `BELUM_DITINJAU_DOKTER`
 - **Hari sakit saat datang**: 1–3
-- **Demografi**: laki-laki 45%; usia 18–30 (bobot 5), 31–45 (bobot 3), 46–60 (bobot 2), 61–75 (bobot 1)
-- **Pekerjaan berisiko** (bias 30%): Buruh pabrik, Pengemudi ojek online, Mahasiswa, Pekerja proyek bangunan
+- **Demografi**: laki-laki 45%; usia 10–12 (bobot 1.5), 13–17 (bobot 2.5), 18–30 (bobot 5), 31–45 (bobot 3), 46–60 (bobot 2), 61–75 (bobot 1)
+- **Pekerjaan berisiko** (bias 30%): Buruh pabrik, Pengemudi ojek online, Mahasiswa, Pekerja proyek bangunan, Pelajar SMP/SMA, Pelajar SD
 - **Biaya penunjang kunci**: Rp25.000 · semua sesuai rencana: Rp25.000
 
 > Penyakit inflamasi kronik saluran napas dengan hiperreaktivitas bronkus. Episode berulang sesak napas, mengi, dada terasa sempit, dan batuk (terutama malam/dini hari) yang dipicu alergen, debu, asap, udara dingin, infeksi virus, atau olahraga, dan membaik spontan atau dengan bronkodilator. Sering ada riwayat atopi (rinitis alergi, eksim) dan riwayat keluarga. Di luar serangan pemeriksaan bisa normal; saat serangan arus puncak ekspirasi (APE) menurun.
@@ -2312,6 +2372,7 @@ Keluhan utama (prioritas): sesak_napas; tambahan: batuk, mengi. Salah kaprah pas
 - _riwayat_obat_: "Biasanya pakai obat semprot, Dok, tapi habis. Kalau pakai, sesaknya cepat hilang." → **Membaik dengan bronkodilator (inhaler)**
 - _riwayat_keluarga_: "Ibu saya juga asma, Dok." → **Riwayat keluarga asma**
 - _bepergian_lingkungan_: "Di tempat kerja banyak debu, Dok, apalagi kalau angin kencang." → **Paparan debu di lingkungan kerja**
+- _bepergian_lingkungan_: "Kamar saya memang agak berdebu, Dok, banyak karpet sama boneka." → **Paparan debu di rumah**
 - _kebiasaan_: "Saya nggak merokok, Dok, tapi orang rumah ada yang merokok." → **Paparan asap rokok**
 - _durasi_: "Kalau kambuh bisa berjam-jam, Dok. Kalau pakai obat semprot cepat hilang." → **Serangan reda dengan bronkodilator**
 - _keparahan_: "Berat... sekali... Dok." → **Bicara terputus per kata (serangan berat)**
@@ -2394,6 +2455,7 @@ Topik anamnesis kunci: Onset, Episode sebelumnya, Pemberat & peringan, Riwayat o
 **Catatan pengembang**
 
 - Serangan berat / status asmatikus tidak dimodelkan.
+- Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri.
 
 **Rujukan**
 

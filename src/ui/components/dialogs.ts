@@ -25,16 +25,26 @@ export function tutorialSteps(app: App): TutorialStep[] {
       icon: '🩺',
       title: 'Selamat datang di meja praktek',
       points: [
-        'Anda adalah dokter umum di layanan primer. Pasien datang satu per satu — sering dengan lebih dari satu masalah.',
+        'Anda adalah dokter umum yang duduk di belakang meja periksa. Pasien masuk lewat pintu, menyapa, lalu duduk di hadapan Anda.',
         'Yang dinilai bukan hanya diagnosis akhir, tetapi seluruh proses penalaran klinis Anda.',
+        'Seret layar untuk melihat sekeliling ruangan. Monitor RME di meja berisi semua tindakan Anda.',
         'Game ini hiburan & edukasi, bukan alat medis. Kontennya belum ditinjau dokter.',
+      ],
+    },
+    {
+      icon: '👀',
+      title: 'Amati pasien',
+      points: [
+        'Observasi dimulai sejak pasien masuk: cara berjalan, postur, napas, warna kulit, ekspresi, dan bagian tubuh yang dipegang.',
+        'Yang terlihat selalu sesuai kasusnya — sesak, batuk, menggigil, pucat, kuning, ruam, pincang — tetapi banyak gejala TIDAK terlihat dan harus ditanyakan atau diperiksa.',
+        'Saat menjawab, pasien memakai bahasa tubuh: menunjuk lokasi nyeri, memperagakan batuk, mengangguk, menggeleng, atau tampak bingung.',
       ],
     },
     {
       icon: '💬',
       title: '1 · Anamnesis bebas',
       points: [
-        'Ketik pertanyaan dengan bahasa Anda sendiri, tanpa batas jumlah. Pasien hanya menjawab yang ditanyakan dan ingat jawaban sebelumnya.',
+        'Ketik pertanyaan dengan bahasa Anda sendiri, tanpa batas jumlah. Jawaban pasien muncul sebagai teks berjalan di ruangan dan tersimpan di riwayat percakapan pada monitor.',
         'Keluhan awal TIDAK pernah lengkap. Gali onset, lokasi, karakter, durasi, keparahan, pola, perjalanan, pemberat/peringan, keluhan lain, episode sebelumnya, riwayat penyakit/obat/alergi/keluarga, lingkungan, dan kebiasaan.',
         'Beberapa gejala tidak disebut sukarela (mis. BAB hitam) — tanyakan spesifik atau lewat tinjauan sistem ("BAB-nya bagaimana?").',
         app.ai === 'ready'

@@ -316,10 +316,10 @@ export function rashTexture(skin: string, seed: number): CanvasTexture {
     const rnd = lcg(seed || 1);
     g.fillStyle = skin;
     g.fillRect(0, 0, w, h);
-    for (let i = 0; i < 46; i++) {
-      g.fillStyle = `rgba(${170 + rnd() * 40},${20 + rnd() * 25},${25 + rnd() * 25},${0.75 + rnd() * 0.25})`;
+    for (let i = 0; i < 26; i++) {
+      g.fillStyle = `rgba(${175 + rnd() * 40},${20 + rnd() * 25},${25 + rnd() * 25},${0.8 + rnd() * 0.2})`;
       g.beginPath();
-      g.arc(rnd() * w, rnd() * h, 0.9 + rnd() * 1.3, 0, Math.PI * 2);
+      g.arc(rnd() * w, rnd() * h, 1.8 + rnd() * 1.8, 0, Math.PI * 2);
       g.fill();
     }
   });

@@ -248,6 +248,31 @@ line('| Topik | Rubrik | Inti | Bobot | Mengapa penting |');
 line('|---|---|---|---|---|');
 for (const a of content.anamnesis) line(`| ${a.label} | ${a.rubric} | ${a.core ? 'Ya' : '—'} | ${a.weight ?? 1} | ${esc(a.why)} |`);
 line();
+line('## Penampilan pasien 3D: isyarat klinis yang TERLIHAT');
+line();
+line('Yang terlihat pada pasien (postur, perilaku, warna kulit) hanya muncul bila gejala/temuannya ada pada kasus.');
+line('Gejala yang tidak tercantum di sini hanya bisa diketahui lewat anamnesis atau pemeriksaan.');
+line();
+line('| Sumber | Syarat | Isyarat yang terlihat | Kekuatan |');
+line('|---|---|---|---|');
+for (const r of content.appearance.symptomCues) {
+  const label = r.cue === 'pegang' && r.site ? `sesekali memegang ${r.site.replace('_', ' ')}` : content.appearance.cueLabels[r.cue];
+  line(`| Gejala | ${content.symptomsById.get(r.symptom)?.label ?? r.symptom} | ${esc(label)} | ${pct(r.level)} |`);
+}
+for (const r of content.appearance.findingCues) {
+  const tool = content.toolsById.get(r.tool);
+  const param = tool?.params.find((x) => x.id === r.param);
+  const syarat = r.match !== undefined ? `hasil abnormal memuat "${r.match}"` : r.min !== undefined ? `≥ ${r.min}` : r.max !== undefined ? `≤ ${r.max}` : 'abnormal';
+  line(`| Temuan: ${tool?.name ?? r.tool} · ${param?.label ?? r.param} | ${esc(syarat)} | ${esc(content.appearance.cueLabels[r.cue])} | ${pct(r.level)} |`);
+}
+line();
+line('Selain itu: tinggi & bentuk badan mengikuti hasil antropometri kasus (TB, IMT); laju napas mengikuti frekuensi napas pada tanda vital;');
+line('pakaian mengikuti pekerjaan (mis. seragam sekolah); pasien demam/menggigil cenderung datang berjaket.');
+line();
+line('**Lokasi yang ditunjuk pasien saat membicarakan gejala**');
+line();
+line(Object.entries(content.appearance.sites).map(([sym, site]) => `${content.symptomsById.get(sym)?.label ?? sym} → ${site.replace('_', ' ')}`).join(' · '));
+line();
 for (const d of content.diseases) diseaseSection(d);
 
 writeFileSync('REVIEW.md', out.join('\n'));
