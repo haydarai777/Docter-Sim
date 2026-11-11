@@ -62,6 +62,9 @@ const PERMANENT = new Set(['not_granted', 'sampling_disabled', 'not_declared', '
 export interface AiAnswer {
   state: EncounterState;
   reply: string;
+  /** Intent yang diambil lewat alat (dasar bahasa tubuh pasien 3D) & potongan jawabannya. */
+  intents: Intent[];
+  parts: string[];
 }
 
 export class AiError extends Error {
@@ -195,10 +198,14 @@ export async function askAiPatient(
 ): Promise<AiAnswer & { usedTools: boolean }> {
   let working = state;
   let usedTools = false;
+  const usedIntents: Intent[] = [];
+  const usedParts: string[] = [];
   const tool = factTool(content, (intents) => {
     usedTools = true;
     const r = applyIntents(working, intents, content);
     working = r.state;
+    usedIntents.push(...intents);
+    usedParts.push(...r.parts);
     return r.parts;
   });
   let text: string;
@@ -213,8 +220,8 @@ export async function askAiPatient(
     // Claude tidak mengambil fakta untuk pertanyaan klinis → pakai jawaban mesin agar tetap konsisten.
     const r = applyIntents(state, fallbackIntents, content);
     const reply = r.parts.join(' ');
-    return { state: recordExchange(r.state, question, reply), reply, usedTools: false };
+    return { state: recordExchange(r.state, question, reply), reply, usedTools: false, intents: [...fallbackIntents], parts: r.parts };
   }
   if (!text) throw new AiError('empty_completion', false);
-  return { state: recordExchange(working, question, text), reply: text, usedTools };
+  return { state: recordExchange(working, question, text), reply: text, usedTools, intents: usedIntents, parts: usedParts };
 }

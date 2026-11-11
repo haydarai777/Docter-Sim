@@ -175,6 +175,8 @@ export interface QuestionResult {
   state: EncounterState;
   reply: string;
   intents: Intent[];
+  /** Potongan jawaban per intent (urutan sama dengan `intents`). */
+  parts: string[];
   understood: boolean;
 }
 
@@ -186,11 +188,11 @@ export function askQuestion(state: EncounterState, question: string, content: Ga
   const { intents } = interpretQuestion(text, content, config.anamnesis.maxIntentsPerQuestion);
   if (intents.length === 0) {
     const reply = conversationReply('unknown', state.case, content, String(state.questionCount));
-    return { state: recordExchange(state, text, reply), reply, intents, understood: false };
+    return { state: recordExchange(state, text, reply), reply, intents, parts: [], understood: false };
   }
   const answered = applyIntents(state, intents, content);
   const reply = answered.parts.join(' ');
-  return { state: recordExchange(answered.state, text, reply), reply, intents, understood: true };
+  return { state: recordExchange(answered.state, text, reply), reply, intents, parts: answered.parts, understood: true };
 }
 
 /** Topik inti yang belum ditanyakan (untuk saran pertanyaan di UI). */

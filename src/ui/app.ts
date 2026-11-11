@@ -2,15 +2,20 @@
  * Pengendali UI: menyimpan state permainan + state tampilan, menerima aksi
  * pemain, memanggil logika inti (src/core), lalu menggambar ulang layar.
  *
+ * Tampilan terdiri dari dua lapis:
+ *  - panggung 3D (ruang praktik & pasien) — menetap, tidak digambar ulang;
+ *  - lapisan UI HTML di atasnya (monitor RME, HUD, dialog) — digambar ulang tiap perubahan.
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
+import { buildAppearance, chiefSite, bodySide, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
 import { askQuestion, canSubmitDecision, EncounterError, performExam, setDdx } from '../core/encounter';
-import { interpretQuestion } from '../core/nlu';
+import { type Intent, interpretQuestion } from '../core/nlu';
 import { hashString, randomSeed } from '../core/rng';
 import { createRun, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
 import type { ClinicalDecision, DdxStatus, Disposition, EncounterState, GameConfig, GameContent, RunState } from '../core/types';
 import { AiError, type AiAvailability, askAiPatient, getSample } from './ai/patientAi';
 import { medicalRecordDialog, settingsDialog, tutorialDialog } from './components/dialogs';
+import { h } from './dom';
 import { renderConsult } from './screens/consult';
 import { renderFinal } from './screens/final';
 import { renderSummary } from './screens/summary';
@@ -27,10 +32,14 @@ import {
   type Settings,
   updateRecords,
 } from './storage';
+import { Director, type Subtitle } from './three/director';
+import type { Stage } from './three/stage';
 
 export type Screen = 'title' | 'consult' | 'summary' | 'final';
 export type ActionTab = 'anamnesis' | 'fisik' | 'penunjang' | 'penalaran' | 'keputusan';
 export type Dialog = 'tutorial' | 'settings' | 'record' | null;
+/** Tahap adegan pasien di ruang praktik. */
+export type ScenePhase = 'datang' | 'konsultasi' | 'pamit';
 
 /** Draf keputusan akhir (diisi bertahap di tab Keputusan). */
 export interface DecisionDraft {
@@ -59,6 +68,11 @@ export interface UiState {
   waiting: boolean;
   /** Bagian umpan balik yang dibuka di layar ringkasan. */
   openFeedback: string | null;
+  phase: ScenePhase;
+  /** 0 = pasien belum bicara · 1 = sudah menyapa · 2 = keluhan disampaikan (boleh bertanya). */
+  intro: 0 | 1 | 2;
+  /** Monitor diperkecil (ponsel) agar ruangan lebih terlihat. */
+  monitorSmall: boolean;
 }
 
 const EMPTY_DECISION: DecisionDraft = { primary: null, secondary: [], complications: [], noComplication: false, disposition: null };
@@ -76,6 +90,9 @@ const INITIAL_UI: UiState = {
   tutorialStep: 0,
   waiting: false,
   openFeedback: null,
+  phase: 'konsultasi',
+  intro: 2,
+  monitorSmall: false,
 };
 
 export class App {
@@ -88,9 +105,16 @@ export class App {
   finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
   /** Indeks log pertama yang "baru" pada render ini (untuk animasi masuk). */
   newLogFrom = 0;
+  /** Pertanyaan yang sedang menunggu jawaban pasien AI (ditampilkan sementara di transkrip). */
+  pendingQuestion: string | null = null;
+  /** Penampilan pasien saat ini (juga dipakai mode tanpa 3D untuk deskripsi teks). */
+  appearance: PatientAppearance | null = null;
   /** Jumlah entri log saat render terakhir. */
   private renderedLogLength = 0;
   private aiAbort: AbortController | null = null;
+  private readonly director: Director | null;
+  private readonly subtitleEl: HTMLElement | null = null;
+  private subtitleText = '';
   /** Sidik jari konten untuk validasi sesi tersimpan. */
   readonly contentKey: string;
 
@@ -98,6 +122,9 @@ export class App {
     private readonly root: HTMLElement,
     readonly content: GameContent,
     private readonly baseConfig: GameConfig,
+    /** Panggung 3D; null bila WebGL tidak tersedia (UI tetap berfungsi penuh). */
+    readonly stage: Stage | null = null,
+    stageUi: HTMLElement | null = null,
   ) {
     this.contentKey = String(
       hashString(
@@ -105,6 +132,24 @@ export class App {
       ),
     );
     applyTheme(this.settings.theme);
+    document.documentElement.classList.toggle('no-3d', !stage);
+    if (stage && stageUi) {
+      this.subtitleEl = h('div', { class: 'subtitle', 'aria-live': 'off', hidden: true });
+      stageUi.append(this.subtitleEl);
+      this.director = new Director(stage, {
+        onIntro: (intro) => {
+          const phase: ScenePhase = this.ui.phase === 'pamit' ? 'pamit' : intro === 2 ? 'konsultasi' : 'datang';
+          this.ui = { ...this.ui, intro, phase };
+          this.render();
+        },
+        onSubtitle: (sub) => this.showSubtitle(sub),
+        onLeft: () => this.afterPatientLeft(),
+      });
+      window.addEventListener('resize', () => this.syncStage());
+      stage.start();
+    } else {
+      this.director = null;
+    }
   }
 
   /** Config efektif = config dasar + pengaturan pemain (mis. mode latihan). */
@@ -119,6 +164,21 @@ export class App {
   /** Pasien AI aktif untuk pertanyaan berikutnya? */
   get aiActive(): boolean {
     return this.settings.aiPatient && this.ai === 'ready';
+  }
+
+  /** Pemain boleh bertanya/memeriksa (pasien sudah duduk & menyampaikan keluhan)? */
+  get canInteract(): boolean {
+    return this.ui.phase === 'konsultasi' && this.ui.intro === 2 && this.encounter?.status === 'active';
+  }
+
+  /**
+   * Entri log yang sudah "terjadi" di ruang praktik: salam & keluhan pembuka baru muncul
+   * setelah pasien mengucapkannya (mengikuti adegan kedatangan).
+   */
+  visibleLog(): EncounterState['log'] {
+    const log = this.encounter?.log ?? [];
+    if (this.ui.intro >= 2) return log;
+    return log.slice(0, this.ui.intro);
   }
 
   /** Sesi tersimpan yang masih bisa dilanjutkan (atau null). */
@@ -145,6 +205,7 @@ export class App {
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
     this.finalRecords = null;
     this.renderedLogLength = 0;
+    this.beginScene(false);
     this.render();
   }
 
@@ -156,7 +217,30 @@ export class App {
     this.ui = { ...INITIAL_UI, screen: active ? 'consult' : 'summary' };
     this.finalRecords = null;
     this.renderedLogLength = 0;
+    if (active) this.beginScene(true);
+    else this.director?.clear();
     this.render();
+  }
+
+  /** Mulai adegan pasien saat ini: datang lewat pintu (atau langsung duduk bila melanjutkan sesi). */
+  private beginScene(instant: boolean): void {
+    const enc = this.encounter;
+    if (!enc) return;
+    const c = enc.case;
+    this.appearance = buildAppearance(c, this.content);
+    if (!this.director) {
+      this.ui = { ...this.ui, phase: 'konsultasi', intro: 2 };
+      return;
+    }
+    this.ui = { ...this.ui, phase: instant ? 'konsultasi' : 'datang', intro: instant ? 2 : 0 };
+    const site = chiefSite(c, this.content);
+    const complaintGestures: GestureCue[] = site ? [{ kind: 'tunjuk', site, side: bodySide(c, this.content) }] : [];
+    void this.director.enter(this.appearance, c.seed, c.patient.callName, c.greeting, c.complaint, complaintGestures, instant);
+  }
+
+  /** Lewati adegan datang/pamit. */
+  skipScene(): void {
+    this.director?.skip();
   }
 
   setDraft(text: string): void {
@@ -167,18 +251,17 @@ export class App {
   async ask(text?: string): Promise<void> {
     const enc = this.encounter;
     const question = (text ?? this.ui.draft).trim();
-    if (!enc || enc.status !== 'active' || !question || this.ui.waiting) return;
+    if (!enc || !this.canInteract || !question || this.ui.waiting) return;
     this.ui = { ...this.ui, draft: '', notice: null };
 
     if (!this.aiActive) {
-      this.updateEncounter((s) => askQuestion(s, question, this.content, this.config).state);
+      this.askLocal(enc, question);
       return;
     }
-
     const sample = await getSample();
     if (!sample) {
       this.ai = 'unavailable';
-      this.updateEncounter((s) => askQuestion(s, question, this.content, this.config).state);
+      this.askLocal(enc, question);
       return;
     }
     // Tampilkan pertanyaan dokter segera, lalu tunggu jawaban.
@@ -194,6 +277,7 @@ export class App {
       const result = await askAiPatient(sample, enc, question, this.content, local, controller.signal);
       if (this.run !== runAtStart || this.encounter !== enc) return; // layar sudah berganti
       this.run = updateEncounter(this.run!, result.state);
+      this.perform(enc, result.state, result.reply, result.intents, result.parts, true);
     } catch (e) {
       if (this.run !== runAtStart || this.encounter !== enc) return;
       const code = e instanceof AiError ? e.code : 'upstream_error';
@@ -206,11 +290,7 @@ export class App {
             : this.ai === 'unavailable'
               ? 'Pasien AI tidak tersedia — beralih ke mode lokal.'
               : 'Pasien AI gagal menjawab — dijawab mode lokal.';
-      try {
-        this.run = updateEncounter(this.run!, askQuestion(enc, question, this.content, this.config).state);
-      } catch (err) {
-        if (!(err instanceof EncounterError)) throw err;
-      }
+      this.askLocal(enc, question, false);
       this.ui = { ...this.ui, notice: reason };
     } finally {
       window.clearTimeout(timer);
@@ -222,15 +302,40 @@ export class App {
     }
   }
 
-  /** Pertanyaan yang sedang menunggu jawaban pasien AI (ditampilkan sementara di chat). */
-  pendingQuestion: string | null = null;
+  private askLocal(enc: EncounterState, question: string, rerender = true): void {
+    try {
+      const r = askQuestion(enc, question, this.content, this.config);
+      this.run = updateEncounter(this.run!, r.state);
+      this.perform(enc, r.state, r.reply, r.intents, r.parts, r.understood);
+    } catch (e) {
+      if (!(e instanceof EncounterError)) throw e;
+      this.ui = { ...this.ui, notice: e.message };
+    }
+    if (rerender) this.render();
+  }
+
+  /** Pasien 3D mengucapkan jawaban dengan bahasa tubuh yang sesuai isi jawabannya. */
+  private perform(before: EncounterState, after: EncounterState, reply: string, intents: readonly Intent[], parts: readonly string[], understood: boolean): void {
+    if (!this.director) return;
+    const newlyRevealed = after.revealedSymptoms.filter((s) => !before.revealedSymptoms.includes(s));
+    // Obrolan ringan yang dijawab pasien AI tanpa mengambil fakta: cukup mengangguk.
+    const gestures: GestureCue[] = understood || intents.length > 0 ? planGestures(after.case, { intents, parts, newlyRevealed }, this.content) : [{ kind: 'bingung' }];
+    this.director.say(reply, intents.length === 0 && understood ? [{ kind: 'angguk' }] : gestures);
+  }
 
   performExam(toolId: string): void {
+    const before = this.encounter?.examsDone.length ?? 0;
     this.updateEncounter((s) => performExam(s, toolId, this.content, this.config));
+    if ((this.encounter?.examsDone.length ?? 0) > before) this.director?.react(toolId);
   }
 
   setTab(tab: ActionTab): void {
-    this.ui = { ...this.ui, actionTab: tab, notice: null };
+    this.ui = { ...this.ui, actionTab: tab, notice: null, monitorSmall: false };
+    this.render();
+  }
+
+  toggleMonitor(): void {
+    this.ui = { ...this.ui, monitorSmall: !this.ui.monitorSmall };
     this.render();
   }
 
@@ -273,6 +378,7 @@ export class App {
   decisionBlocker(): string | null {
     const enc = this.encounter;
     if (!enc) return 'Tidak ada pasien.';
+    if (!this.canInteract) return 'Tunggu pasien duduk dan menyampaikan keluhannya.';
     const d = this.ui.decision;
     const check = canSubmitDecision(enc, { primary: d.primary ?? undefined, disposition: d.disposition ?? undefined }, this.content);
     if (!check.ok) return check.reason ?? 'Belum lengkap.';
@@ -294,6 +400,7 @@ export class App {
     this.render();
   }
 
+  /** Kirim keputusan: konsultasi dinilai, pasien berpamitan & keluar, lalu umpan balik tampil. */
   submitDecision(): void {
     if (!this.run?.encounter || this.decisionBlocker()) return;
     const d = this.ui.decision;
@@ -305,9 +412,21 @@ export class App {
     };
     this.aiAbort?.abort();
     this.run = finishCurrent(this.run, decision, this.content, this.config);
-    this.ui = { ...this.ui, screen: 'summary', confirmDecision: false, notice: null, openFeedback: null };
+    const farewell = this.run.encounter!.log.at(-1);
+    if (this.director && farewell?.kind === 'patient') {
+      this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: null, actionTab: 'anamnesis', monitorSmall: true };
+      this.render();
+      void this.director.leave(farewell.text);
+    } else {
+      this.afterPatientLeft();
+    }
+  }
+
+  private afterPatientLeft(): void {
+    if (!this.run?.encounter || this.run.encounter.status !== 'finished' || this.ui.screen !== 'consult') return;
+    this.ui = { ...this.ui, screen: 'summary', confirmDecision: false, notice: null, openFeedback: null, phase: 'konsultasi' };
     this.render();
-    window.scrollTo({ top: 0 });
+    this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
   }
 
   toggleFeedback(key: string): void {
@@ -320,8 +439,8 @@ export class App {
     this.run = startNextPatient(this.run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult' };
     this.renderedLogLength = 0;
+    this.beginScene(false);
     this.render();
-    window.scrollTo({ top: 0 });
   }
 
   /** Akhiri praktek secara sukarela (di antara pasien) dan tampilkan hasil akhir. */
@@ -343,12 +462,14 @@ export class App {
         bestScore: stats.averageScore,
       });
     }
+    this.director?.clear();
     this.ui = { ...INITIAL_UI, screen: 'final' };
     this.render();
-    window.scrollTo({ top: 0 });
+    this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
   }
 
   backToTitle(): void {
+    this.director?.clear();
     this.ui = { ...INITIAL_UI };
     this.render();
   }
@@ -384,8 +505,8 @@ export class App {
 
   private updateEncounter(fn: (s: EncounterState) => EncounterState): void {
     if (!this.run?.encounter) return;
-    if (this.ui.waiting) {
-      this.ui = { ...this.ui, notice: 'Tunggu pasien selesai menjawab.' };
+    if (this.ui.waiting || !this.canInteract) {
+      this.ui = { ...this.ui, notice: this.ui.waiting ? 'Tunggu pasien selesai menjawab.' : 'Tunggu pasien duduk dan menyampaikan keluhannya.' };
       this.render();
       return;
     }
@@ -413,7 +534,7 @@ export class App {
     });
     const focusedKey = (document.activeElement as HTMLElement | null)?.dataset?.focusKey;
 
-    const logLength = (this.encounter?.log.length ?? 0) + (this.pendingQuestion ? 1 : 0);
+    const logLength = this.visibleLog().length + (this.pendingQuestion ? 1 : 0);
     this.newLogFrom = this.ui.screen === 'consult' && logLength > this.renderedLogLength ? this.renderedLogLength : logLength;
 
     let view: HTMLElement;
@@ -431,6 +552,8 @@ export class App {
         view = renderFinal(this);
         break;
     }
+    // Layar selain konsultasi tampil sebagai lembar di atas ruang praktik.
+    if (this.ui.screen !== 'consult') view = h('div', { class: `overlay-page overlay-page--${this.ui.screen}`, 'data-keep-scroll': this.ui.screen }, view);
     const dialog = this.renderDialog();
     this.root.replaceChildren(...(dialog ? [view, dialog] : [view]));
 
@@ -440,13 +563,57 @@ export class App {
     });
     if (focusedKey) this.root.querySelector<HTMLElement>(`[data-focus-key="${focusedKey}"]`)?.focus();
 
-    // Gulir percakapan ke bawah bila ada pesan baru.
+    // Gulir transkrip ke bawah bila ada pesan baru.
     const chat = this.root.querySelector<HTMLElement>('[data-chat]');
     if (chat && logLength !== this.renderedLogLength) chat.scrollTop = chat.scrollHeight;
     this.renderedLogLength = logLength;
 
     // Fokuskan tombol utama di dialog yang terbuka.
     this.root.querySelector<HTMLElement>('[data-autofocus]')?.focus();
+    this.syncStage();
+  }
+
+  /** Beri tahu panggung area layar yang tidak tertutup panel, dan mode hemat daya. */
+  private syncStage(): void {
+    const stage = this.stage;
+    if (!stage) return;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const consult = this.ui.screen === 'consult';
+    let free = { left: 0, top: 0, right: W, bottom: H };
+    if (consult) {
+      const hud = this.root.querySelector<HTMLElement>('.hud')?.getBoundingClientRect();
+      const mon = this.root.querySelector<HTMLElement>('.monitor')?.getBoundingClientRect();
+      const top = hud ? hud.bottom : 0;
+      if (mon && mon.width > 0) {
+        // Monitor di samping (layar lebar) atau di bawah (ponsel).
+        free = mon.left > W * 0.3 ? { left: 0, top, right: mon.left, bottom: H } : { left: 0, top, right: W, bottom: mon.top };
+      } else free = { left: 0, top, right: W, bottom: H };
+    }
+    stage.setFreeRect(free);
+    stage.setTitleMode(this.ui.screen === 'title');
+    stage.setThrottle(this.ui.screen === 'summary' || this.ui.screen === 'final' ? 4 : 1);
+    const s = document.documentElement.style;
+    s.setProperty('--free-left', `${free.left}px`);
+    s.setProperty('--free-right', `${W - free.right}px`);
+    s.setProperty('--free-top', `${free.top}px`);
+    s.setProperty('--free-bottom', `${H - free.bottom}px`);
+    if (this.subtitleEl) this.subtitleEl.hidden = !consult || !this.subtitleText;
+  }
+
+  /** Teks jawaban berjalan seiring gerak mulut pasien. */
+  private showSubtitle(sub: Subtitle | null): void {
+    const el = this.subtitleEl;
+    if (!el) return;
+    if (!sub) {
+      this.subtitleText = '';
+      el.hidden = true;
+      return;
+    }
+    const shown = sub.text.slice(0, sub.chars);
+    this.subtitleText = shown;
+    el.hidden = this.ui.screen !== 'consult' || !shown;
+    el.replaceChildren(h('span', { class: 'subtitle__who' }, sub.speaker), h('span', { class: 'subtitle__text' }, shown), sub.done ? '' : h('span', { class: 'subtitle__caret', 'aria-hidden': 'true' }, '▍'));
   }
 
   private renderDialog(): HTMLElement | null {

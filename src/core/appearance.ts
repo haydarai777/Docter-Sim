@@ -195,6 +195,7 @@ export function buildAppearance(c: PatientCase, content: GameContent): PatientAp
         footwear: c.patient.economy === 'miskin' && rng.chance(0.6) ? 'sandal' : 'sepatu',
       };
   if (hijab) outfit.sleeves = 'panjang';
+  if (outfit.shorts && sex === 'female') delete outfit.shorts;
   // Pasien demam/menggigil lazim datang berjaket.
   const feverish = (cues.menggigil ?? 0) > 0 || (cues.demam ?? 0) > 0;
   const jacketRoll = rng.chance(0.65);

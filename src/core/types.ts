@@ -659,6 +659,8 @@ export interface OutfitDef {
   sleeves: 'pendek' | 'panjang';
   footwear: 'sepatu' | 'sandal';
   jacket?: string;
+  /** Celana pendek (mis. seragam SD laki-laki). */
+  shorts?: boolean;
 }
 
 export interface WeightedColor {

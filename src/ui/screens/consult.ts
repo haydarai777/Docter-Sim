@@ -1,16 +1,19 @@
 /**
- * Layar konsultasi: kartu pasien, percakapan, dan panel aksi mengikuti alur klinis:
- * Anamnesis → Pemeriksaan fisik → Penunjang → Penalaran (diagnosis banding) → Keputusan.
+ * Antarmuka konsultasi di dalam ruang praktik 3D:
+ *  - HUD di atas (reputasi, bantuan, pengaturan);
+ *  - "monitor" Rekam Medis Elektronik (RME) di meja dokter — berisi data pasien, transkrip
+ *    percakapan + kolom tanya, dan tab alur klinis: Anamnesis → Fisik → Penunjang →
+ *    Penalaran (diagnosis banding) → Keputusan;
+ *  - pasien 3D terlihat di area ruangan yang tidak tertutup monitor.
  */
+import { doctorQuestion } from '../../core/dialogue';
 import { canPerformExam, isBudgetExhausted, unaskedCoreTopics } from '../../core/encounter';
 import { DISPOSITION_LABEL } from '../../core/evaluation';
 import { reputationTitle, toolPrice } from '../../core/scoring';
-import { doctorQuestion } from '../../core/dialogue';
 import { formatRupiah, normalizeForSearch } from '../../core/text';
 import type { CatalogEntry, DdxStatus, EncounterState, LogEntry, ToolDef } from '../../core/types';
 import { DISPOSITIONS } from '../../core/types';
 import type { ActionTab, App } from '../app';
-import { avatarElement } from '../components/avatar';
 import { modal } from '../components/modal';
 import { resultCard } from '../components/resultCard';
 import { cx, h, replaceChildren } from '../dom';
@@ -18,30 +21,39 @@ import { CATALOG_KIND_LABEL, CATEGORY_LABEL, DDX_STATUS_LABEL, ECONOMY_LABEL, OB
 
 export function renderConsult(app: App): HTMLElement {
   const enc = app.encounter!;
+  const scene = app.ui.phase !== 'konsultasi';
   return h(
     'div',
-    { class: 'consult' },
-    topBar(app),
-    patientStrip(app, enc),
-    chatLog(app, enc),
-    actionPanel(app, enc),
+    { class: cx('room-ui', scene && 'room-ui--scene') },
+    hud(app),
+    scene && app.stage
+      ? h(
+          'div',
+          { class: 'scene-note', role: 'status' },
+          h('span', null, app.ui.phase === 'datang' ? `${enc.case.patient.name} memasuki ruang praktik…` : `${enc.case.patient.address} berpamitan…`),
+          h('button', { class: 'btn btn--small', type: 'button', onclick: () => app.skipScene() }, 'Lewati ▸'),
+        )
+      : null,
+    monitor(app, enc),
     app.ui.confirmDecision ? confirmDialog(app) : null,
   );
 }
 
 // ---------------------------------------------------------------------------
+// HUD
+// ---------------------------------------------------------------------------
 
-function topBar(app: App): HTMLElement {
+function hud(app: App): HTMLElement {
   const run = app.run!;
   const { reputation } = app.config;
   const pct = ((run.reputation - reputation.min) / (reputation.max - reputation.min)) * 100;
   const danger = run.reputation < reputation.gameOverBelow + 10;
   return h(
     'header',
-    { class: 'topbar' },
-    h('span', { class: 'topbar__brand' }, '🩺', h('span', { class: 'topbar__brand-text' }, ' Meja Praktek')),
-    h('span', { class: 'topbar__patient' }, `Pasien #${run.patientIndex}`),
-    h('span', { class: 'topbar__title' }, reputationTitle(run.reputation, app.config)),
+    { class: 'hud' },
+    h('span', { class: 'hud__brand' }, '🩺', h('span', { class: 'hud__brand-text' }, ' Meja Praktek')),
+    h('span', { class: 'hud__patient' }, `Pasien #${run.patientIndex}`),
+    h('span', { class: 'hud__title' }, reputationTitle(run.reputation, app.config)),
     h(
       'div',
       { class: cx('rep', danger && 'rep--danger'), title: `Game over jika reputasi di bawah ${reputation.gameOverBelow}` },
@@ -59,43 +71,107 @@ function topBar(app: App): HTMLElement {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Monitor RME
+// ---------------------------------------------------------------------------
+
+const TABS: { id: ActionTab; label: string; step: string }[] = [
+  { id: 'anamnesis', label: 'Anamnesis', step: '1' },
+  { id: 'fisik', label: 'Fisik', step: '2' },
+  { id: 'penunjang', label: 'Penunjang', step: '3' },
+  { id: 'penalaran', label: 'Penalaran', step: '4' },
+  { id: 'keputusan', label: 'Keputusan', step: '5' },
+];
+
+function monitor(app: App, enc: EncounterState): HTMLElement {
+  const tab = app.ui.actionTab;
+  const small = app.ui.monitorSmall;
+  let body: HTMLElement;
+  switch (tab) {
+    case 'anamnesis':
+      body = anamnesisTab(app, enc);
+      break;
+    case 'fisik':
+      body = physicalTab(app, enc);
+      break;
+    case 'penunjang':
+      body = investigationTab(app, enc);
+      break;
+    case 'penalaran':
+      body = reasoningTab(app, enc);
+      break;
+    case 'keputusan':
+      body = decisionTab(app, enc);
+      break;
+  }
+  const exhausted = isBudgetExhausted(enc, app.content, app.config);
+  return h(
+    'aside',
+    { class: cx('monitor', small && 'monitor--small'), 'aria-label': 'Rekam medis elektronik' },
+    h(
+      'div',
+      { class: 'monitor__bar' },
+      h('span', { class: 'monitor__led', 'aria-hidden': 'true' }),
+      h('span', { class: 'monitor__name' }, 'RME · Rekam Medis Elektronik'),
+      h(
+        'button',
+        { class: 'monitor__toggle', type: 'button', 'aria-label': small ? 'Perbesar monitor' : 'Perkecil monitor', 'aria-expanded': small ? 'false' : 'true', onclick: () => app.toggleMonitor() },
+        small ? '▴ Buka' : '▾ Kecilkan',
+      ),
+    ),
+    patientStrip(app, enc),
+    h(
+      'nav',
+      { class: 'tabs', role: 'tablist' },
+      TABS.map((t) =>
+        h(
+          'button',
+          {
+            class: cx('tab', t.id === tab && 'is-active', t.id === 'keputusan' && 'tab--dx'),
+            role: 'tab',
+            type: 'button',
+            'aria-selected': t.id === tab ? 'true' : 'false',
+            onclick: () => app.setTab(t.id),
+          },
+          h('span', { class: 'tab__step', 'aria-hidden': 'true' }, t.step),
+          t.label,
+        ),
+      ),
+    ),
+    exhausted && tab === 'penunjang'
+      ? h('div', { class: 'banner banner--warn', role: 'status' }, 'Budget pasien tidak cukup untuk pemeriksaan penunjang lagi. Anamnesis & pemeriksaan fisik tetap bisa.')
+      : null,
+    app.ui.notice ? h('div', { class: 'banner banner--info', role: 'status' }, app.ui.notice) : null,
+    h('div', { class: cx('monitor__body', tab === 'anamnesis' && 'monitor__body--chat'), 'data-keep-scroll': tab === 'anamnesis' ? undefined : tab }, body),
+  );
+}
+
 function patientStrip(app: App, enc: EncounterState): HTMLElement {
   const p = enc.case.patient;
   const budgetPct = p.budget > 0 ? (enc.budgetRemaining / p.budget) * 100 : 0;
   return h(
     'section',
     { class: 'patient', 'aria-label': 'Data pasien' },
-    h('div', { class: 'patient__avatar' }, avatarElement(p, enc.case.seed, 52)),
     h(
       'div',
-      { class: 'patient__info' },
+      { class: 'patient__row' },
       h('h2', { class: 'patient__name' }, p.name),
-      h('p', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
-      h(
-        'p',
-        { class: 'patient__meta' },
-        h('span', { class: cx('badge', `badge--${p.economy}`) }, ECONOMY_LABEL[p.economy]),
-        h('button', { class: 'btn btn--small btn--ghost', type: 'button', onclick: () => app.openDialog('record') }, '📋 Rekam medis'),
-      ),
+      h('span', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
+      h('button', { class: 'btn btn--small btn--ghost patient__record', type: 'button', onclick: () => app.openDialog('record') }, '📋 Rekam medis'),
     ),
     h(
       'div',
-      { class: 'patient__stats' },
+      { class: 'patient__row patient__row--stats' },
+      h('span', { class: cx('badge', `badge--${p.economy}`) }, ECONOMY_LABEL[p.economy]),
       h(
-        'div',
-        { class: 'stat' },
-        h('span', { class: 'stat__label' }, 'Budget'),
-        h('strong', { class: 'stat__value' }, formatRupiah(enc.budgetRemaining)),
-        h('span', { class: 'stat__sub' }, `/ ${formatRupiah(p.budget)}`),
-        h('span', { class: 'meter meter--budget', 'aria-hidden': 'true' }, h('span', { class: 'meter__fill', style: `width:${budgetPct}%` })),
+        'span',
+        { class: 'patient__budget' },
+        h('span', { class: 'stat__label' }, 'Budget '),
+        h('strong', null, formatRupiah(enc.budgetRemaining)),
+        h('span', { class: 'stat__sub' }, ` / ${formatRupiah(p.budget)}`),
       ),
-      h(
-        'div',
-        { class: 'stat' },
-        h('span', { class: 'stat__label' }, 'Pertanyaan'),
-        h('strong', { class: 'stat__value' }, String(enc.questionCount)),
-        h('span', { class: 'stat__sub' }, aiLabel(app)),
-      ),
+      h('span', { class: 'meter meter--budget', role: 'meter', 'aria-label': 'Sisa budget', 'aria-valuemin': 0, 'aria-valuemax': p.budget, 'aria-valuenow': enc.budgetRemaining }, h('span', { class: 'meter__fill', style: `width:${budgetPct}%` })),
+      h('span', { class: 'patient__mode', title: 'Jumlah pertanyaan · mode pasien' }, `${enc.questionCount} tanya · ${aiLabel(app)}`),
     ),
   );
 }
@@ -106,23 +182,27 @@ function aiLabel(app: App): string {
   return app.ai === 'ready' ? 'pasien AI' : 'mode lokal';
 }
 
-// ---------------------------------------------------------------------------
+// --- 1. Anamnesis: transkrip + kolom tanya ------------------------------------------
 
-function chatLog(app: App, enc: EncounterState): HTMLElement {
+function transcript(app: App, enc: EncounterState): HTMLElement {
   const personality = app.content.personalitiesById.get(enc.case.patient.personalityId);
-  const entries = enc.log.map((entry, i) => {
+  const entries = app.visibleLog().map((entry, i) => {
     const el = chatEntry(app, enc, entry);
     if (i >= app.newLogFrom) el.classList.add('is-new');
     return el;
   });
+  const look = app.appearance;
   return h(
     'section',
-    { class: 'chat', 'data-chat': true, 'data-keep-scroll': 'chat', 'aria-label': 'Percakapan', 'aria-live': 'polite' },
+    { class: 'chat', 'data-chat': true, 'data-keep-scroll': 'chat', 'aria-label': 'Riwayat percakapan', 'aria-live': 'polite' },
     h(
       'div',
       { class: 'bubble bubble--system' },
-      `${enc.case.patient.name} masuk ke ruang praktek.`,
+      `${enc.case.patient.name} masuk ke ruang praktik.`,
+      enc.case.patient.age <= 14 ? ' Diantar orang tuanya, yang menunggu di luar.' : null,
       personality ? ` Kesan umum: ${personality.impression.toLowerCase()}.` : null,
+      // Tanpa tampilan 3D, yang "terlihat" pada pasien dituliskan agar informasinya tidak hilang.
+      !app.stage && look?.observations.length ? ` Tampak: ${look.observations.join(', ')}.` : null,
     ),
     entries,
     app.pendingQuestion
@@ -149,85 +229,28 @@ function chatEntry(app: App, enc: EncounterState, entry: LogEntry): HTMLElement 
       return h('div', { class: 'bubble bubble--system' }, entry.text);
     case 'exam': {
       const tool = app.content.toolsById.get(entry.toolId)!;
-      return resultCard(tool, enc.case.findings[entry.toolId] ?? [], entry.cost);
+      const abnormal = (enc.case.findings[entry.toolId] ?? []).filter((r) => r.flag).length;
+      return h(
+        'button',
+        { class: 'bubble bubble--exam', type: 'button', title: 'Lihat hasil', onclick: () => app.setTab(tool.category === 'fisik' ? 'fisik' : 'penunjang') },
+        `🔎 ${tool.name}`,
+        h('span', { class: cx('bubble__tag', abnormal > 0 && 'is-abnormal') }, abnormal > 0 ? `${abnormal} temuan abnormal` : 'dalam batas normal'),
+      );
     }
   }
 }
 
-// ---------------------------------------------------------------------------
-
-const TABS: { id: ActionTab; label: string; step: string }[] = [
-  { id: 'anamnesis', label: 'Anamnesis', step: '1' },
-  { id: 'fisik', label: 'Fisik', step: '2' },
-  { id: 'penunjang', label: 'Penunjang', step: '3' },
-  { id: 'penalaran', label: 'Penalaran', step: '4' },
-  { id: 'keputusan', label: 'Keputusan', step: '5' },
-];
-
-function actionPanel(app: App, enc: EncounterState): HTMLElement {
-  const tab = app.ui.actionTab;
-  const exhausted = isBudgetExhausted(enc, app.content, app.config);
-
-  let body: HTMLElement;
-  switch (tab) {
-    case 'anamnesis':
-      body = anamnesisTab(app, enc);
-      break;
-    case 'fisik':
-      body = physicalTab(app, enc);
-      break;
-    case 'penunjang':
-      body = investigationTab(app, enc);
-      break;
-    case 'penalaran':
-      body = reasoningTab(app, enc);
-      break;
-    case 'keputusan':
-      body = decisionTab(app, enc);
-      break;
-  }
-
-  return h(
-    'section',
-    { class: 'actions', 'aria-label': 'Tindakan' },
-    h(
-      'nav',
-      { class: 'tabs', role: 'tablist' },
-      TABS.map((t) =>
-        h(
-          'button',
-          {
-            class: cx('tab', t.id === tab && 'is-active', t.id === 'keputusan' && 'tab--dx'),
-            role: 'tab',
-            type: 'button',
-            'aria-selected': t.id === tab ? 'true' : 'false',
-            onclick: () => app.setTab(t.id),
-          },
-          h('span', { class: 'tab__step', 'aria-hidden': 'true' }, t.step),
-          t.label,
-        ),
-      ),
-    ),
-    exhausted && tab === 'penunjang'
-      ? h('div', { class: 'banner banner--warn', role: 'status' }, 'Budget pasien tidak cukup untuk pemeriksaan penunjang lagi. Anamnesis & pemeriksaan fisik tetap bisa.')
-      : null,
-    app.ui.notice ? h('div', { class: 'banner banner--info', role: 'status' }, app.ui.notice) : null,
-    h('div', { class: 'actions__body', 'data-keep-scroll': tab }, body),
-  );
-}
-
-// --- 1. Anamnesis ------------------------------------------------------------
-
 function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
   const waiting = app.ui.waiting;
+  const locked = !app.canInteract;
   const input = h('textarea', {
     class: 'ask__input',
-    rows: 2,
-    placeholder: 'Tulis pertanyaan… mis. "Sejak kapan?"',
+    rows: 1,
+    placeholder: locked ? (app.ui.phase === 'pamit' ? 'Konsultasi selesai.' : 'Pasien sedang masuk…') : 'Tulis pertanyaan untuk pasien…',
     'aria-label': 'Pertanyaan untuk pasien',
     'data-ask-input': true,
     'data-focus-key': 'ask',
-    disabled: waiting,
+    disabled: waiting || locked,
     oninput: (e: Event) => app.setDraft((e.target as HTMLTextAreaElement).value),
     onkeydown: (e: Event) => {
       const k = e as KeyboardEvent;
@@ -246,54 +269,52 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
 
   return h(
     'div',
-    { class: 'tab-panel' },
+    { class: 'tab-panel tab-panel--chat' },
+    transcript(app, enc),
     h(
-      'form',
-      {
-        class: 'ask',
-        onsubmit: (e: Event) => {
-          e.preventDefault();
-          void app.ask();
+      'div',
+      { class: 'ask-dock' },
+      h(
+        'form',
+        {
+          class: 'ask',
+          onsubmit: (e: Event) => {
+            e.preventDefault();
+            void app.ask();
+          },
         },
-      },
-      input,
-      h('button', { class: 'btn btn--primary ask__send', type: 'submit', disabled: waiting }, waiting ? '…' : 'Tanya'),
-    ),
-    h(
-      'p',
-      { class: 'hint' },
-      app.aiActive
-        ? 'Pasien diperankan Claude: tanyakan dengan bahasa Anda sendiri. Pasien hanya menjawab yang ditanyakan dan ingat jawaban sebelumnya.'
-        : 'Ketik pertanyaan bebas (tanpa batas). Pasien menjawab sesuai yang ditanyakan dan konsisten bila ditanya ulang.',
-    ),
-    h(
-      'details',
-      { class: 'frame', open: asked < topics.length },
-      h('summary', null, `Kerangka anamnesis · ${asked}/${topics.length} topik ditanyakan`),
-      h('p', { class: 'hint' }, 'Ketuk topik untuk menanyakan dengan kalimat standar.'),
-      rubrics.map((rubric) =>
-        h(
-          'div',
-          { class: 'frame__group' },
-          h('span', { class: 'frame__rubric' }, rubric),
+        input,
+        h('button', { class: 'btn btn--primary ask__send', type: 'submit', disabled: waiting || locked }, waiting ? '…' : 'Tanya'),
+      ),
+      h(
+        'details',
+        { class: 'frame' },
+        h('summary', null, `Kerangka anamnesis · ${asked}/${topics.length} topik`, h('span', { class: 'frame__hint' }, app.aiActive ? 'pasien AI' : 'ketik bebas')),
+        h('p', { class: 'hint' }, 'Tanyakan dengan bahasa Anda sendiri, atau ketuk topik untuk kalimat standar. Pasien hanya menjawab yang ditanyakan.'),
+        rubrics.map((rubric) =>
           h(
             'div',
-            { class: 'chip-row' },
-            topics
-              .filter((t) => t.rubric === rubric)
-              .map((t) =>
-                h(
-                  'button',
-                  {
-                    class: cx('chip', !unasked.has(t.id) && 'is-done'),
-                    type: 'button',
-                    disabled: waiting,
-                    title: t.why,
-                    onclick: () => void app.ask(doctorQuestion(t.question, enc.case)),
-                  },
-                  unasked.has(t.id) ? t.label : `✓ ${t.label}`,
+            { class: 'frame__group' },
+            h('span', { class: 'frame__rubric' }, rubric),
+            h(
+              'div',
+              { class: 'chip-row' },
+              topics
+                .filter((t) => t.rubric === rubric)
+                .map((t) =>
+                  h(
+                    'button',
+                    {
+                      class: cx('chip', !unasked.has(t.id) && 'is-done'),
+                      type: 'button',
+                      disabled: waiting || locked,
+                      title: t.why,
+                      onclick: () => void app.ask(doctorQuestion(t.question, enc.case)),
+                    },
+                    unasked.has(t.id) ? t.label : `✓ ${t.label}`,
+                  ),
                 ),
-              ),
+            ),
           ),
         ),
       ),
@@ -301,23 +322,32 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
   );
 }
 
-// --- 2. Pemeriksaan fisik ------------------------------------------------------
+// --- 2–3. Pemeriksaan ------------------------------------------------------------
 
-function toolButton(app: App, enc: EncounterState, tool: ToolDef, extra?: HTMLElement | null): HTMLElement {
+function toolItem(app: App, enc: EncounterState, tool: ToolDef, extra?: HTMLElement | null): HTMLElement {
   const check = canPerformExam(enc, tool.id, app.content, app.config);
   const done = enc.examsDone.includes(tool.id);
   const price = toolPrice(tool.id, app.config);
+  const latest = enc.examsDone.at(-1) === tool.id;
   return h(
     'li',
-    null,
+    { class: cx(latest && 'is-latest') },
     h(
       'button',
-      { class: cx('pick', done && 'is-done'), type: 'button', disabled: !check.ok || app.ui.waiting, title: check.reason, onclick: () => app.performExam(tool.id) },
+      {
+        class: cx('pick', done && 'is-done'),
+        type: 'button',
+        disabled: !check.ok || app.ui.waiting || !app.canInteract,
+        title: check.reason,
+        onclick: () => app.performExam(tool.id),
+      },
       h('span', { class: 'pick__main' }, done ? `✓ ${tool.name}` : tool.name),
       h('span', { class: 'pick__sub' }, tool.purpose ?? tool.description),
       extra ?? null,
       h('span', { class: cx('pick__price', !done && price > enc.budgetRemaining && 'is-over') }, done ? 'sudah' : price > 0 ? formatRupiah(price) : 'gratis'),
     ),
+    // Hasil pemeriksaan tampil tepat di bawah alatnya (yang terbaru terbuka).
+    done ? h('details', { class: 'result-wrap', open: latest }, h('summary', null, 'Hasil pemeriksaan'), resultCard(tool, enc.case.findings[tool.id] ?? [], price)) : null,
   );
 }
 
@@ -327,19 +357,17 @@ function physicalTab(app: App, enc: EncounterState): HTMLElement {
   return h(
     'div',
     { class: 'tab-panel' },
-    h('p', { class: 'hint' }, 'Gratis. Mulai dari tanda vital lengkap (TD, nadi, napas, suhu, SpO₂), lalu periksa terarah sesuai keluhan dan kecurigaan komplikasi.'),
+    h('p', { class: 'hint' }, 'Gratis. Mulai dari tanda vital lengkap (TD, nadi, napas, suhu, SpO₂), lalu periksa terarah sesuai keluhan dan kecurigaan komplikasi. Amati juga pasien di hadapan Anda.'),
     groups.map((g) =>
       h(
         'section',
         { class: 'tool-group' },
         h('h3', { class: 'section-title' }, PHYSICAL_GROUP_LABEL[g] ?? g),
-        h('ul', { class: 'pick-list' }, tools.filter((t) => (t.group ?? 'umum') === g).map((t) => toolButton(app, enc, t))),
+        h('ul', { class: 'pick-list' }, tools.filter((t) => (t.group ?? 'umum') === g).map((t) => toolItem(app, enc, t))),
       ),
     ),
   );
 }
-
-// --- 3. Penunjang ------------------------------------------------------------
 
 function investigationTab(app: App, enc: EncounterState): HTMLElement {
   const categories = (['lab', 'pencitraan', 'lainnya'] as const).filter((c) => app.content.tools.some((t) => t.category === c));
@@ -362,7 +390,7 @@ function investigationTab(app: App, enc: EncounterState): HTMLElement {
           app.content.tools
             .filter((t) => t.category === cat)
             .map((t) =>
-              toolButton(
+              toolItem(
                 app,
                 enc,
                 t,
@@ -411,6 +439,7 @@ function findingsSummary(app: App, enc: EncounterState): HTMLElement {
 
 function reasoningTab(app: App, enc: EncounterState): HTMLElement {
   const board = enc.ddx;
+  const locked = app.ui.waiting || !app.canInteract;
   const list = h('ul', { class: 'pick-list' });
   const renderList = () => {
     const onBoard = new Set(board.map((d) => d.id));
@@ -420,7 +449,7 @@ function reasoningTab(app: App, enc: EncounterState): HTMLElement {
         null,
         h(
           'button',
-          { class: 'pick', type: 'button', disabled: app.ui.waiting, onclick: () => app.setDdx(e.id, 'mungkin') },
+          { class: 'pick', type: 'button', disabled: locked, onclick: () => app.setDdx(e.id, 'mungkin') },
           h('span', { class: 'pick__main' }, `+ ${e.name}`),
           h('span', { class: 'pick__sub' }, `${e.system} · ${CATALOG_KIND_LABEL[e.kind]}`),
         ),
@@ -463,13 +492,13 @@ function reasoningTab(app: App, enc: EncounterState): HTMLElement {
                         type: 'button',
                         'aria-pressed': d.status === st ? 'true' : 'false',
                         title: DDX_STATUS_LABEL[st],
-                        disabled: app.ui.waiting,
+                        disabled: locked,
                         onclick: () => app.setDdx(d.id, st),
                       },
                       DDX_SHORT_LABEL[st],
                     ),
                   ),
-                  h('button', { class: 'seg__btn seg__btn--remove', type: 'button', 'aria-label': `Hapus ${e.name}`, disabled: app.ui.waiting, onclick: () => app.setDdx(d.id, null) }, '×'),
+                  h('button', { class: 'seg__btn seg__btn--remove', type: 'button', 'aria-label': `Hapus ${e.name}`, disabled: locked, onclick: () => app.setDdx(d.id, null) }, '×'),
                 ),
               );
             }),
@@ -507,6 +536,7 @@ function decisionTab(app: App, enc: EncounterState): HTMLElement {
     {
       class: 'select',
       'aria-label': 'Diagnosis kerja',
+      disabled: !app.canInteract,
       onchange: (e: Event) => {
         const id = (e.target as HTMLSelectElement).value || null;
         if (id) app.setDdx(id, 'utama');
@@ -652,13 +682,19 @@ function confirmDialog(app: App): HTMLElement {
     body: h(
       'div',
       null,
-      h('dl', { class: 'record-qa' },
-        h('dt', null, 'Diagnosis kerja'), h('dd', null, d.primary ? name(d.primary) : '—'),
-        h('dt', null, 'Komplikasi'), h('dd', null, d.noComplication ? 'Tanpa komplikasi' : d.complications.map(cxName).join(', ') || '—'),
-        h('dt', null, 'Masalah lain'), h('dd', null, d.secondary.map(name).join(', ') || '—'),
-        h('dt', null, 'Disposisi'), h('dd', null, d.disposition ? DISPOSITION_LABEL[d.disposition] : '—'),
+      h(
+        'dl',
+        { class: 'record-qa' },
+        h('dt', null, 'Diagnosis kerja'),
+        h('dd', null, d.primary ? name(d.primary) : '—'),
+        h('dt', null, 'Komplikasi'),
+        h('dd', null, d.noComplication ? 'Tanpa komplikasi' : d.complications.map(cxName).join(', ') || '—'),
+        h('dt', null, 'Masalah lain'),
+        h('dd', null, d.secondary.map(name).join(', ') || '—'),
+        h('dt', null, 'Disposisi'),
+        h('dd', null, d.disposition ? DISPOSITION_LABEL[d.disposition] : '—'),
       ),
-      h('p', { class: 'hint' }, 'Setelah ini Anda tidak bisa bertanya atau memeriksa lagi.'),
+      h('p', { class: 'hint' }, 'Anda akan menjelaskan hasilnya ke pasien; setelah itu pasien berpamitan dan Anda tidak bisa bertanya atau memeriksa lagi.'),
     ),
     actions: [
       h('button', { class: 'btn', type: 'button', onclick: () => app.cancelDecision() }, 'Batal'),
