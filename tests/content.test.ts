@@ -20,6 +20,7 @@ function withDisease(mutate: (d: DiseaseTemplate) => void): GameContent {
     diseases,
     comorbidities: { review: { status: 'BELUM_DITINJAU_DOKTER' }, comorbidities: content.comorbidities, incidentals: content.incidentals },
     conditions: { review: { status: 'BELUM_DITINJAU_DOKTER' }, conditions: content.conditions },
+    appearance: content.appearance,
   });
 }
 

@@ -10,6 +10,8 @@
   "presentationDay": [2, 6],
   "demographics": {
     "ageBands": [
+      { "min": 10, "max": 12, "weight": 1.5 },
+      { "min": 13, "max": 17, "weight": 2.5 },
       { "min": 18, "max": 30, "weight": 5 },
       { "min": 31, "max": 45, "weight": 3 },
       { "min": 46, "max": 60, "weight": 2 },
@@ -20,7 +22,9 @@
       { "id": "mahasiswa", "weight": 3 },
       { "id": "pegawai_kantor", "weight": 2 },
       { "id": "ibu_rumah_tangga", "weight": 2 },
-      { "id": "buruh_pabrik", "weight": 2 }
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "pelajar", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 1.5 }
     ],
     "occupationBias": 0.3
   },
@@ -163,8 +167,9 @@
     ],
     "kebiasaan": [
       { "text": "Biasa saja, Dok. Makan di rumah, nggak merokok.", "weight": 2 },
-      { "text": "Saya merokok, Dok, sehari setengah bungkus.", "weight": 1, "when": { "sex": "male" } },
-      { "text": "Kerja terus, Dok, jarang istirahat.", "weight": 1 }
+      { "text": "Saya merokok, Dok, sehari setengah bungkus.", "weight": 1, "when": { "sex": "male", "ageMin": 18 } },
+      { "text": "Kerja terus, Dok, jarang istirahat.", "weight": 1, "when": { "ageMin": 18 } },
+      { "text": "Biasa saja, Dok. Sekolah, main, pulang. Makan di rumah.", "weight": 1, "when": { "ageMax": 17 } }
     ],
     "durasi": [{ "text": "Panasnya hampir sepanjang hari, Dok. Turun sebentar kalau minum obat, lalu naik lagi." }],
     "keparahan": [
@@ -175,7 +180,11 @@
       },
       {
         "text": "Lumayan berat, Dok. Badan remuk, sudah dua hari nggak bisa kerja.",
-        "when": { "notTraits": ["tanda_bahaya"] }
+        "when": { "notTraits": ["tanda_bahaya"], "ageMin": 18 }
+      },
+      {
+        "text": "Lumayan berat, Dok. Badan remuk, sudah dua hari nggak masuk sekolah.",
+        "when": { "notTraits": ["tanda_bahaya"], "ageMax": 17 }
       }
     ],
     "progresi": [
@@ -198,7 +207,7 @@
       {
         "text": "Waktu kecil katanya pernah dirawat karena demam berdarah, Dok.",
         "weight": 3,
-        "when": { "traits": ["infeksi_sekunder"] },
+        "when": { "traits": ["infeksi_sekunder"], "ageMin": 16 },
         "clue": "Riwayat infeksi dengue sebelumnya (infeksi sekunder cenderung lebih berat)"
       }
     ]
@@ -485,7 +494,8 @@
     "notes": [
       "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
       "Level SKDI perlu dicek: demam dengue/DBD tanpa syok vs sindrom syok dengue.",
-      "Penyederhanaan: DD dan DBD digabung menjadi satu diagnosis di game."
+      "Penyederhanaan: DD dan DBD digabung menjadi satu diagnosis di game.",
+      "Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri."
     ],
     "references": [
       "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)",

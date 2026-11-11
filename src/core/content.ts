@@ -1,5 +1,6 @@
 import type {
   AnamnesisFile,
+  AppearanceFile,
   CatalogEntry,
   ComorbiditiesFile,
   ConditionsFile,
@@ -21,6 +22,7 @@ export interface RawContent {
   diseases: DiseaseTemplate[];
   comorbidities: ComorbiditiesFile;
   conditions: ConditionsFile;
+  appearance: AppearanceFile;
 }
 
 function indexById<T extends { id: string }>(items: readonly T[], what: string): Map<string, T> {
@@ -76,6 +78,7 @@ export function buildContent(raw: RawContent): GameContent {
     incidentals: raw.comorbidities.incidentals,
     incidentalsById: indexById(raw.comorbidities.incidentals, 'Temuan insidental'),
     conditions: raw.conditions.conditions,
+    appearance: raw.appearance,
     catalog,
     catalogById: new Map(catalog.map((e) => [e.id, e])),
     allergies: raw.population.allergies ?? [],

@@ -10,6 +10,8 @@
   "presentationDay": [5, 14],
   "demographics": {
     "ageBands": [
+      { "min": 10, "max": 12, "weight": 1.2 },
+      { "min": 13, "max": 17, "weight": 2.5 },
       { "min": 18, "max": 25, "weight": 5 },
       { "min": 26, "max": 35, "weight": 3 },
       { "min": 36, "max": 50, "weight": 2 },
@@ -20,7 +22,9 @@
       { "id": "mahasiswa", "weight": 4 },
       { "id": "buruh_pabrik", "weight": 2 },
       { "id": "ojek_online", "weight": 1 },
-      { "id": "pedagang_kaki_lima", "weight": 1 }
+      { "id": "pedagang_kaki_lima", "weight": 1 },
+      { "id": "pelajar", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 1.5 }
     ],
     "occupationBias": 0.4
   },
@@ -146,9 +150,16 @@
       {
         "text": "Makan siang di warung dekat tempat kerja tiap hari, Dok. Cuci tangan? Jarang sih.",
         "weight": 3,
-        "clue": "Higiene makanan dan cuci tangan kurang"
+        "clue": "Higiene makanan dan cuci tangan kurang",
+        "when": { "ageMin": 18 }
       },
-      { "text": "Biasa saja, Dok. Makan di rumah.", "weight": 1 }
+      { "text": "Biasa saja, Dok. Makan di rumah.", "weight": 1 },
+      {
+        "text": "Sering jajan di kantin sama pinggir jalan dekat sekolah, Dok. Cuci tangan? Jarang sih.",
+        "weight": 3,
+        "when": { "ageMax": 17 },
+        "clue": "Higiene makanan dan cuci tangan kurang"
+      }
     ],
     "durasi": [{ "text": "Panasnya hampir sepanjang hari, Dok, paling tinggi sore sampai malam." }],
     "keparahan": [
@@ -180,8 +191,9 @@
       }
     ],
     "episode_sebelumnya": [
-      { "text": "Dulu pernah kena tipes, Dok, waktu SMA.", "weight": 1 },
-      { "text": "Belum pernah sakit kayak gini, Dok.", "weight": 3 }
+      { "text": "Dulu pernah kena tipes, Dok, waktu SMA.", "weight": 1, "when": { "ageMin": 19 } },
+      { "text": "Belum pernah sakit kayak gini, Dok.", "weight": 3 },
+      { "text": "Tahun lalu pernah kena tipes juga, Dok.", "when": { "ageMax": 18 }, "weight": 1 }
     ]
   },
   "findings": [
@@ -390,7 +402,8 @@
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": [
       "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
-      "Sensitivitas Tubex/Widal di game disederhanakan."
+      "Sensitivitas Tubex/Widal di game disederhanakan.",
+      "Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri."
     ],
     "references": [
       "Kemenkes RI. Pedoman Pengendalian Demam Tifoid (2006)",

@@ -88,6 +88,22 @@
   },
   "occupations": [
     {
+      "id": "pelajar_sd",
+      "label": "Pelajar SD",
+      "intro": "masih sekolah SD",
+      "age": [10, 12],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 4
+    },
+    {
+      "id": "pelajar",
+      "label": "Pelajar SMP/SMA",
+      "intro": "masih sekolah",
+      "age": [13, 18],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 5
+    },
+    {
       "id": "mahasiswa",
       "label": "Mahasiswa",
       "intro": "masih kuliah",

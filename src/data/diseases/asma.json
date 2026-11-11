@@ -10,6 +10,8 @@
   "presentationDay": [1, 3],
   "demographics": {
     "ageBands": [
+      { "min": 10, "max": 12, "weight": 1.5 },
+      { "min": 13, "max": 17, "weight": 2.5 },
       { "min": 18, "max": 30, "weight": 5 },
       { "min": 31, "max": 45, "weight": 3 },
       { "min": 46, "max": 60, "weight": 2 },
@@ -20,7 +22,9 @@
       { "id": "buruh_pabrik", "weight": 2 },
       { "id": "ojek_online", "weight": 2 },
       { "id": "mahasiswa", "weight": 2 },
-      { "id": "pekerja_proyek", "weight": 1 }
+      { "id": "pekerja_proyek", "weight": 1 },
+      { "id": "pelajar", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 1.5 }
     ],
     "occupationBias": 0.3
   },
@@ -129,8 +133,13 @@
     "bepergian_lingkungan": [
       {
         "text": "Di tempat kerja banyak debu, Dok, apalagi kalau angin kencang.",
-        "when": { "traits": ["pemicu_debu"] },
+        "when": { "traits": ["pemicu_debu"], "ageMin": 18 },
         "clue": "Paparan debu di lingkungan kerja"
+      },
+      {
+        "text": "Kamar saya memang agak berdebu, Dok, banyak karpet sama boneka.",
+        "when": { "traits": ["pemicu_debu"], "ageMax": 17 },
+        "clue": "Paparan debu di rumah"
       },
       { "text": "Nggak ke mana-mana, Dok.", "when": { "notTraits": ["pemicu_debu"] } }
     ],
@@ -297,7 +306,10 @@
   ],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
-    "notes": ["Serangan berat / status asmatikus tidak dimodelkan."],
+    "notes": [
+      "Serangan berat / status asmatikus tidak dimodelkan.",
+      "Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri."
+    ],
     "references": [
       "PDPI. Asma: Pedoman Diagnosis dan Penatalaksanaan di Indonesia",
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Asma Bronkial",

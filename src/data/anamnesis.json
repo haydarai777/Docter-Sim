@@ -176,7 +176,10 @@
         "separah apa"
       ],
       "why": "Keparahan & dampak pada aktivitas menunjukkan derajat penyakit dan kebutuhan rujukan.",
-      "fallback": [{ "text": "Lumayan mengganggu, Dok. Kerja jadi nggak enak." }]
+      "fallback": [
+        { "text": "Lumayan mengganggu, Dok. Kerja jadi nggak enak.", "when": { "ageMin": 18 } },
+        { "text": "Lumayan mengganggu, Dok. Sekolah jadi nggak konsen.", "when": { "ageMax": 17 } }
+      ]
     },
     {
       "id": "pola",
@@ -488,7 +491,10 @@
         "kontrakan"
       ],
       "why": "Riwayat bepergian, pekerjaan, dan lingkungan mengarahkan ke penyakit endemis atau paparan tertentu.",
-      "fallback": [{ "text": "Nggak ke mana-mana, Dok. Di rumah dan tempat kerja saja." }]
+      "fallback": [
+        { "text": "Nggak ke mana-mana, Dok. Di rumah dan tempat kerja saja.", "when": { "ageMin": 18 } },
+        { "text": "Nggak ke mana-mana, Dok. Di rumah dan sekolah saja.", "when": { "ageMax": 17 } }
+      ]
     },
     {
       "id": "kebiasaan",
@@ -518,7 +524,7 @@
       "why": "Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit.",
       "fallback": [
         { "text": "Biasa saja, Dok. Nggak merokok, makan juga teratur." },
-        { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male" } }
+        { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male", "ageMin": 18 } }
       ]
     }
   ],
@@ -535,7 +541,13 @@
       "keparahan": ["Iya, Dok, {gejala}, tapi nggak seberat keluhan utama saya."],
       "progresi": ["Iya, Dok, {gejala}. Rasanya sama saja dari kemarin."],
       "default": ["Iya, Dok, {gejala}. Munculnya bareng keluhan yang lain, nggak terlalu saya perhatikan."]
-    }
+    },
+    "farewell": ["Terima kasih banyak, Dok. Saya permisi dulu.", "Baik, Dok, terima kasih. Permisi.", "Makasih ya, Dok. Mari, Dok."],
+    "farewellReferral": [
+      "Baik, Dok, saya langsung ke rumah sakit. Terima kasih, Dok.",
+      "Iya, Dok, saya berangkat sekarang. Terima kasih banyak."
+    ],
+    "closing": ["Anda menjelaskan diagnosis kerja dan rencana tata laksana kepada {sapaan}."]
   },
   "reviews": [
     {

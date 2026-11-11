@@ -101,11 +101,25 @@ export interface NumericParamDef {
    * = nadi pada tanda vital, agar hasil antar-alat konsisten.
    */
   copyFrom?: string;
+  /**
+   * Rujukan khusus kelompok usia muda, urut dari yang termuda; dipakai bila usia ≤ maxAge.
+   * Aturan penyakit tetap ditulis untuk rujukan dewasa — nilainya digeser otomatis (lihat ageAdjust).
+   */
+  refByAge?: AgeReference[];
   /** Nilai dihitung dari parameter lain di alat yang sama (tidak boleh diatur oleh aturan penyakit). */
   compute?:
     | { type: 'weightFromBmi'; bmi: string; heightCm: string }
     /** eGFR (mL/menit/1,73 m²) dengan persamaan CKD-EPI 2021 dari kreatinin serum, usia, jenis kelamin. */
     | { type: 'egfrCkdEpi2021'; creatinine: string };
+}
+
+/** Rujukan satu kelompok usia (lihat NumericParamDef.refByAge). */
+export interface AgeReference {
+  maxAge: number;
+  ref: Range;
+  refFemale?: Range;
+  normal?: Range;
+  normalFemale?: Range;
 }
 
 /** Parameter hasil pemeriksaan berupa teks (mis. "Negatif", deskripsi auskultasi). */
@@ -263,6 +277,12 @@ export interface ConversationTemplates {
   alreadySaid: string[];
   /** Mengulang keluhan utama. {keluhanAwal} = kalimat keluhan pertama. */
   chief: string[];
+  /** Pamit setelah konsultasi selesai. */
+  farewell: string[];
+  /** Pamit bila pasien dirujuk segera. */
+  farewellReferral: string[];
+  /** Narasi penutup dari dokter (baris sistem). Boleh memakai {sapaan}. */
+  closing: string[];
   /** Detail (onset/keparahan/...) gejala yang BUKAN keluhan utama. {gejala} = frasa gejala. */
   detail: Record<string, string[]> & { default: string[] };
 }
@@ -591,6 +611,88 @@ export interface IncidentalDef {
   note: string;
 }
 
+// ---------------------------------------------------------------------------
+// Penampilan pasien (tampilan 3D) — lihat src/data/appearance.json & core/appearance.ts
+// ---------------------------------------------------------------------------
+
+/** Isyarat klinis yang TERLIHAT (postur, perilaku, warna kulit) — selalu diturunkan dari kasus. */
+export type CueId =
+  | 'batuk'
+  | 'sesak'
+  | 'tripod'
+  | 'menggigil'
+  | 'gelisah'
+  | 'diam_menahan'
+  | 'lemas'
+  | 'mengantuk'
+  | 'pucat'
+  | 'kuning'
+  | 'mata_merah'
+  | 'ruam'
+  | 'pincang_kanan'
+  | 'bengkak'
+  | 'demam'
+  | 'berkeringat'
+  | 'kaku'
+  | 'pegang'
+  | 'kurus'
+  | 'gemuk';
+
+export const CUE_IDS: readonly CueId[] = [
+  'batuk', 'sesak', 'tripod', 'menggigil', 'gelisah', 'diam_menahan', 'lemas', 'mengantuk', 'pucat', 'kuning',
+  'mata_merah', 'ruam', 'pincang_kanan', 'bengkak', 'demam', 'berkeringat', 'kaku', 'pegang', 'kurus', 'gemuk',
+];
+
+/** Bagian tubuh yang bisa ditunjuk/dipegang pasien. */
+export type BodySite = 'kepala' | 'mata' | 'mulut' | 'tenggorokan' | 'dada' | 'ulu_hati' | 'perut' | 'perut_bawah' | 'pinggang' | 'lengan' | 'kaki';
+
+export const BODY_SITES: readonly BodySite[] = ['kepala', 'mata', 'mulut', 'tenggorokan', 'dada', 'ulu_hati', 'perut', 'perut_bawah', 'pinggang', 'lengan', 'kaki'];
+
+export type AgeGroup = 'anak' | 'remaja' | 'dewasa' | 'lansia';
+export type Emotion = 'tenang' | 'cemas' | 'kesakitan' | 'lesu' | 'bingung' | 'santai' | 'yakin';
+/** Peragaan gejala saat pasien membicarakannya. */
+export type Demonstration = 'batuk' | 'sesak' | 'menggigil' | 'lemas' | 'dahi';
+
+export interface OutfitDef {
+  top: string;
+  bottom: string;
+  sleeves: 'pendek' | 'panjang';
+  footwear: 'sepatu' | 'sandal';
+  jacket?: string;
+}
+
+export interface WeightedColor {
+  color: string;
+  weight: number;
+}
+
+export interface AppearanceFile {
+  review: ReviewInfo;
+  skinTones: { id: string; color: string; weight: number }[];
+  hairColors: { muda: WeightedColor[]; paruh_baya: WeightedColor[]; lansia: WeightedColor[] };
+  hairStyles: Record<Sex, Record<AgeGroup, string[]>>;
+  hijabRate: Record<AgeGroup, number>;
+  hijabColors: string[];
+  glassesRate: Record<AgeGroup, number>;
+  topColors: string[];
+  bottomColors: string[];
+  jacketColors: string[];
+  /** Pakaian khas pekerjaan (seragam sekolah, satpam, dsb.). */
+  outfits: Record<string, OutfitDef>;
+  /** Perilaku yang tampak dari gejala. */
+  symptomCues: { symptom: string; cue: CueId; level: number; site?: BodySite }[];
+  /** Tanda yang tampak, diturunkan dari hasil pemeriksaan kasus. */
+  findingCues: { tool: string; param: string; match?: string; min?: number; max?: number; abnormal?: boolean; cue: CueId; level: number }[];
+  /** Lokasi tubuh yang ditunjuk saat pasien membicarakan gejala. */
+  sites: Record<string, BodySite>;
+  /** Trait penentu sisi (kiri/kanan) untuk lokasi yang bersisi. */
+  sideTraits: { kiri: string[]; kanan: string[] };
+  demonstrations: Record<string, Demonstration>;
+  /** Emosi dasar per kepribadian. */
+  emotions: Record<string, Emotion>;
+  cueLabels: Record<CueId, string>;
+}
+
 /** Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah jadi pasien). */
 export interface ConditionDef {
   id: string;
@@ -704,6 +806,8 @@ export interface GameContent {
   incidentals: IncidentalDef[];
   incidentalsById: Map<string, IncidentalDef>;
   conditions: ConditionDef[];
+  /** Aturan penampilan pasien 3D. */
+  appearance: AppearanceFile;
   /** Katalog terpadu: penyakit kasus + komorbiditas + insidental + kondisi banding. */
   catalog: CatalogEntry[];
   catalogById: Map<string, CatalogEntry>;

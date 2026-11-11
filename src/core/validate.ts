@@ -21,7 +21,7 @@ import type {
   Range,
   ToolDef,
 } from './types';
-import { DANGER_LEVELS, DISPOSITIONS, ECONOMY_CLASSES, OBJECTIVES, TOOL_CATEGORIES } from './types';
+import { BODY_SITES, CUE_IDS, DANGER_LEVELS, DISPOSITIONS, ECONOMY_CLASSES, OBJECTIVES, TOOL_CATEGORIES } from './types';
 
 /** Placeholder yang selalu tersedia di teks kasus (diisi oleh generator). */
 export const BUILTIN_PLACEHOLDERS = [
@@ -59,6 +59,7 @@ export function validateContent(content: GameContent, config: GameConfig): strin
   validatePopulation(content, config, err);
   validateConversation(content, err);
   validateExtras(content, err);
+  validateAppearance(content, err);
   validateEvaluationConfig(config, err);
 
   const globalPlaceholders = new Set<string>([
@@ -162,6 +163,15 @@ function validateParam(param: ParamDef, path: string, err: ErrFn): void {
     if (!isRange(param.ref)) err(path, 'ref tidak valid');
     if (param.refFemale && !isRange(param.refFemale)) err(path, 'refFemale tidak valid');
     if (!Number.isInteger(param.decimals) || param.decimals < 0) err(path, 'decimals tidak valid');
+    let prevMax = -Infinity;
+    for (const band of param.refByAge ?? []) {
+      if (!(band.maxAge > prevMax)) err(path, 'refByAge harus urut naik menurut maxAge');
+      prevMax = band.maxAge;
+      if (!isRange(band.ref)) err(path, `refByAge ≤${band.maxAge}: ref tidak valid`);
+      for (const [n, r] of [[band.normal, band.ref], [band.normalFemale, band.refFemale ?? band.ref]] as const) {
+        if (n && (!isRange(n) || (isRange(r) && !within(n, r)))) err(path, `refByAge ≤${band.maxAge}: rentang normal keluar dari rujukan`);
+      }
+    }
     if (param.normal) {
       if (!isRange(param.normal)) err(path, 'normal tidak valid');
       else if (isRange(param.ref) && !within(param.normal, param.ref)) err(path, 'rentang normal keluar dari nilai rujukan');
@@ -226,7 +236,7 @@ function validateConversation(content: GameContent, err: ErrFn): void {
     for (const s of r.symptoms) if (!content.symptomsById.has(s)) err(path, `gejala "${s}" tidak ada`);
   }
   const conv = content.conversation;
-  for (const key of ['greeting', 'thanks', 'consent', 'unknown', 'repeat', 'alreadySaid', 'chief'] as const) {
+  for (const key of ['greeting', 'thanks', 'consent', 'unknown', 'repeat', 'alreadySaid', 'chief', 'farewell', 'farewellReferral', 'closing'] as const) {
     if (!conv?.[key]?.length) err(`anamnesis.conversation.${key}`, 'kosong');
   }
   if (!conv?.detail?.default?.length) err('anamnesis.conversation.detail.default', 'kosong');
@@ -316,6 +326,49 @@ function validateExtras(content: GameContent, err: ErrFn): void {
     if (!DANGER_LEVELS.includes(c.danger)) err(path, `tingkat bahaya tidak valid "${c.danger}"`);
   }
   for (const e of content.catalog) if (!e.aliases) err(`katalog.${e.id}`, 'aliases wajib ada (boleh kosong)');
+}
+
+/** Aturan penampilan 3D: semua rujukan (gejala, alat, pekerjaan, kepribadian) harus ada. */
+function validateAppearance(content: GameContent, err: ErrFn): void {
+  const a = content.appearance;
+  const path = 'penampilan';
+  const isColor = (c: unknown) => typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c);
+  if (!a.skinTones.length || a.skinTones.some((t) => !isColor(t.color) || !(t.weight > 0))) err(`${path}.skinTones`, 'kosong / warna tidak valid');
+  for (const [k, list] of Object.entries(a.hairColors)) if (!list.length || list.some((h) => !isColor(h.color))) err(`${path}.hairColors.${k}`, 'kosong / warna tidak valid');
+  for (const sex of ['male', 'female'] as const) {
+    for (const g of ['anak', 'remaja', 'dewasa', 'lansia'] as const) {
+      if (!a.hairStyles[sex]?.[g]?.length) err(`${path}.hairStyles.${sex}.${g}`, 'kosong');
+    }
+  }
+  for (const list of [a.hijabColors, a.topColors, a.bottomColors, a.jacketColors]) if (!list.length || list.some((c) => !isColor(c))) err(path, 'daftar warna kosong / tidak valid');
+  for (const [occ, o] of Object.entries(a.outfits)) {
+    if (!content.occupationsById.has(occ)) err(`${path}.outfits.${occ}`, 'pekerjaan tidak ada');
+    if (!isColor(o.top) || !isColor(o.bottom) || (o.jacket && !isColor(o.jacket))) err(`${path}.outfits.${occ}`, 'warna tidak valid');
+  }
+  a.symptomCues.forEach((r, i) => {
+    const p = `${path}.symptomCues[${i}]`;
+    if (!content.symptomsById.has(r.symptom)) err(p, `gejala "${r.symptom}" tidak ada`);
+    if (!CUE_IDS.includes(r.cue)) err(p, `isyarat "${r.cue}" tidak dikenal`);
+    if (!isProbability(r.level)) err(p, 'level harus 0..1');
+    if (r.cue === 'pegang' && (!r.site || !BODY_SITES.includes(r.site))) err(p, 'isyarat "pegang" butuh site yang valid');
+  });
+  a.findingCues.forEach((r, i) => {
+    const p = `${path}.findingCues[${i}] (${r.tool}.${r.param})`;
+    const param = content.toolsById.get(r.tool)?.params.find((x) => x.id === r.param);
+    if (!param) return err(p, 'alat/parameter tidak ada');
+    if (!CUE_IDS.includes(r.cue)) err(p, `isyarat "${r.cue}" tidak dikenal`);
+    if (!isProbability(r.level)) err(p, 'level harus 0..1');
+    if (r.match === undefined && r.min === undefined && r.max === undefined && r.abnormal === undefined) err(p, 'butuh match/min/max/abnormal');
+    if ((r.min !== undefined || r.max !== undefined) && param.kind !== 'numeric') err(p, 'min/max hanya untuk parameter numerik');
+    if (r.match !== undefined && param.kind !== 'text') err(p, 'match hanya untuk parameter teks');
+  });
+  for (const [sym, site] of Object.entries(a.sites)) {
+    if (!content.symptomsById.has(sym)) err(`${path}.sites.${sym}`, 'gejala tidak ada');
+    if (!BODY_SITES.includes(site)) err(`${path}.sites.${sym}`, `lokasi "${site}" tidak dikenal`);
+  }
+  for (const sym of Object.keys(a.demonstrations)) if (!content.symptomsById.has(sym)) err(`${path}.demonstrations.${sym}`, 'gejala tidak ada');
+  for (const p of content.personalities) if (!a.emotions[p.id]) err(`${path}.emotions`, `kepribadian "${p.id}" belum punya emosi dasar`);
+  for (const cue of CUE_IDS) if (!a.cueLabels[cue]) err(`${path}.cueLabels`, `label isyarat "${cue}" kosong`);
 }
 
 function validateEvaluationConfig(config: GameConfig, err: ErrFn): void {

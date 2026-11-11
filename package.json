@@ -2,7 +2,7 @@
   "name": "meja-praktek",
   "version": "0.1.0",
   "private": true,
-  "description": "Meja Praktek \u2014 game simulasi diagnosis dokter umum (hiburan & edukasi, bukan alat medis).",
+  "description": "Meja Praktek — game simulasi diagnosis dokter umum (hiburan & edukasi, bukan alat medis).",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.19.1",
+    "@types/three": "^0.170.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.5",
@@ -27,5 +28,8 @@
   },
   "engines": {
     "node": ">=20.19"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
   }
 }

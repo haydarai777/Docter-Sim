@@ -3,7 +3,8 @@
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": [
       "Nilai rujukan memakai angka umum laboratorium klinik di Indonesia (dewasa). Tiap laboratorium bisa berbeda.",
-      "Harga alat TIDAK di file ini, melainkan di src/data/config.ts (toolPrices)."
+      "Harga alat TIDAK di file ini, melainkan di src/data/config.ts (toolPrices).",
+      "refByAge: nilai rujukan anak/remaja disederhanakan (bukan persentil); perlu tinjauan pediatri."
     ],
     "references": [
       "Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (Kemenkes RI)",
@@ -27,7 +28,8 @@
           "unit": "mmHg",
           "decimals": 0,
           "ref": [90, 139],
-          "normal": [105, 128]
+          "normal": [105, 128],
+          "refByAge": [{ "maxAge": 12, "ref": [90, 120], "normal": [98, 114] }]
         },
         {
           "kind": "numeric",
@@ -36,7 +38,8 @@
           "unit": "mmHg",
           "decimals": 0,
           "ref": [60, 89],
-          "normal": [68, 84]
+          "normal": [68, 84],
+          "refByAge": [{ "maxAge": 12, "ref": [55, 80], "normal": [60, 74] }]
         },
         {
           "kind": "numeric",
@@ -45,7 +48,8 @@
           "unit": "×/menit",
           "decimals": 0,
           "ref": [60, 100],
-          "normal": [68, 92]
+          "normal": [68, 92],
+          "refByAge": [{ "maxAge": 12, "ref": [70, 110], "normal": [76, 102] }]
         },
         {
           "kind": "numeric",
@@ -54,7 +58,8 @@
           "unit": "×/menit",
           "decimals": 0,
           "ref": [12, 20],
-          "normal": [14, 20]
+          "normal": [14, 20],
+          "refByAge": [{ "maxAge": 12, "ref": [16, 24], "normal": [18, 22] }]
         },
         {
           "kind": "numeric",
@@ -113,7 +118,24 @@
           "refFemale": [135, 185],
           "normal": [158, 176],
           "normalFemale": [147, 163],
-          "refText": "—"
+          "refText": "—",
+          "refByAge": [
+            { "maxAge": 12, "ref": [125, 160], "normal": [133, 150], "normalFemale": [134, 152] },
+            {
+              "maxAge": 15,
+              "ref": [140, 182],
+              "refFemale": [138, 172],
+              "normal": [152, 170],
+              "normalFemale": [148, 162]
+            },
+            {
+              "maxAge": 17,
+              "ref": [150, 192],
+              "refFemale": [142, 180],
+              "normal": [160, 175],
+              "normalFemale": [150, 164]
+            }
+          ]
         },
         {
           "kind": "numeric",
@@ -123,7 +145,11 @@
           "decimals": 1,
           "ref": [18.5, 22.9],
           "normal": [19, 22.8],
-          "refText": "18,5–22,9 (kriteria Asia-Pasifik)"
+          "refText": "18,5–22,9 (kriteria Asia-Pasifik)",
+          "refByAge": [
+            { "maxAge": 12, "ref": [14, 20.5], "normal": [15, 19.5] },
+            { "maxAge": 17, "ref": [16, 23.5], "normal": [17.5, 22.5] }
+          ]
         },
         {
           "kind": "numeric",
@@ -145,7 +171,11 @@
           "refFemale": [55, 79],
           "normal": [70, 88],
           "normalFemale": [62, 79],
-          "refText": "< 90 (L) / < 80 (P)"
+          "refText": "< 90 (L) / < 80 (P)",
+          "refByAge": [
+            { "maxAge": 12, "ref": [50, 72], "normal": [54, 68] },
+            { "maxAge": 17, "ref": [58, 82], "refFemale": [55, 78], "normal": [62, 78], "normalFemale": [58, 74] }
+          ]
         }
       ],
       "group": "umum"

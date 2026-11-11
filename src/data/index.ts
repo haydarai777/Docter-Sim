@@ -7,6 +7,7 @@
 import { buildContent } from '../core/content';
 import type {
   AnamnesisFile,
+  AppearanceFile,
   ComorbiditiesFile,
   ConditionsFile,
   DiseaseTemplate,
@@ -17,6 +18,7 @@ import type {
   ToolsFile,
 } from '../core/types';
 import anamnesis from './anamnesis.json';
+import appearance from './appearance.json';
 import comorbidities from './comorbidities.json';
 import conditions from './conditions.json';
 import { DISEASE_FILES } from './diseases';
@@ -38,5 +40,6 @@ export function loadDefaultContent(): GameContent {
     diseases: DISEASE_FILES as DiseaseTemplate[],
     comorbidities: comorbidities as unknown as ComorbiditiesFile,
     conditions: conditions as unknown as ConditionsFile,
+    appearance: appearance as unknown as AppearanceFile,
   });
 }

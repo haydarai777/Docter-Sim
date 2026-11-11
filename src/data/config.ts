@@ -14,8 +14,9 @@ import type { GameConfig } from '../core/types';
  */
 export const GAME_CONFIG: GameConfig = {
   patient: {
-    // Untuk sementara hanya pasien dewasa (nilai rujukan lab anak berbeda).
-    minAge: 18,
+    // Anak (10–12 th) & remaja hanya muncul pada penyakit yang kelompok usianya mengizinkan
+    // (dengue, tifoid, asma). Rujukan tanda vital/antropometri menurut usia ada di tools.json (refByAge).
+    minAge: 10,
     maxAge: 75,
     // Peluang pasien punya alergi obat/makanan.
     allergyRate: 0.15,

@@ -32,8 +32,10 @@ import type {
   TraitRule,
 } from './types';
 
-/** Usia di bawah ini disapa "Mas/Mbak", selebihnya "Pak/Bu". */
+/** Usia sampai batas ini disapa "Mas/Mbak", selebihnya "Pak/Bu". */
 const YOUNG_ADDRESS_MAX_AGE = 29;
+/** Usia sampai batas ini disapa "Dik". */
+const CHILD_ADDRESS_MAX_AGE = 14;
 /** Maksimal komorbiditas tambahan per pasien (selain yang sudah dimodelkan oleh penyakit utama). */
 const MAX_COMORBIDITIES = 2;
 
@@ -124,7 +126,8 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const { economy, budget } = sampleEconomy(occupation, config, demoRng);
   const personality = demoRng.weighted(content.personalities, (p) => p.weight);
   const { name, call } = nameOf(demoRng.pick(content.population.names[sex]));
-  const honorific = age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
+  const honorific =
+    age <= CHILD_ADDRESS_MAX_AGE ? 'Dik' : age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
 
   const patient: PatientProfile = {
     name,

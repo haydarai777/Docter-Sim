@@ -283,11 +283,18 @@ export function submitDecision(
   };
   const evaluation = evaluateEncounter(state, finalDecision, content, config);
   const name = content.catalogById.get(finalDecision.primary)!.name;
+  // Penutup: dokter menjelaskan, pasien berpamitan (dipakai juga oleh adegan pasien keluar ruangan).
+  const closing = conversationReply('closing', state.case, content, 'akhir');
+  const farewell = conversationReply(finalDecision.disposition === 'rujuk_segera' ? 'farewellReferral' : 'farewell', state.case, content, 'akhir');
   return {
     ...state,
     status: 'finished',
     decision: finalDecision,
     evaluation,
-    log: [...state.log, { kind: 'system', text: `Diagnosis kerja: ${name}.` }],
+    log: [
+      ...state.log,
+      { kind: 'system', text: `Diagnosis kerja: ${name}. ${closing}` },
+      { kind: 'patient', text: farewell },
+    ],
   };
 }

@@ -151,7 +151,7 @@ function pickConversation(list: readonly string[], c: PatientCase, salt: string,
   return fillTemplate(rng.pick(list), caseValues(c, values));
 }
 
-export type SmallTalk = 'greeting' | 'thanks' | 'consent' | 'unknown' | 'repeat' | 'alreadySaid';
+export type SmallTalk = 'greeting' | 'thanks' | 'consent' | 'unknown' | 'repeat' | 'alreadySaid' | 'farewell' | 'farewellReferral' | 'closing';
 
 /** Balasan basa-basi / pertanyaan tidak dipahami / awalan pengulangan. */
 export function conversationReply(kind: SmallTalk, c: PatientCase, content: GameContent, salt: string): string {
