@@ -19,9 +19,14 @@ klinis**, bukan sekadar tebakan diagnosis.
   berjalan, kipas, tirai, dan bayangan. Seret layar untuk melihat sekeliling.
 - **Pasien NPC hidup**: masuk lewat pintu, berjalan ke kursi, menyapa, duduk, dan setelah konsultasi
   berdiri, berpamitan, lalu keluar. Saat duduk pasien bernapas, berkedip, melirik, dan mengubah posisi.
-- **Karakter modular** dari satu kerangka: gender, kelompok usia (anak, remaja, dewasa, lansia), tinggi &
-  bentuk badan (dari antropometri kasus), warna kulit, gaya/warna rambut atau hijab, kacamata, pakaian
-  sesuai pekerjaan (mis. seragam sekolah, jaket ojek).
+- **Karakter modular berbentuk manusia** dari satu kerangka tulang: tubuh berupa permukaan menyatu
+  (*skinned*) dengan anatomi jelas — bahu, dada, pinggang, pinggul, lengan & kaki berotot wajar, tangan
+  berjari, sepatu/sandal — yang menekuk halus di sendi. Kepala berbentuk tengkorak manusia (dahi, pipi,
+  rahang, dagu) dengan hidung & telinga 3D, rambut bervolume (11 gaya) atau hijab berjuntai, dan kacamata
+  3D. Variasinya: gender, kelompok usia (anak, remaja, dewasa, lansia), tinggi & bentuk badan (dari
+  antropometri kasus: kurus sampai gemuk), warna kulit, bentuk wajah per pasien (rahang, mata, hidung,
+  bibir, alis), serta pakaian sesuai pekerjaan (kaos, kemeja berkerah & berkancing, baju dimasukkan +
+  ikat pinggang, jaket beritsleting, seragam sekolah).
 - **Manifestasi klinis yang terlihat — selalu konsisten dengan kasus**: napas cepat/berat (laju napas =
   tanda vital), batuk, memegang perut/pinggang, gelisah karena kolik, menggigil, lemas, pucat, ikterik,
   mata merah, petekie, pincang, badan kurus/gemuk. Gejala yang tidak tampak tetap harus ditanyakan.
@@ -30,7 +35,7 @@ klinis**, bukan sekadar tebakan diagnosis.
   isi jawaban; ekspresi cemas, kesakitan, lesu, tenang mengikuti kepribadian & kondisi.
 - **Monitor RME di meja** memuat seluruh tindakan (riwayat percakapan, pemeriksaan, penalaran,
   keputusan); jawaban pasien juga tampil sebagai teks berjalan di ruangan.
-- **Ringan**: ± 15 ribu segitiga, satu pasien dalam satu waktu (sumber daya dibuang saat pasien pergi),
+- **Ringan**: ± 16 ribu segitiga, satu pasien dalam satu waktu (sumber daya dibuang saat pasien pergi),
   resolusi & bayangan menyesuaikan kemampuan perangkat; tanpa WebGL game tetap bisa dimainkan (2D).
 - **Anamnesis bebas tanpa batas.** Ketik pertanyaan dengan bahasa sendiri. Pasien hanya menjawab
   yang ditanyakan, mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang), dan memahami
@@ -170,15 +175,20 @@ src/
     validate.ts         validator integritas konten
   ui/                   TAMPILAN (DOM tanpa framework)
     ai/patientAi.ts     pasien AI lewat kapabilitas `sample` claude.ai (dengan fallback lokal)
-    three/              tampilan 3D: stage (kamera/loop), room (ruang praktik), character & face
-                        (karakter modular), actor (animasi prosedural), director (adegan datang/pamit)
+    three/              tampilan 3D: stage (kamera/loop), room (ruang praktik), actor (animasi
+                        prosedural), director (adegan datang/pamit), dan karakter modular:
+                        geo (pembangun permukaan "loft" + bobot tulang), body (torso, leher, lengan,
+                        kaki, pakaian), head (tengkorak, hidung, telinga, rambut, hijab, kacamata),
+                        face (ekspresi), extremities (tangan, sepatu/sandal), character (perakit)
 tests/                  unit test
 scripts/                alat bantu pengembang (validasi, contoh kasus, format data)
 ```
 
 Pratinjau pasien 3D untuk pengembang/reviewer (saat `npm run dev`):
 `http://localhost:5173/dev3d.html?disease=asma&want=trait:serangan_berat` — parameter lain: `seed`,
-`mode=seated|walk|leave`, `want=group:anak,sex:female,hijab:1,cue:kuning,…`, `gesture=[…]`, `say=…`.
+`mode=seated|stand|walk|leave`, `want=group:anak,sex:female,hijab:1,hair:ikal,cue:kuning,…`,
+`gesture=[…]`, `say=…`. Untuk memeriksa bentuk karakter dari segala arah: `studio=1` (tanpa perabot) dan
+`cam=jarak,tinggi,sudut°[,fov[,tinggiTarget]]`, mis. `?mode=stand&studio=1&cam=3.3,0.9,35`.
 
 Aturan main: **UI tidak berisi aturan permainan.** Semua aturan ada di `src/core`,
 semua angka di `src/data/config.ts`, semua konten medis di file JSON.

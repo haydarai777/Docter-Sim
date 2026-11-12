@@ -30,6 +30,22 @@ export interface HeadSpec {
   ageGroup: 'anak' | 'remaja' | 'dewasa' | 'lansia';
   fat: number;
   thin: number;
+  /** Benih variasi wajah: tiap pasien punya bentuk rahang, mata, hidung, bibir sendiri. */
+  seed?: number;
+}
+
+/** Variasi wajah per pasien, masing-masing −1..1. */
+export interface FaceVariation {
+  width: number;
+  jaw: number;
+  chin: number;
+  eyeGap: number;
+  eyeSize: number;
+  eyeTilt: number;
+  nose: number;
+  lips: number;
+  brow: number;
+  mouth: number;
 }
 
 /** Tata letak fitur wajah di kanvas (piksel) — dihitung dari bentuk kepala. */
@@ -48,6 +64,11 @@ export interface FaceLayout {
   chinY: number;
   /** Piksel per milimeter (tegak). */
   pxPerMm: number;
+  /** Kemiringan mata (sudut luar lebih tinggi bila positif), fraksi lebar mata. */
+  eyeTilt: number;
+  /** Faktor tebal bibir & alis. */
+  lipK: number;
+  browK: number;
 }
 
 // [yn, lebar, depan, belakang, geser z] — dalam satuan setengah-lebar/kedalaman kepala.
@@ -84,23 +105,35 @@ export class HeadShape {
   readonly hh: number;
   readonly hd: number;
   readonly eyeYn: number;
+  readonly vary: FaceVariation;
   private readonly table: number[][];
 
   constructor(readonly spec: HeadSpec) {
     const { hs, male, ageGroup, fat, thin } = spec;
     const child = ageGroup === 'anak';
-    this.hw = 0.0775 * hs * (child ? 1.02 : male ? 1 : 0.97);
-    this.hh = 0.1185 * hs * (child ? 0.97 : 1);
+    let h = ((spec.seed ?? 1) ^ 0x51ed270b) >>> 0;
+    const v = (): number => {
+      h = (Math.imul(h ^ (h >>> 15), 2246822507) + 0x9e3779b9) >>> 0;
+      h = Math.imul(h ^ (h >>> 13), 3266489909) >>> 0;
+      // Jumlah dua acak → lebih sering dekat rata-rata, jarang ekstrem.
+      const a = ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+      h = (Math.imul(h, 1664525) + 1013904223) >>> 0;
+      return a + h / 4294967296 - 1;
+    };
+    const vary = (this.vary = { width: v(), jaw: v(), chin: v(), eyeGap: v(), eyeSize: v(), eyeTilt: v(), nose: v(), lips: v(), brow: v(), mouth: v() });
+    // Anak: kepala lebih bulat (lebih lebar, wajah lebih pendek).
+    this.hw = 0.0775 * hs * (child ? 1.05 : male ? 1 : 0.97) * (1 + 0.035 * vary.width);
+    this.hh = 0.1185 * hs * (child ? 0.95 : 1);
     this.hd = 0.098 * hs;
     // Anak: wajah lebih pendek (mata lebih rendah), dahi lebih besar.
-    this.eyeYn = child ? -0.02 : ageGroup === 'remaja' ? 0.02 : 0.045;
+    this.eyeYn = child ? -0.05 : ageGroup === 'remaja' ? 0.015 : 0.045;
     this.table = SKULL.map(([yn, w, f, b, zc]) => {
       let ww = w!;
       let ff = f!;
       const jaw = bell(yn!, -0.66, 0.22);
       const chin = bell(yn!, -0.92, 0.1);
       // Rahang: laki-laki lebih lebar & persegi; perempuan/anak lebih lancip.
-      ww *= 1 + (male && !child ? 0.05 : child ? -0.04 : -0.05) * jaw + (male && !child ? 0.1 : -0.1) * chin;
+      ww *= 1 + ((male && !child ? 0.05 : child ? -0.04 : -0.05) + 0.055 * vary.jaw) * jaw + ((male && !child ? 0.1 : -0.1) + 0.09 * vary.chin) * chin;
       if (child) ww *= 1 + 0.03 * bell(yn!, 0.45, 0.3);
       // Pipi/gelambir saat gemuk; pipi cekung saat kurus/lansia.
       ww *= 1 + 0.1 * fat * bell(yn!, -0.55, 0.28) - 0.05 * (thin + (ageGroup === 'lansia' ? 0.4 : 0)) * bell(yn!, -0.4, 0.2);
@@ -150,29 +183,33 @@ export class HeadShape {
   layout(): FaceLayout {
     const { hs, male, ageGroup } = this.spec;
     const child = ageGroup === 'anak';
-    const eyeX = 0.0315 * hs * (child ? 1.02 : 1);
+    const vary = this.vary;
+    const eyeX = 0.0315 * hs * (child ? 1.02 : 1) * (1 + 0.045 * vary.eyeGap);
     // Sedikit lebih besar dari ukuran anatomis agar ekspresi terbaca dari kursi dokter.
-    const eyeHalf = 0.0166 * hs * (child ? 1.1 : male ? 1 : 1.05);
+    const eyeHalf = 0.0166 * hs * (child ? 1.16 : male ? 1 : 1.05) * (1 + 0.06 * vary.eyeSize);
     const cx = FACE_SIZE / 2;
     const eyeDX = this.canvasX(this.eyeYn, eyeX) - cx;
     const eyeRX = (this.canvasX(this.eyeYn, eyeX + eyeHalf) - this.canvasX(this.eyeYn, eyeX - eyeHalf)) / 2;
     const pxPerMm = FACE_SIZE / ((FACE_TOP - FACE_BOTTOM) * this.hh * 1000);
     const mouthYn = this.eyeYn - (child ? 0.58 : 0.64);
-    const mouthHalf = (child ? 0.0225 : male ? 0.0275 : 0.026) * hs;
+    const mouthHalf = (child ? 0.0225 : male ? 0.0275 : 0.026) * hs * (1 + 0.07 * vary.mouth);
     return {
       size: FACE_SIZE,
       cx,
       eyeDX,
       eyeY: this.canvasY(this.eyeYn),
       eyeRX,
-      eyeRY: (child ? 7.6 : 6.9) * pxPerMm * (male ? 1 : 1.08),
+      eyeRY: (child ? 8.3 : 6.9) * pxPerMm * (male ? 1 : 1.08),
       browY: this.canvasY(this.eyeYn + (child ? 0.13 : 0.15)),
       noseY: this.canvasY(this.eyeYn - 0.385),
-      noseHalfW: this.canvasX(this.eyeYn - 0.38, 0.0165 * hs) - cx,
+      noseHalfW: this.canvasX(this.eyeYn - 0.38, 0.0165 * hs * (1 + 0.12 * vary.nose)) - cx,
       mouthY: this.canvasY(mouthYn),
       mouthHalfW: this.canvasX(mouthYn, mouthHalf) - cx,
       chinY: this.canvasY(-0.93),
       pxPerMm,
+      eyeTilt: 0.05 + 0.07 * vary.eyeTilt,
+      lipK: 1 + 0.2 * vary.lips,
+      browK: 1 + 0.22 * vary.brow,
     };
   }
 }
@@ -217,8 +254,8 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
 
   // --- Tengkorak ------------------------------------------------------------
   const skull = new GeoBuilder();
-  const ROWS = 36;
-  const COLS = 36;
+  const ROWS = 28;
+  const COLS = 32;
   const rows: Vector3[][] = [];
   for (let i = 0; i <= ROWS; i++) {
     const yn = Math.cos((i / ROWS) * Math.PI);
@@ -232,8 +269,8 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
   // --- Bidang wajah (sedikit di luar kulit) ----------------------------------------
   const facePatch = new GeoBuilder();
   const fRows: Vector3[][] = [];
-  const F_ROWS = 26;
-  const F_COLS = 28;
+  const F_ROWS = 20;
+  const F_COLS = 22;
   for (let i = 0; i <= F_ROWS; i++) {
     const yn = FACE_TOP + ((FACE_BOTTOM - FACE_TOP) * i) / F_ROWS;
     const row: Vector3[] = [];
@@ -248,19 +285,19 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
   const nose = new GeoBuilder();
   const noseStations = [
     [eye - 0.41, 0.0105, 0.0015],
-    [eye - 0.38, 0.0165, 0.0115],
-    [eye - 0.33, 0.0172, 0.0195],
-    [eye - 0.23, 0.0112, 0.0135],
-    [eye - 0.09, 0.0082, 0.0062],
-    [eye + 0.05, 0.0078, 0.0022],
-    [eye + 0.14, 0.009, -0.0015],
+    [eye - 0.38, 0.0165, 0.011],
+    [eye - 0.33, 0.0172, 0.0185],
+    [eye - 0.25, 0.0122, 0.0115],
+    [eye - 0.12, 0.0086, 0.0048],
+    [eye, 0.0074, 0.0012],
+    [eye + 0.1, 0.008, -0.002],
   ];
   const child = shape.spec.ageGroup === 'anak';
-  const noseK = hs * (child ? 0.86 : shape.spec.male ? 1.04 : 0.95);
+  const noseK = hs * (child ? 0.78 : shape.spec.male ? 1.04 : 0.94);
   const noseRings: Ring[] = [];
-  for (let yn = eye + 0.14; yn >= eye - 0.4101; yn -= 0.025) {
+  for (let yn = eye + 0.1; yn >= eye - 0.4101; yn -= 0.0255) {
     const [rx, rf] = sampleStations(noseStations, yn) as [number, number];
-    noseRings.push({ c: [0, shape.hh * yn, shape.front(yn) - 0.004 * hs], rx: rx * noseK, rf: rf * noseK + 0.004 * hs, rb: 0.003 * hs, n: 2.2 });
+    noseRings.push({ c: [0, shape.hh * yn, shape.front(yn) - 0.004 * hs], rx: rx * noseK * (1 + 0.12 * shape.vary.nose), rf: rf * noseK + 0.004 * hs, rb: 0.003 * hs });
   }
   nose.addLoft(noseRings, { segments: 12, capEnd: true });
   add(nose.build(false), skin, false);
@@ -270,7 +307,7 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
   for (const sx of [-1, 1]) {
     const m = new Mesh(nostrilGeo, dark);
     m.scale.set(0.0038 * noseK, 0.0022 * noseK, 0.0042 * noseK);
-    m.position.set(sx * 0.0078 * noseK, shape.hh * (eye - 0.392), shape.front(eye - 0.392) + 0.0048 * noseK);
+    m.position.set(sx * 0.0078 * noseK * (1 + 0.12 * shape.vary.nose), shape.hh * (eye - 0.392), shape.front(eye - 0.392) + 0.0048 * noseK);
     group.add(m);
   }
 
@@ -368,10 +405,10 @@ const HAIR: Record<string, HairStyle> = {
   cepak: { thick: 0.005, line: [0.6, 0.38, 0.14, -0.12, -0.34] },
   pendek: { thick: 0.013, line: [0.55, 0.3, 0.1, -0.2, -0.46], fringe: 0.45 },
   belah: { thick: 0.015, line: [0.5, 0.26, 0.08, -0.22, -0.48], fringe: 0.35, part: 0.55 },
-  ikal: { thick: 0.021, line: [0.54, 0.28, 0.1, -0.2, -0.44], curl: 0.006, fringe: 0.2 },
-  tipis: { thick: 0.0065, line: [0.36, 0.3, 0.1, -0.18, -0.42], band: { top: 0.74, from: 0.82 } },
-  botak: { thick: 0.005, line: [0.2, 0.2, 0.1, -0.18, -0.4], band: { top: 0.5, from: 1.2 } },
-  bob: { thick: 0.016, line: [0.46, 0.2, -0.3, -0.5, -0.6], fringe: 0.5, curtain: { to: -1.12, from: 0.95 } },
+  ikal: { thick: 0.02, line: [0.54, 0.28, 0.1, -0.2, -0.44], curl: 0.012, fringe: 0.2 },
+  tipis: { thick: 0.0042, line: [0.36, 0.3, 0.1, -0.18, -0.42], band: { top: 0.74, from: 0.82 } },
+  botak: { thick: 0.0036, line: [0.2, 0.2, 0.1, -0.18, -0.4], band: { top: 0.5, from: 1.2 } },
+  bob: { thick: 0.016, line: [0.34, 0.16, -0.3, -0.5, -0.6], fringe: 0.6, curtain: { to: -1.12, from: 0.95 } },
   panjang: { thick: 0.016, line: [0.52, 0.22, -0.28, -0.5, -0.6], part: 0.3, curtain: { to: -2.05, from: 1.02 } },
   kuncir: { thick: 0.011, line: [0.57, 0.3, 0.02, -0.3, -0.5], tail: 'kuncir' },
   kuncir_dua: { thick: 0.013, line: [0.48, 0.24, 0.0, -0.3, -0.5], fringe: 0.45, tail: 'kuncir_dua' },
@@ -410,7 +447,7 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
   const closed = !style.band;
 
   // Selubung utama: dari garis rambut naik ke ubun-ubun.
-  const ROWS = 9;
+  const ROWS = style.curl ? 14 : 9;
   const rows: Vector3[][] = [];
   for (let i = 0; i <= ROWS; i++) {
     const t = i / ROWS;
@@ -425,12 +462,12 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
       // Menipis di garis rambut; rambut bertirai (bob/panjang) tetap tebal di sisi & belakang.
       const edge = style.curtain ? Math.min(1, front * 1.6) : 1;
       let thick = T * (1 - 0.78 * edge * (1 - smooth(0, 0.28, t)));
-      if (style.band) thick *= 1 - 0.7 * smooth(0.75, 1, t);
+      if (style.band) thick *= (1 - 0.7 * smooth(0.75, 1, t)) * smooth(0, 0.22, Math.min(a - a0, a1 - a));
       // Variasi per arah dipudarkan menuju ubun-ubun agar semua kolom bertemu di satu titik.
       const crown = 1 - smooth(0.7, 1, t);
       if (style.fringe) thick *= 1 + style.fringe * front * front * bell(t, 0.3, 0.3) * crown;
       if (style.part) thick *= 1 + style.part * bell(a > Math.PI ? a - Math.PI * 2 : a, -0.55, 0.5) * bell(t, 0.45, 0.4) * crown;
-      if (style.curl) thick += style.curl * hs * (Math.sin(a * 9 + t * 5) * Math.cos(t * 11 + a * 3) * 0.5 + 0.5) * smooth(0, 0.2, t) * crown;
+      if (style.curl) thick += style.curl * hs * (Math.sin(a * 11 + t * 7) * Math.cos(t * 15 + a * 4) * 0.5 + 0.5) * smooth(0, 0.15, t) * (0.35 + 0.65 * crown);
       row.push(shape.point(yn, a, new Vector3(), thick));
     }
     rows.push(row);
@@ -456,8 +493,9 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
         const thick = T * (1 + 0.3 * smooth(0, 0.35, t)) * (1 - 0.6 * tip) + (style.curl ?? 0) * hs * Math.sin(a * 8 + t * 9);
         const p = shape.point(ynHead, a, new Vector3(), thick);
         p.y = shape.hh * yn;
-        p.x *= 1 - 0.1 * Math.min(1, below) - 0.05 * tip;
-        p.z -= 0.012 * hs * Math.min(1.5, below);
+        // Di bawah rahang rambut jatuh lurus, sedikit di luar kerah/bahu.
+        p.x *= 1 + 0.06 * Math.min(1, below * 2) - 0.05 * tip;
+        p.z -= 0.014 * hs * Math.min(1.5, below);
         row.push(p);
       }
       cRows.push(row);
@@ -549,7 +587,7 @@ function buildHijab(shape: HeadShape, color: string, group: Group, track: <T ext
     }
     rows.push(row);
   };
-  for (let i = 0; i <= 26; i++) add(Math.cos((i / 26) * Math.PI * 0.985));
+  for (let i = 0; i <= 22; i++) add(Math.cos((i / 22) * Math.PI * 0.985));
   for (const d of [0.012, 0.03, 0.05, 0.075]) add(-0.97, d);
   geo.addGrid(rows, center, false);
   const mesh = new Mesh(track(geo.build(false)), mat);

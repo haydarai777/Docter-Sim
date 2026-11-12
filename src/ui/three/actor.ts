@@ -1018,9 +1018,11 @@ export class Actor implements StageUpdatable {
     const palm = this.sitePalm;
     const off = 0.017 * s;
     /** Titik di permukaan depan badan pada tinggi `yr` (× s di atas panggul), relatif tulang `bone`. */
-    const torso = (bone: Object3D, jointYr: number, yr: number, xk: number): Vector3 => {
+    const torso = (bone: Object3D, jointYr: number, yr: number, xk: number, elbowOut = 0): Vector3 => {
       out.set(x * xk * s, (yr - jointYr) * s, c.body.surface(yr).front + off);
       palm.set(0, 0, -1).transformDirection(bone.matrixWorld);
+      // Titik tinggi (dada): siku membuka ke samping agar lengan bawah melintang, bukan tegak.
+      if (elbowOut > 0) this.armGoal[side].pole.set(x * (0.42 + 0.6 * elbowOut), -0.55 + 0.25 * elbowOut, -0.72 + 0.55 * elbowOut);
       return bone.localToWorld(out);
     };
     switch (site) {
@@ -1034,11 +1036,12 @@ export class Actor implements StageUpdatable {
         return out;
       case 'tenggorokan':
         palm.set(0, 0, -1).transformDirection(c.neck.matrixWorld);
+        this.armGoal[side].pole.set(x * 0.9, -0.4, -0.3);
         return c.neck.localToWorld(out.set(0, 0.012 * s, 0.06 * s + off));
       case 'dada':
-        return torso(c.chest, 0.25, 0.35, 0.02);
+        return torso(c.chest, 0.25, 0.35, 0.02, 1);
       case 'ulu_hati':
-        return torso(c.spine, 0.09, 0.225, 0.015);
+        return torso(c.spine, 0.09, 0.225, 0.015, 0.5);
       case 'perut':
         return torso(c.spine, 0.09, 0.125, 0.02);
       case 'perut_bawah':

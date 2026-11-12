@@ -76,6 +76,8 @@ export interface BodyGeometry {
   belt: BufferGeometry | null;
   /** Juntai hijab (null bila tidak berhijab). */
   drape: BufferGeometry | null;
+  /** Jari-jari ujung lengan bawah di pergelangan (X = tebal, Z = lebar) — untuk menyambung tangan. */
+  wrist: { x: number; z: number };
   /**
    * Permukaan badan berpakaian pada tinggi `yr` (× s di atas pusat panggul, pose ikat):
    * setengah lebar, z depan, z belakang — dipakai untuk titik sentuh tangan.
@@ -96,15 +98,15 @@ const TORSO: Table = [
   [0.18, 0.146, 0.101, 0.093, 0.006],
   [0.26, 0.153, 0.11, 0.097, 0.006],
   [0.34, 0.16, 0.117, 0.101, 0.004],
-  [0.376, 0.167, 0.113, 0.103, 0.002],
+  [0.378, 0.168, 0.113, 0.103, 0.002],
   // Bahu: penampang melebar mencakup deltoid, sehingga baju mengalir dari badan ke lengan.
-  [0.396, 0.19, 0.109, 0.103, 0.001],
-  [0.415, 0.22, 0.105, 0.102, 0],
-  [0.435, 0.231, 0.1, 0.101, -0.002],
-  [0.455, 0.223, 0.094, 0.098, -0.004],
-  [0.472, 0.203, 0.087, 0.095, -0.005],
-  [0.486, 0.172, 0.08, 0.091, -0.006],
-  [0.5, 0.128, 0.072, 0.086, -0.008],
+  [0.398, 0.198, 0.109, 0.103, 0.001],
+  [0.418, 0.225, 0.105, 0.102, 0],
+  [0.438, 0.229, 0.1, 0.101, -0.002],
+  [0.458, 0.213, 0.093, 0.098, -0.004],
+  [0.474, 0.19, 0.086, 0.095, -0.005],
+  [0.488, 0.155, 0.079, 0.09, -0.006],
+  [0.5, 0.118, 0.072, 0.086, -0.008],
   [0.515, 0.088, 0.063, 0.074, -0.008],
   [0.527, 0.064, 0.058, 0.064, -0.008],
 ];
@@ -167,7 +169,7 @@ function torsoTable(spec: BodySpec, armK: number): Table {
     const upper = smooth(0.2, 0.36, y!);
     const lower = 1 - smooth(0.02, 0.14, y!);
     // Lebar bahu & panggul mengikuti kerangka; tonjolan deltoid mengikuti tebal lengan.
-    const deltoid = smooth(0.38, 0.42, y!) * (1 - smooth(0.46, 0.49, y!));
+    const deltoid = smooth(0.38, 0.42, y!) * (1 - smooth(0.45, 0.485, y!));
     w = (w + (kSh - 1) * 0.178 * upper) * (1 + (kHip - 1) * lower * 0.9) + (armK - 1) * 0.049 * deltoid;
     if (!male) {
       w *= 1 - 0.1 * bell(y!, 0.14, 0.07) + 0.03 * bell(y!, -0.02, 0.06);
@@ -283,7 +285,7 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     // Lengan baju: dari puncak bahu sampai kelim (lengan pendek sedikit melebar di ujung).
     const sleeve: Ring[] = [];
     for (const d of [-0.03, -0.022, -0.012]) sleeve.push(armRing(d, sleeveCloth));
-    for (let d = 0; d < sleeveEnd - 0.004; d += 0.0178) sleeve.push(armRing(d, sleeveCloth + (spec.longSleeves ? 0 : 0.003 * s * smooth(0.05, sleeveEnd, d))));
+    for (let d = 0; d < sleeveEnd - 0.004; d += d < 0.1 ? 0.0178 : 0.0245) sleeve.push(armRing(d, sleeveCloth + (spec.longSleeves ? 0 : 0.003 * s * smooth(0.05, sleeveEnd, d))));
     sleeve.push(armRing(sleeveEnd, sleeveCloth + (spec.longSleeves ? 0.0015 : 0.0035) * s));
     top.addLoft(sleeve, { segments: 14, capStart: true });
     // Kulit lengan yang terlihat (di bawah lengan baju) sampai pergelangan.
@@ -488,7 +490,7 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     // Sisi kain di atas lengan ikut terangkat bila lengan atas bergerak.
     const drapeWeights = (x: number, y: number, z: number): Weights => {
       const base = torsoWeights(x, y, z);
-      const wArm = 0.55 * smooth(sh - 0.02, sh + 0.05, Math.abs(x) / s) * smooth(0.5, 0.44, (y - hy) / s);
+      const wArm = 0.85 * smooth(sh - 0.03, sh + 0.04, Math.abs(x) / s) * smooth(0.5, 0.445, (y - hy) / s);
       if (wArm < 0.01) return base;
       return [...base.map(([bone, w]) => [bone, w * (1 - wArm)] as const), [x > 0 ? B.upL : B.upR, wArm] as const];
     };
@@ -511,6 +513,7 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     bottom: bottom.build(),
     belt: belt ? belt.build() : null,
     drape: drape ? drape.build() : null,
+    wrist: { x: 0.0215 * s * armK, z: 0.0245 * s * armK },
     surface,
   };
 }

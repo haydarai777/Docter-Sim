@@ -12,39 +12,49 @@ import { GeoBuilder, type Ring, sampleStations } from './geo';
 const X = new Vector3(1, 0, 0);
 const Y = new Vector3(0, 1, 0);
 
-/** Geometri tangan kiri. `k` = skala tangan (meter per satuan). */
-export function buildHand(k: number, plump = 0): BufferGeometry {
+/**
+ * Geometri tangan kiri. `k` = skala tangan (meter per satuan); `wrist` = jari-jari ujung lengan
+ * bawah (X = tebal, Z = lebar, meter) supaya pangkal tangan menyambung rata dengan lengan.
+ */
+export function buildHand(k: number, plump: number, wrist: { x: number; z: number }): BufferGeometry {
   const geo = new GeoBuilder();
   const t = 1 + 0.22 * plump;
+  const wx = wrist.x / k;
+  const wz = wrist.z / k;
   // Telapak: [y, setengah tebal (X), lebar ke sisi ibu jari (+Z), lebar ke sisi kelingking (−Z), geser z]
   const palm = [
-    [0.014, 0.019, 0.0225, 0.0225, 0],
-    [0.0, 0.0205, 0.0245, 0.0245, 0],
-    [-0.016, 0.0165, 0.034, 0.031, 0.002],
-    [-0.04, 0.0135, 0.0405, 0.036, 0.002],
-    [-0.066, 0.012, 0.0405, 0.0375, 0.001],
-    [-0.086, 0.0105, 0.039, 0.037, 0],
-    [-0.094, 0.0075, 0.035, 0.034, 0],
+    [-0.099, 0.0072, 0.033, 0.032, 0],
+    [-0.094, 0.0102, 0.0375, 0.036, 0],
+    [-0.086, 0.0112, 0.0392, 0.0372, 0],
+    [-0.066, 0.0122, 0.0405, 0.0375, 0.001],
+    [-0.042, 0.0138, 0.0405, 0.036, 0.002],
+    [-0.018, 0.0165, 0.033, 0.031, 0.002],
+    [-0.004, wx * 0.98, wz * 0.98, wz * 0.98, 0],
+    // Pangkal tangan masuk ke dalam ujung lengan bawah (jelas lebih kecil → sambungan bersih).
+    [0.004, wx * 0.86, wz * 0.86, wz * 0.86, 0],
+    [0.016, wx * 0.82, wz * 0.82, wz * 0.82, 0],
   ];
   const rings: Ring[] = [];
-  for (let y = 0.014; y > -0.0945; y -= 0.009) {
+  for (const y of [0.016, 0.004, -0.004, -0.018, -0.032, -0.046, -0.06, -0.074, -0.086, -0.094, -0.099]) {
     const [rx, rf, rb, zc] = sampleStations(palm, y) as [number, number, number, number];
-    // Telapak sedikit cekung: punggung tangan (+X) lebih menonjol daripada sisi telapak.
-    rings.push({ c: [0.002 * k, y * k, zc * k], rx: rx * k * t, rf: rf * k, rb: rb * k, n: 2.5 });
+    // Tebal telapak ikut `plump`, kecuali di pergelangan (harus pas dengan lengan).
+    const tt = 1 + (t - 1) * Math.min(1, Math.max(0, -y / 0.02));
+    rings.push({ c: [0.001 * k, y * k, zc * k], rx: rx * k * tt, rf: rf * k, rb: rb * k, n: 2.3 });
   }
+  // Jumlah segmen sama dengan lengan bawah agar tepi keduanya tidak saling silang.
   geo.addLoft(rings, { segments: 14, capStart: true, capEnd: true });
 
   // Jari: [z pangkal, y pangkal, panjang, jari-jari, tekukan total (rad), sebaran z]
   const fingers = [
-    [0.0285, -0.088, 0.07, 0.0088, 0.42, 0.006],
-    [0.0095, -0.092, 0.078, 0.0092, 0.5, 0.001],
-    [-0.0095, -0.09, 0.072, 0.0088, 0.6, -0.003],
-    [-0.0275, -0.084, 0.057, 0.0078, 0.72, -0.007],
+    [0.0285, -0.084, 0.074, 0.0088, 0.42, 0.006],
+    [0.0095, -0.087, 0.083, 0.0092, 0.5, 0.001],
+    [-0.0095, -0.085, 0.077, 0.0088, 0.6, -0.003],
+    [-0.0275, -0.08, 0.061, 0.0078, 0.72, -0.007],
   ];
   for (const [zb, yb, len, r, curl, spread] of fingers as [number, number, number, number, number, number][]) {
     const f: Ring[] = [];
     for (const [u, rk] of [
-      [0, 1.04],
+      [0, 1],
       [0.22, 1],
       [0.45, 0.97],
       [0.68, 0.9],
@@ -57,7 +67,7 @@ export function buildHand(k: number, plump = 0): BufferGeometry {
       const y = yb - (len / curl) * Math.sin(phi);
       f.push({ c: [(0.001 + x) * k, y * k, (zb + spread * u) * k], rx: r * rk * k * t, rf: r * rk * k * t });
     }
-    geo.addLoft(f, { segments: 8, capStart: true, capEnd: true });
+    geo.addLoft(f, { segments: 6, capStart: true, capEnd: true });
   }
 
   // Ibu jari: keluar dari pangkal telapak sisi +Z, mengarah ke depan-bawah, agak ke telapak.
@@ -67,18 +77,18 @@ export function buildHand(k: number, plump = 0): BufferGeometry {
   const base = new Vector3(-0.002, -0.02, 0.022);
   const thumb: Ring[] = [];
   for (const [d, r] of [
-    [-0.006, 0.0125],
-    [0.012, 0.0138],
-    [0.03, 0.0118],
-    [0.046, 0.0104],
-    [0.06, 0.0094],
-    [0.069, 0.006],
+    [-0.006, 0.0115],
+    [0.012, 0.0126],
+    [0.03, 0.0108],
+    [0.046, 0.0097],
+    [0.058, 0.0088],
+    [0.066, 0.0056],
   ] as [number, number][]) {
     // Ruas ujung ibu jari sedikit menekuk kembali sejajar jari.
     const bend = Math.max(0, d - 0.03) * 0.35;
     thumb.push({ c: [(base.x + dir.x * d) * k, (base.y + dir.y * d - bend * 0.4) * k, (base.z + dir.z * d - bend) * k], rx: r * k * t, rf: r * k * t });
   }
-  geo.addLoft(thumb, { segments: 8, capStart: true, capEnd: true, u, v });
+  geo.addLoft(thumb, { segments: 6, capStart: true, capEnd: true, u, v });
   return geo.build(false);
 }
 
@@ -118,20 +128,21 @@ export function buildFoot(s: number, footH: number, sandal: boolean, swollen: bo
       [0.065, 0.046, -0.019, 0.002],
       [0.11, 0.049, -0.031, 0.004],
       [0.15, 0.047, -0.036, 0.004],
-      [0.182, 0.04, -0.04, 0.003],
-      [0.2, 0.027, -0.045, 0.002],
+      [0.18, 0.039, -0.04, 0.003],
+      [0.196, 0.029, -0.044, 0.002],
+      [0.205, 0.016, -0.048, 0.002],
     ];
     const upper = new GeoBuilder();
     const sole = new GeoBuilder();
     const up: Ring[] = [];
     const so: Ring[] = [];
-    for (let z = -0.068; z < 0.2005; z += 0.0134) {
+    for (let z = -0.068; z < 0.2055; z += 0.0182) {
       const [w, top, xo] = sampleStations(shape, z) as [number, number, number];
-      up.push(ring(z, w * wide, top * s + puff, floor + 0.009 * s, 2.7, xo));
+      up.push(ring(z, w * wide, top * s + puff, floor + 0.009 * s, 2.5, xo));
       so.push(ring(z, w * wide + 0.0035, floor + 0.014 * s, floor + 0.0008, 5, xo));
     }
-    upper.addLoft(up, { ...opt, segments: 14, capStart: true, capEnd: true });
-    sole.addLoft(so, { ...opt, segments: 12, capStart: true, capEnd: true });
+    upper.addLoft(up, { ...opt, segments: 12, capStart: true, capEnd: true });
+    sole.addLoft(so, { ...opt, segments: 10, capStart: true, capEnd: true });
     return { upper: upper.build(false), sole: sole.build(false), skin: null, strap: null };
   }
 
@@ -153,17 +164,17 @@ export function buildFoot(s: number, footH: number, sandal: boolean, swollen: bo
   const soleTop = floor + 0.012 * s;
   const sk: Ring[] = [];
   const so: Ring[] = [];
-  for (let z = -0.06; z < 0.1765; z += 0.0131) {
+  for (let z = -0.06; z < 0.1765; z += 0.0169) {
     const [w, top, xo] = sampleStations(shape, z) as [number, number, number];
     sk.push(ring(z, w * wide, top * s + puff, soleTop - 0.001, 2.6, xo));
   }
-  skin.addLoft(sk, { ...opt, segments: 14, capStart: true, capEnd: true });
-  for (let z = -0.066; z < 0.2075; z += 0.0152) {
+  skin.addLoft(sk, { ...opt, segments: 12, capStart: true, capEnd: true });
+  for (let z = -0.066; z < 0.2075; z += 0.0228) {
     const [w, , xo] = sampleStations(shape, Math.min(z, 0.176)) as [number, number, number];
     const taper = z > 0.176 ? 1 - ((z - 0.176) / 0.031) ** 2 * 0.45 : 1;
     so.push(ring(z, (w * wide + 0.004) * taper, soleTop, floor + 0.0008, 5, xo));
   }
-  sole.addLoft(so, { ...opt, segments: 12, capStart: true, capEnd: true });
+  sole.addLoft(so, { ...opt, segments: 10, capStart: true, capEnd: true });
   // Jari kaki: ibu jari di sisi dalam (−X pada kaki kiri).
   const toes: [number, number, number][] = [
     [-0.027, 0.186, 0.0118],
@@ -182,7 +193,7 @@ export function buildFoot(s: number, footH: number, sandal: boolean, swollen: bo
     ] as [number, number][]) {
       toe.push({ c: [(x + 0.004) * s * wide, soleTop + r * s * 0.82, (z + dz) * s], rx: r * s * rk, rf: r * s * rk * 0.84, rb: r * s * 0.8 });
     }
-    skin.addLoft(toe, { ...opt, segments: 8, capStart: true, capEnd: true });
+    skin.addLoft(toe, { ...opt, segments: 6, capStart: true, capEnd: true });
   }
   // Tali: pita melengkung di atas punggung kaki.
   const st: Ring[] = [];

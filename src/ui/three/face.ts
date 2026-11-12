@@ -167,29 +167,43 @@ export class Face {
     soft(cx, A.mouthY + 9.5 * u, A.mouthHalfW * 0.8, 3.4 * u, skinDark(0.16));
 
     // --- Rona pipi: sedikit pada semua orang, kuat saat demam ---------------------
-    const blush = 0.07 + 0.5 * L.flush - 0.05 * L.pale;
-    if (blush > 0.01) for (const sx of [-1, 1]) soft(cx + sx * A.eyeDX * 1.28, (A.noseY + eyeY) / 2 + 6 * u, 15 * u, 11 * u, `rgba(206,84,66,${Math.min(0.55, blush)})`);
+    const blush = 0.06 + 0.26 * L.flush - 0.05 * L.pale;
+    if (blush > 0.01) {
+      for (const sx of [-1, 1]) soft(cx + sx * A.eyeDX * 1.3, (A.noseY + eyeY) / 2 + 7 * u, 24 * u, 17 * u, `rgba(200,84,66,${Math.min(0.4, blush)})`);
+      if (L.flush > 0.2) {
+        soft(cx, A.noseY - 6 * u, 13 * u, 15 * u, `rgba(200,84,66,${0.16 * L.flush})`);
+        soft(cx, A.browY - 18 * u, 38 * u, 14 * u, `rgba(200,84,66,${0.1 * L.flush})`);
+      }
+    }
 
     // --- Kerut usia ------------------------------------------------------------
     if (L.wrinkles > 0.12) {
-      g.strokeStyle = skinDark(0.5 * L.wrinkles);
-      g.lineWidth = 0.75 * u;
-      for (const dy of [13, 18.5, 24]) {
+      g.strokeStyle = skinDark(0.34 * L.wrinkles);
+      g.lineWidth = 0.7 * u;
+      const lines: [number, number, number][] = [
+        [13, -0.95, 0.8],
+        [18.5, -0.7, 1.05],
+        [24, -0.85, 0.55],
+      ];
+      for (const [dy, x0, x1] of lines) {
+        const y = A.browY - dy * u;
         g.beginPath();
-        g.moveTo(cx - A.eyeDX * 1.15, A.browY - dy * u + 1.2 * u);
-        g.quadraticCurveTo(cx, A.browY - dy * u - 1.4 * u - s.browRaise * 1.8 * u, cx + A.eyeDX * 1.15, A.browY - dy * u + 1.2 * u);
+        g.moveTo(cx + x0 * A.eyeDX, y + 1.1 * u);
+        g.bezierCurveTo(cx + x0 * A.eyeDX * 0.4, y - 1.6 * u - s.browRaise * 1.8 * u, cx + x1 * A.eyeDX * 0.4, y + 0.6 * u - s.browRaise * 1.8 * u, cx + x1 * A.eyeDX, y + 0.9 * u);
         g.stroke();
       }
       for (const sx of [-1, 1]) {
-        // Lipatan nasolabial & kerut sudut mata.
+        // Lipatan nasolabial (pendek, dari cuping hidung ke arah sudut bibir) & kerut sudut mata.
+        g.strokeStyle = skinDark(0.3 * L.wrinkles);
         g.beginPath();
-        g.moveTo(cx + sx * A.noseHalfW * 1.25, A.noseY - 2 * u);
-        g.quadraticCurveTo(cx + sx * (A.mouthHalfW + 6 * u), (A.noseY + A.mouthY) / 2, cx + sx * (A.mouthHalfW + 4.5 * u), A.mouthY + 4 * u);
+        g.moveTo(cx + sx * A.noseHalfW * 1.3, A.noseY - 1.5 * u);
+        g.quadraticCurveTo(cx + sx * (A.mouthHalfW * 0.95 + 5 * u), (A.noseY + A.mouthY) / 2 - 1 * u, cx + sx * (A.mouthHalfW + 5.5 * u), A.mouthY - 2.5 * u);
         g.stroke();
+        g.strokeStyle = skinDark(0.28 * L.wrinkles);
         for (const k of [-1, 0, 1]) {
           g.beginPath();
-          g.moveTo(cx + sx * (A.eyeDX + rx + 2 * u), eyeY + k * 1.6 * u);
-          g.lineTo(cx + sx * (A.eyeDX + rx + 7 * u), eyeY + k * 4.2 * u);
+          g.moveTo(cx + sx * (A.eyeDX + rx + 2 * u), eyeY + k * 1.5 * u);
+          g.lineTo(cx + sx * (A.eyeDX + rx + 6.5 * u), eyeY + k * 3.8 * u);
           g.stroke();
         }
       }
@@ -202,9 +216,9 @@ export class Face {
       const ex = cx + sx * A.eyeDX;
       // Sudut dalam (dekat hidung) sedikit lebih rendah daripada sudut luar.
       const inX = ex - sx * rx;
-      const inY = eyeY + ry * 0.2;
+      const inY = eyeY + ry * 0.1 + A.eyeTilt * rx * 0.6;
       const outX = ex + sx * rx;
-      const outY = eyeY - ry * 0.12;
+      const outY = eyeY - A.eyeTilt * rx;
       const up = ry * Math.min(1.2, open) * 1.28;
       const low = ry * 0.78 * Math.min(1, 0.35 + open * 0.65);
       const lidPath = () => {
@@ -294,7 +308,7 @@ export class Face {
 
     // --- Alis: bentuk terisi, tebal di pangkal dan meruncing ke ekor ----------------
     const browColor = shade(L.hair, L.wrinkles > 0.65 ? 0.18 : -0.1, 0.93);
-    const thick = (L.child ? 3 : L.female ? 2.9 : 4.3) * u;
+    const thick = (L.child ? 3 : L.female ? 2.9 : 4.3) * u * A.browK;
     for (const sx of [-1, 1]) {
       const ex = cx + sx * A.eyeDX;
       const raise = (s.browRaise * 4.4 + (sx === 1 ? s.browAsym * 3.6 : -s.browAsym * 0.8)) * u;
@@ -340,8 +354,8 @@ export class Face {
     const mo = Math.max(0, Math.min(1, s.mouthOpen));
     const halfW = A.mouthHalfW * (0.84 + 0.3 * s.mouthWide) * (1 + Math.max(0, s.smile) * 0.14) * (1 - mo * 0.08);
     const corner = -s.smile * 4.2 * u; // negatif = sudut bibir naik
-    const upT = (L.child ? 3.1 : L.female ? 4.1 : 3.4) * u;
-    const lowT = (L.child ? 4.3 : L.female ? 5.4 : 4.7) * u;
+    const upT = (L.child ? 3.1 : L.female ? 4.1 : 3.4) * u * A.lipK;
+    const lowT = (L.child ? 4.3 : L.female ? 5.4 : 4.7) * u * A.lipK;
     const gap = mo * 9.5 * u;
     const lipBase = mix(mix(L.skin, '#a8484a', L.female ? 0.62 : 0.4), '#cdb8ae', Math.min(1, L.pale * 0.8));
     const lipUpper = mix(mix(L.skin, '#8f3a3e', L.female ? 0.68 : 0.46), '#c2aca2', Math.min(1, L.pale * 0.8));
@@ -423,20 +437,28 @@ export class Face {
       }
     }
 
-    // --- Keringat ------------------------------------------------------------
+    // --- Keringat: butir kecil mengilap di dahi & pelipis ----------------------------
     if (L.sweat > 0.1) {
-      g.fillStyle = `rgba(196,228,246,${0.55 + 0.35 * L.sweat})`;
-      const drops: [number, number][] = [
-        [cx - A.eyeDX * 1.1, A.browY - 15 * u],
-        [cx + A.eyeDX * 0.7, A.browY - 20 * u],
-        [cx + A.eyeDX * 1.5, eyeY - 3 * u],
+      const beads: [number, number, number][] = [
+        [-1.12, -15, 1],
+        [0.72, -21, 0.85],
+        [1.5, -4, 0.9],
+        [-0.38, -24, 0.7],
+        [-1.56, 5, 0.8],
+        [0.2, -16, 0.6],
+        [1.15, -12, 0.65],
       ];
-      if (L.sweat > 0.5) drops.push([cx - A.eyeDX * 0.4, A.browY - 23 * u], [cx - A.eyeDX * 1.55, eyeY + 6 * u]);
-      for (const [dx, dy] of drops) {
+      const count = L.sweat > 0.5 ? beads.length : 4;
+      for (let i = 0; i < count; i++) {
+        const [kx, dy, size] = beads[i]!;
+        const x = cx + kx * A.eyeDX;
+        const y = (kx > 1.3 || kx < -1.3 ? eyeY : A.browY) + dy * u;
+        const r = 1.25 * u * size;
+        soft(x, y + r * 0.5, r * 1.5, r * 2, `rgba(60,40,30,${0.16 * L.sweat + 0.06})`);
+        soft(x, y, r * 1.25, r * 1.7, `rgba(226,240,250,${0.42 + 0.3 * L.sweat})`);
+        g.fillStyle = 'rgba(255,255,255,0.9)';
         g.beginPath();
-        g.moveTo(dx, dy - 2.8 * u);
-        g.quadraticCurveTo(dx + 2.1 * u, dy + 0.6 * u, dx, dy + 2 * u);
-        g.quadraticCurveTo(dx - 2.1 * u, dy + 0.6 * u, dx, dy - 2.8 * u);
+        g.arc(x - r * 0.3, y - r * 0.45, r * 0.32, 0, TAU);
         g.fill();
       }
     }

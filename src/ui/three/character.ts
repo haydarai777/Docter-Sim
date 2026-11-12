@@ -116,7 +116,7 @@ export class Character {
     // --- Proporsi ------------------------------------------------------------
     // Kepala tidak mengecil sebanding tinggi badan (anak berkepala relatif besar).
     const hs = (0.52 + 0.48 * (a.heightCm / 165)) * (child ? 1.03 : 1);
-    const shape = (this.headShape = new HeadShape({ hs, male, ageGroup: a.ageGroup, fat, thin }));
+    const shape = (this.headShape = new HeadShape({ hs, male, ageGroup: a.ageGroup, fat, thin, seed }));
     // Dagu sedikit di bawah sendi kepala; skala badan dipilih agar tinggi total = tinggi pasien.
     const chinDrop = 0.015 * hs;
     const s = (a.heightCm / 100 - 2 * shape.hh + chinDrop) / 1.455;
@@ -253,7 +253,7 @@ export class Character {
 
     // --- Tangan ------------------------------------------------------------
     const frame = child ? 0.9 : young ? 0.955 : male ? 1 : 0.935;
-    const handGeo = this.track(buildHand(s * frame * (1 - 0.05 * thin), fat));
+    const handGeo = this.track(buildHand(s * frame * (1 - 0.05 * thin), fat, body.wrist));
     const handMat = longSleeves && rash ? rash : skin;
     for (const [arm, side] of [
       [this.armL, 1],
