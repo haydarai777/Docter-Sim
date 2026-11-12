@@ -6,7 +6,7 @@
  *
  * Tidak ada klip animasi/berkas aset: semua pasien berbagi sistem yang sama.
  */
-import { Euler, Matrix4, Quaternion, Vector3 } from 'three';
+import { Euler, Matrix4, type Object3D, Quaternion, Vector3 } from 'three';
 import { type GestureCue, type PatientAppearance, sampleSpeech, type SpeechTimeline } from '../../core/appearance';
 import type { BodySite, Emotion } from '../../core/types';
 import { Character, type Limb } from './character';
@@ -39,6 +39,9 @@ interface ArmGoal {
   target: Vector3;
   ik: number;
   pole: Vector3;
+  /** Arah hadap telapak (dunia) & bobotnya; 0 = netral (telapak menghadap ke dalam). */
+  palm: Vector3;
+  palmW: number;
 }
 
 /** Kanal pose satu frame (target sebelum dihaluskan). Awalan "f" = wajah/pandangan. */
@@ -59,6 +62,8 @@ const ease = (t: number) => {
 /** Amplop gestur: naik, tahan, turun. */
 const envelope = (t: number, dur: number, attack = 0.28, release = 0.35) => Math.min(ease(t / attack), ease((dur - t) / release));
 const sign = (side: Side) => (side === 'L' ? 1 : -1);
+const DOWN = new Vector3(0, -1, 0);
+const UP = new Vector3(0, 1, 0);
 
 /** Pengacak kecil deterministik per pasien. */
 function prng(seed: number): () => number {
@@ -118,13 +123,13 @@ export class Actor implements StageUpdatable {
   private smileUntil = 0;
   // Nilai terhaluskan
   private readonly cur: Record<string, number> = {};
-  private readonly armCur = { L: { q: new Quaternion(), elbow: 0.2 }, R: { q: new Quaternion(), elbow: 0.2 } };
+  private readonly armCur = { L: { q: new Quaternion(), elbow: 0.2, twist: 0, ext: 0 }, R: { q: new Quaternion(), elbow: 0.2, twist: 0, ext: 0 } };
   private readonly faceTarget: FaceState = { ...NEUTRAL_FACE };
   // Objek kerja (hindari alokasi tiap frame)
   private readonly F = Object.fromEntries(FRAME_KEYS.map((k) => [k, 0])) as Frame;
   private readonly armGoal: Record<Side, ArmGoal> = {
-    L: { fkX: 0, fkZ: 0, fkElbow: 0.2, target: new Vector3(), ik: 0, pole: new Vector3() },
-    R: { fkX: 0, fkZ: 0, fkElbow: 0.2, target: new Vector3(), ik: 0, pole: new Vector3() },
+    L: { fkX: 0, fkZ: 0, fkElbow: 0.2, target: new Vector3(), ik: 0, pole: new Vector3(), palm: new Vector3(), palmW: 0 },
+    R: { fkX: 0, fkZ: 0, fkElbow: 0.2, target: new Vector3(), ik: 0, pole: new Vector3(), palm: new Vector3(), palmW: 0 },
   };
   private readonly ankle = { L: new Vector3(), R: new Vector3() };
   private legFk = 0;
@@ -133,8 +138,12 @@ export class Actor implements StageUpdatable {
   private readonly v3 = new Vector3();
   private readonly v4 = new Vector3();
   private readonly v5 = new Vector3();
+  private readonly v6 = new Vector3();
+  /** Arah hadap telapak untuk titik sentuh terakhir dari sitePoint(). */
+  private readonly sitePalm = new Vector3();
   private readonly q1 = new Quaternion();
   private readonly q2 = new Quaternion();
+  private readonly q3 = new Quaternion();
   private readonly e1 = new Euler();
   private readonly m1 = new Matrix4();
   private readonly dominant: Side;
@@ -491,9 +500,9 @@ export class Actor implements StageUpdatable {
     // Tangan di paha saat duduk (posisi istirahat).
     for (const side of ['L', 'R'] as const) {
       const g = this.armGoal[side];
-      const rest = this.v1.set(sign(side) * (d.hipHalf + 0.03 * d.s), -d.hipDrop + 0.085 * d.s * (1 + 0.24 * Math.max(0, this.look.build)), (0.29 + 0.05 * Math.max(0, this.look.build)) * d.s);
+      const rest = this.v1.set(sign(side) * (d.hipHalf + 0.025 * d.s), -d.hipDrop + 0.088 * d.s * (1 + 0.24 * Math.max(0, this.look.build)), (0.225 + 0.07 * Math.max(0, this.look.build)) * d.s);
       c.hips.localToWorld(rest);
-      if (seated > 0.02) this.aimArm(side, rest, ease(seated));
+      if (seated > 0.02) this.aimArm(side, rest, ease(seated), false, DOWN);
       g.fkZ = sign(side) * (0.07 + 0.14 * Math.max(0, this.look.build));
     }
 
@@ -504,9 +513,9 @@ export class Actor implements StageUpdatable {
       F.shL += 0.014;
       F.shR += 0.014;
       for (const side of ['L', 'R'] as const) {
-        const knee = this.v1.set(sign(side) * (d.hipHalf + 0.02), -d.hipDrop + 0.07 * d.s, 0.36 * d.s);
+        const knee = this.v1.set(sign(side) * (d.hipHalf + 0.02), -d.hipDrop + 0.082 * d.s, 0.35 * d.s);
         c.hips.localToWorld(knee);
-        this.aimArm(side, knee, 1);
+        this.aimArm(side, knee, 1, false, DOWN);
       }
     }
     // Menggigil: mendekap badan, bahu naik, gemetar halus.
@@ -523,7 +532,11 @@ export class Actor implements StageUpdatable {
     // Duduk kaku menahan nyeri (curiga peritonitis): kedua tangan di perut, minim gerak.
     if (cues.diam_menahan) {
       F.spineX += 0.12;
-      for (const side of ['L', 'R'] as const) this.aimArm(side, this.sitePoint('perut', side, this.v1), 1);
+      for (const side of ['L', 'R'] as const) {
+        const p = this.sitePoint('perut', side, this.v1);
+        p.y += sign(side) * 0.02;
+        this.aimArm(side, p, 1, false, this.sitePalm);
+      }
     }
 
     // Memegang bagian yang sakit: siklus tahan–lepas sesuai kekuatan nyeri.
@@ -556,7 +569,7 @@ export class Actor implements StageUpdatable {
     const p = this.sitePoint(site, site === 'pinggang' ? side : armSide, this.v1);
     // Gerakan mengusap kecil agar tidak kaku.
     p.y += Math.sin(this.time * 2.1) * 0.008 * w;
-    this.aimArm(armSide, p, w, site === 'pinggang');
+    this.aimArm(armSide, p, w, site === 'pinggang', this.sitePalm);
     if (site === 'perut' || site === 'ulu_hati' || site === 'perut_bawah') {
       F.spineX += 0.11 * w;
       F.headX += 0.05 * w;
@@ -572,9 +585,10 @@ export class Actor implements StageUpdatable {
     const c = this.character;
     const d = c.dims;
     for (const side of ['L', 'R'] as const) {
-      const p = this.v1.set(-sign(side) * d.shoulderHalf * 0.78, d.shoulderY - 0.13 * d.s, 0.105 * d.s * d.bd);
+      // Tangan mendekap lengan atas sisi seberang.
+      const p = this.v1.set(-sign(side) * d.shoulderHalf * 0.5, d.shoulderY - (side === 'L' ? 0.15 : 0.2) * d.s, c.body.surface(0.3).front + (side === 'L' ? 0.05 : 0.028) * d.s);
       c.chest.localToWorld(p);
-      this.aimArm(side, p, w);
+      this.aimArm(side, p, w, false, this.sitePalm.set(0, 0, -1).transformDirection(c.chest.matrixWorld));
     }
   }
 
@@ -733,7 +747,7 @@ export class Actor implements StageUpdatable {
           if (clip.arm && clip.arm !== 'both') {
             const p = this.sitePoint('kepala', clip.arm, this.v1);
             p.y += Math.sin(t * 9) * 0.006;
-            this.aimArm(clip.arm, p, e);
+            this.aimArm(clip.arm, p, e, false, this.sitePalm);
           }
           break;
         case 'salam': {
@@ -754,9 +768,10 @@ export class Actor implements StageUpdatable {
           // Kedua tangan menyapu dari dada ke perut: "seluruh badan, Dok".
           const k = clamp(t / clip.dur, 0, 1);
           for (const side of ['L', 'R'] as const) {
-            const p = this.v1.set(sign(side) * d.shoulderHalf * 0.55, lerp(0.12, -0.08, k) * d.s, 0.16 * d.s * d.bd);
+            const yr = lerp(0.37, 0.17, k);
+            const p = this.v1.set(sign(side) * d.shoulderHalf * 0.5, (yr - 0.25) * d.s, c.body.surface(yr).front + 0.03 * d.s);
             c.chest.localToWorld(p);
-            this.aimArm(side, p, e);
+            this.aimArm(side, p, e, false, this.sitePalm.set(0, 0, -1).transformDirection(c.chest.matrixWorld));
           }
           break;
         }
@@ -767,18 +782,18 @@ export class Actor implements StageUpdatable {
             const show: Side = this.dominant === 'R' ? 'L' : 'R';
             const out = this.v1.set(sign(show) * 0.1 * d.s, -0.05 * d.s, 0.33 * d.s);
             c.chest.localToWorld(out);
-            this.aimArm(show, out, e);
+            this.aimArm(show, out, e, false, UP);
             const mid = this.v2.set(sign(show) * 0.1 * d.s, 0.0, 0.24 * d.s);
             c.chest.localToWorld(mid);
-            mid.y += Math.sin(t * 6) * 0.01;
-            this.aimArm(this.dominant, mid, e);
+            mid.y += Math.sin(t * 6) * 0.01 + 0.03 * d.s;
+            this.aimArm(this.dominant, mid, e, false, DOWN);
             F.headX += 0.14 * e;
             F.fLookOff = Math.max(F.fLookOff, e * 0.6);
           } else if (site === 'kaki') {
             const side = clip.side ?? this.dominant;
-            const knee = this.v1.set(sign(side) * (d.hipHalf + 0.01), -d.hipDrop + 0.06 * d.s, (this.sitU > 0.5 ? 0.38 : 0.1) * d.s);
+            const knee = this.v1.set(sign(side) * (d.hipHalf + 0.01), -d.hipDrop + 0.08 * d.s, (this.sitU > 0.5 ? 0.37 : 0.1) * d.s);
             c.hips.localToWorld(knee);
-            this.aimArm(side, knee, e);
+            this.aimArm(side, knee, e, false, DOWN);
             F.spineX += 0.2 * e;
             F.headX += 0.2 * e;
             F.fLookOff = Math.max(F.fLookOff, e * 0.7);
@@ -796,7 +811,7 @@ export class Actor implements StageUpdatable {
             F.shL += 0.02 * b * e;
             F.shR += 0.02 * b * e;
             F.fMouth = Math.max(F.fMouth, 0.25 * e);
-            this.aimArm(clip.arm as Side, this.sitePoint('dada', clip.arm as Side, this.v1), e);
+            this.aimArm(clip.arm as Side, this.sitePoint('dada', clip.arm as Side, this.v1), e, false, this.sitePalm);
           } else if (clip.act === 'menggigil') {
             const tr = Math.sin(t * 40);
             F.spineY += tr * 0.016 * e;
@@ -805,9 +820,9 @@ export class Actor implements StageUpdatable {
             F.shR += 0.014 * e;
             this.hug(e);
           } else if (clip.act === 'dahi') {
-            const p = this.v1.set(0, d.headR * 0.55, d.headR * 1.02);
-            c.headBall.localToWorld(p);
-            this.aimArm(clip.arm as Side, p, e);
+            const p = c.headBall.localToWorld(c.headSite('dahi', sign(clip.arm as Side), this.v1));
+            this.armGoal[clip.arm as Side].pole.set(sign(clip.arm as Side) * 0.5, -0.5, 0.7);
+            this.aimArm(clip.arm as Side, p, e, false, c.headBall.getWorldPosition(this.sitePalm).sub(p).normalize());
             F.fEyes = Math.min(F.fEyes, 1 - 0.5 * e);
           } else {
             F.spineX += 0.13 * e;
@@ -821,7 +836,7 @@ export class Actor implements StageUpdatable {
           break;
         case 'gelisah_tangan':
           for (const side of ['L', 'R'] as const) {
-            const p = this.v1.set(sign(side) * 0.03 * d.s + Math.sin(t * 5 + sign(side)) * 0.012, -d.hipDrop + 0.1 * d.s * d.bd, 0.2 * d.s + Math.cos(t * 4.3) * 0.01);
+            const p = this.v1.set(sign(side) * 0.03 * d.s + Math.sin(t * 5 + sign(side)) * 0.012, -d.hipDrop + 0.11 * d.s * d.bd, 0.2 * d.s + Math.cos(t * 4.3) * 0.01);
             c.hips.localToWorld(p);
             this.aimArm(side, p, e);
           }
@@ -829,7 +844,7 @@ export class Actor implements StageUpdatable {
         case 'ulur_lengan': {
           // Tanda vital: ulurkan lengan kiri ke atas meja.
           const p = this.v1.set(LAYOUT.seat.x + 0.2, LAYOUT.desk.top + 0.05, LAYOUT.desk.z0 + 0.02);
-          this.aimArm('L', p, e);
+          this.aimArm('L', p, e, false, UP);
           F.spineX += 0.1 * e;
           break;
         }
@@ -855,7 +870,7 @@ export class Actor implements StageUpdatable {
     const pulse = (x: number) => Math.exp(-((x / 0.075) ** 2));
     const burst = pulse(t - 0.45) + pulse(t - 0.78) + pulse(t - 1.08) * 0.8;
     const p = this.sitePoint('mulut', clip.arm as Side, this.v1);
-    this.aimArm(clip.arm as Side, p, e);
+    this.aimArm(clip.arm as Side, p, e, false, this.sitePalm);
     F.chestX += 0.2 * burst;
     F.spineX += 0.08 * burst + 0.05 * e;
     F.headX += 0.16 * burst + 0.06 * e;
@@ -964,13 +979,22 @@ export class Actor implements StageUpdatable {
     g.fkZ = sign(side) * 0.08;
     g.fkElbow = 0.2;
     g.ik = 0;
+    g.palmW = 0;
     g.pole.set(sign(side) * 0.42, -0.55, -0.72);
   }
 
-  /** Arahkan tangan ke titik dunia dengan bobot w; bobot lebih besar menimpa yang lebih kecil. */
-  private aimArm(side: Side, world: Vector3, w: number, behind = false): void {
+  /**
+   * Arahkan pusat telapak ke titik dunia dengan bobot w; bobot lebih besar menimpa yang lebih
+   * kecil. `palm` = arah hadap telapak (dunia), mis. ke bawah saat tangan di paha.
+   */
+  private aimArm(side: Side, world: Vector3, w: number, behind = false, palm?: Vector3): void {
     const g = this.armGoal[side];
     if (w <= 0) return;
+    if (palm) {
+      if (g.palmW <= 0.0001) g.palm.copy(palm);
+      else g.palm.lerp(palm, clamp(w, 0, 1)).normalize();
+      g.palmW = Math.max(g.palmW, w);
+    } else if (g.palmW > 0) g.palmW *= 1 - clamp(w, 0, 1);
     if (g.ik <= 0.0001) {
       g.target.copy(world);
       g.ik = w;
@@ -982,36 +1006,54 @@ export class Actor implements StageUpdatable {
     if (behind) g.pole.set(sign(side) * 1, -0.15, -0.75);
   }
 
-  /** Posisi dunia suatu bagian tubuh (titik sentuh tangan). */
+  /**
+   * Posisi dunia suatu bagian tubuh (titik sentuh pusat telapak, sedikit di luar permukaan).
+   * Arah hadap telapak untuk titik itu disimpan di `sitePalm`.
+   */
   private sitePoint(site: BodySite, side: Side, out: Vector3): Vector3 {
     const c = this.character;
     const d = c.dims;
     const s = d.s;
     const x = sign(side);
-    const R = d.headR;
+    const palm = this.sitePalm;
+    const off = 0.017 * s;
+    /** Titik di permukaan depan badan pada tinggi `yr` (× s di atas panggul), relatif tulang `bone`. */
+    const torso = (bone: Object3D, jointYr: number, yr: number, xk: number): Vector3 => {
+      out.set(x * xk * s, (yr - jointYr) * s, c.body.surface(yr).front + off);
+      palm.set(0, 0, -1).transformDirection(bone.matrixWorld);
+      return bone.localToWorld(out);
+    };
     switch (site) {
       case 'kepala':
-        return c.headBall.localToWorld(out.set(x * R * 0.8, R * 0.42, R * 0.52));
       case 'mata':
-        return c.headBall.localToWorld(out.set(x * R * 0.4, R * 0.12, R * 1.1));
       case 'mulut':
-        return c.headBall.localToWorld(out.set(x * R * 0.1, -R * 0.62, R * 1.22));
+        c.headBall.localToWorld(c.headSite(site, x, out));
+        c.headBall.getWorldPosition(palm).sub(out).normalize();
+        // Siku di depan-bawah (lengan bawah naik ke kepala), bukan terangkat ke samping seperti hormat.
+        this.armGoal[side].pole.set(x * 0.5, -0.5, 0.7);
+        return out;
       case 'tenggorokan':
-        return c.neck.localToWorld(out.set(0, 0.015 * s, 0.075 * s));
+        palm.set(0, 0, -1).transformDirection(c.neck.matrixWorld);
+        return c.neck.localToWorld(out.set(0, 0.012 * s, 0.06 * s + off));
       case 'dada':
-        return c.chest.localToWorld(out.set(x * 0.02 * s, 0.1 * s, 0.128 * s * (1 + 0.3 * Math.max(0, this.look.build))));
+        return torso(c.chest, 0.25, 0.35, 0.02);
       case 'ulu_hati':
-        return c.spine.localToWorld(out.set(x * 0.015 * s, 0.135 * s, 0.118 * s * d.bd));
+        return torso(c.spine, 0.09, 0.225, 0.015);
       case 'perut':
-        return c.spine.localToWorld(out.set(x * 0.02 * s, 0.035 * s, (0.122 + 0.07 * Math.max(0, this.look.build)) * s * d.bd));
+        return torso(c.spine, 0.09, 0.125, 0.02);
       case 'perut_bawah':
-        return c.hips.localToWorld(out.set(x * 0.02 * s, 0.035 * s, 0.128 * s * d.bd));
-      case 'pinggang':
-        return c.spine.localToWorld(out.set(x * 0.132 * s * d.bw, 0.005 * s, -0.05 * s));
+        return torso(c.hips, 0, 0.04, 0.02);
+      case 'pinggang': {
+        const surf = c.body.surface(0.095);
+        palm.set(-x * 0.45, 0, 0.9).transformDirection(c.spine.matrixWorld);
+        return c.spine.localToWorld(out.set(x * surf.half * 0.86, 0.005 * s, surf.back * 0.7));
+      }
       case 'lengan':
+        palm.set(0, -1, 0);
         return c.chest.localToWorld(out.set(-x * 0.1 * s, 0, 0.24 * s));
       case 'kaki':
-        return c.hips.localToWorld(out.set(x * d.hipHalf, -d.hipDrop + 0.06 * s, 0.36 * s));
+        palm.set(0, -1, 0);
+        return c.hips.localToWorld(out.set(x * d.hipHalf, -d.hipDrop + 0.08 * s, 0.36 * s));
     }
   }
 
@@ -1044,7 +1086,7 @@ export class Actor implements StageUpdatable {
     c.spine.rotation.set(g('spineX'), g('spineY'), g('spineZ'));
     c.chest.rotation.set(g('chestX'), g('chestY'), g('chestZ'));
     const breath = F.breath;
-    c.chestMesh.scale.set(c.chestBase.x * (1 + breath * 0.45), 1, c.chestBase.z * (1 + breath * 1.7));
+    c.setBreath(breath);
     c.shoulderL.position.y = d.shoulderY + g('shL');
     c.shoulderR.position.y = d.shoulderY + g('shR');
     c.root.updateMatrixWorld(true);
@@ -1105,7 +1147,11 @@ export class Actor implements StageUpdatable {
     leg.end.rotation.set(thigh - flex, 0, 0);
   }
 
-  /** Lengan: FK (ayunan/istirahat) dicampur dengan IK dua-ruas menuju target. */
+  /**
+   * Lengan: FK (ayunan/istirahat) dicampur dengan IK dua-ruas. IK membidik PERGELANGAN, yaitu
+   * titik raih telapak dikurangi arah jari (pose frame lalu) × panjang telapak, sehingga pusat
+   * telapak jatuh tepat di titik sentuh walau pergelangan menekuk.
+   */
   private solveArm(side: Side, dt: number, snap: boolean): void {
     const c = this.character;
     const d = c.dims;
@@ -1116,8 +1162,9 @@ export class Actor implements StageUpdatable {
     let elbow = g.fkElbow;
     if (g.ik > 0.001) {
       const L1 = d.upperArm;
-      const L2 = d.foreArm + 0.045 * d.s;
-      const v = this.v1.copy(g.target);
+      const L2 = d.foreArm;
+      const fingers = this.v6.set(0, -1, 0).transformDirection(arm.end.matrixWorld);
+      const v = this.v1.copy(g.target).addScaledVector(fingers, -d.palm);
       c.chest.worldToLocal(v);
       v.sub(sh.position);
       let dist = v.length();
@@ -1155,5 +1202,25 @@ export class Actor implements StageUpdatable {
     cur.elbow += (elbow - cur.elbow) * k;
     arm.upper.quaternion.copy(cur.q);
     arm.lower.rotation.set(-cur.elbow, 0, 0);
+
+    // Telapak: puntir lengan bawah (pronasi/supinasi) + tekuk pergelangan agar telapak
+    // menghadap arah yang diminta (ke bawah di paha, ke badan saat memegang bagian yang sakit).
+    let twist = 0;
+    let ext = 0;
+    const pw = clamp(g.palmW, 0, 1) * clamp(g.ik, 0, 1);
+    if (pw > 0.001) {
+      const sg = sign(side);
+      const qFore = c.chest.getWorldQuaternion(this.q3).multiply(cur.q).multiply(arm.lower.quaternion);
+      const p = this.v1.copy(g.palm).applyQuaternion(qFore.invert());
+      const flat = Math.hypot(p.x, p.z);
+      // Pronasi (telapak ke belakang/bawah) lebih leluasa daripada supinasi.
+      const raw = Math.atan2(sg * p.z, -sg * p.x);
+      twist = clamp(raw, sg > 0 ? -2.0 : -1.35, sg > 0 ? 1.35 : 2.0) * clamp((flat - 0.12) / 0.35, 0, 1) * pw;
+      ext = clamp(Math.asin(clamp(-p.y, -1, 1)), -0.6, 0.85) * pw;
+    }
+    const kw = snap ? 1 : 1 - Math.exp(-8 * dt);
+    cur.twist += (twist - cur.twist) * kw;
+    cur.ext += (ext - cur.ext) * kw;
+    arm.end.rotation.set(0, cur.twist, sign(side) * cur.ext);
   }
 }

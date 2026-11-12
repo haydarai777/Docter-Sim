@@ -67,6 +67,29 @@ const say = q.get('say');
 if (say) setTimeout(() => actor.say(speechTimeline(say, app.talkRate)), 300);
 const react = q.get('react');
 if (react) setTimeout(() => actor.react(react), 300);
+// Kamera studio untuk memeriksa bentuk karakter: cam=jarak,tinggi,sudut°[,fov[,tinggiTarget]]
+const cam = q.get('cam');
+if (cam) {
+  const [dist, h, ang, fov, ty] = cam.split(',').map(Number);
+  stage.updateCamera = () => {
+    const base = actor.character.root.position;
+    const a = ((ang || 0) * Math.PI) / 180;
+    stage.camera.position.set(base.x + Math.sin(a) * dist, h, base.z + Math.cos(a) * dist);
+    stage.camera.lookAt(base.x, ty ?? h, base.z);
+    stage.camera.fov = fov || 30;
+    stage.camera.clearViewOffset();
+    stage.camera.updateProjectionMatrix();
+  };
+}
+// studio=1: sembunyikan perabot & dinding (lampu tetap) agar karakter terlihat dari segala arah.
+if (q.get('studio')) {
+  stage.room.group.traverse((o) => { if (o.isMesh || o.isSprite || o.isPoints) o.visible = false; });
+  const { Mesh, PlaneGeometry, MeshStandardMaterial } = await import('three');
+  const floor = new Mesh(new PlaneGeometry(8, 8), new MeshStandardMaterial({ color: '#b9bec4', roughness: 0.95 }));
+  floor.rotation.x = -Math.PI / 2;
+  floor.receiveShadow = true;
+  stage.scene.add(floor);
+}
 stage.start();
 window.ready = true;
 </script></body></html>

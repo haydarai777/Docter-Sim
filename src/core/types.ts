@@ -661,6 +661,10 @@ export interface OutfitDef {
   jacket?: string;
   /** Celana pendek (mis. seragam SD laki-laki). */
   shorts?: boolean;
+  /** Kemeja berkerah (bila tidak diisi, tampilan 3D memilih sendiri secara stabil). */
+  collar?: boolean;
+  /** Baju dimasukkan ke celana + ikat pinggang. */
+  tucked?: boolean;
 }
 
 export interface WeightedColor {

@@ -324,3 +324,29 @@ export function rashTexture(skin: string, seed: number): CanvasTexture {
     }
   });
 }
+
+let hairStreaks: CanvasTexture | null = null;
+/**
+ * Serat rambut: garis-garis terang–gelap memanjang (dikalikan warna rambut). Satu tekstur
+ * dipakai bersama semua pasien, jadi tidak dibuang saat pasien berganti.
+ */
+export function hairStreakTexture(): CanvasTexture {
+  if (hairStreaks) return hairStreaks;
+  hairStreaks = canvasTexture(128, 64, (g, w, h) => {
+    const rnd = lcg(4217);
+    g.fillStyle = '#d2d2d2';
+    g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 150; i++) {
+      const x = rnd() * w;
+      const light = rnd() < 0.42;
+      g.strokeStyle = light ? `rgba(255,255,255,${0.3 + rnd() * 0.5})` : `rgba(70,70,70,${0.14 + rnd() * 0.34})`;
+      g.lineWidth = 0.6 + rnd() * 1.7;
+      g.beginPath();
+      g.moveTo(x, 0);
+      g.bezierCurveTo(x + (rnd() - 0.5) * 5, h * 0.33, x + (rnd() - 0.5) * 5, h * 0.66, x, h);
+      g.stroke();
+    }
+  });
+  hairStreaks.wrapS = hairStreaks.wrapT = RepeatWrapping;
+  return hairStreaks;
+}
