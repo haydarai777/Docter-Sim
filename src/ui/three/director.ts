@@ -48,6 +48,8 @@ export class Director implements StageUpdatable {
   private waits: { test: () => boolean; resolve: () => void; token: number }[] = [];
   private readonly focus = new Vector3();
   private subtitleClear = 0;
+  /** Penyelesai janji ucapan yang sedang berjalan (dipanggil bila ucapan disela/dibatalkan). */
+  private endSpeech: (() => void) | null = null;
 
   constructor(
     private readonly stage: Stage,
@@ -206,7 +208,16 @@ export class Director implements StageUpdatable {
 
   private begin(): number {
     this.token++;
+    // Ucapan yang sedang ditunggu adegan lama harus selesai, jika tidak janji (dan aktor yang
+    // dirujuknya) tertahan selamanya di memori.
+    this.finishSpeech();
     return this.token;
+  }
+
+  private finishSpeech(): void {
+    const end = this.endSpeech;
+    this.endSpeech = null;
+    end?.();
   }
 
   private until(test: () => boolean, token: number): Promise<void> {
@@ -221,6 +232,8 @@ export class Director implements StageUpdatable {
   private speak(text: string, gestures: readonly GestureCue[], token: number): Promise<void> {
     const actor = this.actor;
     if (!actor) return Promise.resolve();
+    // Ucapan sebelumnya yang disela jawaban baru dianggap selesai.
+    this.finishSpeech();
     actor.stopTalking();
     const emotion = momentaryEmotion(gestures);
     if (emotion) actor.setEmotion(emotion, 2.6);
@@ -230,19 +243,26 @@ export class Director implements StageUpdatable {
     this.subtitleClear = 0;
     return new Promise((resolve) => {
       let finished = false;
+      const end = () => {
+        if (finished) return;
+        finished = true;
+        if (this.endSpeech === end) this.endSpeech = null;
+        resolve();
+      };
+      this.endSpeech = end;
       actor.say(tl, (chars, done) => {
         if (finished) return;
         if (token === this.token || this.actor === actor) this.hooks.onSubtitle({ speaker, text, chars: done ? text.length : chars, done });
         if (done) {
-          finished = true;
           this.subtitleClear = this.time + Math.min(6, 2.2 + text.length * 0.03);
-          resolve();
+          end();
         }
       });
     });
   }
 
   private removeActor(): void {
+    this.finishSpeech();
     if (!this.actor) return;
     this.stage.remove(this.actor);
     this.actor.dispose();

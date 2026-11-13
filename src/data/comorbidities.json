@@ -81,7 +81,7 @@
         { "tool": "timbangan", "param": "lingkar_perut", "when": { "sex": "female" }, "range": [82, 100] },
         { "tool": "keadaan_umum", "param": "gizi", "values": ["Kesan gizi lebih (obesitas)"] }
       ],
-      "history": { "known": "", "habit": "Saya juga suka ngemil dan jarang olahraga." },
+      "history": { "known": "", "habit": "Saya juga suka ngemil dan jarang olahraga.", "mentions": ["olahraga", "ngemil"] },
       "detectBy": { "tools": ["timbangan", "keadaan_umum"] },
       "management": ["Target penurunan berat badan 5–10% dalam 6 bulan.", "Diet seimbang dan aktivitas fisik 150 menit/minggu."]
     },

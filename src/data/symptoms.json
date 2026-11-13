@@ -243,7 +243,7 @@
         "exaggerated": ["ulu hati saya perih sekali, kayak disayat"],
         "downplayed": ["ulu hati agak perih sedikit"]
       },
-      "keywords": ["ulu hati", "epigastrium", "perut atas", "perih di perut", "maag", "lambung"]
+      "keywords": ["ulu hati", "epigastrium", "perut atas", "perih di perut", "maag", "lambung", "ulu hati panas", "ulu hati terasa panas", "perut panas", "perut terasa panas"]
     },
     {
       "id": "kembung",
@@ -269,7 +269,7 @@
         "exaggerated": ["dada saya panas sekali kayak disiram air mendidih"],
         "downplayed": ["dada agak panas sedikit"]
       },
-      "keywords": ["dada panas", "dada terbakar", "rasa terbakar di dada", "heartburn", "panas di dada", "perih di dada"]
+      "keywords": ["dada panas", "dada terbakar", "rasa terbakar di dada", "heartburn", "panas di dada", "perih di dada", "dada terasa panas", "dada rasanya panas", "dada terasa terbakar", "dada rasanya terbakar", "dada seperti terbakar"]
     },
     {
       "id": "regurgitasi",

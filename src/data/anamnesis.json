@@ -272,7 +272,14 @@
         "kalau beraktivitas",
         "saat aktivitas",
         "aktivitas fisik",
-        "naik tangga"
+        "naik tangga",
+        "membuat lebih berat",
+        "membuat lebih parah",
+        "membuat makin parah",
+        "membuat lebih ringan",
+        "bikin tambah sakit",
+        "bikin lebih parah",
+        "bikin enakan"
       ],
       "why": "Faktor pemberat/peringan (aktivitas vs makan vs posisi) memisahkan angina, GERD, dispepsia, dan kolik.",
       "fallback": [{ "text": "Kalau istirahat agak mendingan, Dok." }]
@@ -512,6 +519,9 @@
         "minuman keras",
         "olahraga",
         "pola makan",
+        "makan teratur",
+        "makan tidak teratur",
+        "jadwal makan",
         "makanan",
         "jajan",
         "kopi",

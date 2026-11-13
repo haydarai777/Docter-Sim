@@ -288,7 +288,7 @@ export function evaluateEncounter(
         const objective = content.toolsById.get(it.tools[0]!)?.purpose;
         missed.push({
           text: `${it.role === 'kunci' ? 'Pemeriksaan kunci' : it.role === 'komplikasi' ? 'Pemeriksaan untuk komplikasi/fungsi organ' : 'Pemeriksaan pendukung'} yang tidak dilakukan: ${name}`,
-          detail: `${it.reason}${objective ? ` (${objective})` : ''}${cheapest > c.patient.budget ? ' — di luar budget pasien.' : ''}`,
+          detail: `${it.reason}${objective ? ` Kegunaan: ${objective}` : ''}${cheapest > c.patient.budget ? ' (Di luar budget pasien.)' : ''}`,
         });
       }
     }
@@ -314,9 +314,15 @@ export function evaluateEncounter(
       for (const r of results.filter((x) => x.source === 'false_positive')) {
         missed.push({ text: `Interpretasi: ${toolName(t, content)} — ${r.label} ${r.display} adalah POSITIF PALSU`, detail: 'Tidak setiap hasil abnormal disebabkan penyakit pasien; nilai dalam konteks klinis.' });
       }
-      const diagnosticRule = disease.findings.some((f) => f.tool === t && f.diagnostic && matchesCondition(f.when, ctx));
-      if (diagnosticRule && !results.some((x) => x.source === 'disease')) {
-        missed.push({ text: `Interpretasi: ${toolName(t, content)} NEGATIF PALSU pada kasus ini`, detail: 'Sensitivitas tes tidak 100% — hasil negatif tidak otomatis menyingkirkan penyakit.' });
+      // Negatif palsu dinilai pada parameter DIAGNOSTIK alat itu (mis. IgM dengue), bukan pada parameter
+      // lain yang kebetulan abnormal (mis. IgG positif dari infeksi lama).
+      const diagnosticParams = [...new Set(disease.findings.filter((f) => f.tool === t && f.diagnostic && matchesCondition(f.when, ctx)).map((f) => f.param))];
+      if (diagnosticParams.length && !diagnosticParams.some((p) => results.find((x) => x.paramId === p)?.source === 'disease')) {
+        const labels = diagnosticParams.map((p) => results.find((x) => x.paramId === p)?.label ?? p);
+        missed.push({
+          text: `Interpretasi: ${toolName(t, content)} NEGATIF PALSU pada kasus ini (${labels.join(', ')})`,
+          detail: 'Sensitivitas tes tidak 100% — hasil negatif tidak otomatis menyingkirkan penyakit.',
+        });
       }
     }
     const fraction = ratio(earned, Math.min(total, affordable)) - penalty / Math.max(1, W.penunjang);

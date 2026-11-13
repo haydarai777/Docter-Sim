@@ -33,7 +33,7 @@ Setiap file punya blok `review` dengan `status`:
 
 | File | Isi |
 |---|---|
-| `comorbidities.json` | Komorbiditas (peluang, syarat usia, gejala, temuan, riwayat yang diketahui pasien, `detectBy`, tata laksana) & temuan insidental |
+| `comorbidities.json` | Komorbiditas (peluang, syarat usia, gejala, temuan, riwayat yang diketahui pasien, `detectBy`, tata laksana) & temuan insidental. Kalimat `history` digabung ke jawaban anamnesis tanpa kontradiksi: penyangkalan umum ("Nggak ada penyakit apa-apa") dibuang, pembuka kepribadian dipertahankan, dan kalimat tidak ditambahkan bila jawaban sudah menyebut nama/alias kondisi atau frasa `history.mentions` |
 | `conditions.json` | Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah menjadi pasien) |
 | `anamnesis.json` | Topik anamnesis (kata kunci untuk pertanyaan bebas, bobot, alasan), templat percakapan, tinjauan sistem |
 | `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang) |

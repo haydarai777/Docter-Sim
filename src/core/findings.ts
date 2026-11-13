@@ -107,6 +107,12 @@ export interface FindingSource {
   rules: readonly FindingRule[];
 }
 
+/** Ganti isi hasil di tempat (objeknya dirujuk dari daftar hasil) tanpa menyisakan `origin` lama. */
+function assignResult(target: ParamResult, next: ParamResult): void {
+  delete target.origin;
+  Object.assign(target, next);
+}
+
 function makeResult(param: ParamDef, value: number | string, source: ResultSource, who: PatientBasics, origin?: string): ParamResult {
   const result = makeBaseResult(param, value, source, who);
   if (origin) result.origin = origin;
@@ -212,14 +218,14 @@ function applyGroups(tool: ToolDef, results: ParamResult[], who: PatientBasics):
       for (const r of others) {
         const p = tool.params.find((x) => x.id === r.paramId) as NumericParamDef;
         const scaled = roundToStep((r.value as number) * factor, p);
-        Object.assign(r, makeResult(p, scaled, r.source, who, r.origin));
+        assignResult(r, makeResult(p, scaled, r.source, who, r.origin));
       }
       othersSum = others.reduce((sum, r) => sum + (r.value as number), 0);
     }
     const value = roundToStep(Math.max(0, group.sumTo - othersSum), remParam);
     const driver = others.find((r) => r.source === 'disease');
     const source: ResultSource = driver ? 'disease' : remainder.source;
-    Object.assign(remainder, makeResult(remParam, value, source, who, driver?.origin ?? remainder.origin));
+    assignResult(remainder, makeResult(remParam, value, source, who, driver?.origin ?? remainder.origin));
   }
 }
 
@@ -249,17 +255,45 @@ function applyDerived(tool: ToolDef, results: ParamResult[], who: PatientBasics)
     if (param.kind === 'numeric' && param.compute?.type === 'weightFromBmi') {
       const bmi = byId.get(param.compute.bmi)?.value as number;
       const heightM = (byId.get(param.compute.heightCm)?.value as number) / 100;
-      Object.assign(target, makeResult(param, roundToStep(bmi * heightM * heightM, param), 'normal', who));
+      assignResult(target, makeResult(param, roundToStep(bmi * heightM * heightM, param), 'normal', who));
     }
     if (param.kind === 'numeric' && param.compute?.type === 'egfrCkdEpi2021') {
-      const scr = byId.get(param.compute.creatinine);
-      const egfr = roundToStep(egfrCkdEpi2021(scr?.value as number, who.age, sex), param);
-      Object.assign(target, makeResult(param, egfr, scr?.source ?? 'normal', who, scr?.origin));
+      const creatinineId = param.compute.creatinine;
+      const scr = byId.get(creatinineId);
+      const scrParam = tool.params.find((p) => p.id === creatinineId);
+      let egfr = roundToStep(egfrCkdEpi2021(scr?.value as number, who.age, sex), param);
+      // Kreatinin NORMAL pada lansia bisa menghasilkan eGFR < batas rujukan, sehingga hasil "normal"
+      // tampak seperti gangguan ginjal. Turunkan kreatinin (tetap dalam rentang normalnya) secukupnya.
+      const [egfrLo] = referenceRange(param, who);
+      if (scr && scrParam?.kind === 'numeric' && scr.source === 'normal' && egfr < egfrLo) {
+        const [nLo] = normalRange(scrParam, who);
+        let ok = nLo;
+        let bad = scr.value as number;
+        for (let i = 0; i < 32; i++) {
+          const mid = (ok + bad) / 2;
+          if (egfrCkdEpi2021(mid, who.age, sex) >= egfrLo + 1) ok = mid;
+          else bad = mid;
+        }
+        const step = scrParam.step ?? Math.pow(10, -scrParam.decimals);
+        const value = Math.max(nLo, Number((Math.floor(ok / step + 1e-9) * step).toFixed(scrParam.decimals)));
+        assignResult(scr, makeResult(scrParam, value, 'normal', who));
+        egfr = roundToStep(egfrCkdEpi2021(value, who.age, sex), param);
+      }
+      assignResult(target, makeResult(param, egfr, scr?.source ?? 'normal', who, scr?.origin));
     }
-    if (param.kind === 'text' && param.bands && target.source === 'normal') {
-      const source = byId.get(param.bands.from)?.value as number;
-      const band = param.bands.ranges.find((b) => b.max === undefined || source <= b.max);
-      if (band) Object.assign(target, makeResult(param, band.value, 'normal', who));
+    // Teks turunan dihitung ulang bila belum diatur aturan penyakit dengan teks lain
+    // (nilai yang masih salah satu teks pita boleh disesuaikan lagi dengan angka terbaru).
+    if (param.kind === 'text' && param.bands && (target.source === 'normal' || param.bands.ranges.some((b) => b.value === target.value))) {
+      const from = byId.get(param.bands.from);
+      const value = from?.value as number;
+      const band = param.bands.ranges.find((b) => b.max === undefined || value <= b.max);
+      if (band) {
+        // Teks turunan yang abnormal (mis. "Sinus takikardia" dari nadi tinggi) mewarisi sumber angkanya:
+        // takikardia karena demam adalah temuan penyakit, bukan "normal".
+        const abnormal = !param.normal.includes(band.value);
+        const source: ResultSource = abnormal && from && from.source !== 'normal' ? from.source : 'normal';
+        assignResult(target, makeResult(param, band.value, source, who, source === 'normal' ? undefined : from?.origin));
+      }
     }
   }
 }
@@ -277,7 +311,7 @@ export function linkFindings(tools: readonly ToolDef[], findings: Record<string,
       const src = findings[srcTool!]?.find((r) => r.paramId === srcParam);
       const target = findings[tool.id]?.find((r) => r.paramId === param.id);
       if (!src || !target) continue;
-      Object.assign(target, makeResult(param, src.value as number, src.source, who, src.origin));
+      assignResult(target, makeResult(param, src.value as number, src.source, who, src.origin));
       changed = true;
     }
     if (changed) applyDerived(tool, findings[tool.id]!, who);

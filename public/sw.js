@@ -26,8 +26,12 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put('./', copy));
+          // Hanya halaman yang berhasil dimuat yang disimpan sebagai salinan offline
+          // (halaman galat 404/500 tidak boleh menimpa salinan yang baik).
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put('./', copy));
+          }
           return response;
         })
         .catch(() => caches.match('./')),

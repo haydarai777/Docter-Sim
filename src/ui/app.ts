@@ -111,6 +111,8 @@ export class App {
   appearance: PatientAppearance | null = null;
   /** Jumlah entri log saat render terakhir. */
   private renderedLogLength = 0;
+  /** Status buka/tutup panel lipat (details[data-keep-open]) — bertahan antar-render & antar-tab. */
+  private readonly detailsOpen = new Map<string, boolean>();
   private aiAbort: AbortController | null = null;
   private readonly director: Director | null;
   private readonly subtitleEl: HTMLElement | null = null;
@@ -199,7 +201,15 @@ export class App {
   // Aksi pemain
   // -------------------------------------------------------------------------
 
+  /** Batalkan pertanyaan ke pasien AI yang masih menunggu (pasien/sesi berganti). */
+  private cancelAi(): void {
+    this.aiAbort?.abort();
+    this.aiAbort = null;
+    this.pendingQuestion = null;
+  }
+
   startGame(): void {
+    this.cancelAi();
     const run = createRun(randomSeed(), this.config);
     this.run = startNextPatient(run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
@@ -212,6 +222,7 @@ export class App {
   resumeGame(): void {
     const saved = this.savedSession;
     if (!saved) return;
+    this.cancelAi();
     this.run = saved.run;
     const active = saved.run.encounter?.status === 'active';
     this.ui = { ...INITIAL_UI, screen: active ? 'consult' : 'summary' };
@@ -260,14 +271,17 @@ export class App {
       this.askLocal(enc, question);
       return;
     }
+    // Tandai menunggu SEBELUM await pertama: klik/Enter kedua tidak boleh mengirim pertanyaan ganda.
+    this.ui = { ...this.ui, waiting: true };
     const sample = await getSample();
     if (!sample) {
       this.ai = 'unavailable';
-      this.askLocal(enc, question);
+      this.ui = { ...this.ui, waiting: false };
+      if (this.encounter === enc) this.askLocal(enc, question);
       return;
     }
+    if (this.encounter !== enc) return; // pasien/sesi berganti selama menunggu
     // Tampilkan pertanyaan dokter segera, lalu tunggu jawaban.
-    this.ui = { ...this.ui, waiting: true };
     this.pendingQuestion = question;
     this.render();
     const controller = new AbortController();
@@ -351,12 +365,14 @@ export class App {
 
   /** Ubah status kondisi di papan diagnosis banding (null = hapus). */
   setDdx(conditionId: string, status: DdxStatus | null): void {
+    const before = this.encounter;
     this.updateEncounter((s) => setDdx(s, conditionId, status, this.content));
-    // Sinkronkan diagnosis utama di draf keputusan.
+    // Sinkronkan diagnosis utama di draf keputusan — hanya bila papan benar-benar berubah
+    // (aksi bisa ditolak saat menunggu jawaban) dan diagnosis kerjanya berganti.
     const enc = this.encounter;
-    if (!enc) return;
+    if (!enc || enc === before) return;
     const utama = enc.ddx.find((d) => d.status === 'utama')?.id ?? null;
-    if (status === 'utama' || this.ui.decision.primary === conditionId) {
+    if (utama !== this.ui.decision.primary) {
       this.patchDecision({ primary: utama, complications: [], noComplication: false });
     }
   }
@@ -412,7 +428,7 @@ export class App {
       complications: d.noComplication ? [] : d.complications,
       disposition: d.disposition!,
     };
-    this.aiAbort?.abort();
+    this.cancelAi();
     this.run = finishCurrent(this.run, decision, this.content, this.config);
     const farewell = this.run.encounter!.log.at(-1);
     if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
@@ -442,7 +458,8 @@ export class App {
   }
 
   nextPatient(): void {
-    if (!this.run || this.run.status !== 'playing') return;
+    if (!this.run || this.run.status !== 'playing' || this.run.encounter?.status === 'active') return;
+    this.cancelAi();
     this.run = startNextPatient(this.run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult' };
     this.renderedLogLength = 0;
@@ -469,6 +486,7 @@ export class App {
         bestScore: stats.averageScore,
       });
     }
+    this.cancelAi();
     this.director?.clear();
     this.ui = { ...INITIAL_UI, screen: 'final' };
     this.render();
@@ -476,6 +494,7 @@ export class App {
   }
 
   backToTitle(): void {
+    this.cancelAi();
     this.director?.clear();
     this.ui = { ...INITIAL_UI };
     this.render();
@@ -540,6 +559,9 @@ export class App {
       scrolls.set(el.dataset.keepScroll!, el.scrollTop);
     });
     const focusedKey = (document.activeElement as HTMLElement | null)?.dataset?.focusKey;
+    this.root.querySelectorAll<HTMLDetailsElement>('details[data-keep-open]').forEach((el) => {
+      this.detailsOpen.set(el.dataset.keepOpen!, el.open);
+    });
 
     const logLength = this.visibleLog().length + (this.pendingQuestion ? 1 : 0);
     this.newLogFrom = this.ui.screen === 'consult' && logLength > this.renderedLogLength ? this.renderedLogLength : logLength;
@@ -564,6 +586,10 @@ export class App {
     const dialog = this.renderDialog();
     this.root.replaceChildren(...(dialog ? [view, dialog] : [view]));
 
+    this.root.querySelectorAll<HTMLDetailsElement>('details[data-keep-open]').forEach((el) => {
+      const open = this.detailsOpen.get(el.dataset.keepOpen!);
+      if (open !== undefined) el.open = open;
+    });
     this.root.querySelectorAll<HTMLElement>('[data-keep-scroll]').forEach((el) => {
       const top = scrolls.get(el.dataset.keepScroll!);
       if (top !== undefined) el.scrollTop = top;

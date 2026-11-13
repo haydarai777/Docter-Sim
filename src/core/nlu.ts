@@ -139,7 +139,32 @@ interface Keyword {
 
 const GREETING_KEYWORDS = ['halo', 'hai', 'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam', 'assalamualaikum', 'permisi', 'silakan duduk', 'apa kabar'];
 const THANKS_KEYWORDS = ['terima kasih', 'makasih', 'trima kasih', 'thanks'];
-const CONSENT_KEYWORDS = ['saya periksa', 'boleh saya periksa', 'diperiksa dulu', 'periksa dulu', 'saya cek', 'kita periksa', 'saya ukur', 'saya tensi', 'berbaring dulu'];
+const CONSENT_KEYWORDS = [
+  'saya periksa',
+  'boleh saya periksa',
+  'diperiksa dulu',
+  'periksa dulu',
+  'saya cek',
+  'kita periksa',
+  'saya ukur',
+  'saya tensi',
+  'berbaring dulu',
+  'silakan berbaring',
+  'silakan baring',
+  'silakan tiduran',
+  'coba berbaring',
+  'berbaring di sini',
+  'mari saya periksa',
+  'izin periksa',
+  'saya akan periksa',
+  'saya mau periksa',
+];
+
+/**
+ * Kata tanya anamnesis. Kalimat izin/aba-aba pemeriksaan TANPA kata tanya ("Silakan berbaring,
+ * saya periksa dulu ya.") bukan pertanyaan riwayat, walau memuat kata kunci seperti "berbaring".
+ */
+const QUESTION_WORDS = /\b(ada|apakah|apa|kapan|sejak|berapa|bagaimana|gimana|kenapa|mengapa|pernah|mana|masih|sering|kah)\b/;
 
 /** Bangun indeks kata kunci dari konten (cache per objek konten). */
 const indexCache = new WeakMap<GameContent, Keyword[]>();
@@ -220,6 +245,9 @@ export function interpretQuestion(text: string, content: GameContent, maxIntents
 
   // "Di rumah ada yang batuk lama?" → pertanyaan tentang keluarga/kontak, bukan gejala pasien sendiri.
   if (topics.includes('riwayat_keluarga')) symptoms.length = 0;
+
+  // Aba-aba pemeriksaan tanpa pertanyaan → pasien cukup mengiyakan.
+  if (consent && !text.includes('?') && !QUESTION_WORDS.test(normalized)) return { intents: [{ kind: 'consent' }], normalized };
 
   const intents: Intent[] = [];
   const detailTopics = topics.filter((t) => DETAIL_TOPICS.has(t));

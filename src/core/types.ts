@@ -591,6 +591,11 @@ export interface ComorbidityDef {
     habit?: string;
     /** Ditambahkan ke riwayat keluarga. */
     family?: string;
+    /**
+     * Frasa (selain nama & alias) yang menandakan jawaban sudah memuat hal ini, sehingga
+     * kalimat riwayat tidak ditambahkan dua kali (mis. obesitas: "olahraga").
+     */
+    mentions?: string[];
   };
   /** Pemeriksaan yang mendeteksi/menilai komorbiditas ini. */
   detectBy: EvidenceRef;

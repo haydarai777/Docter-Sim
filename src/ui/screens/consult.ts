@@ -288,7 +288,8 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
       ),
       h(
         'details',
-        { class: 'frame' },
+        // Tetap terbuka setelah topik diketuk (layar digambar ulang tiap pertanyaan).
+        { class: 'frame', 'data-keep-open': 'kerangka' },
         h('summary', null, `Kerangka anamnesis · ${asked}/${topics.length} topik`, h('span', { class: 'frame__hint' }, app.aiActive ? 'pasien AI' : 'ketik bebas')),
         h('p', { class: 'hint' }, 'Tanyakan dengan bahasa Anda sendiri, atau ketuk topik untuk kalimat standar. Pasien hanya menjawab yang ditanyakan.'),
         rubrics.map((rubric) =>
@@ -427,7 +428,7 @@ function findingsSummary(app: App, enc: EncounterState): HTMLElement {
   const normalTools = enc.examsDone.filter((t) => !(enc.case.findings[t] ?? []).some((r) => r.flag)).map((t) => app.content.toolsById.get(t)?.name ?? t);
   return h(
     'details',
-    { class: 'frame', open: true },
+    { class: 'frame', open: true, 'data-keep-open': 'data-terkumpul' },
     h('summary', null, 'Data yang sudah terkumpul'),
     h('p', null, h('strong', null, 'Gejala: '), symptoms.join(', ') || '—'),
     denied.length ? h('p', { class: 'muted' }, h('strong', null, 'Disangkal: '), denied.join(', ')) : null,

@@ -86,6 +86,23 @@ describe('pemahaman pertanyaan bebas', () => {
     expect(kindsOf('Selamat pagi, sejak kapan sakitnya?')).toEqual(['topic']);
   });
 
+  it('aba-aba pemeriksaan tanpa pertanyaan dijawab sebagai persetujuan, bukan topik riwayat', () => {
+    // "berbaring" adalah kata kunci faktor pemberat, tetapi di sini dokter memberi aba-aba.
+    expect(kindsOf('Silakan berbaring, saya periksa dulu ya.')).toEqual(['consent']);
+    expect(kindsOf('Permisi, saya periksa dadanya ya')).toEqual(['consent']);
+    // Bila ada pertanyaan, pertanyaannya yang dijawab.
+    expect(interpretQuestion('Saya periksa dulu ya, ada nyeri perut?', content).intents).toEqual([{ kind: 'symptom', symptom: 'nyeri_perut' }]);
+    expect(kindsOf('Kalau berbaring sakitnya bertambah?')).toContain('topic');
+  });
+
+  it('"panas" pada dada/ulu hati adalah rasa terbakar, bukan demam', () => {
+    const ids = (q: string) => interpretQuestion(q, content).intents.map((i) => ('symptom' in i ? i.symptom : i.kind));
+    expect(ids('Dada terasa panas setelah makan?')).toEqual(['heartburn']);
+    expect(ids('Ulu hatinya panas?')).toEqual(['nyeri_ulu_hati']);
+    expect(ids('Ada panas?')).toEqual(['demam']);
+    expect(ids('Badannya panas?')).toEqual(['demam']);
+  });
+
   it('pertanyaan yang tidak dipahami menghasilkan daftar kosong', () => {
     expect(interpretQuestion('Siapa presiden pertama?', content).intents).toEqual([]);
     expect(interpretQuestion('   ', content).intents).toEqual([]);

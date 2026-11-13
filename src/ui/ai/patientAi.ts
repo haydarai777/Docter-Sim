@@ -213,7 +213,11 @@ export async function askAiPatient(
     const result = await sample(personaPrompt(state, content, question), { tools: [tool], modelTier: 'quick', signal });
     text = finalParagraph(result.text);
   } catch (e) {
-    const code = typeof e === 'object' && e && 'code' in e ? String((e as { code: unknown }).code) : 'upstream_error';
+    // Dibatalkan (batas waktu / pasien berganti): DOMException juga punya `code` numerik, jadi
+    // periksa sinyalnya lebih dulu agar tidak terbaca sebagai galat lain.
+    if (signal?.aborted || (e instanceof Error && e.name === 'AbortError')) throw new AiError('cancelled', false);
+    const raw = typeof e === 'object' && e && 'code' in e ? (e as { code: unknown }).code : undefined;
+    const code = typeof raw === 'string' && raw ? raw : 'upstream_error';
     throw new AiError(code, PERMANENT.has(code));
   }
   if (!usedTools && fallbackIntents.length > 0) {

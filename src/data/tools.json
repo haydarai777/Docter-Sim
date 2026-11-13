@@ -157,7 +157,7 @@
           "label": "Berat badan",
           "unit": "kg",
           "decimals": 1,
-          "ref": [30, 200],
+          "ref": [15, 250],
           "refText": "—",
           "compute": { "type": "weightFromBmi", "bmi": "imt", "heightCm": "tb" }
         },

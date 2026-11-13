@@ -222,7 +222,8 @@ export function medicalRecordDialog(app: App): HTMLElement {
       h('p', null, h('strong', null, p.name), ` · ${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
       personality ? h('p', { class: 'muted' }, `Kesan umum: ${personality.impression.toLowerCase()}.`) : null,
       h('h3', null, 'Keluhan utama'),
-      h('p', null, c.complaint),
+      // Keluhan baru tercatat setelah pasien mengucapkannya (adegan kedatangan).
+      h('p', app.ui.intro >= 2 ? null : { class: 'muted' }, app.ui.intro >= 2 ? c.complaint : 'Pasien belum menyampaikan keluhannya.'),
       h('h3', null, 'Gejala yang diketahui'),
       enc.revealedSymptoms.length
         ? h('ul', { class: 'chip-row' }, enc.revealedSymptoms.map((id) => h('li', { class: 'tag' }, symptomLabel(id))))
