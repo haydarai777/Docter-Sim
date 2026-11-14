@@ -38,12 +38,19 @@ klinis**, bukan sekadar tebakan diagnosis.
 - **Ringan**: ± 16 ribu segitiga, satu pasien dalam satu waktu (sumber daya dibuang saat pasien pergi),
   resolusi & bayangan menyesuaikan kemampuan perangkat; tanpa WebGL game tetap bisa dimainkan (2D).
 - **Anamnesis bebas tanpa batas.** Ketik pertanyaan dengan bahasa sendiri. Pasien hanya menjawab
-  yang ditanyakan, mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang), dan memahami
-  rumusan berbeda, slang, akhiran *-nya*, serta tinjauan sistem ("BAB-nya bagaimana?").
-  - **Pasien AI (opsional):** saat dibuka sebagai Artifact di claude.ai, Claude memerankan pasien.
-    Claude **tidak diberi kunci kasus** — fakta hanya bisa diambil lewat alat halaman yang memakai
-    mesin yang sama, sehingga pengungkapan tetap bertahap dan penilaian tetap sama.
-  - **Mode lokal:** di luar claude.ai (atau bila ditolak/gagal), pemahaman bahasa memakai NLU lokal.
+  yang ditanyakan dan mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang).
+  - **Mode lokal (bawaan, tanpa kuota Claude):** pemahaman bahasa berjalan di perangkat. Paham
+    singkatan & bahasa gaul ("brp", "gmn", "udh"), salah ketik, imbuhan (*-nya*, *di-*, *ber-*),
+    tinjauan sistem ("BAB-nya bagaimana?"), beberapa pertanyaan sekaligus, dan **pertanyaan
+    lanjutan**: "Ada batuk?" → "Sejak kapan?" ditanyakan untuk batuknya. Pasien bisa mengulang
+    jawabannya ("Bisa diulang?"), menanggapi lama sakit yang Anda sebut ("Sudah 3 hari?" → "Lebih
+    lama dari itu, Dok."), dan menjawab perkenalan serta pendapat, kekhawatiran, dan harapannya.
+    Pada pertanyaan baru yang belum pernah dilihat, ± 80% dipahami persis (mesin lama ± 58%) —
+    rinciannya di [`docs/nlu-benchmark.md`](docs/nlu-benchmark.md).
+  - **Pasien AI (opsional, mati secara bawaan):** saat dibuka sebagai Artifact di claude.ai, pemain
+    bisa mengaktifkannya di Pengaturan; **memakai kuota Claude akun pemain**. Claude **tidak diberi
+    kunci kasus** — fakta hanya bisa diambil lewat alat halaman yang memakai mesin yang sama, sehingga
+    pengungkapan tetap bertahap dan penilaian tetap sama. Bila gagal, otomatis kembali ke mode lokal.
 - **Pasien kompleks:** komorbiditas (hipertensi, DM, obesitas, anemia, dislipidemia — kadang belum
   diketahui pasien), temuan insidental (batu empedu, fatty liver, kista ginjal), komplikasi
   tersembunyi, gejala yang tidak disebut sukarela (mis. BAB hitam), alergi.
@@ -89,22 +96,25 @@ Perintah lain:
 | `npm run format-data` | Merapikan format file JSON di `src/data` |
 | `npm run review-sheet` | Membuat ulang `REVIEW.md` (lembar tinjauan untuk dokter) dari file data |
 | `npm run balance-report` | Laporan keseimbangan: biaya vs budget per penyakit + simulasi bot pemain |
+| `npm run nlu-benchmark` | Akurasi pemahaman bahasa mode lokal pada korpus pertanyaan dokter berlabel |
 
 ## Konten saat ini
 
-12 penyakit dalam 4 klaster yang sengaja saling mengecoh:
+13 penyakit dalam 4 klaster yang sengaja saling mengecoh:
 
 | Klaster | Penyakit | Contoh jebakan |
 |---|---|---|
 | Demam akut | Infeksi dengue, demam tifoid, malaria | Trombosit turun pada dengue **dan** malaria; Widal sering positif palsu |
-| Nyeri dada / ulu hati | GERD, angina pektoris stabil*, dispepsia/gastritis | "Dada nggak enak, kayak masuk angin"; EKG istirahat angina sering normal |
+| Nyeri dada / ulu hati | GERD, angina pektoris stabil*, dispepsia fungsional, gastritis akut | "Dada nggak enak, kayak masuk angin"; EKG istirahat angina sering normal; "maag" kronik berbulan-bulan tanpa pemicu (dispepsia fungsional) vs perih mendadak setelah jamu pegal linu/OAINS atau alkohol yang bisa berdarah (gastritis) |
 | Berkemih / pinggang | ISK bawah, batu saluran kemih*, DM tipe 2 | "Sering kencing" bisa ISK (sedikit-sedikit, perih) atau poliuria DM |
 | Batuk / sesak | TB paru, pneumonia komunitas, asma | Batuk + BB turun: TB atau DM? |
 
 \* Tingkat SKDI 3A (bukan 4A) — sengaja dimasukkan karena dokter umum wajib mengenalinya.
 
-32 alat pemeriksaan (11 fisik, 14 lab, 4 pencitraan, EKG, spirometri), 43 gejala, 16 topik anamnesis
-+ 6 tinjauan sistem, 5 komorbiditas, 3 temuan insidental, 23 kondisi khusus diagnosis banding
+33 alat pemeriksaan (11 fisik, 16 lab termasuk tes antigen H. pylori, 4 pencitraan, EKG, spirometri),
+45 gejala, 16 topik anamnesis yang dinilai + keluhan utama + 8 topik percakapan (identitas, pendapat,
+kekhawatiran, harapan, haid & kehamilan; tidak dinilai), 10 tinjauan sistem, 5 komorbiditas,
+3 temuan insidental, 23 kondisi khusus diagnosis banding
 (mis. leptospirosis, sindrom koroner akut, pielonefritis, massa saluran kemih, kanker paru), 5 kepribadian.
 Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
 
@@ -119,7 +129,7 @@ Hasilnya di `dist-single/`:
 | File | Kegunaan |
 |---|---|
 | `meja-praktek.html` | Seluruh game dalam **satu file** (± 1 MB, termasuk mesin 3D). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
-| `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI aktif). |
+| `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI bisa diaktifkan di Pengaturan; bawaannya tetap mode lokal tanpa kuota). |
 
 Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.
 Di HP, cara paling andal adalah membuka versi yang di-hosting (Artifact/Netlify/dll.); sebagian

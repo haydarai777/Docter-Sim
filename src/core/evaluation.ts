@@ -50,6 +50,7 @@ export function caseContext(state: EncounterState): ConditionContext {
     sex: c.patient.sex,
     age: c.patient.age,
     occupationId: c.patient.occupationId,
+    personality: c.patient.personalityId,
     traits: new Set(c.traits),
     symptoms: new Set(c.symptoms),
   };
@@ -294,8 +295,13 @@ export function evaluateEncounter(
     }
     let penalty = 0;
     const unnecessary = new Map((disease.plan.unnecessary ?? []).map((u) => [u.tool, u.reason]));
+    const optional = new Map((disease.plan.optional ?? []).map((u) => [u.tool, u.reason]));
     for (const t of state.examsDone) {
       if (toolPrice(t, config) <= 0 || indicatedTools.has(t)) continue;
+      if (optional.has(t)) {
+        good.push({ text: toolName(t, content), detail: `Boleh (tidak wajib): ${optional.get(t)}` });
+        continue;
+      }
       if (detectTools.has(t)) {
         good.push({ text: toolName(t, content), detail: 'Relevan untuk masalah lain yang ada pada pasien.' });
         continue;

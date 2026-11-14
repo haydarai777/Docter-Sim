@@ -1,13 +1,13 @@
 {
   "id": "dispepsia",
-  "name": "Dispepsia / Gastritis",
-  "aliases": ["Maag", "Sakit maag", "Gastritis", "Dispepsia fungsional", "Radang lambung"],
+  "name": "Dispepsia fungsional",
+  "aliases": ["Maag", "Sakit maag", "Dispepsia", "Sindrom dispepsia", "Dispepsia nonulkus"],
   "system": "Pencernaan",
   "skdiLevel": "4A",
   "danger": "rendah",
-  "prevalenceWeight": 1.1,
-  "summary": "Kumpulan keluhan nyeri atau rasa tidak nyaman di ulu hati, rasa penuh setelah makan, cepat kenyang, kembung, dan mual. Gastritis (peradangan mukosa lambung) sering dipicu obat antinyeri golongan OAINS, alkohol, stres, pola makan tidak teratur, atau infeksi H. pylori. Pemeriksaan penunjang umumnya normal. Waspadai tanda alarm (berat badan turun, muntah darah, BAB hitam, anemia, usia > 55 tahun dengan keluhan baru) yang memerlukan rujukan untuk endoskopi.",
-  "presentationDay": [3, 60],
+  "prevalenceWeight": 1,
+  "summary": "Keluhan ulu hati KRONIK tanpa kelainan struktural: nyeri/perih epigastrium, rasa penuh setelah makan, cepat kenyang, kembung. Menurut kriteria Roma IV keluhan berlangsung ≥ 3 bulan terakhir dan mulai ≥ 6 bulan sebelumnya. Sering diperberat stres dan pola makan tidak teratur; pemeriksaan fisik normal atau nyeri tekan ringan. Diagnosis ditegakkan setelah tanda alarm (BB turun, muntah darah, BAB hitam, anemia, sulit menelan, usia > 55 tahun dengan keluhan baru) dan penyebab organik (obat antinyeri, tukak) disingkirkan.",
+  "presentationDay": [90, 300],
   "demographics": {
     "ageBands": [
       { "min": 18, "max": 30, "weight": 4 },
@@ -15,232 +15,229 @@
       { "min": 46, "max": 60, "weight": 2 },
       { "min": 61, "max": 75, "weight": 1 }
     ],
-    "maleRatio": 0.45,
+    "maleRatio": 0.4,
     "occupations": [
       { "id": "mahasiswa", "weight": 3 },
-      { "id": "pegawai_kantor", "weight": 2 },
-      { "id": "ojek_online", "weight": 2 },
-      { "id": "buruh_pabrik", "weight": 2 },
-      { "id": "pekerja_proyek", "weight": 1 }
+      { "id": "pegawai_kantor", "weight": 3 },
+      { "id": "karyawan_bank", "weight": 2 },
+      { "id": "guru", "weight": 1 },
+      { "id": "pedagang_pasar", "weight": 1 }
     ],
     "occupationBias": 0.4
   },
   "traits": [
-    { "id": "oains", "probability": 0.35 },
-    { "id": "makan_tidak_teratur", "probability": 0.6 },
-    { "id": "stres", "probability": 0.4 },
-    { "id": "perdarahan_saluran_cerna", "when": { "traits": ["oains"] }, "probability": 0.15 },
-    { "id": "perdarahan_saluran_cerna", "probability": 0.05 }
+    { "id": "nyeri_epigastrium", "probability": 0.5 },
+    { "id": "stres", "probability": 0.55 },
+    { "id": "makan_tidak_teratur", "probability": 0.5 },
+    { "id": "h_pylori", "probability": 0.25 }
   ],
   "traitLabels": {
-    "oains": "Pemicu: konsumsi obat antinyeri (OAINS/jamu pegal linu) rutin.",
-    "makan_tidak_teratur": "Pemicu: pola makan tidak teratur dan kopi berlebihan.",
-    "stres": "Pemicu: stres psikologis.",
-    "perdarahan_saluran_cerna": "Komplikasi: perdarahan saluran cerna atas (melena, anemia)."
+    "nyeri_epigastrium": "Pola dominan nyeri/perih ulu hati (epigastric pain syndrome); tanpa trait ini dominan rasa penuh/cepat kenyang setelah makan (postprandial distress syndrome).",
+    "stres": "Pencetus: stres psikologis.",
+    "makan_tidak_teratur": "Pencetus: pola makan tidak teratur dan kopi berlebihan.",
+    "h_pylori": "Infeksi Helicobacter pylori (dispepsia terkait H. pylori)."
   },
   "symptoms": [
-    { "id": "bab_hitam", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 0.95 },
-    { "id": "lemas", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 1 },
-    { "id": "nyeri_ulu_hati", "probability": 1 },
-    { "id": "kembung", "probability": 0.75 },
-    { "id": "mual_muntah", "probability": 0.55 },
-    { "id": "nafsu_makan_turun", "probability": 0.4 },
-    { "id": "heartburn", "probability": 0.25 }
+    { "id": "nyeri_ulu_hati", "when": { "traits": ["nyeri_epigastrium"] }, "probability": 1 },
+    { "id": "nyeri_ulu_hati", "probability": 0.3 },
+    { "id": "cepat_kenyang", "when": { "notTraits": ["nyeri_epigastrium"] }, "probability": 1 },
+    { "id": "cepat_kenyang", "probability": 0.35 },
+    { "id": "kembung", "probability": 0.7 },
+    { "id": "mual_muntah", "probability": 0.3 },
+    { "id": "heartburn", "probability": 0.2 },
+    { "id": "nafsu_makan_turun", "probability": 0.15 }
   ],
-  "chiefComplaint": { "primary": ["nyeri_ulu_hati"], "extraPool": ["kembung", "mual_muntah"] },
-  "clueSymptoms": ["kembung"],
-  "misattributions": ["masuk angin", "asam lambung", "kecapekan", "maag"],
-  "fears": ["kanker lambung", "usus buntu", "penyakit jantung"],
+  "chiefComplaint": { "primary": ["nyeri_ulu_hati", "cepat_kenyang"], "extraPool": ["kembung", "cepat_kenyang"] },
+  "clueSymptoms": ["cepat_kenyang", "kembung"],
+  "misattributions": ["masuk angin", "maag", "asam lambung", "kecapekan"],
+  "fears": ["kanker lambung", "penyakit jantung", "usus buntu"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang timbul." }],
-    "lokasi": [{ "text": "Di ulu hati, Dok, perut atas bagian tengah.", "clue": "Nyeri terlokalisasi di epigastrium" }],
+    "onset": [{ "text": "Sudah lama, Dok, kira-kira {lamaSakit} ini kambuh-kambuhan.", "clue": "Keluhan kronik berbulan-bulan" }],
+    "lokasi": [{ "text": "Di ulu hati, Dok, perut atas bagian tengah.", "clue": "Keluhan terlokalisasi di epigastrium" }],
     "karakter": [
       {
-        "text": "Perih, Dok, kayak ditusuk-tusuk. Perut juga begah.",
-        "when": { "symptoms": ["kembung"] },
-        "reveals": ["kembung"],
-        "clue": "Perih ulu hati disertai rasa penuh/begah"
+        "text": "Perih, Dok, kadang kayak terbakar, tapi nggak sampai hebat.",
+        "when": { "traits": ["nyeri_epigastrium"] },
+        "clue": "Perih/terbakar ulu hati yang tidak hebat"
       },
-      { "text": "Perih, Dok, kayak ditusuk-tusuk.", "when": { "notSymptoms": ["kembung"] } }
+      {
+        "text": "Lebih ke begah, Dok, perut atas rasanya penuh. Kadang ulu hati perih juga.",
+        "when": { "notTraits": ["nyeri_epigastrium"], "symptoms": ["nyeri_ulu_hati"] },
+        "clue": "Dominan rasa penuh/begah di perut atas"
+      },
+      {
+        "text": "Lebih ke begah, Dok. Perut atas rasanya penuh terus, nggak enak.",
+        "when": { "notTraits": ["nyeri_epigastrium"], "notSymptoms": ["nyeri_ulu_hati"] },
+        "clue": "Rasa penuh/begah di perut atas"
+      }
     ],
     "pola": [
       {
-        "text": "Kalau telat makan langsung kambuh, Dok. Tapi habis makan sedikit sudah kenyang.",
-        "clue": "Terkait waktu makan; cepat kenyang"
+        "text": "Biasanya habis makan, Dok. Baru makan sedikit sudah kenyang, terus begah sampai berjam-jam.",
+        "when": { "notTraits": ["nyeri_epigastrium"] },
+        "clue": "Rasa penuh setelah makan & cepat kenyang"
+      },
+      {
+        "text": "Kambuh kalau telat makan atau lagi banyak pikiran, Dok. Kadang malam juga perih.",
+        "when": { "traits": ["nyeri_epigastrium"] },
+        "clue": "Kambuh terkait waktu makan dan stres"
+      }
+    ],
+    "durasi": [{ "text": "Bisa berjam-jam, Dok. Kadang seharian nggak enak, besoknya hilang sendiri." }],
+    "keparahan": [{ "text": "Mengganggu, Dok, tapi masih bisa {kegiatan}. Cuma jadi malas makan banyak." }],
+    "progresi": [
+      {
+        "text": "Begitu-begitu saja, Dok. Kadang membaik, nanti kambuh lagi.",
+        "clue": "Tidak progresif (tanpa tanda alarm)"
       }
     ],
     "pemberat_peringan": [
       {
-        "text": "Makan pedas, kopi, atau telat makan bikin kambuh. Minum obat maag biasanya mendingan, Dok.",
-        "clue": "Dipicu makanan pedas/kopi/telat makan; membaik dengan antasida"
+        "text": "Kalau stres, makan berlemak, atau kebanyakan kopi tambah parah, Dok. Obat maag cuma mempan sebentar.",
+        "clue": "Diperberat stres, makanan berlemak, kopi; respons sebagian terhadap antasida"
       }
     ],
-    "riwayat_penyakit": [{ "text": "Sudah lama punya maag, Dok.", "weight": 2 }, { "text": "Nggak ada, Dok.", "weight": 1 }],
-    "riwayat_obat": [
+    "episode_sebelumnya": [
       {
-        "text": "Saya sering minum obat pegal linu, Dok, hampir tiap hari. Habis kerja badan pegal semua.",
-        "when": { "traits": ["oains"] },
-        "clue": "Konsumsi obat antinyeri (OAINS) rutin"
+        "text": "Sering, Dok. Sudah bertahun-tahun hilang timbul begini.",
+        "weight": 3,
+        "clue": "Keluhan berulang bertahun-tahun (kronik)"
       },
-      { "text": "Minum obat maag dari warung, Dok, enakan sebentar.", "when": { "notTraits": ["oains"] } }
+      { "text": "Sudah berkali-kali, Dok, sejak setahun terakhir.", "weight": 1, "clue": "Keluhan berulang (kronik)" }
     ],
-    "riwayat_keluarga": [{ "text": "Nggak ada yang sakit berat, Dok." }],
+    "riwayat_penyakit": [
+      { "text": "Kata dokter dulu cuma maag, Dok. Sudah pernah diberi obat, kambuh lagi.", "weight": 2 },
+      { "text": "Nggak ada penyakit lain, Dok.", "weight": 1 }
+    ],
+    "riwayat_obat": [{ "text": "Sering beli obat maag di warung, Dok. Enakan sebentar, nanti kambuh lagi. Obat antinyeri jarang." }],
+    "riwayat_keluarga": [{ "text": "Ibu saya juga sering sakit maag, Dok.", "weight": 1 }, { "text": "Nggak ada, Dok.", "weight": 2 }],
     "kebiasaan": [
       {
+        "text": "Lagi banyak pikiran, Dok, kerjaan numpuk dan tidur kurang. Makan juga jadi nggak teratur, sering nggak sarapan, kopi tiga gelas sehari.",
+        "when": { "traits": ["stres", "makan_tidak_teratur"] },
+        "clue": "Stres psikologis dan pola makan tidak teratur"
+      },
+      {
+        "text": "Lagi banyak pikiran, Dok. Kerjaan numpuk, tidur juga kurang.",
+        "when": { "traits": ["stres"], "notTraits": ["makan_tidak_teratur"] },
+        "clue": "Stres psikologis & kurang tidur"
+      },
+      {
         "text": "Makan saya nggak teratur, Dok. Sering nggak sarapan, kopi tiga gelas sehari.",
-        "when": { "traits": ["makan_tidak_teratur"] },
-        "weight": 2,
+        "when": { "traits": ["makan_tidak_teratur"], "notTraits": ["stres"] },
         "clue": "Pola makan tidak teratur, kopi berlebihan"
       },
       {
-        "text": "Lagi banyak pikiran, Dok, kerjaan numpuk.",
-        "when": { "traits": ["stres"] },
-        "weight": 2,
-        "clue": "Stres psikologis"
-      },
-      { "text": "Biasa saja, Dok. Suka sambal sih.", "weight": 1 }
+        "text": "Biasa saja, Dok. Nggak merokok, nggak minum alkohol.",
+        "when": { "notTraits": ["stres", "makan_tidak_teratur"] }
+      }
     ],
-    "durasi": [{ "text": "Kadang sebentar, kadang sampai berjam-jam, Dok, apalagi kalau telat makan." }],
-    "keparahan": [
-      {
-        "text": "Lemas sekali, Dok, kepala kliyengan kalau berdiri.",
-        "when": { "traits": ["perdarahan_saluran_cerna"] },
-        "clue": "Lemas & pusing saat berdiri (curiga perdarahan saluran cerna)"
-      },
-      { "text": "Lumayan perih, Dok, tapi masih bisa kerja.", "when": { "notTraits": ["perdarahan_saluran_cerna"] } }
-    ],
-    "progresi": [{ "text": "Hilang timbul, Dok. Kalau lagi banyak pikiran makin sering." }],
-    "episode_sebelumnya": [
-      {
-        "text": "Sudah sering kambuh, Dok, dari zaman sekolah.",
-        "weight": 2,
-        "clue": "Keluhan berulang lama (dispepsia kronik)"
-      },
-      { "text": "Baru kali ini separah ini, Dok.", "weight": 1 }
-    ]
+    "bepergian_lingkungan": [{ "text": "Nggak ke mana-mana, Dok." }]
   },
   "findings": [
-    { "tool": "pemeriksaan_abdomen", "param": "nyeri_tekan", "probability": 0.8, "values": ["Nyeri tekan epigastrium"] },
     {
-      "tool": "darah_lengkap",
-      "param": "hb",
-      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "male" },
-      "range": [8, 10.5]
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "probability": 0.4,
+      "values": ["Nyeri tekan ringan epigastrium"]
     },
     {
-      "tool": "darah_lengkap",
-      "param": "hb",
-      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "female" },
-      "range": [7.5, 10]
-    },
-    {
-      "tool": "kepala_leher",
-      "param": "konjungtiva",
-      "when": { "traits": ["perdarahan_saluran_cerna"] },
-      "values": ["Anemis (pucat)"]
-    },
-    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["perdarahan_saluran_cerna"] }, "range": [102, 116] },
-    {
-      "tool": "keadaan_umum",
-      "param": "kesan_sakit",
-      "when": { "traits": ["perdarahan_saluran_cerna"] },
-      "values": ["Tampak pucat dan lemas"]
+      "tool": "tes_h_pylori",
+      "param": "antigen",
+      "when": { "traits": ["h_pylori"] },
+      "probability": 0.92,
+      "values": ["Positif"],
+      "diagnostic": true
     }
   ],
   "differentials": [
     {
+      "id": "gastritis",
+      "howToDistinguish": "Gastritis akut: perih ulu hati yang muncul MENDADAK beberapa hari setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), sering dengan mual-muntah; bisa berdarah. Dispepsia fungsional: keluhan kronik berbulan-bulan, hilang timbul, tanpa pemicu organik.",
+      "excludeBy": { "topics": ["onset", "episode_sebelumnya", "riwayat_obat"] }
+    },
+    {
       "id": "gerd",
-      "howToDistinguish": "GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang, nyeri tekan epigastrium.",
+      "howToDistinguish": "GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: keluhan di ulu hati, begah, cepat kenyang.",
       "excludeBy": { "topics": ["lokasi", "karakter"] }
     },
     {
+      "id": "tukak_peptik",
+      "howToDistinguish": "Tukak peptik: nyeri ulu hati lebih menetap, sering pada pengguna OAINS atau H. pylori; dapat berdarah (BAB hitam). Dispepsia fungsional: tanpa kelainan struktural dan tanpa tanda alarm.",
+      "excludeBy": { "topics": ["riwayat_obat", "keluhan_lain"] }
+    },
+    {
+      "id": "keganasan_lambung",
+      "howToDistinguish": "Keganasan lambung: usia > 55 tahun dengan keluhan baru, BB turun, anemia, muntah berulang, sulit menelan, BAB hitam → endoskopi.",
+      "mustNotMiss": true,
+      "excludeBy": { "symptoms": ["berat_badan_turun", "bab_hitam"], "topics": ["keluhan_lain"] }
+    },
+    {
       "id": "angina_stabil",
-      "howToDistinguish": "Angina: rasa berat di dada saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan, ada nyeri tekan epigastrium.",
+      "howToDistinguish": "Angina: rasa berat di dada/ulu hati saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan dan stres, tidak dipicu aktivitas.",
       "mustNotMiss": true,
       "excludeBy": { "topics": ["pemberat_peringan"], "tools": ["ekg"] }
     },
     {
-      "id": "demam_tifoid",
-      "howToDistinguish": "Tifoid: keluhan perut disertai DEMAM lebih dari seminggu (sore–malam) dan lidah kotor. Dispepsia: tanpa demam.",
-      "excludeBy": { "tools": ["tanda_vital"] }
-    },
-    {
-      "id": "tukak_peptik",
-      "howToDistinguish": "Tukak peptik: nyeri ulu hati lebih menetap, sering pada pengguna OAINS; dapat berdarah (BAB hitam).",
-      "excludeBy": { "symptoms": ["bab_hitam"], "topics": ["riwayat_obat"] }
-    },
-    {
       "id": "kolik_bilier",
-      "howToDistinguish": "Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+).",
+      "howToDistinguish": "Kolik bilier: serangan nyeri kanan atas hebat setelah makan berlemak, Murphy (+). Dispepsia: rasa tidak nyaman ulu hati yang lebih ringan dan menetap.",
       "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
-    },
-    {
-      "id": "pankreatitis_akut",
-      "howToDistinguish": "Pankreatitis: nyeri epigastrium sangat hebat menjalar ke punggung, muntah.",
-      "excludeBy": { "topics": ["keparahan", "lokasi"] }
-    },
-    {
-      "id": "keganasan_lambung",
-      "howToDistinguish": "Keganasan lambung: usia > 55 tahun, BB turun, anemia, muntah, disfagia.",
-      "mustNotMiss": true,
-      "excludeBy": { "symptoms": ["berat_badan_turun", "bab_hitam"] }
     }
   ],
-  "otherDifferentials": ["Tukak peptik", "Kolelitiasis", "Pankreatitis", "Keganasan lambung (bila ada tanda alarm)"],
+  "otherDifferentials": [
+    "Dispepsia akibat obat",
+    "Gastroparesis (pada diabetes)",
+    "Intoleransi makanan",
+    "Sindrom usus iritabel (tumpang tindih)"
+  ],
   "keyFindings": [
-    "Nyeri/perih ulu hati, kembung, cepat kenyang, mual",
-    "Dipicu telat makan, makanan pedas/asam, kopi, stres, atau obat antinyeri (OAINS)",
-    "Nyeri tekan epigastrium; pemeriksaan lain umumnya normal",
-    "Tanpa tanda alarm (BB turun, muntah darah, BAB hitam, anemia, sulit menelan)"
+    "Keluhan ulu hati kronik berbulan-bulan, hilang timbul",
+    "Rasa penuh setelah makan, cepat kenyang, begah, dan/atau perih ulu hati",
+    "Diperberat stres dan pola makan tidak teratur; tanpa pemicu organik (obat antinyeri)",
+    "Pemeriksaan normal atau nyeri tekan ringan; TANPA tanda alarm"
   ],
   "teachingPoints": [
-    "Dispepsia adalah diagnosis klinis — pemeriksaan mahal biasanya tidak diperlukan bila tanpa tanda alarm.",
-    "Selalu tanyakan obat antinyeri dan jamu pegal linu: OAINS adalah penyebab gastritis yang sering."
+    "Dispepsia fungsional (Roma IV): keluhan ≥ 3 bulan terakhir, mulai ≥ 6 bulan, tanpa kelainan struktural — tegakkan setelah tanda alarm disingkirkan.",
+    "Dua pola: nyeri/perih epigastrium (EPS) dan rasa penuh/cepat kenyang setelah makan (PDS).",
+    "Edukasi dan meyakinkan pasien (reassurance) serta mengelola stres adalah bagian penting terapi.",
+    "Tanpa tanda alarm, pemeriksaan mahal tidak diperlukan; tes H. pylori (strategi \"test and treat\") boleh dilakukan."
   ],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
-    "notes": ["Dispepsia dan gastritis digabung menjadi satu diagnosis di game."],
+    "notes": [
+      "Dipisahkan dari gastritis: dispepsia di game = dispepsia FUNGSIONAL (kronik, tanpa penyebab organik, tanpa tanda alarm).",
+      "Perdarahan saluran cerna dipindah ke gastritis (erosif); kasus dengan tanda alarm bukan dispepsia fungsional.",
+      "Tes H. pylori dinilai opsional (tanpa penalti) karena ketersediaannya di layanan primer terbatas."
+    ],
     "references": [
-      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia & Gastritis",
-      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)"
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia",
+      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)",
+      "Stanghellini V, dkk. Gastroduodenal Disorders (Rome IV). Gastroenterology 2016"
     ]
   },
-  "complications": [
-    {
-      "id": "perdarahan_saluran_cerna",
-      "name": "Perdarahan saluran cerna atas",
-      "trait": "perdarahan_saluran_cerna",
-      "redFlag": true,
-      "assess": { "symptoms": ["bab_hitam"], "tools": ["darah_lengkap", "kepala_leher", "tanda_vital"] },
-      "explanation": "BAB hitam (melena), anemia, takikardia → rujuk segera untuk endoskopi."
-    }
-  ],
   "plan": {
-    "keyTopics": ["lokasi", "pemberat_peringan", "riwayat_obat", "keluhan_lain"],
+    "keyTopics": ["onset", "episode_sebelumnya", "riwayat_obat", "keluhan_lain"],
     "exams": [
       {
         "tool": "pemeriksaan_abdomen",
         "role": "kunci",
-        "reason": "Nyeri tekan epigastrium; singkirkan kolik bilier dan apendisitis."
+        "reason": "Umumnya normal atau nyeri tekan ringan epigastrium; singkirkan massa, kolik bilier, dan organomegali."
       },
-      { "tool": "kepala_leher", "role": "pendukung", "reason": "Konjungtiva anemis (tanda alarm)." }
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Konjungtiva anemis (tanda alarm)." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Penurunan berat badan adalah tanda alarm." }
     ],
     "tests": [
       {
-        "tool": "darah_lengkap",
-        "role": "komplikasi",
-        "reason": "Anemia akibat perdarahan.",
-        "when": { "traits": ["perdarahan_saluran_cerna"] }
-      },
-      {
         "tool": "ekg",
         "role": "pendukung",
-        "reason": "Pada usia > 45 tahun, nyeri epigastrium bisa berasal dari iskemia inferior.",
+        "reason": "Pada usia > 45 tahun, keluhan epigastrium bisa berasal dari iskemia inferior.",
         "when": { "ageMin": 45 }
       }
     ],
+    "optional": [{ "tool": "tes_h_pylori", "reason": "Strategi \"test and treat\" pada dispepsia tanpa tanda alarm." }],
     "unnecessary": [
-      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk dispepsia tanpa tanda alarm." },
+      { "tool": "usg_abdomen", "reason": "Tanpa tanda alarm atau nyeri kanan atas, USG tidak diperlukan." },
       { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
       { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
       { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
@@ -250,45 +247,45 @@
       { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
       { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
       { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
-      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis dispepsia." },
       { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
-      { "tool": "usg_abdomen", "reason": "Tanpa tanda alarm atau nyeri kanan atas, USG tidak diperlukan." },
       { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
     ]
   },
   "disposition": [
     {
-      "value": "rujuk_segera",
-      "reason": "Perdarahan saluran cerna atas memerlukan penanganan di rumah sakit.",
-      "when": { "traits": ["perdarahan_saluran_cerna"] }
-    },
-    {
       "value": "rujuk_spesialis",
-      "reason": "Dispepsia baru pada usia > 55 tahun perlu endoskopi.",
+      "reason": "Usia > 55 tahun dengan dispepsia perlu endoskopi untuk menyingkirkan keganasan.",
       "when": { "ageMin": 56 },
       "alsoAccept": ["rawat_jalan"]
     },
-    { "value": "rawat_jalan", "reason": "Dispepsia tanpa tanda alarm dikelola di layanan primer." }
+    { "value": "rawat_jalan", "reason": "Dispepsia fungsional tanpa tanda alarm dikelola di layanan primer." }
   ],
   "management": [
-    "Hindari pemicu: OAINS/jamu pegal linu, kopi, makanan pedas/asam; makan teratur porsi kecil.",
-    "Terapi simptomatik/penekan asam — keputusan dokter.",
-    "Rujuk endoskopi bila ada tanda alarm atau usia > 55 tahun dengan keluhan baru."
+    "Edukasi dan yakinkan pasien bahwa keluhannya bukan penyakit berbahaya; kelola stres dan tidur.",
+    "Makan teratur porsi kecil; kurangi kopi, makanan berlemak/pedas; hindari obat antinyeri OAINS.",
+    "Penekan asam (pola nyeri/perih) atau prokinetik (pola begah/cepat kenyang) — keputusan dokter.",
+    "Tes H. pylori bila tersedia; bila positif, eradikasi sesuai panduan.",
+    "Evaluasi ulang dan rujuk endoskopi bila muncul tanda alarm atau tidak membaik dengan terapi."
   ],
   "approach": [
-    "Nyeri ulu hati: lokasi, karakter, hubungan dengan makan, dan obat antinyeri.",
-    "Cari tanda alarm: BAB hitam, muntah darah, BB turun, anemia, disfagia.",
-    "Pemeriksaan abdomen; pada usia > 45 tahun dengan faktor risiko, pikirkan iskemia (EKG).",
-    "Tanpa tanda alarm, diagnosis klinis — tidak perlu pemeriksaan mahal."
+    "Pastikan keluhan kronik (berbulan-bulan) dan polanya: setelah makan (begah/cepat kenyang) atau perih ulu hati.",
+    "Singkirkan tanda alarm: BB turun, muntah berulang/darah, BAB hitam, anemia, sulit menelan, usia > 55 tahun.",
+    "Tanyakan obat antinyeri/jamu — dispepsia karena obat bukan fungsional.",
+    "Pemeriksaan fisik umumnya normal; tanpa tanda alarm, pemeriksaan mahal tidak diperlukan."
   ],
   "pitfalls": [
     {
-      "when": { "topicNotAsked": "riwayat_obat", "traits": ["oains"] },
-      "text": "Konsumsi OAINS/jamu pegal linu tidak ditanyakan — penyebab gastritis yang sering dan meningkatkan risiko perdarahan."
+      "when": { "topicNotAsked": "keluhan_lain" },
+      "text": "Tanda alarm (BB turun, BAB hitam, muntah darah, sulit menelan) harus ditanyakan sebelum menyimpulkan dispepsia fungsional."
     },
     {
-      "when": { "traits": ["perdarahan_saluran_cerna"], "topicNotAsked": "keluhan_lain" },
-      "text": "BAB hitam jarang disebut spontan — tanyakan gejala penyerta dan warna BAB secara spesifik."
+      "when": { "topicNotAsked": "kebiasaan", "traits": ["stres"] },
+      "text": "Stres dan pola makan tidak ditanyakan — pencetus utama dispepsia fungsional yang perlu dikelola."
+    },
+    {
+      "when": { "primaryIs": "gastritis" },
+      "text": "Keluhan kronik berbulan-bulan tanpa pemicu akut lebih sesuai dispepsia fungsional; gastritis akut muncul mendadak setelah pemicu (OAINS, alkohol, makanan iritatif)."
     }
   ]
 }

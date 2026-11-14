@@ -67,7 +67,7 @@ describe('penampilan pasien: konsisten dengan kasus', () => {
   });
 
   it('gejala tanpa isyarat tetap tersembunyi (hanya lewat anamnesis/pemeriksaan)', () => {
-    const c = find('dispepsia', (x) => x.hiddenSymptoms.includes('bab_hitam'));
+    const c = find('gastritis', (x) => x.hiddenSymptoms.includes('bab_hitam'));
     const cued = new Set(content.appearance.symptomCues.map((r) => r.symptom));
     for (const s of ['bab_hitam', 'disuria', 'sering_kencing', 'haus', 'keringat_malam', 'kencing_merah', 'diare']) expect(cued.has(s), s).toBe(false);
     expect(buildAppearance(c, content).observations.join(' ')).not.toMatch(/bab|hitam/i);

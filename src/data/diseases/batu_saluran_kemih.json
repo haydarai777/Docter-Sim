@@ -385,8 +385,8 @@
       "excludeBy": { "tools": ["usg_abdomen", "ct_abdomen"] }
     },
     {
-      "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: perih ulu hati terkait makan dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria.",
+      "id": "gastritis",
+      "howToDistinguish": "Gastritis akut: perih ulu hati terkait makan/pemicu dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria.",
       "excludeBy": { "topics": ["lokasi", "karakter"], "tools": ["urinalisis"] }
     }
   ],

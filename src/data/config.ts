@@ -90,6 +90,7 @@ export const GAME_CONFIG: GameConfig = {
     hba1c: 150_000,
     tcm_tb: 150_000,
     serologi_dengue: 175_000,
+    tes_h_pylori: 120_000,
     // Pencitraan
     foto_bno: 120_000,
     rontgen_thorax: 175_000,

@@ -102,7 +102,10 @@
         { "tool": "darah_lengkap", "param": "hematokrit", "range": [28, 35] },
         { "tool": "kepala_leher", "param": "konjungtiva", "probability": 0.75, "values": ["Anemis (pucat)"] }
       ],
-      "history": { "known": "Kata bidan dulu saya kurang darah, Dok.", "habit": "Haid saya banyak, Dok, bisa sampai seminggu." },
+      "history": {
+        "known": "Kata bidan dulu saya kurang darah, Dok.",
+        "menstrual": "Tapi haidnya banyak, Dok, bisa sampai seminggu."
+      },
       "detectBy": { "tools": ["darah_lengkap", "kepala_leher"] },
       "management": [
         "Cari penyebab (perdarahan haid, saluran cerna, asupan).",

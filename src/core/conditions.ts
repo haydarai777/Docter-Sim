@@ -11,6 +11,8 @@ export interface ConditionContext {
   sex: Sex;
   age: number;
   occupationId: string;
+  /** Kepribadian pasien (untuk variasi gaya jawaban). */
+  personality?: string;
   traits: ReadonlySet<string>;
   symptoms?: ReadonlySet<string>;
 }
@@ -24,6 +26,7 @@ export function matchesCondition(cond: Condition | undefined, ctx: ConditionCont
   if (cond.ageMax !== undefined && ctx.age > cond.ageMax) return false;
   if (cond.sex !== undefined && ctx.sex !== cond.sex) return false;
   if (cond.occupations && !cond.occupations.includes(ctx.occupationId)) return false;
+  if (cond.personality && !(ctx.personality && cond.personality.includes(ctx.personality))) return false;
   if (cond.traits && !cond.traits.every((t) => ctx.traits.has(t))) return false;
   if (cond.notTraits && cond.notTraits.some((t) => ctx.traits.has(t))) return false;
   if (cond.symptoms) {

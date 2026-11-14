@@ -15,7 +15,8 @@ JSON penyakit menjadi `DISETUJUI` dan isi `reviewer` serta `date`.
 | Malaria | 4A | tinggi | `BELUM_DITINJAU_DOKTER` |
 | Penyakit Refluks Gastroesofageal (GERD) | 4A | rendah | `BELUM_DITINJAU_DOKTER` |
 | Angina Pektoris Stabil | 3A | kritis | `BELUM_DITINJAU_DOKTER` |
-| Dispepsia / Gastritis | 4A | rendah | `BELUM_DITINJAU_DOKTER` |
+| Dispepsia fungsional | 4A | rendah | `BELUM_DITINJAU_DOKTER` |
+| Gastritis akut | 4A | sedang | `BELUM_DITINJAU_DOKTER` |
 | Infeksi Saluran Kemih Bawah (Sistitis) | 4A | rendah | `BELUM_DITINJAU_DOKTER` |
 | Batu Saluran Kemih dengan Kolik (Urolitiasis) | 3A | sedang | `BELUM_DITINJAU_DOKTER` |
 | Diabetes Melitus Tipe 2 | 4A | sedang | `BELUM_DITINJAU_DOKTER` |
@@ -53,6 +54,7 @@ JSON penyakit menjadi `DISETUJUI` dan isi `reviewer` serta `date`.
 | Profil lipid | lab | skrining — Faktor risiko kardiovaskular (kolesterol, LDL, HDL, trigliserida). | Rp100.000 | Kolesterol total: < 200 mg/dL<br>Kolesterol LDL: < 130 mg/dL<br>Kolesterol HDL: 40–100 mg/dL<br>Trigliserida: < 150 mg/dL | — |
 | BTA sputum (mikroskopis) | lab | identifikasi — Mikroskopis BTA dahak. Murah; sensitivitas sedang — negatif tidak menyingkirkan TB. | Rp50.000 | Hasil BTA: Negatif | Hasil BTA 1% |
 | Tes Cepat Molekuler (TCM) TB | lab | identifikasi — Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA. | Rp150.000 | Hasil TCM: MTB not detected | — |
+| Tes antigen H. pylori (feses) | lab | identifikasi — Mencari infeksi H. pylori pada dispepsia/gastritis (strategi "test and treat"). Positif → pertimbangkan eradikasi; tidak wajib bila tanpa tanda alarm. | Rp120.000 | Antigen H. pylori: Negatif | Antigen H. pylori 3% |
 | Rontgen thorax (PA) | pencitraan | struktur, komplikasi — Infiltrat/konsolidasi, kavitas, efusi pleura, hiperinflasi, kardiomegali. | Rp175.000 | Cor: Tidak membesar (CTR < 50%)<br>Pulmo: Corakan bronkovaskular normal, tidak tampak infiltrat<br>Sinus & diafragma: Sinus kostofrenikus tajam, diafragma licin<br>Tulang: Tulang-tulang intak<br>Kesan: Cor dan pulmo dalam batas normal | — |
 | USG abdomen (termasuk ginjal) | pencitraan | struktur, komplikasi — Batu, sumbatan (hidronefrosis), massa, ukuran organ, dan cairan bebas. Batu ureter distal kadang sulit terlihat. | Rp300.000 | Hepar: Ukuran dan ekogenisitas normal, tidak tampak lesi<br>Kandung empedu: Dinding tidak menebal, tidak tampak batu<br>Lien: Ukuran normal<br>Ginjal kanan & kiri: Ukuran normal, tidak tampak batu maupun hidronefrosis<br>Vesika urinaria: Dinding licin, tidak tampak batu<br>Cairan bebas: Tidak tampak<br>Kesan: Tidak tampak kelainan pada organ intraabdomen yang terperiksa | — |
 | Foto polos abdomen (BNO/KUB) | pencitraan | struktur — Batu radioopak (± 75–90% batu saluran kemih). Batu radiolusen (mis. asam urat) tidak tampak, jadi BNO normal tidak menyingkirkan batu. | Rp120.000 | Bayangan batu: Tidak tampak bayangan radioopak sepanjang traktus urinarius<br>Kesan: Tidak tampak kelainan | — |
@@ -127,6 +129,14 @@ JSON penyakit menjadi `DISETUJUI` dan isi `reviewer` serta `date`.
 | Riwayat keluarga | Riwayat | Ya | 1 | Riwayat keluarga & kontak serumah menunjukkan risiko genetik (DM, PJK, asma) atau penularan (TB, dengue). |
 | Bepergian, pekerjaan & lingkungan | Sosial & lingkungan | Ya | 1 | Riwayat bepergian, pekerjaan, dan lingkungan mengarahkan ke penyakit endemis atau paparan tertentu. |
 | Kebiasaan & gaya hidup | Sosial & lingkungan | Ya | 1 | Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit. |
+| Nama | Identitas & perspektif | — | 1 | Menyapa pasien dengan namanya membangun hubungan dokter–pasien. |
+| Umur | Identitas & perspektif | — | 1 | Usia mengubah kemungkinan penyakit dan nilai rujukan pemeriksaan. |
+| Pekerjaan | Identitas & perspektif | — | 1 | Pekerjaan memberi petunjuk paparan (lingkungan kerja, aktivitas fisik, jam makan). |
+| Status & keluarga | Identitas & perspektif | — | 1 | Dukungan keluarga & orang serumah penting untuk edukasi dan kepatuhan berobat. |
+| Pendapat pasien | Identitas & perspektif | — | 1 | Gagasan pasien tentang penyakitnya (ide) membantu edukasi dan meluruskan salah kaprah. |
+| Kekhawatiran | Identitas & perspektif | — | 1 | Menggali kekhawatiran pasien (concern) membantu menenangkan dan menjelaskan dengan tepat sasaran. |
+| Harapan pasien | Identitas & perspektif | — | 1 | Mengetahui harapan pasien (expectation) membantu menyepakati rencana tata laksana. |
+| Haid & kehamilan | Riwayat | — | 1 | Pada perempuan usia subur, kemungkinan hamil memengaruhi diagnosis serta pilihan obat dan pemeriksaan. |
 
 ## Penampilan pasien 3D: isyarat klinis yang TERLIHAT
 
@@ -183,7 +193,7 @@ pakaian mengikuti pekerjaan (mis. seragam sekolah); pasien demam/menggigil cende
 
 **Lokasi yang ditunjuk pasien saat membicarakan gejala**
 
-Nyeri kepala → kepala · Nyeri belakang bola mata (retro-orbital) → mata · Mata/kulit kuning (ikterus) → mata · Pandangan kabur → mata · Mimisan / gusi berdarah → mulut · Mual/muntah → ulu hati · Sulit menelan (disfagia) → tenggorokan · Regurgitasi asam → tenggorokan · Batuk → dada · Batuk darah (hemoptisis) → dada · Sesak napas → dada · Mengi (wheezing) → dada · Nyeri dada (berat/tertekan) → dada · Nyeri dada saat bernapas/batuk (pleuritik) → dada · Rasa terbakar di dada (heartburn) → dada · Nyeri menjalar ke lengan kiri/leher/rahang → lengan · Nyeri/perih ulu hati (epigastrium) → ulu hati · Kembung / cepat kenyang → perut · Nyeri perut → perut · Diare → perut · Sulit buang air besar (konstipasi) → perut · Nyeri perut bawah (suprapubik) → perut bawah · Nyeri/perih saat berkemih (disuria) → perut bawah · Nyeri pinggang → pinggang · Bintik merah di kulit (petekie) → lengan · Nyeri otot/sendi (mialgia/artralgia) → lengan · Kesemutan/kebas di tangan atau kaki → kaki · Luka lama sembuh → kaki
+Nyeri kepala → kepala · Nyeri belakang bola mata (retro-orbital) → mata · Mata/kulit kuning (ikterus) → mata · Pandangan kabur → mata · Mimisan / gusi berdarah → mulut · Mual/muntah → ulu hati · Sulit menelan (disfagia) → tenggorokan · Regurgitasi asam → tenggorokan · Batuk → dada · Batuk darah (hemoptisis) → dada · Sesak napas → dada · Mengi (wheezing) → dada · Nyeri dada (berat/tertekan) → dada · Nyeri dada saat bernapas/batuk (pleuritik) → dada · Rasa terbakar di dada (heartburn) → dada · Nyeri menjalar ke lengan kiri/leher/rahang → lengan · Nyeri/perih ulu hati (epigastrium) → ulu hati · Kembung / sering sendawa → perut · Cepat kenyang / begah setelah makan → ulu hati · Muntah darah (hematemesis) → mulut · Nyeri perut → perut · Diare → perut · Sulit buang air besar (konstipasi) → perut · Nyeri perut bawah (suprapubik) → perut bawah · Nyeri/perih saat berkemih (disuria) → perut bawah · Nyeri pinggang → pinggang · Bintik merah di kulit (petekie) → lengan · Nyeri otot/sendi (mialgia/artralgia) → lengan · Kesemutan/kebas di tangan atau kaki → kaki · Luka lama sembuh → kaki
 
 ## Infeksi Dengue (Demam Dengue / DBD)
 
@@ -873,7 +883,7 @@ Topik anamnesis kunci: Bepergian, pekerjaan & lingkungan, Pola & waktu, Durasi t
 | Rasa terbakar di dada (heartburn) | 100% | — |
 | Regurgitasi asam | 75% | — |
 | Nyeri/perih ulu hati (epigastrium) | 40% | — |
-| Kembung / cepat kenyang | 35% | — |
+| Kembung / sering sendawa | 35% | — |
 | Mual/muntah | 20% | — |
 | Batuk | 100% | trait: batuk_kronik |
 | Nyeri dada (berat/tertekan) | 15% | — |
@@ -932,7 +942,8 @@ Topik anamnesis kunci: Sifat keluhan, Pemberat & peringan, Pola & waktu, Lokasi 
 | Kondisi | Wajib disingkirkan | Bukti untuk menyingkirkan | Cara membedakan |
 |---|---|---|---|
 | Angina Pektoris Stabil | Ya | anamnesis: Pemberat & peringan; Elektrokardiografi (EKG) 12 sadapan | Angina: rasa berat/tertekan di dada saat aktivitas fisik atau emosi, membaik dengan istirahat dalam beberapa menit, sering pada pasien dengan faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang. GERD: rasa terbakar terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida. |
-| Dispepsia / Gastritis | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan | Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk. |
+| Dispepsia fungsional | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan | Dispepsia fungsional: keluhan kronik di ulu hati — begah, cepat kenyang, perih — tanpa regurgitasi. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk. |
+| Gastritis akut | — | anamnesis: Lokasi & penjalaran; anamnesis: Riwayat obat | Gastritis akut: perih ulu hati mendadak setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), mual-muntah, nyeri tekan epigastrium. GERD: rasa terbakar retrosternal dan regurgitasi asam, memberat saat berbaring. |
 | Sindrom Koroner Akut | Ya | anamnesis: Durasi tiap episode; anamnesis: Pemberat & peringan; Elektrokardiografi (EKG) 12 sadapan | SKA: nyeri dada saat istirahat > 20 menit, keringat dingin, perubahan EKG. GERD: rasa terbakar terkait makan, membaik dengan antasida. |
 | Tukak Peptik | — | gejala: BAB hitam (melena) | Tukak peptik: nyeri ulu hati terkait makan, dapat disertai BAB hitam. |
 | Kolik Bilier / Kolesistitis | — | Abdomen | Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+). |
@@ -1119,7 +1130,8 @@ Topik anamnesis kunci: Lokasi & penjalaran, Sifat keluhan, Durasi tiap episode, 
 |---|---|---|---|
 | Sindrom Koroner Akut | Ya | anamnesis: Perjalanan penyakit; anamnesis: Durasi tiap episode; Elektrokardiografi (EKG) 12 sadapan | SKA: nyeri saat istirahat > 20 menit, makin berat, perubahan EKG akut. Angina stabil: dipicu aktivitas, < 15 menit, reda dengan istirahat. |
 | Penyakit Refluks Gastroesofageal (GERD) | — | anamnesis: Pemberat & peringan; anamnesis: Sifat keluhan | GERD: rasa terbakar di dada terkait makan dan berbaring, regurgitasi asam, membaik dengan antasida, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat, faktor risiko kardiovaskular, dapat menjalar ke lengan kiri/rahang. |
-| Dispepsia / Gastritis | — | anamnesis: Lokasi & penjalaran; Abdomen | Dispepsia: nyeri/perih ulu hati terkait makan, kembung, nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko. |
+| Dispepsia fungsional | — | anamnesis: Lokasi & penjalaran; Abdomen | Dispepsia fungsional: keluhan ulu hati kronik terkait makan dan stres (begah, cepat kenyang), tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko. |
+| Gastritis akut | — | anamnesis: Pemberat & peringan; Abdomen | Gastritis: perih ulu hati setelah pemicu (obat antinyeri, alkohol, makanan pedas), nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat. |
 | Nyeri Dada Muskuloskeletal | — | anamnesis: Sifat keluhan; anamnesis: Pemberat & peringan | Nyeri muskuloskeletal: terlokalisasi, bertambah saat ditekan atau bergerak, tidak terkait aktivitas berat. |
 | Gagal Jantung | — | Kepala & leher; Ekstremitas & kulit; Thorax — paru | Gagal jantung: sesak saat berbaring, edema tungkai, JVP meningkat, ronkhi basal, kardiomegali. |
 | Asma Bronkial (Serangan Ringan–Sedang) | — | anamnesis: Pemberat & peringan; anamnesis: Episode sebelumnya; Thorax — paru; Spirometri sederhana (APE & reversibilitas) | Asma: sesak dengan mengi episodik sejak muda, ada pemicu alergen/udara dingin, membaik dengan bronkodilator. Angina: rasa berat di dada saat aktivitas pada usia lanjut dengan faktor risiko, tanpa mengi. |
@@ -1157,6 +1169,7 @@ Topik anamnesis kunci: Lokasi & penjalaran, Sifat keluhan, Durasi tiap episode, 
 - `{"excluded":"angina_stabil","toolNormal":"ekg"}` → EKG istirahat normal TIDAK menyingkirkan angina stabil — anamnesis yang khas lebih menentukan.
 - `{"primaryIs":"gerd"}` → Keluhan "masuk angin/angin duduk" yang dipicu aktivitas dan reda dengan istirahat pada pasien berisiko harus dianggap angina.
 - `{"primaryIs":"dispepsia"}` → Nyeri dada/epigastrium yang dipicu aktivitas pada pasien berisiko harus dianggap jantung sampai terbukti bukan.
+- `{"primaryIs":"gastritis"}` → Nyeri dada/epigastrium yang dipicu aktivitas pada pasien berisiko harus dianggap jantung sampai terbukti bukan — "maag" bukan penjelasan untuk keluhan saat aktivitas.
 
 **Temuan khas (layar edukasi)**
 
@@ -1191,73 +1204,236 @@ Topik anamnesis kunci: Lokasi & penjalaran, Sifat keluhan, Durasi tiap episode, 
 
 ---
 
-## Dispepsia / Gastritis
+## Dispepsia fungsional
 
 - **id**: `dispepsia` · **SKDI**: 4A · **bahaya**: rendah · **sistem**: Pencernaan · **status**: `BELUM_DITINJAU_DOKTER`
-- **Hari sakit saat datang**: 3–60
-- **Demografi**: laki-laki 45%; usia 18–30 (bobot 4), 31–45 (bobot 4), 46–60 (bobot 2), 61–75 (bobot 1)
-- **Pekerjaan berisiko** (bias 40%): Mahasiswa, Pegawai kantor swasta, Pengemudi ojek online, Buruh pabrik, Pekerja proyek bangunan
+- **Hari sakit saat datang**: 90–300
+- **Demografi**: laki-laki 40%; usia 18–30 (bobot 4), 31–45 (bobot 4), 46–60 (bobot 2), 61–75 (bobot 1)
+- **Pekerjaan berisiko** (bias 40%): Mahasiswa, Pegawai kantor swasta, Karyawan bank, Guru, Pedagang pasar
 - **Biaya penunjang kunci**: Rp0 · semua sesuai rencana: Rp0
 
-> Kumpulan keluhan nyeri atau rasa tidak nyaman di ulu hati, rasa penuh setelah makan, cepat kenyang, kembung, dan mual. Gastritis (peradangan mukosa lambung) sering dipicu obat antinyeri golongan OAINS, alkohol, stres, pola makan tidak teratur, atau infeksi H. pylori. Pemeriksaan penunjang umumnya normal. Waspadai tanda alarm (berat badan turun, muntah darah, BAB hitam, anemia, usia > 55 tahun dengan keluhan baru) yang memerlukan rujukan untuk endoskopi.
+> Keluhan ulu hati KRONIK tanpa kelainan struktural: nyeri/perih epigastrium, rasa penuh setelah makan, cepat kenyang, kembung. Menurut kriteria Roma IV keluhan berlangsung ≥ 3 bulan terakhir dan mulai ≥ 6 bulan sebelumnya. Sering diperberat stres dan pola makan tidak teratur; pemeriksaan fisik normal atau nyeri tekan ringan. Diagnosis ditegakkan setelah tanda alarm (BB turun, muntah darah, BAB hitam, anemia, sulit menelan, usia > 55 tahun dengan keluhan baru) dan penyebab organik (obat antinyeri, tukak) disingkirkan.
 
 **Trait laten** (aturan pertama yang cocok per id dipakai)
 
 | Trait | Peluang | Kondisi | Keterangan |
 |---|---|---|---|
-| oains | 35% | — | Pemicu: konsumsi obat antinyeri (OAINS/jamu pegal linu) rutin. |
-| makan_tidak_teratur | 60% | — | Pemicu: pola makan tidak teratur dan kopi berlebihan. |
-| stres | 40% | — | Pemicu: stres psikologis. |
-| perdarahan_saluran_cerna | 15% | trait: oains | Komplikasi: perdarahan saluran cerna atas (melena, anemia). |
-| perdarahan_saluran_cerna | 5% | — | Komplikasi: perdarahan saluran cerna atas (melena, anemia). |
+| nyeri_epigastrium | 50% | — | Pola dominan nyeri/perih ulu hati (epigastric pain syndrome); tanpa trait ini dominan rasa penuh/cepat kenyang setelah makan (postprandial distress syndrome). |
+| stres | 55% | — | Pencetus: stres psikologis. |
+| makan_tidak_teratur | 50% | — | Pencetus: pola makan tidak teratur dan kopi berlebihan. |
+| h_pylori | 25% | — | Infeksi Helicobacter pylori (dispepsia terkait H. pylori). |
 
 **Gejala**
 
 | Gejala | Peluang | Kondisi |
 |---|---|---|
-| BAB hitam (melena) | 95% | trait: perdarahan_saluran_cerna |
-| Lemas | 100% | trait: perdarahan_saluran_cerna |
-| Nyeri/perih ulu hati (epigastrium) | 100% | — |
-| Kembung / cepat kenyang | 75% | — |
-| Mual/muntah | 55% | — |
-| Nafsu makan menurun | 40% | — |
-| Rasa terbakar di dada (heartburn) | 25% | — |
+| Nyeri/perih ulu hati (epigastrium) | 100% | trait: nyeri_epigastrium |
+| Nyeri/perih ulu hati (epigastrium) | 30% | — |
+| Cepat kenyang / begah setelah makan | 100% | tanpa: nyeri_epigastrium |
+| Cepat kenyang / begah setelah makan | 35% | — |
+| Kembung / sering sendawa | 70% | — |
+| Mual/muntah | 30% | — |
+| Rasa terbakar di dada (heartburn) | 20% | — |
+| Nafsu makan menurun | 15% | — |
 
-Keluhan utama (prioritas): nyeri_ulu_hati; tambahan: kembung, mual_muntah. Salah kaprah pasien: masuk angin, asam lambung, kecapekan, maag.
+Keluhan utama (prioritas): nyeri_ulu_hati → cepat_kenyang; tambahan: kembung, cepat_kenyang. Salah kaprah pasien: masuk angin, maag, asam lambung, kecapekan.
 
 **Temuan pemeriksaan abnormal** (parameter lain = normal)
 
 | Alat · parameter | Kondisi | Peluang | Nilai |
 |---|---|---|---|
-| Abdomen · Palpasi — nyeri tekan | — | 80% | Nyeri tekan epigastrium |
-| Darah lengkap + hitung jenis · Hemoglobin | laki-laki; trait: perdarahan_saluran_cerna | 100% | 8,0–10,5 g/dL |
-| Darah lengkap + hitung jenis · Hemoglobin | perempuan; trait: perdarahan_saluran_cerna | 100% | 7,5–10,0 g/dL |
-| Kepala & leher · Konjungtiva | trait: perdarahan_saluran_cerna | 100% | Anemis (pucat) |
-| Tanda vital lengkap · Nadi | trait: perdarahan_saluran_cerna | 100% | 102–116 ×/menit |
-| Keadaan umum · Kesan sakit | trait: perdarahan_saluran_cerna | 100% | Tampak pucat dan lemas |
+| Abdomen · Palpasi — nyeri tekan | — | 40% | Nyeri tekan ringan epigastrium |
+| Tes antigen H. pylori (feses) · Antigen H. pylori | trait: h_pylori | 92% (sensitivitas) | Positif |
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _lokasi_: "Di ulu hati, Dok, perut atas bagian tengah." → **Nyeri terlokalisasi di epigastrium**
-- _karakter_: "Perih, Dok, kayak ditusuk-tusuk. Perut juga begah." → **Perih ulu hati disertai rasa penuh/begah**
-- _pola_: "Kalau telat makan langsung kambuh, Dok. Tapi habis makan sedikit sudah kenyang." → **Terkait waktu makan; cepat kenyang**
-- _pemberat_peringan_: "Makan pedas, kopi, atau telat makan bikin kambuh. Minum obat maag biasanya mendingan, Dok." → **Dipicu makanan pedas/kopi/telat makan; membaik dengan antasida**
-- _riwayat_obat_: "Saya sering minum obat pegal linu, Dok, hampir tiap hari. Habis kerja badan pegal semua." → **Konsumsi obat antinyeri (OAINS) rutin**
+- _onset_: "Sudah lama, Dok, kira-kira {lamaSakit} ini kambuh-kambuhan." → **Keluhan kronik berbulan-bulan**
+- _lokasi_: "Di ulu hati, Dok, perut atas bagian tengah." → **Keluhan terlokalisasi di epigastrium**
+- _karakter_: "Perih, Dok, kadang kayak terbakar, tapi nggak sampai hebat." → **Perih/terbakar ulu hati yang tidak hebat**
+- _karakter_: "Lebih ke begah, Dok, perut atas rasanya penuh. Kadang ulu hati perih juga." → **Dominan rasa penuh/begah di perut atas**
+- _karakter_: "Lebih ke begah, Dok. Perut atas rasanya penuh terus, nggak enak." → **Rasa penuh/begah di perut atas**
+- _pola_: "Biasanya habis makan, Dok. Baru makan sedikit sudah kenyang, terus begah sampai berjam-jam." → **Rasa penuh setelah makan & cepat kenyang**
+- _pola_: "Kambuh kalau telat makan atau lagi banyak pikiran, Dok. Kadang malam juga perih." → **Kambuh terkait waktu makan dan stres**
+- _progresi_: "Begitu-begitu saja, Dok. Kadang membaik, nanti kambuh lagi." → **Tidak progresif (tanpa tanda alarm)**
+- _pemberat_peringan_: "Kalau stres, makan berlemak, atau kebanyakan kopi tambah parah, Dok. Obat maag cuma mempan sebentar." → **Diperberat stres, makanan berlemak, kopi; respons sebagian terhadap antasida**
+- _episode_sebelumnya_: "Sering, Dok. Sudah bertahun-tahun hilang timbul begini." → **Keluhan berulang bertahun-tahun (kronik)**
+- _episode_sebelumnya_: "Sudah berkali-kali, Dok, sejak setahun terakhir." → **Keluhan berulang (kronik)**
+- _kebiasaan_: "Lagi banyak pikiran, Dok, kerjaan numpuk dan tidur kurang. Makan juga jadi nggak teratur, sering nggak sarapan, kopi tiga gelas sehari." → **Stres psikologis dan pola makan tidak teratur**
+- _kebiasaan_: "Lagi banyak pikiran, Dok. Kerjaan numpuk, tidur juga kurang." → **Stres psikologis & kurang tidur**
 - _kebiasaan_: "Makan saya nggak teratur, Dok. Sering nggak sarapan, kopi tiga gelas sehari." → **Pola makan tidak teratur, kopi berlebihan**
-- _kebiasaan_: "Lagi banyak pikiran, Dok, kerjaan numpuk." → **Stres psikologis**
-- _keparahan_: "Lemas sekali, Dok, kepala kliyengan kalau berdiri." → **Lemas & pusing saat berdiri (curiga perdarahan saluran cerna)**
-- _episode_sebelumnya_: "Sudah sering kambuh, Dok, dari zaman sekolah." → **Keluhan berulang lama (dispepsia kronik)**
 
 **Rencana pemeriksaan sesuai indikasi** (dasar penilaian)
 
 | Jenis | Pemeriksaan | Peran | Kondisi | Alasan |
 |---|---|---|---|---|
-| Fisik | Abdomen | kunci | — | Nyeri tekan epigastrium; singkirkan kolik bilier dan apendisitis. |
+| Fisik | Abdomen | kunci | — | Umumnya normal atau nyeri tekan ringan epigastrium; singkirkan massa, kolik bilier, dan organomegali. |
 | Fisik | Kepala & leher | pendukung | — | Konjungtiva anemis (tanda alarm). |
-| Penunjang | Darah lengkap + hitung jenis | komplikasi | trait: perdarahan_saluran_cerna | Anemia akibat perdarahan. |
-| Penunjang | Elektrokardiografi (EKG) 12 sadapan | pendukung | usia 45–… | Pada usia > 45 tahun, nyeri epigastrium bisa berasal dari iskemia inferior. |
-| Tidak perlu | CT-scan abdomen non-kontras (rujukan) | — | — | CT-scan mahal dan tidak diindikasikan untuk keluhan ini. |
+| Fisik | Antropometri (timbangan & pita ukur) | pendukung | — | Penurunan berat badan adalah tanda alarm. |
+| Penunjang | Elektrokardiografi (EKG) 12 sadapan | pendukung | usia 45–… | Pada usia > 45 tahun, keluhan epigastrium bisa berasal dari iskemia inferior. |
+| Tidak perlu | CT-scan abdomen non-kontras (rujukan) | — | — | CT-scan mahal dan tidak diindikasikan untuk dispepsia tanpa tanda alarm. |
+| Tidak perlu | USG abdomen (termasuk ginjal) | — | — | Tanpa tanda alarm atau nyeri kanan atas, USG tidak diperlukan. |
 | Tidak perlu | Foto polos abdomen (BNO/KUB) | — | — | Tidak ada kecurigaan batu saluran kemih. |
+| Tidak perlu | Tes cepat NS1 dengue | — | — | Tidak ada demam akut yang mengarah ke dengue. |
+| Tidak perlu | Serologi dengue IgM/IgG | — | — | Tidak ada demam akut yang mengarah ke dengue. |
+| Tidak perlu | Tes cepat (RDT) malaria | — | — | Tidak ada demam/riwayat daerah endemis. |
+| Tidak perlu | Apusan darah tebal–tipis (malaria) | — | — | Tidak ada demam/riwayat daerah endemis. |
+| Tidak perlu | Tubex TF (IgM anti-Salmonella) | — | — | Tidak ada demam lama yang mengarah ke tifoid. |
+| Tidak perlu | Tes Widal | — | — | Tidak ada demam lama yang mengarah ke tifoid. |
+| Tidak perlu | Tes Cepat Molekuler (TCM) TB | — | — | Tidak ada gejala yang mengarah ke TB. |
+| Tidak perlu | BTA sputum (mikroskopis) | — | — | Tidak ada gejala yang mengarah ke TB. |
+| Tidak perlu | HbA1c | — | — | HbA1c tidak membantu diagnosis dispepsia. |
+| Tidak perlu | Spirometri sederhana (APE & reversibilitas) | — | — | Tidak ada keluhan sesak/obstruksi saluran napas. |
+| Tidak perlu | Rontgen thorax (PA) | — | — | Tidak ada keluhan napas. |
+
+Topik anamnesis kunci: Onset, Episode sebelumnya, Riwayat obat, Keluhan lain.
+
+**Diagnosis banding**
+
+| Kondisi | Wajib disingkirkan | Bukti untuk menyingkirkan | Cara membedakan |
+|---|---|---|---|
+| Gastritis akut | — | anamnesis: Onset; anamnesis: Episode sebelumnya; anamnesis: Riwayat obat | Gastritis akut: perih ulu hati yang muncul MENDADAK beberapa hari setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), sering dengan mual-muntah; bisa berdarah. Dispepsia fungsional: keluhan kronik berbulan-bulan, hilang timbul, tanpa pemicu organik. |
+| Penyakit Refluks Gastroesofageal (GERD) | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan | GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: keluhan di ulu hati, begah, cepat kenyang. |
+| Tukak Peptik | — | anamnesis: Riwayat obat; anamnesis: Keluhan lain | Tukak peptik: nyeri ulu hati lebih menetap, sering pada pengguna OAINS atau H. pylori; dapat berdarah (BAB hitam). Dispepsia fungsional: tanpa kelainan struktural dan tanpa tanda alarm. |
+| Keganasan Lambung | Ya | anamnesis: Keluhan lain; gejala: Berat badan turun; gejala: BAB hitam (melena) | Keganasan lambung: usia > 55 tahun dengan keluhan baru, BB turun, anemia, muntah berulang, sulit menelan, BAB hitam → endoskopi. |
+| Angina Pektoris Stabil | Ya | anamnesis: Pemberat & peringan; Elektrokardiografi (EKG) 12 sadapan | Angina: rasa berat di dada/ulu hati saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan dan stres, tidak dipicu aktivitas. |
+| Kolik Bilier / Kolesistitis | — | Abdomen | Kolik bilier: serangan nyeri kanan atas hebat setelah makan berlemak, Murphy (+). Dispepsia: rasa tidak nyaman ulu hati yang lebih ringan dan menetap. |
+
+**Disposisi** (aturan pertama yang cocok)
+
+- usia 56–… → **Rujuk ke spesialis (tidak darurat)** (juga diterima: Rawat jalan, edukasi & kontrol): Usia > 55 tahun dengan dispepsia perlu endoskopi untuk menyingkirkan keganasan.
+- — → **Rawat jalan, edukasi & kontrol**: Dispepsia fungsional tanpa tanda alarm dikelola di layanan primer.
+
+**Prinsip tata laksana** (tanpa dosis)
+
+- Edukasi dan yakinkan pasien bahwa keluhannya bukan penyakit berbahaya; kelola stres dan tidur.
+- Makan teratur porsi kecil; kurangi kopi, makanan berlemak/pedas; hindari obat antinyeri OAINS.
+- Penekan asam (pola nyeri/perih) atau prokinetik (pola begah/cepat kenyang) — keputusan dokter.
+- Tes H. pylori bila tersedia; bila positif, eradikasi sesuai panduan.
+- Evaluasi ulang dan rujuk endoskopi bila muncul tanda alarm atau tidak membaik dengan terapi.
+
+**Langkah penalaran yang dianjurkan**
+
+1. Pastikan keluhan kronik (berbulan-bulan) dan polanya: setelah makan (begah/cepat kenyang) atau perih ulu hati.
+2. Singkirkan tanda alarm: BB turun, muntah berulang/darah, BAB hitam, anemia, sulit menelan, usia > 55 tahun.
+3. Tanyakan obat antinyeri/jamu — dispepsia karena obat bukan fungsional.
+4. Pemeriksaan fisik umumnya normal; tanpa tanda alarm, pemeriksaan mahal tidak diperlukan.
+
+**Jebakan penalaran (umpan balik)**
+
+- `{"topicNotAsked":"keluhan_lain"}` → Tanda alarm (BB turun, BAB hitam, muntah darah, sulit menelan) harus ditanyakan sebelum menyimpulkan dispepsia fungsional.
+- `{"topicNotAsked":"kebiasaan","traits":["stres"]}` → Stres dan pola makan tidak ditanyakan — pencetus utama dispepsia fungsional yang perlu dikelola.
+- `{"primaryIs":"gastritis"}` → Keluhan kronik berbulan-bulan tanpa pemicu akut lebih sesuai dispepsia fungsional; gastritis akut muncul mendadak setelah pemicu (OAINS, alkohol, makanan iritatif).
+
+**Temuan khas (layar edukasi)**
+
+- Keluhan ulu hati kronik berbulan-bulan, hilang timbul
+- Rasa penuh setelah makan, cepat kenyang, begah, dan/atau perih ulu hati
+- Diperberat stres dan pola makan tidak teratur; tanpa pemicu organik (obat antinyeri)
+- Pemeriksaan normal atau nyeri tekan ringan; TANPA tanda alarm
+
+**Catatan pengembang**
+
+- Dipisahkan dari gastritis: dispepsia di game = dispepsia FUNGSIONAL (kronik, tanpa penyebab organik, tanpa tanda alarm).
+- Perdarahan saluran cerna dipindah ke gastritis (erosif); kasus dengan tanda alarm bukan dispepsia fungsional.
+- Tes H. pylori dinilai opsional (tanpa penalti) karena ketersediaannya di layanan primer terbatas.
+
+**Rujukan**
+
+- Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia
+- PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)
+- Stanghellini V, dkk. Gastroduodenal Disorders (Rome IV). Gastroenterology 2016
+
+**Checklist reviewer**
+
+- [ ] Nama, alias, tingkat SKDI, dan tingkat bahaya sudah tepat
+- [ ] Demografi & faktor risiko sesuai epidemiologi Indonesia
+- [ ] Probabilitas gejala masuk akal
+- [ ] Rentang nilai lab & sensitivitas tes sesuai literatur
+- [ ] Jawaban anamnesis & petunjuk realistis (bahasa awam)
+- [ ] Temuan khas, catatan pembelajaran, dan cara membedakan akurat
+- [ ] Rencana pemeriksaan (kunci/pendukung/komplikasi) & pemeriksaan "tidak perlu" sesuai praktik layanan primer
+- [ ] Komplikasi, tanda bahaya, dan aturan disposisi/rujukan tepat
+- [ ] Prinsip tata laksana & jebakan penalaran akurat
+
+---
+
+## Gastritis akut
+
+- **id**: `gastritis` · **SKDI**: 4A · **bahaya**: sedang · **sistem**: Pencernaan · **status**: `BELUM_DITINJAU_DOKTER`
+- **Hari sakit saat datang**: 1–7
+- **Demografi**: laki-laki 55%; usia 18–30 (bobot 3), 31–45 (bobot 4), 46–60 (bobot 3), 61–75 (bobot 2)
+- **Pekerjaan berisiko** (bias 45%): Buruh pabrik, Pekerja proyek bangunan, Petani, Sopir truk, Pengemudi ojek online, Mahasiswa
+- **Biaya penunjang kunci**: Rp0 · semua sesuai rencana: Rp0
+
+> Peradangan akut mukosa lambung. Pemicu tersering: obat antinyeri golongan OAINS (termasuk jamu pegal linu yang sering dicampur OAINS/steroid), alkohol, makanan sangat pedas/asam, dan infeksi Helicobacter pylori. Keluhan perih ulu hati yang MUNCUL MENDADAK dalam beberapa hari setelah paparan pemicu, mual-muntah, dan nyeri tekan epigastrium. Gastritis erosif dapat berdarah (muntah darah, BAB hitam, anemia) — tanda bahaya yang harus dirujuk segera.
+
+**Trait laten** (aturan pertama yang cocok per id dipakai)
+
+| Trait | Peluang | Kondisi | Keterangan |
+|---|---|---|---|
+| oains | 45% | — | Pemicu: obat antinyeri (OAINS) atau jamu pegal linu beberapa hari terakhir. |
+| alkohol | 20% | laki-laki | Pemicu: minum minuman beralkohol. |
+| alkohol | 5% | — | Pemicu: minum minuman beralkohol. |
+| makanan_iritatif | 40% | — | Pemicu: makanan sangat pedas/asam. |
+| h_pylori | 30% | — | Penyebab: infeksi Helicobacter pylori. |
+| perdarahan_saluran_cerna | 22% | trait: oains | Komplikasi: gastritis erosif dengan perdarahan saluran cerna atas (muntah darah/BAB hitam, anemia). |
+| perdarahan_saluran_cerna | 15% | trait: alkohol | Komplikasi: gastritis erosif dengan perdarahan saluran cerna atas (muntah darah/BAB hitam, anemia). |
+| perdarahan_saluran_cerna | 5% | — | Komplikasi: gastritis erosif dengan perdarahan saluran cerna atas (muntah darah/BAB hitam, anemia). |
+
+**Gejala**
+
+| Gejala | Peluang | Kondisi |
+|---|---|---|
+| Nyeri/perih ulu hati (epigastrium) | 100% | — |
+| Mual/muntah | 80% | — |
+| Nafsu makan menurun | 50% | — |
+| Kembung / sering sendawa | 35% | — |
+| Rasa terbakar di dada (heartburn) | 20% | — |
+| Muntah darah (hematemesis) | 55% | trait: perdarahan_saluran_cerna |
+| BAB hitam (melena) | 80% | trait: perdarahan_saluran_cerna |
+| Lemas | 100% | trait: perdarahan_saluran_cerna |
+| Lemas | 20% | — |
+
+Keluhan utama (prioritas): nyeri_ulu_hati; tambahan: mual_muntah. Salah kaprah pasien: masuk angin, maag kambuh, salah makan, asam lambung naik.
+
+**Temuan pemeriksaan abnormal** (parameter lain = normal)
+
+| Alat · parameter | Kondisi | Peluang | Nilai |
+|---|---|---|---|
+| Abdomen · Palpasi — nyeri tekan | — | 90% | Nyeri tekan epigastrium |
+| Tes antigen H. pylori (feses) · Antigen H. pylori | trait: h_pylori | 92% (sensitivitas) | Positif |
+| Darah lengkap + hitung jenis · Hemoglobin | laki-laki; trait: perdarahan_saluran_cerna | 100% | 8,0–10,5 g/dL |
+| Darah lengkap + hitung jenis · Hemoglobin | perempuan; trait: perdarahan_saluran_cerna | 100% | 7,5–10,0 g/dL |
+| Kepala & leher · Konjungtiva | trait: perdarahan_saluran_cerna | 100% | Anemis (pucat) |
+| Tanda vital lengkap · Nadi | trait: perdarahan_saluran_cerna | 100% | 102–118 ×/menit |
+| Keadaan umum · Kesan sakit | trait: perdarahan_saluran_cerna | 100% | Tampak pucat dan lemas |
+| Keadaan umum · Kesan sakit | tanpa: perdarahan_saluran_cerna | 50% | Tampak sakit ringan, sesekali memegang ulu hati |
+
+**Petunjuk anamnesis** (jawaban bertanda petunjuk)
+
+- _onset_: "Mendadak, Dok, baru {lamaSakit} ini. Sebelumnya nggak pernah separah ini." → **Onset akut (beberapa hari)**
+- _lokasi_: "Di ulu hati, Dok, perut atas bagian tengah." → **Nyeri terlokalisasi di epigastrium**
+- _karakter_: "Perih sekali, Dok, kayak terbakar di dalam." → **Perih/terbakar di ulu hati**
+- _keparahan_: "Lemas sekali, Dok, kepala kliyengan kalau berdiri." → **Lemas & pusing saat berdiri (curiga perdarahan saluran cerna)**
+- _pemberat_peringan_: "Kalau perut diisi atau habis minum kopi tambah perih, Dok. Minum obat maag sedikit mendingan." → **Memberat setelah makan/kopi; sedikit membaik dengan antasida**
+- _episode_sebelumnya_: "Baru kali ini, Dok. Biasanya perut saya nggak pernah rewel." → **Episode pertama (akut)**
+- _riwayat_obat_: "Seminggu ini saya minum jamu pegal linu tiap hari, Dok, badan pegal habis kerja berat." → **Jamu pegal linu (sering dicampur OAINS/steroid) setiap hari**
+- _riwayat_obat_: "Lututnya sakit, Dok, jadi tiap hari saya minum obat asam urat sama obat antinyeri dari warung." → **Obat antinyeri (OAINS) rutin beberapa hari terakhir**
+- _kebiasaan_: "Malam Minggu kemarin saya ikut minum-minum sama teman, Dok, lumayan banyak. Habis itu makan seblak yang pedas sekali." → **Minum alkohol dan makanan sangat pedas sebelum keluhan muncul**
+- _kebiasaan_: "Malam Minggu kemarin saya ikut minum-minum sama teman, Dok, lumayan banyak." → **Minum alkohol sebelum keluhan muncul**
+- _kebiasaan_: "Dua hari lalu saya makan seblak level paling pedas, Dok, terus minum es jeruk." → **Makanan sangat pedas/asam sebelum keluhan**
+
+**Rencana pemeriksaan sesuai indikasi** (dasar penilaian)
+
+| Jenis | Pemeriksaan | Peran | Kondisi | Alasan |
+|---|---|---|---|---|
+| Fisik | Abdomen | kunci | — | Nyeri tekan epigastrium; singkirkan apendisitis, kolik bilier, dan peritonitis. |
+| Fisik | Kepala & leher | pendukung | — | Konjungtiva anemis (tanda perdarahan). |
+| Penunjang | Darah lengkap + hitung jenis | komplikasi | trait: perdarahan_saluran_cerna | Menilai anemia akibat perdarahan saluran cerna. |
+| Penunjang | Elektrokardiografi (EKG) 12 sadapan | pendukung | usia 45–… | Pada usia > 45 tahun, nyeri epigastrium bisa berasal dari iskemia inferior. |
+| Tidak perlu | CT-scan abdomen non-kontras (rujukan) | — | — | CT-scan mahal dan tidak diindikasikan untuk gastritis tanpa komplikasi bedah. |
+| Tidak perlu | Foto polos abdomen (BNO/KUB) | — | — | Tidak ada kecurigaan batu saluran kemih atau obstruksi usus. |
+| Tidak perlu | USG abdomen (termasuk ginjal) | — | — | Tanpa nyeri kanan atas atau tanda alarm, USG tidak diperlukan. |
 | Tidak perlu | Tes cepat NS1 dengue | — | — | Tidak ada demam akut yang mengarah ke dengue. |
 | Tidak perlu | Serologi dengue IgM/IgG | — | — | Tidak ada demam akut yang mengarah ke dengue. |
 | Tidak perlu | Tes cepat (RDT) malaria | — | — | Tidak ada demam/riwayat daerah endemis. |
@@ -1268,67 +1444,70 @@ Keluhan utama (prioritas): nyeri_ulu_hati; tambahan: kembung, mual_muntah. Salah
 | Tidak perlu | BTA sputum (mikroskopis) | — | — | Tidak ada gejala yang mengarah ke TB. |
 | Tidak perlu | HbA1c | — | — | HbA1c tidak membantu diagnosis keluhan akut ini. |
 | Tidak perlu | Spirometri sederhana (APE & reversibilitas) | — | — | Tidak ada keluhan sesak/obstruksi saluran napas. |
-| Tidak perlu | USG abdomen (termasuk ginjal) | — | — | Tanpa tanda alarm atau nyeri kanan atas, USG tidak diperlukan. |
 | Tidak perlu | Rontgen thorax (PA) | — | — | Tidak ada keluhan napas. |
 
-Topik anamnesis kunci: Lokasi & penjalaran, Pemberat & peringan, Riwayat obat, Keluhan lain.
+Topik anamnesis kunci: Onset, Riwayat obat, Kebiasaan & gaya hidup, Keluhan lain.
 
 **Diagnosis banding**
 
 | Kondisi | Wajib disingkirkan | Bukti untuk menyingkirkan | Cara membedakan |
 |---|---|---|---|
-| Penyakit Refluks Gastroesofageal (GERD) | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan | GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang, nyeri tekan epigastrium. |
-| Angina Pektoris Stabil | Ya | anamnesis: Pemberat & peringan; Elektrokardiografi (EKG) 12 sadapan | Angina: rasa berat di dada saat aktivitas fisik, membaik dengan istirahat, ada faktor risiko kardiovaskular. Dispepsia: terkait makan, ada nyeri tekan epigastrium. |
-| Demam Tifoid | — | Tanda vital lengkap | Tifoid: keluhan perut disertai DEMAM lebih dari seminggu (sore–malam) dan lidah kotor. Dispepsia: tanpa demam. |
-| Tukak Peptik | — | anamnesis: Riwayat obat; gejala: BAB hitam (melena) | Tukak peptik: nyeri ulu hati lebih menetap, sering pada pengguna OAINS; dapat berdarah (BAB hitam). |
+| Dispepsia fungsional | — | anamnesis: Onset; anamnesis: Episode sebelumnya; anamnesis: Riwayat obat | Dispepsia fungsional: keluhan KRONIK hilang timbul berbulan-bulan (cepat kenyang, begah, perih ulu hati) tanpa pemicu jelas dan tanpa tanda alarm. Gastritis akut: muncul mendadak beberapa hari setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), sering disertai mual-muntah. |
+| Penyakit Refluks Gastroesofageal (GERD) | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan | GERD: rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Gastritis: perih di ulu hati dengan nyeri tekan epigastrium. |
+| Tukak Peptik | — | anamnesis: Onset; anamnesis: Riwayat obat; gejala: BAB hitam (melena); gejala: Muntah darah (hematemesis) | Tukak peptik: nyeri ulu hati lebih menetap berminggu-minggu, khas terkait makan (tukak duodenum membaik saat makan), risiko perdarahan/perforasi. Gastritis akut: onset beberapa hari setelah pemicu. Keduanya bisa berdarah → rujuk endoskopi bila ada tanda alarm. |
+| Angina Pektoris Stabil | Ya | anamnesis: Pemberat & peringan; Elektrokardiografi (EKG) 12 sadapan | Angina/iskemia inferior dapat terasa di ulu hati: dipicu aktivitas fisik, membaik dengan istirahat, faktor risiko kardiovaskular. Gastritis: terkait makan/pemicu iritan, nyeri tekan epigastrium. |
+| Pankreatitis Akut | Ya | anamnesis: Keparahan; anamnesis: Lokasi & penjalaran | Pankreatitis: nyeri epigastrium sangat hebat menjalar ke punggung, muntah terus, sering setelah alkohol berat atau batu empedu. Gastritis: perih lebih ringan, tanpa penjalaran ke punggung. |
 | Kolik Bilier / Kolesistitis | — | Abdomen | Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+). |
-| Pankreatitis Akut | — | anamnesis: Keparahan; anamnesis: Lokasi & penjalaran | Pankreatitis: nyeri epigastrium sangat hebat menjalar ke punggung, muntah. |
-| Keganasan Lambung | Ya | gejala: Berat badan turun; gejala: BAB hitam (melena) | Keganasan lambung: usia > 55 tahun, BB turun, anemia, muntah, disfagia. |
+| Apendisitis Akut | Ya | Abdomen; Tanda vital lengkap | Apendisitis awal bisa dimulai di ulu hati lalu berpindah ke perut kanan bawah, disertai demam dan nyeri tekan McBurney. Gastritis: nyeri tetap di epigastrium tanpa demam. |
 
 **Komplikasi & tanda bahaya**
 
 | Komplikasi | Trait | Tanda bahaya | Cara menilai | Penjelasan |
 |---|---|---|---|---|
-| Perdarahan saluran cerna atas | perdarahan_saluran_cerna | Ya | gejala: BAB hitam (melena); Darah lengkap + hitung jenis; Kepala & leher; Tanda vital lengkap | BAB hitam (melena), anemia, takikardia → rujuk segera untuk endoskopi. |
+| Perdarahan saluran cerna atas | perdarahan_saluran_cerna | Ya | gejala: BAB hitam (melena); gejala: Muntah darah (hematemesis); Darah lengkap + hitung jenis; Kepala & leher; Tanda vital lengkap | Muntah darah/BAB hitam, anemia, takikardia → gastritis erosif berdarah: stabilisasi dan rujuk segera untuk endoskopi. |
 
 **Disposisi** (aturan pertama yang cocok)
 
-- trait: perdarahan_saluran_cerna → **Rujuk segera / IGD**: Perdarahan saluran cerna atas memerlukan penanganan di rumah sakit.
-- usia 56–… → **Rujuk ke spesialis (tidak darurat)** (juga diterima: Rawat jalan, edukasi & kontrol): Dispepsia baru pada usia > 55 tahun perlu endoskopi.
-- — → **Rawat jalan, edukasi & kontrol**: Dispepsia tanpa tanda alarm dikelola di layanan primer.
+- trait: perdarahan_saluran_cerna → **Rujuk segera / IGD**: Perdarahan saluran cerna atas (gastritis erosif) memerlukan penanganan dan endoskopi di rumah sakit.
+- — → **Rawat jalan, edukasi & kontrol** (juga diterima: Rawat jalan dengan pemantauan ketat / kontrol ulang): Gastritis akut tanpa tanda bahaya dikelola di layanan primer: hentikan pemicu dan beri penekan asam.
 
 **Prinsip tata laksana** (tanpa dosis)
 
-- Hindari pemicu: OAINS/jamu pegal linu, kopi, makanan pedas/asam; makan teratur porsi kecil.
-- Terapi simptomatik/penekan asam — keputusan dokter.
-- Rujuk endoskopi bila ada tanda alarm atau usia > 55 tahun dengan keluhan baru.
+- Hentikan pemicu: OAINS/jamu pegal linu, alkohol, makanan sangat pedas/asam; ganti antinyeri ke parasetamol bila perlu.
+- Penekan asam/antasida dan obat simptomatik (mual) — keputusan dokter.
+- Makan porsi kecil tapi sering; cukup minum.
+- Bila H. pylori positif: eradikasi sesuai panduan.
+- Muntah darah/BAB hitam/pucat: pasang akses infus, stabilisasi, rujuk segera.
 
 **Langkah penalaran yang dianjurkan**
 
-1. Nyeri ulu hati: lokasi, karakter, hubungan dengan makan, dan obat antinyeri.
-2. Cari tanda alarm: BAB hitam, muntah darah, BB turun, anemia, disfagia.
-3. Pemeriksaan abdomen; pada usia > 45 tahun dengan faktor risiko, pikirkan iskemia (EKG).
-4. Tanpa tanda alarm, diagnosis klinis — tidak perlu pemeriksaan mahal.
+1. Nyeri ulu hati akut: kapan mulai dan apa pemicunya (obat antinyeri, jamu, alkohol, makanan).
+2. Cari tanda bahaya perdarahan: muntah darah, BAB hitam, lemas/pusing saat berdiri; periksa konjungtiva dan nadi.
+3. Periksa abdomen: nyeri tekan epigastrium; singkirkan apendisitis, kolik bilier, pankreatitis.
+4. Usia > 45 tahun dengan faktor risiko: pikirkan iskemia (EKG).
 
 **Jebakan penalaran (umpan balik)**
 
-- `{"topicNotAsked":"riwayat_obat","traits":["oains"]}` → Konsumsi OAINS/jamu pegal linu tidak ditanyakan — penyebab gastritis yang sering dan meningkatkan risiko perdarahan.
-- `{"traits":["perdarahan_saluran_cerna"],"topicNotAsked":"keluhan_lain"}` → BAB hitam jarang disebut spontan — tanyakan gejala penyerta dan warna BAB secara spesifik.
+- `{"topicNotAsked":"riwayat_obat","traits":["oains"]}` → Obat antinyeri/jamu pegal linu tidak ditanyakan — penyebab gastritis tersering sekaligus pemicu perdarahan.
+- `{"topicNotAsked":"kebiasaan","traits":["alkohol"]}` → Kebiasaan minum alkohol tidak ditanyakan — pemicu gastritis akut yang harus dihentikan.
+- `{"traits":["perdarahan_saluran_cerna"],"topicNotAsked":"keluhan_lain"}` → Muntah darah/BAB hitam jarang disebut spontan — tanyakan gejala penyerta dan warna BAB secara spesifik.
+- `{"primaryIs":"dispepsia"}` → Keluhan yang muncul mendadak setelah pemicu jelas (OAINS, alkohol, makanan iritatif) bukan dispepsia fungsional — dispepsia fungsional bersifat kronik tanpa penyebab organik.
 
 **Temuan khas (layar edukasi)**
 
-- Nyeri/perih ulu hati, kembung, cepat kenyang, mual
-- Dipicu telat makan, makanan pedas/asam, kopi, stres, atau obat antinyeri (OAINS)
-- Nyeri tekan epigastrium; pemeriksaan lain umumnya normal
-- Tanpa tanda alarm (BB turun, muntah darah, BAB hitam, anemia, sulit menelan)
+- Perih/nyeri ulu hati yang muncul mendadak (beberapa hari), sering dengan mual-muntah
+- Ada pemicu: OAINS/jamu pegal linu, alkohol, atau makanan sangat pedas/asam
+- Nyeri tekan epigastrium; tanpa demam
+- Tanda bahaya perdarahan: muntah darah, BAB hitam, pucat, takikardia
 
 **Catatan pengembang**
 
-- Dispepsia dan gastritis digabung menjadi satu diagnosis di game.
+- Dipisahkan dari dispepsia fungsional: gastritis di game = gastritis/gastropati AKUT dengan pemicu jelas.
+- Tes H. pylori dinilai opsional (tanpa penalti) karena ketersediaannya di layanan primer terbatas.
 
 **Rujukan**
 
-- Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Dispepsia & Gastritis
+- Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Gastritis
 - PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)
 
 **Checklist reviewer**
@@ -1656,7 +1835,7 @@ Topik anamnesis kunci: Lokasi & penjalaran, Sifat keluhan, Durasi tiap episode, 
 | Apendisitis Akut | Ya | Abdomen | Apendisitis: nyeri berpindah ke kanan bawah, McBurney (+), demam ringan; urinalisis umumnya normal. |
 | Kolik Bilier / Kolesistitis | — | Abdomen; USG abdomen (termasuk ginjal) | Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+); USG tampak batu empedu. |
 | Massa / Tumor Saluran Kemih | Ya | USG abdomen (termasuk ginjal); CT-scan abdomen non-kontras (rujukan) | Massa saluran kemih: hematuria tanpa nyeri pada usia lanjut/perokok, sumbatan tanpa batu yang jelas; perlu CT. |
-| Dispepsia / Gastritis | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan; Urinalisis (urin lengkap) | Dispepsia: perih ulu hati terkait makan dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria. |
+| Gastritis akut | — | anamnesis: Lokasi & penjalaran; anamnesis: Sifat keluhan; Urinalisis (urin lengkap) | Gastritis akut: perih ulu hati terkait makan/pemicu dengan nyeri tekan epigastrium. Batu: nyeri pinggang kolik menjalar ke lipat paha, nyeri ketok CVA, hematuria. |
 
 **Komplikasi & tanda bahaya**
 

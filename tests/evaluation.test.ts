@@ -70,7 +70,7 @@ describe('penilaian klinis: struktur', () => {
 
 describe('penilaian klinis: anamnesis', () => {
   it('menggali keluhan tambahan & gejala tersembunyi menaikkan skor', () => {
-    const c = findCase('dispepsia', (x) => x.hiddenSymptoms.includes('bab_hitam'));
+    const c = findCase('gastritis', (x) => x.hiddenSymptoms.includes('bab_hitam'));
     const base = askTopics(startEncounter(c), 'onset', 'lokasi');
     const deeper = applyIntents(askTopics(base, 'keluhan_lain'), [{ kind: 'symptom', symptom: 'bab_hitam' }], content).state;
     const a = comp(decide(base, {}), 'anamnesis');

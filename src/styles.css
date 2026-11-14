@@ -623,6 +623,10 @@ h3 {
   opacity: 0.75;
   background: var(--primary-soft);
 }
+.chip--soft {
+  border-style: dashed;
+  background: transparent;
+}
 .chip--filter {
   border-radius: 999px;
   min-height: 34px;

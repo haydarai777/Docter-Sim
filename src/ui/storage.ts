@@ -79,18 +79,37 @@ export interface Settings {
   /** false = mode latihan: tes diagnostik selalu akurat. */
   realisticTests: boolean;
   tutorialSeen: boolean;
-  /** true = pasien diperankan Claude (bila tersedia); false = pemahaman bahasa lokal. */
+  /**
+   * true = pasien diperankan Claude (memakai kuota Claude pemain, hanya di claude.ai);
+   * false (bawaan) = pemahaman bahasa lokal di perangkat, tanpa token.
+   */
   aiPatient: boolean;
 }
 
-const DEFAULT_SETTINGS: Settings = { theme: 'system', realisticTests: true, tutorialSeen: false, aiPatient: true };
+/**
+ * Versi skema pengaturan.
+ * v2: mode lokal menjadi bawaan — pasien AI harus diaktifkan sendiri oleh pemain.
+ */
+export const SETTINGS_VERSION = 2;
+
+export const DEFAULT_SETTINGS: Readonly<Settings> = { theme: 'system', realisticTests: true, tutorialSeen: false, aiPatient: false };
+
+/** Gabungkan pengaturan tersimpan dengan bawaan, termasuk migrasi dari versi lama. */
+export function migrateSettings(stored: unknown): Settings {
+  const raw = stored && typeof stored === 'object' ? (stored as Partial<Settings> & { version?: unknown }) : {};
+  const { version, ...rest } = raw;
+  const settings: Settings = { ...DEFAULT_SETTINGS, ...rest };
+  // v1 menyimpan aiPatient: true sebagai BAWAAN lama (bukan pilihan pemain) → kembali ke mode lokal.
+  if (typeof version !== 'number' || version < 2) settings.aiPatient = false;
+  return settings;
+}
 
 export function loadSettings(): Settings {
-  return { ...DEFAULT_SETTINGS, ...readJson<Partial<Settings>>('pengaturan', {}) };
+  return migrateSettings(readJson<unknown>('pengaturan', {}));
 }
 
 export function saveSettings(settings: Settings): void {
-  writeJson('pengaturan', settings);
+  writeJson('pengaturan', { ...settings, version: SETTINGS_VERSION });
 }
 
 /** Terapkan tema: 'system' mengikuti preferensi OS (via media query di CSS). */

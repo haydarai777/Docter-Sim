@@ -29,7 +29,20 @@
         "bisa diceritakan",
         "apa masalah",
         "ada yang bisa saya bantu",
-        "ada yang bisa dibantu"
+        "ada yang bisa dibantu",
+        "apa yang bisa saya bantu",
+        "bisa saya bantu",
+        "apa yang dikeluhkan",
+        "datang berobat",
+        "membuat datang",
+        "datang ke sini",
+        "masalah kesehatan",
+        "keluhan kesehatan",
+        "periksa apa",
+        "mau periksa apa",
+        "keluhan utama",
+        "kami bantu",
+        "bisa kami bantu"
       ],
       "why": "Keluhan utama adalah titik awal; dengarkan dulu dengan kata-kata pasien sendiri.",
       "fallback": []
@@ -62,7 +75,23 @@
         "pertama muncul",
         "kapan pertama",
         "onset",
-        "dari kapan"
+        "dari kapan",
+        "berapa lama",
+        "pertama kali terasa",
+        "pertama terasa",
+        "mulai terasa",
+        "mulai dirasakan",
+        "sejak",
+        "sejak kemarin",
+        "dari kemarin",
+        "sejak tadi",
+        "dari tadi",
+        "sejak pagi",
+        "tadi pagi",
+        "baru tadi",
+        "tadi malam",
+        "merasa sehat",
+        "terakhir sehat"
       ],
       "why": "Onset & lama sakit membedakan proses akut (infeksi, kolik) dari kronik (TB, DM, GERD).",
       "fallback": [{ "text": "Mulainya sekitar {hariTeks} hari yang lalu, Dok." }]
@@ -89,7 +118,16 @@
         "sisi kanan",
         "sisi kiri",
         "kanan atau kiri",
-        "daerah mana"
+        "daerah mana",
+        "menyebar",
+        "merambat",
+        "pindah ke",
+        "titik mana",
+        "paling sakit di",
+        "sebelah kanan",
+        "sebelah kiri",
+        "bagian kanan",
+        "bagian kiri"
       ],
       "why": "Lokasi dan penjalaran mengarahkan ke organ sumber (retrosternal → jantung/esofagus; pinggang ke lipat paha → ureter).",
       "fallback": [{ "text": "Nggak di satu tempat, Dok. Rasanya seluruh badan." }]
@@ -120,7 +158,21 @@
         "berdenyut",
         "kualitas",
         "digambarkan",
-        "seperti apa rasanya"
+        "seperti apa rasanya",
+        "seperti bagaimana",
+        "gambarkan",
+        "jelaskan rasanya",
+        "deskripsikan",
+        "rasanya bagaimana",
+        "nyeri bagaimana",
+        "rasa nyeri",
+        "cekot",
+        "nyut",
+        "senut",
+        "ditindih",
+        "ditimpa",
+        "tertindih",
+        "diikat"
       ],
       "why": "Kualitas keluhan (terbakar, ditekan, kolik, perih) adalah pembeda utama.",
       "fallback": [{ "text": "Gimana ya, Dok... pokoknya nggak enak." }]
@@ -143,7 +195,14 @@
         "berapa menit",
         "berapa jam",
         "durasi",
-        "lama serangan"
+        "lama serangan",
+        "sekali sakit",
+        "sekali nyeri",
+        "sekali muncul",
+        "tiap sakit",
+        "setiap sakit",
+        "tiap kambuh",
+        "setiap kambuh"
       ],
       "why": "Lama tiap episode (mis. angina < 15 menit, kolik hilang-timbul) membantu membedakan penyebab.",
       "fallback": [{ "text": "Nggak tentu, Dok. Pokoknya terasa terus." }]
@@ -173,7 +232,21 @@
         "masih bisa kerja",
         "bisa kerja",
         "intensitas",
-        "separah apa"
+        "separah apa",
+        "bisa sekolah",
+        "masih bisa sekolah",
+        "bisa kuliah",
+        "bisa beraktivitas",
+        "parah",
+        "berat atau ringan",
+        "ringan atau berat",
+        "berat ringan",
+        "mengganggu aktivitas",
+        "mengganggu tidur",
+        "nilai",
+        "0 sampai 10",
+        "angka berapa",
+        "sampai harus"
       ],
       "why": "Keparahan & dampak pada aktivitas menunjukkan derajat penyakit dan kebutuhan rujukan.",
       "fallback": [
@@ -202,10 +275,28 @@
         "subuh",
         "kapan saja",
         "berkala",
-        "teratur",
         "jadwal",
         "setiap hari",
-        "naik turun"
+        "naik turun",
+        "seberapa sering",
+        "berapa kali",
+        "sehari berapa kali",
+        "datang pergi",
+        "datang dan pergi",
+        "hilang muncul",
+        "kadang",
+        "sakit terus",
+        "nyeri terus",
+        "sepanjang hari",
+        "setiap saat",
+        "kumat",
+        "biasanya muncul",
+        "muncul kapan",
+        "biasanya kapan",
+        "kapan biasanya",
+        "tiap hari",
+        "tiap malam",
+        "tiap pagi"
       ],
       "why": "Pola waktu (sore–malam, berkala, malam/dini hari) adalah petunjuk klasik.",
       "fallback": [{ "text": "Terus-terusan, Dok. Nggak ada jam-jamnya." }]
@@ -236,7 +327,21 @@
         "makin sering",
         "makin lama makin",
         "makin lama",
-        "semakin lama"
+        "semakin lama",
+        "dibanding",
+        "dibandingkan",
+        "makin berat",
+        "makin parah",
+        "semakin parah",
+        "semakin berat",
+        "tambah berat",
+        "bertambah parah",
+        "bertambah berat",
+        "makin sakit",
+        "tambah sakit",
+        "perbaikan",
+        "perubahan",
+        "ada perubahan"
       ],
       "why": "Perjalanan penyakit (memburuk/membaik/makin sering) menilai progresivitas dan kemungkinan komplikasi.",
       "fallback": [{ "text": "Kayaknya makin hari makin nggak enak, Dok." }]
@@ -279,7 +384,24 @@
         "membuat lebih ringan",
         "bikin tambah sakit",
         "bikin lebih parah",
-        "bikin enakan"
+        "bikin enakan",
+        "istirahat membaik",
+        "kalau istirahat",
+        "aktivitas",
+        "berjalan",
+        "dipakai jalan",
+        "jalan kaki",
+        "kalau jalan",
+        "saat jalan",
+        "habis jalan",
+        "setelah jalan",
+        "lebih ringan",
+        "kalau makan",
+        "saat makan",
+        "waktu makan",
+        "sesudah makan",
+        "sehabis makan",
+        "lebih sakit"
       ],
       "why": "Faktor pemberat/peringan (aktivitas vs makan vs posisi) memisahkan angina, GERD, dispepsia, dan kolik.",
       "fallback": [{ "text": "Kalau istirahat agak mendingan, Dok." }]
@@ -298,13 +420,15 @@
         "gejala lain",
         "ada lagi",
         "yang lain",
-        "lainnya",
         "keluhan tambahan",
         "selain",
         "dirasakan lagi",
         "masih ada keluhan",
         "ada keluhan lain",
-        "keluhan penyerta"
+        "keluhan penyerta",
+        "masih ada yang dirasakan",
+        "ada lagi yang dirasakan",
+        "lain lagi"
       ],
       "why": "Gejala penyerta sering tidak disebut spontan; banyak petunjuk penting tersembunyi di sini.",
       "fallback": [],
@@ -336,7 +460,8 @@
         "serupa",
         "seperti ini sebelumnya",
         "pernah kambuh",
-        "sering kambuh"
+        "sering kambuh",
+        "baru sekali"
       ],
       "why": "Episode serupa sebelumnya menandakan penyakit berulang (asma, batu, ISK berulang, malaria relaps) atau riwayat yang relevan.",
       "fallback": [{ "text": "Belum pernah kayak gini sebelumnya, Dok." }],
@@ -370,7 +495,30 @@
         "rawat inap",
         "penyakit kronis",
         "sakit berat",
-        "kolesterol"
+        "kolesterol",
+        "didiagnosis",
+        "diagnosis",
+        "divonis",
+        "kata dokter",
+        "asma",
+        "tbc",
+        "tb",
+        "flek paru",
+        "stroke",
+        "asam urat",
+        "sakit ginjal",
+        "penyakit ginjal",
+        "hepatitis",
+        "liver",
+        "penyakit paru",
+        "penyakit diderita",
+        "diderita",
+        "penyakit sebelumnya",
+        "tensi",
+        "tekanan darah tinggi",
+        "gula darah",
+        "gula tinggi",
+        "kadar gula"
       ],
       "why": "Penyakit lain (hipertensi, DM, dll.) mengubah risiko, diagnosis banding, dan tata laksana.",
       "fallback": [
@@ -396,7 +544,37 @@
         "vitamin",
         "rutin minum",
         "diberi apa",
-        "berobat"
+        "berobat",
+        "minum obat",
+        "obat pegal linu",
+        "jamu pegal linu",
+        "obat warung",
+        "parasetamol",
+        "paracetamol",
+        "panadol",
+        "antibiotik",
+        "amoksisilin",
+        "ibuprofen",
+        "asam mefenamat",
+        "antasida",
+        "promag",
+        "mylanta",
+        "omeprazol",
+        "ranitidin",
+        "metformin",
+        "amlodipin",
+        "captopril",
+        "insulin",
+        "puyer",
+        "obat maag",
+        "obat sakit kepala",
+        "ke dokter",
+        "periksa ke",
+        "ke puskesmas",
+        "ke klinik",
+        "ke bidan",
+        "ke mantri",
+        "ke rumah sakit"
       ],
       "why": "Obat yang sudah diminum (OAINS, antibiotik, obat rutin) memengaruhi gejala, hasil tes, dan pilihan terapi.",
       "fallback": [
@@ -420,7 +598,8 @@
         "gatal setelah minum",
         "alergi obat",
         "alergi makanan",
-        "alergi apa"
+        "alergi apa",
+        "gatal setelah minum obat"
       ],
       "why": "Riwayat alergi wajib ditanyakan sebelum memberi obat apa pun.",
       "fallback": [{ "text": "Nggak ada alergi, Dok." }]
@@ -444,7 +623,6 @@
         "anak anak",
         "keturunan",
         "serumah",
-        "menurun",
         "istri",
         "suami",
         "orang rumah",
@@ -454,7 +632,24 @@
         "orang serumah",
         "tertular",
         "menular",
-        "kontak dengan"
+        "kontak dengan",
+        "penyakit menurun",
+        "penyakit keturunan",
+        "turunan",
+        "tetangga",
+        "teman yang sakit",
+        "teman ada yang",
+        "rekan kerja",
+        "teman kerja",
+        "teman sekamar",
+        "teman sekantor",
+        "teman sekolah",
+        "teman sekelas",
+        "kantor ada yang",
+        "sekolah ada yang",
+        "kerja ada yang",
+        "kampung ada yang",
+        "sekitar ada yang"
       ],
       "why": "Riwayat keluarga & kontak serumah menunjukkan risiko genetik (DM, PJK, asma) atau penularan (TB, dengue).",
       "fallback": [
@@ -485,17 +680,30 @@
         "tinggal di",
         "tempat kerja",
         "lingkungan kerja",
-        "pekerjaan",
-        "kerja apa",
         "bekerja",
         "nyamuk",
         "banjir",
         "genangan",
-        "tetangga",
         "daerah",
         "kampung",
         "kos",
-        "kontrakan"
+        "kontrakan",
+        "rumah di mana",
+        "rumahnya di mana",
+        "papua",
+        "ntt",
+        "nusa tenggara",
+        "maluku",
+        "kalimantan",
+        "sumba",
+        "flores",
+        "luar daerah",
+        "daerah endemis",
+        "hutan",
+        "baru pulang",
+        "pulang dari",
+        "ke mana saja",
+        "pergi ke mana"
       ],
       "why": "Riwayat bepergian, pekerjaan, dan lingkungan mengarahkan ke penyakit endemis atau paparan tertentu.",
       "fallback": [
@@ -522,19 +730,291 @@
         "makan teratur",
         "makan tidak teratur",
         "jadwal makan",
-        "makanan",
         "jajan",
         "kopi",
         "tidur",
         "gaya hidup",
         "minum air",
-        "sehari hari",
-        "begadang"
+        "begadang",
+        "makanan apa",
+        "jenis makanan",
+        "makan pedas",
+        "makanan pedas",
+        "pedas",
+        "suka makan",
+        "minum kopi",
+        "makan telat",
+        "telat makan",
+        "makan terlambat",
+        "makan tidak tepat waktu"
       ],
       "why": "Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit.",
       "fallback": [
         { "text": "Biasa saja, Dok. Nggak merokok, makan juga teratur." },
         { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male", "ageMin": 18 } }
+      ]
+    },
+    {
+      "id": "identitas_nama",
+      "label": "Nama",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "siapa nama",
+        "nama siapa",
+        "namanya siapa",
+        "siapa namanya",
+        "nama lengkap",
+        "dengan bapak siapa",
+        "dengan ibu siapa",
+        "dengan mas siapa",
+        "dengan mbak siapa",
+        "dengan adik siapa",
+        "boleh tahu nama",
+        "nama anda"
+      ],
+      "why": "Menyapa pasien dengan namanya membangun hubungan dokter–pasien.",
+      "question": "Boleh saya tahu nama lengkapnya?",
+      "type": "static",
+      "fallback": [{ "text": "Nama saya {nama}, Dok." }, { "text": "Saya {nama}, Dok. Panggil saja {panggilan}." }]
+    },
+    {
+      "id": "identitas_umur",
+      "label": "Umur",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": ["umur", "usia", "umur berapa", "usia berapa", "tahun lahir", "lahir tahun", "tanggal lahir", "umurnya berapa"],
+      "why": "Usia mengubah kemungkinan penyakit dan nilai rujukan pemeriksaan.",
+      "question": "Usianya berapa sekarang?",
+      "type": "static",
+      "fallback": [{ "text": "Umur saya {usia} tahun, Dok." }, { "text": "{usia} tahun, Dok." }]
+    },
+    {
+      "id": "identitas_pekerjaan",
+      "label": "Pekerjaan",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "pekerjaan",
+        "kerja apa",
+        "kerjanya apa",
+        "bekerja sebagai",
+        "profesi",
+        "kesibukan",
+        "sehari hari kerja",
+        "kerja di mana",
+        "bekerja di mana",
+        "sekolah di mana",
+        "kuliah di mana",
+        "sibuk apa",
+        "mata pencaharian",
+        "kegiatan sehari hari",
+        "sehari hari kegiatan",
+        "kegiatan apa",
+        "aktivitas sehari hari",
+        "sehari hari ngapain",
+        "sehari hari sibuk",
+        "masih sekolah",
+        "masih kuliah",
+        "kelas berapa"
+      ],
+      "why": "Pekerjaan memberi petunjuk paparan (lingkungan kerja, aktivitas fisik, jam makan).",
+      "question": "Sehari-hari pekerjaannya apa?",
+      "type": "static",
+      "fallback": [{ "text": "Saya {pekerjaan}, Dok." }]
+    },
+    {
+      "id": "identitas_status",
+      "label": "Status & keluarga",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "menikah",
+        "sudah menikah",
+        "berkeluarga",
+        "sudah berkeluarga",
+        "punya anak",
+        "anak berapa",
+        "status pernikahan",
+        "tinggal dengan siapa",
+        "tinggal bersama siapa",
+        "sudah punya anak"
+      ],
+      "why": "Dukungan keluarga & orang serumah penting untuk edukasi dan kepatuhan berobat.",
+      "question": "Sudah berkeluarga? Tinggal dengan siapa di rumah?",
+      "type": "static",
+      "fallback": [
+        { "text": "Saya tinggal sama Bapak sama Ibu, Dok.", "when": { "ageMax": 14 } },
+        { "text": "Belum menikah, Dok. Masih tinggal sama orang tua.", "when": { "ageMin": 15, "ageMax": 21 } },
+        { "text": "Belum, Dok, masih sendiri.", "when": { "ageMin": 22, "ageMax": 29 } },
+        { "text": "Sudah, Dok, baru setahun. Belum punya anak.", "when": { "ageMin": 22, "ageMax": 29 } },
+        { "text": "Sudah, Dok. Anak saya dua.", "when": { "ageMin": 30, "ageMax": 50 }, "weight": 2 },
+        { "text": "Sudah, Dok. Anak tiga, yang besar sudah SMA.", "when": { "ageMin": 35, "ageMax": 50 } },
+        {
+          "text": "Sudah, Dok. Anak-anak sudah besar, yang sulung sudah kerja.",
+          "when": { "ageMin": 51, "ageMax": 59 }
+        },
+        { "text": "Sudah, Dok. Anak-anak sudah berkeluarga semua, cucu saya empat.", "when": { "ageMin": 60 } }
+      ]
+    },
+    {
+      "id": "pendapat_pasien",
+      "label": "Pendapat pasien",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "menurut bapak",
+        "menurut ibu",
+        "menurut anda",
+        "menurut mas",
+        "menurut mbak",
+        "menurut adik",
+        "menurut kamu",
+        "menurut sendiri",
+        "kira kira kenapa",
+        "kira kira penyebab",
+        "penyebab apa",
+        "penyebabnya apa",
+        "karena apa",
+        "gara gara apa",
+        "pikirkan",
+        "dipikirkan",
+        "pendapat",
+        "curiga sakit apa",
+        "pikir sakit apa",
+        "kenapa bisa begini"
+      ],
+      "why": "Gagasan pasien tentang penyakitnya (ide) membantu edukasi dan meluruskan salah kaprah.",
+      "question": "Menurut {sapaan} sendiri, keluhan ini karena apa?",
+      "type": "static",
+      "fallback": [
+        {
+          "text": "Wah, saya sudah baca-baca di internet, Dok. Ini pasti {salahKira}.",
+          "when": { "personality": ["sok_tahu"] }
+        },
+        {
+          "text": "Paling {salahKira} biasa, Dok. Nanti juga sembuh sendiri.",
+          "when": { "personality": ["meremehkan"] }
+        },
+        {
+          "text": "Saya kira {salahKira}, Dok... tapi saya takut ini sesuatu yang parah.",
+          "when": { "personality": ["cemas"] }
+        },
+        { "text": "Saya kira {salahKira}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } },
+        {
+          "text": "Kalau menurut saya sih {salahKira}, Dok. Betul nggak?",
+          "when": { "personality": ["kooperatif", "pelupa"] }
+        }
+      ]
+    },
+    {
+      "id": "kekhawatiran",
+      "label": "Kekhawatiran",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "khawatir",
+        "dikhawatirkan",
+        "kekhawatiran",
+        "takut",
+        "ditakutkan",
+        "cemas",
+        "dicemaskan",
+        "was was",
+        "kepikiran",
+        "yang dipikirkan"
+      ],
+      "why": "Menggali kekhawatiran pasien (concern) membantu menenangkan dan menjelaskan dengan tepat sasaran.",
+      "question": "Apa yang paling {sapaan} khawatirkan dari keluhan ini?",
+      "type": "static",
+      "fallback": [
+        {
+          "text": "Saya takut sekali ini {ketakutan}, Dok. Sampai susah tidur mikirinnya.",
+          "when": { "personality": ["cemas"] }
+        },
+        {
+          "text": "Ah, nggak terlalu khawatir sih, Dok. Paling {salahKira} biasa.",
+          "when": { "personality": ["meremehkan"] }
+        },
+        { "text": "Takutnya {ketakutan}, Dok. Tapi kayaknya sih {salahKira}.", "when": { "personality": ["sok_tahu"] } },
+        { "text": "Saya takut ini {ketakutan}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } },
+        { "text": "Jujur saya khawatir kena {ketakutan}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } }
+      ]
+    },
+    {
+      "id": "harapan",
+      "label": "Harapan pasien",
+      "rubric": "Identitas & perspektif",
+      "core": false,
+      "keywords": [
+        "harapan",
+        "berharap",
+        "diharapkan",
+        "mau bagaimana",
+        "maunya bagaimana",
+        "ingin apa",
+        "mau apa",
+        "tujuan datang",
+        "datang untuk",
+        "minta apa",
+        "ingin bagaimana",
+        "ingin diperiksa"
+      ],
+      "why": "Mengetahui harapan pasien (expectation) membantu menyepakati rencana tata laksana.",
+      "question": "Apa yang {sapaan} harapkan dari pemeriksaan hari ini?",
+      "type": "static",
+      "fallback": [
+        { "text": "Saya cuma mau tahu ini bahaya atau nggak, Dok. Biar tenang.", "when": { "personality": ["cemas"] } },
+        {
+          "text": "Saya mau dicek {salahKira}, Dok, terus dikasih obat yang paling ampuh.",
+          "when": { "personality": ["sok_tahu"] }
+        },
+        {
+          "text": "Dikasih obat saja, Dok, biar cepat bisa {kegiatan} lagi.",
+          "when": { "personality": ["meremehkan"] }
+        },
+        {
+          "text": "Pengennya cepat sembuh, Dok, biar bisa {kegiatan} lagi.",
+          "when": { "personality": ["kooperatif", "pelupa"] }
+        }
+      ]
+    },
+    {
+      "id": "haid_kehamilan",
+      "label": "Haid & kehamilan",
+      "rubric": "Riwayat",
+      "core": false,
+      "keywords": [
+        "haid",
+        "mens",
+        "menstruasi",
+        "datang bulan",
+        "hamil",
+        "kehamilan",
+        "kb",
+        "kontrasepsi",
+        "telat bulan",
+        "telat haid",
+        "menopause",
+        "siklus haid"
+      ],
+      "why": "Pada perempuan usia subur, kemungkinan hamil memengaruhi diagnosis serta pilihan obat dan pemeriksaan.",
+      "question": "Bagaimana haidnya, teratur? Kapan haid terakhir, ada kemungkinan hamil?",
+      "type": "static",
+      "fallback": [
+        { "text": "Hehe, saya kan laki-laki, Dok.", "when": { "sex": "male" } },
+        { "text": "Belum haid, Dok.", "when": { "sex": "female", "ageMax": 11 } },
+        { "text": "Baru mulai haid, Dok, belum teratur.", "when": { "sex": "female", "ageMin": 12, "ageMax": 14 } },
+        {
+          "text": "Haid teratur, Dok. Terakhir sekitar dua minggu lalu. Nggak lagi hamil.",
+          "when": { "sex": "female", "ageMin": 15, "ageMax": 49 },
+          "weight": 2
+        },
+        {
+          "text": "Haid lancar, Dok, terakhir minggu lalu. Belum ada rencana hamil.",
+          "when": { "sex": "female", "ageMin": 15, "ageMax": 49 }
+        },
+        { "text": "Sudah nggak haid lagi, Dok, sudah menopause.", "when": { "sex": "female", "ageMin": 50 } }
       ]
     }
   ],
@@ -547,17 +1027,26 @@
     "alreadySaid": ["Iya, Dok, seperti tadi saya bilang.", "Iya, Dok, itu yang tadi saya ceritakan."],
     "chief": ["Itu tadi, Dok. {keluhanAwal}"],
     "detail": {
-      "onset": ["Iya, Dok, {gejala}. Mulainya belakangan, setelah keluhan yang pertama."],
+      "onset": [
+        "Iya, Dok, {gejala}. Mulainya kira-kira {lamaGejala} yang lalu.",
+        "{Gejala}, Dok, sudah sekitar {lamaGejala} ini."
+      ],
       "keparahan": ["Iya, Dok, {gejala}, tapi nggak seberat keluhan utama saya."],
       "progresi": ["Iya, Dok, {gejala}. Rasanya sama saja dari kemarin."],
-      "default": ["Iya, Dok, {gejala}. Munculnya bareng keluhan yang lain, nggak terlalu saya perhatikan."]
+      "default": ["Iya, Dok, {gejala}. Munculnya bareng keluhan yang lain, nggak terlalu saya perhatikan."],
+      "pola": ["Iya, Dok, {gejala}. Datangnya hilang timbul, nggak tentu waktunya."],
+      "karakter": ["Iya, Dok, {gejala}. Susah dijelaskan, pokoknya nggak enak."]
     },
     "farewell": ["Terima kasih banyak, Dok. Saya permisi dulu.", "Baik, Dok, terima kasih. Permisi.", "Makasih ya, Dok. Mari, Dok."],
     "farewellReferral": [
       "Baik, Dok, saya langsung ke rumah sakit. Terima kasih, Dok.",
       "Iya, Dok, saya berangkat sekarang. Terima kasih banyak."
     ],
-    "closing": ["Anda menjelaskan diagnosis kerja dan rencana tata laksana kepada {sapaan}."]
+    "closing": ["Anda menjelaskan diagnosis kerja dan rencana tata laksana kepada {sapaan}."],
+    "repeatAsked": ["Tadi saya bilang begini, Dok:", "Iya, Dok. Tadi saya bilang:"],
+    "durationSame": ["Iya, Dok, kurang lebih segitu.", "Betul, Dok, sekitar itu."],
+    "durationLonger": ["Lebih lama dari itu, Dok.", "Bukan, Dok, sudah lebih lama."],
+    "durationShorter": ["Belum selama itu, Dok.", "Nggak, Dok, belum selama itu."]
   },
   "reviews": [
     {
@@ -601,23 +1090,73 @@
     {
       "id": "napas",
       "label": "Pernapasan",
-      "keywords": ["napas bagaimana", "pernapasan", "bernapas bagaimana", "napas lancar", "dada bagaimana"],
+      "keywords": ["napas bagaimana", "pernapasan", "bernapas bagaimana", "napas lancar"],
       "symptoms": ["batuk", "sesak_napas", "mengi", "nyeri_dada_pleuritik"],
       "normal": ["Napas lega, Dok, nggak batuk juga.", "Napas biasa saja, Dok."]
     },
     {
       "id": "kulit",
       "label": "Kulit",
-      "keywords": ["kulit bagaimana", "ada ruam", "kulit ada", "perubahan kulit", "warna kulit"],
+      "keywords": ["kulit bagaimana", "kulit ada", "perubahan kulit", "warna kulit", "kulit"],
       "symptoms": ["bintik_merah", "kuning", "luka_sulit_sembuh"],
-      "normal": ["Kulit saya biasa saja, Dok.", "Nggak ada apa-apa di kulit, Dok."]
+      "normal": ["Kulit saya biasa saja, Dok.", "Nggak ada apa-apa di kulit, Dok."],
+      "weak": true
     },
     {
       "id": "berat_badan",
       "label": "Berat badan",
-      "keywords": ["berat badan", "berat badan bagaimana", "timbangan", "bobot"],
+      "keywords": [
+        "berat badan",
+        "berat badan bagaimana",
+        "timbangan",
+        "bobot",
+        "berat turun atau naik",
+        "berat naik atau turun",
+        "berat naik turun"
+      ],
       "symptoms": ["berat_badan_turun"],
       "normal": ["Berat badan tetap, Dok, nggak berubah.", "Kayaknya berat badan saya biasa saja, Dok."]
+    },
+    {
+      "id": "perut",
+      "label": "Perut",
+      "keywords": ["perut", "perut bagaimana", "keluhan di perut"],
+      "symptoms": [
+        "nyeri_perut",
+        "nyeri_ulu_hati",
+        "kembung",
+        "cepat_kenyang",
+        "nyeri_suprapubik",
+        "mual_muntah",
+        "diare",
+        "konstipasi"
+      ],
+      "normal": ["Perut nggak ada keluhan, Dok.", "Perutnya biasa saja, Dok."],
+      "weak": true
+    },
+    {
+      "id": "kepala",
+      "label": "Kepala",
+      "keywords": ["kepala", "kepala bagaimana"],
+      "symptoms": ["nyeri_kepala", "nyeri_retroorbital"],
+      "normal": ["Kepala nggak apa-apa, Dok.", "Nggak ada keluhan di kepala, Dok."],
+      "weak": true
+    },
+    {
+      "id": "dada",
+      "label": "Dada",
+      "keywords": ["dada", "dada bagaimana"],
+      "symptoms": ["nyeri_dada", "heartburn", "nyeri_dada_pleuritik", "sesak_napas", "nyeri_menjalar"],
+      "normal": ["Dada nggak apa-apa, Dok.", "Dada saya biasa saja, Dok."],
+      "weak": true
+    },
+    {
+      "id": "mata",
+      "label": "Mata",
+      "keywords": ["mata", "mata bagaimana"],
+      "symptoms": ["kuning", "nyeri_retroorbital", "pandangan_kabur"],
+      "normal": ["Mata saya nggak apa-apa, Dok."],
+      "weak": true
     }
   ]
 }

@@ -119,10 +119,10 @@ describe('konsultasi: anamnesis bebas', () => {
   });
 
   it('gejala tersembunyi tidak disebut sukarela, hanya bila ditanya spesifik', () => {
-    // Cari kasus dispepsia dengan BAB hitam (tanda bahaya, volunteer: false).
+    // Cari kasus gastritis dengan BAB hitam (tanda bahaya, volunteer: false).
     let c: PatientCase | null = null;
     for (let i = 0; i < 400 && !c; i++) {
-      const x = generateCase(content, config, { diseaseId: 'dispepsia', seed: deriveSeed(5, `bab:${i}`) });
+      const x = generateCase(content, config, { diseaseId: 'gastritis', seed: deriveSeed(5, `bab:${i}`) });
       if (x.hiddenSymptoms.includes('bab_hitam')) c = x;
     }
     expect(c).not.toBeNull();

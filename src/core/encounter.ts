@@ -15,9 +15,12 @@ import {
   answerSymptomQuestion,
   chiefComplaintReply,
   conversationReply,
+  durationReaction,
+  symptomOnsetDays,
 } from './dialogue';
 import { evaluateEncounter } from './evaluation';
-import { type Intent, interpretQuestion } from './nlu';
+import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion } from './nlu';
+import { fillTemplate } from './text';
 import { toolPrice } from './scoring';
 import type {
   ClinicalDecision,
@@ -83,18 +86,46 @@ export interface IntentAnswer {
 
 const uniq = (items: string[]) => [...new Set(items)];
 
+/** Info tambahan dari pertanyaan dokter (mis. lama sakit yang disebut untuk dikonfirmasi). */
+export interface QuestionHints {
+  durationDays?: number;
+}
+
+/** Jawaban pasien terakhir (tanpa awalan "tadi saya bilang" agar tidak bertumpuk). */
+function lastPatientAnswer(state: EncounterState, content: GameContent): string {
+  for (let i = state.log.length - 1; i >= 0; i--) {
+    const e = state.log[i]!;
+    if (e.kind !== 'patient') continue;
+    let text = e.text;
+    for (const t of content.conversation.repeatAsked) {
+      const prefix = fillTemplate(t, state.case.context);
+      if (text.startsWith(prefix)) text = text.slice(prefix.length).trim();
+    }
+    return text;
+  }
+  return '';
+}
+
 /**
  * Terapkan satu atau beberapa intent ke state: tandai topik/gejala yang ditanyakan,
  * ungkap gejala, dan susun potongan jawaban pasien. Dipakai oleh jalur lokal (NLU)
  * maupun pasien AI (tool calls) agar keduanya mencatat hal yang sama.
  */
-export function applyIntents(state: EncounterState, intents: readonly Intent[], content: GameContent): IntentAnswer {
+export function applyIntents(state: EncounterState, intents: readonly Intent[], content: GameContent, hints: QuestionHints = {}): IntentAnswer {
   const c = state.case;
   let askedTopics = [...state.askedTopics];
   let askedSymptoms = [...state.askedSymptoms];
   let revealed = [...state.revealedSymptoms];
   const parts: string[] = [];
   const salt = String(state.questionCount);
+  let focus = state.focus;
+  /** Gejala yang ADA & dibicarakan menjadi rujukan pertanyaan lanjutan berikutnya. */
+  const setFocus = (symptom: string | undefined) => {
+    focus = symptom && c.symptoms.includes(symptom) ? { symptom, turn: state.questionCount } : undefined;
+  };
+  /** "Sudah 3 hari?" → pasien membenarkan atau mengoreksi sebelum menjawab. */
+  const withDuration = (text: string, actualDays: number) =>
+    hints.durationDays === undefined ? text : `${durationReaction(c, hints.durationDays, actualDays, content, salt)} ${text}`;
 
   const answerTopic = (topic: string) => {
     const cat = content.anamnesisById.get(topic);
@@ -106,10 +137,14 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
       const result = answerOtherComplaints(c, revealed, content);
       revealed = uniq([...revealed, ...result.revealed]);
       parts.push(result.text);
+      // "Ada keluhan lain?" → "Batuk, Dok." → "Sejak kapan?" merujuk gejala yang baru disebut.
+      if (result.revealed.length) setFocus(result.revealed.at(-1));
     } else {
       const answer = c.answers[topic];
-      const text = answer?.text ?? 'Hmm, saya kurang tahu, Dok.';
-      parts.push(repeated ? `${conversationReply('repeat', c, content, `${topic}:${salt}`)} ${text}` : text);
+      const base = answer?.text ?? 'Hmm, saya kurang tahu, Dok.';
+      const told = repeated ? `${conversationReply('repeat', c, content, `${topic}:${salt}`)} ${base}` : base;
+      // Tanggapan atas angka dokter didahulukan: "Bukan, Dok, sudah lebih lama. Seperti yang saya bilang tadi: …"
+      parts.push(topic === 'onset' ? withDuration(told, c.day) : told);
       revealed = uniq([...revealed, ...(answer?.reveals ?? [])]);
     }
     askedTopics = uniq([...askedTopics, topic]);
@@ -118,6 +153,7 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
   for (const intent of intents) {
     switch (intent.kind) {
       case 'topic':
+        // Rujukan gejala tetap disimpan; kedaluwarsanya diatur jarak giliran di interpretInContext.
         answerTopic(intent.topic);
         break;
       case 'symptom': {
@@ -129,6 +165,7 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
           if (r.revealed) revealed = uniq([...revealed, intent.symptom]);
         }
         askedSymptoms = uniq([...askedSymptoms, intent.symptom]);
+        setFocus(intent.symptom);
         break;
       }
       case 'symptom_detail': {
@@ -136,10 +173,11 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
           answerTopic(intent.topic);
         } else {
           const r = answerSymptomDetail(c, intent.topic, intent.symptom, content);
-          parts.push(r.text);
+          parts.push(intent.topic === 'onset' && r.revealed ? withDuration(r.text, symptomOnsetDays(c, intent.symptom)) : r.text);
           if (r.revealed) revealed = uniq([...revealed, intent.symptom]);
           askedSymptoms = uniq([...askedSymptoms, intent.symptom]);
         }
+        setFocus(intent.symptom);
         break;
       }
       case 'review': {
@@ -150,8 +188,12 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
         parts.push(repeatedAll ? `${conversationReply('repeat', c, content, `${intent.group}:${salt}`)} ${r.text}` : r.text);
         revealed = uniq([...revealed, ...r.revealed]);
         askedSymptoms = uniq([...askedSymptoms, ...group.symptoms]);
+        setFocus(r.revealed[0]);
         break;
       }
+      case 'repeat':
+        parts.push(`${conversationReply('repeatAsked', c, content, salt)} ${lastPatientAnswer(state, content)}`.trim());
+        break;
       case 'greeting':
       case 'thanks':
       case 'consent':
@@ -159,7 +201,29 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
         break;
     }
   }
-  return { state: { ...state, askedTopics, askedSymptoms, revealedSymptoms: revealed }, parts };
+  const next: EncounterState = { ...state, askedTopics, askedSymptoms, revealedSymptoms: revealed };
+  if (focus) next.focus = focus;
+  else delete next.focus;
+  return { state: next, parts };
+}
+
+/**
+ * Tafsirkan pertanyaan dalam konteks percakapan. Pertanyaan lanjutan yang hanya berisi aspek
+ * keluhan ("Sejak kapan?", "Seberapa berat?") dirujukkan ke gejala yang baru saja dibicarakan
+ * — sama seperti percakapan sungguhan ("Ada batuk?" "Iya, Dok." "Sejak kapan?").
+ */
+export function interpretInContext(state: EncounterState, question: string, content: GameContent, config: GameConfig): Interpretation {
+  const interp = interpretQuestion(question, content, config.anamnesis.maxIntentsPerQuestion);
+  const focus = state.focus;
+  if (!focus || interp.intents.length === 0) return interp;
+  const gap = state.questionCount - focus.turn;
+  const recent = gap <= 1 || (interp.deictic && gap <= 3);
+  const onlyAspects = interp.intents.every((i) => i.kind === 'topic' && DETAIL_TOPICS.has(i.topic));
+  // "Sakitnya/keluhannya sejak kapan?" merujuk keluhan utama, kecuali dokter menunjuk ("yang tadi").
+  const mentionsChief = /\b(sakit|nyeri|keluhan)\b/.test(interp.normalized) && !interp.deictic;
+  if (!recent || !onlyAspects || mentionsChief) return interp;
+  const intents: Intent[] = interp.intents.map((i) => ({ kind: 'symptom_detail', topic: (i as { topic: string }).topic, symptom: focus.symptom }));
+  return { ...interp, intents };
 }
 
 /** Catat satu pertukaran tanya-jawab di log percakapan. */
@@ -185,12 +249,12 @@ export function askQuestion(state: EncounterState, question: string, content: Ga
   assertOk(checkActive(state));
   const text = question.trim();
   if (!text) throw new EncounterError('Pertanyaan masih kosong.');
-  const { intents } = interpretQuestion(text, content, config.anamnesis.maxIntentsPerQuestion);
+  const { intents, durationDays } = interpretInContext(state, text, content, config);
   if (intents.length === 0) {
     const reply = conversationReply('unknown', state.case, content, String(state.questionCount));
     return { state: recordExchange(state, text, reply), reply, intents, parts: [], understood: false };
   }
-  const answered = applyIntents(state, intents, content);
+  const answered = applyIntents(state, intents, content, durationDays === undefined ? {} : { durationDays });
   const reply = answered.parts.join(' ');
   return { state: recordExchange(answered.state, text, reply), reply, intents, parts: answered.parts, understood: true };
 }

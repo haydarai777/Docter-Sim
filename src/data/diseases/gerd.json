@@ -176,8 +176,13 @@
     },
     {
       "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: nyeri/perih di ulu hati, kembung, cepat kenyang. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk.",
+      "howToDistinguish": "Dispepsia fungsional: keluhan kronik di ulu hati — begah, cepat kenyang, perih — tanpa regurgitasi. GERD: dominan rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring/membungkuk.",
       "excludeBy": { "topics": ["lokasi", "karakter"] }
+    },
+    {
+      "id": "gastritis",
+      "howToDistinguish": "Gastritis akut: perih ulu hati mendadak setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), mual-muntah, nyeri tekan epigastrium. GERD: rasa terbakar retrosternal dan regurgitasi asam, memberat saat berbaring.",
+      "excludeBy": { "topics": ["lokasi", "riwayat_obat"] }
     },
     {
       "id": "sindrom_koroner_akut",

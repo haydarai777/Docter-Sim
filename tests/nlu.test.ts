@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { doctorQuestion } from '../src/core/dialogue';
+import { generateCase } from '../src/core/generator';
 import { interpretQuestion, normalizeQuestion } from '../src/core/nlu';
-import { content } from './helpers';
+import { config, content } from './helpers';
 
 const topicsOf = (q: string) =>
   interpretQuestion(q, content).intents.flatMap((i) => (i.kind === 'topic' ? [i.topic] : i.kind === 'symptom_detail' ? [`${i.topic}/${i.symptom}`] : []));
@@ -9,7 +11,8 @@ const kindsOf = (q: string) => interpretQuestion(q, content).intents.map((i) => 
 describe('normalisasi bahasa sehari-hari', () => {
   it('slang, akhiran -nya/-kah, dan kata ulang angka', () => {
     expect(normalizeQuestion('Udah brp lama sakitnya?')).toBe('sudah berapa lama sakit');
-    expect(normalizeQuestion('Apakah pusing2?')).toBe('apakah pusing pusing');
+    // Kata ulang cukup satu: "pusing2" → "pusing pusing" → "pusing".
+    expect(normalizeQuestion('Apakah pusing2?')).toBe('apakah pusing');
     expect(normalizeQuestion('Gimana BAB-nya?')).toBe('bagaimana bab');
   });
   it('kata yang hanya mirip akhiran tidak dipotong', () => {
@@ -106,5 +109,23 @@ describe('pemahaman pertanyaan bebas', () => {
   it('pertanyaan yang tidak dipahami menghasilkan daftar kosong', () => {
     expect(interpretQuestion('Siapa presiden pertama?', content).intents).toEqual([]);
     expect(interpretQuestion('   ', content).intents).toEqual([]);
+  });
+});
+
+describe('tombol topik standar', () => {
+  it('kalimat standar tiap topik (dengan semua sapaan) dipahami sebagai topik itu saja', () => {
+    const seen = new Set<string>();
+    for (const d of content.diseases) {
+      for (let seed = 1; seed <= 25; seed++) {
+        const c = generateCase(content, config, { diseaseId: d.id, seed });
+        for (const t of content.anamnesis) {
+          const q = doctorQuestion(t.question, c);
+          if (seen.has(q)) continue;
+          seen.add(q);
+          expect(interpretQuestion(q, content, config.anamnesis.maxIntentsPerQuestion).intents, q).toEqual([{ kind: 'topic', topic: t.id }]);
+        }
+      }
+    }
+    expect(seen.size).toBeGreaterThan(content.anamnesis.length * 3);
   });
 });

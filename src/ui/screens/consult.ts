@@ -264,6 +264,10 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
 
   const unasked = new Set(unaskedCoreTopics(enc, app.content));
   const topics = app.content.anamnesis.filter((t) => t.core);
+  const p = enc.case.patient;
+  const extras = app.content.anamnesis.filter(
+    (t) => !t.core && t.type !== 'chief' && (t.id !== 'haid_kehamilan' || (p.sex === 'female' && p.age >= 12)),
+  );
   const rubrics = [...new Set(topics.map((t) => t.rubric))];
   const asked = topics.length - unasked.size;
 
@@ -290,7 +294,7 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
         'details',
         // Tetap terbuka setelah topik diketuk (layar digambar ulang tiap pertanyaan).
         { class: 'frame', 'data-keep-open': 'kerangka' },
-        h('summary', null, `Kerangka anamnesis · ${asked}/${topics.length} topik`, h('span', { class: 'frame__hint' }, app.aiActive ? 'pasien AI' : 'ketik bebas')),
+        h('summary', null, `Kerangka anamnesis · ${asked}/${topics.length} topik`, h('span', { class: 'frame__hint' }, app.aiActive ? 'pasien AI' : 'mode lokal · ketik bebas')),
         h('p', { class: 'hint' }, 'Tanyakan dengan bahasa Anda sendiri, atau ketuk topik untuk kalimat standar. Pasien hanya menjawab yang ditanyakan.'),
         rubrics.map((rubric) =>
           h(
@@ -315,6 +319,29 @@ function anamnesisTab(app: App, enc: EncounterState): HTMLElement {
                     unasked.has(t.id) ? t.label : `✓ ${t.label}`,
                   ),
                 ),
+            ),
+          ),
+        ),
+        // Topik percakapan yang tidak dinilai: perkenalan & perspektif pasien.
+        h(
+          'div',
+          { class: 'frame__group' },
+          h('span', { class: 'frame__rubric' }, 'Kenali pasien (tidak dinilai)'),
+          h(
+            'div',
+            { class: 'chip-row' },
+            extras.map((t) =>
+              h(
+                'button',
+                {
+                  class: cx('chip', 'chip--soft', enc.askedTopics.includes(t.id) && 'is-done'),
+                  type: 'button',
+                  disabled: waiting || locked,
+                  title: t.why,
+                  onclick: () => void app.ask(doctorQuestion(t.question, enc.case)),
+                },
+                enc.askedTopics.includes(t.id) ? `✓ ${t.label}` : t.label,
+              ),
             ),
           ),
         ),

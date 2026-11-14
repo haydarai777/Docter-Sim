@@ -191,7 +191,7 @@ describe('generator kasus', () => {
   });
 
   it('kesan USG selalu konsisten dengan temuan organ (termasuk temuan insidental)', () => {
-    for (const id of ['batu_saluran_kemih', 'dispepsia', 'demam_tifoid', 'dm_tipe2']) {
+    for (const id of ['batu_saluran_kemih', 'dispepsia', 'gastritis', 'demam_tifoid', 'dm_tipe2']) {
       for (const c of many(id, 250)) {
         const usg = c.findings.usg_abdomen!;
         const organs = usg.filter((r) => r.paramId !== 'kesan');

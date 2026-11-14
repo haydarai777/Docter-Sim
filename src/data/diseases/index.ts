@@ -18,6 +18,7 @@ import malaria from './malaria.json';
 import gerd from './gerd.json';
 import anginaStabil from './angina_stabil.json';
 import dispepsia from './dispepsia.json';
+import gastritis from './gastritis.json';
 // Keluhan berkemih / pinggang
 import isk from './isk.json';
 import batuSaluranKemih from './batu_saluran_kemih.json';
@@ -34,6 +35,7 @@ export const DISEASE_FILES: unknown[] = [
   gerd,
   anginaStabil,
   dispepsia,
+  gastritis,
   isk,
   batuSaluranKemih,
   dmTipe2,

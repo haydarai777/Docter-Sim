@@ -8,8 +8,8 @@
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
 import { buildAppearance, chiefSite, bodySide, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
-import { askQuestion, canSubmitDecision, EncounterError, performExam, setDdx } from '../core/encounter';
-import { type Intent, interpretQuestion } from '../core/nlu';
+import { askQuestion, canSubmitDecision, EncounterError, interpretInContext, performExam, setDdx } from '../core/encounter';
+import type { Intent } from '../core/nlu';
 import { hashString, randomSeed } from '../core/rng';
 import { createRun, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
 import type { ClinicalDecision, DdxStatus, Disposition, EncounterState, GameConfig, GameContent, RunState } from '../core/types';
@@ -289,7 +289,8 @@ export class App {
     const timer = window.setTimeout(() => controller.abort(), 45_000);
     const runAtStart = this.run;
     try {
-      const local = interpretQuestion(question, this.content, this.config.anamnesis.maxIntentsPerQuestion).intents;
+      // Tafsiran lokal (memakai konteks percakapan) dipakai bila Claude tidak mengambil fakta lewat alat.
+      const local = interpretInContext(enc, question, this.content, this.config).intents;
       const result = await askAiPatient(sample, enc, question, this.content, local, controller.signal);
       if (this.run !== runAtStart || this.encounter !== enc) return; // layar sudah berganti
       this.run = updateEncounter(this.run!, result.state);

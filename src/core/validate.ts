@@ -34,6 +34,8 @@ export const BUILTIN_PLACEHOLDERS = [
   'pekerjaan',
   'salahKira',
   'ketakutan',
+  'panggilan',
+  'kegiatan',
 ] as const;
 
 const REVIEW_STATUSES = ['BELUM_DITINJAU_DOKTER', 'SEDANG_DITINJAU', 'DISETUJUI'];
@@ -226,6 +228,15 @@ function validateAnamnesis(content: GameContent, err: ErrFn): void {
     if (!cat.label || !cat.rubric || !cat.why) err(path, 'label/rubric/why wajib diisi');
     if (cat.weight !== undefined && !(cat.weight > 0)) err(path, 'weight harus > 0');
     for (const v of cat.fallback) for (const r of v.reveals ?? []) err(path, `fallback tidak boleh mengungkap gejala ("${r}")`);
+    cat.fallback.forEach((v, i) => {
+      const w = v.when;
+      if (!w) return;
+      const p = `${path}.fallback[${i}]`;
+      // Fallback berlaku untuk semua penyakit: trait/gejala khusus penyakit tidak bermakna di sini.
+      if (w.traits || w.notTraits || w.symptoms || w.notSymptoms) err(p, 'fallback umum tidak boleh bersyarat trait/gejala penyakit');
+      for (const id of w.personality ?? []) if (!content.personalitiesById.has(id)) err(p, `kepribadian "${id}" tidak ada`);
+      for (const o of w.occupations ?? []) if (!content.occupationsById.has(o)) err(p, `pekerjaan "${o}" tidak ada`);
+    });
   }
 }
 
@@ -234,15 +245,17 @@ function validateConversation(content: GameContent, err: ErrFn): void {
     const path = `anamnesis.reviews.${r.id}`;
     if (!r.keywords.length || !r.normal.length || !r.symptoms.length) err(path, 'keywords/normal/symptoms wajib diisi');
     for (const s of r.symptoms) if (!content.symptomsById.has(s)) err(path, `gejala "${s}" tidak ada`);
+    if (r.weak !== undefined && typeof r.weak !== 'boolean') err(path, 'weak harus boolean');
   }
   const conv = content.conversation;
-  for (const key of ['greeting', 'thanks', 'consent', 'unknown', 'repeat', 'alreadySaid', 'chief', 'farewell', 'farewellReferral', 'closing'] as const) {
+  const required = ['greeting', 'thanks', 'consent', 'unknown', 'repeat', 'alreadySaid', 'chief', 'farewell', 'farewellReferral', 'closing', 'repeatAsked', 'durationSame', 'durationLonger', 'durationShorter'] as const;
+  for (const key of required) {
     if (!conv?.[key]?.length) err(`anamnesis.conversation.${key}`, 'kosong');
   }
   if (!conv?.detail?.default?.length) err('anamnesis.conversation.detail.default', 'kosong');
   for (const [topic, list] of Object.entries(conv?.detail ?? {})) {
     if (topic !== 'default' && !content.anamnesisById.has(topic)) err(`anamnesis.conversation.detail.${topic}`, 'topik tidak ada');
-    for (const t of list) if (!t.includes('{gejala}')) err(`anamnesis.conversation.detail.${topic}`, `templat harus memuat {gejala}: "${t}"`);
+    for (const t of list) if (!/\{[gG]ejala\}/.test(t)) err(`anamnesis.conversation.detail.${topic}`, `templat harus memuat {gejala}: "${t}"`);
   }
   for (const t of conv?.chief ?? []) {
     if (!t.includes('{keluhanAwal}')) err('anamnesis.conversation.chief', `templat harus memuat {keluhanAwal}: "${t}"`);
@@ -464,6 +477,7 @@ function validateDisease(
       if (!symptomIds.has(s)) err(p, `gejala "${s}" bukan gejala penyakit ini`);
     }
     for (const o of cond.occupations ?? []) if (!content.occupationsById.has(o)) err(p, `pekerjaan "${o}" tidak ada`);
+    for (const id of cond.personality ?? []) if (!content.personalitiesById.has(id)) err(p, `kepribadian "${id}" tidak ada`);
   };
   (d.traits ?? []).forEach((t, i) => {
     if (!isProbability(t.probability)) err(`${path}.traits[${i}]`, 'probability harus 0..1');
@@ -488,7 +502,24 @@ function validateDisease(
     const first = d.symptoms.find((s) => s.id === id && !s.when);
     return first?.probability === 1;
   });
-  if (!guaranteed) err(`${path}.chiefComplaint`, 'minimal satu gejala primary harus pasti ada (probability 1 tanpa kondisi)');
+  // Atau sepasang gejala primary yang saling melengkapi: gejala A pasti ada BILA trait T ada, gejala B
+  // pasti ada bila T TIDAK ada (mis. dispepsia: nyeri ulu hati pada pola nyeri, cepat kenyang pada pola begah).
+  const onlyTrait = (w: Condition | undefined, key: 'traits' | 'notTraits') =>
+    w && Object.keys(w).length === 1 && w[key]?.length === 1 ? w[key]![0] : undefined;
+  const ifPresent = new Set<string>();
+  const ifAbsent = new Set<string>();
+  for (const id of cc.primary) {
+    const first = d.symptoms.find((s) => s.id === id);
+    if (first?.probability !== 1) continue;
+    const t = onlyTrait(first.when, 'traits');
+    const nt = onlyTrait(first.when, 'notTraits');
+    if (t) ifPresent.add(t);
+    if (nt) ifAbsent.add(nt);
+  }
+  const complementary = [...ifPresent].some((t) => ifAbsent.has(t));
+  if (!guaranteed && !complementary) {
+    err(`${path}.chiefComplaint`, 'minimal satu gejala primary harus pasti ada (probability 1 tanpa kondisi, atau pasangan trait/notTraits yang saling melengkapi)');
+  }
 
   // Anamnesis
   const allowedText = new Set([...globalPlaceholders, ...Object.keys(d.context ?? {})]);
@@ -573,6 +604,14 @@ function validateDisease(
       if (!content.toolsById.has(u.tool)) err(`${path}.plan.unnecessary`, `alat "${u.tool}" tidak ada`);
       if (planned.has(u.tool)) err(`${path}.plan.unnecessary`, `alat "${u.tool}" juga ada di plan.tests`);
       if (!u.reason) err(`${path}.plan.unnecessary`, `alasan "${u.tool}" kosong`);
+    }
+    const unneeded = new Set((d.plan.unnecessary ?? []).map((u) => u.tool));
+    for (const o of d.plan.optional ?? []) {
+      const tool = content.toolsById.get(o.tool);
+      if (!tool) err(`${path}.plan.optional`, `alat "${o.tool}" tidak ada`);
+      else if (tool.category === 'fisik') err(`${path}.plan.optional`, `"${o.tool}" pemeriksaan fisik (selalu gratis, tidak perlu opsional)`);
+      if (planned.has(o.tool) || unneeded.has(o.tool)) err(`${path}.plan.optional`, `alat "${o.tool}" juga ada di plan.tests/unnecessary`);
+      if (!o.reason) err(`${path}.plan.optional`, `alasan "${o.tool}" kosong`);
     }
   }
 

@@ -168,7 +168,7 @@
     "kebiasaan": [
       { "text": "Biasa saja, Dok. Makan di rumah, nggak merokok.", "weight": 2 },
       { "text": "Saya merokok, Dok, sehari setengah bungkus.", "weight": 1, "when": { "sex": "male", "ageMin": 18 } },
-      { "text": "Kerja terus, Dok, jarang istirahat.", "weight": 1, "when": { "ageMin": 18 } },
+      { "text": "{Kegiatan} terus, Dok, jarang istirahat.", "weight": 1, "when": { "ageMin": 18 } },
       { "text": "Biasa saja, Dok. Sekolah, main, pulang. Makan di rumah.", "weight": 1, "when": { "ageMax": 17 } }
     ],
     "durasi": [{ "text": "Panasnya hampir sepanjang hari, Dok. Turun sebentar kalau minum obat, lalu naik lagi." }],
@@ -179,7 +179,7 @@
         "clue": "Lemas berat & sulit makan-minum (tanda bahaya)"
       },
       {
-        "text": "Lumayan berat, Dok. Badan remuk, sudah dua hari nggak bisa kerja.",
+        "text": "Lumayan berat, Dok. Badan remuk, sudah dua hari nggak bisa {kegiatan}.",
         "when": { "notTraits": ["tanda_bahaya"], "ageMin": 18 }
       },
       {

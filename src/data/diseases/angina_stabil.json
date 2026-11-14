@@ -284,8 +284,13 @@
     },
     {
       "id": "dispepsia",
-      "howToDistinguish": "Dispepsia: nyeri/perih ulu hati terkait makan, kembung, nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko.",
+      "howToDistinguish": "Dispepsia fungsional: keluhan ulu hati kronik terkait makan dan stres (begah, cepat kenyang), tidak dipicu aktivitas fisik. Angina: nyeri retrosternal saat aktivitas pada pasien dengan faktor risiko.",
       "excludeBy": { "tools": ["pemeriksaan_abdomen"], "topics": ["lokasi"] }
+    },
+    {
+      "id": "gastritis",
+      "howToDistinguish": "Gastritis: perih ulu hati setelah pemicu (obat antinyeri, alkohol, makanan pedas), nyeri tekan epigastrium, tidak dipicu aktivitas fisik. Angina: rasa berat/tertekan saat aktivitas, membaik dengan istirahat.",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"], "topics": ["pemberat_peringan"] }
     },
     {
       "id": "nyeri_muskuloskeletal",
@@ -422,6 +427,10 @@
     {
       "when": { "primaryIs": "dispepsia" },
       "text": "Nyeri dada/epigastrium yang dipicu aktivitas pada pasien berisiko harus dianggap jantung sampai terbukti bukan."
+    },
+    {
+      "when": { "primaryIs": "gastritis" },
+      "text": "Nyeri dada/epigastrium yang dipicu aktivitas pada pasien berisiko harus dianggap jantung sampai terbukti bukan — \"maag\" bukan penjelasan untuk keluhan saat aktivitas."
     }
   ]
 }

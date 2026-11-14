@@ -70,6 +70,8 @@ export interface Condition {
   notSymptoms?: string[];
   /** Pekerjaan pasien harus salah satu dari daftar ini. */
   occupations?: string[];
+  /** Kepribadian pasien harus salah satu dari daftar ini (gaya jawaban). */
+  personality?: string[];
 }
 
 /** Parameter hasil pemeriksaan berupa angka (mis. trombosit). */
@@ -283,8 +285,14 @@ export interface ConversationTemplates {
   farewellReferral: string[];
   /** Narasi penutup dari dokter (baris sistem). Boleh memakai {sapaan}. */
   closing: string[];
-  /** Detail (onset/keparahan/...) gejala yang BUKAN keluhan utama. {gejala} = frasa gejala. */
+  /** Detail (onset/keparahan/...) gejala yang BUKAN keluhan utama. {gejala} = frasa gejala, {lamaGejala} = sejak kapan. */
   detail: Record<string, string[]> & { default: string[] };
+  /** Awalan saat dokter meminta pasien mengulang jawaban terakhir. */
+  repeatAsked: string[];
+  /** Konfirmasi lama sakit yang disebut dokter ("Sudah 3 hari?"): sesuai / lebih lama / belum selama itu. */
+  durationSame: string[];
+  durationLonger: string[];
+  durationShorter: string[];
 }
 
 /**
@@ -298,6 +306,11 @@ export interface ReviewGroupDef {
   symptoms: string[];
   /** Jawaban bila tidak ada satu pun gejala kelompok ini. */
   normal: string[];
+  /**
+   * Tinjauan "umum" bagian tubuh ("perutnya bagaimana?"): diabaikan bila pertanyaan yang sama
+   * sudah menyebut gejala spesifik ("mata buram?" → gejala, bukan tinjauan mata).
+   */
+  weak?: boolean;
 }
 
 export interface AnamnesisFile {
@@ -465,6 +478,8 @@ export interface CasePlan {
   tests: PlanItem[];
   /** Pemeriksaan yang tidak tepat untuk kasus ini, beserta alasannya. */
   unnecessary?: { tool: string; reason: string }[];
+  /** Pemeriksaan yang BOLEH dilakukan (tidak wajib, tanpa penalti), mis. tes H. pylori pada dispepsia. */
+  optional?: { tool: string; reason: string }[];
 }
 
 export interface DispositionRule {
@@ -591,6 +606,8 @@ export interface ComorbidityDef {
     habit?: string;
     /** Ditambahkan ke riwayat keluarga. */
     family?: string;
+    /** Ditambahkan ke jawaban haid (perempuan usia subur). */
+    menstrual?: string;
     /**
      * Frasa (selain nama & alias) yang menandakan jawaban sudah memuat hal ini, sehingga
      * kalimat riwayat tidak ditambahkan dua kali (mis. obesitas: "olahraga").
@@ -980,6 +997,11 @@ export interface EncounterState {
   ddx: DdxEntry[];
   log: LogEntry[];
   status: 'active' | 'finished';
+  /**
+   * Gejala yang terakhir dibicarakan & nomor pertanyaannya — agar pertanyaan lanjutan tanpa
+   * gejala ("Sejak kapan?" setelah "Ada batuk?") dipahami merujuk gejala itu.
+   */
+  focus?: { symptom: string; turn: number };
   decision?: ClinicalDecision;
   evaluation?: EvaluationResult;
 }

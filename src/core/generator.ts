@@ -40,6 +40,15 @@ const CHILD_ADDRESS_MAX_AGE = 14;
 /** Maksimal komorbiditas tambahan per pasien (selain yang sudah dimodelkan oleh penyakit utama). */
 const MAX_COMORBIDITIES = 2;
 
+/** Kegiatan sehari-hari pasien untuk kalimat seperti "biar bisa {kegiatan} lagi". */
+function activityOf(occupationId: string): string {
+  if (occupationId === 'pelajar_sd' || occupationId === 'pelajar') return 'sekolah';
+  if (occupationId === 'mahasiswa') return 'kuliah';
+  if (occupationId === 'ibu_rumah_tangga') return 'mengurus rumah';
+  if (occupationId === 'pensiunan') return 'beraktivitas';
+  return 'kerja';
+}
+
 interface Demographics {
   sex: Sex;
   age: number;
@@ -146,7 +155,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   // --- Hari sakit, trait, gejala -----------------------------------------
   const day = rng.fork('hari').int(disease.presentationDay[0], disease.presentationDay[1]);
   const traits = new Set<string>();
-  const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, traits };
+  const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, personality: personality.id, traits };
   sampleRules(disease.traits ?? [], baseCtx, rng.fork('trait'), traits);
 
   // --- Komorbiditas & temuan insidental (id-nya ikut menjadi trait) -------
@@ -178,7 +187,9 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     hariTeks: numberToWords(day),
     lamaSakit: durationText(day),
     nama: name,
+    panggilan: call,
     sapaan: patient.address,
+    kegiatan: activityOf(occupation.id),
     usia: String(age),
     pekerjaan: occupation.intro,
     salahKira: ctxRng.pick(disease.misattributions),
@@ -232,7 +243,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     );
   }
 
-  mergeComorbidityHistory(answers, comorbidities, content, personality, context, rng.fork('riwayat_komorbid'));
+  mergeComorbidityHistory(answers, comorbidities, content, personality, context, { sex, age }, rng.fork('riwayat_komorbid'));
 
   // --- Hasil semua pemeriksaan --------------------------------------------
   const ruleSets: FindingSource[] = [
@@ -337,6 +348,7 @@ function mergeComorbidityHistory(
   content: GameContent,
   personality: PersonalityDef,
   values: Record<string, string>,
+  who: { sex: Sex; age: number },
   rng: Rng,
 ): void {
   /** "Saya juga …"/"Ibu saya juga …" tanpa kalimat lain yang dirujuk → buang "juga". */
@@ -373,6 +385,8 @@ function mergeComorbidityHistory(
       add('riwayat_obat', def.history.medication, `Obat rutin untuk ${def.name.toLowerCase()}`, mentions);
     }
     add('kebiasaan', def.history.habit, `Faktor risiko ${def.name.toLowerCase()}`, mentions);
+    // Keluhan haid (mis. haid banyak pada anemia) hanya pada perempuan yang masih haid.
+    if (who.sex === 'female' && who.age >= 12 && who.age <= 49) add('haid_kehamilan', def.history.menstrual, `Faktor risiko ${def.name.toLowerCase()}`, mentions);
     // "Ibu saya JUGA kencing manis" hanya wajar bila pasien tahu dirinya mengidap penyakit itu.
     if (rng.fork(c.id).chance(0.5)) add('riwayat_keluarga', def.history.family, `Riwayat keluarga ${def.name.toLowerCase()}`, mentions, !c.known);
   }

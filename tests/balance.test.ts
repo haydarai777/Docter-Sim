@@ -22,7 +22,7 @@ describe('keseimbangan ekonomi', () => {
   it('pasien termiskin pun selalu bisa diberi minimal satu pemeriksaan penunjang informatif (atau tidak perlu penunjang)', () => {
     for (const d of content.diseases) {
       const key = d.plan.tests.filter((t) => !t.when && t.role !== 'komplikasi');
-      if (key.length === 0) continue; // diagnosis klinis (mis. dispepsia tanpa tanda bahaya)
+      if (key.length === 0) continue; // diagnosis klinis (mis. dispepsia fungsional, gastritis tanpa tanda bahaya)
       expect(key.some((t) => toolPrice(t.tool, config) <= minPoorBudget), `${d.id}: tidak ada penunjang ≤ ${minPoorBudget}`).toBe(true);
     }
   });

@@ -8,7 +8,7 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { createRng, deriveSeed, type Rng } from './rng';
-import { capitalize, fillTemplate, joinList } from './text';
+import { capitalize, durationText, fillTemplate, joinList } from './text';
 import type {
   AnswerResult,
   AnswerVariant,
@@ -151,7 +151,20 @@ function pickConversation(list: readonly string[], c: PatientCase, salt: string,
   return fillTemplate(rng.pick(list), caseValues(c, values));
 }
 
-export type SmallTalk = 'greeting' | 'thanks' | 'consent' | 'unknown' | 'repeat' | 'alreadySaid' | 'farewell' | 'farewellReferral' | 'closing';
+export type SmallTalk =
+  | 'greeting'
+  | 'thanks'
+  | 'consent'
+  | 'unknown'
+  | 'repeat'
+  | 'alreadySaid'
+  | 'farewell'
+  | 'farewellReferral'
+  | 'closing'
+  | 'repeatAsked'
+  | 'durationSame'
+  | 'durationLonger'
+  | 'durationShorter';
 
 /** Balasan basa-basi / pertanyaan tidak dipahami / awalan pengulangan. */
 export function conversationReply(kind: SmallTalk, c: PatientCase, content: GameContent, salt: string): string {
@@ -163,6 +176,17 @@ export function chiefComplaintReply(c: PatientCase, content: GameContent): strin
   // "Dok, tolong..." → hindari "Itu tadi, Dok. Dok, tolong..."
   const keluhanAwal = capitalize(c.complaint.replace(/^(dok(ter)?)[,.!…\s]+/i, ''));
   return pickConversation(content.conversation.chief, c, 'chief', { keluhanAwal });
+}
+
+/**
+ * Sejak berapa hari gejala ini dirasakan. Keluhan utama = lama sakit; gejala lain muncul
+ * belakangan (deterministik per kasus, tidak pernah lebih lama dari lama sakit).
+ */
+export function symptomOnsetDays(c: PatientCase, symptomId: string): number {
+  if (c.chiefComplaintSymptoms.includes(symptomId) || !c.symptoms.includes(symptomId)) return c.day;
+  const rng = createRng(deriveSeed(c.seed, `mulai:${symptomId}`));
+  const lo = Math.max(1, Math.round(c.day * 0.3));
+  return Math.min(c.day, rng.int(lo, Math.max(lo, c.day)));
 }
 
 /**
@@ -180,7 +204,18 @@ export function answerSymptomDetail(
   const rng = createRng(deriveSeed(c.seed, `detail:${topic}:${symptomId}`));
   const templates = content.conversation.detail[topic] ?? content.conversation.detail.default;
   const phrase = symptomPhrase(symptom, 'lay', rng);
-  return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase })), revealed: true };
+  const lamaGejala = durationText(symptomOnsetDays(c, symptomId));
+  return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase, lamaGejala })), revealed: true };
+}
+
+/**
+ * Tanggapan atas lama sakit yang disebut dokter ("Sudah 3 hari?"): membenarkan, atau mengoreksi
+ * bila sebenarnya lebih lama / belum selama itu. Toleransi ±25% (minimal 1 hari).
+ */
+export function durationReaction(c: PatientCase, askedDays: number, actualDays: number, content: GameContent, salt: string): string {
+  const tolerance = Math.max(1, Math.round(actualDays * 0.25));
+  const kind = Math.abs(askedDays - actualDays) <= tolerance ? 'durationSame' : actualDays > askedDays ? 'durationLonger' : 'durationShorter';
+  return conversationReply(kind, c, content, `durasi:${salt}`);
 }
 
 /**

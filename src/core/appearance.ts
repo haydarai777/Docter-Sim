@@ -274,7 +274,11 @@ export type GestureCue =
 
 const NEGATIVE = /^(nggak|tidak|belum|enggak|itu saja|sudah itu saja|kayaknya nggak)/i;
 const UNSURE = /(mungkin|kayaknya|kurang tahu|lupa|nggak ingat|entah)/i;
-const RECALL_TOPICS = new Set(['onset', 'durasi', 'episode_sebelumnya', 'riwayat_penyakit', 'riwayat_obat', 'riwayat_keluarga', 'bepergian_lingkungan', 'kebiasaan']);
+const RECALL_TOPICS = new Set(['onset', 'durasi', 'episode_sebelumnya', 'riwayat_penyakit', 'riwayat_obat', 'riwayat_keluarga', 'bepergian_lingkungan', 'kebiasaan', 'haid_kehamilan']);
+/** Pertanyaan perkenalan: dijawab ramah. */
+const SOCIAL_TOPICS = new Set(['identitas_nama', 'identitas_umur', 'identitas_pekerjaan', 'identitas_status', 'harapan']);
+/** Pertanyaan tentang pikiran/perasaan pasien. */
+const REFLECT_TOPICS = new Set(['pendapat_pasien', 'kekhawatiran']);
 const PAIN_TOPICS = new Set(['karakter', 'keparahan']);
 
 /** Gestur peragaan untuk satu gejala yang ADA (tunjuk lokasi atau peragakan). */
@@ -318,6 +322,7 @@ export function planGestures(c: PatientCase, ctx: ExchangeContext, content: Game
         push({ kind: 'angguk' });
         break;
       case 'consent':
+      case 'repeat':
         push({ kind: 'angguk' });
         break;
       case 'symptom':
@@ -358,6 +363,11 @@ export function planGestures(c: PatientCase, ctx: ExchangeContext, content: Game
         } else if (RECALL_TOPICS.has(topic)) {
           push({ kind: 'pikir' });
           if (NEGATIVE.test(text)) push({ kind: 'geleng' });
+        } else if (SOCIAL_TOPICS.has(topic)) {
+          push({ kind: 'senyum' });
+          push({ kind: 'angguk' });
+        } else if (REFLECT_TOPICS.has(topic)) {
+          push({ kind: 'pikir' });
         }
         break;
       }

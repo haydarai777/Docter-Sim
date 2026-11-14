@@ -910,6 +910,25 @@
       "purpose": "Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA."
     },
     {
+      "id": "tes_h_pylori",
+      "name": "Tes antigen H. pylori (feses)",
+      "category": "lab",
+      "description": "Mendeteksi antigen Helicobacter pylori pada tinja. Hasil bisa negatif palsu bila pasien baru minum penekan asam (PPI), antibiotik, atau bismut.",
+      "action": "Pasien diberi wadah sampel tinja; sampel diperiksa dengan tes cepat antigen H. pylori.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "antigen",
+          "label": "Antigen H. pylori",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.03,
+          "falsePositiveValues": ["Positif"]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Mencari infeksi H. pylori pada dispepsia/gastritis (strategi \"test and treat\"). Positif → pertimbangkan eradikasi; tidak wajib bila tanpa tanda alarm."
+    },
+    {
       "id": "rontgen_thorax",
       "name": "Rontgen thorax (PA)",
       "category": "pencitraan",
