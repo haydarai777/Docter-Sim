@@ -14,6 +14,7 @@ import { formatRupiah, normalizeForSearch } from '../../core/text';
 import type { CatalogEntry, DdxStatus, EncounterState, LogEntry, ToolDef } from '../../core/types';
 import { DISPOSITIONS } from '../../core/types';
 import type { ActionTab, App } from '../app';
+import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
 import { modal } from '../components/modal';
 import { resultCard } from '../components/resultCard';
 import { cx, h, replaceChildren } from '../dom';
@@ -179,7 +180,10 @@ function patientStrip(app: App, enc: EncounterState): HTMLElement {
 function aiLabel(app: App): string {
   if (!app.settings.aiPatient) return 'mode lokal';
   if (app.ai === 'checking') return 'memeriksa AI…';
-  return app.ai === 'ready' ? 'pasien AI' : 'mode lokal';
+  if (app.ai !== 'ready') return 'mode lokal';
+  // Tampilkan model yang benar-benar menjawab terakhir kali.
+  // 'cadangan' = Haiku 5.5 tidak tersedia untuk penonton ini; platform memakai tier cepat.
+  return app.aiModelServed === 'cadangan' ? 'pasien AI · tier cepat' : `pasien AI · ${AI_PATIENT_MODEL_LABEL}`;
 }
 
 // --- 1. Anamnesis: transkrip + kolom tanya ------------------------------------------

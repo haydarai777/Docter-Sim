@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { startEncounter } from '../src/core/encounter';
 import { generateCase } from '../src/core/generator';
-import { AiError, askAiPatient } from '../src/ui/ai/patientAi';
+import { AI_PATIENT_MODEL, AiError, askAiPatient, patientSampleOptions } from '../src/ui/ai/patientAi';
 import { config, content } from './helpers';
 
 /** Pasien AI dengan `sample` tiruan: jalur alat, jawaban tanpa alat, dan klasifikasi galat. */
@@ -9,7 +9,8 @@ import { config, content } from './helpers';
 const enc = startEncounter(generateCase(content, config, { diseaseId: 'dengue', seed: 7 }));
 
 type Sample = Parameters<typeof askAiPatient>[0];
-const sampleOf = (impl: (input: string, opts: { tools?: { execute(i: Record<string, unknown>, c: { signal: AbortSignal }): unknown }[]; signal?: AbortSignal }) => Promise<{ text: string; truncated: boolean }>) =>
+type Opts = { tools?: { execute(i: Record<string, unknown>, c: { signal: AbortSignal }): unknown }[]; signal?: AbortSignal; model?: string; modelTier?: string };
+const sampleOf = (impl: (input: string, opts: Opts) => Promise<{ text: string; truncated: boolean; modelApplied?: string }>) =>
   impl as unknown as Sample;
 
 async function codeOf(p: Promise<unknown>): Promise<{ code: string; permanent: boolean }> {
@@ -70,5 +71,35 @@ describe('pasien AI', () => {
     expect(await codeOf(askAiPatient(failing('rate_limited'), enc, 'Ada batuk?', content, []))).toEqual({ code: 'rate_limited', permanent: false });
     expect(await codeOf(askAiPatient(failing('not_granted'), enc, 'Ada batuk?', content, []))).toEqual({ code: 'not_granted', permanent: true });
     expect((await codeOf(askAiPatient(failing(42), enc, 'Ada batuk?', content, []))).code).toBe('upstream_error');
+  });
+});
+
+describe('model pasien AI: Claude Haiku 5.5', () => {
+  it('setiap panggilan menamai claude-haiku-5-5, dengan tier cepat hanya sebagai cadangan platform', async () => {
+    expect(AI_PATIENT_MODEL).toBe('claude-haiku-5-5');
+    expect(patientSampleOptions([])).toEqual({ tools: [], model: 'claude-haiku-5-5', modelTier: 'quick' });
+    const seen: Opts[] = [];
+    const sample = sampleOf(async (_input, opts) => {
+      seen.push(opts);
+      return { text: 'Iya, Dok.', truncated: false, modelApplied: 'claude-haiku-5-5' };
+    });
+    for (const q of ['Selamat pagi', 'Ada batuk?', 'Kucingnya siapa namanya?']) await askAiPatient(sample, enc, q, content, []);
+    expect(seen).toHaveLength(3);
+    for (const o of seen) {
+      expect(o.model).toBe('claude-haiku-5-5');
+      expect(o.modelTier).toBe('quick');
+    }
+  });
+
+  it('melaporkan model yang benar-benar menjawab (Haiku atau tier cadangan)', async () => {
+    const haiku = sampleOf(async () => ({ text: 'Iya, Dok.', truncated: false, modelApplied: 'claude-haiku-5-5' }));
+    expect((await askAiPatient(haiku, enc, 'Selamat pagi', content, [])).model).toBe('claude-haiku-5-5');
+    const fallback = sampleOf(async () => ({ text: 'Iya, Dok.', truncated: false }));
+    expect((await askAiPatient(fallback, enc, 'Selamat pagi', content, [])).model).toBeNull();
+    // Jawaban klinis tanpa alat tetap memakai mesin, tetapi model yang dipanggil tetap dicatat.
+    const noTool = sampleOf(async () => ({ text: 'Karangan.', truncated: false, modelApplied: 'claude-haiku-5-5' }));
+    const r = await askAiPatient(noTool, enc, 'Ada demam?', content, [{ kind: 'symptom', symptom: 'demam' }]);
+    expect(r.reply).not.toContain('Karangan');
+    expect(r.model).toBe('claude-haiku-5-5');
   });
 });

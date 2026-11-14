@@ -48,7 +48,9 @@ klinis**, bukan sekadar tebakan diagnosis.
     Pada pertanyaan baru yang belum pernah dilihat, ± 80% dipahami persis (mesin lama ± 58%) —
     rinciannya di [`docs/nlu-benchmark.md`](docs/nlu-benchmark.md).
   - **Pasien AI (opsional, mati secara bawaan):** saat dibuka sebagai Artifact di claude.ai, pemain
-    bisa mengaktifkannya di Pengaturan; **memakai kuota Claude akun pemain**. Claude **tidak diberi
+    bisa mengaktifkannya di Pengaturan; **memakai kuota Claude akun pemain**. Semua jawaban memakai
+    model **Claude Haiku 5.5** (`claude-haiku-5-5`) — cepat dan hemat kuota; bila platform tidak bisa
+    memakainya, platform menjawab dengan tier tercepat dan label "pasien AI · tier cepat" tampil. Claude **tidak diberi
     kunci kasus** — fakta hanya bisa diambil lewat alat halaman yang memakai mesin yang sama, sehingga
     pengungkapan tetap bertahap dan penilaian tetap sama. Bila gagal, otomatis kembali ke mode lokal.
 - **Pasien kompleks:** komorbiditas (hipertensi, DM, obesitas, anemia, dislipidemia — kadang belum

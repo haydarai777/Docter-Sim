@@ -2,6 +2,7 @@
  * Dialog: panduan bermain, pengaturan, dan rekam medis pasien.
  */
 import { formatRupiah } from '../../core/text';
+import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
 import type { App } from '../app';
 import { type Child, cx, h } from '../dom';
 import { modal } from './modal';
@@ -48,7 +49,7 @@ export function tutorialSteps(app: App): TutorialStep[] {
         'Keluhan awal TIDAK pernah lengkap. Gali onset, lokasi, karakter, durasi, keparahan, pola, perjalanan, pemberat/peringan, keluhan lain, episode sebelumnya, riwayat penyakit/obat/alergi/keluarga, lingkungan, dan kebiasaan.',
         'Beberapa gejala tidak disebut sukarela (mis. BAB hitam) — tanyakan spesifik atau lewat tinjauan sistem ("BAB-nya bagaimana?").',
         app.aiActive
-          ? 'Pasien sedang diperankan Claude — memakai kuota Claude Anda (bisa dimatikan di Pengaturan).'
+          ? `Pasien sedang diperankan Claude ${AI_PATIENT_MODEL_LABEL} — memakai kuota Claude Anda (bisa dimatikan di Pengaturan).`
           : 'Mode lokal (bawaan, tanpa kuota Claude): pasien memahami bahasa sehari-hari, singkatan ("brp", "gmn"), salah ketik, dan pertanyaan lanjutan — "Ada batuk?" lalu "Sejak kapan?" ditanyakan untuk batuknya. Ketik "Bisa diulang?" bila perlu.',
       ],
     },
@@ -161,13 +162,13 @@ export function settingsDialog(app: App): HTMLElement {
             disabled: app.ai === 'unavailable',
             onchange: (e: Event) => app.updateSettings({ aiPatient: (e.target as HTMLInputElement).checked }),
           }),
-          ' Pasien diperankan Claude (memakai kuota Claude Anda)',
+          ` Pasien diperankan Claude ${AI_PATIENT_MODEL_LABEL} (memakai kuota Claude Anda)`,
         ),
         h(
           'p',
           { class: 'hint' },
           app.ai === 'ready'
-            ? 'Bawaan: mode lokal — tanpa kuota Claude, berjalan di perangkat ini. Pasien lokal memahami bahasa sehari-hari, singkatan, salah ketik, dan pertanyaan lanjutan. Aktifkan pasien AI bila ingin gaya bahasa yang lebih bebas; fakta medis tetap dari mesin kasus (tidak dikarang).'
+            ? `Bawaan: mode lokal — tanpa kuota Claude, berjalan di perangkat ini. Pasien lokal memahami bahasa sehari-hari, singkatan, salah ketik, dan pertanyaan lanjutan. Aktifkan pasien AI bila ingin gaya bahasa yang lebih bebas; semua jawabannya memakai model ${AI_PATIENT_MODEL_LABEL} (cepat & hemat kuota), dan fakta medis tetap dari mesin kasus (tidak dikarang).`
             : app.ai === 'checking'
               ? 'Memeriksa ketersediaan…'
               : 'Tidak tersedia di sini (hanya saat dibuka di claude.ai dengan izin Claude). Mode lokal dipakai — tanpa kuota Claude.',

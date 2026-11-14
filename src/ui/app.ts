@@ -101,6 +101,11 @@ export class App {
   settings: Settings = loadSettings();
   /** Status pasien AI di perangkat ini. */
   ai: AiAvailability = 'checking';
+  /**
+   * Model yang menjawab pertanyaan AI terakhir: ID model (Haiku 5.5), 'cadangan' bila tier
+   * cadangan yang menjawab, atau null bila belum ada jawaban AI.
+   */
+  aiModelServed: string | null = null;
   /** Rekor setelah sesi berakhir (diisi sekali saat layar akhir dibuka). */
   finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
   /** Indeks log pertama yang "baru" pada render ini (untuk animasi masuk). */
@@ -294,6 +299,7 @@ export class App {
       const result = await askAiPatient(sample, enc, question, this.content, local, controller.signal);
       if (this.run !== runAtStart || this.encounter !== enc) return; // layar sudah berganti
       this.run = updateEncounter(this.run!, result.state);
+      this.aiModelServed = result.model ?? 'cadangan';
       this.perform(enc, result.state, result.reply, result.intents, result.parts, true);
     } catch (e) {
       if (this.run !== runAtStart || this.encounter !== enc) return;

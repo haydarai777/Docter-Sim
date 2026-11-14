@@ -10,6 +10,11 @@
  *  - Claude menulis ulang jawaban rujukan dengan gaya pasien, memakai konteks percakapan
  *    untuk memahami rumusan pertanyaan yang beragam.
  *
+ * Model: setiap panggilan menamai Claude Haiku 5.5 (`AI_PATIENT_MODEL`) — cepat dan hemat kuota,
+ * cukup untuk memerankan pasien karena fakta medis datang dari mesin kasus. Bila platform tidak
+ * dapat memakai Haiku 5.5 untuk penonton ini, platform menjawab dengan tier `quick` (tier
+ * tercepat/teringan); model yang benar-benar menjawab dilaporkan lewat `modelApplied`.
+ *
  * Bila kapabilitas tidak tersedia, ditolak, atau gagal, pemanggil memakai NLU lokal.
  */
 import { applyIntents, recordExchange } from '../../core/encounter';
@@ -23,8 +28,21 @@ interface SampleTool {
   inputSchema?: { type: 'object'; properties?: Record<string, unknown>; required?: string[] };
   execute(input: Record<string, unknown>, context: { signal: AbortSignal }): unknown;
 }
+interface SampleOptions {
+  tools?: SampleTool[];
+  modelTier?: 'quick' | 'default' | 'complex';
+  model?: string;
+  signal?: AbortSignal;
+}
+interface SampleResult {
+  text: string;
+  truncated: boolean;
+  /** Model yang dinamai, bila model itu yang menjawab (tidak ada bila tier cadangan yang menjawab). */
+  modelApplied?: string;
+  modelTierApplied?: string;
+}
 interface SampleFn {
-  (input: string, options?: { tools?: SampleTool[]; modelTier?: 'quick' | 'default' | 'complex'; signal?: AbortSignal }): Promise<{ text: string; truncated: boolean }>;
+  (input: string, options?: SampleOptions): Promise<SampleResult>;
   limits?: () => Promise<{ tools?: { maxCount: number } }>;
 }
 interface ClaudeGlobal {
@@ -32,6 +50,19 @@ interface ClaudeGlobal {
 }
 
 export type AiAvailability = 'checking' | 'ready' | 'unavailable';
+
+/** Model Claude untuk SEMUA jawaban pasien AI (ID API). */
+export const AI_PATIENT_MODEL = 'claude-haiku-5-5';
+export const AI_PATIENT_MODEL_LABEL = 'Haiku 5.5';
+/** Tier cadangan bila platform tidak dapat memakai model di atas: tier tercepat/teringan. */
+export const AI_PATIENT_FALLBACK_TIER = 'quick';
+
+/** Opsi panggilan `sample` untuk pasien AI (diekspor untuk tes). */
+export function patientSampleOptions(tools: SampleTool[], signal?: AbortSignal): SampleOptions {
+  const options: SampleOptions = { tools, model: AI_PATIENT_MODEL, modelTier: AI_PATIENT_FALLBACK_TIER };
+  if (signal) options.signal = signal;
+  return options;
+}
 
 let samplePromise: Promise<SampleFn | null> | null = null;
 
@@ -65,6 +96,11 @@ export interface AiAnswer {
   /** Intent yang diambil lewat alat (dasar bahasa tubuh pasien 3D) & potongan jawabannya. */
   intents: Intent[];
   parts: string[];
+  /**
+   * Model yang menjawab: `AI_PATIENT_MODEL` bila Haiku 5.5 menjawab, `null` bila tier cadangan
+   * yang menjawab (atau platform belum melaporkan nama model).
+   */
+  model: string | null;
 }
 
 export class AiError extends Error {
@@ -209,9 +245,11 @@ export async function askAiPatient(
     return r.parts;
   });
   let text: string;
+  let model: string | null = null;
   try {
-    const result = await sample(personaPrompt(state, content, question), { tools: [tool], modelTier: 'quick', signal });
+    const result = await sample(personaPrompt(state, content, question), patientSampleOptions([tool], signal));
     text = finalParagraph(result.text);
+    model = result.modelApplied === AI_PATIENT_MODEL ? AI_PATIENT_MODEL : null;
   } catch (e) {
     // Dibatalkan (batas waktu / pasien berganti): DOMException juga punya `code` numerik, jadi
     // periksa sinyalnya lebih dulu agar tidak terbaca sebagai galat lain.
@@ -224,8 +262,8 @@ export async function askAiPatient(
     // Claude tidak mengambil fakta untuk pertanyaan klinis → pakai jawaban mesin agar tetap konsisten.
     const r = applyIntents(state, fallbackIntents, content);
     const reply = r.parts.join(' ');
-    return { state: recordExchange(r.state, question, reply), reply, usedTools: false, intents: [...fallbackIntents], parts: r.parts };
+    return { state: recordExchange(r.state, question, reply), reply, usedTools: false, intents: [...fallbackIntents], parts: r.parts, model };
   }
   if (!text) throw new AiError('empty_completion', false);
-  return { state: recordExchange(working, question, text), reply: text, usedTools, intents: usedIntents, parts: usedParts };
+  return { state: recordExchange(working, question, text), reply: text, usedTools, intents: usedIntents, parts: usedParts, model };
 }
