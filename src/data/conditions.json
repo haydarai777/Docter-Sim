@@ -1,0 +1,189 @@
+{
+  "review": { "status": "BELUM_DITINJAU_DOKTER", "notes": ["Kondisi diagnosis banding (tidak pernah menjadi pasien)."] },
+  "conditions": [
+    {
+      "id": "leptospirosis",
+      "name": "Leptospirosis",
+      "aliases": ["Kencing tikus", "Penyakit Weil"],
+      "system": "Infeksi tropis",
+      "danger": "tinggi",
+      "summary": "Demam akut setelah paparan banjir/air tercemar urin tikus; nyeri betis, injeksi konjungtiva, ikterik, gangguan ginjal."
+    },
+    {
+      "id": "chikungunya",
+      "name": "Chikungunya",
+      "aliases": ["Flu tulang"],
+      "system": "Infeksi tropis",
+      "danger": "rendah",
+      "summary": "Demam akut dengan nyeri sendi hebat (poliartralgia) dan ruam; trombositopenia jarang berat."
+    },
+    {
+      "id": "influenza",
+      "name": "Influenza",
+      "aliases": ["Flu"],
+      "system": "Pernapasan",
+      "danger": "rendah",
+      "summary": "Demam akut, nyeri otot, batuk, pilek; sembuh sendiri dalam 1 minggu."
+    },
+    {
+      "id": "ispa_virus",
+      "name": "ISPA / Common cold",
+      "aliases": ["Selesma", "Pilek", "Batuk pilek"],
+      "system": "Pernapasan",
+      "danger": "rendah",
+      "summary": "Infeksi saluran napas atas ringan: pilek, nyeri tenggorok, batuk; demam ringan."
+    },
+    {
+      "id": "covid19",
+      "name": "COVID-19",
+      "aliases": ["Corona"],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Infeksi SARS-CoV-2: demam, batuk, anosmia; dapat berat pada lansia/komorbid."
+    },
+    {
+      "id": "bronkitis_akut",
+      "name": "Bronkitis Akut",
+      "aliases": ["Radang saluran napas"],
+      "system": "Pernapasan",
+      "danger": "rendah",
+      "summary": "Batuk akut (berdahak) pasca-ISPA tanpa konsolidasi pada pemeriksaan."
+    },
+    {
+      "id": "ppok",
+      "name": "PPOK",
+      "aliases": ["Penyakit paru obstruktif kronik", "Bronkitis kronik", "Emfisema"],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Sesak & batuk kronik progresif pada perokok lama; obstruksi tidak reversibel penuh."
+    },
+    {
+      "id": "kanker_paru",
+      "name": "Kanker Paru",
+      "aliases": ["Tumor paru"],
+      "system": "Pernapasan",
+      "danger": "kritis",
+      "summary": "Batuk lama, hemoptisis, BB turun pada perokok usia lanjut; massa pada foto toraks."
+    },
+    {
+      "id": "gagal_jantung",
+      "name": "Gagal Jantung",
+      "aliases": ["Payah jantung", "CHF"],
+      "system": "Jantung & pembuluh darah",
+      "danger": "tinggi",
+      "summary": "Sesak saat aktivitas/berbaring, edema tungkai, JVP meningkat, ronkhi basal, kardiomegali."
+    },
+    {
+      "id": "sindrom_koroner_akut",
+      "name": "Sindrom Koroner Akut",
+      "aliases": ["Serangan jantung", "Infark miokard", "Angina tidak stabil", "SKA"],
+      "system": "Jantung & pembuluh darah",
+      "danger": "kritis",
+      "summary": "Nyeri dada saat istirahat > 20 menit, makin berat/sering; perubahan EKG; gawat darurat."
+    },
+    {
+      "id": "nyeri_muskuloskeletal",
+      "name": "Nyeri Dada Muskuloskeletal",
+      "aliases": ["Nyeri otot dada", "Kostokondritis"],
+      "system": "Otot & sendi",
+      "danger": "rendah",
+      "summary": "Nyeri dada terlokalisasi, bertambah saat ditekan atau bergerak."
+    },
+    {
+      "id": "tukak_peptik",
+      "name": "Tukak Peptik",
+      "aliases": ["Ulkus lambung", "Ulkus duodenum"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Nyeri ulu hati terkait makan; komplikasi perdarahan (melena) atau perforasi."
+    },
+    {
+      "id": "keganasan_lambung",
+      "name": "Keganasan Lambung",
+      "aliases": ["Kanker lambung"],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Dispepsia baru pada usia > 55 tahun dengan BB turun, anemia, muntah, atau disfagia (tanda alarm)."
+    },
+    {
+      "id": "kolik_bilier",
+      "name": "Kolik Bilier / Kolesistitis",
+      "aliases": ["Batu empedu bergejala", "Radang kandung empedu"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Nyeri kuadran kanan atas setelah makan berlemak, Murphy sign (+), kadang demam."
+    },
+    {
+      "id": "pankreatitis_akut",
+      "name": "Pankreatitis Akut",
+      "aliases": ["Radang pankreas"],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Nyeri epigastrium hebat menjalar ke punggung, muntah; amilase/lipase meningkat."
+    },
+    {
+      "id": "apendisitis_akut",
+      "name": "Apendisitis Akut",
+      "aliases": ["Usus buntu"],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Nyeri periumbilikal berpindah ke kanan bawah, demam, McBurney (+)."
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "name": "Gastroenteritis Akut",
+      "aliases": ["Diare akut", "Muntaber"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Diare & muntah akut; risiko dehidrasi."
+    },
+    {
+      "id": "hepatitis_a",
+      "name": "Hepatitis A",
+      "aliases": ["Sakit kuning", "Hepatitis virus"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Demam, mual, ikterik, urin gelap; transaminase sangat tinggi."
+    },
+    {
+      "id": "pielonefritis",
+      "name": "Pielonefritis Akut",
+      "aliases": ["ISK atas", "Infeksi ginjal"],
+      "system": "Saluran kemih",
+      "danger": "tinggi",
+      "summary": "Demam tinggi, menggigil, nyeri pinggang, nyeri ketok CVA, leukosituria."
+    },
+    {
+      "id": "massa_saluran_kemih",
+      "name": "Massa / Tumor Saluran Kemih",
+      "aliases": ["Tumor ginjal", "Tumor kandung kemih", "Massa ureter"],
+      "system": "Saluran kemih",
+      "danger": "kritis",
+      "summary": "Hematuria tanpa nyeri, sumbatan (hidronefrosis) tanpa batu yang jelas; pikirkan pada usia lanjut/perokok."
+    },
+    {
+      "id": "uretritis_ims",
+      "name": "Uretritis (Infeksi Menular Seksual)",
+      "aliases": ["Kencing nanah", "Gonore"],
+      "system": "Saluran kemih",
+      "danger": "sedang",
+      "summary": "Disuria dengan duh uretra; riwayat hubungan seksual berisiko."
+    },
+    {
+      "id": "kehamilan_ektopik",
+      "name": "Kehamilan Ektopik Terganggu",
+      "aliases": ["KET", "Hamil di luar kandungan"],
+      "system": "Kebidanan",
+      "danger": "kritis",
+      "summary": "Perempuan usia subur, terlambat haid, nyeri perut bawah mendadak, syok; tes kehamilan positif."
+    },
+    {
+      "id": "sepsis",
+      "name": "Sepsis",
+      "aliases": ["Infeksi berat"],
+      "system": "Infeksi tropis",
+      "danger": "kritis",
+      "summary": "Infeksi dengan disfungsi organ: hipotensi, takikardia, takipnea, penurunan kesadaran."
+    }
+  ]
+}

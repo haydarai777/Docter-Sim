@@ -35,7 +35,11 @@ for (const disease of content.diseases) {
         `(budget ${formatRupiah(p.budget)}), kepribadian: ${p.personalityId}`,
     );
     console.log(`Hari sakit ke-${c.day} · trait: ${c.traits.join(', ') || '-'}`);
-    console.log(`Gejala: ${c.symptoms.join(', ')}`);
+    console.log(`Gejala: ${c.symptoms.join(', ')}${c.hiddenSymptoms.length ? ` (tersembunyi: ${c.hiddenSymptoms.join(', ')})` : ''}`);
+    console.log(
+      `Komorbid: ${c.comorbidities.map((x) => `${x.id}${x.known ? '' : ' (tidak tahu)'}`).join(', ') || '-'} · insidental: ${c.incidentals.join(', ') || '-'} · ` +
+        `komplikasi: ${c.complications.join(', ') || '-'} · alergi: ${c.allergy ?? '-'}`,
+    );
     console.log(`> ${c.greeting}`);
     console.log(`> ${c.complaint}`);
     for (const [cat, a] of Object.entries(c.answers)) {

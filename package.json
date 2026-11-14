@@ -2,21 +2,26 @@
   "name": "meja-praktek",
   "version": "0.1.0",
   "private": true,
-  "description": "Meja Praktek \u2014 game simulasi diagnosis dokter umum (hiburan & edukasi, bukan alat medis).",
+  "description": "Meja Praktek — game simulasi diagnosis dokter umum (hiburan & edukasi, bukan alat medis).",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:single": "tsc --noEmit && vite build --mode single",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "validate-content": "tsx scripts/validate-content.ts",
     "sample-cases": "tsx scripts/sample-cases.ts",
-    "format-data": "tsx scripts/format-data.ts"
+    "format-data": "tsx scripts/format-data.ts",
+    "review-sheet": "tsx scripts/review-sheet.ts",
+    "balance-report": "tsx scripts/balance-report.ts",
+    "nlu-benchmark": "tsx scripts/nlu-benchmark.ts"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",
+    "@types/three": "^0.170.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.5",
@@ -24,5 +29,8 @@
   },
   "engines": {
     "node": ">=20.19"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
   }
 }

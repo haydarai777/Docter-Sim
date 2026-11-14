@@ -1,6 +1,6 @@
 {
   "id": "malaria",
-  "name": "Malaria (tanpa komplikasi)",
+  "name": "Malaria",
   "aliases": ["Malaria", "Malaria falciparum", "Malaria tropika", "Malaria vivax", "Malaria tertiana"],
   "system": "Infeksi tropis",
   "skdiLevel": "4A",
@@ -40,6 +40,7 @@
   },
   "traits": [
     { "id": "falciparum", "probability": 0.55 },
+    { "id": "malaria_berat", "when": { "traits": ["falciparum"] }, "probability": 0.1 },
     { "id": "vivax", "when": { "notTraits": ["falciparum"] }, "probability": 1 },
     { "id": "sedang_demam", "probability": 0.7 },
     { "id": "di_sela_serangan", "when": { "notTraits": ["sedang_demam"] }, "probability": 1 },
@@ -61,9 +62,12 @@
     "hepatomegali": "Hepatomegali.",
     "trombositopenia": "Trombositopenia — juga sering pada malaria, bukan hanya dengue.",
     "ikterik_ringan": "Subikterik.",
-    "riwayat_malaria": "Pernah sakit malaria sebelumnya."
+    "riwayat_malaria": "Pernah sakit malaria sebelumnya.",
+    "malaria_berat": "Malaria berat: penurunan kesadaran, ikterik, anemia berat, gangguan ginjal, hiperparasitemia."
   },
   "symptoms": [
+    { "id": "urin_gelap", "when": { "traits": ["malaria_berat"] }, "probability": 0.8 },
+    { "id": "kuning", "when": { "traits": ["malaria_berat"] }, "probability": 0.8 },
     { "id": "demam", "probability": 1 },
     { "id": "menggigil", "probability": 0.9 },
     { "id": "berkeringat", "probability": 0.75 },
@@ -152,14 +156,7 @@
       },
       { "text": "Minum obat panas agak turun, Dok, tapi kumat lagi.", "when": { "notSymptoms": ["berkeringat"] } }
     ],
-    "riwayat_penyakit": [
-      {
-        "text": "Dulu waktu kerja di sana pernah kena malaria juga, Dok. Sudah diobati.",
-        "when": { "traits": ["riwayat_malaria"] },
-        "clue": "Riwayat malaria sebelumnya"
-      },
-      { "text": "Belum pernah sakit kayak gini, Dok.", "when": { "notTraits": ["riwayat_malaria"] } }
-    ],
+    "riwayat_penyakit": [{ "text": "Nggak ada penyakit lain, Dok." }],
     "riwayat_obat": [
       { "text": "Minum parasetamol, Dok. Panasnya turun, tapi balik lagi.", "weight": 3 },
       { "text": "Minum obat panas dari warung sama jamu, Dok.", "weight": 1 }
@@ -213,34 +210,110 @@
         "when": { "sex": "male" },
         "clue": "Sering beraktivitas di luar rumah pada malam hari (jam gigit Anopheles)"
       }
+    ],
+    "durasi": [
+      {
+        "text": "Sekali kumat bisa beberapa jam, Dok: menggigil, panas, lalu keringetan, habis itu enakan.",
+        "when": { "symptoms": ["menggigil", "berkeringat"] },
+        "reveals": ["menggigil", "berkeringat"],
+        "clue": "Serangan berlangsung beberapa jam lalu mereda (paroksismal)"
+      },
+      {
+        "text": "Tiap kumat beberapa jam, Dok, habis itu agak enakan.",
+        "when": { "notSymptoms": ["berkeringat"] },
+        "clue": "Serangan berlangsung beberapa jam lalu mereda (paroksismal)"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Berat sekali, Dok. Kata keluarga, tadi pagi saya sempat bicara ngelantur, kencing juga gelap.",
+        "when": { "traits": ["malaria_berat"], "symptoms": ["urin_gelap"] },
+        "reveals": ["urin_gelap"],
+        "clue": "Penurunan kesadaran ringan & urin gelap (curiga malaria berat)"
+      },
+      {
+        "text": "Kalau lagi kumat berat sekali, Dok, nggak bisa ngapa-ngapain. Kalau sudah lewat agak mendingan.",
+        "when": { "notTraits": ["malaria_berat"] }
+      },
+      {
+        "text": "Berat sekali, Dok. Kata keluarga, tadi pagi saya sempat bicara ngelantur.",
+        "when": { "traits": ["malaria_berat"], "notSymptoms": ["urin_gelap"] },
+        "clue": "Penurunan kesadaran ringan (curiga malaria berat)"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Makin parah, Dok. Sekarang badan kuning dan lemas sekali.",
+        "when": { "traits": ["malaria_berat"], "symptoms": ["kuning"] },
+        "reveals": ["kuning"],
+        "clue": "Perburukan dengan ikterik (curiga malaria berat)"
+      },
+      { "text": "Kumat terus, Dok, belum ada perbaikan.", "weight": 2, "when": { "notTraits": ["malaria_berat"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Dulu waktu kerja di sana pernah kena malaria juga, Dok. Sudah diobati.",
+        "when": { "traits": ["riwayat_malaria"] },
+        "clue": "Riwayat malaria sebelumnya (kemungkinan relaps atau reinfeksi)"
+      },
+      { "text": "Belum pernah sakit kayak gini, Dok.", "when": { "notTraits": ["riwayat_malaria"] } }
     ]
   },
   "findings": [
-    { "tool": "termometer", "param": "suhu", "when": { "traits": ["sedang_demam"] }, "range": [38.5, 40.2] },
-    { "tool": "termometer", "param": "suhu", "range": [36.6, 37.4] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesadaran",
+      "when": { "traits": ["malaria_berat"] },
+      "values": ["Apatis, GCS 14 (E4M6V4)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["malaria_berat"] },
+      "values": ["Tampak sakit berat"]
+    },
+    { "tool": "kepala_leher", "param": "sklera", "when": { "traits": ["malaria_berat"] }, "values": ["Ikterik"] },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["malaria_berat"] }, "range": [5.8, 7] },
+    { "tool": "fungsi_hati", "param": "bilirubin", "when": { "traits": ["malaria_berat"] }, "range": [3.2, 6] },
+    { "tool": "fungsi_ginjal", "param": "kreatinin", "when": { "traits": ["malaria_berat"] }, "range": [2.6, 4] },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["malaria_berat"] }, "range": [80, 140] },
+    {
+      "tool": "mikroskopis_malaria",
+      "param": "hasil",
+      "when": { "traits": ["malaria_berat"] },
+      "values": ["Ditemukan P. falciparum stadium tropozoit, kepadatan tinggi (± 8% eritrosit terinfeksi)"]
+    },
+    {
+      "tool": "urinalisis",
+      "param": "warna",
+      "when": { "traits": ["malaria_berat"] },
+      "values": ["Coklat gelap seperti teh"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["sedang_demam"] }, "range": [38.5, 40.2] },
+    { "tool": "tanda_vital", "param": "suhu", "range": [36.6, 37.4] },
     { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["sedang_demam"] }, "range": [96, 118] },
     {
-      "tool": "senter",
+      "tool": "kepala_leher",
       "param": "konjungtiva",
       "when": { "traits": ["anemia"] },
       "probability": 0.8,
       "values": ["Anemis (pucat)"]
     },
-    { "tool": "senter", "param": "sklera", "when": { "traits": ["ikterik_ringan"] }, "values": ["Subikterik"] },
+    { "tool": "kepala_leher", "param": "sklera", "when": { "traits": ["ikterik_ringan"] }, "values": ["Subikterik"] },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "lien",
       "when": { "traits": ["splenomegali"] },
       "values": ["Teraba Schuffner I", "Teraba Schuffner II"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "hepar",
       "when": { "traits": ["hepatomegali"] },
       "values": ["Teraba 1–2 jari di bawah arkus kosta"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "nyeri_tekan",
       "when": { "traits": ["splenomegali"] },
       "probability": 0.3,
@@ -297,16 +370,91 @@
       "when": { "traits": ["trombositopenia"] },
       "probability": 0.15,
       "values": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
+    },
+    {
+      "tool": "mikroskopis_malaria",
+      "param": "hasil",
+      "when": { "traits": ["falciparum"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": [
+        "Ditemukan P. falciparum stadium tropozoit (bentuk cincin), ± 2.400 parasit/µL",
+        "Ditemukan P. falciparum stadium tropozoit dan gametosit (bentuk pisang)"
+      ]
+    },
+    {
+      "tool": "mikroskopis_malaria",
+      "param": "hasil",
+      "when": { "traits": ["vivax"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": [
+        "Ditemukan P. vivax stadium tropozoit (amoeboid) dan skizon",
+        "Ditemukan P. vivax stadium tropozoit, eritrosit terinfeksi membesar"
+      ]
+    },
+    { "tool": "fungsi_hati", "param": "bilirubin", "when": { "traits": ["ikterik_ringan"] }, "range": [1.6, 3.2] },
+    { "tool": "fungsi_hati", "param": "sgot", "probability": 0.3, "range": [42, 80] },
+    { "tool": "usg_abdomen", "param": "lien", "when": { "traits": ["splenomegali"] }, "values": ["Splenomegali"] },
+    {
+      "tool": "usg_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali", "splenomegali"] },
+      "values": ["Hepatosplenomegali"]
+    },
+    { "tool": "usg_abdomen", "param": "kesan", "when": { "traits": ["splenomegali"] }, "values": ["Splenomegali"] },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["sedang_demam"] },
+      "values": ["Tampak sakit sedang, menggigil"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "kulit",
+      "when": { "traits": ["ikterik_ringan"] },
+      "values": ["Kulit tampak kekuningan"]
     }
   ],
   "differentials": [
     {
       "id": "dengue",
-      "howToDistinguish": "Dengue: tanpa riwayat ke daerah endemis malaria, nyeri otot/sendi dan belakang mata menonjol, hemokonsentrasi, NS1 positif. Malaria: menggigil–berkeringat berkala, anemia, splenomegali, RDT/mikroskopis positif."
+      "howToDistinguish": "Dengue: tanpa riwayat ke daerah endemis malaria, nyeri otot/sendi dan belakang mata menonjol, hemokonsentrasi, NS1 positif. Malaria: menggigil–berkeringat berkala, anemia, splenomegali, RDT/mikroskopis positif.",
+      "excludeBy": { "tools": ["ns1_dengue", "darah_lengkap"] }
     },
     {
       "id": "demam_tifoid",
-      "howToDistinguish": "Tifoid: demam naik bertahap terutama sore–malam lebih dari seminggu, dengan keluhan cerna dan lidah kotor. Malaria: demam paroksismal dengan menggigil hebat dan riwayat daerah endemis."
+      "howToDistinguish": "Tifoid: demam naik bertahap terutama sore–malam lebih dari seminggu, dengan keluhan cerna dan lidah kotor. Malaria: demam paroksismal dengan menggigil hebat dan riwayat daerah endemis.",
+      "excludeBy": { "tools": ["tubex"], "topics": ["pola"] }
+    },
+    {
+      "id": "leptospirosis",
+      "howToDistinguish": "Leptospirosis: paparan banjir/tikus, nyeri betis, ikterik, gangguan ginjal; parasit malaria negatif.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["bepergian_lingkungan"] }
+    },
+    {
+      "id": "sepsis",
+      "howToDistinguish": "Sepsis: sumber infeksi jelas dengan hipotensi, takikardia, penurunan kesadaran; parasit negatif.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "keadaan_umum"] }
+    },
+    {
+      "id": "influenza",
+      "howToDistinguish": "Influenza: batuk-pilek menonjol, demam tidak paroksismal, tanpa riwayat daerah endemis.",
+      "excludeBy": { "symptoms": ["batuk"] }
     }
   ],
   "otherDifferentials": ["Leptospirosis", "Influenza", "Sepsis", "Pielonefritis"],
@@ -315,14 +463,13 @@
     "Riwayat tinggal/bepergian ke daerah endemis (Papua, NTT, Maluku, dsb.)",
     "Anemia (konjungtiva pucat), splenomegali, kadang subikterik",
     "Trombositopenia juga sering pada malaria — jangan langsung menyimpulkan dengue",
-    "RDT malaria atau mikroskopis apusan darah tebal–tipis positif (baku emas: mikroskopis)"
+    "Apusan darah tebal–tipis (baku emas, sekaligus menentukan spesies) atau RDT malaria positif"
   ],
   "teachingPoints": [
     "Selalu tanyakan riwayat bepergian pada pasien demam: satu pertanyaan gratis ini bisa mengarah ke malaria.",
     "Suhu bisa normal bila pasien datang di sela serangan demam.",
     "Diagnosis malaria harus dikonfirmasi dengan pemeriksaan parasit (mikroskopis atau RDT)."
   ],
-  "idealWorkup": ["termometer", "palpasi_abdomen", "rdt_malaria"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": [
@@ -335,5 +482,117 @@
       "Kemenkes RI. Buku Saku Tatalaksana Kasus Malaria",
       "WHO. Guidelines for malaria"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "malaria_berat",
+      "name": "Malaria berat",
+      "trait": "malaria_berat",
+      "redFlag": true,
+      "assess": {
+        "tools": ["keadaan_umum", "darah_lengkap", "fungsi_ginjal", "fungsi_hati", "mikroskopis_malaria"],
+        "symptoms": ["urin_gelap"]
+      },
+      "explanation": "Penurunan kesadaran, ikterik, anemia berat (Hb < 7), gangguan ginjal, hiperparasitemia, atau urin gelap → rujuk segera."
+    },
+    {
+      "id": "anemia",
+      "name": "Anemia",
+      "trait": "anemia",
+      "redFlag": false,
+      "assess": { "tools": ["darah_lengkap", "kepala_leher"] },
+      "explanation": "Anemia akibat hemolisis; berat bila Hb < 7 g/dL."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["bepergian_lingkungan", "pola", "durasi", "episode_sebelumnya"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Konjungtiva anemis dan sklera ikterik." },
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Splenomegali." },
+      { "tool": "keadaan_umum", "role": "komplikasi", "reason": "Kesadaran (tanda malaria berat)." }
+    ],
+    "tests": [
+      {
+        "tool": "mikroskopis_malaria",
+        "role": "kunci",
+        "reason": "Baku emas: spesies & kepadatan parasit.",
+        "group": "konfirmasi_malaria"
+      },
+      {
+        "tool": "rdt_malaria",
+        "role": "kunci",
+        "reason": "Konfirmasi parasitologis cepat.",
+        "group": "konfirmasi_malaria"
+      },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Anemia dan trombositopenia." },
+      {
+        "tool": "fungsi_ginjal",
+        "role": "komplikasi",
+        "reason": "Gangguan ginjal pada malaria berat.",
+        "when": { "traits": ["malaria_berat"] }
+      },
+      {
+        "tool": "fungsi_hati",
+        "role": "komplikasi",
+        "reason": "Ikterik/bilirubin pada malaria berat.",
+        "when": { "traits": ["malaria_berat"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ekg", "reason": "Tidak ada keluhan yang mengarah ke jantung." },
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Malaria berat memerlukan terapi parenteral dan rawat inap.",
+      "when": { "traits": ["malaria_berat"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Malaria tanpa komplikasi: rawat jalan dengan konfirmasi parasitologis, pengobatan sesuai pedoman, dan kontrol.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Konfirmasi parasitologis (mikroskopis/RDT) sebelum terapi.",
+    "Terapi antimalaria sesuai pedoman nasional dan spesies — keputusan dokter.",
+    "Pantau tanda malaria berat; rujuk segera bila muncul.",
+    "Edukasi kelambu/repelan bila kembali ke daerah endemis."
+  ],
+  "approach": [
+    "Pada setiap pasien demam, tanyakan riwayat tinggal/bepergian ke daerah endemis.",
+    "Gali pola demam paroksismal dan riwayat malaria sebelumnya.",
+    "Periksa anemia, ikterik, splenomegali, dan tingkat kesadaran.",
+    "Konfirmasi dengan mikroskopis atau RDT.",
+    "Nilai tanda malaria berat (kesadaran, Hb, bilirubin, kreatinin, kepadatan parasit) sebelum memutuskan rawat jalan."
+  ],
+  "pitfalls": [
+    {
+      "when": { "primaryIs": "dengue", "traits": ["trombositopenia"] },
+      "text": "Trombositopenia juga sering pada malaria — riwayat daerah endemis seharusnya mengarahkan ke pemeriksaan parasit."
+    },
+    {
+      "when": { "excluded": "malaria", "topicNotAsked": "bepergian_lingkungan" },
+      "text": "Malaria disingkirkan tanpa menanyakan riwayat bepergian atau tempat tinggal."
+    },
+    {
+      "when": { "excluded": "malaria", "traits": ["di_sela_serangan"] },
+      "text": "Suhu normal saat diperiksa tidak menyingkirkan malaria — pasien bisa datang di sela serangan."
+    },
+    {
+      "when": { "primaryIs": "demam_tifoid", "toolDone": "widal" },
+      "text": "Titer Widal tunggal sering positif palsu di daerah endemis; tidak cukup untuk mendiagnosis tifoid."
+    }
+  ]
 }

@@ -1,0 +1,244 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "File ini menentukan apa yang TERLIHAT pada pasien 3D. Isyarat klinis hanya berasal dari gejala/temuan yang memang ada pada kasus.",
+      "symptomCues: perilaku yang tampak dari gejala (mis. batuk, memegang perut). level 0..1 = seberapa sering/kuat.",
+      "findingCues: tanda yang tampak diturunkan dari HASIL pemeriksaan kasus (teks 'match' atau ambang angka 'min'/'max'), sehingga yang terlihat selalu sesuai hasil pemeriksaan.",
+      "Gejala yang tidak tercantum di sini hanya bisa diketahui lewat anamnesis atau pemeriksaan.",
+      "findingCues dievaluasi berurutan: untuk tiap (alat, parameter, isyarat) aturan PERTAMA yang cocok dipakai; antar-sumber diambil level tertinggi."
+    ]
+  },
+  "skinTones": [
+    { "id": "kuning_langsat", "color": "#efc7a2", "weight": 2 },
+    { "id": "sawo_muda", "color": "#dba77c", "weight": 4 },
+    { "id": "sawo_matang", "color": "#c48a5e", "weight": 5 },
+    { "id": "cokelat", "color": "#a56f49", "weight": 3 },
+    { "id": "cokelat_tua", "color": "#83553a", "weight": 1.5 }
+  ],
+  "hairColors": {
+    "muda": [
+      { "color": "#15110f", "weight": 6 },
+      { "color": "#2a1c14", "weight": 3 },
+      { "color": "#4b3021", "weight": 1 },
+      { "color": "#6a4428", "weight": 0.6 }
+    ],
+    "paruh_baya": [
+      { "color": "#15110f", "weight": 4 },
+      { "color": "#2a1c14", "weight": 2 },
+      { "color": "#55504c", "weight": 2 },
+      { "color": "#8a8783", "weight": 1 }
+    ],
+    "lansia": [
+      { "color": "#8a8783", "weight": 3 },
+      { "color": "#bdbab5", "weight": 3 },
+      { "color": "#e4e1dc", "weight": 2 },
+      { "color": "#3a3532", "weight": 1 }
+    ]
+  },
+  "hairStyles": {
+    "male": {
+      "anak": ["pendek", "cepak", "belah"],
+      "remaja": ["pendek", "belah", "ikal", "cepak"],
+      "dewasa": ["pendek", "belah", "cepak", "ikal", "tipis"],
+      "lansia": ["tipis", "pendek", "botak", "cepak"]
+    },
+    "female": {
+      "anak": ["bob", "kuncir", "kuncir_dua"],
+      "remaja": ["panjang", "kuncir", "bob"],
+      "dewasa": ["panjang", "kuncir", "bob", "sanggul", "pendek"],
+      "lansia": ["sanggul", "pendek", "bob"]
+    }
+  },
+  "hijabRate": { "anak": 0.15, "remaja": 0.4, "dewasa": 0.5, "lansia": 0.55 },
+  "hijabColors": ["#e9e4da", "#2f3b52", "#7b8f6b", "#a0522d", "#c9a0a8", "#4a4a4a", "#8fb0c4", "#6d4c7d"],
+  "glassesRate": { "anak": 0.08, "remaja": 0.15, "dewasa": 0.18, "lansia": 0.4 },
+  "topColors": [
+    "#3f6aa6",
+    "#b8493f",
+    "#4f8a5b",
+    "#d9d3c4",
+    "#7a5c99",
+    "#c98b2e",
+    "#2f7f86",
+    "#8c8f94",
+    "#d97a8a",
+    "#34495e",
+    "#a3b86c",
+    "#f1ede4"
+  ],
+  "bottomColors": ["#2c3440", "#3d4a63", "#5a4a3c", "#1f1f24", "#6b6f58", "#7a7f88"],
+  "jacketColors": ["#39424e", "#5b3d3d", "#2e5d50", "#6a6f7a", "#7a5a2e"],
+  "outfits": {
+    "pelajar_sd": {
+      "top": "#f7f7f5",
+      "bottom": "#a8242b",
+      "sleeves": "pendek",
+      "footwear": "sepatu",
+      "shorts": true,
+      "collar": true,
+      "tucked": true
+    },
+    "pelajar": { "top": "#f7f7f5", "bottom": "#77808f", "sleeves": "pendek", "footwear": "sepatu", "collar": true, "tucked": true },
+    "satpam": { "top": "#f2f2ef", "bottom": "#1f2a44", "sleeves": "pendek", "footwear": "sepatu", "collar": true, "tucked": true },
+    "tni": {
+      "top": "#4d5d3a",
+      "bottom": "#3f4c30",
+      "sleeves": "panjang",
+      "footwear": "sepatu",
+      "collar": true,
+      "tucked": true
+    },
+    "pns": { "top": "#b7a27a", "bottom": "#8d7b56", "sleeves": "pendek", "footwear": "sepatu", "collar": true, "tucked": true },
+    "guru": { "top": "#b7a27a", "bottom": "#3a3f4a", "sleeves": "pendek", "footwear": "sepatu", "collar": true, "tucked": true },
+    "pegawai_kantor": {
+      "top": "#cfe0f2",
+      "bottom": "#2c3440",
+      "sleeves": "panjang",
+      "footwear": "sepatu",
+      "collar": true,
+      "tucked": true
+    },
+    "karyawan_bank": {
+      "top": "#f1f3f6",
+      "bottom": "#1f2937",
+      "sleeves": "panjang",
+      "footwear": "sepatu",
+      "collar": true,
+      "tucked": true
+    },
+    "manajer": {
+      "top": "#e7ecf3",
+      "bottom": "#252a33",
+      "sleeves": "panjang",
+      "footwear": "sepatu",
+      "collar": true,
+      "tucked": true
+    },
+    "ojek_online": { "top": "#2f2f33", "bottom": "#2c3440", "sleeves": "pendek", "footwear": "sepatu", "jacket": "#1f8f4e" },
+    "pekerja_proyek": { "top": "#d8782a", "bottom": "#4a4f58", "sleeves": "panjang", "footwear": "sepatu", "collar": true },
+    "pekerja_tambang": { "top": "#cf6a1f", "bottom": "#3d4350", "sleeves": "panjang", "footwear": "sepatu", "collar": true },
+    "petani": { "top": "#8a8f6a", "bottom": "#4a4438", "sleeves": "panjang", "footwear": "sandal", "collar": false },
+    "nelayan": { "top": "#6f8fa8", "bottom": "#3a4350", "sleeves": "pendek", "footwear": "sandal", "collar": false }
+  },
+  "symptomCues": [
+    { "symptom": "batuk", "cue": "batuk", "level": 0.6 },
+    { "symptom": "batuk_darah", "cue": "batuk", "level": 0.7 },
+    { "symptom": "sesak_napas", "cue": "sesak", "level": 0.3 },
+    { "symptom": "mengi", "cue": "sesak", "level": 0.3 },
+    { "symptom": "lemas", "cue": "lemas", "level": 0.35 },
+    { "symptom": "berkeringat", "cue": "berkeringat", "level": 0.6 },
+    { "symptom": "keringat_dingin", "cue": "berkeringat", "level": 0.3 },
+    { "symptom": "nyeri_otot_sendi", "cue": "kaku", "level": 0.5 },
+    { "symptom": "nyeri_pinggang", "cue": "pegang", "site": "pinggang", "level": 0.9 },
+    { "symptom": "nyeri_perut", "cue": "pegang", "site": "perut", "level": 0.6 },
+    { "symptom": "nyeri_ulu_hati", "cue": "pegang", "site": "ulu_hati", "level": 0.45 },
+    { "symptom": "nyeri_suprapubik", "cue": "pegang", "site": "perut_bawah", "level": 0.4 },
+    { "symptom": "nyeri_dada_pleuritik", "cue": "pegang", "site": "dada", "level": 0.35 },
+    { "symptom": "nyeri_kepala", "cue": "pegang", "site": "kepala", "level": 0.3 },
+    { "symptom": "nyeri_retroorbital", "cue": "pegang", "site": "mata", "level": 0.25 },
+    { "symptom": "heartburn", "cue": "pegang", "site": "dada", "level": 0.2 },
+    { "symptom": "mual_muntah", "cue": "pegang", "site": "mulut", "level": 0.15 }
+  ],
+  "findingCues": [
+    { "tool": "tanda_vital", "param": "suhu", "min": 38, "cue": "demam", "level": 0.7 },
+    { "tool": "tanda_vital", "param": "napas", "min": 25, "cue": "sesak", "level": 1 },
+    { "tool": "tanda_vital", "param": "napas", "min": 21, "cue": "sesak", "level": 0.6 },
+    { "tool": "tanda_vital", "param": "spo2", "max": 93, "cue": "sesak", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "membungkuk", "cue": "tripod", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "sesak berat", "cue": "sesak", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "cuping hidung", "cue": "sesak", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "tampak sesak", "cue": "sesak", "level": 0.6 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "napas agak cepat", "cue": "sesak", "level": 0.5 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "menggigil", "cue": "menggigil", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "gelisah", "cue": "gelisah", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "enggan bergerak", "cue": "diam_menahan", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "sakit berat", "cue": "lemas", "level": 0.9 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "lemas", "cue": "lemas", "level": 0.7 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "sakit kronik", "cue": "lemas", "level": 0.5 },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "match": "pucat", "cue": "pucat", "level": 1 },
+    { "tool": "keadaan_umum", "param": "kesadaran", "abnormal": true, "cue": "mengantuk", "level": 1 },
+    { "tool": "kepala_leher", "param": "konjungtiva", "match": "anemis (pucat)", "cue": "pucat", "level": 1 },
+    { "tool": "kepala_leher", "param": "konjungtiva", "match": "hiperemis", "cue": "mata_merah", "level": 1 },
+    { "tool": "kepala_leher", "param": "sklera", "match": "subikterik", "cue": "kuning", "level": 0.5 },
+    { "tool": "kepala_leher", "param": "sklera", "match": "ikterik", "cue": "kuning", "level": 1 },
+    { "tool": "ekstremitas_kulit", "param": "kulit", "match": "kekuningan", "cue": "kuning", "level": 0.6 },
+    { "tool": "ekstremitas_kulit", "param": "kulit", "match": "petekie", "cue": "ruam", "level": 1 },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "kulit",
+      "match": "luka di telapak kaki kanan",
+      "cue": "pincang_kanan",
+      "level": 1
+    },
+    { "tool": "ekstremitas_kulit", "param": "edema", "abnormal": true, "cue": "bengkak", "level": 1 }
+  ],
+  "sites": {
+    "nyeri_kepala": "kepala",
+    "nyeri_retroorbital": "mata",
+    "kuning": "mata",
+    "pandangan_kabur": "mata",
+    "perdarahan_mukosa": "mulut",
+    "mual_muntah": "ulu_hati",
+    "sulit_menelan": "tenggorokan",
+    "regurgitasi": "tenggorokan",
+    "batuk": "dada",
+    "batuk_darah": "dada",
+    "sesak_napas": "dada",
+    "mengi": "dada",
+    "nyeri_dada": "dada",
+    "nyeri_dada_pleuritik": "dada",
+    "heartburn": "dada",
+    "nyeri_menjalar": "lengan",
+    "nyeri_ulu_hati": "ulu_hati",
+    "kembung": "perut",
+    "cepat_kenyang": "ulu_hati",
+    "muntah_darah": "mulut",
+    "nyeri_perut": "perut",
+    "diare": "perut",
+    "konstipasi": "perut",
+    "nyeri_suprapubik": "perut_bawah",
+    "disuria": "perut_bawah",
+    "nyeri_pinggang": "pinggang",
+    "bintik_merah": "lengan",
+    "nyeri_otot_sendi": "lengan",
+    "kesemutan": "kaki",
+    "luka_sulit_sembuh": "kaki"
+  },
+  "sideTraits": { "kiri": ["sisi_kiri"], "kanan": ["sisi_kanan"] },
+  "demonstrations": {
+    "batuk": "batuk",
+    "batuk_darah": "batuk",
+    "sesak_napas": "sesak",
+    "mengi": "sesak",
+    "menggigil": "menggigil",
+    "lemas": "lemas",
+    "demam": "dahi",
+    "berkeringat": "dahi",
+    "keringat_malam": "dahi",
+    "keringat_dingin": "dahi"
+  },
+  "emotions": { "kooperatif": "tenang", "cemas": "cemas", "meremehkan": "santai", "pelupa": "bingung", "sok_tahu": "yakin" },
+  "cueLabels": {
+    "batuk": "sesekali batuk",
+    "sesak": "napas tampak cepat/berat",
+    "tripod": "duduk membungkuk bertumpu pada tangan",
+    "menggigil": "menggigil",
+    "gelisah": "gelisah, sering berganti posisi",
+    "diam_menahan": "duduk kaku menahan nyeri, enggan bergerak",
+    "lemas": "tampak lemas, postur kurang tegap",
+    "mengantuk": "tampak mengantuk, respons lambat",
+    "pucat": "tampak pucat",
+    "kuning": "mata/kulit tampak kekuningan",
+    "mata_merah": "mata tampak kemerahan",
+    "ruam": "bintik-bintik merah di lengan dan tungkai",
+    "pincang_kanan": "berjalan pincang (kaki kanan)",
+    "bengkak": "kedua pergelangan kaki tampak bengkak",
+    "demam": "wajah kemerahan seperti demam",
+    "berkeringat": "berkeringat",
+    "kaku": "bergerak pelan dan kaku",
+    "pegang": "sesekali memegang bagian yang sakit",
+    "kurus": "tampak kurus",
+    "gemuk": "tampak berbadan besar"
+  }
+}

@@ -10,6 +10,8 @@
   "presentationDay": [5, 14],
   "demographics": {
     "ageBands": [
+      { "min": 10, "max": 12, "weight": 1.2 },
+      { "min": 13, "max": 17, "weight": 2.5 },
       { "min": 18, "max": 25, "weight": 5 },
       { "min": 26, "max": 35, "weight": 3 },
       { "min": 36, "max": 50, "weight": 2 },
@@ -20,7 +22,9 @@
       { "id": "mahasiswa", "weight": 4 },
       { "id": "buruh_pabrik", "weight": 2 },
       { "id": "ojek_online", "weight": 1 },
-      { "id": "pedagang_kaki_lima", "weight": 1 }
+      { "id": "pedagang_kaki_lima", "weight": 1 },
+      { "id": "pelajar", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 1.5 }
     ],
     "occupationBias": 0.4
   },
@@ -34,7 +38,10 @@
     { "id": "konstipasi", "probability": 0.45 },
     { "id": "diare", "when": { "notTraits": ["konstipasi"] }, "probability": 0.35 },
     { "id": "aneosinofilia", "probability": 0.55 },
-    { "id": "meteorismus", "probability": 0.3 }
+    { "id": "meteorismus", "probability": 0.3 },
+    { "id": "transaminitis", "probability": 0.5 },
+    { "id": "perdarahan_usus", "when": { "dayMin": 10 }, "probability": 0.06 },
+    { "id": "perforasi", "when": { "dayMin": 10, "notTraits": ["perdarahan_usus"] }, "probability": 0.03 }
   ],
   "traitLabels": {
     "bradikardia_relatif": "Bradikardia relatif: nadi tidak naik sebanding dengan suhu.",
@@ -45,9 +52,14 @@
     "konstipasi": "Keluhan cerna berupa konstipasi (lebih sering pada dewasa).",
     "diare": "Keluhan cerna berupa diare.",
     "aneosinofilia": "Aneosinofilia (eosinofil 0%).",
-    "meteorismus": "Meteorismus (perut kembung)."
+    "meteorismus": "Meteorismus (perut kembung).",
+    "transaminitis": "Peningkatan ringan SGOT/SGPT (hepatitis tifosa ringan).",
+    "perdarahan_usus": "Komplikasi: perdarahan saluran cerna (BAB hitam, Hb turun).",
+    "perforasi": "Komplikasi: perforasi usus (akut abdomen) — kegawatan bedah."
   },
   "symptoms": [
+    { "id": "bab_hitam", "when": { "traits": ["perdarahan_usus"] }, "probability": 0.9 },
+    { "id": "nyeri_perut", "when": { "traits": ["perforasi"] }, "probability": 1 },
     { "id": "demam", "probability": 1 },
     { "id": "nyeri_kepala", "probability": 0.75 },
     { "id": "lemas", "probability": 0.85 },
@@ -106,10 +118,7 @@
       }
     ],
     "pemberat_peringan": [{ "text": "Habis makan perut jadi begah, Dok. Minum obat panas cuma turun sebentar.", "weight": 1 }],
-    "riwayat_penyakit": [
-      { "text": "Dulu pernah kena tipes, Dok, waktu SMA.", "weight": 1 },
-      { "text": "Nggak ada sakit berat, Dok. Paling maag.", "weight": 3 }
-    ],
+    "riwayat_penyakit": [{ "text": "Nggak ada sakit berat, Dok. Paling maag." }],
     "riwayat_obat": [
       { "text": "Minum parasetamol sama obat maag, Dok, tapi nggak sembuh juga.", "weight": 3 },
       { "text": "Sudah minum obat warung, Dok. Panasnya turun sebentar, terus naik lagi.", "weight": 2 }
@@ -141,18 +150,97 @@
       {
         "text": "Makan siang di warung dekat tempat kerja tiap hari, Dok. Cuci tangan? Jarang sih.",
         "weight": 3,
-        "clue": "Higiene makanan dan cuci tangan kurang"
+        "clue": "Higiene makanan dan cuci tangan kurang",
+        "when": { "ageMin": 18 }
       },
-      { "text": "Biasa saja, Dok. Makan di rumah.", "weight": 1 }
+      { "text": "Biasa saja, Dok. Makan di rumah.", "weight": 1 },
+      {
+        "text": "Sering jajan di kantin sama pinggir jalan dekat sekolah, Dok. Cuci tangan? Jarang sih.",
+        "weight": 3,
+        "when": { "ageMax": 17 },
+        "clue": "Higiene makanan dan cuci tangan kurang"
+      }
+    ],
+    "durasi": [{ "text": "Panasnya hampir sepanjang hari, Dok, paling tinggi sore sampai malam." }],
+    "keparahan": [
+      {
+        "text": "Berat, Dok. Kemarin sempat pusing mau pingsan waktu berdiri.",
+        "when": { "traits": ["perdarahan_usus"] },
+        "clue": "Pusing saat berdiri (curiga perdarahan saluran cerna)"
+      },
+      {
+        "text": "Sakit sekali, Dok, perut keras dan nggak bisa bergerak.",
+        "when": { "traits": ["perforasi"] },
+        "clue": "Nyeri perut hebat (curiga perforasi usus)"
+      },
+      {
+        "text": "Lumayan berat, Dok. Sudah seminggu nggak bisa beraktivitas.",
+        "when": { "notTraits": ["perdarahan_usus", "perforasi"] }
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Dari tadi pagi perut tiba-tiba sakit sekali, Dok, makin parah.",
+        "when": { "traits": ["perforasi"] },
+        "clue": "Nyeri perut hebat mendadak pada minggu ke-2–3 (curiga perforasi)"
+      },
+      {
+        "text": "Makin hari makin panas, Dok, nggak sembuh-sembuh.",
+        "when": { "notTraits": ["perforasi"] },
+        "clue": "Demam progresif lebih dari seminggu"
+      }
+    ],
+    "episode_sebelumnya": [
+      { "text": "Dulu pernah kena tipes, Dok, waktu SMA.", "weight": 1, "when": { "ageMin": 19 } },
+      { "text": "Belum pernah sakit kayak gini, Dok.", "weight": 3 },
+      { "text": "Tahun lalu pernah kena tipes juga, Dok.", "when": { "ageMax": 18 }, "weight": 1 }
     ]
   },
   "findings": [
-    { "tool": "termometer", "param": "suhu", "when": { "traits": ["demam_saat_periksa"] }, "range": [38, 39.6] },
-    { "tool": "termometer", "param": "suhu", "range": [37.4, 38] },
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["perdarahan_usus"] }, "range": [8.5, 10.5] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["perdarahan_usus"] }, "range": [106, 120] },
+    {
+      "tool": "kepala_leher",
+      "param": "konjungtiva",
+      "when": { "traits": ["perdarahan_usus"] },
+      "values": ["Anemis (pucat)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["perforasi"] },
+      "values": ["Tampak sakit berat, menahan nyeri, enggan bergerak"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["perdarahan_usus"] },
+      "values": ["Tampak sakit sedang, pucat"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "tanda_khusus",
+      "when": { "traits": ["perforasi"] },
+      "values": ["Defans muskular (+), nyeri lepas (+)"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "traits": ["perforasi"] },
+      "values": ["Nyeri tekan di seluruh lapang perut"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "auskultasi",
+      "when": { "traits": ["perforasi"] },
+      "values": ["Bising usus menurun"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["demam_saat_periksa"] }, "range": [38, 39.6] },
+    { "tool": "tanda_vital", "param": "suhu", "range": [37.4, 38] },
     { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["bradikardia_relatif"] }, "range": [68, 84] },
     { "tool": "tanda_vital", "param": "nadi", "range": [90, 108] },
     {
-      "tool": "senter",
+      "tool": "kepala_leher",
       "param": "lidah",
       "when": { "traits": ["lidah_kotor"] },
       "values": [
@@ -161,39 +249,45 @@
       ]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "nyeri_tekan",
       "when": { "symptoms": ["nyeri_perut"] },
       "probability": 0.7,
       "values": ["Nyeri tekan epigastrium", "Nyeri tekan periumbilikal", "Nyeri tekan ringan regio epigastrium dan periumbilikal"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "hepar",
       "when": { "traits": ["hepatomegali"] },
       "values": ["Teraba 1–2 jari di bawah arkus kosta, kenyal, nyeri tekan ringan"]
     },
     {
-      "tool": "palpasi_abdomen",
+      "tool": "pemeriksaan_abdomen",
       "param": "lien",
       "when": { "traits": ["splenomegali"] },
       "values": ["Teraba Schuffner I"]
     },
     {
-      "tool": "palpasi_abdomen",
-      "param": "inspeksi_perkusi",
+      "tool": "pemeriksaan_abdomen",
+      "param": "inspeksi",
       "when": { "traits": ["meteorismus"] },
-      "values": ["Sedikit cembung, meteorismus (hipertimpani)"]
+      "values": ["Sedikit cembung"]
     },
     {
-      "tool": "stetoskop",
-      "param": "bising_usus",
+      "tool": "pemeriksaan_abdomen",
+      "param": "perkusi",
+      "when": { "traits": ["meteorismus"] },
+      "values": ["Hipertimpani (meteorismus), shifting dullness (−)"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "auskultasi",
       "when": { "traits": ["diare"] },
       "values": ["Bising usus meningkat"]
     },
     {
-      "tool": "stetoskop",
-      "param": "bising_usus",
+      "tool": "pemeriksaan_abdomen",
+      "param": "auskultasi",
       "when": { "traits": ["konstipasi"] },
       "probability": 0.5,
       "values": ["Bising usus menurun"]
@@ -223,16 +317,73 @@
       "probability": 0.8,
       "diagnostic": true,
       "values": ["4 (positif lemah)", "6 (positif)", "6 (positif)", "8 (positif kuat)", "10 (positif kuat)"]
-    }
+    },
+    { "tool": "fungsi_hati", "param": "sgot", "when": { "traits": ["transaminitis"] }, "range": [42, 110] },
+    { "tool": "fungsi_hati", "param": "sgpt", "when": { "traits": ["transaminitis"] }, "range": [42, 100] },
+    {
+      "tool": "usg_abdomen",
+      "param": "hepar",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan, ekogenisitas normal"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "lien",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Splenomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali", "splenomegali"] },
+      "values": ["Hepatosplenomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["hepatomegali"] },
+      "values": ["Hepatomegali ringan"]
+    },
+    {
+      "tool": "usg_abdomen",
+      "param": "kesan",
+      "when": { "traits": ["splenomegali"] },
+      "values": ["Splenomegali ringan"]
+    },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "probability": 0.6, "values": ["Tampak sakit sedang, lemas"] }
   ],
   "differentials": [
     {
       "id": "dengue",
-      "howToDistinguish": "Dengue: demam tinggi mendadak dengan nyeri otot/sendi dan belakang mata, trombositopenia nyata dan hemokonsentrasi; NS1 positif di awal. Tifoid: demam bertahap lebih dari seminggu, keluhan cerna, lidah kotor, trombosit umumnya normal."
+      "howToDistinguish": "Dengue: demam tinggi mendadak dengan nyeri otot/sendi dan belakang mata, trombositopenia nyata dan hemokonsentrasi; NS1 positif di awal. Tifoid: demam bertahap lebih dari seminggu, keluhan cerna, lidah kotor, trombosit umumnya normal.",
+      "excludeBy": { "tools": ["darah_lengkap", "ns1_dengue"] }
     },
     {
       "id": "malaria",
-      "howToDistinguish": "Malaria: riwayat ke daerah endemis, demam menggigil–berkeringat berkala, anemia dan splenomegali, RDT positif. Tifoid: tanpa riwayat daerah endemis malaria, demam sore–malam, keluhan cerna, Tubex positif."
+      "howToDistinguish": "Malaria: riwayat ke daerah endemis, demam menggigil–berkeringat berkala, anemia dan splenomegali, RDT positif. Tifoid: tanpa riwayat daerah endemis malaria, demam sore–malam, keluhan cerna, Tubex positif.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["bepergian_lingkungan"], "tools": ["rdt_malaria", "mikroskopis_malaria"] }
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "howToDistinguish": "Gastroenteritis: diare/muntah akut beberapa hari, demam ringan, tanpa demam bertahap lebih dari seminggu.",
+      "excludeBy": { "topics": ["onset", "pola"] }
+    },
+    {
+      "id": "hepatitis_a",
+      "howToDistinguish": "Hepatitis A: ikterik, urin gelap, transaminase sangat tinggi; demam biasanya turun saat kuning muncul.",
+      "excludeBy": { "tools": ["fungsi_hati", "kepala_leher"] }
+    },
+    {
+      "id": "leptospirosis",
+      "howToDistinguish": "Leptospirosis: riwayat banjir/kontak tikus, nyeri betis, ikterik, gangguan ginjal.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["bepergian_lingkungan"] }
+    },
+    {
+      "id": "apendisitis_akut",
+      "howToDistinguish": "Apendisitis: nyeri berpindah ke kanan bawah, McBurney (+); demam tidak berlangsung seminggu lebih.",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
     }
   ],
   "otherDifferentials": ["Gastroenteritis akut", "Leptospirosis", "Hepatitis A", "Pielonefritis", "Tuberkulosis (demam lama)"],
@@ -247,17 +398,129 @@
     "Widal murah tetapi sering positif palsu di daerah endemis dan bisa negatif di minggu pertama. Jangan mendiagnosis tifoid hanya dari titer Widal tunggal.",
     "Bradikardia relatif = nadi tidak naik sebanding dengan suhu (umumnya nadi naik sekitar 10×/menit tiap kenaikan 1 °C)."
   ],
-  "idealWorkup": ["termometer", "tanda_vital", "senter", "darah_lengkap", "tubex"],
   "review": {
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": [
       "Probabilitas gejala dan rentang nilai lab adalah estimasi pengembang; mohon diverifikasi.",
-      "Sensitivitas Tubex/Widal di game disederhanakan."
+      "Sensitivitas Tubex/Widal di game disederhanakan.",
+      "Pasien anak (10–12 th) & remaja (13–17 th) memakai konten yang sama dengan dewasa, dengan rujukan tanda vital/antropometri menurut usia yang disederhanakan — perlu tinjauan khusus pediatri."
     ],
     "references": [
       "Kemenkes RI. Pedoman Pengendalian Demam Tifoid (2006)",
       "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Demam Tifoid",
       "WHO. Background document: the diagnosis, treatment and prevention of typhoid fever (2003)"
     ]
-  }
+  },
+  "complications": [
+    {
+      "id": "perdarahan_usus",
+      "name": "Perdarahan saluran cerna",
+      "trait": "perdarahan_usus",
+      "redFlag": true,
+      "assess": { "symptoms": ["bab_hitam"], "tools": ["darah_lengkap", "tanda_vital"] },
+      "explanation": "BAB hitam, Hb turun, nadi cepat — biasanya minggu ke-2–3; rujuk segera."
+    },
+    {
+      "id": "perforasi",
+      "name": "Perforasi usus",
+      "trait": "perforasi",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_abdomen"] },
+      "explanation": "Nyeri perut hebat mendadak, defans muskular, bising usus menurun — kegawatan bedah."
+    },
+    {
+      "id": "hepatitis_tifosa",
+      "name": "Hepatitis tifosa ringan",
+      "trait": "transaminitis",
+      "redFlag": false,
+      "assess": { "tools": ["fungsi_hati"] },
+      "explanation": "Peningkatan SGOT/SGPT ringan; umumnya membaik dengan terapi tifoid."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "pola", "progresi", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Lidah kotor (coated tongue)." },
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "reason": "Nyeri tekan, hepatosplenomegali, dan tanda perforasi."
+      }
+    ],
+    "tests": [
+      {
+        "tool": "darah_lengkap",
+        "role": "kunci",
+        "reason": "Leukosit normal/rendah, aneosinofilia; Hb untuk mendeteksi perdarahan."
+      },
+      {
+        "tool": "tubex",
+        "role": "kunci",
+        "reason": "Konfirmasi serologis yang lebih spesifik daripada Widal.",
+        "group": "serologi_tifoid"
+      },
+      {
+        "tool": "widal",
+        "role": "pendukung",
+        "reason": "Bila Tubex tidak tersedia — interpretasi hati-hati.",
+        "group": "serologi_tifoid"
+      },
+      {
+        "tool": "fungsi_hati",
+        "role": "komplikasi",
+        "reason": "Menilai hepatitis tifosa.",
+        "when": { "traits": ["transaminitis"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ekg", "reason": "Tidak ada keluhan yang mengarah ke jantung." },
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "rontgen_thorax", "reason": "Tanpa keluhan napas, foto toraks tidak diperlukan." }
+    ]
+  },
+  "disposition": [
+    { "value": "rujuk_segera", "reason": "Perforasi usus adalah kegawatan bedah.", "when": { "traits": ["perforasi"] } },
+    {
+      "value": "rujuk_segera",
+      "reason": "Perdarahan saluran cerna pada tifoid memerlukan rawat inap.",
+      "when": { "traits": ["perdarahan_usus"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Tifoid tanpa komplikasi dapat dirawat jalan bila masih bisa makan-minum.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Istirahat, asupan cairan & kalori cukup, diet lunak.",
+    "Antibiotik sesuai pedoman — keputusan dokter.",
+    "Edukasi tanda bahaya: nyeri perut hebat, BAB hitam, penurunan kesadaran → segera ke rumah sakit.",
+    "Higiene makanan dan cuci tangan untuk mencegah penularan."
+  ],
+  "approach": [
+    "Demam lebih dari 5–7 hari: tanyakan pola (sore–malam), keluhan cerna, kebiasaan makan & higiene.",
+    "Periksa lidah kotor, bradikardia relatif, nyeri tekan abdomen, dan hepatosplenomegali.",
+    "Darah lengkap + Tubex/IgM Salmonella; interpretasi Widal dengan hati-hati.",
+    "Cari komplikasi: BAB hitam, nyeri perut hebat/defans, penurunan kesadaran.",
+    "Singkirkan dengue (onset mendadak, trombositopenia) dan malaria (riwayat bepergian)."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "demam_tifoid", "toolNormal": "widal" },
+      "text": "Widal negatif, terutama di minggu pertama, tidak menyingkirkan tifoid."
+    },
+    {
+      "when": { "topicNotAsked": "keluhan_lain", "traits": ["perdarahan_usus"] },
+      "text": "BAB hitam tidak disebut spontan oleh pasien — gali keluhan lain dan tanyakan spesifik warna BAB pada demam lama."
+    }
+  ]
 }

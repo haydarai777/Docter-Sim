@@ -1,11 +1,11 @@
 /**
  * Sesi permainan: antrean pasien, reputasi, riwayat, dan game over.
  */
-import { startEncounter, submitDiagnosis } from './encounter';
+import { startEncounter, submitDecision } from './encounter';
 import { generateCase } from './generator';
 import { createRng, deriveSeed } from './rng';
 import { applyReputation, isGameOver } from './scoring';
-import type { EncounterState, GameConfig, GameContent, PatientRecord, RunState } from './types';
+import type { ClinicalDecision, EncounterState, GameConfig, GameContent, PatientRecord, RunState } from './types';
 
 export function createRun(runSeed: number, config: GameConfig): RunState {
   return {
@@ -48,19 +48,20 @@ export function updateEncounter(run: RunState, encounter: EncounterState): RunSt
   return { ...run, encounter };
 }
 
-/** Kirim diagnosis untuk pasien saat ini; perbarui reputasi, riwayat, dan status game over. */
-export function diagnoseCurrent(run: RunState, diseaseId: string, content: GameContent, config: GameConfig): RunState {
+/** Kirim keputusan klinis untuk pasien saat ini; perbarui reputasi, riwayat, dan status game over. */
+export function finishCurrent(run: RunState, decision: ClinicalDecision, content: GameContent, config: GameConfig): RunState {
   if (!run.encounter) throw new Error('Tidak ada pasien.');
-  const encounter = submitDiagnosis(run.encounter, diseaseId, content, config);
-  const outcome = encounter.outcome!;
-  const reputation = applyReputation(run.reputation, outcome.reputationDelta, config);
+  const encounter = submitDecision(run.encounter, decision, content, config);
+  const ev = encounter.evaluation!;
+  const reputation = applyReputation(run.reputation, ev.reputationDelta, config);
   const record: PatientRecord = {
     index: run.patientIndex - 1,
     seed: encounter.case.seed,
-    diseaseId: outcome.trueId,
-    chosenId: outcome.chosenId,
-    correct: outcome.correct,
-    spent: outcome.spent,
+    diseaseId: ev.trueId,
+    chosenId: ev.chosenId,
+    correct: ev.primaryCorrect,
+    score: ev.total,
+    spent: ev.spent,
     budget: encounter.case.patient.budget,
     reputationDelta: reputation - run.reputation,
     reputationAfter: reputation,
@@ -75,17 +76,34 @@ export function diagnoseCurrent(run: RunState, diseaseId: string, content: GameC
   };
 }
 
+/**
+ * Pemain mengakhiri praktek secara sukarela (hanya di antara pasien).
+ * Statistik akhir tetap ditampilkan seperti game over.
+ */
+export function retireRun(run: RunState): RunState {
+  if (run.status !== 'playing') return run;
+  if (run.encounter && run.encounter.status === 'active') throw new Error('Selesaikan pasien yang sedang diperiksa dulu.');
+  return { ...run, status: 'retired' };
+}
+
 export interface RunStats {
   patientsSeen: number;
   correct: number;
   accuracy: number;
+  /** Rata-rata skor klinis 0–100. */
+  averageScore: number;
   totalSpent: number;
+  averageSpent: number;
   /** Penyakit berbahaya (tinggi/kritis) yang terlewat. */
   dangerousMisses: number;
   bestStreak: number;
+  /** Reputasi awal lalu reputasi setelah tiap pasien. */
+  reputationHistory: number[];
+  /** Rekap per penyakit (hanya penyakit yang pernah muncul). */
+  perDisease: { diseaseId: string; seen: number; correct: number }[];
 }
 
-export function runStats(run: RunState, content: GameContent): RunStats {
+export function runStats(run: RunState, content: GameContent, config: GameConfig): RunStats {
   let best = 0;
   let current = 0;
   let dangerousMisses = 0;
@@ -100,12 +118,26 @@ export function runStats(run: RunState, content: GameContent): RunStats {
     }
   }
   const correct = run.history.filter((r) => r.correct).length;
+  const totalSpent = run.history.reduce((s, r) => s + r.spent, 0);
+
+  const perDiseaseMap = new Map<string, { diseaseId: string; seen: number; correct: number }>();
+  for (const r of run.history) {
+    const entry = perDiseaseMap.get(r.diseaseId) ?? { diseaseId: r.diseaseId, seen: 0, correct: 0 };
+    entry.seen++;
+    if (r.correct) entry.correct++;
+    perDiseaseMap.set(r.diseaseId, entry);
+  }
+
   return {
     patientsSeen: run.history.length,
     correct,
     accuracy: run.history.length ? correct / run.history.length : 0,
-    totalSpent: run.history.reduce((s, r) => s + r.spent, 0),
+    averageScore: run.history.length ? run.history.reduce((sum, r) => sum + (r.score ?? 0), 0) / run.history.length : 0,
+    totalSpent,
+    averageSpent: run.history.length ? totalSpent / run.history.length : 0,
     dangerousMisses,
     bestStreak: best,
+    reputationHistory: [config.reputation.initial, ...run.history.map((r) => r.reputationAfter)],
+    perDisease: [...perDiseaseMap.values()].sort((a, b) => b.seen - a.seen || a.diseaseId.localeCompare(b.diseaseId)),
   };
 }

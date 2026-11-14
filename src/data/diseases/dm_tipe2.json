@@ -1,0 +1,420 @@
+{
+  "id": "dm_tipe2",
+  "name": "Diabetes Melitus Tipe 2",
+  "aliases": ["Diabetes", "DM", "Kencing manis", "Gula darah tinggi", "Penyakit gula"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Gangguan metabolik akibat resistansi insulin dan defisiensi insulin relatif, ditandai hiperglikemia kronik. Gejala klasik: poliuria, polidipsia, polifagia, dan penurunan berat badan tanpa sebab jelas; keluhan lain: lemas, kesemutan, luka sulit sembuh, pandangan kabur. Banyak pasien tanpa gejala. Kriteria diagnosis (PERKENI): GDS ≥ 200 mg/dL dengan gejala klasik, GDP ≥ 126 mg/dL, TTGO 2 jam ≥ 200 mg/dL, atau HbA1c ≥ 6,5%.",
+  "presentationDay": [14, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 30, "max": 40, "weight": 1 },
+      { "min": 41, "max": 55, "weight": 4 },
+      { "min": 56, "max": 75, "weight": 4 }
+    ],
+    "maleRatio": 0.45,
+    "occupations": [
+      { "id": "pensiunan", "weight": 3 },
+      { "id": "pengusaha", "weight": 2 },
+      { "id": "ibu_rumah_tangga", "weight": 2 },
+      { "id": "pns", "weight": 2 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "pedagang_pasar", "weight": 1 }
+    ],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "obesitas", "probability": 0.6 },
+    { "id": "riwayat_keluarga_dm", "probability": 0.55 },
+    { "id": "neuropati", "probability": 0.35 },
+    { "id": "hipertensi", "probability": 0.4 },
+    { "id": "dislipidemia", "probability": 0.5 },
+    { "id": "glukosuria", "probability": 0.75 },
+    { "id": "ulkus_kaki", "when": { "traits": ["neuropati"] }, "probability": 0.25 },
+    { "id": "nefropati", "probability": 0.25 },
+    { "id": "hiperglikemia_berat", "probability": 0.05 }
+  ],
+  "traitLabels": {
+    "obesitas": "Faktor risiko: obesitas sentral.",
+    "riwayat_keluarga_dm": "Faktor risiko: riwayat keluarga DM.",
+    "neuropati": "Komplikasi awal: neuropati perifer (kesemutan/kebas).",
+    "hipertensi": "Komorbid: hipertensi.",
+    "dislipidemia": "Komorbid: dislipidemia (trigliserida tinggi, HDL rendah).",
+    "glukosuria": "Glukosuria (glukosa darah melebihi ambang ginjal ± 180 mg/dL).",
+    "ulkus_kaki": "Komplikasi: ulkus kaki diabetik.",
+    "nefropati": "Komplikasi: nefropati diabetik (proteinuria, eGFR turun).",
+    "hiperglikemia_berat": "Hiperglikemia berat dengan ketosis — perlu rujuk segera."
+  },
+  "symptoms": [
+    { "id": "luka_sulit_sembuh", "when": { "traits": ["ulkus_kaki"] }, "probability": 1 },
+    { "id": "luka_sulit_sembuh", "probability": 0.1 },
+    { "id": "mual_muntah", "when": { "traits": ["hiperglikemia_berat"] }, "probability": 0.8 },
+    { "id": "sering_kencing", "probability": 0.85 },
+    { "id": "lemas", "probability": 1 },
+    { "id": "haus", "probability": 0.8 },
+    { "id": "lapar", "probability": 0.5 },
+    { "id": "berat_badan_turun", "probability": 0.6 },
+    { "id": "kesemutan", "when": { "traits": ["neuropati"] }, "probability": 0.9 },
+    { "id": "pandangan_kabur", "probability": 0.25 }
+  ],
+  "chiefComplaint": { "primary": ["sering_kencing", "lemas"], "extraPool": ["lemas", "kesemutan", "berat_badan_turun"] },
+  "clueSymptoms": ["haus", "lapar", "berat_badan_turun", "kesemutan", "luka_sulit_sembuh"],
+  "misattributions": ["kecapekan", "kurang minum", "asam urat", "anyang-anyangan"],
+  "fears": ["kencing manis", "gagal ginjal", "stroke"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah sekitar {lamaSakit}, Dok, pelan-pelan." }],
+    "lokasi": [
+      {
+        "text": "Nggak ada yang sakit, Dok, cuma lemas dan sering ke kamar mandi.",
+        "when": { "symptoms": ["sering_kencing"] },
+        "reveals": ["sering_kencing"]
+      },
+      { "text": "Nggak ada yang sakit, Dok, badan lemas saja.", "when": { "notSymptoms": ["sering_kencing"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Kencingnya banyak, Dok, tapi nggak perih sama sekali. Malam bisa bangun tiga-empat kali.",
+        "when": { "symptoms": ["sering_kencing"] },
+        "reveals": ["sering_kencing"],
+        "clue": "Poliuria & nokturia tanpa disuria"
+      },
+      { "text": "Badan lemas terus, Dok, padahal makan banyak.", "when": { "notSymptoms": ["sering_kencing"] } }
+    ],
+    "pola": [
+      {
+        "text": "Gampang haus, Dok, minum terus tapi tetap haus.",
+        "when": { "symptoms": ["haus"] },
+        "reveals": ["haus"],
+        "clue": "Polidipsia"
+      },
+      { "text": "Terus-terusan, Dok, makin lama makin lemas.", "when": { "notSymptoms": ["haus"] } }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Cepat lapar, Dok. Makan banyak, tapi berat badan malah turun.",
+        "when": { "symptoms": ["lapar", "berat_badan_turun"] },
+        "reveals": ["lapar", "berat_badan_turun"],
+        "clue": "Polifagia dengan penurunan berat badan"
+      },
+      {
+        "text": "Cepat lapar, Dok, makannya jadi banyak.",
+        "when": { "symptoms": ["lapar"], "notSymptoms": ["berat_badan_turun"] },
+        "reveals": ["lapar"],
+        "clue": "Polifagia"
+      },
+      { "text": "Nggak ada yang bikin enakan, Dok.", "when": { "notSymptoms": ["lapar"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya darah tinggi, Dok, obatnya kadang lupa.",
+        "when": { "traits": ["hipertensi"] },
+        "clue": "Hipertensi (komorbid)"
+      },
+      { "text": "Belum pernah cek gula, Dok. Jarang ke dokter.", "when": { "notTraits": ["hipertensi"] } }
+    ],
+    "riwayat_obat": [{ "text": "Belum minum obat apa-apa, Dok. Paling vitamin." }],
+    "riwayat_keluarga": [
+      {
+        "text": "Ibu saya kencing manis, Dok, sampai jari kakinya diamputasi.",
+        "when": { "traits": ["riwayat_keluarga_dm"] },
+        "clue": "Riwayat keluarga DM"
+      },
+      { "text": "Nggak tahu, Dok, orang tua jarang periksa.", "when": { "notTraits": ["riwayat_keluarga_dm"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya suka yang manis-manis, Dok, teh manis tiap hari. Olahraga hampir nggak pernah.",
+        "when": { "traits": ["obesitas"] },
+        "clue": "Pola makan tinggi gula dan kurang aktivitas fisik"
+      },
+      {
+        "text": "Makan biasa, Dok, tapi memang jarang gerak.",
+        "when": { "notTraits": ["obesitas"] },
+        "clue": "Kurang aktivitas fisik"
+      }
+    ],
+    "durasi": [{ "text": "Hampir sepanjang hari, Dok. Malam juga bangun buat kencing." }],
+    "keparahan": [
+      {
+        "text": "Lemas sekali, Dok, mual, haus terus nggak berhenti.",
+        "when": { "traits": ["hiperglikemia_berat"] },
+        "clue": "Lemas berat & mual (curiga dekompensasi metabolik)"
+      },
+      {
+        "text": "Nggak sakit, Dok, cuma lemas. Kerja jadi gampang capek.",
+        "when": { "notTraits": ["hiperglikemia_berat"] }
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Pelan-pelan makin lemas, Dok, berat badan juga turun.",
+        "when": { "symptoms": ["berat_badan_turun"] },
+        "reveals": ["berat_badan_turun"],
+        "clue": "Penurunan berat badan progresif"
+      },
+      { "text": "Pelan-pelan makin lemas, Dok.", "when": { "notSymptoms": ["berat_badan_turun"] } }
+    ],
+    "episode_sebelumnya": [{ "text": "Belum pernah periksa gula, Dok. Ini pertama kali saya berobat untuk keluhan ini." }]
+  },
+  "findings": [
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["hiperglikemia_berat"] }, "range": [420, 560] },
+    { "tool": "urinalisis", "param": "keton", "when": { "traits": ["hiperglikemia_berat"] }, "values": ["+2"] },
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["hiperglikemia_berat"] },
+      "values": ["Mukosa kering, turgor kulit menurun"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["hiperglikemia_berat"] },
+      "values": ["Tampak lemas, napas agak cepat"]
+    },
+    { "tool": "urinalisis", "param": "protein", "when": { "traits": ["nefropati"] }, "values": ["+1", "+2"] },
+    {
+      "tool": "fungsi_ginjal",
+      "param": "kreatinin",
+      "when": { "traits": ["nefropati"], "sex": "male" },
+      "range": [1.3, 1.8]
+    },
+    {
+      "tool": "fungsi_ginjal",
+      "param": "kreatinin",
+      "when": { "traits": ["nefropati"], "sex": "female" },
+      "range": [1.1, 1.5]
+    },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["nefropati"] }, "range": [45, 65] },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas"] }, "range": [25.5, 34] },
+    {
+      "tool": "timbangan",
+      "param": "lingkar_perut",
+      "when": { "traits": ["obesitas"], "sex": "male" },
+      "range": [93, 115]
+    },
+    {
+      "tool": "timbangan",
+      "param": "lingkar_perut",
+      "when": { "traits": ["obesitas"], "sex": "female" },
+      "range": [83, 105]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi"] }, "range": [140, 165] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi"] }, "range": [90, 100] },
+    {
+      "tool": "gula_darah",
+      "param": "gds",
+      "when": { "traits": ["glukosuria"] },
+      "probability": 0.95,
+      "diagnostic": true,
+      "range": [220, 420]
+    },
+    { "tool": "gula_darah", "param": "gds", "probability": 0.8, "diagnostic": true, "range": [200, 260] },
+    { "tool": "hba1c", "param": "hba1c", "probability": 0.95, "diagnostic": true, "range": [6.6, 11.5] },
+    { "tool": "urinalisis", "param": "glukosa", "when": { "traits": ["glukosuria"] }, "values": ["+1", "+2", "+3"] },
+    {
+      "tool": "urinalisis",
+      "param": "keton",
+      "when": { "traits": ["glukosuria"] },
+      "probability": 0.1,
+      "values": ["+1"]
+    },
+    { "tool": "profil_lipid", "param": "tg", "when": { "traits": ["dislipidemia"] }, "range": [160, 320] },
+    { "tool": "profil_lipid", "param": "hdl", "when": { "traits": ["dislipidemia"], "sex": "male" }, "range": [28, 39] },
+    {
+      "tool": "profil_lipid",
+      "param": "hdl",
+      "when": { "traits": ["dislipidemia"], "sex": "female" },
+      "range": [34, 49]
+    },
+    {
+      "tool": "profil_lipid",
+      "param": "ldl",
+      "when": { "traits": ["dislipidemia"] },
+      "probability": 0.6,
+      "range": [135, 190]
+    },
+    {
+      "tool": "kaki_diabetik",
+      "param": "inspeksi",
+      "when": { "traits": ["ulkus_kaki"] },
+      "values": ["Ulkus ± 1,5 cm di telapak kaki kanan, dasar merah, tanpa nanah"]
+    },
+    {
+      "tool": "kaki_diabetik",
+      "param": "monofilamen",
+      "when": { "traits": ["neuropati"] },
+      "values": ["Sensibilitas menurun (6/10 titik) di kedua telapak kaki"]
+    },
+    {
+      "tool": "kaki_diabetik",
+      "param": "pulsasi",
+      "when": { "traits": ["ulkus_kaki"] },
+      "probability": 0.4,
+      "values": ["Pulsasi a. dorsalis pedis kanan melemah"]
+    },
+    {
+      "tool": "neurologis",
+      "param": "sensorik",
+      "when": { "traits": ["neuropati"] },
+      "values": ["Hipestesia distal kedua tungkai (pola kaus kaki)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "gizi",
+      "when": { "traits": ["obesitas"] },
+      "values": ["Kesan gizi lebih (obesitas)"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "kulit",
+      "when": { "traits": ["ulkus_kaki"] },
+      "values": ["Luka di telapak kaki kanan"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "isk",
+      "howToDistinguish": "ISK: kencing sering tapi sedikit-sedikit dan perih (disuria), nyeri suprapubik; urinalisis leukosituria. DM: poliuria tanpa perih, haus, lapar, BB turun; gula darah tinggi dan glukosuria.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["urinalisis"] }
+    },
+    {
+      "id": "tb_paru",
+      "howToDistinguish": "TB: berat badan turun disertai batuk ≥ 2 minggu, keringat malam, demam subfebris; BTA/TCM positif. DM: poliuria, polidipsia, polifagia; gula darah tinggi. Keduanya bisa bersamaan — DM meningkatkan risiko TB.",
+      "excludeBy": { "symptoms": ["batuk", "keringat_malam"], "tools": ["rontgen_thorax"] },
+      "mustNotMiss": true
+    }
+  ],
+  "otherDifferentials": ["Diabetes melitus tipe 1", "Hipertiroidisme", "Diabetes insipidus", "Keganasan (penurunan berat badan)"],
+  "keyFindings": [
+    "Poliuria (sering & banyak kencing, terutama malam), polidipsia, polifagia",
+    "Penurunan berat badan tanpa sebab jelas, lemas, kesemutan",
+    "Faktor risiko: usia > 40 tahun, obesitas sentral, riwayat keluarga DM, hipertensi, kurang aktivitas fisik",
+    "GDS ≥ 200 mg/dL dengan gejala klasik, atau HbA1c ≥ 6,5% (kriteria PERKENI)",
+    "Glukosuria pada urinalisis"
+  ],
+  "teachingPoints": [
+    "Gula darah sewaktu adalah pemeriksaan murah dengan nilai diagnostik tinggi bila ada gejala klasik.",
+    "Bedakan poliuria (volume banyak) dari frekuensi pada ISK (sedikit-sedikit, perih)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Rentang GDS/HbA1c adalah estimasi pengembang."],
+    "references": [
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus Tipe 2 Dewasa di Indonesia (2021)",
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Diabetes Melitus Tipe 2"
+    ]
+  },
+  "complications": [
+    {
+      "id": "neuropati",
+      "name": "Neuropati diabetik",
+      "trait": "neuropati",
+      "redFlag": false,
+      "assess": { "tools": ["kaki_diabetik", "neurologis"], "symptoms": ["kesemutan"] },
+      "explanation": "Kesemutan/kebas dengan sensibilitas monofilamen menurun — risiko ulkus kaki."
+    },
+    {
+      "id": "nefropati",
+      "name": "Nefropati diabetik",
+      "trait": "nefropati",
+      "redFlag": false,
+      "assess": { "tools": ["urinalisis", "fungsi_ginjal"] },
+      "explanation": "Proteinuria dan/atau penurunan eGFR; perlu pengendalian gula & tekanan darah yang ketat."
+    },
+    {
+      "id": "ulkus_kaki",
+      "name": "Ulkus kaki diabetik",
+      "trait": "ulkus_kaki",
+      "redFlag": true,
+      "assess": { "tools": ["kaki_diabetik"] },
+      "explanation": "Luka di kaki pasien DM berisiko infeksi & amputasi; perlu perawatan luka dan evaluasi vaskular."
+    },
+    {
+      "id": "hiperglikemia_berat",
+      "name": "Hiperglikemia berat / ketosis",
+      "trait": "hiperglikemia_berat",
+      "redFlag": true,
+      "assess": { "tools": ["gula_darah", "urinalisis", "keadaan_umum"] },
+      "explanation": "GDS sangat tinggi dengan ketonuria dan dehidrasi → rujuk segera."
+    }
+  ],
+  "traitComorbidities": { "hipertensi": "hipertensi", "dislipidemia": "dislipidemia", "obesitas": "obesitas" },
+  "plan": {
+    "keyTopics": ["karakter", "keluhan_lain", "riwayat_keluarga", "kebiasaan"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "IMT dan lingkar perut (obesitas sentral)." },
+      { "tool": "kaki_diabetik", "role": "komplikasi", "reason": "Neuropati, ulkus, dan pulsasi kaki." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Sensibilitas distal." }
+    ],
+    "tests": [
+      {
+        "tool": "gula_darah",
+        "role": "kunci",
+        "reason": "Diagnosis: GDS ≥ 200 mg/dL dengan gejala klasik.",
+        "group": "gula"
+      },
+      { "tool": "hba1c", "role": "pendukung", "reason": "Konfirmasi dan menilai kendali gula 2–3 bulan." },
+      { "tool": "urinalisis", "role": "komplikasi", "reason": "Glukosuria, ketonuria, proteinuria." },
+      { "tool": "fungsi_ginjal", "role": "komplikasi", "reason": "eGFR (nefropati diabetik)." },
+      { "tool": "profil_lipid", "role": "pendukung", "reason": "Faktor risiko kardiovaskular." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "USG tidak diperlukan untuk diagnosis DM." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Hiperglikemia berat dengan ketosis memerlukan penanganan di rumah sakit.",
+      "when": { "traits": ["hiperglikemia_berat"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Ulkus kaki diabetik: perawatan luka dan evaluasi; rujuk bila infeksi/iskemia.",
+      "when": { "traits": ["ulkus_kaki"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "DM tipe 2 tanpa komplikasi akut dikelola di layanan primer (edukasi, nutrisi, aktivitas, farmakoterapi).",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Edukasi, terapi nutrisi medis, dan aktivitas fisik.",
+    "Farmakoterapi sesuai pedoman PERKENI — keputusan dokter.",
+    "Skrining komplikasi berkala: kaki, ginjal (eGFR, albuminuria), mata, kardiovaskular.",
+    "Kendalikan komorbid: tekanan darah, lipid, dan berat badan."
+  ],
+  "approach": [
+    "Poliuria/polidipsia/polifagia/BB turun: tanyakan volume kencing, riwayat keluarga, dan gaya hidup.",
+    "Antropometri, tanda vital, dan pemeriksaan kaki.",
+    "GDS ≥ 200 dengan gejala klasik atau HbA1c ≥ 6,5% untuk diagnosis.",
+    "Nilai komplikasi: neuropati, ulkus, nefropati (urinalisis, eGFR), hiperglikemia berat.",
+    "Catat komorbid: hipertensi, dislipidemia, obesitas."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "dm_tipe2", "toolNormal": "urinalisis" },
+      "text": "Glukosuria tidak selalu ada; diagnosis DM ditegakkan dengan gula darah atau HbA1c."
+    },
+    {
+      "when": { "traits": ["neuropati"], "notConsidered": "dm_tipe2" },
+      "text": "Kesemutan pada pasien dengan poliuria adalah petunjuk komplikasi DM."
+    }
+  ]
+}

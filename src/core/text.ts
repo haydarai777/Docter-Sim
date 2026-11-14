@@ -47,6 +47,15 @@ export function numberToWords(n: number): string {
 }
 
 /**
+ * Lama sakit dalam bahasa sehari-hari: 4 → "empat hari", 21 → "tiga minggu", 75 → "tiga bulan".
+ */
+export function durationText(days: number): string {
+  if (days < 14) return `${numberToWords(days)} hari`;
+  if (days < 60) return `${numberToWords(Math.round(days / 7))} minggu`;
+  return `${numberToWords(Math.round(days / 30))} bulan`;
+}
+
+/**
  * Isi placeholder {nama} pada template. Placeholder dengan huruf pertama
  * kapital ({Keluhan}) diisi nilai yang huruf pertamanya dikapitalkan.
  * Placeholder yang tidak dikenal dibiarkan apa adanya (dideteksi oleh tes konten).

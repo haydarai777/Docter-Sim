@@ -1,0 +1,315 @@
+{
+  "id": "isk",
+  "name": "Infeksi Saluran Kemih Bawah (Sistitis)",
+  "aliases": ["ISK", "Infeksi saluran kemih", "Sistitis", "Anyang-anyangan", "Kencing perih", "UTI"],
+  "system": "Saluran kemih",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Infeksi bakteri (tersering E. coli) pada kandung kemih. Gejala khas: nyeri/perih saat berkemih (disuria), sering dan anyang-anyangan dengan volume sedikit (frekuensi & urgensi), nyeri suprapubik, kadang urin keruh/berbau atau kemerahan. Jauh lebih sering pada perempuan (uretra pendek), terutama usia aktif seksual, kehamilan, dan kurang minum. Biasanya tanpa demam tinggi; demam tinggi dengan nyeri pinggang mengarah ke pielonefritis.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.15,
+    "occupations": [
+      { "id": "ibu_rumah_tangga", "weight": 2 },
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "guru", "weight": 1 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "pedagang_pasar", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "pielonefritis", "probability": 0.15 },
+    { "id": "isk_berulang", "probability": 0.3 },
+    { "id": "kurang_minum", "probability": 0.5 },
+    { "id": "menahan_kencing", "probability": 0.4 },
+    { "id": "hematuria", "probability": 0.35 },
+    { "id": "demam_ringan", "probability": 0.2, "when": { "notTraits": ["pielonefritis"] } },
+    { "id": "nitrit_positif", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "kurang_minum": "Faktor risiko: kurang minum.",
+    "menahan_kencing": "Faktor risiko: kebiasaan menahan berkemih.",
+    "hematuria": "Hematuria (sistitis hemoragik ringan).",
+    "demam_ringan": "Demam ringan — bila demam tinggi + nyeri pinggang, pikirkan pielonefritis.",
+    "pielonefritis": "Infeksi naik ke ginjal (pielonefritis).",
+    "isk_berulang": "ISK berulang."
+  },
+  "symptoms": [
+    { "id": "demam", "when": { "traits": ["pielonefritis"] }, "probability": 1 },
+    { "id": "menggigil", "when": { "traits": ["pielonefritis"] }, "probability": 0.7 },
+    { "id": "nyeri_pinggang", "when": { "traits": ["pielonefritis"] }, "probability": 0.9 },
+    { "id": "mual_muntah", "when": { "traits": ["pielonefritis"] }, "probability": 0.4 },
+    { "id": "disuria", "probability": 1 },
+    { "id": "sering_kencing", "probability": 0.9 },
+    { "id": "nyeri_suprapubik", "probability": 0.6 },
+    { "id": "urin_keruh", "probability": 0.5 },
+    { "id": "kencing_merah", "when": { "traits": ["hematuria"] }, "probability": 0.4 },
+    { "id": "demam", "when": { "traits": ["demam_ringan"] }, "probability": 1 },
+    { "id": "mual_muntah", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["disuria"], "extraPool": ["sering_kencing", "nyeri_suprapubik"] },
+  "clueSymptoms": ["sering_kencing", "nyeri_suprapubik", "urin_keruh"],
+  "misattributions": ["panas dalam", "kurang minum", "masuk angin", "kecapekan"],
+  "fears": ["penyakit kelamin", "batu ginjal", "kencing manis"],
+  "anamnesis": {
+    "onset": [{ "text": "Baru {hariTeks} hari, Dok, mendadak.", "clue": "Onset akut (hari)" }],
+    "lokasi": [
+      {
+        "text": "Di perut bawah, di atas kemaluan, Dok. Pinggang sih nggak sakit.",
+        "when": { "symptoms": ["nyeri_suprapubik"] },
+        "reveals": ["nyeri_suprapubik"],
+        "clue": "Nyeri suprapubik tanpa nyeri pinggang"
+      },
+      {
+        "text": "Perihnya pas kencing saja, Dok. Pinggang nggak sakit.",
+        "when": { "notSymptoms": ["nyeri_suprapubik"] },
+        "clue": "Tanpa nyeri pinggang/kolik"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Perih dan panas kalau kencing, Dok, terus rasanya nggak tuntas.",
+        "clue": "Disuria dan rasa tidak tuntas (anyang-anyangan)"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Sebentar-sebentar mau kencing, Dok, tapi keluarnya sedikit-sedikit.",
+        "when": { "symptoms": ["sering_kencing"] },
+        "reveals": ["sering_kencing"],
+        "clue": "Sering kencing dengan volume sedikit (bukan poliuria)"
+      },
+      { "text": "Setiap kencing perih, Dok.", "when": { "notSymptoms": ["sering_kencing"] } }
+    ],
+    "pemberat_peringan": [{ "text": "Kalau kurang minum makin perih, Dok. Banyak minum agak mendingan." }],
+    "riwayat_penyakit": [{ "text": "Nggak ada, Dok." }],
+    "riwayat_obat": [{ "text": "Belum minum obat, Dok. Cuma banyakin minum air putih." }],
+    "riwayat_keluarga": [{ "text": "Nggak ada, Dok." }],
+    "kebiasaan": [
+      {
+        "text": "Saya jarang minum, Dok, paling dua gelas sehari.",
+        "when": { "traits": ["kurang_minum"] },
+        "weight": 2,
+        "clue": "Kurang minum"
+      },
+      {
+        "text": "Di tempat kerja saya sering menahan kencing, Dok, toiletnya jauh.",
+        "when": { "traits": ["menahan_kencing"] },
+        "weight": 2,
+        "clue": "Kebiasaan menahan berkemih"
+      },
+      { "text": "Biasa saja, Dok.", "weight": 1 }
+    ],
+    "durasi": [{ "text": "Tiap kencing perih, Dok, sebentar-sebentar ingin ke kamar mandi lagi." }],
+    "keparahan": [
+      {
+        "text": "Berat, Dok. Badan panas menggigil, pinggang juga sakit.",
+        "when": { "traits": ["pielonefritis"], "symptoms": ["demam", "nyeri_pinggang"] },
+        "reveals": ["demam", "nyeri_pinggang"],
+        "clue": "Demam tinggi + nyeri pinggang (curiga pielonefritis)"
+      },
+      {
+        "text": "Nggak parah sekali, Dok, tapi mengganggu, sebentar-sebentar ke kamar mandi.",
+        "when": { "notTraits": ["pielonefritis"] }
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Awalnya cuma perih kencing, Dok, sekarang malah demam tinggi dan pinggang sakit.",
+        "when": { "traits": ["pielonefritis"], "symptoms": ["demam", "nyeri_pinggang"] },
+        "reveals": ["demam", "nyeri_pinggang"],
+        "clue": "Perburukan menjadi demam & nyeri pinggang (infeksi naik ke ginjal)"
+      },
+      { "text": "Makin sering ke kamar mandi, Dok.", "when": { "notTraits": ["pielonefritis"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Dulu pernah kayak gini juga, Dok, setahun ini sudah dua kali.",
+        "when": { "traits": ["isk_berulang"] },
+        "clue": "ISK berulang (cari faktor penyulit)"
+      },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["isk_berulang"] } }
+    ]
+  },
+  "findings": [
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["pielonefritis"] }, "range": [38.5, 39.6] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["pielonefritis"] }, "range": [98, 112] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "ketok_cva",
+      "when": { "traits": ["pielonefritis"] },
+      "probability": 0.9,
+      "values": ["Positif kanan", "Positif kiri"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "when": { "traits": ["pielonefritis"] }, "range": [12000, 17000] },
+    { "tool": "darah_lengkap", "param": "neutrofil_batang", "when": { "traits": ["pielonefritis"] }, "range": [6, 10] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["pielonefritis"] },
+      "values": ["Tampak sakit sedang, menggigil"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["demam_ringan"] }, "range": [37.6, 38.2] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "symptoms": ["nyeri_suprapubik"] },
+      "probability": 0.8,
+      "values": ["Nyeri tekan suprapubik"]
+    },
+    { "tool": "urinalisis", "param": "warna", "when": { "symptoms": ["urin_keruh"] }, "values": ["Kuning keruh"] },
+    {
+      "tool": "urinalisis",
+      "param": "leukosit_esterase",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["+1", "+2", "+3"]
+    },
+    { "tool": "urinalisis", "param": "nitrit", "when": { "traits": ["nitrit_positif"] }, "values": ["Positif"] },
+    { "tool": "urinalisis", "param": "sedimen_leukosit", "probability": 0.9, "diagnostic": true, "range": [10, 50] },
+    {
+      "tool": "urinalisis",
+      "param": "bakteri",
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Positif (+)", "Positif (++)"]
+    },
+    { "tool": "urinalisis", "param": "darah", "when": { "traits": ["hematuria"] }, "values": ["+1", "+2"] },
+    { "tool": "urinalisis", "param": "sedimen_eritrosit", "when": { "traits": ["hematuria"] }, "range": [5, 25] },
+    { "tool": "urinalisis", "param": "protein", "probability": 0.3, "values": ["Trace", "+1"] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.25, "range": [9500, 12000] }
+  ],
+  "differentials": [
+    {
+      "id": "batu_saluran_kemih",
+      "howToDistinguish": "Batu: nyeri kolik hebat hilang-timbul di pinggang yang menjalar ke perut bawah/lipat paha, pasien gelisah, hematuria; nyeri ketok CVA positif, USG tampak batu/hidronefrosis. ISK: disuria dan anyang-anyangan tanpa kolik; leukosituria, nitrit dan bakteri positif.",
+      "excludeBy": { "topics": ["lokasi", "karakter"], "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "DM: kencing BANYAK (poliuria) terutama malam tanpa perih, disertai haus, lapar, BB turun; gula darah tinggi, glukosuria. ISK: kencing sering tapi SEDIKIT-SEDIKIT dan perih.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["gula_darah", "urinalisis"] }
+    },
+    {
+      "id": "pielonefritis",
+      "howToDistinguish": "Pielonefritis: demam tinggi, menggigil, nyeri pinggang, nyeri ketok CVA. ISK bawah: tanpa demam tinggi atau nyeri pinggang.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "uretritis_ims",
+      "howToDistinguish": "Uretritis IMS: duh uretra, riwayat hubungan seksual berisiko.",
+      "excludeBy": { "topics": ["kebiasaan"] }
+    }
+  ],
+  "otherDifferentials": ["Pielonefritis akut", "Uretritis (infeksi menular seksual)", "Vaginitis", "Prostatitis (laki-laki)"],
+  "keyFindings": [
+    "Disuria, frekuensi, urgensi, rasa tidak tuntas (anyang-anyangan)",
+    "Nyeri suprapubik; tanpa nyeri pinggang/kolik dan tanpa demam tinggi",
+    "Lebih sering pada perempuan; faktor risiko kurang minum, menahan kencing",
+    "Urinalisis: leukosit esterase (+), leukosituria (> 5/LPB), bakteriuria, nitrit (+)"
+  ],
+  "teachingPoints": [
+    "'Sering kencing' bisa berarti volume sedikit tapi sering (ISK) atau volume banyak (poliuria, mis. DM). Tanyakan pola dan volumenya!",
+    "Nitrit negatif tidak menyingkirkan ISK — sensitivitasnya hanya sekitar 50%."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas temuan urinalisis adalah estimasi pengembang; mohon diverifikasi."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Infeksi Saluran Kemih",
+      "IAUI. Guideline Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "pielonefritis",
+      "name": "Pielonefritis (ISK atas)",
+      "trait": "pielonefritis",
+      "redFlag": true,
+      "assess": { "symptoms": ["demam", "nyeri_pinggang"], "tools": ["tanda_vital", "pemeriksaan_abdomen"] },
+      "explanation": "Demam tinggi, menggigil, nyeri pinggang, nyeri ketok CVA, leukositosis."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["karakter", "pola", "episode_sebelumnya", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "reason": "Nyeri tekan suprapubik dan nyeri ketok CVA (singkirkan pielonefritis)."
+      }
+    ],
+    "tests": [
+      { "tool": "urinalisis", "role": "kunci", "reason": "Leukosituria, nitrit, bakteriuria, hematuria." },
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "reason": "Leukositosis pada pielonefritis.",
+        "when": { "traits": ["pielonefritis"] }
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "ekg", "reason": "Tidak ada keluhan yang mengarah ke jantung." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      {
+        "tool": "profil_lipid",
+        "reason": "Profil lipid adalah skrining risiko kardiovaskular, tidak menjawab keluhan akut ini."
+      },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "usg_abdomen", "reason": "ISK bawah tanpa komplikasi tidak memerlukan USG." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "observasi",
+      "reason": "Pielonefritis ringan dapat rawat jalan dengan kontrol ketat 48–72 jam; rujuk bila muntah, sepsis, atau tidak membaik.",
+      "when": { "traits": ["pielonefritis"] },
+      "alsoAccept": ["rujuk_spesialis"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "ISK bawah tanpa komplikasi: rawat jalan, edukasi minum cukup dan tidak menahan kencing."
+    }
+  ],
+  "management": [
+    "Minum cukup, jangan menahan kencing, higiene genital.",
+    "Antibiotik empiris sesuai pedoman — keputusan dokter.",
+    "Cari faktor penyulit bila berulang, pada laki-laki, hamil, atau DM."
+  ],
+  "approach": [
+    "Disuria + sering kencing: tanyakan volume kencing (sedikit-sedikit vs banyak), demam, nyeri pinggang, episode sebelumnya.",
+    "Periksa suhu, nyeri tekan suprapubik, dan nyeri ketok CVA.",
+    "Urinalisis: leukosituria, nitrit, bakteriuria.",
+    "Bedakan ISK bawah, pielonefritis, batu, dan DM."
+  ],
+  "pitfalls": [
+    {
+      "when": { "excluded": "isk", "toolDone": "urinalisis", "notTraits": ["nitrit_positif"] },
+      "text": "Nitrit negatif tidak menyingkirkan ISK — sensitivitasnya hanya sekitar 50%."
+    },
+    {
+      "when": { "traits": ["pielonefritis"], "notConsidered": "pielonefritis" },
+      "text": "Demam tinggi dengan nyeri pinggang pada ISK harus memicu pertimbangan pielonefritis."
+    }
+  ]
+}

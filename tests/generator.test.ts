@@ -77,13 +77,13 @@ describe('generator kasus', () => {
         expect(c.chiefComplaintSymptoms.length).toBeGreaterThan(0);
         for (const s of c.chiefComplaintSymptoms) expect(c.symptoms).toContain(s);
         // revealOrder = gejala sisanya
-        expect([...c.chiefComplaintSymptoms, ...c.revealOrder].sort()).toEqual([...c.symptoms].sort());
+        expect([...c.chiefComplaintSymptoms, ...c.revealOrder, ...c.hiddenSymptoms].sort()).toEqual([...c.symptoms].sort());
       }
     }
-    // Gejala tidak pernah disebut lengkap di awal (secara umum).
-    const all = DISEASE_IDS.flatMap((id) => many(id, 100));
-    const complete = all.filter((c) => c.revealOrder.length === 0).length;
-    expect(complete / all.length).toBeLessThan(0.05);
+    // Gejala tidak pernah disebut lengkap di awal (kecuali pasien hanya punya satu gejala).
+    for (const c of DISEASE_IDS.flatMap((id) => many(id, 100))) {
+      if (c.symptoms.length > 1) expect(c.revealOrder.length + c.hiddenSymptoms.length).toBeGreaterThan(0);
+    }
   });
 
   it('jawaban anamnesis hanya mengungkap gejala yang ada', () => {
@@ -162,6 +162,67 @@ describe('generator kasus', () => {
       if (c.traits.includes('kebocoran_plasma')) {
         expect(ht.value as number).toBeGreaterThan(upper);
         expect(ht.flag).toBe('H');
+      }
+    }
+  });
+
+  it('frekuensi EKG sama dengan nadi, irama mengikuti frekuensi', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, 40)) {
+        const nadi = c.findings.tanda_vital!.find((r) => r.paramId === 'nadi')!.value as number;
+        const ekg = c.findings.ekg!;
+        expect(ekg.find((r) => r.paramId === 'frekuensi')!.value).toBe(nadi);
+        const irama = ekg.find((r) => r.paramId === 'irama')!.value;
+        if (nadi > 100) expect(irama).toBe('Sinus takikardia');
+        else if (nadi < 60) expect(irama).toBe('Sinus bradikardia');
+        else expect(irama).toBe('Sinus ritme');
+      }
+    }
+  });
+
+  it('berat badan konsisten dengan IMT dan tinggi badan', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, 40)) {
+        const get = (p: string) => c.findings.timbangan!.find((r) => r.paramId === p)!.value as number;
+        const expected = get('imt') * (get('tb') / 100) ** 2;
+        expect(Math.abs(get('bb') - expected)).toBeLessThan(0.11);
+      }
+    }
+  });
+
+  it('kesan USG selalu konsisten dengan temuan organ (termasuk temuan insidental)', () => {
+    for (const id of ['batu_saluran_kemih', 'dispepsia', 'gastritis', 'demam_tifoid', 'dm_tipe2']) {
+      for (const c of many(id, 250)) {
+        const usg = c.findings.usg_abdomen!;
+        const organs = usg.filter((r) => r.paramId !== 'kesan');
+        const kesan = usg.find((r) => r.paramId === 'kesan')!;
+        expect(kesan.flag !== null, `${id}: ${JSON.stringify(usg.map((r) => r.display))}`).toBe(organs.some((r) => r.flag !== null));
+        // Setiap sumber kelainan organ tercermin di kesan.
+        if (c.incidentals.length && organs.some((r) => r.origin === c.incidentals[0])) {
+          const label = content.incidentalsById.get(c.incidentals[0]!)!.findings.find((f) => f.param === 'kesan')!.values![0]!;
+          expect(kesan.display).toContain(label);
+        }
+      }
+    }
+  });
+
+  it('temuan mencatat asal kelainan (penyakit utama / komorbiditas / insidental)', () => {
+    for (const c of many('dengue', 200)) {
+      for (const results of Object.values(c.findings)) {
+        for (const r of results) {
+          if (r.source !== 'disease') continue;
+          expect([c.diseaseId, ...c.comorbidities.map((x) => x.id), ...c.incidentals]).toContain(r.origin);
+        }
+      }
+    }
+  });
+
+  it('setiap kategori anamnesis statis selalu punya jawaban untuk semua penyakit', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, 50)) {
+        for (const cat of content.anamnesis.filter((x) => x.type === 'static')) {
+          expect(c.answers[cat.id]?.text.length, `${id}/${cat.id}`).toBeGreaterThan(3);
+        }
       }
     }
   });
