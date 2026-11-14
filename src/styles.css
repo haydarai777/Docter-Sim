@@ -2067,3 +2067,260 @@ body {
     }
   }
 }
+
+/* ===================================================================== Mode OSCE */
+.osce-menu,
+.osce-result,
+.osce-proc {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 1rem var(--gutter-r) 2.5rem var(--gutter-l);
+}
+.osce-menu fieldset,
+.proc-q {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem 0.8rem;
+  margin: 0 0 0.9rem;
+  background: var(--surface);
+}
+.osce-menu legend,
+.proc-q legend {
+  font-weight: 600;
+  padding: 0 0.3rem;
+}
+.osce-menu .radio,
+.proc-q .radio,
+.check {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.3rem 0;
+  min-height: 32px;
+  cursor: pointer;
+}
+.check input,
+.radio input {
+  margin-top: 0.2rem;
+  flex: none;
+}
+.input {
+  width: 100%;
+  min-height: 40px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+}
+.osce-badge {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.osce-badge--superior {
+  background: var(--primary);
+  color: var(--primary-ink);
+}
+.osce-badge--lulus {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.osce-badge--tidak_lulus {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.osce-timer {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  padding: 0.15rem 0.55rem;
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+.osce-timer--low {
+  background: var(--bad-soft);
+  color: var(--bad);
+}
+.osce-percent {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0.2rem 0 0.6rem;
+}
+.osce-critical {
+  border-left: 4px solid var(--bad);
+  background: var(--bad-soft);
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  margin: 0.6rem 0;
+}
+.osce-rubric {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0;
+  font-size: 0.92rem;
+}
+.osce-rubric th,
+.osce-rubric td {
+  border-bottom: 1px solid var(--border);
+  padding: 0.4rem 0.35rem;
+  text-align: left;
+  vertical-align: top;
+}
+.osce-score {
+  white-space: nowrap;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.osce-row--2 .osce-score {
+  color: var(--ok);
+}
+.osce-row--1 .osce-score {
+  color: var(--warn);
+}
+.osce-row--0 .osce-score {
+  color: var(--bad);
+}
+.osce-good li::marker,
+.osce-good {
+  color: var(--ok);
+}
+.osce-bad li,
+.osce-bad {
+  color: var(--bad);
+}
+.osce-warn li {
+  color: var(--warn);
+}
+.osce-key li {
+  color: var(--text);
+}
+.osce-result .frame,
+.osce-treatment .frame {
+  margin: 0.5rem 0;
+}
+.rx__paper {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+.rx__head {
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3rem;
+  margin: 0 0 0.4rem;
+}
+.rx__line {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  align-items: flex-start;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted var(--border);
+}
+.rx__s {
+  padding-left: 1.2rem;
+  color: var(--text-muted);
+}
+.rx__pro {
+  margin: 0.5rem 0 0;
+}
+.rx-form {
+  margin-top: 0.7rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.rx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.5rem;
+  align-items: end;
+}
+.rx-field {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+}
+.rx-field--wide {
+  grid-column: 1 / -1;
+}
+.osce-check {
+  margin-top: 1rem;
+}
+.result-mark {
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+.result-table tr.is-marked td,
+.result-table tr.is-marked th {
+  background: var(--warn-soft);
+}
+.osce-proc__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+}
+.osce-proc__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 720px) {
+  .osce-proc__grid {
+    grid-template-columns: 1fr;
+  }
+}
+.proc-cards li + li {
+  margin-top: 0.4rem;
+}
+.proc-card {
+  width: 100%;
+  text-align: left;
+  padding: 0.55rem 0.7rem;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.proc-card:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+.proc-seq li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.4rem;
+  align-items: flex-start;
+  padding: 0.3rem 0;
+  border-bottom: 1px dotted var(--border);
+}
+.briefing ol {
+  padding-left: 1.2rem;
+}
+.osce-history {
+  margin-top: 1.4rem;
+}
+.title-osce {
+  margin-top: 0.6rem;
+  width: 100%;
+}
+.title-osce__sub {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.osce-check .plain-list,
+.osce-result .plain-list.osce-good,
+.osce-result .plain-list.osce-bad {
+  list-style: none;
+  padding-left: 0;
+}

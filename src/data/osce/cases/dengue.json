@@ -1,0 +1,154 @@
+{
+  "disease": "dengue",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam akut",
+  "therapy": {
+    "items": [
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "utama",
+        "reason": "Demam & nyeri otot: parasetamol satu-satunya antipiretik yang aman pada dengue.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 500–1000 mg 3–4 × sehari bila demam/nyeri (maks. 4 g/hari)",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 15 }
+      },
+      {
+        "id": "antipiretik_anak",
+        "label": "Antipiretik-analgesik (anak)",
+        "role": "utama",
+        "reason": "Demam & nyeri otot: parasetamol satu-satunya antipiretik yang aman pada dengue.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam",
+            "schedules": ["prn", "rutin"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMax": 14 }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains", "salisilat"],
+        "reason": "OAINS/aspirin mengganggu fungsi trombosit dan memicu perdarahan pada dengue.",
+        "severity": "kritis"
+      },
+      {
+        "groups": ["metamizol"],
+        "reason": "Metamizol (antalgin) tidak dianjurkan pada dengue (risiko hipotensi & gangguan darah).",
+        "severity": "salah"
+      },
+      { "groups": ["steroid"], "reason": "Kortikosteroid tidak bermanfaat pada dengue.", "severity": "salah" },
+      { "classes": ["antibiotik"], "reason": "Infeksi virus — antibiotik tidak diperlukan.", "severity": "salah" }
+    ],
+    "note": "Tidak ada antivirus spesifik. Kunci tatalaksana: cairan cukup, parasetamol bila demam, pantau tanda bahaya; rawat/rujuk bila ada tanda bahaya, kebocoran plasma, atau perdarahan."
+  },
+  "nonPharm": [
+    {
+      "id": "cairan",
+      "text": "Minum cukup 2–2,5 L/hari (air putih, oralit, jus buah, susu, sup)",
+      "kind": "benar",
+      "why": "Mencegah hipovolemia saat kebocoran plasma."
+    },
+    { "id": "istirahat", "text": "Tirah baring/istirahat di rumah", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres hangat bila demam", "kind": "benar" },
+    {
+      "id": "pantau_urin",
+      "text": "Pantau frekuensi & jumlah kencing (target kencing tiap 4–6 jam)",
+      "kind": "benar",
+      "why": "Penanda kecukupan cairan dan perfusi."
+    },
+    {
+      "id": "infus_rujuk",
+      "text": "Pasang infus kristaloid (RL/NaCl 0,9%) lalu rujuk segera ke rumah sakit",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["tanda_bahaya"] }, { "traits": ["kebocoran_plasma"] }, { "traits": ["perdarahan_spontan"] }],
+      "why": "Tanda bahaya/kebocoran plasma/perdarahan memerlukan rawat inap."
+    },
+    {
+      "id": "kompres_es",
+      "text": "Kompres dengan air es atau alkohol agar demam cepat turun",
+      "kind": "pengecoh",
+      "why": "Menyebabkan menggigil/vasokonstriksi; kompres hangat lebih tepat."
+    },
+    {
+      "id": "puasa",
+      "text": "Batasi makan sampai demam turun",
+      "kind": "pengecoh",
+      "why": "Asupan kalori & cairan justru perlu dijaga."
+    },
+    {
+      "id": "jamu",
+      "text": "Minum jamu atau obat pereda pegal warung bila badan linu",
+      "kind": "berbahaya",
+      "why": "Banyak jamu pegal linu mengandung OAINS/steroid → risiko perdarahan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini infeksi virus dengue dari gigitan nyamuk Aedes; tidak ada obat khusus, kuncinya cukup cairan dan pemantauan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Parasetamol hanya bila demam; jangan minum ibuprofen, asam mefenamat, atau aspirin",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke RS bila nyeri perut hebat, muntah terus, mimisan/gusi berdarah/BAB hitam, gelisah/lemas, tangan-kaki dingin, atau tidak kencing > 6 jam — terutama saat demam mulai turun",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol setiap hari untuk periksa darah sampai 24–48 jam setelah demam turun",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Cegah dengan 3M Plus: menguras, menutup, mendaur ulang; pakai kelambu dan losion antinyamuk",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "sembuh",
+      "text": "Bila demam sudah turun berarti sudah sembuh, tidak perlu kontrol lagi",
+      "kind": "berbahaya",
+      "category": "kontrol",
+      "why": "Fase kritis justru terjadi saat demam turun (hari 3–6)."
+    },
+    {
+      "id": "jambu",
+      "text": "Jus jambu pasti menaikkan trombosit sehingga tidak perlu kontrol",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak ada bukti kuat; pemantauan tetap wajib."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Pedoman Nasional Pelayanan Kedokteran Tatalaksana Infeksi Dengue Dewasa (2020)",
+      "WHO. Dengue guidelines for diagnosis, treatment, prevention and control"
+    ]
+  }
+}

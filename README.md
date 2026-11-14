@@ -66,6 +66,13 @@ klinis**, bukan sekadar tebakan diagnosis.
   yang terlewat, keluhan yang tidak digali, pemeriksaan yang kurang/tidak perlu, banding yang
   terlewat atau disingkirkan tanpa bukti, komplikasi yang tidak dinilai, asumsi keliru (mis. "fungsi
   ginjal normal menyingkirkan batu"), pendekatan yang dianjurkan, dan rekomendasi.
+- **Mode Latihan OSCE** (persiapan ujian): stasiun bertimer (10/15/20 menit) dengan lembar tugas,
+  rubrik 7 tugas × skor 0–1–2 (total /14 → Superior/Lulus/Tidak lulus) seperti OSCE komprehensif,
+  **penulisan resep** (dosis, frekuensi, lama, jumlah angka Romawi; alergi & obat berbahaya = kesalahan
+  kritis), tatalaksana non-farmakologi, **KIE**, interpretasi hasil penunjang (penanda abnormal
+  disembunyikan), perilaku profesional, 11 **stasiun prosedur** (kateter, tampon hidung, IUD, Pap smear,
+  ACLS, resusitasi cairan, bidai, dll.), serta simulasi beberapa stasiun berurutan. Lihat
+  [`docs/osce.md`](docs/osce.md).
 - **Reputasi & game over** dari skor klinis, penalti bila penyakit berbahaya terlewat atau pasien
   gawat dipulangkan. Layar akhir dengan grafik, statistik, rekor.
 - Rekam medis & transkrip, panduan bermain, tema terang/gelap, simpan & lanjutkan sesi, PWA offline.

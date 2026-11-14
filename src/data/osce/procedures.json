@@ -1,0 +1,969 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Langkah prosedur disusun dari modul OSCE yang dikirim pengguna dan pedoman umum; urutan detail dapat berbeda antar institusi."
+    ],
+    "references": [
+      "Modul OSCE fakultas (dokumen pengguna)",
+      "AHA ACLS Guidelines 2020",
+      "Kemenkes RI. Panduan Praktik Klinis Fasyankes Primer"
+    ]
+  },
+  "procedures": [
+    {
+      "id": "kateter_uretra_pria",
+      "title": "Kateterisasi uretra pria (retensi urin akut)",
+      "system": "Urologi",
+      "skdi": "4A",
+      "scenario": "Laki-laki 68 tahun di IGD tidak bisa BAK sejak 6 jam, nyeri perut bawah, buli teraba penuh (bulging suprapubik). Tidak ada riwayat trauma, meatus tidak berdarah. Lakukan kateterisasi uretra.",
+      "steps": [
+        {
+          "id": "kateter_uretra_pria-s1",
+          "text": "Jelaskan tujuan & langkah tindakan, minta persetujuan (informed consent)"
+        },
+        {
+          "id": "kateter_uretra_pria-s2",
+          "text": "Siapkan alat steril: kateter Foley 16–18 Fr, urobag, jeli lidokain 2%, spuit berisi aquadest 10–15 mL, duk lubang, kasa, povidon iodin"
+        },
+        {
+          "id": "kateter_uretra_pria-s3",
+          "text": "Cuci tangan, pakai sarung tangan steril; pasien terlentang, pasang duk lubang"
+        },
+        {
+          "id": "kateter_uretra_pria-s4",
+          "text": "Pegang penis dengan tangan nondominan, tarik prepusium, desinfeksi glans & meatus secara sirkular dari dalam ke luar"
+        },
+        {
+          "id": "kateter_uretra_pria-s5",
+          "text": "Masukkan 10–15 mL jeli lidokain ke uretra, tahan glans 3–5 menit",
+          "critical": true,
+          "why": "Anestesi & lubrikasi mengurangi nyeri dan trauma uretra."
+        },
+        { "id": "kateter_uretra_pria-s6", "text": "Tegakkan penis 90° terhadap tubuh untuk meluruskan uretra" },
+        {
+          "id": "kateter_uretra_pria-s7",
+          "text": "Masukkan kateter perlahan sambil pasien menarik napas dalam (relaksasi sfingter)"
+        },
+        {
+          "id": "kateter_uretra_pria-s8",
+          "text": "Dorong kateter sampai pangkal/percabangan dan pastikan urin keluar",
+          "critical": true,
+          "why": "Balon harus berada di dalam buli, bukan di uretra prostatika."
+        },
+        {
+          "id": "kateter_uretra_pria-s9",
+          "text": "Kembangkan balon dengan 10–15 mL aquadest, lalu tarik perlahan sampai tertahan",
+          "critical": true
+        },
+        {
+          "id": "kateter_uretra_pria-s10",
+          "text": "Sambungkan ke urobag (sistem tertutup) dan gantung di bawah tinggi kandung kemih"
+        },
+        {
+          "id": "kateter_uretra_pria-s11",
+          "text": "Kembalikan prepusium ke posisi semula",
+          "critical": true,
+          "why": "Prepusium yang tertinggal tertarik → parafimosis."
+        },
+        {
+          "id": "kateter_uretra_pria-s12",
+          "text": "Fiksasi kateter ke paha/inguinal, catat jumlah & warna urin, edukasi perawatan kateter"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "kateter_uretra_pria-x1",
+          "text": "Paksakan kateter bila ada tahanan berat",
+          "why": "Risiko saluran palsu/ruptur uretra — hentikan dan konsul urologi (sistostomi).",
+          "dangerous": true
+        },
+        {
+          "id": "kateter_uretra_pria-x2",
+          "text": "Kembangkan balon begitu kateter masuk ± 5 cm",
+          "why": "Balon mengembang di uretra → ruptur uretra.",
+          "dangerous": true
+        },
+        {
+          "id": "kateter_uretra_pria-x3",
+          "text": "Lanjutkan kateterisasi walau ada darah di meatus pascatrauma perineum",
+          "why": "Curiga ruptur uretra: kateter uretra dikontraindikasikan.",
+          "dangerous": true
+        },
+        {
+          "id": "kateter_uretra_pria-x4",
+          "text": "Gunakan kateter 8 Fr agar lebih mudah masuk",
+          "why": "Terlalu kecil untuk pria dewasa dengan retensi (mudah tersumbat/tertekuk)."
+        },
+        {
+          "id": "kateter_uretra_pria-x5",
+          "text": "Isi balon dengan udara karena lebih praktis",
+          "why": "Balon diisi aquadest/NaCl, bukan udara."
+        }
+      ],
+      "questions": [
+        {
+          "id": "kateter_uretra_pria-q1",
+          "question": "Ukuran kateter Foley untuk pria dewasa dengan retensi urin?",
+          "options": ["8–10 Fr", "12 Fr", "16–18 Fr", "24–26 Fr"],
+          "answer": 2,
+          "why": "16–18 Fr cukup kaku untuk melewati prostat dan tidak terlalu besar."
+        },
+        {
+          "id": "kateter_uretra_pria-q2",
+          "question": "Kapan PSA sebaiknya diperiksa pada retensi urin?",
+          "options": [
+            "Segera setelah kateter terpasang",
+            "Sebelum colok dubur/kateterisasi atau 2–4 minggu setelah retensi teratasi",
+            "Tepat setelah colok dubur",
+            "Tidak perlu diperiksa"
+          ],
+          "answer": 1,
+          "why": "Retensi, colok dubur, dan manipulasi kateter menaikkan PSA palsu."
+        },
+        {
+          "id": "kateter_uretra_pria-q3",
+          "question": "Temuan yang menjadi kontraindikasi kateterisasi uretra?",
+          "options": ["Prostat membesar kenyal", "Darah di meatus uretra pascatrauma", "Buli teraba penuh", "Riwayat LUTS"],
+          "answer": 1,
+          "why": "Curiga ruptur uretra → sistostomi suprapubik oleh urolog."
+        }
+      ],
+      "keyPoints": [
+        "Jeli lidokain & penis tegak 90° adalah kunci kateter mudah masuk.",
+        "Dorong sampai pangkal & tunggu urin keluar sebelum mengisi balon.",
+        "Jangan pernah memaksa — konsul urologi bila gagal.",
+        "Waspadai diuresis pascaobstruksi."
+      ],
+      "source": "Panduan OSCE Urologi — Retensi Urin & Kateterisasi Uretra Pria"
+    },
+    {
+      "id": "tampon_anterior",
+      "title": "Pemasangan tampon hidung anterior (epistaksis)",
+      "system": "THT-KL",
+      "skdi": "4A",
+      "scenario": "Pria dewasa dengan perdarahan hidung kanan 30 menit yang tidak berhenti dengan penekanan. Lakukan rinoskopi anterior dan pasang tampon anterior.",
+      "steps": [
+        {
+          "id": "tampon_anterior-s1",
+          "text": "Jelaskan tindakan & minta persetujuan; pasien duduk tegak, kepala sedikit menunduk"
+        },
+        {
+          "id": "tampon_anterior-s2",
+          "text": "Pakai APD (sarung tangan, masker, pelindung mata) dan atur lampu kepala"
+        },
+        { "id": "tampon_anterior-s3", "text": "Minta pasien menghembuskan bekuan darah atau lakukan pengisapan" },
+        {
+          "id": "tampon_anterior-s4",
+          "text": "Pegang spekulum dengan tangan kiri, masukkan tertutup lalu buka ke arah latero-superior (tidak menekan septum)",
+          "critical": true,
+          "why": "Septum sangat mudah berdarah."
+        },
+        {
+          "id": "tampon_anterior-s5",
+          "text": "Pasang kapas berisi lidokain 2% + vasokonstriktor (epinefrin/efedrin) selama 5–10 menit"
+        },
+        { "id": "tampon_anterior-s6", "text": "Evaluasi sumber perdarahan (pleksus Kiesselbach)" },
+        { "id": "tampon_anterior-s7", "text": "Siapkan kasa pita yang diolesi salep antibiotik/vaselin" },
+        {
+          "id": "tampon_anterior-s8",
+          "text": "Masukkan kasa pita dengan pinset bayonet menyusuri dasar hidung, susun berlapis zig-zag (akordeon) dari dasar ke atap, dari posterior ke anterior",
+          "critical": true
+        },
+        { "id": "tampon_anterior-s9", "text": "Sisakan ujung pita di luar nares" },
+        {
+          "id": "tampon_anterior-s10",
+          "text": "Periksa orofaring dengan spatula lidah: pastikan tidak ada darah mengalir ke tenggorok",
+          "critical": true,
+          "why": "Darah tetap mengalir → curiga epistaksis posterior."
+        },
+        {
+          "id": "tampon_anterior-s11",
+          "text": "Fiksasi kasa penutup di luar hidung; beri antibiotik profilaksis; tampon dipertahankan 2 × 24 jam"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "tampon_anterior-x1",
+          "text": "Posisikan kepala menengadah agar darah tidak keluar",
+          "why": "Darah tertelan/teraspirasi dan perdarahan tersamarkan.",
+          "dangerous": true
+        },
+        {
+          "id": "tampon_anterior-x2",
+          "text": "Buka spekulum ke arah septum agar lapang pandang luas",
+          "why": "Menekan septum memicu perdarahan baru.",
+          "dangerous": true
+        },
+        {
+          "id": "tampon_anterior-x3",
+          "text": "Tutup spekulum rapat penuh saat menariknya keluar",
+          "why": "Bulu hidung/mukosa terjepit; tutup sebagian saja."
+        },
+        {
+          "id": "tampon_anterior-x4",
+          "text": "Lepas tampon setelah 2 jam bila tidak berdarah lagi",
+          "why": "Tampon anterior dipertahankan 48 jam."
+        }
+      ],
+      "questions": [
+        {
+          "id": "tampon_anterior-q1",
+          "question": "Berapa lama tampon anterior dipertahankan?",
+          "options": ["2 jam", "12 jam", "2 × 24 jam", "7 hari"],
+          "answer": 2,
+          "why": "48 jam (dapat sampai 72 jam bila perlu)."
+        },
+        {
+          "id": "tampon_anterior-q2",
+          "question": "Tangan yang memegang spekulum hidung (pemeriksa dominan kanan)?",
+          "options": ["Kanan", "Kiri", "Mana saja", "Dipegang asisten"],
+          "answer": 1,
+          "why": "Tangan kanan bebas untuk pinset/suction."
+        },
+        {
+          "id": "tampon_anterior-q3",
+          "question": "Mengapa diberi antibiotik profilaksis?",
+          "options": ["Mencegah toxic shock syndrome/sinusitis", "Menghentikan perdarahan", "Mengurangi nyeri", "Mencegah alergi"],
+          "answer": 0,
+          "why": "Tampon yang lama berisiko infeksi."
+        }
+      ],
+      "keyPoints": [
+        "Spekulum dengan tangan kiri, buka ke arah lateral-atas.",
+        "Susun pita berlapis dari dasar ke atap hidung.",
+        "Selalu periksa orofaring setelah memasang tampon."
+      ],
+      "source": "Panduan OSCE THT — Epistaksis & Benda Asing Hidung"
+    },
+    {
+      "id": "benda_asing_hidung",
+      "title": "Ekstraksi benda asing hidung pada anak",
+      "system": "THT-KL",
+      "skdi": "4A",
+      "scenario": "Anak 4 tahun diantar ibu karena memasukkan manik-manik ke lubang hidung kanan. Lakukan ekstraksi.",
+      "steps": [
+        { "id": "benda_asing_hidung-s1", "text": "Jelaskan tindakan kepada orang tua & minta persetujuan" },
+        {
+          "id": "benda_asing_hidung-s2",
+          "text": "Posisikan anak dipangku ibu: kaki dijepit paha ibu, tangan & dada dirangkul, dahi ditahan",
+          "critical": true,
+          "why": "Gerakan tiba-tiba mendorong benda asing ke posterior."
+        },
+        {
+          "id": "benda_asing_hidung-s3",
+          "text": "Pasang lampu kepala; tangan kiri memfiksasi kepala dan mengangkat ujung hidung"
+        },
+        { "id": "benda_asing_hidung-s4", "text": "Teteskan dekongestan topikal bila mukosa edema" },
+        { "id": "benda_asing_hidung-s5", "text": "Identifikasi jenis benda asing (bulat-licin, lunak, baterai tombol)" },
+        {
+          "id": "benda_asing_hidung-s6",
+          "text": "Masukkan pengait (hak) hidung mendatar melewati sisi atas benda asing sampai di belakangnya",
+          "critical": true
+        },
+        { "id": "benda_asing_hidung-s7", "text": "Putar pengait 90° sehingga ujungnya menghadap ke bawah" },
+        { "id": "benda_asing_hidung-s8", "text": "Tarik pengait perlahan ke anterior menyusuri dasar hidung" },
+        { "id": "benda_asing_hidung-s9", "text": "Periksa ulang kedua rongga hidung dan kedua telinga" },
+        { "id": "benda_asing_hidung-s10", "text": "Evaluasi perdarahan/laserasi mukosa dan edukasi orang tua" }
+      ],
+      "distractors": [
+        {
+          "id": "benda_asing_hidung-x1",
+          "text": "Jepit manik-manik dengan pinset anatomis",
+          "why": "Benda bulat-licin terlontar ke posterior → aspirasi.",
+          "dangerous": true
+        },
+        {
+          "id": "benda_asing_hidung-x2",
+          "text": "Teteskan air untuk melunakkan baterai tombol sebelum diambil",
+          "why": "Memicu reaksi korosif; baterai tombol harus segera diekstraksi.",
+          "dangerous": true
+        },
+        {
+          "id": "benda_asing_hidung-x3",
+          "text": "Tunda tindakan sampai anak tenang besok pagi",
+          "why": "Benda asing (terutama baterai) harus segera dikeluarkan."
+        }
+      ],
+      "questions": [
+        {
+          "id": "benda_asing_hidung-q1",
+          "question": "Alat yang tepat untuk benda asing bulat licin?",
+          "options": ["Pinset anatomis", "Pinset bayonet", "Pengait/hak hidung", "Cunam aligator"],
+          "answer": 2,
+          "why": "Pengait ditarik dari belakang benda asing."
+        },
+        {
+          "id": "benda_asing_hidung-q2",
+          "question": "Benda asing hidung yang merupakan kegawatdaruratan absolut?",
+          "options": ["Kertas", "Busa", "Baterai tombol", "Biji kacang hijau"],
+          "answer": 2,
+          "why": "Korosif & nekrosis mukosa dalam hitungan jam."
+        }
+      ],
+      "keyPoints": [
+        "Fiksasi anak yang aman lebih penting daripada kecepatan.",
+        "Benda bulat licin: pengait, bukan pinset.",
+        "Selalu periksa lubang tubuh lain."
+      ],
+      "source": "Panduan OSCE THT — Epistaksis & Benda Asing Hidung"
+    },
+    {
+      "id": "benda_asing_kornea",
+      "title": "Ekstraksi benda asing kornea superfisial",
+      "system": "Mata",
+      "skdi": "4A",
+      "scenario": "Pekerja bengkel merasa mata kanan mengganjal setelah menggerinda tanpa kacamata. Visus OD 6/9, benda asing kecil superfisial di kornea perifer jam 4, fluoresens (+). Lakukan ekstraksi.",
+      "steps": [
+        {
+          "id": "benda_asing_kornea-s1",
+          "text": "Periksa visus kedua mata sebelum tindakan",
+          "critical": true,
+          "why": "Dokumentasi medikolegal & penilaian awal."
+        },
+        {
+          "id": "benda_asing_kornea-s2",
+          "text": "Tanyakan mekanisme: material (logam/organik) & kecepatan (risiko benda asing intraokular)"
+        },
+        {
+          "id": "benda_asing_kornea-s3",
+          "text": "Inspeksi & eversi palpebra superior/inferior untuk mencari benda asing tersembunyi"
+        },
+        {
+          "id": "benda_asing_kornea-s4",
+          "text": "Nilai kedalaman benda asing, COA, pupil; lakukan tes Seidel untuk menyingkirkan perforasi",
+          "critical": true
+        },
+        { "id": "benda_asing_kornea-s5", "text": "Teteskan anestesi topikal (tetrakain/pantokain 0,5%)" },
+        { "id": "benda_asing_kornea-s6", "text": "Irigasi dengan NaCl 0,9%" },
+        {
+          "id": "benda_asing_kornea-s7",
+          "text": "Angkat benda asing dengan kapas lidi basah atau jarum 26G bevel menghadap ke atas, arah tangensial di bawah lup/slit lamp"
+        },
+        { "id": "benda_asing_kornea-s8", "text": "Periksa ulang dengan fluoresens; evaluasi cincin karat" },
+        {
+          "id": "benda_asing_kornea-s9",
+          "text": "Beri antibiotik topikal (levofloksasin/moksifloksasin/gentamisin tetes) dan analgetik oral"
+        },
+        { "id": "benda_asing_kornea-s10", "text": "Periksa visus ulang dan edukasi kacamata pelindung & tanda bahaya" }
+      ],
+      "distractors": [
+        {
+          "id": "benda_asing_kornea-x1",
+          "text": "Bekali pasien tetes anestesi topikal untuk dipakai di rumah",
+          "why": "Menghambat penyembuhan epitel & memicu ulkus kornea.",
+          "dangerous": true
+        },
+        {
+          "id": "benda_asing_kornea-x2",
+          "text": "Ambil sendiri benda asing yang menembus dalam/Seidel positif",
+          "why": "Perforasi → rujuk segera ke spesialis mata.",
+          "dangerous": true
+        },
+        {
+          "id": "benda_asing_kornea-x3",
+          "text": "Lakukan MRI bila curiga benda asing logam intraokular",
+          "why": "Logam feromagnetik bergerak dalam medan MRI; gunakan foto polos/CT.",
+          "dangerous": true
+        },
+        {
+          "id": "benda_asing_kornea-x4",
+          "text": "Tutup mata dengan eye patch rutin selama 3 hari",
+          "why": "Tidak lagi dianjurkan rutin (risiko infeksi)."
+        }
+      ],
+      "questions": [
+        {
+          "id": "benda_asing_kornea-q1",
+          "question": "Tes untuk menyingkirkan perforasi kornea?",
+          "options": ["Tes Schirmer", "Tes Seidel", "Tes Ishihara", "Tonometri Schiotz"],
+          "answer": 1,
+          "why": "Aliran akuos humor terlihat di bawah sinar biru kobalt."
+        },
+        {
+          "id": "benda_asing_kornea-q2",
+          "question": "Pencitraan bila curiga benda asing logam intraokular?",
+          "options": ["MRI orbita", "Foto polos/CT orbita", "USG abdomen", "Tidak perlu"],
+          "answer": 1,
+          "why": "MRI dikontraindikasikan pada logam feromagnetik."
+        }
+      ],
+      "keyPoints": [
+        "Visus sebelum dan sesudah tindakan.",
+        "Eversi palpebra — cari benda asing tersembunyi.",
+        "Jangan pernah memberi anestesi topikal untuk dibawa pulang."
+      ],
+      "source": "SGD Oftalmologi — Benda Asing Kornea & Abrasi"
+    },
+    {
+      "id": "pap_smear",
+      "title": "Pemeriksaan Pap smear",
+      "system": "Obstetri & Ginekologi",
+      "skdi": "4A",
+      "scenario": "Wanita 36 tahun ingin skrining kanker serviks. Tidak sedang haid, tidak berhubungan seksual/douching 48 jam terakhir. Lakukan Pap smear.",
+      "steps": [
+        {
+          "id": "pap_smear-s1",
+          "text": "Pastikan syarat: tidak haid, tidak berhubungan seksual/douching/obat vagina 48 jam; jelaskan & minta persetujuan"
+        },
+        {
+          "id": "pap_smear-s2",
+          "text": "Siapkan alat: spekulum Graves, spatula Ayre, cytobrush, kaca objek, alkohol 95%, sarung tangan, lampu sorot"
+        },
+        { "id": "pap_smear-s3", "text": "Minta pasien berkemih; posisikan litotomi" },
+        {
+          "id": "pap_smear-s4",
+          "text": "Vulva hygiene, masukkan spekulum miring lalu putar, buka & kunci hingga serviks tampak"
+        },
+        { "id": "pap_smear-s5", "text": "Ambil sampel ektoserviks dengan spatula Ayre diputar 360°", "critical": true },
+        { "id": "pap_smear-s6", "text": "Oleskan tipis & merata pada separuh kaca objek" },
+        { "id": "pap_smear-s7", "text": "Ambil sampel endoserviks dengan cytobrush diputar 180–360°", "critical": true },
+        { "id": "pap_smear-s8", "text": "Oleskan pada sisa kaca objek" },
+        {
+          "id": "pap_smear-s9",
+          "text": "Segera fiksasi kaca objek dalam alkohol 95% (fiksasi basah) 15–30 menit",
+          "critical": true,
+          "why": "Sediaan kering → artefak, tidak bisa dibaca."
+        },
+        {
+          "id": "pap_smear-s10",
+          "text": "Lepas spekulum dan jelaskan pengambilan hasil (1–2 minggu) serta jadwal ulang"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "pap_smear-x1",
+          "text": "Lakukan Pap smear setelah IUD dipasang pada kunjungan yang sama",
+          "why": "Pap smear harus sebelum pemasangan IUD agar sampel tidak terganggu darah/benang."
+        },
+        {
+          "id": "pap_smear-x2",
+          "text": "Biarkan sediaan mengering di udara sebelum dikirim",
+          "why": "Harus difiksasi basah segera."
+        },
+        {
+          "id": "pap_smear-x3",
+          "text": "Bersihkan serviks dengan povidon iodin sebelum mengambil sampel",
+          "why": "Merusak sel yang akan diperiksa."
+        }
+      ],
+      "questions": [
+        {
+          "id": "pap_smear-q1",
+          "question": "Interval Pap smear bila hasil normal?",
+          "options": ["Setiap tahun", "Setiap 3 tahun (5 tahun bila dengan tes HPV)", "Setiap 10 tahun", "Tidak perlu diulang"],
+          "answer": 1,
+          "why": "Sesuai rekomendasi skrining."
+        },
+        {
+          "id": "pap_smear-q2",
+          "question": "Larutan fiksasi Pap smear konvensional?",
+          "options": ["Formalin 10%", "Alkohol 95%", "NaCl 0,9%", "KOH 10%"],
+          "answer": 1,
+          "why": "Fiksasi basah alkohol 95%."
+        }
+      ],
+      "keyPoints": [
+        "Ektoserviks dengan spatula Ayre, endoserviks dengan cytobrush.",
+        "Fiksasi segera di alkohol 95%.",
+        "Pap smear dikerjakan sebelum pemasangan IUD."
+      ],
+      "source": "Panduan OSCE Ginekologi — Kontrasepsi & Pap Smear"
+    },
+    {
+      "id": "pasang_iud",
+      "title": "Pemasangan AKDR/IUD Copper T 380A",
+      "system": "Obstetri & Ginekologi",
+      "skdi": "4A",
+      "scenario": "Wanita 36 tahun, 2 anak, ingin kontrasepsi jangka panjang; IMT 42,8 (obesitas). Kehamilan & servisitis sudah disingkirkan, konseling SATU TUJU selesai. Pasang IUD CuT 380A.",
+      "steps": [
+        {
+          "id": "pasang_iud-s1",
+          "text": "Pastikan tidak hamil (HPHT) dan tidak ada servisitis/PRP; informed consent",
+          "critical": true
+        },
+        { "id": "pasang_iud-s2", "text": "Pemeriksaan bimanual: posisi, ukuran, dan mobilitas uterus" },
+        { "id": "pasang_iud-s3", "text": "Pasang spekulum; usap porsio & vagina dengan antiseptik" },
+        { "id": "pasang_iud-s4", "text": "Jepit porsio dengan tenakulum pada jam 11 atau jam 1" },
+        {
+          "id": "pasang_iud-s5",
+          "text": "Ukur kedalaman uterus dengan sonde (teknik tanpa sentuh)",
+          "critical": true,
+          "why": "Normal 6–8 cm; menentukan posisi leher biru."
+        },
+        { "id": "pasang_iud-s6", "text": "Masukkan lengan IUD ke tabung inserter dalam kemasan steril" },
+        { "id": "pasang_iud-s7", "text": "Atur leher biru sesuai kedalaman sonde" },
+        { "id": "pasang_iud-s8", "text": "Masukkan tabung inserter sampai leher biru menyentuh porsio" },
+        {
+          "id": "pasang_iud-s9",
+          "text": "Tahan pendorong, tarik tabung inserter (teknik withdrawal) untuk melepas lengan IUD di fundus",
+          "critical": true
+        },
+        { "id": "pasang_iud-s10", "text": "Dorong tabung perlahan sampai fundus, lalu keluarkan pendorong & tabung" },
+        { "id": "pasang_iud-s11", "text": "Gunting benang 2–3 cm dari ostium uteri eksternum" },
+        {
+          "id": "pasang_iud-s12",
+          "text": "Lepas tenakulum, rawat bekas jepitan, lepas spekulum; konseling pasca-pemasangan"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "pasang_iud-x1",
+          "text": "Dorong IUD dengan pendorong ke fundus (teknik dorong)",
+          "why": "Meningkatkan risiko perforasi; gunakan teknik tarik (withdrawal).",
+          "dangerous": true
+        },
+        {
+          "id": "pasang_iud-x2",
+          "text": "Pasang IUD walau ada servisitis purulen",
+          "why": "Risiko penyakit radang panggul.",
+          "dangerous": true
+        },
+        {
+          "id": "pasang_iud-x3",
+          "text": "Potong benang rata dengan porsio",
+          "why": "Benang 2–3 cm diperlukan untuk kontrol & pelepasan."
+        }
+      ],
+      "questions": [
+        {
+          "id": "pasang_iud-q1",
+          "question": "Kontrasepsi paling sesuai untuk pasien obesitas morbid ini?",
+          "options": ["Pil kombinasi", "Suntik 1 bulan", "IUD tembaga (CuT 380A)", "Suntik DMPA 3 bulan"],
+          "answer": 2,
+          "why": "Tanpa hormon: tidak meningkatkan risiko tromboemboli/berat badan."
+        },
+        {
+          "id": "pasang_iud-q2",
+          "question": "Kunjungan ulang pertama setelah pemasangan IUD?",
+          "options": ["1 minggu", "1 bulan/setelah haid berikutnya", "6 bulan", "Tidak perlu"],
+          "answer": 1,
+          "why": "Lalu setiap tahun."
+        }
+      ],
+      "keyPoints": [
+        "Sonde dulu, lalu atur leher biru.",
+        "Teknik withdrawal, bukan didorong.",
+        "Ajari pasien memeriksa benang sendiri."
+      ],
+      "source": "Panduan OSCE Ginekologi — Kontrasepsi & Pap Smear"
+    },
+    {
+      "id": "kerokan_koh",
+      "title": "Kerokan kulit & sediaan KOH (dermatofitosis)",
+      "system": "Kulit & Kelamin",
+      "skdi": "4A",
+      "scenario": "Atlet 28 tahun dengan plak eritematosa anular gatal di lipat paha, tepi aktif, central clearing. Buat sediaan KOH.",
+      "steps": [
+        {
+          "id": "kerokan_koh-s1",
+          "text": "Jelaskan tindakan & minta persetujuan; siapkan alat (skalpel tumpul/kaca objek, KOH 10–20%, kaca penutup, lampu spiritus, mikroskop)"
+        },
+        { "id": "kerokan_koh-s2", "text": "Bersihkan lesi dengan alkohol 70%" },
+        {
+          "id": "kerokan_koh-s3",
+          "text": "Kerok bagian tepi lesi yang aktif dari dalam ke luar",
+          "critical": true,
+          "why": "Elemen jamur paling banyak di tepi aktif."
+        },
+        { "id": "kerokan_koh-s4", "text": "Kumpulkan sisik di atas kaca objek" },
+        { "id": "kerokan_koh-s5", "text": "Teteskan 1–2 tetes KOH 10–20% dan tutup dengan kaca penutup" },
+        { "id": "kerokan_koh-s6", "text": "Hangatkan sebentar di atas lampu spiritus tanpa mendidih" },
+        { "id": "kerokan_koh-s7", "text": "Periksa di bawah mikroskop (perbesaran lemah lalu kuat)" },
+        {
+          "id": "kerokan_koh-s8",
+          "text": "Interpretasi: hifa panjang bersekat bercabang & artrospora = dermatofita",
+          "critical": true
+        }
+      ],
+      "distractors": [
+        {
+          "id": "kerokan_koh-x1",
+          "text": "Kerok bagian tengah lesi yang sudah menyembuh",
+          "why": "Elemen jamur sedikit di bagian tengah (central clearing)."
+        },
+        { "id": "kerokan_koh-x2", "text": "Didihkan sediaan sampai kering", "why": "Merusak sediaan." },
+        {
+          "id": "kerokan_koh-x3",
+          "text": "Beri ketokonazol oral sebagai terapi lini pertama",
+          "why": "Ketokonazol oral tidak lagi dianjurkan (hepatotoksik).",
+          "dangerous": true
+        }
+      ],
+      "questions": [
+        {
+          "id": "kerokan_koh-q1",
+          "question": "Gambaran KOH pitiriasis versikolor?",
+          "options": [
+            "Hifa panjang bersekat",
+            "Hifa pendek & spora bulat (spaghetti and meatballs)",
+            "Pseudohifa & blastospora",
+            "Tidak ada elemen jamur"
+          ],
+          "answer": 1,
+          "why": "Malassezia."
+        },
+        {
+          "id": "kerokan_koh-q2",
+          "question": "Terapi topikal tinea kruris terbatas?",
+          "options": [
+            "Krim ketokonazol 2%/terbinafin 1% 2–4 minggu, 2 cm di luar lesi",
+            "Kortikosteroid potensi tinggi",
+            "Antibiotik oral",
+            "Ketokonazol oral"
+          ],
+          "answer": 0,
+          "why": "Lanjutkan 1 minggu setelah sembuh klinis."
+        }
+      ],
+      "keyPoints": ["Kerok tepi aktif.", "KOH + pemanasan ringan.", "Hifa bersekat bercabang = dermatofita."],
+      "source": "Panduan OSCE Integumen — Lepra & Tinea"
+    },
+    {
+      "id": "slit_skin_smear",
+      "title": "Slit-skin smear (pemeriksaan BTA kusta)",
+      "system": "Kulit & Kelamin",
+      "skdi": "4A",
+      "scenario": "Laki-laki 34 tahun dengan makula hipopigmentasi anestesi dan penebalan N. ulnaris. Ambil sediaan slit-skin smear.",
+      "steps": [
+        { "id": "slit_skin_smear-s1", "text": "Jelaskan tindakan & minta persetujuan; pakai sarung tangan" },
+        { "id": "slit_skin_smear-s2", "text": "Pilih lokasi: kedua cuping telinga dan lesi paling aktif" },
+        { "id": "slit_skin_smear-s3", "text": "Bersihkan lokasi dengan alkohol 70%" },
+        {
+          "id": "slit_skin_smear-s4",
+          "text": "Jepit kulit kuat dengan ibu jari & telunjuk sampai pucat (iskemik)",
+          "critical": true,
+          "why": "Mencegah perdarahan yang mengencerkan sediaan."
+        },
+        { "id": "slit_skin_smear-s5", "text": "Iris kulit dengan skalpel no. 15 sepanjang 5 mm, dalam 2 mm" },
+        {
+          "id": "slit_skin_smear-s6",
+          "text": "Putar skalpel 90° dan kerok dasar & dinding irisan untuk mengambil cairan jaringan (bukan darah)",
+          "critical": true
+        },
+        { "id": "slit_skin_smear-s7", "text": "Oleskan merata pada kaca objek" },
+        { "id": "slit_skin_smear-s8", "text": "Warnai Ziehl-Neelsen dan hitung Indeks Bakteri (skala Ridley 0–+6)" }
+      ],
+      "distractors": [
+        {
+          "id": "slit_skin_smear-x1",
+          "text": "Ambil sediaan dari darah yang keluar dari irisan",
+          "why": "Yang diperiksa cairan jaringan, bukan darah."
+        },
+        {
+          "id": "slit_skin_smear-x2",
+          "text": "Iris sedalam 5 mm agar kuman pasti terambil",
+          "why": "Terlalu dalam → perdarahan & nyeri; cukup 2 mm."
+        }
+      ],
+      "questions": [
+        {
+          "id": "slit_skin_smear-q1",
+          "question": "Indeks Bakteri +2 berarti?",
+          "options": [
+            "1–10 BTA dalam 100 lapang pandang",
+            "1–10 BTA dalam 10 lapang pandang",
+            "10–100 BTA dalam 1 lapang pandang",
+            "> 1000 BTA dalam 1 lapang pandang"
+          ],
+          "answer": 1,
+          "why": "Skala logaritmik Ridley."
+        },
+        {
+          "id": "slit_skin_smear-q2",
+          "question": "Regimen MDT-WHO kusta PB dewasa?",
+          "options": [
+            "Rifampisin 600 mg/bulan + dapson 100 mg/hari, 6 blister dalam 6–9 bulan",
+            "Rifampisin harian 2 bulan",
+            "Dapson saja 2 tahun",
+            "Prednison"
+          ],
+          "answer": 0,
+          "why": "Rifampisin diminum di depan petugas tiap bulan."
+        }
+      ],
+      "keyPoints": [
+        "Jepit sampai pucat sebelum mengiris.",
+        "Kerok cairan jaringan, bukan darah.",
+        "Indeks Bakteri dibaca dengan skala Ridley."
+      ],
+      "source": "Panduan OSCE Integumen — Lepra & Tinea"
+    },
+    {
+      "id": "acls_vt_tanpa_nadi",
+      "title": "Resusitasi henti jantung: VT tanpa nadi (ACLS)",
+      "system": "Kardiologi & Kegawatdaruratan",
+      "skdi": "3B",
+      "scenario": "Laki-laki 58 tahun dengan nyeri dada di IGD mendadak kejang lalu tidak sadar. Monitor: QRS lebar, reguler, sangat cepat tanpa gelombang P.",
+      "steps": [
+        { "id": "acls_vt_tanpa_nadi-s1", "text": "Pastikan lingkungan aman, cek respons pasien" },
+        {
+          "id": "acls_vt_tanpa_nadi-s2",
+          "text": "Panggil bantuan/aktifkan code blue dan minta defibrilator",
+          "critical": true
+        },
+        { "id": "acls_vt_tanpa_nadi-s3", "text": "Raba nadi karotis sambil menilai napas, tidak lebih dari 10 detik" },
+        {
+          "id": "acls_vt_tanpa_nadi-s4",
+          "text": "Segera mulai RJP berkualitas tinggi 30:2 (kedalaman 5–6 cm, 100–120 ×/menit, recoil penuh)",
+          "critical": true
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s5",
+          "text": "Pasang pad/monitor defibrilator dan analisis irama: VT tanpa nadi (shockable)"
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s6",
+          "text": "Isi daya, pastikan area aman (clear), beri kejut unsinkron 120–200 J bifasik (360 J monofasik)",
+          "critical": true
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s7",
+          "text": "Langsung lanjutkan RJP 2 menit tanpa memeriksa nadi",
+          "critical": true
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s8",
+          "text": "Pasang akses IV/IO; beri epinefrin 1 mg setelah kejut ke-2, ulangi tiap 3–5 menit"
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s9",
+          "text": "Bila tetap VT setelah kejut ke-3: amiodaron 300 mg IV bolus (berikutnya 150 mg)"
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s10",
+          "text": "Cari & atasi penyebab reversibel 5H & 5T (terutama trombosis koroner)"
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-s11",
+          "text": "Bila ROSC: nilai ABC, EKG 12 sadapan, siapkan reperfusi koroner (IKP primer)"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "acls_vt_tanpa_nadi-x1",
+          "text": "Lakukan kardioversi tersinkronisasi",
+          "why": "VT tanpa nadi diterapi defibrilasi unsinkron; sinkronisasi menunda kejut.",
+          "dangerous": true
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-x2",
+          "text": "Raba nadi 30 detik sebelum memulai RJP",
+          "why": "Menunda kompresi; maksimal 10 detik.",
+          "dangerous": true
+        },
+        { "id": "acls_vt_tanpa_nadi-x3", "text": "Beri atropin 1 mg", "why": "Tidak bermanfaat pada VT/VF." },
+        {
+          "id": "acls_vt_tanpa_nadi-x4",
+          "text": "Hentikan RJP untuk cek nadi segera setelah kejut",
+          "why": "RJP dilanjutkan 2 menit dulu."
+        }
+      ],
+      "questions": [
+        {
+          "id": "acls_vt_tanpa_nadi-q1",
+          "question": "Energi defibrilasi bifasik untuk VT tanpa nadi?",
+          "options": ["50 J", "120–200 J", "360 J", "Tidak perlu energi"],
+          "answer": 1,
+          "why": "Monofasik 360 J."
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-q2",
+          "question": "Dosis epinefrin pada henti jantung dewasa?",
+          "options": ["0,1 mg IV", "1 mg IV/IO tiap 3–5 menit", "5 mg IV sekali", "1 mg IM"],
+          "answer": 1,
+          "why": "Diberikan setelah kejut ke-2 pada irama shockable."
+        },
+        {
+          "id": "acls_vt_tanpa_nadi-q3",
+          "question": "Dosis awal amiodaron pada VF/VT tanpa nadi refrakter?",
+          "options": ["150 mg", "300 mg IV bolus", "600 mg", "900 mg"],
+          "answer": 1,
+          "why": "Dosis kedua 150 mg."
+        }
+      ],
+      "keyPoints": [
+        "Kompresi berkualitas & minim jeda.",
+        "Shock → langsung RJP 2 menit.",
+        "Epinefrin setelah kejut ke-2, amiodaron setelah kejut ke-3."
+      ],
+      "source": "Rubrik OSCE Kardiologi — SKA & ACLS"
+    },
+    {
+      "id": "resusitasi_cairan",
+      "title": "Resusitasi cairan syok hipovolemik (diare akut)",
+      "system": "Kegawatdaruratan",
+      "skdi": "4A",
+      "scenario": "Wanita 24 tahun, BB 50 kg, diare cair 8–10 ×/hari & muntah 2 hari. TD 88/56, nadi 118, akral dingin, CRT > 3 detik, oliguria. Paru bersih, tidak ada edema.",
+      "steps": [
+        { "id": "resusitasi_cairan-s1", "text": "Nilai ABC dan posisikan pasien berbaring (tungkai ditinggikan)" },
+        {
+          "id": "resusitasi_cairan-s2",
+          "text": "Pasang 2 jalur IV perifer kateter besar (16–18G) di fossa kubiti",
+          "critical": true
+        },
+        {
+          "id": "resusitasi_cairan-s3",
+          "text": "Ambil sampel darah: darah lengkap, elektrolit, fungsi ginjal, gula darah"
+        },
+        {
+          "id": "resusitasi_cairan-s4",
+          "text": "Beri bolus kristaloid isotonik (Ringer laktat) 20–30 mL/kgBB dalam 15–30 menit (1000–1500 mL)",
+          "critical": true
+        },
+        {
+          "id": "resusitasi_cairan-s5",
+          "text": "Evaluasi ulang setelah bolus: TD/MAP ≥ 65, nadi, CRT, akral, kesadaran",
+          "critical": true
+        },
+        {
+          "id": "resusitasi_cairan-s6",
+          "text": "Pasang kateter urin; target produksi urin ≥ 0,5 mL/kgBB/jam (≥ 25 mL/jam)"
+        },
+        { "id": "resusitasi_cairan-s7", "text": "Periksa tanda kelebihan cairan (ronki basah, JVP meningkat)" },
+        {
+          "id": "resusitasi_cairan-s8",
+          "text": "Bila respons parsial: bolus ulang 10–20 mL/kgBB sambil mencari kehilangan berlanjut"
+        },
+        {
+          "id": "resusitasi_cairan-s9",
+          "text": "Bila stabil: cairan rumatan (Holliday-Segar ≈ 2100 mL/24 jam) + ganti kehilangan berlanjut"
+        },
+        {
+          "id": "resusitasi_cairan-s10",
+          "text": "Terapi kausal: oralit bila sudah bisa minum, antiemetik, zink/antibiotik bila ada indikasi"
+        }
+      ],
+      "distractors": [
+        {
+          "id": "resusitasi_cairan-x1",
+          "text": "Gunakan dekstrosa 5% untuk resusitasi",
+          "why": "Cairan hipotonik cepat berpindah ke intrasel; tidak mengembalikan volume intravaskular.",
+          "dangerous": true
+        },
+        {
+          "id": "resusitasi_cairan-x2",
+          "text": "Beri cairan dengan tetesan lambat 20 tetes/menit",
+          "why": "Syok memerlukan bolus cepat.",
+          "dangerous": true
+        },
+        {
+          "id": "resusitasi_cairan-x3",
+          "text": "Pasang kateter vena sentral lebih dulu",
+          "why": "Akses perifer kaliber besar lebih cepat & aman di tahap awal."
+        },
+        {
+          "id": "resusitasi_cairan-x4",
+          "text": "Mulai vasopresor sebelum memberi cairan",
+          "why": "Syok hipovolemik dikoreksi dengan volume."
+        }
+      ],
+      "questions": [
+        {
+          "id": "resusitasi_cairan-q1",
+          "question": "Volume bolus awal untuk pasien 50 kg?",
+          "options": ["250 mL", "500 mL", "1000–1500 mL", "3000 mL"],
+          "answer": 2,
+          "why": "20–30 mL/kgBB."
+        },
+        {
+          "id": "resusitasi_cairan-q2",
+          "question": "Target produksi urin pada pasien 50 kg?",
+          "options": ["≥ 10 mL/jam", "≥ 25 mL/jam", "≥ 100 mL/jam", "Tidak dipantau"],
+          "answer": 1,
+          "why": "0,5 mL/kgBB/jam."
+        },
+        {
+          "id": "resusitasi_cairan-q3",
+          "question": "Kebutuhan rumatan Holliday-Segar 50 kg per hari?",
+          "options": ["1500 mL", "2100 mL", "3000 mL", "5000 mL"],
+          "answer": 1,
+          "why": "1500 mL + 20 mL × 30 kg."
+        }
+      ],
+      "keyPoints": ["Dua jalur IV besar.", "Bolus 20–30 mL/kg kristaloid seimbang.", "Nilai ulang setelah setiap bolus."],
+      "source": "Rubrik OSCE Resusitasi Cairan — Syok Hipovolemik"
+    },
+    {
+      "id": "bidai_radius",
+      "title": "Pemasangan bidai fraktur distal radius",
+      "system": "Muskuloskeletal",
+      "skdi": "3B",
+      "scenario": "Laki-laki 35 tahun terpeleset, punggung tangan kanan membentur lantai; nyeri 8/10, deformitas garden spade, fraktur tertutup. Lakukan penanganan awal sebelum rujuk.",
+      "steps": [
+        { "id": "bidai_radius-s1", "text": "Jelaskan tindakan & minta persetujuan" },
+        {
+          "id": "bidai_radius-s2",
+          "text": "Beri analgesia adekuat: opioid IV titrasi (fentanil/morfin) + parasetamol, pantau napas & SpO₂",
+          "critical": true
+        },
+        {
+          "id": "bidai_radius-s3",
+          "text": "Periksa neurovaskular distal sebelum pembidaian: nadi radialis/ulnaris, CRT, sensorik & motorik saraf medianus/ulnaris/radialis",
+          "critical": true
+        },
+        { "id": "bidai_radius-s4", "text": "Lepas cincin/perhiasan di jari sebelum bengkak bertambah" },
+        {
+          "id": "bidai_radius-s5",
+          "text": "Siapkan bidai yang melewati dua sendi (siku sampai metakarpofalangeal) dan beri bantalan"
+        },
+        { "id": "bidai_radius-s6", "text": "Pasang bidai sugar-tong/volar dengan pergelangan posisi netral" },
+        { "id": "bidai_radius-s7", "text": "Balut elastis tidak terlalu kencang" },
+        { "id": "bidai_radius-s8", "text": "Periksa ulang neurovaskular sesudah pembidaian", "critical": true },
+        { "id": "bidai_radius-s9", "text": "Elevasi lengan (mitela); foto rontgen pergelangan AP & lateral" },
+        { "id": "bidai_radius-s10", "text": "Rujuk ke spesialis ortopedi; edukasi tanda bahaya sindrom kompartemen" }
+      ],
+      "distractors": [
+        {
+          "id": "bidai_radius-x1",
+          "text": "Reposisi paksa tanpa analgesia/anestesi",
+          "why": "Nyeri hebat & risiko cedera saraf/pembuluh darah.",
+          "dangerous": true
+        },
+        {
+          "id": "bidai_radius-x2",
+          "text": "Balut bidai sekencang mungkin agar stabil",
+          "why": "Risiko sindrom kompartemen.",
+          "dangerous": true
+        },
+        {
+          "id": "bidai_radius-x3",
+          "text": "Bidai hanya dari pergelangan sampai jari",
+          "why": "Imobilisasi harus melewati dua sendi."
+        },
+        {
+          "id": "bidai_radius-x4",
+          "text": "Beri ibuprofen oral saja untuk nyeri 8/10",
+          "why": "Nyeri berat memerlukan opioid IV yang dititrasi."
+        }
+      ],
+      "questions": [
+        {
+          "id": "bidai_radius-q1",
+          "question": "Ciri fraktur Smith dibanding Colles?",
+          "options": [
+            "Angulasi fragmen distal ke volar (trauma fleksi)",
+            "Angulasi ke dorsal (dinner fork)",
+            "Fraktur kepala radius",
+            "Fraktur skafoid"
+          ],
+          "answer": 0,
+          "why": "Colles: angulasi dorsal, trauma ekstensi."
+        },
+        {
+          "id": "bidai_radius-q2",
+          "question": "Tanda sindrom kompartemen yang paling awal?",
+          "options": ["Nadi hilang", "Nyeri hebat tidak proporsional, nyeri saat peregangan pasif", "Pucat", "Paralisis"],
+          "answer": 1,
+          "why": "Nadi hilang adalah tanda lambat."
+        }
+      ],
+      "keyPoints": [
+        "Analgesia adekuat lebih dulu.",
+        "Cek neurovaskular sebelum & sesudah bidai.",
+        "Bidai melewati dua sendi, lalu rujuk Sp.OT."
+      ],
+      "source": "Rubrik OSCE Muskuloskeletal — Fraktur Smith"
+    }
+  ]
+}

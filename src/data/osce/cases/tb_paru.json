@@ -1,0 +1,128 @@
+{
+  "disease": "tb_paru",
+  "setting": "Puskesmas",
+  "station": "Pulmonologi — batuk/sesak",
+  "therapy": {
+    "items": [
+      {
+        "id": "oat",
+        "label": "OAT kategori 1 fase intensif (2RHZE)",
+        "role": "utama",
+        "reason": "TB paru terkonfirmasi bakteriologis kasus baru.",
+        "options": [
+          {
+            "drug": "oat_kdt_intensif",
+            "label": "OAT KDT RHZE 1 × sehari selama 2 bulan, jumlah tablet sesuai BB (30–37 kg: 2 · 38–54 kg: 3 · 55–70 kg: 4 · ≥ 71 kg: 5) pada perut kosong",
+            "schedules": ["rutin"],
+            "unitsByWeight": [
+              { "minKg": 30, "maxKg": 37, "units": 2 },
+              { "minKg": 38, "maxKg": 54, "units": 3 },
+              { "minKg": 55, "maxKg": 70, "units": 4 },
+              { "minKg": 71, "maxKg": 200, "units": 5 }
+            ],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          }
+        ]
+      },
+      {
+        "id": "b6",
+        "label": "Piridoksin",
+        "role": "pendukung",
+        "reason": "Mencegah neuropati perifer akibat isoniazid.",
+        "options": [
+          {
+            "drug": "piridoksin",
+            "label": "Vitamin B6 10 mg 1 × sehari selama pengobatan",
+            "schedules": ["rutin"],
+            "dose": [10, 25],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["kuinolon"],
+        "reason": "Kuinolon tunggal menyamarkan TB dan memicu resistensi.",
+        "severity": "salah"
+      },
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid tidak diindikasikan pada TB paru tanpa komplikasi.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Dilanjutkan fase lanjutan 4RH. Riwayat OAT sebelumnya → rujuk (curiga TB resisten obat). Dosis berbasis BB — timbang pasien."
+  },
+  "nonPharm": [
+    { "id": "etika", "text": "Pakai masker dan terapkan etika batuk; buang dahak di wadah tertutup", "kind": "benar" },
+    { "id": "ventilasi", "text": "Buka jendela agar sinar matahari & udara masuk", "kind": "benar" },
+    { "id": "gizi", "text": "Makan bergizi tinggi kalori-protein", "kind": "benar" },
+    { "id": "pmo", "text": "Tunjuk Pengawas Menelan Obat (PMO) dari keluarga", "kind": "benar" },
+    { "id": "kontak", "text": "Periksa anggota keluarga serumah (investigasi kontak)", "kind": "benar" },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["perokok"] } },
+    {
+      "id": "piring",
+      "text": "Rebus semua alat makan pasien setiap hari agar tidak menular",
+      "kind": "pengecoh",
+      "why": "TB menular lewat udara, bukan alat makan."
+    },
+    { "id": "buang", "text": "Buang dahak di mana saja asal di luar rumah", "kind": "berbahaya" }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini TB paru, infeksi kuman yang menular lewat percikan dahak, dan bisa sembuh total",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum setiap hari tanpa putus minimal 6 bulan, dengan pengawasan PMO",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Kencing kemerahan karena rifampisin itu normal; segera kembali bila mata kuning, mual hebat, atau gatal-gatal",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke RS bila batuk darah banyak, sesak berat, atau kuning",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol & ambil obat sesuai jadwal; periksa dahak ulang di akhir bulan ke-2",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Gunakan masker, jaga ventilasi rumah, dan bawa keluarga serumah untuk diperiksa",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Obat boleh dihentikan bila batuk sudah hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Putus obat → kambuh & TB resisten obat."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Petunjuk Teknis Penatalaksanaan Tuberkulosis (2020)",
+      "KMK No. HK.01.07/MENKES/755/2019 PNPK Tuberkulosis"
+    ]
+  }
+}

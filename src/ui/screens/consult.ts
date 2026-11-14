@@ -14,6 +14,7 @@ import { formatRupiah, normalizeForSearch } from '../../core/text';
 import type { CatalogEntry, DdxStatus, EncounterState, LogEntry, ToolDef } from '../../core/types';
 import { DISPOSITIONS } from '../../core/types';
 import type { ActionTab, App } from '../app';
+import { osceHudItems, treatmentTab } from '../osce/views';
 import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
 import { modal } from '../components/modal';
 import { resultCard } from '../components/resultCard';
@@ -53,9 +54,9 @@ function hud(app: App): HTMLElement {
     'header',
     { class: 'hud' },
     h('span', { class: 'hud__brand' }, '🩺', h('span', { class: 'hud__brand-text' }, ' Meja Praktek')),
-    h('span', { class: 'hud__patient' }, `Pasien #${run.patientIndex}`),
-    h('span', { class: 'hud__title' }, reputationTitle(run.reputation, app.config)),
-    h(
+    app.osce ? osceHudItems(app) : h('span', { class: 'hud__patient' }, `Pasien #${run.patientIndex}`),
+    app.osce ? null : h('span', { class: 'hud__title' }, reputationTitle(run.reputation, app.config)),
+    app.osce ? null : h(
       'div',
       { class: cx('rep', danger && 'rep--danger'), title: `Game over jika reputasi di bawah ${reputation.gameOverBelow}` },
       h('span', { class: 'rep__label' }, 'Reputasi'),
@@ -83,6 +84,12 @@ const TABS: { id: ActionTab; label: string; step: string }[] = [
   { id: 'penalaran', label: 'Penalaran', step: '4' },
   { id: 'keputusan', label: 'Keputusan', step: '5' },
 ];
+/** Mode OSCE menambah tab Tatalaksana (resep, non-farmakologi, KIE) sebelum Keputusan. */
+const OSCE_TABS: { id: ActionTab; label: string; step: string }[] = [
+  ...TABS.slice(0, 4),
+  { id: 'tatalaksana', label: 'Tatalaksana', step: '5' },
+  { id: 'keputusan', label: 'Keputusan', step: '6' },
+];
 
 function monitor(app: App, enc: EncounterState): HTMLElement {
   const tab = app.ui.actionTab;
@@ -100,6 +107,9 @@ function monitor(app: App, enc: EncounterState): HTMLElement {
       break;
     case 'penalaran':
       body = reasoningTab(app, enc);
+      break;
+    case 'tatalaksana':
+      body = app.osce ? treatmentTab(app, enc) : decisionTab(app, enc);
       break;
     case 'keputusan':
       body = decisionTab(app, enc);
@@ -124,7 +134,7 @@ function monitor(app: App, enc: EncounterState): HTMLElement {
     h(
       'nav',
       { class: 'tabs', role: 'tablist' },
-      TABS.map((t) =>
+      (app.osce ? OSCE_TABS : TABS).map((t) =>
         h(
           'button',
           {
@@ -379,7 +389,19 @@ function toolItem(app: App, enc: EncounterState, tool: ToolDef, extra?: HTMLElem
       h('span', { class: cx('pick__price', !done && price > enc.budgetRemaining && 'is-over') }, done ? 'sudah' : price > 0 ? formatRupiah(price) : 'gratis'),
     ),
     // Hasil pemeriksaan tampil tepat di bawah alatnya (yang terbaru terbuka).
-    done ? h('details', { class: 'result-wrap', open: latest }, h('summary', null, 'Hasil pemeriksaan'), resultCard(tool, enc.case.findings[tool.id] ?? [], price)) : null,
+    done
+      ? h(
+          'details',
+          { class: 'result-wrap', open: latest, 'data-keep-open': app.osce ? `hasil-${tool.id}` : null },
+          h('summary', null, app.osce && price > 0 ? 'Hasil pemeriksaan — tandai yang abnormal' : 'Hasil pemeriksaan'),
+          resultCard(
+            tool,
+            enc.case.findings[tool.id] ?? [],
+            price,
+            app.osce && price > 0 ? { marked: (p) => app.isMarkedAbnormal(tool.id, p), toggle: (p) => app.toggleAbnormal(tool.id, p), disabled: !app.canInteract } : undefined,
+          ),
+        )
+      : null,
   );
 }
 
@@ -451,12 +473,15 @@ function catalogMatches(app: App, query: string, filter?: (e: CatalogEntry) => b
 function findingsSummary(app: App, enc: EncounterState): HTMLElement {
   const symptoms = enc.revealedSymptoms.map((id) => app.content.symptomsById.get(id)?.label ?? id);
   const denied = enc.askedSymptoms.filter((id) => !enc.revealedSymptoms.includes(id)).map((id) => app.content.symptomsById.get(id)?.label ?? id);
+  const paid = (t: string) => toolPrice(t, app.config) > 0;
   const abnormal = enc.examsDone.flatMap((t) =>
     (enc.case.findings[t] ?? [])
-      .filter((r) => r.flag)
+      .filter((r) => (app.osce && paid(t) ? app.isMarkedAbnormal(t, r.paramId) : r.flag))
       .map((r) => `${app.content.toolsById.get(t)?.name ?? t} — ${r.label}: ${r.display}${r.unit ? ` ${r.unit}` : ''}`),
   );
-  const normalTools = enc.examsDone.filter((t) => !(enc.case.findings[t] ?? []).some((r) => r.flag)).map((t) => app.content.toolsById.get(t)?.name ?? t);
+  const normalTools = enc.examsDone
+    .filter((t) => !(enc.case.findings[t] ?? []).some((r) => (app.osce && paid(t) ? app.isMarkedAbnormal(t, r.paramId) : r.flag)))
+    .map((t) => app.content.toolsById.get(t)?.name ?? t);
   return h(
     'details',
     { class: 'frame', open: true, 'data-keep-open': 'data-terkumpul' },
@@ -709,8 +734,9 @@ function confirmDialog(app: App): HTMLElement {
   const name = (id: string) => app.content.catalogById.get(id)?.name ?? id;
   const disease = d.primary ? app.content.diseasesById.get(d.primary) : undefined;
   const cxName = (id: string) => disease?.complications?.find((c) => c.id === id)?.name ?? id;
+  const work = app.osce?.work;
   return modal({
-    title: 'Selesaikan konsultasi?',
+    title: app.osce ? 'Selesaikan stasiun?' : 'Selesaikan konsultasi?',
     body: h(
       'div',
       null,
@@ -725,7 +751,11 @@ function confirmDialog(app: App): HTMLElement {
         h('dd', null, d.secondary.map(name).join(', ') || '—'),
         h('dt', null, 'Disposisi'),
         h('dd', null, d.disposition ? DISPOSITION_LABEL[d.disposition] : '—'),
+        work ? [h('dt', null, 'Tatalaksana'), h('dd', null, `${work.prescription.length} obat · ${work.nonPharm.length} saran non-farmakologi · ${work.education.length} poin KIE`)] : null,
       ),
+      work && work.prescription.length + work.nonPharm.length + work.education.length === 0
+        ? h('p', { class: 'notice' }, 'Tab Tatalaksana masih kosong — resep, non-farmakologi, dan KIE ikut dinilai (LT5–LT7).')
+        : null,
       h('p', { class: 'hint' }, 'Anda akan menjelaskan hasilnya ke pasien; setelah itu pasien berpamitan dan Anda tidak bisa bertanya atau memeriksa lagi.'),
     ),
     actions: [

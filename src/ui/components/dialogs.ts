@@ -54,6 +54,16 @@ export function tutorialSteps(app: App): TutorialStep[] {
       ],
     },
     {
+      icon: '🎓',
+      title: 'Latihan OSCE',
+      points: [
+        'Dari halaman awal pilih "Latihan OSCE": stasiun bertimer dengan lembar tugas dan rubrik 7 tugas (skor 0–1–2, total /14).',
+        'Selain anamnesis s/d diagnosis, Anda menulis resep, memilih tatalaksana non-farmakologi, dan menyampaikan KIE di tab Tatalaksana.',
+        'Penanda abnormal hasil penunjang disembunyikan — tandai sendiri. Salah diagnosis, obat berbahaya/alergi, atau memulangkan pasien gawat = tidak lulus.',
+        'Ada juga 11 stasiun prosedur (urutan langkah + pertanyaan penguji).',
+      ],
+    },
+    {
       icon: '🩻',
       title: '2–3 · Pemeriksaan',
       points: [

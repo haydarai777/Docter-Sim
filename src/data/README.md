@@ -38,6 +38,8 @@ Setiap file punya blok `review` dengan `status`:
 | `anamnesis.json` | Topik anamnesis (kata kunci untuk pertanyaan bebas, bobot, alasan), templat percakapan, tinjauan sistem. Topik tanpa `core` (identitas, pendapat/kekhawatiran/harapan pasien, haid & kehamilan) bisa ditanyakan tetapi tidak dinilai. Tinjauan `weak: true` (perut, kepala, dada, mata, kulit) hanya dipakai bila pertanyaan tidak menyebut gejala spesifik. Setelah mengubah kata kunci, jalankan `npm run nlu-benchmark` |
 | `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang) |
 
+| `osce/` | Mode OSCE: `formulary.json` (obat, sediaan, golongan alergi, dosis harian maksimum), `cases/<penyakit>.json` (kunci terapi beserta alternatif & rentang dosis, obat yang dihindari, saran non-farmakologi & KIE benar/pengecoh/berbahaya), `procedures.json` (langkah prosedur, pengecoh, pertanyaan). Lihat `docs/osce.md` |
+
 Parameter yang **tidak** disebut di `findings` otomatis bernilai normal.
 
 ## Kondisi (`when`)

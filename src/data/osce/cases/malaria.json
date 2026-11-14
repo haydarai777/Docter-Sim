@@ -1,0 +1,191 @@
+{
+  "disease": "malaria",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam akut",
+  "therapy": {
+    "items": [
+      {
+        "id": "act",
+        "label": "Antimalaria ACT",
+        "role": "utama",
+        "reason": "Lini pertama malaria tanpa komplikasi (semua spesies).",
+        "options": [
+          {
+            "drug": "dhp",
+            "label": "DHP 1 × sehari selama 3 hari; jumlah tablet sesuai BB (36–59 kg: 3 tab · 60–79 kg: 4 tab · ≥ 80 kg: 5 tab)",
+            "schedules": ["rutin"],
+            "unitsByWeight": [
+              { "minKg": 25, "maxKg": 35, "units": 2 },
+              { "minKg": 36, "maxKg": 59, "units": 3 },
+              { "minKg": 60, "maxKg": 79, "units": 4 },
+              { "minKg": 80, "maxKg": 200, "units": 5 }
+            ],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          }
+        ],
+        "when": { "notTraits": ["malaria_berat"] }
+      },
+      {
+        "id": "primakuin_pf",
+        "label": "Primakuin (gametosidal) — P. falciparum",
+        "role": "pendukung",
+        "reason": "Mencegah penularan (gametosit) P. falciparum.",
+        "options": [
+          {
+            "drug": "primakuin",
+            "label": "Primakuin 0,25 mg/kgBB dosis tunggal hari pertama",
+            "schedules": ["tunggal"],
+            "dosePerKg": [0.2, 0.3]
+          },
+          {
+            "drug": "primakuin",
+            "label": "Primakuin 0,75 mg/kgBB dosis tunggal (pedoman lama)",
+            "schedules": ["tunggal"],
+            "dosePerKg": [0.65, 0.8]
+          }
+        ],
+        "when": { "traits": ["falciparum"], "notTraits": ["malaria_berat"] }
+      },
+      {
+        "id": "primakuin_pv",
+        "label": "Primakuin (radikal) — P. vivax",
+        "role": "pendukung",
+        "reason": "Membasmi hipnozoit di hati agar tidak relaps.",
+        "options": [
+          {
+            "drug": "primakuin",
+            "label": "Primakuin 0,25 mg/kgBB 1 × sehari selama 14 hari",
+            "schedules": ["rutin"],
+            "dosePerKg": [0.2, 0.3],
+            "timesPerDay": [1, 1],
+            "days": [14, 14]
+          }
+        ],
+        "when": { "traits": ["vivax"], "notTraits": ["malaria_berat"] }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 500–1000 mg 3–4 × sehari bila demam/nyeri (maks. 4 g/hari)",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 15 }
+      },
+      {
+        "id": "antipiretik_anak",
+        "label": "Antipiretik-analgesik (anak)",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam",
+            "schedules": ["prn", "rutin"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMax": 14 }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains", "salisilat"],
+        "reason": "Hindari OAINS/aspirin selama trombositopenia & sebelum dengue disingkirkan.",
+        "severity": "salah"
+      },
+      { "classes": ["antibiotik"], "reason": "Antibiotik tidak mengobati malaria.", "severity": "salah" }
+    ],
+    "note": "Konfirmasi parasitologis (mikroskopis/RDT) dulu; dosis berbasis BB — timbang pasien. Primakuin dikontraindikasikan pada ibu hamil, bayi < 6 bulan, dan defisiensi G6PD berat. Malaria berat: artesunat parenteral & rujuk segera."
+  },
+  "nonPharm": [
+    { "id": "tirah", "text": "Tirah baring", "kind": "benar" },
+    { "id": "cairan", "text": "Minum 2,5–3 L/hari atau oralit untuk mengganti cairan", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres hangat di ketiak & lipat paha", "kind": "benar" },
+    { "id": "gizi", "text": "Makan tinggi kalori-protein porsi kecil tapi sering", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Berikan artesunat parenteral bila tersedia, pasang infus, rujuk segera",
+      "kind": "benar",
+      "why": "Malaria berat memerlukan perawatan RS.",
+      "when": { "traits": ["malaria_berat"] }
+    },
+    {
+      "id": "kerok",
+      "text": "Kerokan/pijat kuat di perut kiri atas untuk meredakan pegal",
+      "kind": "berbahaya",
+      "why": "Limpa membesar mudah ruptur."
+    },
+    { "id": "mandi", "text": "Mandi air dingin saat sedang menggigil", "kind": "pengecoh" }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini malaria, ditularkan gigitan nyamuk Anopheles saat berada di daerah endemis",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "DHP diminum 3 hari sampai habis; primakuin diminum tuntas sesuai jadwal walau sudah tidak demam",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Bila kencing menjadi merah pekat/hitam atau mata sangat kuning setelah minum obat, segera kembali",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke RS bila bingung/mengantuk terus, kejang, sesak, muntah terus, kencing sedikit/gelap, atau perdarahan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol untuk periksa darah ulang (hari ke-3, 7, 14, dan 28)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Tidur dengan kelambu berinsektisida, pakai losion antinyamuk & baju lengan panjang; konsultasi profilaksis sebelum ke daerah endemis",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Obat boleh dihentikan bila sudah tidak demam",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Pengobatan tidak tuntas → kambuh & resistensi."
+    },
+    {
+      "id": "tular",
+      "text": "Malaria menular langsung antarmanusia lewat batuk",
+      "kind": "pengecoh",
+      "category": "diagnosis"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Primakuin P. falciparum: pedoman nasional terbaru 0,25 mg/kgBB dosis tunggal; dosis 0,75 mg/kgBB (pedoman lama, tercantum di beberapa modul OSCE) juga diterima."
+    ],
+    "references": ["Kemenkes RI. Buku Saku Tatalaksana Kasus Malaria (2020)", "WHO Guidelines for Malaria"]
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "disease": "batu_saluran_kemih",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik kolik",
+        "role": "utama",
+        "reason": "OAINS adalah lini pertama nyeri kolik renal.",
+        "options": [
+          {
+            "drug": "natrium_diklofenak",
+            "label": "Natrium diklofenak 50 mg 2–3 × sehari sesudah makan",
+            "schedules": ["rutin", "prn"],
+            "dose": [50, 50],
+            "timesPerDay": [2, 3],
+            "days": [3, 7]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 400 mg 3 × sehari sesudah makan",
+            "schedules": ["rutin", "prn"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "notTraits": ["gangguan_fungsi_ginjal"] }
+      },
+      {
+        "id": "analgesik_ginjal",
+        "label": "Analgesik (fungsi ginjal terganggu)",
+        "role": "utama",
+        "reason": "Hindari OAINS bila fungsi ginjal menurun.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 500–1000 mg 3–4 × sehari bila demam/nyeri (maks. 4 g/hari)",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "traits": ["gangguan_fungsi_ginjal"] }
+      },
+      {
+        "id": "met",
+        "label": "Terapi ekspulsi medikamentosa",
+        "role": "pendukung",
+        "reason": "Alfa-bloker membantu keluarnya batu ureter distal.",
+        "options": [
+          {
+            "drug": "tamsulosin",
+            "label": "Tamsulosin 0,4 mg 1 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [0.4, 0.4],
+            "timesPerDay": [1, 1],
+            "days": [14, 28]
+          }
+        ],
+        "when": { "traits": ["batu_distal"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains"],
+        "reason": "OAINS memperburuk fungsi ginjal yang sudah terganggu.",
+        "severity": "salah",
+        "when": { "traits": ["gangguan_fungsi_ginjal"] }
+      }
+    ],
+    "note": "Rujuk urologi untuk evaluasi; rujuk segera bila demam/infeksi obstruktif atau gangguan fungsi ginjal."
+  },
+  "nonPharm": [
+    { "id": "minum", "text": "Minum air 2,5–3 L/hari (urin ≥ 2 L/hari)", "kind": "benar" },
+    { "id": "saring", "text": "Saring urin untuk menangkap batu yang keluar", "kind": "benar" },
+    { "id": "diet", "text": "Kurangi garam dan protein hewani berlebih", "kind": "benar" },
+    {
+      "id": "rujuk_sp",
+      "text": "Rujuk ke spesialis urologi untuk evaluasi batu",
+      "kind": "benar",
+      "when": { "notTraits": ["infeksi_obstruktif"] }
+    },
+    {
+      "id": "rujuk_segera",
+      "text": "Pasang infus dan rujuk segera (infeksi pada saluran kemih tersumbat)",
+      "kind": "benar",
+      "when": { "traits": ["infeksi_obstruktif"] }
+    },
+    {
+      "id": "kalsium",
+      "text": "Hindari semua makanan yang mengandung kalsium (susu, keju)",
+      "kind": "pengecoh",
+      "why": "Pembatasan kalsium justru meningkatkan risiko batu oksalat."
+    },
+    {
+      "id": "batasi_minum",
+      "text": "Batasi minum agar nyeri tidak kambuh",
+      "kind": "berbahaya",
+      "why": "Memperbesar risiko batu & infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Nyeri karena batu di saluran kemih yang menyumbat aliran urin",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum pereda nyeri sesudah makan sesuai aturan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila demam/menggigil, tidak bisa kencing, atau nyeri tidak teratasi obat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol ke spesialis urologi sesuai rujukan", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Minum air cukup seumur hidup untuk mencegah batu kambuh",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "hancur",
+      "text": "Batu pasti hancur sendiri dengan jamu peluruh batu, tidak perlu kontrol",
+      "kind": "berbahaya",
+      "category": "kontrol"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["IAUI. Panduan Penatalaksanaan Klinis Batu Saluran Kemih (2018)", "EAU Guidelines on Urolithiasis"]
+  }
+}

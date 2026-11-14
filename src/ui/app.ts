@@ -8,7 +8,15 @@
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
 import { buildAppearance, chiefSite, bodySide, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
-import { askQuestion, canSubmitDecision, EncounterError, interpretInContext, performExam, setDdx } from '../core/encounter';
+import { askQuestion, canSubmitDecision, EncounterError, interpretInContext, performExam, setDdx, startEncounter, submitDecision as submitEncounterDecision } from '../core/encounter';
+import { generateCase } from '../core/generator';
+import type { OsceContent } from '../core/osce/content';
+import { expectedQuantity } from '../core/osce/prescription';
+import { evaluateProcedure } from '../core/osce/procedure';
+import { evaluateStation } from '../core/osce/station';
+import { loadOsceContent } from '../data/osce';
+import { DEFAULT_SETUP, EMPTY_DRAFT, type DraftLine, emptyWork, newSession, type OsceSession, type OsceSetup, planStations, secondsLeft, secondsUsed, formatClock } from './osce/session';
+import { briefingDialog, renderOsceFinal, renderOsceMenu, renderOsceResult, renderProcedure } from './osce/views';
 import type { Intent } from '../core/nlu';
 import { hashString, randomSeed } from '../core/rng';
 import { createRun, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
@@ -31,13 +39,15 @@ import {
   type SavedSession,
   type Settings,
   updateRecords,
+  addOsceHistory,
+  loadOsceHistory,
 } from './storage';
 import { Director, type Subtitle } from './three/director';
 import type { Stage } from './three/stage';
 
-export type Screen = 'title' | 'consult' | 'summary' | 'final';
-export type ActionTab = 'anamnesis' | 'fisik' | 'penunjang' | 'penalaran' | 'keputusan';
-export type Dialog = 'tutorial' | 'settings' | 'record' | null;
+export type Screen = 'title' | 'consult' | 'summary' | 'final' | 'osce_menu' | 'osce_result' | 'osce_final' | 'procedure';
+export type ActionTab = 'anamnesis' | 'fisik' | 'penunjang' | 'penalaran' | 'tatalaksana' | 'keputusan';
+export type Dialog = 'tutorial' | 'settings' | 'record' | 'briefing' | null;
 /** Tahap adegan pasien di ruang praktik. */
 export type ScenePhase = 'datang' | 'konsultasi' | 'pamit';
 
@@ -106,6 +116,13 @@ export class App {
    * cadangan yang menjawab, atau null bila belum ada jawaban AI.
    */
   aiModelServed: string | null = null;
+  /** Konten mode OSCE (formularium, kunci stasiun, prosedur). */
+  readonly osceContent: OsceContent = loadOsceContent();
+  /** Sesi latihan OSCE yang berjalan (null = mode praktik biasa). */
+  osce: OsceSession | null = null;
+  /** Pengaturan menu OSCE. */
+  osceSetup: OsceSetup = { ...DEFAULT_SETUP };
+  private osceTimer: number | null = null;
   /** Rekor setelah sesi berakhir (diisi sekali saat layar akhir dibuka). */
   finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
   /** Indeks log pertama yang "baru" pada render ini (untuk animasi masuk). */
@@ -215,6 +232,7 @@ export class App {
 
   startGame(): void {
     this.cancelAi();
+    this.stopOsce();
     const run = createRun(randomSeed(), this.config);
     this.run = startNextPatient(run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
@@ -228,6 +246,7 @@ export class App {
     const saved = this.savedSession;
     if (!saved) return;
     this.cancelAi();
+    this.stopOsce();
     this.run = saved.run;
     const active = saved.run.encounter?.status === 'active';
     this.ui = { ...INITIAL_UI, screen: active ? 'consult' : 'summary' };
@@ -436,6 +455,10 @@ export class App {
       disposition: d.disposition!,
     };
     this.cancelAi();
+    if (this.osce) {
+      this.finishOsceStation(decision, false);
+      return;
+    }
     this.run = finishCurrent(this.run, decision, this.content, this.config);
     const farewell = this.run.encounter!.log.at(-1);
     if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
@@ -454,6 +477,12 @@ export class App {
 
   private afterPatientLeft(): void {
     if (!this.run?.encounter || this.run.encounter.status !== 'finished' || this.ui.screen !== 'consult') return;
+    if (this.osce) {
+      this.ui = { ...this.ui, screen: 'osce_result', confirmDecision: false, notice: null, phase: 'konsultasi' };
+      this.render();
+      this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
+      return;
+    }
     this.ui = { ...this.ui, screen: 'summary', confirmDecision: false, notice: null, openFeedback: null, phase: 'konsultasi' };
     this.render();
     this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
@@ -502,6 +531,7 @@ export class App {
 
   backToTitle(): void {
     this.cancelAi();
+    this.stopOsce();
     this.director?.clear();
     this.ui = { ...INITIAL_UI };
     this.render();
@@ -554,6 +584,258 @@ export class App {
   }
 
   // -------------------------------------------------------------------------
+  // Mode OSCE
+  // -------------------------------------------------------------------------
+
+  openOsceMenu(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.director?.clear();
+    this.ui = { ...INITIAL_UI, screen: 'osce_menu' };
+    this.render();
+  }
+
+  patchOsceSetup(patch: Partial<OsceSetup>): void {
+    this.osceSetup = { ...this.osceSetup, ...patch };
+    this.render();
+  }
+
+  osceHistory(): ReturnType<typeof loadOsceHistory> {
+    return loadOsceHistory();
+  }
+
+  startOsce(): void {
+    const stations = planStations(this.osceSetup, this.content, this.osceContent, randomSeed());
+    if (!stations.length) return;
+    this.osce = newSession({ ...this.osceSetup }, stations);
+    this.startStation();
+  }
+
+  /** Siapkan stasiun saat ini (lembar tugas tampil; waktu mulai setelah "Mulai"). */
+  private startStation(): void {
+    const s = this.osce;
+    if (!s) return;
+    this.cancelAi();
+    this.clearOsceTimer();
+    const spec = s.stations[s.index]!;
+    s.work = emptyWork();
+    s.draft = { ...EMPTY_DRAFT };
+    s.startedAt = null;
+    s.timeUp = false;
+    s.procedure = { attempt: { sequence: [], answers: {} }, phase: 'urutan' };
+    this.renderedLogLength = 0;
+    if (spec.kind === 'klinis') {
+      const c = generateCase(this.content, this.config, { diseaseId: spec.diseaseId, seed: spec.seed });
+      const run = createRun(spec.seed, this.config);
+      this.run = { ...run, patientIndex: s.index + 1, encounter: startEncounter(c) };
+      this.ui = { ...INITIAL_UI, screen: 'consult', dialog: 'briefing' };
+      this.beginScene(false);
+    } else {
+      this.run = null;
+      this.director?.clear();
+      this.ui = { ...INITIAL_UI, screen: 'procedure', dialog: 'briefing' };
+    }
+    this.render();
+  }
+
+  /** Tutup lembar tugas & mulai menghitung waktu. */
+  beginStation(): void {
+    const s = this.osce;
+    if (!s) return;
+    if (s.startedAt === null) s.startedAt = Date.now();
+    this.ui = { ...this.ui, dialog: null };
+    this.clearOsceTimer();
+    if (s.setup.minutes !== null) this.osceTimer = window.setInterval(() => this.osceTick(), 1000);
+    this.render();
+  }
+
+  private osceTick(): void {
+    const s = this.osce;
+    if (!s || s.startedAt === null) return;
+    const left = secondsLeft(s, Date.now());
+    this.root.querySelectorAll<HTMLElement>('[data-osce-timer]').forEach((el) => {
+      el.textContent = left === null ? '∞' : formatClock(left);
+      el.classList.toggle('osce-timer--low', left !== null && left <= 120);
+    });
+    if (left === 0) this.osceTimeUp();
+  }
+
+  private clearOsceTimer(): void {
+    if (this.osceTimer !== null) window.clearInterval(this.osceTimer);
+    this.osceTimer = null;
+  }
+
+  /** Akhiri sesi OSCE. Pasien stasiun dibuang agar tidak tersimpan sebagai sesi praktik. */
+  private stopOsce(): void {
+    this.clearOsceTimer();
+    if (this.osce) this.run = null;
+    this.osce = null;
+  }
+
+  /** Waktu habis: stasiun dinilai apa adanya. */
+  private osceTimeUp(): void {
+    const s = this.osce;
+    if (!s || s.timeUp) return;
+    s.timeUp = true;
+    this.clearOsceTimer();
+    const spec = s.stations[s.index]!;
+    if (spec.kind === 'prosedur') {
+      this.finishProcedure();
+      return;
+    }
+    if (this.ui.screen !== 'consult' || this.encounter?.status !== 'active') return;
+    const d = this.ui.decision;
+    this.finishOsceStation(
+      { primary: d.primary ?? '', secondary: d.secondary, complications: d.noComplication ? [] : d.complications, disposition: d.disposition ?? 'rawat_jalan' },
+      true,
+    );
+  }
+
+  /** Nilai stasiun klinis lalu pasien berpamitan; hasil tampil setelahnya. */
+  private finishOsceStation(decision: ClinicalDecision, timeUp: boolean): void {
+    const s = this.osce;
+    const enc = this.run?.encounter;
+    if (!s || !enc || enc.status !== 'active') return;
+    this.clearOsceTimer();
+    const now = Date.now();
+    const { result, clinical } = evaluateStation(enc, decision, s.work, this.content, this.osceContent, this.config, { secondsUsed: secondsUsed(s, now), timeUp });
+    s.outcomes.push({ kind: 'klinis', spec: s.stations[s.index]!, result, clinical, work: structuredClone(s.work), patientName: enc.case.patient.name });
+    addOsceHistory({ title: `${result.stationTitle} (${this.content.diseasesById.get(result.diseaseId)?.name ?? ''})`, percent: result.percent, category: result.category, date: new Date(now).toLocaleDateString('id-ID') });
+    const finished = submitEncounterDecision(enc, decision.primary ? decision : { ...decision, primary: this.content.catalog.find((e) => e.id !== enc.case.diseaseId)!.id }, this.content, this.config);
+    this.run = { ...this.run!, encounter: finished };
+    const farewell = finished.log.at(-1);
+    if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
+      this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: timeUp ? 'Waktu habis — stasiun dinilai.' : null, actionTab: 'anamnesis', monitorSmall: true, dialog: null };
+      this.render();
+      void this.director.leave(farewell.text);
+    } else {
+      this.director?.clear();
+      this.afterPatientLeft();
+    }
+  }
+
+  osceNext(): void {
+    const s = this.osce;
+    if (!s || s.index >= s.stations.length - 1) return;
+    s.index++;
+    this.startStation();
+  }
+
+  osceRetry(): void {
+    const s = this.osce;
+    if (!s) return;
+    s.outcomes.pop();
+    this.startStation();
+  }
+
+  osceFinish(): void {
+    if (!this.osce) return;
+    this.clearOsceTimer();
+    this.director?.clear();
+    const multi = this.osce.stations.length > 1;
+    if (!multi) this.stopOsce();
+    this.ui = { ...INITIAL_UI, screen: multi ? 'osce_final' : 'osce_menu' };
+    this.render();
+  }
+
+  // --- Tatalaksana (resep, non-farmakologi, KIE, interpretasi) ---------------
+
+  patchRxDraft(patch: Partial<DraftLine>, rerender = true): void {
+    if (!this.osce) return;
+    this.osce.draft = { ...this.osce.draft, ...patch };
+    if (rerender) this.render();
+  }
+
+  addRxLine(): void {
+    const s = this.osce;
+    if (!s || !this.canInteract) return;
+    const d = s.draft;
+    const entry = d.form ? this.osceContent.formsById.get(d.form) : undefined;
+    if (!d.drug || !entry) return;
+    const line = { drug: d.drug, form: d.form!, units: d.units, schedule: d.schedule, timesPerDay: d.schedule === 'tunggal' ? 1 : d.timesPerDay, days: d.schedule === 'tunggal' ? 1 : d.days, quantity: 0, timing: d.timing };
+    line.quantity = d.quantity ?? expectedQuantity(line, entry.form);
+    s.work.prescription.push(line);
+    s.draft = { ...EMPTY_DRAFT };
+    this.render();
+  }
+
+  removeRxLine(index: number): void {
+    if (!this.osce || !this.canInteract) return;
+    this.osce.work.prescription.splice(index, 1);
+    this.render();
+  }
+
+  toggleOsceAdvice(kind: 'nonPharm' | 'education', id: string): void {
+    if (!this.osce || !this.canInteract) return;
+    const list = this.osce.work[kind];
+    const i = list.indexOf(id);
+    if (i >= 0) list.splice(i, 1);
+    else list.push(id);
+    this.render();
+  }
+
+  isMarkedAbnormal(toolId: string, paramId: string): boolean {
+    return this.osce?.work.abnormalMarks.includes(`${toolId}.${paramId}`) ?? false;
+  }
+
+  toggleAbnormal(toolId: string, paramId: string): void {
+    if (!this.osce || !this.canInteract) return;
+    const key = `${toolId}.${paramId}`;
+    const list = this.osce.work.abnormalMarks;
+    const i = list.indexOf(key);
+    if (i >= 0) list.splice(i, 1);
+    else list.push(key);
+    this.render();
+  }
+
+  // --- Stasiun prosedur -----------------------------------------------------
+
+  procPick(id: string): void {
+    const s = this.osce;
+    if (!s || s.startedAt === null || s.procedure.attempt.sequence.includes(id)) return;
+    s.procedure.attempt.sequence.push(id);
+    this.render();
+  }
+
+  procRemove(index: number): void {
+    this.osce?.procedure.attempt.sequence.splice(index, 1);
+    this.render();
+  }
+
+  procToQuestions(): void {
+    if (!this.osce) return;
+    this.osce.procedure.phase = 'pertanyaan';
+    this.render();
+  }
+
+  procBack(): void {
+    if (!this.osce) return;
+    this.osce.procedure.phase = 'urutan';
+    this.render();
+  }
+
+  procAnswer(questionId: string, option: number): void {
+    if (!this.osce) return;
+    this.osce.procedure.attempt.answers[questionId] = option;
+    this.render();
+  }
+
+  finishProcedure(): void {
+    const s = this.osce;
+    if (!s) return;
+    const spec = s.stations[s.index]!;
+    if (spec.kind !== 'prosedur') return;
+    this.clearOsceTimer();
+    const proc = this.osceContent.proceduresById.get(spec.procedureId)!;
+    const attempt = structuredClone(s.procedure.attempt);
+    const result = evaluateProcedure(proc, attempt);
+    s.outcomes.push({ kind: 'prosedur', spec, result, attempt });
+    addOsceHistory({ title: proc.title, percent: result.percent, category: result.category, date: new Date().toLocaleDateString('id-ID') });
+    this.ui = { ...INITIAL_UI, screen: 'osce_result' };
+    this.render();
+  }
+
+  // -------------------------------------------------------------------------
   // Render
   // -------------------------------------------------------------------------
 
@@ -586,6 +868,18 @@ export class App {
         break;
       case 'final':
         view = renderFinal(this);
+        break;
+      case 'osce_menu':
+        view = renderOsceMenu(this);
+        break;
+      case 'osce_result':
+        view = renderOsceResult(this);
+        break;
+      case 'osce_final':
+        view = renderOsceFinal(this);
+        break;
+      case 'procedure':
+        view = renderProcedure(this);
         break;
     }
     // Layar selain konsultasi tampil sebagai lembar di atas ruang praktik.
@@ -632,7 +926,7 @@ export class App {
     }
     stage.setFreeRect(free);
     stage.setTitleMode(this.ui.screen === 'title');
-    stage.setThrottle(this.ui.screen === 'summary' || this.ui.screen === 'final' ? 4 : 1);
+    stage.setThrottle(consult ? 1 : 4);
     const s = document.documentElement.style;
     s.setProperty('--free-left', `${free.left}px`);
     s.setProperty('--free-right', `${W - free.right}px`);
@@ -664,6 +958,8 @@ export class App {
         return settingsDialog(this);
       case 'record':
         return this.encounter ? medicalRecordDialog(this) : null;
+      case 'briefing':
+        return this.osce ? briefingDialog(this) : null;
       default:
         return null;
     }
@@ -671,7 +967,8 @@ export class App {
 
   /** Simpan sesi berjalan agar bisa dilanjutkan; hapus jika sudah selesai. */
   private persist(): void {
-    if (!this.run) return;
+    // Stasiun OSCE tidak menimpa sesi praktik yang tersimpan.
+    if (!this.run || this.osce) return;
     if (this.run.status === 'playing') saveSession(this.run, this.contentKey);
     else clearSession();
   }

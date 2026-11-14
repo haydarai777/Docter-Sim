@@ -147,3 +147,23 @@ export function loadSession<TRun>(contentKey: string): SavedSession<TRun> | null
 export function clearSession(): void {
   removeKey('sesi');
 }
+
+// ---------------------------------------------------------------------------
+// Riwayat latihan OSCE
+// ---------------------------------------------------------------------------
+
+export interface OsceHistoryEntry {
+  title: string;
+  percent: number;
+  category: 'superior' | 'lulus' | 'tidak_lulus';
+  date: string;
+}
+
+export function loadOsceHistory(): OsceHistoryEntry[] {
+  const list = readJson<unknown>('osce-riwayat', []);
+  return Array.isArray(list) ? (list as OsceHistoryEntry[]).filter((e) => e && typeof e.title === 'string') : [];
+}
+
+export function addOsceHistory(entry: OsceHistoryEntry): void {
+  writeJson('osce-riwayat', [entry, ...loadOsceHistory()].slice(0, 30));
+}

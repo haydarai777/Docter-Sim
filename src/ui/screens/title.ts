@@ -34,6 +34,12 @@ export function renderTitle(app: App): HTMLElement {
             h('button', { class: 'btn', type: 'button', onclick: () => app.startGame() }, 'Mulai praktek baru'),
           )
         : h('button', { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.startGame() }, 'Mulai Praktek'),
+      h(
+        'button',
+        { class: 'btn btn--lg title-osce', type: 'button', onclick: () => app.openOsceMenu() },
+        '🎓 Latihan OSCE',
+        h('span', { class: 'title-osce__sub' }, ' — stasiun bertimer, resep, KIE & prosedur'),
+      ),
       records.runsPlayed > 0
         ? h(
             'p',
