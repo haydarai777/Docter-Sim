@@ -55,6 +55,14 @@ import miopia from './miopia.json';
 import perdarahanSubkonjungtiva from './perdarahan_subkonjungtiva.json';
 import presbiopia from './presbiopia.json';
 import trikiasis from './trikiasis.json';
+// Obstetri & ginekologi
+import abortusKomplit from './abortus_komplit.json';
+import anemiaKehamilan from './anemia_kehamilan.json';
+import crackedNipple from './cracked_nipple.json';
+import invertedNipple from './inverted_nipple.json';
+import kehamilanNormal from './kehamilan_normal.json';
+import mastitis from './mastitis.json';
+import rupturPerineum from './ruptur_perineum.json';
 // Pencernaan
 import askariasis from './askariasis.json';
 import cacingTambang from './cacing_tambang.json';
@@ -144,6 +152,13 @@ export const DISEASE_FILES: unknown[] = [
   perdarahanSubkonjungtiva,
   presbiopia,
   trikiasis,
+  abortusKomplit,
+  anemiaKehamilan,
+  crackedNipple,
+  invertedNipple,
+  kehamilanNormal,
+  mastitis,
+  rupturPerineum,
   askariasis,
   cacingTambang,
   disentri,

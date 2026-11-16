@@ -122,14 +122,6 @@
       "summary": "Disuria dengan duh uretra; riwayat hubungan seksual berisiko."
     },
     {
-      "id": "kehamilan_ektopik",
-      "name": "Kehamilan Ektopik Terganggu",
-      "aliases": ["KET", "Hamil di luar kandungan"],
-      "system": "Kebidanan",
-      "danger": "kritis",
-      "summary": "Perempuan usia subur, terlambat haid, nyeri perut bawah mendadak, syok; tes kehamilan positif."
-    },
-    {
       "id": "sepsis",
       "name": "Sepsis",
       "aliases": ["Infeksi berat"],
@@ -752,6 +744,102 @@
       "system": "Kulit & kelamin",
       "danger": "rendah",
       "summary": "Urtika/papul gatal di bekas gigitan."
+    },
+    {
+      "id": "mola_hidatidosa",
+      "name": "Mola hidatidosa",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Kehamilan abnormal: perdarahan, uterus lebih besar dari usia kehamilan, mual-muntah hebat, β-hCG sangat tinggi, USG gambaran badai salju."
+    },
+    {
+      "id": "hiperemesis_gravidarum",
+      "name": "Hiperemesis gravidarum",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "sedang",
+      "summary": "Mual-muntah berat pada kehamilan muda dengan dehidrasi, ketonuria, BB turun."
+    },
+    {
+      "id": "preeklampsia",
+      "name": "Preeklampsia",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Hipertensi ≥ 140/90 setelah 20 minggu + proteinuria/disfungsi organ; nyeri kepala, pandangan kabur, nyeri ulu hati. Rujuk."
+    },
+    {
+      "id": "kehamilan_ektopik",
+      "name": "Kehamilan ektopik terganggu",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Terlambat haid, nyeri perut bawah, perdarahan bercak, tes kehamilan positif, USG tanpa kantong gestasi intrauterin; dapat syok. Rujuk segera."
+    },
+    {
+      "id": "abortus_inkomplit",
+      "name": "Abortus inkomplit",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Perdarahan banyak, OUE terbuka, teraba/tampak sisa jaringan konsepsi — perlu evakuasi."
+    },
+    {
+      "id": "anemia_megaloblastik",
+      "name": "Anemia megaloblastik (defisiensi folat/B12)",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "sedang",
+      "summary": "Anemia makrositik (MCV tinggi), glositis; defisiensi folat sering pada kehamilan."
+    },
+    {
+      "id": "perdarahan_antepartum",
+      "name": "Perdarahan antepartum",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Perdarahan jalan lahir setelah 20 minggu (plasenta previa, solusio plasenta). Jangan periksa dalam; rujuk segera."
+    },
+    {
+      "id": "ruptur_perineum_berat",
+      "name": "Ruptur perineum derajat 3–4",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Robekan mengenai sfingter ani (derajat 3) hingga mukosa rektum (derajat 4) — perlu reparasi di RS."
+    },
+    {
+      "id": "atonia_uteri",
+      "name": "Atonia uteri / perdarahan pascasalin",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Uterus lembek tidak berkontraksi dengan perdarahan banyak setelah persalinan — masase, uterotonika, rujuk."
+    },
+    {
+      "id": "bendungan_asi",
+      "name": "Bendungan ASI (engorgement)",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "rendah",
+      "summary": "Payudara penuh, keras, nyeri bilateral pada hari 2–5 pascasalin tanpa demam tinggi; atasi dengan menyusui sering."
+    },
+    {
+      "id": "kanker_payudara",
+      "name": "Kanker payudara",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Massa keras tidak nyeri, retraksi puting baru unilateral, kulit peau d'orange, KGB aksila. Rujuk."
+    },
+    {
+      "id": "abses_payudara",
+      "name": "Abses payudara",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Komplikasi mastitis: massa nyeri berfluktuasi — aspirasi/insisi."
     }
   ]
 }

@@ -1,0 +1,219 @@
+{
+  "id": "mastitis",
+  "name": "Mastitis",
+  "aliases": ["Radang payudara", "Mastitis laktasi", "Infeksi payudara menyusui"],
+  "system": "Obstetri & ginekologi",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Radang payudara pada ibu menyusui (tersering minggu 2–6 pascasalin) akibat stasis ASI (menyusui jarang, pelekatan buruk) ± infeksi S. aureus melalui puting lecet. Area payudara merah berbentuk baji, nyeri, hangat, keras, disertai demam, menggigil, dan gejala seperti flu. Terapi: TETAP menyusui/memerah ASI, kompres, analgesik, antibiotik antistafilokokus 10–14 hari. Fluktuasi menandakan abses (aspirasi/insisi).",
+  "presentationDay": [1, 4],
+  "demographics": { "ageBands": [{ "min": 18, "max": 29, "weight": 3 }, { "min": 30, "max": 40, "weight": 3 }], "maleRatio": 0 },
+  "traits": [
+    { "id": "abses", "probability": 0.1 },
+    { "id": "puting_lecet_portal", "probability": 0.45 },
+    { "id": "jarang_menyusui", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "abses": "Abses payudara.",
+    "puting_lecet_portal": "Puting lecet sebagai port d'entrée.",
+    "jarang_menyusui": "Menyusui jarang/terjadwal, ASI tidak dikosongkan."
+  },
+  "symptoms": [
+    { "id": "puting_lecet", "probability": 1, "when": { "traits": ["puting_lecet_portal"] } },
+    { "id": "payudara_nyeri_bengkak", "probability": 1 },
+    { "id": "demam", "probability": 0.85 },
+    { "id": "menggigil", "probability": 0.5 },
+    { "id": "lemas", "probability": 0.5 },
+    { "id": "nyeri_otot_sendi", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["payudara_nyeri_bengkak"], "extraPool": ["demam"] },
+  "clueSymptoms": ["demam", "menggigil", "lemas", "nyeri_otot_sendi", "puting_lecet"],
+  "misattributions": ["masuk angin", "ASI basi", "ASI kebanyakan"],
+  "fears": ["kanker payudara", "harus berhenti menyusui"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Dua hari ini payudara kanan sakit, merah, panas, Dok, badan meriang.",
+        "clue": "Akut, unilateral dengan demam"
+      }
+    ],
+    "haid_kehamilan": [{ "text": "Saya melahirkan sebulan lalu, Dok, sekarang menyusui.", "clue": "Ibu menyusui minggu ke-4" }],
+    "kebiasaan": [
+      {
+        "text": "Bayinya saya susui kalau nangis saja, Dok, kadang lama nggak menyusu karena tidur.",
+        "when": { "traits": ["jarang_menyusui"] },
+        "clue": "Menyusui jarang (stasis ASI)"
+      },
+      {
+        "text": "Menyusuinya sering, Dok, tapi putingnya lecet jadi sakit.",
+        "reveals": ["puting_lecet"],
+        "when": { "traits": ["puting_lecet_portal"], "symptoms": ["puting_lecet"] },
+        "clue": "Puting lecet"
+      },
+      {
+        "text": "Menyusui sesuai keinginan bayi, Dok.",
+        "when": { "notTraits": ["jarang_menyusui", "puting_lecet_portal"] }
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di bagian kanan atas payudara kanan, Dok, merahnya kayak segitiga.",
+        "clue": "Area merah berbentuk baji, unilateral"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Sekarang ada benjolan yang terasa lunak berisi cairan, Dok, sakit sekali.",
+        "when": { "traits": ["abses"] },
+        "clue": "Massa berfluktuasi (curiga abses)"
+      },
+      {
+        "text": "Makin sakit kalau bayinya nggak menyusu, Dok. Saya jadi takut menyusui dari yang sakit.",
+        "when": { "notTraits": ["abses"] },
+        "clue": "Memberat bila ASI tidak dikeluarkan"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "palpasi_payudara",
+      "when": { "notTraits": ["abses"] },
+      "diagnostic": true,
+      "values": ["Hangat, nyeri tekan, indurasi; tidak ada fluktuasi"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "palpasi_payudara",
+      "when": { "traits": ["abses"] },
+      "diagnostic": true,
+      "values": ["Hangat, nyeri tekan, teraba massa berfluktuasi ± 3 cm"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "puting",
+      "when": { "traits": ["puting_lecet_portal"] },
+      "values": ["Fisura/lecet di puting kanan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38.3, 39.5] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "symptoms": ["demam"] }, "range": [96, 112] },
+    {
+      "tool": "usg_superfisial",
+      "param": "lesi",
+      "when": { "traits": ["abses"] },
+      "values": ["Kumpulan cairan hipoekoik berbatas tegas ± 3 cm (abses)"]
+    },
+    { "tool": "usg_superfisial", "param": "kesan", "when": { "traits": ["abses"] }, "values": ["Abses payudara kanan"] },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "inspeksi_payudara",
+      "values": ["Payudara kanan kuadran lateral atas eritema berbentuk baji, edema"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "kgb_aksila",
+      "probability": 0.4,
+      "values": ["KGB aksila kanan teraba, nyeri tekan"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.6, "range": [11500, 17000] }
+  ],
+  "differentials": [
+    {
+      "id": "kanker_payudara",
+      "howToDistinguish": "Karsinoma inflamatorik: eritema & edema luas (peau d'orange) tanpa demam, tidak membaik dengan antibiotik, pada wanita tidak menyusui — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_payudara"], "topics": ["haid_kehamilan"] }
+    },
+    {
+      "id": "bendungan_asi",
+      "howToDistinguish": "Bendungan ASI: payudara penuh keras nyeri bilateral hari 2–5 tanpa demam tinggi/eritema lokal.",
+      "excludeBy": { "topics": ["onset"], "tools": ["pemeriksaan_payudara"] }
+    },
+    {
+      "id": "abses_payudara",
+      "howToDistinguish": "Abses: massa nyeri berfluktuasi — aspirasi/insisi.",
+      "excludeBy": { "tools": ["pemeriksaan_payudara"] }
+    }
+  ],
+  "keyFindings": [
+    "Ibu menyusui dengan payudara unilateral merah berbentuk baji, nyeri, hangat",
+    "Demam, menggigil, gejala seperti flu",
+    "Faktor: stasis ASI, puting lecet"
+  ],
+  "teachingPoints": [
+    "Pengosongan payudara adalah terapi terpenting — ASI dari payudara yang sakit AMAN bagi bayi.",
+    "Fluktuasi = abses; aspirasi jarum/insisi, menyusui tetap dilanjutkan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Mastitis: causes and management (2000)",
+      "Kemenkes RI. Pedoman Konseling Menyusui"
+    ]
+  },
+  "complications": [
+    {
+      "id": "abses",
+      "name": "Abses payudara",
+      "trait": "abses",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_payudara", "usg_superfisial"] },
+      "explanation": "Massa berfluktuasi — aspirasi/insisi (rujuk bila perlu)."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "lokasi", "progresi", "keluhan_lain"],
+    "exams": [{ "tool": "pemeriksaan_payudara", "role": "kunci", "reason": "Eritema, indurasi, fluktuasi, puting, KGB aksila." }],
+    "tests": [
+      {
+        "tool": "usg_superfisial",
+        "role": "komplikasi",
+        "when": { "traits": ["abses"] },
+        "reason": "Konfirmasi abses."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "darah_lengkap", "reason": "Bila sakit berat." }]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Abses payudara: aspirasi/insisi drainase (rujuk bila tidak tersedia).",
+      "when": { "traits": ["abses"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Lanjutkan menyusui, antibiotik 10–14 hari, analgesik, kompres; kontrol 2–3 hari."
+    }
+  ],
+  "management": [
+    "Tetap menyusui/memerah ASI sering dari payudara yang sakit; perbaiki posisi & pelekatan.",
+    "Kompres hangat sebelum & dingin setelah menyusui; istirahat & cairan cukup.",
+    "Analgesik (ibuprofen/parasetamol); antibiotik dikloksasilin atau sefaleksin 4 × 500 mg 10–14 hari (eritromisin bila alergi penisilin).",
+    "Abses: aspirasi/insisi drainase."
+  ],
+  "approach": ["Konfirmasi status menyusui, lokasi, demam.", "Palpasi fluktuasi (abses); cari penyebab stasis."]
+}

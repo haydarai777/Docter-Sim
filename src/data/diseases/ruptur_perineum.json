@@ -1,0 +1,164 @@
+{
+  "id": "ruptur_perineum",
+  "name": "Ruptur perineum tingkat 1–2",
+  "aliases": ["Robekan jalan lahir", "Laserasi perineum", "Robekan perineum"],
+  "system": "Obstetri & ginekologi",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.7,
+  "summary": "Robekan jalan lahir saat persalinan pervaginam. Derajat 1: mukosa vagina & kulit perineum; derajat 2: hingga otot perineum tanpa mengenai sfingter ani. Ibu baru melahirkan (sering di rumah/dukun) datang dengan perineum nyeri dan berdarah. Nilai juga kontraksi uterus (singkirkan atonia) dan sfingter ani (singkirkan derajat 3–4). Tata laksana: penjahitan dengan anestesi lokal, perawatan perineum.",
+  "presentationDay": [1, 1],
+  "demographics": { "ageBands": [{ "min": 18, "max": 29, "weight": 4 }, { "min": 30, "max": 40, "weight": 2 }], "maleRatio": 0 },
+  "traits": [
+    { "id": "derajat2", "probability": 0.6 },
+    { "id": "lahir_dukun", "probability": 0.6 },
+    { "id": "primipara", "probability": 0.6 }
+  ],
+  "traitLabels": {
+    "derajat2": "Ruptur derajat 2 (mengenai otot perineum).",
+    "lahir_dukun": "Bersalin di rumah dibantu dukun.",
+    "primipara": "Persalinan pertama."
+  },
+  "symptoms": [
+    { "id": "nyeri_perineum", "probability": 1 },
+    { "id": "perdarahan_pervaginam", "probability": 0.7 },
+    { "id": "lemas", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_perineum"], "extraPool": ["perdarahan_pervaginam"] },
+  "clueSymptoms": ["perdarahan_pervaginam", "lemas"],
+  "misattributions": ["darah nifas biasa", "lecet biasa"],
+  "fears": ["robekannya besar", "tidak bisa BAB"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tadi subuh saya melahirkan di rumah dibantu dukun, Dok, sekarang di bawah perih sekali dan ada darah.",
+        "when": { "traits": ["lahir_dukun"] },
+        "clue": "Pascasalin di rumah (dukun), nyeri & perdarahan perineum"
+      },
+      {
+        "text": "Tadi pagi melahirkan di bidan tapi bidannya lagi nggak ada alat jahit, Dok, disuruh ke sini.",
+        "when": { "notTraits": ["lahir_dukun"] },
+        "clue": "Pascasalin dengan robekan belum dijahit"
+      }
+    ],
+    "haid_kehamilan": [
+      {
+        "text": "Ini anak pertama, Dok, lahir normal, beratnya 3,4 kilo.",
+        "when": { "traits": ["primipara"] },
+        "clue": "Primipara, bayi besar"
+      },
+      { "text": "Ini anak ketiga, Dok, lahir normal.", "when": { "notTraits": ["primipara"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Darahnya nggak deras, Dok, cuma rembes. Perut terasa keras.",
+        "clue": "Perdarahan tidak deras, uterus berkontraksi"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Kentut dan BAB masih bisa saya tahan, Dok.", "clue": "Kontinensia baik (sfingter utuh)" }],
+    "riwayat_penyakit": [{ "text": "Ari-arinya sudah keluar lengkap, kata dukunnya, Dok.", "clue": "Plasenta lahir lengkap" }]
+  },
+  "findings": [
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "perineum",
+      "when": { "traits": ["derajat2"] },
+      "diagnostic": true,
+      "values": ["Robekan mukosa vagina, kulit, dan otot perineum ± 3 cm, sfingter ani utuh, perdarahan aktif minimal"]
+    },
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "perineum",
+      "diagnostic": true,
+      "values": ["Robekan mukosa vagina & kulit perineum ± 2 cm, otot utuh, perdarahan aktif minimal"]
+    },
+    { "tool": "inspekulo_bimanual", "param": "serviks", "values": ["Serviks utuh, tidak ada robekan"] },
+    { "tool": "inspekulo_bimanual", "param": "duh_vagina", "values": ["Lokia rubra jumlah normal"] },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "tfu",
+      "values": ["2 jari di bawah pusat, kontraksi uterus baik (keras)"]
+    },
+    { "tool": "pemeriksaan_obstetri", "param": "kontraksi", "values": ["Uterus berkontraksi baik (pascasalin)"] },
+    { "tool": "pemeriksaan_anus", "param": "colok_dubur", "values": ["Tonus sfingter ani baik, mukosa rektum utuh"] },
+    { "tool": "pemeriksaan_payudara", "param": "puting", "values": ["Menonjol, kolostrum (+)"] }
+  ],
+  "differentials": [
+    {
+      "id": "ruptur_perineum_berat",
+      "howToDistinguish": "Derajat 3–4: robekan mengenai sfingter ani/mukosa rektum — colok dubur wajib; rujuk untuk reparasi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_anus"] }
+    },
+    {
+      "id": "atonia_uteri",
+      "howToDistinguish": "Atonia uteri: uterus lembek dengan perdarahan banyak — masase & uterotonika.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_obstetri"] }
+    }
+  ],
+  "otherDifferentials": ["Robekan serviks", "Sisa plasenta", "Hematoma vulva"],
+  "keyFindings": [
+    "Pascasalin pervaginam dengan nyeri & perdarahan perineum",
+    "Robekan mukosa/kulit (derajat 1) hingga otot perineum (derajat 2), sfingter utuh",
+    "Uterus berkontraksi baik"
+  ],
+  "teachingPoints": [
+    "Colok dubur wajib setelah persalinan dengan robekan untuk menilai sfingter ani — derajat 3–4 sering terlewat.",
+    "Penjahitan derajat 2: lapis mukosa vagina (jelujur), otot perineum (terputus/jelujur), kulit (subkutikuler) dengan benang dapat diserap."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "POGI. Panduan Nasional Pelayanan Kedokteran Obstetri & Ginekologi",
+      "WHO. Managing complications in pregnancy and childbirth (2017)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "keparahan", "pemberat_peringan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "inspekulo_bimanual", "role": "kunci", "reason": "Derajat robekan & serviks." },
+      { "tool": "pemeriksaan_anus", "role": "kunci", "reason": "Sfingter ani & mukosa rektum." },
+      { "tool": "pemeriksaan_obstetri", "role": "kunci", "reason": "Kontraksi uterus & TFU (singkirkan atonia)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "darah_lengkap", "reason": "Hb bila perdarahan cukup banyak." }]
+  },
+  "disposition": [
+    {
+      "value": "observasi",
+      "reason": "Penjahitan perineum dengan anestesi lokal, observasi nifas 2–6 jam, lalu pulang dengan edukasi perawatan.",
+      "alsoAccept": ["rawat_jalan"]
+    }
+  ],
+  "management": [
+    "Anestesi lokal lidokain 1%, penjahitan lapis demi lapis dengan benang dapat diserap (chromic/poliglaktin).",
+    "Antiseptik, analgesik (parasetamol/asam mefenamat), kompres dingin.",
+    "Higiene perineum: cebok air bersih depan ke belakang, ganti pembalut sering; cegah konstipasi.",
+    "Pastikan kontraksi uterus baik; tablet besi; KIE nifas & menyusui; kontrol 1 minggu."
+  ],
+  "approach": ["Nilai perdarahan & kontraksi uterus terlebih dulu.", "Tentukan derajat robekan dengan inspeksi & colok dubur."]
+}

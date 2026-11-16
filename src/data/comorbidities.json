@@ -95,7 +95,7 @@
       "summary": "Anemia mikrositik (MCV rendah) akibat kekurangan besi; pada perempuan usia subur sering karena haid berlebih.",
       "probability": 0.18,
       "when": { "sex": "female", "ageMin": 12, "ageMax": 50 },
-      "excludePrimary": ["anemia_defisiensi_besi", "malaria"],
+      "excludePrimary": ["anemia_defisiensi_besi", "anemia_kehamilan", "malaria"],
       "knownProbability": 0.3,
       "symptoms": [{ "id": "lemas", "probability": 0.6 }, { "id": "nyeri_kepala", "probability": 0.25 }],
       "findings": [
