@@ -33,14 +33,14 @@
     "baterai": "Baterai kancing — kedaruratan."
   },
   "symptoms": [
-    { "id": "benda_masuk", "probability": 1 },
     { "id": "ingus_satu_sisi", "probability": 0.6, "when": { "traits": ["di_hidung"], "dayMin": 2 } },
     { "id": "hidung_tersumbat", "probability": 0.5, "when": { "traits": ["di_hidung"] } },
     { "id": "telinga_penuh", "probability": 0.7, "when": { "notTraits": ["di_hidung"] } },
     { "id": "nyeri_telinga", "probability": 1, "when": { "traits": ["serangga"] } },
     { "id": "nyeri_telinga", "probability": 0.3, "when": { "notTraits": ["di_hidung"] } },
     { "id": "pendengaran_turun", "probability": 0.5, "when": { "notTraits": ["di_hidung"] } },
-    { "id": "rewel", "probability": 0.7, "when": { "ageMax": 4 } }
+    { "id": "rewel", "probability": 0.7, "when": { "ageMax": 4 } },
+    { "id": "benda_masuk", "probability": 1 }
   ],
   "chiefComplaint": { "primary": ["benda_masuk"], "extraPool": ["ingus_satu_sisi", "telinga_penuh"] },
   "clueSymptoms": ["ingus_satu_sisi", "hidung_tersumbat", "telinga_penuh", "nyeri_telinga", "pendengaran_turun", "rewel"],

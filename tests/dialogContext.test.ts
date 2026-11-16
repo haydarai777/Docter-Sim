@@ -118,7 +118,7 @@ describe('topik percakapan baru tersedia di mode lokal', () => {
       const c = generateCase(content, config, { diseaseId, seed: 5 });
       const s = startEncounter(c);
       expect(ask(s, 'Siapa namanya?').reply).toContain(c.patient.name.split(' ')[0]!);
-      expect(ask(s, 'Umurnya berapa?').reply).toContain(String(c.patient.age));
+      expect(ask(s, 'Umurnya berapa?').reply).toContain((c.patient.ageText ?? String(c.patient.age)).split(' ')[0]!);
       const job = ask(s, 'Kerjanya apa?');
       expect(job.understood).toBe(true);
       expect(job.intents).toEqual([{ kind: 'topic', topic: 'identitas_pekerjaan' }]);

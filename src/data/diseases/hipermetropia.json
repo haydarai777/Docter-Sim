@@ -17,10 +17,10 @@
   "traits": [{ "id": "astenopia_berat", "probability": 0.4 }],
   "traitLabels": { "astenopia_berat": "Astenopia akomodatif dengan sakit kepala." },
   "symptoms": [
+    { "id": "nyeri_kepala", "probability": 1, "when": { "traits": ["astenopia_berat"] } },
     { "id": "kabur_dekat", "probability": 1 },
     { "id": "mata_lelah", "probability": 0.9 },
     { "id": "nyeri_kepala", "probability": 0.6 },
-    { "id": "nyeri_kepala", "probability": 1, "when": { "traits": ["astenopia_berat"] } },
     { "id": "mata_berair", "probability": 0.2 }
   ],
   "chiefComplaint": { "primary": ["kabur_dekat"], "extraPool": ["mata_lelah"] },

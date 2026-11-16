@@ -20,11 +20,11 @@
     "riwayat_blefaritis": "Riwayat blefaritis kronik."
   },
   "symptoms": [
+    { "id": "silau", "probability": 0.5, "when": { "traits": ["erosi_kornea"] } },
     { "id": "bulu_mata_menusuk", "probability": 1 },
     { "id": "mata_mengganjal", "probability": 0.9 },
     { "id": "mata_berair", "probability": 0.8 },
-    { "id": "mata_merah", "probability": 0.6 },
-    { "id": "silau", "probability": 0.5, "when": { "traits": ["erosi_kornea"] } }
+    { "id": "mata_merah", "probability": 0.6 }
   ],
   "chiefComplaint": { "primary": ["bulu_mata_menusuk", "mata_mengganjal"], "extraPool": ["mata_berair"] },
   "clueSymptoms": ["mata_berair", "mata_merah", "silau"],
@@ -64,11 +64,6 @@
   "findings": [
     {
       "tool": "segmen_anterior",
-      "param": "silia",
-      "values": ["Beberapa bulu mata di tepi kelopak bawah tumbuh mengarah ke bola mata dan menyentuh kornea"]
-    },
-    {
-      "tool": "segmen_anterior",
       "param": "palpebra",
       "when": { "traits": ["entropion_curiga"] },
       "values": ["Tepi kelopak bawah tampak melipat ke dalam (entropion)"]
@@ -80,17 +75,22 @@
       "values": ["Uji fluoresein (+): erosi pungtata di area kontak bulu mata"]
     },
     {
-      "tool": "segmen_anterior",
-      "param": "konjungtiva_bulbi",
-      "probability": 0.7,
-      "values": ["Injeksi konjungtiva ringan"]
-    },
-    {
       "tool": "visus",
       "param": "visus_od",
       "when": { "traits": ["erosi_kornea"] },
       "probability": 0.5,
       "values": ["6/9"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "values": ["Beberapa bulu mata di tepi kelopak bawah tumbuh mengarah ke bola mata dan menyentuh kornea"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.7,
+      "values": ["Injeksi konjungtiva ringan"]
     }
   ],
   "differentials": [

@@ -30,10 +30,10 @@
     "berulang": "Epistaksis berulang."
   },
   "symptoms": [
-    { "id": "perdarahan_mukosa", "probability": 1 },
     { "id": "nyeri_kepala", "probability": 0.4, "when": { "traits": ["hipertensi_terkait"] } },
     { "id": "mual_muntah", "probability": 0.4, "when": { "traits": ["posterior"] } },
-    { "id": "lemas", "probability": 0.5, "when": { "traits": ["posterior"] } }
+    { "id": "lemas", "probability": 0.5, "when": { "traits": ["posterior"] } },
+    { "id": "perdarahan_mukosa", "probability": 1 }
   ],
   "chiefComplaint": { "primary": ["perdarahan_mukosa"] },
   "clueSymptoms": ["nyeri_kepala", "mual_muntah", "lemas"],

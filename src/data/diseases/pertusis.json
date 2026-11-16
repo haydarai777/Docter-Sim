@@ -29,12 +29,12 @@
     "kontak_batuk": "Kontak dengan penderita batuk lama."
   },
   "symptoms": [
+    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["apnea_bayi"] } },
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 0 } },
     { "id": "batuk_rejan", "probability": 1 },
     { "id": "mual_muntah", "probability": 0.7 },
     { "id": "pilek", "probability": 0.5 },
-    { "id": "demam", "probability": 0.2 },
-    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["apnea_bayi"] } },
-    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 0 } }
+    { "id": "demam", "probability": 0.2 }
   ],
   "chiefComplaint": { "primary": ["batuk_rejan"], "extraPool": ["mual_muntah"] },
   "clueSymptoms": ["mual_muntah", "pilek", "demam", "sesak_napas", "malas_menyusu"],
@@ -95,14 +95,6 @@
     ]
   },
   "findings": [
-    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.8, "diagnostic": true, "range": [16000, 35000] },
-    { "tool": "darah_lengkap", "param": "limfosit", "probability": 0.8, "diagnostic": true, "range": [60, 75] },
-    {
-      "tool": "segmen_anterior",
-      "param": "konjungtiva_bulbi",
-      "probability": 0.3,
-      "values": ["Perdarahan subkonjungtiva kecil (akibat batuk)"]
-    },
     {
       "tool": "keadaan_umum",
       "param": "kesan_sakit",
@@ -116,6 +108,14 @@
       "values": ["Tampak sakit sedang, sianosis perioral saat batuk"]
     },
     { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["apnea_bayi"] }, "range": [88, 92] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.8, "diagnostic": true, "range": [16000, 35000] },
+    { "tool": "darah_lengkap", "param": "limfosit", "probability": 0.8, "diagnostic": true, "range": [60, 75] },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.3,
+      "values": ["Perdarahan subkonjungtiva kecil (akibat batuk)"]
+    },
     {
       "tool": "pemeriksaan_paru",
       "param": "auskultasi",

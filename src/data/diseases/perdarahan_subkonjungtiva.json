@@ -29,10 +29,10 @@
     "antikoagulan": "Memakai obat pengencer darah."
   },
   "symptoms": [
-    { "id": "bercak_darah_mata", "probability": 1 },
-    { "id": "mata_mengganjal", "probability": 0.25 },
     { "id": "batuk", "probability": 0.5, "when": { "traits": ["mengejan_batuk"] } },
-    { "id": "nyeri_kepala", "probability": 0.3, "when": { "traits": ["hipertensi_terkait"] } }
+    { "id": "nyeri_kepala", "probability": 0.3, "when": { "traits": ["hipertensi_terkait"] } },
+    { "id": "bercak_darah_mata", "probability": 1 },
+    { "id": "mata_mengganjal", "probability": 0.25 }
   ],
   "chiefComplaint": { "primary": ["bercak_darah_mata"] },
   "clueSymptoms": ["mata_mengganjal", "batuk", "nyeri_kepala"],
@@ -84,13 +84,13 @@
     "episode_sebelumnya": [{ "text": "Belum pernah, Dok." }]
   },
   "findings": [
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [150, 178] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [92, 105] },
     {
       "tool": "segmen_anterior",
       "param": "konjungtiva_bulbi",
       "values": ["Perdarahan subkonjungtiva merah terang berbatas tegas di temporal, tanpa injeksi siliar"]
-    },
-    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [150, 178] },
-    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [92, 105] }
+    }
   ],
   "differentials": [
     {

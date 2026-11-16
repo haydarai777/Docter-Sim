@@ -62,12 +62,6 @@
   "findings": [
     {
       "tool": "pemeriksaan_hidung",
-      "param": "mukosa_konka",
-      "diagnostic": true,
-      "values": ["Mukosa hiperemis dan edema, konka inferior membesar"]
-    },
-    {
-      "tool": "pemeriksaan_hidung",
       "param": "sekret_hidung",
       "when": { "notTraits": ["sekret_kental"] },
       "values": ["Serosa encer"]
@@ -78,13 +72,19 @@
       "when": { "traits": ["sekret_kental"] },
       "values": ["Mukoid kental"]
     },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38.2] },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "mukosa_konka",
+      "diagnostic": true,
+      "values": ["Mukosa hiperemis dan edema, konka inferior membesar"]
+    },
     {
       "tool": "pemeriksaan_tenggorok",
       "param": "dinding_faring",
       "probability": 0.5,
       "values": ["Faring hiperemis ringan"]
-    },
-    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38.2] }
+    }
   ],
   "differentials": [
     {

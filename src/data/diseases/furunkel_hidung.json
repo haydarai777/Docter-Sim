@@ -29,11 +29,11 @@
     "trombosis_kavernosus": "Tanda penyebaran ke sinus kavernosus."
   },
   "symptoms": [
+    { "id": "demam", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } },
+    { "id": "benjolan_kelopak", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } },
     { "id": "hidung_bengkak_nyeri", "probability": 1 },
     { "id": "demam", "probability": 0.3 },
-    { "id": "demam", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } },
-    { "id": "nyeri_kepala", "probability": 0.2 },
-    { "id": "benjolan_kelopak", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } }
+    { "id": "nyeri_kepala", "probability": 0.2 }
   ],
   "chiefComplaint": { "primary": ["hidung_bengkak_nyeri"] },
   "clueSymptoms": ["demam", "nyeri_kepala", "benjolan_kelopak"],
@@ -90,12 +90,6 @@
   },
   "findings": [
     {
-      "tool": "pemeriksaan_hidung",
-      "param": "hidung_luar",
-      "diagnostic": true,
-      "values": ["Vestibulum nasi kanan: benjolan hiperemis, edema, nyeri tekan dengan titik pus di pangkal rambut hidung"]
-    },
-    {
       "tool": "tanda_vital",
       "param": "suhu",
       "when": { "symptoms": ["demam"], "notTraits": ["trombosis_kavernosus"] },
@@ -113,6 +107,12 @@
       "param": "n_okulomotor",
       "when": { "traits": ["trombosis_kavernosus"] },
       "values": ["Gerak bola mata kanan terbatas ke segala arah (oftalmoplegia)"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "hidung_luar",
+      "diagnostic": true,
+      "values": ["Vestibulum nasi kanan: benjolan hiperemis, edema, nyeri tekan dengan titik pus di pangkal rambut hidung"]
     }
   ],
   "differentials": [

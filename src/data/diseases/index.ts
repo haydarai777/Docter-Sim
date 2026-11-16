@@ -18,6 +18,16 @@ import dengue from './dengue.json';
 import malaria from './malaria.json';
 // Jantung & pembuluh darah
 import anginaStabil from './angina_stabil.json';
+// Jiwa
+import gangguanSomatoform from './gangguan_somatoform.json';
+import insomnia from './insomnia.json';
+// Kepala & saraf
+import bellsPalsy from './bells_palsy.json';
+import bppv from './bppv.json';
+import kejangDemam from './kejang_demam.json';
+import migren from './migren.json';
+import tensionHeadache from './tension_headache.json';
+import tetanus from './tetanus.json';
 // Mata
 import astigmatisma from './astigmatisma.json';
 import bendaAsingKonjungtiva from './benda_asing_konjungtiva.json';
@@ -66,6 +76,14 @@ export const DISEASE_FILES: unknown[] = [
   dengue,
   malaria,
   anginaStabil,
+  gangguanSomatoform,
+  insomnia,
+  bellsPalsy,
+  bppv,
+  kejangDemam,
+  migren,
+  tensionHeadache,
+  tetanus,
   astigmatisma,
   bendaAsingKonjungtiva,
   blefaritis,

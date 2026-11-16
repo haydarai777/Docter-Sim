@@ -206,6 +206,22 @@ EXP_REASON = {
 }
 
 
+def _conditional_first(rules, key):
+    """Aturan pertama yang cocok yang dipakai: aturan bersyarat harus mendahului aturan tanpa syarat untuk kunci yang sama."""
+    seen_uncond = set()
+    out, tail = [], []
+    for r in rules:
+        if r.get("when"):
+            out.append(r)
+        else:
+            tail.append(r)
+    # Pertahankan urutan aslinya untuk aturan tanpa syarat, diletakkan setelah semua aturan bersyarat kunci yang sama.
+    result = []
+    for r in out + tail:
+        result.append(r)
+    return result
+
+
 def D(**k):
     """Susun satu penyakit. Kunci ringkas — lihat dokumentasi di bawah setiap batch."""
     did = k["id"]
@@ -267,6 +283,7 @@ def D(**k):
     key_topics = plan.get("topics")
     if key_topics is None:
         key_topics = ["onset", "keluhan_lain"] + [c for c in ana if ANAM[c]["core"] and c not in ("onset", "keluhan_lain")][:4]
+    key_topics = [t for t in key_topics if ANAM[t]["core"]]
     plan_out = {"keyTopics": key_topics, "exams": exams, "tests": tests}
     if unn:
         plan_out["unnecessary"] = unn
@@ -296,7 +313,7 @@ def D(**k):
         out["traits"] = traits
     if k.get("tl"):
         out["traitLabels"] = k["tl"]
-    out["symptoms"] = syms
+    out["symptoms"] = _conditional_first(syms, lambda x: x["id"])
     out["chiefComplaint"] = {"primary": cc, **({"extraPool": k["ex"]} if k.get("ex") else {})}
     if clue:
         out["clueSymptoms"] = clue
@@ -304,7 +321,7 @@ def D(**k):
     if k.get("fears"):
         out["fears"] = k["fears"]
     out["anamnesis"] = ana
-    out["findings"] = k["f"]
+    out["findings"] = _conditional_first(k["f"], lambda f: (f["tool"], f["param"]))
     out["differentials"] = k["dd"]
     if k.get("odd"):
         out["otherDifferentials"] = k["odd"]

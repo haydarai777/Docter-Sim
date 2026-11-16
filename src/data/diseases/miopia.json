@@ -67,7 +67,6 @@
     "riwayat_keluarga": [{ "text": "Bapak dan ibu saya dua-duanya pakai kacamata minus, Dok.", "clue": "Riwayat keluarga miopia" }]
   },
   "findings": [
-    { "tool": "visus", "param": "visus_od", "values": ["6/15", "6/18", "6/12"] },
     {
       "tool": "visus",
       "param": "visus_os",
@@ -75,7 +74,6 @@
       "values": ["6/15", "6/18", "6/12"]
     },
     { "tool": "visus", "param": "visus_os", "when": { "traits": ["miopia_kiri_lebih"] }, "values": ["6/24", "6/30"] },
-    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] },
     {
       "tool": "visus",
       "param": "koreksi",
@@ -87,7 +85,9 @@
       "param": "koreksi",
       "when": { "traits": ["miopia_kiri_lebih"] },
       "values": ["OD S −1,50 D → 6/6; OS S −2,50 D → 6/6"]
-    }
+    },
+    { "tool": "visus", "param": "visus_od", "values": ["6/15", "6/18", "6/12"] },
+    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] }
   ],
   "differentials": [
     {

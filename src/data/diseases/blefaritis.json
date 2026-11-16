@@ -19,12 +19,12 @@
   "traits": [{ "id": "seboroik", "probability": 0.6 }, { "id": "madarosis", "probability": 0.3 }],
   "traitLabels": { "seboroik": "Tipe seboroik (skuama berminyak, ketombe).", "madarosis": "Bulu mata rontok (madarosis)." },
   "symptoms": [
+    { "id": "ketombe", "probability": 0.8, "when": { "traits": ["seboroik"] } },
     { "id": "kelopak_bersisik", "probability": 1 },
     { "id": "mata_gatal", "probability": 0.8 },
     { "id": "mata_merah", "probability": 0.6 },
     { "id": "mata_mengganjal", "probability": 0.5 },
-    { "id": "mata_berair", "probability": 0.3 },
-    { "id": "ketombe", "probability": 0.8, "when": { "traits": ["seboroik"] } }
+    { "id": "mata_berair", "probability": 0.3 }
   ],
   "chiefComplaint": { "primary": ["kelopak_bersisik"], "extraPool": ["mata_gatal"] },
   "clueSymptoms": ["mata_gatal", "mata_merah", "mata_mengganjal", "mata_berair", "ketombe"],
@@ -57,7 +57,6 @@
     ]
   },
   "findings": [
-    { "tool": "segmen_anterior", "param": "palpebra", "values": ["Tepi kelopak atas & bawah hiperemis dan menebal"] },
     {
       "tool": "segmen_anterior",
       "param": "silia",
@@ -77,12 +76,6 @@
       "values": ["Skuama di pangkal bulu mata, beberapa bulu mata rontok (madarosis)"]
     },
     {
-      "tool": "segmen_anterior",
-      "param": "konjungtiva_bulbi",
-      "probability": 0.5,
-      "values": ["Injeksi konjungtiva ringan"]
-    },
-    {
       "tool": "status_dermatologis",
       "param": "lokasi",
       "when": { "traits": ["seboroik"] },
@@ -95,6 +88,13 @@
       "when": { "traits": ["seboroik"] },
       "probability": 0.8,
       "values": ["Eritema dengan skuama kekuningan berminyak"]
+    },
+    { "tool": "segmen_anterior", "param": "palpebra", "values": ["Tepi kelopak atas & bawah hiperemis dan menebal"] },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.5,
+      "values": ["Injeksi konjungtiva ringan"]
     }
   ],
   "differentials": [

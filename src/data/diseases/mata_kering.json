@@ -36,14 +36,14 @@
     "sjogren_curiga": "Mata & mulut kering + nyeri sendi: curiga sindrom Sjögren."
   },
   "symptoms": [
+    { "id": "silau", "probability": 0.3, "when": { "traits": ["keratitis_pungtata"] } },
+    { "id": "nyeri_otot_sendi", "probability": 0.8, "when": { "traits": ["sjogren_curiga"] } },
     { "id": "mata_kering", "probability": 1 },
     { "id": "mata_mengganjal", "probability": 0.8 },
     { "id": "mata_lelah", "probability": 0.7 },
     { "id": "mata_merah", "probability": 0.4 },
     { "id": "mata_berair", "probability": 0.25 },
-    { "id": "silau", "probability": 0.3, "when": { "traits": ["keratitis_pungtata"] } },
-    { "id": "pandangan_kabur", "probability": 0.3 },
-    { "id": "nyeri_otot_sendi", "probability": 0.8, "when": { "traits": ["sjogren_curiga"] } }
+    { "id": "pandangan_kabur", "probability": 0.3 }
   ],
   "chiefComplaint": { "primary": ["mata_kering"], "extraPool": ["mata_mengganjal", "mata_lelah"] },
   "clueSymptoms": ["mata_mengganjal", "mata_lelah", "mata_merah", "mata_berair", "silau", "pandangan_kabur"],
@@ -94,13 +94,13 @@
     ]
   },
   "findings": [
-    { "tool": "tes_schirmer", "param": "schirmer", "probability": 0.9, "diagnostic": true, "range": [3, 8] },
     {
       "tool": "segmen_anterior",
       "param": "kornea",
       "when": { "traits": ["keratitis_pungtata"] },
       "values": ["Uji fluoresein: pungtata halus di kornea inferior (keratitis pungtata superfisial)"]
     },
+    { "tool": "tes_schirmer", "param": "schirmer", "probability": 0.9, "diagnostic": true, "range": [3, 8] },
     {
       "tool": "segmen_anterior",
       "param": "konjungtiva_bulbi",

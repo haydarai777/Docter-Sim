@@ -29,11 +29,11 @@
     "xerosis_kornea": "Xerosis kornea (X2) — darurat."
   },
   "symptoms": [
-    { "id": "rabun_senja", "probability": 1 },
-    { "id": "mata_kering", "probability": 0.6 },
     { "id": "bb_tidak_naik", "probability": 0.8, "when": { "traits": ["gizi_kurang"] } },
     { "id": "diare", "probability": 0.6, "when": { "traits": ["diare_berulang"] } },
     { "id": "silau", "probability": 0.6, "when": { "traits": ["xerosis_kornea"] } },
+    { "id": "rabun_senja", "probability": 1 },
+    { "id": "mata_kering", "probability": 0.6 },
     { "id": "nafsu_makan_turun", "probability": 0.5 }
   ],
   "chiefComplaint": { "primary": ["rabun_senja"], "extraPool": ["mata_kering"] },

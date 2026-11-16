@@ -1,0 +1,146 @@
+{
+  "id": "bppv",
+  "name": "Vertigo (Benign paroxysmal positional vertigo)",
+  "aliases": ["BPPV", "Vertigo posisi", "Pusing berputar posisional"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Vertigo perifer tersering akibat otokonia di kanalis semisirkularis (tersering posterior): vertigo berputar singkat (< 1 menit) yang dipicu perubahan posisi kepala (berbaring, berguling, menengadah, menunduk), disertai mual. Tanpa gangguan dengar dan defisit neurologis. Dix–Hallpike positif (nistagmus torsional-upbeat dengan latensi, cepat lelah). Terapi: manuver Epley.",
+  "presentationDay": [1, 14],
+  "demographics": { "ageBands": [{ "min": 30, "max": 49, "weight": 3 }, { "min": 50, "max": 75, "weight": 4 }], "maleRatio": 0.35 },
+  "traits": [{ "id": "sisi_kanan", "probability": 0.6 }, { "id": "riwayat_trauma_kepala", "probability": 0.1 }],
+  "traitLabels": { "sisi_kanan": "Kanalis posterior kanan.", "riwayat_trauma_kepala": "Riwayat benturan kepala." },
+  "symptoms": [{ "id": "pusing_berputar", "probability": 1 }, { "id": "mual_muntah", "probability": 0.7 }],
+  "chiefComplaint": { "primary": ["pusing_berputar"], "extraPool": ["mual_muntah"] },
+  "clueSymptoms": ["mual_muntah"],
+  "misattributions": ["darah rendah", "kolesterol", "darah tinggi"],
+  "fears": ["stroke", "tumor otak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mulai {hariTeks} hari lalu, Dok, waktu bangun tidur langsung muter.",
+        "clue": "Onset saat perubahan posisi (bangun tidur)"
+      }
+    ],
+    "durasi": [{ "text": "Muternya sebentar saja, Dok, nggak sampai semenit, terus hilang.", "clue": "Durasi singkat < 1 menit" }],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau guling ke kanan di kasur atau menengadah ambil barang, langsung muter, Dok. Kalau diam nggak apa-apa.",
+        "clue": "Dipicu perubahan posisi kepala"
+      }
+    ],
+    "karakter": [{ "text": "Rasanya kamar berputar, Dok, sampai mual.", "clue": "Vertigo berputar (rotatoar)" }],
+    "keparahan": [
+      {
+        "text": "Pendengaran saya baik, Dok, telinga nggak berdenging. Bicara dan tangan kaki normal.",
+        "clue": "Tanpa gangguan dengar/tinitus & defisit neurologis"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Setahun lalu pernah begini juga, Dok, sembuh sendiri.",
+        "weight": 0.4,
+        "clue": "Riwayat episode serupa"
+      },
+      { "text": "Baru kali ini, Dok." }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "tes_vestibular",
+      "param": "dix_hallpike",
+      "when": { "traits": ["sisi_kanan"] },
+      "diagnostic": true,
+      "values": ["Positif kanan: vertigo & nistagmus torsional ke atas, laten 3 detik, < 30 detik, melemah saat diulang"]
+    },
+    {
+      "tool": "tes_vestibular",
+      "param": "dix_hallpike",
+      "when": { "notTraits": ["sisi_kanan"] },
+      "diagnostic": true,
+      "values": ["Positif kiri: vertigo & nistagmus torsional ke atas, laten 3 detik, < 30 detik, melemah saat diulang"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "stroke",
+      "howToDistinguish": "Vertigo sentral: vertigo menetap dengan defisit neurologis, ataksia berat, nistagmus vertikal/berubah arah, HINTS sentral — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["saraf_kranial", "neurologis", "tes_vestibular"] }
+    },
+    {
+      "id": "neuritis_vestibular",
+      "howToDistinguish": "Neuritis vestibular: vertigo berat terus-menerus berhari-hari, nistagmus spontan, tanpa pencetus posisi.",
+      "excludeBy": { "topics": ["durasi"], "tools": ["tes_vestibular"] }
+    },
+    {
+      "id": "penyakit_meniere",
+      "howToDistinguish": "Ménière: serangan berjam-jam dengan tinitus, telinga penuh, tuli fluktuatif.",
+      "excludeBy": { "topics": ["keparahan"], "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "keyFindings": [
+    "Vertigo berputar singkat (< 1 menit) dipicu perubahan posisi kepala",
+    "Tanpa gangguan dengar & defisit neurologis",
+    "Dix–Hallpike positif dengan latensi & fatigabilitas"
+  ],
+  "teachingPoints": [
+    "Manuver Epley (reposisi kanalit) adalah terapi definitif BPPV kanalis posterior; obat antivertigo hanya simptomatik jangka pendek."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "durasi", "pemberat_peringan", "karakter", "keparahan", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      { "tool": "tes_vestibular", "role": "kunci", "reason": "Dix–Hallpike, nistagmus spontan, Romberg." },
+      { "tool": "saraf_kranial", "role": "kunci", "reason": "Menyingkirkan vertigo sentral." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Motorik & sensorik." },
+      { "tool": "pemeriksaan_telinga", "role": "pendukung", "reason": "Telinga & tes penala." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Manuver Epley di klinik, latihan Brandt–Daroff di rumah, antivertigo jangka pendek bila mual."
+    }
+  ],
+  "management": [
+    "Manuver reposisi kanalit (Epley) sesuai sisi yang positif.",
+    "Latihan Brandt–Daroff di rumah.",
+    "Simptomatik jangka pendek: betahistin/dimenhidrinat bila mual berat.",
+    "Edukasi bangun perlahan, cegah jatuh; rujuk bila tidak membaik atau curiga sentral."
+  ],
+  "approach": [
+    "Bedakan vertigo dari presinkop/disekuilibrium.",
+    "Tentukan durasi & pencetus; periksa saraf kranial lalu Dix–Hallpike."
+  ]
+}

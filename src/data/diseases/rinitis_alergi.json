@@ -30,13 +30,13 @@
     "asma_menyertai": "Asma menyertai (united airway)."
   },
   "symptoms": [
+    { "id": "mengi", "probability": 0.8, "when": { "traits": ["asma_menyertai"] } },
+    { "id": "sulit_tidur", "probability": 0.3, "when": { "traits": ["persisten"] } },
     { "id": "bersin", "probability": 1 },
     { "id": "pilek", "probability": 1 },
     { "id": "hidung_tersumbat", "probability": 0.8 },
     { "id": "mata_gatal", "probability": 0.6 },
-    { "id": "mata_berair", "probability": 0.4 },
-    { "id": "mengi", "probability": 0.8, "when": { "traits": ["asma_menyertai"] } },
-    { "id": "sulit_tidur", "probability": 0.3, "when": { "traits": ["persisten"] } }
+    { "id": "mata_berair", "probability": 0.4 }
   ],
   "chiefComplaint": { "primary": ["bersin"], "extraPool": ["pilek", "hidung_tersumbat"] },
   "clueSymptoms": ["pilek", "hidung_tersumbat", "mata_gatal", "mata_berair", "mengi", "sulit_tidur"],
@@ -97,27 +97,27 @@
   },
   "findings": [
     {
-      "tool": "pemeriksaan_hidung",
-      "param": "mukosa_konka",
-      "diagnostic": true,
-      "values": ["Mukosa edema, basah, berwarna pucat livid; konka inferior hipertrofi"]
-    },
-    { "tool": "pemeriksaan_hidung", "param": "sekret_hidung", "values": ["Serosa encer banyak"] },
-    {
       "tool": "segmen_anterior",
       "param": "konjungtiva_bulbi",
       "when": { "symptoms": ["mata_gatal"] },
       "probability": 0.5,
       "values": ["Injeksi konjungtiva ringan"]
     },
-    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.6, "range": [5, 9] },
     {
       "tool": "pemeriksaan_paru",
       "param": "auskultasi",
       "when": { "traits": ["asma_menyertai"] },
       "probability": 0.6,
       "values": ["Wheezing (+/+) ekspirasi"]
-    }
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "mukosa_konka",
+      "diagnostic": true,
+      "values": ["Mukosa edema, basah, berwarna pucat livid; konka inferior hipertrofi"]
+    },
+    { "tool": "pemeriksaan_hidung", "param": "sekret_hidung", "values": ["Serosa encer banyak"] },
+    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.6, "range": [5, 9] }
   ],
   "differentials": [
     {

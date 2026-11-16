@@ -34,16 +34,16 @@
   },
   "symptoms": [
     { "id": "nyeri_telinga", "probability": 1, "when": { "notTraits": ["perforasi"] } },
-    { "id": "nyeri_telinga", "probability": 0.5 },
     { "id": "telinga_berair", "probability": 1, "when": { "traits": ["perforasi"] } },
     { "id": "demam", "probability": 1, "when": { "traits": ["supurasi"] } },
-    { "id": "demam", "probability": 0.6 },
     { "id": "pilek", "probability": 0.9, "when": { "traits": ["didahului_ispa"] } },
     { "id": "batuk", "probability": 0.6, "when": { "traits": ["didahului_ispa"] } },
-    { "id": "pendengaran_turun", "probability": 0.5 },
-    { "id": "telinga_penuh", "probability": 0.5 },
     { "id": "rewel", "probability": 0.9, "when": { "ageMax": 4 } },
-    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 1 } }
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 1 } },
+    { "id": "nyeri_telinga", "probability": 0.5 },
+    { "id": "demam", "probability": 0.6 },
+    { "id": "pendengaran_turun", "probability": 0.5 },
+    { "id": "telinga_penuh", "probability": 0.5 }
   ],
   "chiefComplaint": { "primary": ["nyeri_telinga", "telinga_berair"], "extraPool": ["demam", "pilek"] },
   "clueSymptoms": ["demam", "pilek", "batuk", "pendengaran_turun", "telinga_penuh", "rewel"],
@@ -110,12 +110,6 @@
     },
     {
       "tool": "pemeriksaan_telinga",
-      "param": "membran_timpani",
-      "diagnostic": true,
-      "values": ["Membran timpani kanan hiperemis, refleks cahaya menghilang"]
-    },
-    {
-      "tool": "pemeriksaan_telinga",
       "param": "liang_telinga",
       "when": { "traits": ["perforasi"] },
       "values": ["Sekret mukopurulen di MAE kanan, liang tidak edema"]
@@ -150,6 +144,12 @@
       "when": { "traits": ["didahului_ispa"] },
       "probability": 0.6,
       "values": ["Faring hiperemis"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "diagnostic": true,
+      "values": ["Membran timpani kanan hiperemis, refleks cahaya menghilang"]
     }
   ],
   "differentials": [

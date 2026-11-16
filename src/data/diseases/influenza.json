@@ -28,6 +28,7 @@
     "pneumonia_sekunder": "Komplikasi pneumonia."
   },
   "symptoms": [
+    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["pneumonia_sekunder"] } },
     { "id": "demam", "probability": 1 },
     { "id": "nyeri_otot_sendi", "probability": 0.9 },
     { "id": "nyeri_kepala", "probability": 0.8 },
@@ -35,8 +36,7 @@
     { "id": "batuk", "probability": 0.85 },
     { "id": "nyeri_tenggorokan", "probability": 0.6 },
     { "id": "pilek", "probability": 0.6 },
-    { "id": "menggigil", "probability": 0.5 },
-    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["pneumonia_sekunder"] } }
+    { "id": "menggigil", "probability": 0.5 }
   ],
   "chiefComplaint": { "primary": ["demam"], "extraPool": ["nyeri_otot_sendi", "batuk"] },
   "clueSymptoms": ["nyeri_otot_sendi", "nyeri_kepala", "lemas", "batuk", "nyeri_tenggorokan", "pilek"],
@@ -75,6 +75,14 @@
     "bepergian_lingkungan": [{ "text": "Nggak ada genangan atau banyak nyamuk di rumah, Dok.", "clue": "Tanpa paparan khas dengue/lepto" }]
   },
   "findings": [
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["pneumonia_sekunder"] },
+      "values": ["Ronkhi basah halus di basal paru kanan"]
+    },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["pneumonia_sekunder"] }, "range": [24, 30] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["pneumonia_sekunder"] }, "range": [90, 93] },
     { "tool": "tanda_vital", "param": "suhu", "diagnostic": true, "range": [38.5, 39.8] },
     { "tool": "tanda_vital", "param": "nadi", "range": [96, 112] },
     {
@@ -91,14 +99,6 @@
       "diagnostic": true,
       "values": ["Positif (influenza A)"]
     },
-    {
-      "tool": "pemeriksaan_paru",
-      "param": "auskultasi",
-      "when": { "traits": ["pneumonia_sekunder"] },
-      "values": ["Ronkhi basah halus di basal paru kanan"]
-    },
-    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["pneumonia_sekunder"] }, "range": [24, 30] },
-    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["pneumonia_sekunder"] }, "range": [90, 93] },
     { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.4, "range": [3500, 5500] }
   ],
   "differentials": [

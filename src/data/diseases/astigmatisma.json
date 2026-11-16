@@ -17,10 +17,10 @@
   "traits": [{ "id": "dengan_miopia", "probability": 0.5 }],
   "traitLabels": { "dengan_miopia": "Astigmatisma miopia kompositus." },
   "symptoms": [
+    { "id": "kabur_jauh", "probability": 0.6, "when": { "traits": ["dengan_miopia"] } },
     { "id": "pandangan_kabur", "probability": 1 },
     { "id": "mata_lelah", "probability": 0.8 },
-    { "id": "nyeri_kepala", "probability": 0.5 },
-    { "id": "kabur_jauh", "probability": 0.6, "when": { "traits": ["dengan_miopia"] } }
+    { "id": "nyeri_kepala", "probability": 0.5 }
   ],
   "chiefComplaint": { "primary": ["pandangan_kabur"], "extraPool": ["mata_lelah"] },
   "clueSymptoms": ["mata_lelah", "nyeri_kepala", "kabur_jauh"],
@@ -44,9 +44,6 @@
     "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
   },
   "findings": [
-    { "tool": "visus", "param": "visus_od", "values": ["6/12", "6/9"] },
-    { "tool": "visus", "param": "visus_os", "values": ["6/12", "6/9"] },
-    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] },
     {
       "tool": "visus",
       "param": "koreksi",
@@ -59,6 +56,9 @@
       "when": { "traits": ["dengan_miopia"] },
       "values": ["ODS S −0,75 D C −1,00 D aksis 180° → 6/6"]
     },
+    { "tool": "visus", "param": "visus_od", "values": ["6/12", "6/9"] },
+    { "tool": "visus", "param": "visus_os", "values": ["6/12", "6/9"] },
+    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] },
     { "tool": "visus", "param": "visus_dekat", "values": ["J3, huruf tampak berbayang"] }
   ],
   "differentials": [

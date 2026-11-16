@@ -34,11 +34,11 @@
     "pekerjaan_gerinda": "Riwayat menggerinda/memalu — singkirkan trauma tembus."
   },
   "symptoms": [
+    { "id": "silau", "probability": 0.6, "when": { "traits": ["abrasi_kornea"] } },
     { "id": "mata_mengganjal", "probability": 1 },
     { "id": "mata_berair", "probability": 0.9 },
     { "id": "mata_merah", "probability": 0.8 },
     { "id": "nyeri_mata", "probability": 0.6 },
-    { "id": "silau", "probability": 0.6, "when": { "traits": ["abrasi_kornea"] } },
     { "id": "silau", "probability": 0.15 }
   ],
   "chiefComplaint": { "primary": ["mata_mengganjal"], "extraPool": ["mata_berair", "mata_merah"] },
@@ -94,7 +94,6 @@
       "when": { "traits": ["di_tarsal"] },
       "values": ["Injeksi konjungtiva (+)"]
     },
-    { "tool": "segmen_anterior", "param": "sekret_mata", "probability": 0.8, "values": ["Serosa (berair)"] },
     {
       "tool": "segmen_anterior",
       "param": "kornea",
@@ -107,13 +106,14 @@
       "when": { "traits": ["abrasi_kornea"] },
       "values": ["Uji fluoresein (+): erosi kecil di kornea"]
     },
+    { "tool": "visus", "param": "visus_od", "when": { "traits": ["abrasi_kornea"] }, "values": ["6/9", "6/7,5"] },
+    { "tool": "segmen_anterior", "param": "sekret_mata", "probability": 0.8, "values": ["Serosa (berair)"] },
     {
       "tool": "segmen_anterior",
       "param": "palpebra",
       "probability": 0.4,
       "values": ["Kelopak sedikit edema, blefarospasme ringan"]
-    },
-    { "tool": "visus", "param": "visus_od", "when": { "traits": ["abrasi_kornea"] }, "values": ["6/9", "6/7,5"] }
+    }
   ],
   "differentials": [
     {

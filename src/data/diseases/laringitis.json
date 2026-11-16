@@ -29,11 +29,11 @@
     "perokok": "Perokok."
   },
   "symptoms": [
+    { "id": "pilek", "probability": 0.6, "when": { "traits": ["ispa"] } },
+    { "id": "demam", "probability": 0.3, "when": { "traits": ["ispa"] } },
     { "id": "suara_serak", "probability": 1 },
     { "id": "nyeri_tenggorokan", "probability": 0.6 },
-    { "id": "batuk", "probability": 0.6 },
-    { "id": "pilek", "probability": 0.6, "when": { "traits": ["ispa"] } },
-    { "id": "demam", "probability": 0.3, "when": { "traits": ["ispa"] } }
+    { "id": "batuk", "probability": 0.6 }
   ],
   "chiefComplaint": { "primary": ["suara_serak"], "extraPool": ["nyeri_tenggorokan"] },
   "clueSymptoms": ["nyeri_tenggorokan", "batuk", "pilek", "demam"],
@@ -66,18 +66,18 @@
   "findings": [
     {
       "tool": "pemeriksaan_tenggorok",
-      "param": "laring",
-      "diagnostic": true,
-      "values": ["Plika vokalis hiperemis dan edema, gerak simetris, tidak ada massa"]
-    },
-    {
-      "tool": "pemeriksaan_tenggorok",
       "param": "dinding_faring",
       "when": { "traits": ["ispa"] },
       "probability": 0.7,
       "values": ["Faring hiperemis ringan"]
     },
-    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38] }
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "laring",
+      "diagnostic": true,
+      "values": ["Plika vokalis hiperemis dan edema, gerak simetris, tidak ada massa"]
+    }
   ],
   "differentials": [
     {

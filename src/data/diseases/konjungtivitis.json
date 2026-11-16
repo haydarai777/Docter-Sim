@@ -39,18 +39,18 @@
     "kontak_serumah": "Ada kontak dengan penderita serupa."
   },
   "symptoms": [
-    { "id": "mata_merah", "probability": 1 },
     { "id": "belekan", "probability": 1, "when": { "traits": ["bakteri"] } },
     { "id": "belekan", "probability": 0.3, "when": { "traits": ["virus"] } },
     { "id": "mata_berair", "probability": 0.9, "when": { "traits": ["virus"] } },
     { "id": "mata_berair", "probability": 0.8, "when": { "traits": ["alergi"] } },
-    { "id": "mata_berair", "probability": 0.3 },
     { "id": "mata_gatal", "probability": 1, "when": { "traits": ["alergi"] } },
-    { "id": "mata_gatal", "probability": 0.3 },
-    { "id": "mata_mengganjal", "probability": 0.6 },
     { "id": "bersin", "probability": 0.6, "when": { "traits": ["alergi"] } },
     { "id": "nyeri_tenggorokan", "probability": 0.4, "when": { "traits": ["virus"] } },
-    { "id": "demam", "probability": 0.25, "when": { "traits": ["virus"] } }
+    { "id": "demam", "probability": 0.25, "when": { "traits": ["virus"] } },
+    { "id": "mata_merah", "probability": 1 },
+    { "id": "mata_berair", "probability": 0.3 },
+    { "id": "mata_gatal", "probability": 0.3 },
+    { "id": "mata_mengganjal", "probability": 0.6 }
   ],
   "chiefComplaint": { "primary": ["mata_merah"], "extraPool": ["belekan", "mata_gatal", "mata_berair"] },
   "clueSymptoms": ["belekan", "mata_berair", "mata_gatal", "mata_mengganjal", "bersin", "nyeri_tenggorokan"],
@@ -120,11 +120,6 @@
   "findings": [
     {
       "tool": "segmen_anterior",
-      "param": "konjungtiva_bulbi",
-      "values": ["Injeksi konjungtiva difus, lebih merah di forniks"]
-    },
-    {
-      "tool": "segmen_anterior",
       "param": "sekret_mata",
       "when": { "traits": ["bakteri"] },
       "values": ["Mukopurulen kekuningan"]
@@ -155,7 +150,6 @@
       "probability": 0.8,
       "values": ["Papil-papil halus di konjungtiva tarsal superior"]
     },
-    { "tool": "segmen_anterior", "param": "palpebra", "probability": 0.4, "values": ["Kelopak sedikit edema"] },
     {
       "tool": "kepala_leher",
       "param": "kgb",
@@ -170,7 +164,13 @@
       "probability": 0.4,
       "values": ["Faring hiperemis"]
     },
-    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] }
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "values": ["Injeksi konjungtiva difus, lebih merah di forniks"]
+    },
+    { "tool": "segmen_anterior", "param": "palpebra", "probability": 0.4, "values": ["Kelopak sedikit edema"] }
   ],
   "differentials": [
     {

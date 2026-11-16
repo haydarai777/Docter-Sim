@@ -34,13 +34,13 @@
     "dm_curiga": "Faktor risiko diabetes (waspadai otitis eksterna maligna)."
   },
   "symptoms": [
+    { "id": "telinga_gatal", "probability": 1, "when": { "traits": ["jamur"] } },
+    { "id": "demam", "probability": 0.15, "when": { "traits": ["sirkumskripta"] } },
     { "id": "nyeri_telinga", "probability": 1 },
     { "id": "telinga_gatal", "probability": 0.5 },
-    { "id": "telinga_gatal", "probability": 1, "when": { "traits": ["jamur"] } },
     { "id": "telinga_penuh", "probability": 0.5 },
     { "id": "telinga_berair", "probability": 0.35 },
-    { "id": "pendengaran_turun", "probability": 0.3 },
-    { "id": "demam", "probability": 0.15, "when": { "traits": ["sirkumskripta"] } }
+    { "id": "pendengaran_turun", "probability": 0.3 }
   ],
   "chiefComplaint": { "primary": ["nyeri_telinga"], "extraPool": ["telinga_gatal", "telinga_penuh"] },
   "clueSymptoms": ["telinga_gatal", "telinga_penuh", "telinga_berair", "pendengaran_turun", "demam"],
@@ -91,12 +91,6 @@
   "findings": [
     {
       "tool": "pemeriksaan_telinga",
-      "param": "aurikula",
-      "diagnostic": true,
-      "values": ["Nyeri tarik aurikula & nyeri tekan tragus (+) telinga kanan"]
-    },
-    {
-      "tool": "pemeriksaan_telinga",
       "param": "liang_telinga",
       "when": { "notTraits": ["sirkumskripta", "jamur"] },
       "values": ["MAE kanan edema, hiperemis, menyempit, sekret serosa sedikit"]
@@ -120,6 +114,13 @@
       "probability": 0.5,
       "values": ["Intak, sulit dinilai seluruhnya karena liang telinga sempit"]
     },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.2] },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "aurikula",
+      "diagnostic": true,
+      "values": ["Nyeri tarik aurikula & nyeri tekan tragus (+) telinga kanan"]
+    },
     {
       "tool": "pemeriksaan_telinga",
       "param": "tes_penala",
@@ -131,8 +132,7 @@
       "param": "kgb",
       "probability": 0.3,
       "values": ["KGB preaurikular kanan teraba, nyeri tekan"]
-    },
-    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.2] }
+    }
   ],
   "differentials": [
     {

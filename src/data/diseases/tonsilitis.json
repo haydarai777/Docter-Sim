@@ -28,13 +28,13 @@
     "mengorok": "Mengorok/obstruksi saat tidur."
   },
   "symptoms": [
+    { "id": "malas_menyusu", "probability": 0.5, "when": { "ageMax": 3 } },
     { "id": "nyeri_tenggorokan", "probability": 1 },
     { "id": "sulit_menelan", "probability": 0.9 },
     { "id": "demam", "probability": 0.8 },
     { "id": "nyeri_telinga", "probability": 0.3 },
     { "id": "nyeri_kepala", "probability": 0.3 },
-    { "id": "benjolan_kgb", "probability": 0.5 },
-    { "id": "malas_menyusu", "probability": 0.5, "when": { "ageMax": 3 } }
+    { "id": "benjolan_kgb", "probability": 0.5 }
   ],
   "chiefComplaint": { "primary": ["nyeri_tenggorokan"], "extraPool": ["sulit_menelan", "demam"] },
   "clueSymptoms": ["sulit_menelan", "demam", "nyeri_telinga", "nyeri_kepala", "benjolan_kgb", "malas_menyusu"],
@@ -80,6 +80,7 @@
       "diagnostic": true,
       "values": ["T2–T2 hiperemis, kripta melebar, detritus (+)"]
     },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38, 39.2] },
     { "tool": "pemeriksaan_tenggorok", "param": "dinding_faring", "probability": 0.7, "values": ["Faring hiperemis"] },
     { "tool": "kepala_leher", "param": "faring", "values": ["Faring hiperemis, tonsil membesar"] },
     {
@@ -87,8 +88,7 @@
       "param": "kgb",
       "probability": 0.6,
       "values": ["KGB jugulodigastrik membesar, nyeri tekan"]
-    },
-    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38, 39.2] }
+    }
   ],
   "differentials": [
     {

@@ -20,17 +20,17 @@
   "traits": [{ "id": "streptokokus", "probability": 0.3 }],
   "traitLabels": { "streptokokus": "Faringitis streptokokus (skor Centor tinggi)." },
   "symptoms": [
+    { "id": "demam", "probability": 1, "when": { "traits": ["streptokokus"] } },
+    { "id": "batuk", "probability": 0.1, "when": { "traits": ["streptokokus"] } },
+    { "id": "pilek", "probability": 0.05, "when": { "traits": ["streptokokus"] } },
+    { "id": "suara_serak", "probability": 0.2, "when": { "notTraits": ["streptokokus"] } },
+    { "id": "benjolan_kgb", "probability": 0.7, "when": { "traits": ["streptokokus"] } },
     { "id": "nyeri_tenggorokan", "probability": 1 },
     { "id": "sulit_menelan", "probability": 0.7 },
-    { "id": "demam", "probability": 1, "when": { "traits": ["streptokokus"] } },
     { "id": "demam", "probability": 0.5 },
-    { "id": "batuk", "probability": 0.1, "when": { "traits": ["streptokokus"] } },
     { "id": "batuk", "probability": 0.7 },
-    { "id": "pilek", "probability": 0.05, "when": { "traits": ["streptokokus"] } },
     { "id": "pilek", "probability": 0.6 },
-    { "id": "suara_serak", "probability": 0.2, "when": { "notTraits": ["streptokokus"] } },
-    { "id": "nyeri_kepala", "probability": 0.4 },
-    { "id": "benjolan_kgb", "probability": 0.7, "when": { "traits": ["streptokokus"] } }
+    { "id": "nyeri_kepala", "probability": 0.4 }
   ],
   "chiefComplaint": { "primary": ["nyeri_tenggorokan"], "extraPool": ["sulit_menelan", "demam"] },
   "clueSymptoms": ["sulit_menelan", "demam", "batuk", "pilek", "suara_serak", "nyeri_kepala"],
@@ -90,7 +90,6 @@
       "probability": 0.6,
       "values": ["T2–T2 hiperemis dengan eksudat"]
     },
-    { "tool": "kepala_leher", "param": "faring", "values": ["Faring hiperemis"] },
     {
       "tool": "kepala_leher",
       "param": "kgb",
@@ -111,7 +110,8 @@
       "when": { "notTraits": ["streptokokus"] },
       "probability": 0.2,
       "values": ["Injeksi konjungtiva ringan"]
-    }
+    },
+    { "tool": "kepala_leher", "param": "faring", "values": ["Faring hiperemis"] }
   ],
   "differentials": [
     {

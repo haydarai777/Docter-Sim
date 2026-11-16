@@ -1,0 +1,259 @@
+{
+  "id": "tetanus",
+  "name": "Tetanus",
+  "aliases": ["Tetanus generalisata", "Kaku rahang (tetanus)"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "kritis",
+  "prevalenceWeight": 0.4,
+  "summary": "Neurotoksin Clostridium tetani dari luka kotor/tusuk (masa inkubasi 3–21 hari) pada orang dengan imunisasi tidak lengkap. Gejala awal trismus (sulit membuka mulut), lalu rigiditas otot leher, punggung (opistotonus), dinding perut seperti papan, risus sardonikus, dan spasme yang dipicu rangsang (suara, cahaya, sentuhan) dengan kesadaran tetap baik. Kedaruratan: stabilkan jalan napas, HTIG/ATS, metronidazol, diazepam, rawat luka, rujuk segera.",
+  "presentationDay": [1, 4],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 40, "weight": 2 },
+      { "min": 41, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.7,
+    "occupations": [{ "id": "petani", "weight": 3 }, { "id": "pekerja_proyek", "weight": 3 }, { "id": "pekerja_sawit", "weight": 1 }],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "luka_tusuk_paku", "probability": 0.65 },
+    { "id": "luka_lain", "probability": 1, "when": { "notTraits": ["luka_tusuk_paku"] } },
+    { "id": "berat", "probability": 0.4 },
+    { "id": "tidak_imunisasi", "probability": 0.85 }
+  ],
+  "traitLabels": {
+    "luka_tusuk_paku": "Port d'entrée: luka tusuk paku.",
+    "luka_lain": "Port d'entrée: luka kotor lain (sabit, kayu).",
+    "berat": "Tetanus berat (spasme umum, disfagia, gangguan napas).",
+    "tidak_imunisasi": "Tidak pernah/tidak lengkap imunisasi tetanus."
+  },
+  "symptoms": [
+    { "id": "sulit_menelan", "probability": 1, "when": { "traits": ["berat"] } },
+    { "id": "kejang", "probability": 1, "when": { "traits": ["berat"] } },
+    { "id": "luka_tusuk", "probability": 1, "when": { "traits": ["luka_tusuk_paku"] } },
+    { "id": "luka_robek", "probability": 0.8, "when": { "traits": ["luka_lain"] } },
+    { "id": "kaku_rahang", "probability": 1 },
+    { "id": "kaku_badan", "probability": 0.9 },
+    { "id": "sulit_menelan", "probability": 0.6 },
+    { "id": "kejang", "probability": 0.3 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "berkeringat", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["kaku_rahang"], "extraPool": ["kaku_badan"] },
+  "clueSymptoms": ["kaku_badan", "sulit_menelan", "kejang", "demam", "berkeringat", "luka_tusuk"],
+  "misattributions": ["masuk angin", "kesambet", "sakit gigi"],
+  "fears": ["kesambet", "lumpuh"],
+  "anamnesis": {
+    "onset": [{ "text": "Dua hari ini, Dok, mulut susah dibuka, makin lama makin kaku.", "clue": "Trismus sebagai gejala awal" }],
+    "riwayat_penyakit": [
+      {
+        "text": "Dua minggu lalu kaki saya ketusuk paku berkarat di sawah, Dok, cuma saya cuci air.",
+        "reveals": ["luka_tusuk"],
+        "when": { "traits": ["luka_tusuk_paku"], "symptoms": ["luka_tusuk"] },
+        "clue": "Luka tusuk kotor 1–3 minggu sebelumnya"
+      },
+      {
+        "text": "Sepuluh hari lalu tangan saya kena sabit waktu ngarit rumput, Dok, lukanya kotor.",
+        "reveals": ["luka_robek"],
+        "when": { "traits": ["luka_lain"], "symptoms": ["luka_robek"] },
+        "clue": "Luka kotor 1–3 minggu sebelumnya"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Badan saya kaku, perut keras, punggung kayak ditarik ke belakang, Dok.",
+        "reveals": ["kaku_badan"],
+        "when": { "symptoms": ["kaku_badan"] },
+        "clue": "Rigiditas otot perut & punggung (opistotonus)"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau ada suara keras atau kena cahaya, badan saya langsung kejang kaku, Dok, sakit sekali.",
+        "reveals": ["kejang"],
+        "when": { "traits": ["berat"], "symptoms": ["kejang"] },
+        "clue": "Spasme dipicu rangsang"
+      },
+      {
+        "text": "Kalau kaget badan saya terasa makin kaku, Dok.",
+        "when": { "notTraits": ["berat"] },
+        "clue": "Kekakuan bertambah dengan rangsang"
+      }
+    ],
+    "keparahan": [{ "text": "Saya masih sadar penuh, Dok, cuma nggak bisa buka mulut buat makan.", "clue": "Kesadaran baik" }],
+    "kebiasaan": [
+      {
+        "text": "Seingat saya nggak pernah disuntik tetanus, Dok.",
+        "when": { "traits": ["tidak_imunisasi"] },
+        "clue": "Imunisasi tetanus tidak lengkap"
+      },
+      {
+        "text": "Dulu pernah suntik tetanus waktu SD, Dok, sudah lama sekali.",
+        "when": { "notTraits": ["tidak_imunisasi"] },
+        "clue": "Imunisasi tetanus lama tanpa booster"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Nggak minum obat mual atau obat jiwa, Dok. Nggak digigit anjing juga.",
+        "clue": "Tanpa obat pemicu distonia & gigitan hewan"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "refleks_tonus",
+      "param": "tonus",
+      "when": { "traits": ["berat"] },
+      "diagnostic": true,
+      "values": ["Trismus, opistotonus, spasme umum saat dirangsang, uji spatula (+)"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "traits": ["luka_tusuk_paku"] },
+      "values": ["Luka tusuk 0,5 cm di telapak kaki kanan, kotor, sekitar hiperemis dengan pus"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "traits": ["luka_lain"] },
+      "values": ["Luka robek 3 cm di punggung tangan kiri, kotor, bernanah"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.5] },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["berat"] }, "range": [24, 30] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["berat"] }, "range": [91, 94] },
+    {
+      "tool": "refleks_tonus",
+      "param": "tonus",
+      "diagnostic": true,
+      "values": ["Trismus ± 1 cm, risus sardonikus, rigiditas otot leher & dinding perut seperti papan, uji spatula (+)"]
+    },
+    { "tool": "refleks_tonus", "param": "refleks_fisiologis", "values": ["Meningkat (+3) di keempat ekstremitas"] },
+    { "tool": "keadaan_umum", "param": "kesadaran", "values": ["Compos mentis (GCS 15)"] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "values": ["Tampak sakit berat, kaku, wajah meringis (risus sardonikus)"]
+    },
+    { "tool": "status_lokalis", "param": "tepi_dasar", "values": ["Tepi luka kotor, dasar jaringan nekrotik, ada pus"] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [104, 124] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "probability": 0.6, "range": [140, 165] },
+    {
+      "tool": "neurologis",
+      "param": "meningeal",
+      "values": ["Kaku kuduk (+) akibat rigiditas otot leher, kesadaran baik"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "meningitis",
+      "howToDistinguish": "Meningitis: demam tinggi, nyeri kepala, penurunan kesadaran; tanpa trismus & spasme dipicu rangsang.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["keadaan_umum", "neurologis"] }
+    },
+    {
+      "id": "distonia_obat",
+      "howToDistinguish": "Distonia akut: riwayat metoklopramid/antipsikotik, membaik dengan difenhidramin; tanpa luka & rigiditas perut.",
+      "excludeBy": { "topics": ["riwayat_obat"] }
+    },
+    {
+      "id": "rabies",
+      "howToDistinguish": "Rabies: riwayat gigitan hewan, hidrofobia, agitasi, hipersalivasi.",
+      "excludeBy": { "topics": ["riwayat_obat", "riwayat_penyakit"] }
+    },
+    {
+      "id": "abses_peritonsil",
+      "howToDistinguish": "Trismus lokal akibat abses peritonsil/odontogen: nyeri tenggorok/gigi, tanpa rigiditas umum.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"], "topics": ["karakter"] }
+    }
+  ],
+  "keyFindings": [
+    "Trismus diikuti rigiditas otot (risus sardonikus, perut papan, opistotonus) dengan kesadaran baik",
+    "Luka kotor/tusuk 1–3 minggu sebelumnya, imunisasi tidak lengkap",
+    "Spasme dipicu rangsang; uji spatula (+)"
+  ],
+  "teachingPoints": [
+    "Uji spatula: spatula menyentuh dinding faring → pasien menggigit spatula (refleks spasme) — sangat spesifik untuk tetanus.",
+    "Setiap luka kotor: nilai status imunisasi tetanus dan berikan TT/HTIG sesuai indikasi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)",
+      "WHO. Current recommendations for treatment of tetanus during humanitarian emergencies"
+    ]
+  },
+  "complications": [
+    {
+      "id": "berat",
+      "name": "Tetanus berat (risiko gagal napas)",
+      "trait": "berat",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "refleks_tonus"] },
+      "explanation": "Spasme umum, disfagia, takipnea, SpO2 turun — amankan jalan napas, rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": [
+      "onset",
+      "riwayat_penyakit",
+      "karakter",
+      "pemberat_peringan",
+      "keparahan",
+      "kebiasaan",
+      "riwayat_obat",
+      "keluhan_lain"
+    ],
+    "exams": [
+      { "tool": "refleks_tonus", "role": "kunci", "reason": "Trismus, rigiditas, spasme, uji spatula." },
+      { "tool": "status_lokalis", "role": "kunci", "reason": "Mencari luka port d'entrée." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Kesadaran (tetap baik) & keadaan umum." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Membedakan dari meningitis." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Tetanus adalah kedaruratan: stabilisasi, HTIG/ATS, metronidazol, diazepam, rawat luka, lalu rujuk segera ke RS (ICU bila berat)."
+    }
+  ],
+  "management": [
+    "Amankan jalan napas, oksigen, ruangan tenang & redup, minimalkan rangsang.",
+    "Imunoglobulin tetanus (HTIG 3000–6000 IU IM) atau ATS; vaksin TT di sisi lain.",
+    "Metronidazol 500 mg tiap 8 jam IV/oral 7–10 hari; diazepam untuk spasme.",
+    "Debridemen & perawatan luka setelah pemberian antitoksin.",
+    "Rujuk segera ke RS."
+  ],
+  "approach": [
+    "Trismus + rigiditas + kesadaran baik + luka → tetanus.",
+    "Cari port d'entrée dan status imunisasi; nilai jalan napas."
+  ]
+}

@@ -47,7 +47,7 @@ describe('riwayat komorbiditas di jawaban anamnesis', () => {
 
   it('kalimat pembuka kepribadian tetap di depan dan riwayat yang diketahui selalu disebut', () => {
     let pelupa = 0;
-    for (const c of cases(160, 3)) {
+    for (const c of cases(480, 3)) {
       const personality = content.personalitiesById.get(c.patient.personalityId)!;
       for (const cm of c.comorbidities.filter((x) => x.known)) {
         const def = content.comorbiditiesById.get(cm.id)!;

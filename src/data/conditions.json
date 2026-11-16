@@ -410,20 +410,108 @@
       "summary": "Pustul kecil di folikel rambut."
     },
     {
-      "id": "bppv",
-      "name": "Vertigo posisional paroksismal jinak (BPPV)",
-      "aliases": [],
-      "system": "Kepala & saraf",
-      "danger": "rendah",
-      "summary": "Vertigo singkat dipicu perubahan posisi kepala."
-    },
-    {
       "id": "gastroenteritis_akut",
       "name": "Gastroenteritis akut",
       "aliases": [],
       "system": "Pencernaan",
       "danger": "sedang",
       "summary": "Diare akut ± muntah."
+    },
+    {
+      "id": "meningitis",
+      "name": "Meningitis / ensefalitis",
+      "aliases": ["Ensefalitis", "Radang selaput otak"],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Infeksi selaput otak/otak: demam, nyeri kepala hebat, kaku kuduk, penurunan kesadaran, kejang; pada bayi ubun-ubun membonjol. Rujuk segera."
+    },
+    {
+      "id": "epilepsi",
+      "name": "Epilepsi",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Kejang berulang tanpa provokasi (tanpa demam), ≥ 2 kali berselang > 24 jam."
+    },
+    {
+      "id": "gangguan_elektrolit",
+      "name": "Gangguan elektrolit (hipokalsemia/hiponatremia)",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "Kejang/tetani akibat kadar natrium atau kalsium abnormal."
+    },
+    {
+      "id": "tumor_otak",
+      "name": "Lesi desak ruang intrakranial (tumor otak)",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "tinggi",
+      "summary": "Nyeri kepala progresif, memberat pagi/saat mengedan, muntah proyektil, defisit neurologis fokal, papil edema. Rujuk."
+    },
+    {
+      "id": "distonia_obat",
+      "name": "Reaksi distonia akut akibat obat",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Spasme otot wajah/leher/rahang setelah metoklopramid/antipsikotik; membaik dengan difenhidramin."
+    },
+    {
+      "id": "rabies",
+      "name": "Rabies",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Riwayat gigitan hewan: hidrofobia, aerofobia, agitasi, hipersalivasi. Fatal; profilaksis pascapajanan."
+    },
+    {
+      "id": "ramsay_hunt",
+      "name": "Sindrom Ramsay Hunt (herpes zoster otikus)",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Paresis N. VII perifer disertai vesikel di telinga/liang telinga dan nyeri telinga hebat."
+    },
+    {
+      "id": "neuritis_vestibular",
+      "name": "Neuritis vestibular",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Vertigo berat terus-menerus berhari-hari tanpa gangguan dengar, sering pascainfeksi virus."
+    },
+    {
+      "id": "penyakit_meniere",
+      "name": "Penyakit Ménière",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Serangan vertigo berjam-jam dengan tinitus, telinga penuh, dan tuli sensorineural fluktuatif."
+    },
+    {
+      "id": "depresi",
+      "name": "Gangguan depresi",
+      "aliases": ["Depresi"],
+      "system": "Jiwa",
+      "danger": "tinggi",
+      "summary": "Mood depresif, hilang minat, energi turun ≥ 2 minggu; nilai ide bunuh diri."
+    },
+    {
+      "id": "gangguan_cemas",
+      "name": "Gangguan cemas menyeluruh",
+      "aliases": [],
+      "system": "Jiwa",
+      "danger": "sedang",
+      "summary": "Kecemasan berlebihan sebagian besar hari ≥ 6 bulan dengan gejala otonom."
+    },
+    {
+      "id": "sleep_apnea",
+      "name": "Obstructive sleep apnea",
+      "aliases": [],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Mendengkur keras, henti napas saat tidur, mengantuk berat siang hari; sering pada obesitas."
     }
   ]
 }
