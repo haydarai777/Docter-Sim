@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Seminggu lalu awalnya bintil merah di bawah hidung, Dok, terus pecah jadi koreng kuning dan menyebar.",
+        "text": "{LamaSakit} lalu awalnya bintil merah di bawah hidung, Dok, terus pecah jadi koreng kuning dan menyebar.",
         "when": { "notTraits": ["bulosa"] },
         "clue": "Mulai bintil → krusta kuning menyebar"
       },

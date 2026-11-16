@@ -26,12 +26,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua minggu, Dok, ujung kemaluan keluar cairan bening sedikit, kayak lem, kencing agak perih.",
+        "text": "Sudah {lamaSakit}, Dok, ujung kemaluan keluar cairan bening sedikit, kayak lem, kencing agak perih.",
         "when": { "notTraits": ["perempuan"] },
         "clue": "Duh mukoid sedikit & disuria ringan, subakut"
       },
       {
-        "text": "Sudah dua minggu keputihan agak banyak, Dok, kadang flek setelah berhubungan.",
+        "text": "Sudah {lamaSakit} keputihan agak banyak, Dok, kadang flek setelah berhubungan.",
         "when": { "traits": ["perempuan"] },
         "clue": "Keputihan & perdarahan pascasanggama"
       }

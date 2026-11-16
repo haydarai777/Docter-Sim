@@ -47,7 +47,12 @@
   "misattributions": ["masuk angin", "kesambet", "sakit gigi"],
   "fears": ["kesambet", "lumpuh"],
   "anamnesis": {
-    "onset": [{ "text": "Dua hari ini, Dok, mulut susah dibuka, makin lama makin kaku.", "clue": "Trismus sebagai gejala awal" }],
+    "onset": [
+      {
+        "text": "{LamaSakit} ini, Dok, mulut susah dibuka, makin lama makin kaku.",
+        "clue": "Trismus sebagai gejala awal"
+      }
+    ],
     "riwayat_penyakit": [
       {
         "text": "Dua minggu lalu kaki saya ketusuk paku berkarat di sawah, Dok, cuma saya cuci air.",

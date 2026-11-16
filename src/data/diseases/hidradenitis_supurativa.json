@@ -23,7 +23,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua tahun, Dok, bisul di ketiak kambuh terus di tempat yang sama.",
+        "text": "Sudah {lamaSakit}, Dok, bisul di ketiak kambuh terus di tempat yang sama.",
         "clue": "Kronik berulang di lokasi sama"
       }
     ],

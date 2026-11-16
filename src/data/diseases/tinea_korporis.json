@@ -33,7 +33,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, bercak merah melingkar di punggung, makin lebar.",
+        "text": "Sudah {lamaSakit}, Dok, bercak merah melingkar di punggung, makin lebar.",
         "clue": "Bercak anular meluas perlahan"
       }
     ],

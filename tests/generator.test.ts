@@ -61,14 +61,19 @@ describe('generator kasus', () => {
     }
   });
 
-  it('hari sakit dalam rentang presentasi penyakit', () => {
+  it('hari sakit dalam rentang presentasi penyakit (atau rentang khusus trait varian)', () => {
+    let overridden = 0;
     for (const id of DISEASE_IDS) {
-      const [lo, hi] = content.diseasesById.get(id)!.presentationDay;
+      const d = content.diseasesById.get(id)!;
       for (const c of many(id, perDisease(100, 10))) {
-        expect(c.day).toBeGreaterThanOrEqual(lo);
-        expect(c.day).toBeLessThanOrEqual(hi);
+        const rule = d.presentationDayByTrait?.find((r) => c.traits.includes(r.trait));
+        if (rule) overridden++;
+        const [lo, hi] = rule?.range ?? d.presentationDay;
+        expect(c.day, `${id}${rule ? `:${rule.trait}` : ''}`).toBeGreaterThanOrEqual(lo);
+        expect(c.day, `${id}${rule ? `:${rule.trait}` : ''}`).toBeLessThanOrEqual(hi);
       }
     }
+    expect(overridden).toBeGreaterThan(0);
   });
 
   it('keluhan utama hanya menyebut sebagian gejala yang benar-benar ada', () => {

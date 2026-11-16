@@ -36,12 +36,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tiga hari ini, Dok, keluar nanah dari ujung kemaluan, pagi hari paling banyak, kencing perih.",
+        "text": "{LamaSakit} ini, Dok, keluar nanah dari ujung kemaluan, pagi hari paling banyak, kencing perih.",
         "when": { "notTraits": ["perempuan"] },
         "clue": "Duh uretra purulen 2–7 hari, disuria"
       },
       {
-        "text": "Seminggu ini keputihan kuning dan kencing perih, Dok.",
+        "text": "{LamaSakit} ini keputihan kuning dan kencing perih, Dok.",
         "when": { "traits": ["perempuan"] },
         "clue": "Keputihan mukopurulen & disuria"
       }

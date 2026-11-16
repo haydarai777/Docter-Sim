@@ -49,7 +49,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Empat hari lalu panas tinggi, batuk pilek, matanya merah berair, Dok. Kemarin muncul bintik merah di belakang telinga, sekarang sampai badan.",
+        "text": "{LamaSakit} lalu panas tinggi, batuk pilek, matanya merah berair, Dok. Kemarin muncul bintik merah di belakang telinga, sekarang sampai badan.",
         "reveals": ["batuk", "mata_merah"],
         "when": { "symptoms": ["batuk", "mata_merah"] },
         "clue": "Prodromal 3C lalu ruam mulai di belakang telinga menyebar ke bawah"

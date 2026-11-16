@@ -26,7 +26,7 @@
   "misattributions": ["kutil", "biang keringat", "jerawat"],
   "fears": ["menular", "cacar"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah dua bulan, Dok, bintilnya makin banyak.", "clue": "Bertambah dalam bulan" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, bintilnya makin banyak.", "clue": "Bertambah dalam bulan" }],
     "lokasi": [
       {
         "text": "Di badan, lipatan ketiak, dan wajah, Dok.",

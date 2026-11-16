@@ -7,7 +7,7 @@
   "danger": "rendah",
   "prevalenceWeight": 1.1,
   "summary": "Nyeri kepala primer berulang 4–72 jam: unilateral, berdenyut, sedang–berat, diperberat aktivitas, disertai mual/muntah dan/atau fotofobia & fonofobia. Sebagian dengan aura visual (kilatan, zig-zag) 5–60 menit sebelum nyeri. Pencetus: haid, kurang tidur, stres, makanan tertentu, telat makan. Perempuan 3:1. Neurologis normal di luar serangan.",
-  "presentationDay": [1, 2],
+  "presentationDay": [1, 1],
   "demographics": {
     "ageBands": [
       { "min": 15, "max": 30, "weight": 4 },

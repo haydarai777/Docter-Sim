@@ -31,7 +31,7 @@
   "misattributions": ["kurap", "kurang vitamin", "kusta"],
   "fears": ["kusta", "belang permanen"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah dua bulan, Dok, ada bercak putih-putih di punggung dan dada.", "clue": "Kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, ada bercak putih-putih di punggung dan dada.", "clue": "Kronik" }],
     "pemberat_peringan": [
       {
         "text": "Kalau keringatan agak gatal, Dok. Habis olahraga kelihatan lebih jelas.",

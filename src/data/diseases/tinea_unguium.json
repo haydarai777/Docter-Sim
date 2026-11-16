@@ -19,7 +19,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah setahun lebih, Dok, kuku jempol kaki tebal dan kuning, makin lama makin rapuh.",
+        "text": "Sudah {lamaSakit} lebih, Dok, kuku jempol kaki tebal dan kuning, makin lama makin rapuh.",
         "clue": "Kronik progresif"
       }
     ],

@@ -8,6 +8,7 @@
   "prevalenceWeight": 2,
   "summary": "Diare akut (≥ 3 kali/hari, < 14 hari), tersering virus (rotavirus/norovirus) atau bakteri, dengan/tanpa muntah, nyeri perut, demam ringan. Kunci tata laksana: menilai derajat DEHIDRASI (tanpa, ringan–sedang, berat) dan rehidrasi oralit (Rencana A/B/C), zinc pada anak, lanjutkan makan/ASI. Kolera: diare cair masif seperti air cucian beras → dehidrasi berat cepat. Giardiasis: diare berlemak berbau, kembung, > 1 minggu.",
   "presentationDay": [1, 4],
+  "presentationDayByTrait": [{ "trait": "giardia", "range": [7, 21] }],
   "demographics": {
     "ageBands": [
       { "min": 0, "max": 0, "weight": 1 },
@@ -51,12 +52,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sejak kemarin, Dok, mencret lebih dari sepuluh kali, cair sekali.",
+        "text": "Sejak {lamaSakit} lalu, Dok, mencret lebih dari sepuluh kali, cair sekali.",
         "when": { "notTraits": ["giardia"] },
         "clue": "Diare akut cair, frekuensi tinggi"
       },
       {
-        "text": "Sudah seminggu lebih, Dok, mencret berbau busuk, berminyak, perut kembung.",
+        "text": "Sudah {lamaSakit} lebih, Dok, mencret berbau busuk, berminyak, perut kembung.",
         "reveals": ["kembung"],
         "when": { "traits": ["giardia"], "symptoms": ["kembung"] },
         "clue": "Diare > 7 hari berlemak & kembung (giardiasis)"

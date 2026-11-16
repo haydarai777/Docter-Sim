@@ -7,7 +7,7 @@
   "danger": "tinggi",
   "prevalenceWeight": 0.5,
   "summary": "Kedaruratan urologi: preputium yang diretraksi ke proksimal sulkus koronarius tidak dapat dikembalikan sehingga membentuk cincin konstriksi; aliran vena & limfe terhambat → glans dan preputium edema, nyeri, dan bila dibiarkan iskemia/nekrosis glans. Sering setelah membersihkan penis, pemasangan kateter, atau aktivitas seksual. Reposisi manual segera; dorsal slit bila gagal; sirkumsisi elektif kemudian.",
-  "presentationDay": [1, 2],
+  "presentationDay": [1, 1],
   "demographics": {
     "ageBands": [
       { "min": 3, "max": 9, "weight": 2 },
@@ -36,7 +36,7 @@
         "clue": "Kulup diretraksi lalu tidak dapat dikembalikan"
       },
       {
-        "text": "Sejak kemarin setelah dipasang selang kencing di rumah sakit, Dok, ujungnya bengkak.",
+        "text": "Sejak {lamaSakit} lalu setelah dipasang selang kencing di rumah sakit, Dok, ujungnya bengkak.",
         "when": { "traits": ["pasca_kateter"] },
         "clue": "Setelah kateterisasi (kulup tidak dikembalikan)"
       }

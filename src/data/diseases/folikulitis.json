@@ -26,7 +26,7 @@
   "misattributions": ["jerawat", "biang keringat", "alergi celana"],
   "fears": ["bisul", "penyakit kulit menular"],
   "anamnesis": {
-    "onset": [{ "text": "Seminggu ini, Dok, muncul bintil-bintil bernanah kecil.", "clue": "Subakut" }],
+    "onset": [{ "text": "{LamaSakit} ini, Dok, muncul bintil-bintil bernanah kecil.", "clue": "Subakut" }],
     "lokasi": [
       {
         "text": "Di janggut dan dagu, Dok, sejak cukur pakai silet.",

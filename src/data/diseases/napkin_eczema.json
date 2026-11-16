@@ -29,7 +29,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah lima hari, Dok, pantat dan kemaluannya merah, rewel kalau ganti popok.",
+        "text": "Sudah {lamaSakit}, Dok, pantat dan kemaluannya merah, rewel kalau ganti popok.",
         "clue": "Akut di area popok"
       }
     ],

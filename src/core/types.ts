@@ -547,6 +547,11 @@ export interface DiseaseTemplate {
   summary: string;
   /** Rentang hari sakit saat pasien datang. */
   presentationDay: Range;
+  /**
+   * Rentang hari sakit khusus varian (trait pertama yang cocok menggantikan `presentationDay`),
+   * mis. dermatitis kontak iritan akut datang 1–3 hari setelah pajanan, sedangkan varian kumulatif berminggu-minggu.
+   */
+  presentationDayByTrait?: { trait: string; range: Range }[];
   demographics: {
     ageBands: AgeBand[];
     /** Proporsi laki-laki 0..1. */
@@ -1059,6 +1064,8 @@ export interface PatientRecord {
 
 export interface RunState {
   runSeed: number;
+  /** Fokus latihan: hanya penyakit dari sistem organ ini (null/tidak ada = semua penyakit). */
+  focusSystem?: string | null;
   /** Nomor pasien berikutnya (mulai 0). */
   patientIndex: number;
   reputation: number;

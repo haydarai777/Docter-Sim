@@ -8,6 +8,7 @@
   "prevalenceWeight": 1.3,
   "summary": "Peradangan kulit non-imunologis akibat kontak berulang dengan iritan (air & sabun, deterjen, pelarut, semen) atau iritan kuat sekali kontak. Kronik kumulatif: kulit kering, eritema, skuama, fisura, likenifikasi di punggung tangan & sela jari, terasa perih/terbakar lebih dari gatal, berbatas sesuai area kontak. Akut: eritema, edema, vesikel-bula. Terapi: hindari iritan, pelindung, emolien, kortikosteroid topikal.",
   "presentationDay": [14, 180],
+  "presentationDayByTrait": [{ "trait": "akut", "range": [1, 3] }],
   "demographics": {
     "ageBands": [
       { "min": 18, "max": 39, "weight": 3 },
@@ -39,12 +40,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua bulan, Dok, kedua tangan kering, merah, pecah-pecah, perih.",
+        "text": "Sudah {lamaSakit}, Dok, kedua tangan kering, merah, pecah-pecah, perih.",
         "when": { "notTraits": ["akut"] },
         "clue": "Kronik kumulatif"
       },
       {
-        "text": "Kemarin habis bersihin kamar mandi pakai pembersih keras tanpa sarung tangan, Dok, tangan langsung merah, melepuh, perih.",
+        "text": "{LamaSakit} lalu habis bersihin kamar mandi pakai pembersih keras tanpa sarung tangan, Dok, tangan langsung merah, melepuh, perih.",
         "reveals": ["lepuh_kulit"],
         "when": { "traits": ["akut"], "symptoms": ["lepuh_kulit"] },
         "clue": "Akut setelah iritan kuat"

@@ -222,6 +222,39 @@ def _conditional_first(rules, key):
     return result
 
 
+import re as _re_lama
+
+_DUR = r"(?:se(?:minggu|bulan|tahun|hari)|(?:satu|dua|tiga|empat|lima|enam|tujuh|delapan|sepuluh)(?:-(?:dua|tiga|empat))?\s+(?:hari|minggu|bulan|tahun))"
+_LAMA_RULES = [
+    # "Sudah sebulan", "Sejak dua hari lalu", "Baru tiga hari", "Sekitar sebulan ini", "Sudah lebih dari tiga bulan"
+    (_re_lama.compile(r"^(Sudah|Sejak|Baru|Sekitar)((?: lebih dari)?)\s+" + _DUR, _re_lama.I), r"\1\2 {lamaSakit}"),
+    # "Seminggu ini", "Dua hari lalu", "Setahun terakhir ini", "Dua-tiga tahun ini"
+    (_re_lama.compile(r"^" + _DUR + r"(?=\s+(?:ini|lalu|terakhir)\b)", _re_lama.I), "{LamaSakit}"),
+    (_re_lama.compile(r"^Sejak kemarin\b", _re_lama.I), "Sejak {lamaSakit} lalu"),
+]
+_LAMA_ACUTE = [
+    # Hanya untuk penyakit akut (hari sakit ≤ 7): "Kemarin sore ...", "Tadi pagi ...", "Mendadak, Dok, kemarin sore ..."
+    (_re_lama.compile(r"^(Kemarin|Tadi)(?: (?:pagi|sore|malam|siang))?\b", _re_lama.I), "{LamaSakit} lalu"),
+    (_re_lama.compile(r"^(Mendadak, Dok, )kemarin(?: (?:pagi|sore|malam|siang))?\b"), r"\1{lamaSakit} lalu"),
+]
+
+
+def lama_sakit(text, day_range):
+    """Ganti durasi tetap di awal jawaban onset dengan {lamaSakit} agar selaras dengan hari sakit kasus."""
+    if "{" in text:
+        return text
+    for rx, rep in _LAMA_RULES:
+        new, n = rx.subn(rep, text, count=1)
+        if n:
+            return new
+    if day_range[1] > 1 and day_range[1] <= 7:
+        for rx, rep in _LAMA_ACUTE:
+            new, n = rx.subn(rep, text, count=1)
+            if n:
+                return new
+    return text
+
+
 def D(**k):
     """Susun satu penyakit. Kunci ringkas — lihat dokumentasi di bawah setiap batch."""
     did = k["id"]
@@ -259,6 +292,13 @@ def D(**k):
                 vs.append(A(*v))
             else:
                 vs.append(v)
+        if cat in ("onset", "durasi"):
+            for v in vs:
+                rng_day = k["day"]
+                for t, r in k.get("dayt", []):
+                    if t in ((v.get("when") or {}).get("traits") or []):
+                        rng_day = r
+                v["text"] = lama_sakit(v["text"], rng_day)
         if cat in ("riwayat_penyakit", "riwayat_obat", "riwayat_keluarga", "kebiasaan"):
             for v in vs:
                 assert not denial.search(v["text"]), (did, cat, v["text"], "penyangkalan mutlak bertentangan dengan riwayat komorbid")
@@ -307,6 +347,7 @@ def D(**k):
         "prevalenceWeight": k.get("prev", 1),
         "summary": k["summary"],
         "presentationDay": list(k["day"]),
+        **({"presentationDayByTrait": [{"trait": t, "range": list(r)} for t, r in k["dayt"]]} if k.get("dayt") else {}),
         "demographics": demo,
     }
     if traits:

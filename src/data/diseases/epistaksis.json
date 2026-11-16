@@ -40,7 +40,7 @@
   "misattributions": ["kecapekan", "panas dalam", "darah tinggi naik"],
   "fears": ["kanker", "darah tinggi", "stroke"],
   "anamnesis": {
-    "onset": [{ "text": "Tadi pagi, Dok, tiba-tiba mimisan.", "clue": "Akut" }],
+    "onset": [{ "text": "{LamaSakit} lalu, Dok, tiba-tiba mimisan.", "clue": "Akut" }],
     "lokasi": [
       {
         "text": "Dari lubang hidung kanan, Dok, netes ke depan.",

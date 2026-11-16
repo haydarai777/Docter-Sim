@@ -25,7 +25,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Kemarin malam keluar darah banyak dari jalan lahir, Dok, perut mulas, terus keluar gumpalan kayak daging.",
+        "text": "{LamaSakit} lalu keluar darah banyak dari jalan lahir, Dok, perut mulas, terus keluar gumpalan kayak daging.",
         "reveals": ["keluar_jaringan"],
         "when": { "symptoms": ["keluar_jaringan"] },
         "clue": "Perdarahan & keluar jaringan kemarin"

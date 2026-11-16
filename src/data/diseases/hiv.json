@@ -60,7 +60,7 @@
         "clue": "Pasangan HIV positif"
       },
       {
-        "text": "Tiga bulan ini berat badan turun hampir enam kilo, Dok, sering mencret dan demam hilang timbul.",
+        "text": "{LamaSakit} ini berat badan turun hampir enam kilo, Dok, sering mencret dan demam hilang timbul.",
         "reveals": ["berat_badan_turun"],
         "when": { "traits": ["bb_turun"], "symptoms": ["berat_badan_turun"] },
         "clue": "BB turun, diare & demam berulang"

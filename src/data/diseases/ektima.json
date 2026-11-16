@@ -32,12 +32,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua minggu, Dok, awalnya bentol digigit nyamuk saya garuk, jadi koreng tebal hitam.",
+        "text": "Sudah {lamaSakit}, Dok, awalnya bentol digigit nyamuk saya garuk, jadi koreng tebal hitam.",
         "when": { "traits": ["bekas_gigitan"] },
         "clue": "Bermula dari gigitan serangga yang digaruk"
       },
       {
-        "text": "Sudah dua minggu, Dok, ada koreng tebal di kaki yang nggak sembuh.",
+        "text": "Sudah {lamaSakit}, Dok, ada koreng tebal di kaki yang nggak sembuh.",
         "when": { "notTraits": ["bekas_gigitan"] },
         "clue": "Krusta tebal menetap"
       }

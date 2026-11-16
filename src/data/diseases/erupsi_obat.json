@@ -8,6 +8,7 @@
   "prevalenceWeight": 0.9,
   "summary": "Reaksi kulit simpang akibat obat. Eksantematosa (morbiliformis): makula-papul eritematosa simetris di badan menyebar ke ekstremitas 7–14 hari setelah obat baru (amoksisilin, kotrimoksazol, antikonvulsan, alopurinol), gatal, tanpa mukosa. Fixed drug eruption: bercak bulat eritematosa-keunguan berbatas tegas, kadang bula, kambuh di TEMPAT YANG SAMA setiap minum obat yang sama (OAINS, sulfa, tetrasiklin), meninggalkan hiperpigmentasi. Hentikan obat; waspadai SJS/NET & DRESS.",
   "presentationDay": [1, 7],
+  "presentationDayByTrait": [{ "trait": "fde", "range": [1, 2] }],
   "demographics": {
     "ageBands": [
       { "min": 10, "max": 30, "weight": 3 },

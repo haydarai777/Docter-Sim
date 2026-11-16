@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua hari ini payudara kanan sakit, merah, panas, Dok, badan meriang.",
+        "text": "{LamaSakit} ini payudara kanan sakit, merah, panas, Dok, badan meriang.",
         "clue": "Akut, unilateral dengan demam"
       }
     ],

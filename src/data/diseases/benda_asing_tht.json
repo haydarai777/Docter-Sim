@@ -14,6 +14,7 @@
   "prevalenceWeight": 0.8,
   "summary": "Benda asing (biji-bijian, manik-manik, kertas, baterai kancing, serangga) di kavum nasi atau liang telinga, tersering pada anak 2–6 tahun. Hidung: ingus berbau dari SATU lubang hidung bila tidak diketahui. Telinga: penuh, tuli, nyeri; serangga hidup sangat nyeri & bising. Baterai kancing adalah kedaruratan (nekrosis). Ekstraksi dengan alat yang sesuai; jangan irigasi benda organik/baterai.",
   "presentationDay": [1, 7],
+  "presentationDayByTrait": [{ "trait": "serangga", "range": [1, 1] }],
   "demographics": {
     "ageBands": [{ "min": 1, "max": 5, "weight": 5 }, { "min": 6, "max": 9, "weight": 3 }, { "min": 10, "max": 40, "weight": 1 }],
     "maleRatio": 0.55,
@@ -49,7 +50,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi siang, Dok, kakaknya lihat dia masukin biji ke hidung.",
+        "text": "{LamaSakit} lalu, Dok, kakaknya lihat dia masukin biji ke hidung.",
         "when": { "traits": ["di_hidung", "organik"] },
         "clue": "Kejadian disaksikan (hidung)"
       },

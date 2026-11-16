@@ -465,12 +465,18 @@ function investigationTab(app: App, enc: EncounterState): HTMLElement {
 const STATUS_ORDER: DdxStatus[] = ['utama', 'mungkin', 'disingkirkan'];
 const DDX_SHORT_LABEL: Record<DdxStatus, string> = { utama: 'Kerja', mungkin: 'Mungkin', disingkirkan: 'Singkirkan' };
 
-function catalogMatches(app: App, query: string, filter?: (e: CatalogEntry) => boolean): CatalogEntry[] {
+function catalogMatches(app: App, query: string, filter?: (e: CatalogEntry) => boolean, system = ''): CatalogEntry[] {
   const q = normalizeForSearch(query);
   return app.content.catalog
     .filter((e) => !filter || filter(e))
+    .filter((e) => !system || e.system === system)
     .filter((e) => !q || normalizeForSearch(`${e.name} ${e.aliases.join(' ')} ${e.system}`).includes(q))
     .sort((a, b) => a.name.localeCompare(b.name, 'id'));
+}
+
+/** Sistem organ di katalog (untuk saringan daftar kondisi). */
+function catalogSystems(app: App): string[] {
+  return [...new Set(app.content.catalog.map((e) => e.system))].sort((a, b) => a.localeCompare(b, 'id'));
 }
 
 function findingsSummary(app: App, enc: EncounterState): HTMLElement {
@@ -503,7 +509,7 @@ function reasoningTab(app: App, enc: EncounterState): HTMLElement {
   const list = h('ul', { class: 'pick-list' });
   const renderList = () => {
     const onBoard = new Set(board.map((d) => d.id));
-    const items = catalogMatches(app, app.ui.catalogQuery, (e) => !onBoard.has(e.id)).map((e) =>
+    const items = catalogMatches(app, app.ui.catalogQuery, (e) => !onBoard.has(e.id), app.ui.catalogSystem).map((e) =>
       h(
         'li',
         null,
@@ -565,18 +571,35 @@ function reasoningTab(app: App, enc: EncounterState): HTMLElement {
         )
       : h('p', { class: 'empty' }, 'Belum ada. Tambahkan kondisi dari daftar di bawah.'),
     h('h3', { class: 'section-title' }, 'Tambah kondisi'),
-    h('input', {
-      class: 'search',
-      type: 'search',
-      placeholder: `Cari dari ${app.content.catalog.length} kondisi… (nama atau istilah awam)`,
-      'aria-label': 'Cari kondisi',
-      'data-focus-key': 'catalog',
-      value: app.ui.catalogQuery,
-      oninput: (e: Event) => {
-        app.setCatalogQuery((e.target as HTMLInputElement).value);
-        renderList();
-      },
-    }),
+    h(
+      'div',
+      { class: 'catalog-filter' },
+      h('input', {
+        class: 'search',
+        type: 'search',
+        placeholder: `Cari dari ${app.content.catalog.length} kondisi… (nama atau istilah awam)`,
+        'aria-label': 'Cari kondisi',
+        'data-focus-key': 'catalog',
+        value: app.ui.catalogQuery,
+        oninput: (e: Event) => {
+          app.setCatalogQuery((e.target as HTMLInputElement).value);
+          renderList();
+        },
+      }),
+      h(
+        'select',
+        {
+          class: 'select catalog-filter__system',
+          'aria-label': 'Saring menurut sistem organ',
+          onchange: (e: Event) => {
+            app.setCatalogSystem((e.target as HTMLSelectElement).value);
+            renderList();
+          },
+        },
+        h('option', { value: '', selected: !app.ui.catalogSystem }, 'Semua sistem'),
+        catalogSystems(app).map((sys) => h('option', { value: sys, selected: app.ui.catalogSystem === sys }, sys)),
+      ),
+    ),
     list,
   );
 }

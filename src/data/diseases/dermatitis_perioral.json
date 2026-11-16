@@ -23,7 +23,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, bintil-bintil merah kecil di sekitar mulut, rasanya panas.",
+        "text": "Sudah {lamaSakit}, Dok, bintil-bintil merah kecil di sekitar mulut, rasanya panas.",
         "clue": "Papul sekitar mulut, terbakar"
       }
     ],

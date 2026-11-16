@@ -44,7 +44,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi pagi bangun tidur, Dok, waktu kumur air keluar dari sudut mulut, mulut mencong ke kiri.",
+        "text": "{LamaSakit} lalu bangun tidur, Dok, waktu kumur air keluar dari sudut mulut, mulut mencong ke kiri.",
         "clue": "Onset akut, disadari pagi hari"
       }
     ],

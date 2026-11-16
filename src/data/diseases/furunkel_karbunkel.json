@@ -37,7 +37,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Empat hari ini, Dok, benjolan merah sakit di tengkuk, sekarang ada nanahnya.",
+        "text": "{LamaSakit} ini, Dok, benjolan merah sakit di tengkuk, sekarang ada nanahnya.",
         "clue": "Akut, nodus nyeri dengan pus"
       }
     ],

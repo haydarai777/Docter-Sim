@@ -8,6 +8,7 @@
   "prevalenceWeight": 1.1,
   "summary": "Reaksi kulit terhadap gigitan/sengatan serangga (nyamuk, kutu busuk, semut, tawon, lebah, ulat): papul-urtika gatal dengan punktum di tengah, sering berkelompok di area terbuka; pada anak dapat menjadi urtikaria papular berulang. Sengatan tawon/lebah menimbulkan bengkak lokal nyeri. Waspadai reaksi sistemik/anafilaksis. Terapi simtomatik: kompres dingin, antihistamin, steroid topikal ringan.",
   "presentationDay": [1, 7],
+  "presentationDayByTrait": [{ "trait": "sengatan", "range": [1, 1] }],
   "demographics": {
     "ageBands": [{ "min": 1, "max": 9, "weight": 4 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 2 }],
     "maleRatio": 0.5
@@ -30,7 +31,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Kemarin sore, Dok, habis main di kebun muncul bentol-bentol gatal di kaki dan tangan.",
+        "text": "{LamaSakit} lalu, Dok, habis main di kebun muncul bentol-bentol gatal di kaki dan tangan.",
         "when": { "notTraits": ["sengatan"] },
         "clue": "Akut setelah aktivitas luar"
       },

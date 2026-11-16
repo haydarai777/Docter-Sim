@@ -46,7 +46,7 @@
   "misattributions": ["kecapekan", "darah rendah", "panas dalam"],
   "fears": ["lumpuh", "kanker darah"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah satu-dua bulan, Dok, badan lemas.", "clue": "Subakut–kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, badan lemas.", "clue": "Subakut–kronik" }],
     "kebiasaan": [
       {
         "text": "Makan nasi putih saja hampir tiap hari, Dok, jarang sayur atau buah, minum tuak tiap malam.",

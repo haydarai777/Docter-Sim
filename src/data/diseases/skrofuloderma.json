@@ -29,7 +29,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga bulan, Dok, benjolan di leher nggak sakit, lama-lama lunak lalu pecah jadi luka bernanah encer.",
+        "text": "Sudah {lamaSakit}, Dok, benjolan di leher nggak sakit, lama-lama lunak lalu pecah jadi luka bernanah encer.",
         "clue": "Benjolan kronik tidak nyeri → abses dingin → ulkus/fistel"
       }
     ],

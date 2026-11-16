@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Seminggu lalu demam, lemas, mual, nggak nafsu makan, Dok. Dua hari ini mata kuning dan kencing kayak teh.",
+        "text": "{LamaSakit} lalu demam, lemas, mual, nggak nafsu makan, Dok. Dua hari ini mata kuning dan kencing kayak teh.",
         "reveals": ["urin_gelap"],
         "when": { "symptoms": ["urin_gelap"] },
         "clue": "Prodromal 1 minggu lalu ikterus & urin gelap"

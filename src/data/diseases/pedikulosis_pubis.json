@@ -23,7 +23,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua minggu ini, Dok, rambut kemaluan gatal sekali, ada kutu kecil kayak ketombe yang bergerak.",
+        "text": "{LamaSakit} ini, Dok, rambut kemaluan gatal sekali, ada kutu kecil kayak ketombe yang bergerak.",
         "reveals": ["kutu_rambut"],
         "when": { "symptoms": ["kutu_rambut"] },
         "clue": "Gatal pubis dengan kutu terlihat"

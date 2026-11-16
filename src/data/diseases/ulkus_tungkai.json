@@ -30,7 +30,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga bulan, Dok, luka di mata kaki kiri nggak sembuh-sembuh, makin lebar.",
+        "text": "Sudah {lamaSakit}, Dok, luka di mata kaki kiri nggak sembuh-sembuh, makin lebar.",
         "clue": "Ulkus kronik > 6 minggu"
       }
     ],

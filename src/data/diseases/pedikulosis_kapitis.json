@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, kepalanya gatal terus, garuk-garuk terutama belakang kepala.",
+        "text": "Sudah {lamaSakit}, Dok, kepalanya gatal terus, garuk-garuk terutama belakang kepala.",
         "clue": "Gatal kulit kepala kronik, oksipital"
       }
     ],

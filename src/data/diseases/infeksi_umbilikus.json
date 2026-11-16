@@ -40,7 +40,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua hari ini pusarnya merah dan basah, Dok, baunya nggak enak.",
+        "text": "{LamaSakit} ini pusarnya merah dan basah, Dok, baunya nggak enak.",
         "clue": "Akut, umbilikus merah basah berbau"
       }
     ],

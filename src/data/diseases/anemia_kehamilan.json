@@ -48,7 +48,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sebulan ini, Dok, gampang capek dan pusing, padahal kerja sedikit.",
+        "text": "{LamaSakit} ini, Dok, gampang capek dan pusing, padahal kerja sedikit.",
         "clue": "Lemas & pusing progresif"
       }
     ],

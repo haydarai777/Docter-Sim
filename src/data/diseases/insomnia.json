@@ -7,7 +7,8 @@
   "danger": "rendah",
   "prevalenceWeight": 1,
   "summary": "Kesulitan memulai atau mempertahankan tidur, atau bangun terlalu dini, ≥ 3 malam/minggu, disertai gangguan fungsi siang hari (lelah, mengantuk, sulit konsentrasi, mudah marah). Akut (< 3 bulan, sering karena stresor) atau kronik. Cari penyebab: higiene tidur buruk (kafein, gawai), stres, depresi/cemas, nyeri, obat, sleep apnea. Terapi utama: higiene tidur & CBT-I; hipnotik hanya jangka pendek.",
-  "presentationDay": [14, 180],
+  "presentationDay": [14, 60],
+  "presentationDayByTrait": [{ "trait": "kronik", "range": [90, 180] }],
   "demographics": {
     "ageBands": [
       { "min": 18, "max": 35, "weight": 3 },
@@ -51,12 +52,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga minggu ini, Dok, sejak ada masalah di kantor.",
+        "text": "Sudah {lamaSakit} ini, Dok, sejak ada masalah di kantor.",
         "when": { "notTraits": ["kronik"], "traits": ["stresor"] },
         "clue": "Akut, dipicu stresor"
       },
       {
-        "text": "Sudah lebih dari tiga bulan, Dok, hampir tiap malam.",
+        "text": "Sudah lebih dari {lamaSakit}, Dok, hampir tiap malam.",
         "when": { "traits": ["kronik"] },
         "clue": "Kronik ≥ 3 bulan"
       },

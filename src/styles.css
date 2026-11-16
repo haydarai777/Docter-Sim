@@ -2324,3 +2324,28 @@ body {
   list-style: none;
   padding-left: 0;
 }
+
+/* Fokus kelompok penyakit (layar judul) & saringan sistem organ (papan diagnosis banding) */
+.title-focus {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0 auto 0.75rem;
+  max-width: 22rem;
+  text-align: left;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.catalog-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+.catalog-filter .search {
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+.catalog-filter__system {
+  flex: 0 1 13rem;
+  width: auto;
+}

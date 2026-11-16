@@ -467,3 +467,45 @@ export function sampleSpeech(tl: SpeechTimeline, time: number): { open: number; 
   const k = clamp((time - a.t) / span, 0, 1);
   return { open: a.open + (b.open - a.open) * k, wide: a.wide + (b.wide - a.wide) * k, chars: a.chars, done: false };
 }
+
+/** Cara pengantar membawa pasien anak ke ruang praktik. */
+export type CompanionMode = 'dampingi' | 'pangku';
+
+/** Bayi & batita (< 3 tahun) digendong lalu dipangku; anak lebih besar berjalan sendiri dan duduk di kursi pasien. */
+export function companionMode(age: number): CompanionMode {
+  return age < 3 ? 'pangku' : 'dampingi';
+}
+
+/**
+ * Penampilan pengantar (orang tua/nenek) pasien anak: orang dewasa sehat tanpa isyarat klinis,
+ * wajah sedikit cemas bila anaknya tampak sakit. Deterministik dari seed kasus.
+ */
+export function buildCompanionAppearance(c: PatientCase, content: GameContent, patientLook?: PatientAppearance): PatientAppearance | null {
+  const comp = c.patient.companion;
+  if (!comp) return null;
+  const rng = createRng(deriveSeed(c.seed, 'pengantar-3d'));
+  const heightCm = Math.round(comp.sex === 'male' ? rng.float(158, 174) : rng.float(147, 162));
+  const bmi = Math.round(rng.float(19.5, 27.5) * 10) / 10;
+  const stand_in: PatientCase = {
+    ...c,
+    seed: deriveSeed(c.seed, 'pengantar'),
+    patient: { ...c.patient, sex: comp.sex, age: comp.age, occupationId: 'pengantar', companion: undefined },
+    symptoms: [],
+    chiefComplaintSymptoms: [],
+    findings: {},
+  };
+  const look = buildAppearance(stand_in, content);
+  const sickChild = !!patientLook && (patientLook.emotion === 'kesakitan' || patientLook.emotion === 'lesu' || Object.keys(patientLook.cues).length >= 2);
+  return {
+    ...look,
+    heightCm,
+    bmi,
+    build: clamp((bmi - 23) / 8, -0.3, 0.6),
+    cues: {},
+    hold: null,
+    breathsPerMinute: 15,
+    emotion: sickChild || c.patient.personalityId === 'cemas' ? 'cemas' : look.emotion === 'santai' ? 'santai' : 'tenang',
+    walkSpeed: comp.age >= 55 ? 0.85 : 1.05,
+    observations: [],
+  };
+}

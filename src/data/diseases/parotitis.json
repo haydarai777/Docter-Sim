@@ -7,7 +7,7 @@
   "danger": "rendah",
   "prevalenceWeight": 0.8,
   "summary": "Infeksi virus mumps pada anak usia sekolah/remaja yang belum vaksin MMR: demam, nyeri kepala, lalu pembengkakan kelenjar parotis (unilateral lalu bilateral pada 70%) di depan-bawah telinga, nyeri saat mengunyah/makanan asam, lobulus telinga terangkat. Menular sejak 2 hari sebelum hingga 5 hari setelah bengkak. Komplikasi: orkitis (pascapubertas), meningitis aseptik, pankreatitis.",
-  "presentationDay": [1, 5],
+  "presentationDay": [2, 5],
   "demographics": {
     "ageBands": [{ "min": 4, "max": 9, "weight": 4 }, { "min": 10, "max": 15, "weight": 4 }, { "min": 16, "max": 30, "weight": 1 }],
     "maleRatio": 0.55,
@@ -41,12 +41,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua hari lalu demam dan pusing, Dok, kemarin pipi kanan bengkak, sekarang kiri juga.",
+        "text": "{LamaSakit} lalu demam dan pusing, Dok, kemarin pipi kanan bengkak, sekarang kiri juga.",
         "when": { "traits": ["bilateral"] },
         "clue": "Prodromal lalu bengkak parotis unilateral → bilateral"
       },
       {
-        "text": "Dua hari lalu demam, Dok, kemarin pipi kanan bengkak.",
+        "text": "{LamaSakit} lalu demam, Dok, kemarin pipi kanan bengkak.",
         "when": { "notTraits": ["bilateral"] },
         "clue": "Prodromal lalu bengkak parotis unilateral"
       }

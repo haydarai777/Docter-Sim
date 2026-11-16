@@ -44,7 +44,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua hari ini panas tinggi menggigil, Dok, pinggang kanan sakit.",
+        "text": "{LamaSakit} ini panas tinggi menggigil, Dok, pinggang kanan sakit.",
         "clue": "Demam tinggi + nyeri pinggang akut"
       }
     ],

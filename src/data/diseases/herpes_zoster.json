@@ -39,7 +39,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tiga hari lalu dada kiri sampai punggung perih kayak terbakar, Dok, kemarin muncul bintil berair berkelompok.",
+        "text": "{LamaSakit} lalu dada kiri sampai punggung perih kayak terbakar, Dok, kemarin muncul bintil berair berkelompok.",
         "clue": "Nyeri prodromal 1–3 hari lalu vesikel berkelompok"
       }
     ],

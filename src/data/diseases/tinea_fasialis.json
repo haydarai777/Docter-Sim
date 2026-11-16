@@ -22,7 +22,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, bercak merah di pipi makin lebar melingkar.",
+        "text": "Sudah {lamaSakit}, Dok, bercak merah di pipi makin lebar melingkar.",
         "clue": "Bercak anular meluas perlahan"
       }
     ],

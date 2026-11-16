@@ -27,12 +27,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua minggu lalu muncul luka di kemaluan, Dok, nggak sakit sama sekali, pinggirnya keras.",
+        "text": "{LamaSakit} lalu muncul luka di kemaluan, Dok, nggak sakit sama sekali, pinggirnya keras.",
         "when": { "notTraits": ["stadium2"] },
         "clue": "Ulkus tunggal tidak nyeri dengan indurasi"
       },
       {
-        "text": "Dua minggu ini muncul bintik kemerahan di badan sampai telapak tangan dan kaki, Dok, nggak gatal.",
+        "text": "{LamaSakit} ini muncul bintik kemerahan di badan sampai telapak tangan dan kaki, Dok, nggak gatal.",
         "when": { "traits": ["stadium2"] },
         "clue": "Ruam papuloskuamosa termasuk telapak, tidak gatal"
       }

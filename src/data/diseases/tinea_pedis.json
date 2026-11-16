@@ -38,7 +38,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua bulan, Dok, sela jari kaki gatal, putih basah, mengelupas, kadang perih.",
+        "text": "Sudah {lamaSakit}, Dok, sela jari kaki gatal, putih basah, mengelupas, kadang perih.",
         "clue": "Kronik interdigital"
       }
     ],

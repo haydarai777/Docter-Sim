@@ -39,7 +39,7 @@ describe('pengaturan pasien AI', () => {
 
   it('pengaturan versi lama (tanpa versi) dengan aiPatient: true dimigrasi ke mode lokal; pengaturan lain dipertahankan', () => {
     const old = { theme: 'dark', realisticTests: false, tutorialSeen: true, aiPatient: true };
-    expect(migrateSettings(old)).toEqual({ theme: 'dark', realisticTests: false, tutorialSeen: true, aiPatient: false });
+    expect(migrateSettings(old)).toEqual({ theme: 'dark', realisticTests: false, tutorialSeen: true, aiPatient: false, focusSystem: null });
   });
 
   it('pilihan pemain setelah migrasi dihormati (versi 2)', () => {

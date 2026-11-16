@@ -8,6 +8,7 @@
   "prevalenceWeight": 1.4,
   "summary": "Nyeri kepala primer tersering: bilateral, seperti ditekan/diikat (non-pulsatil), intensitas ringan–sedang, tidak diperberat aktivitas, tanpa mual-muntah (boleh salah satu dari fotofobia/fonofobia). Sering dipicu stres, kurang tidur, postur kerja; nyeri tekan otot perikranial. Pemeriksaan neurologis normal. Episodik (< 15 hari/bulan) atau kronik.",
   "presentationDay": [1, 30],
+  "presentationDayByTrait": [{ "trait": "kronik", "range": [30, 90] }],
   "demographics": {
     "ageBands": [
       { "min": 18, "max": 30, "weight": 3 },
@@ -52,7 +53,7 @@
         "clue": "Episodik"
       },
       {
-        "text": "Hampir tiap hari sebulan terakhir, Dok.",
+        "text": "Hampir tiap hari {lamaSakit} terakhir, Dok.",
         "when": { "traits": ["kronik"] },
         "clue": "Kronik (≥ 15 hari/bulan)"
       }

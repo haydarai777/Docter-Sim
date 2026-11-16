@@ -1,6 +1,7 @@
 import type { App } from '../app';
 import { disclaimer } from '../components/disclaimer';
 import { h } from '../dom';
+import { diseaseSystems } from '../../core/run';
 import { loadRecords } from '../storage';
 
 export function renderTitle(app: App): HTMLElement {
@@ -22,6 +23,21 @@ export function renderTitle(app: App): HTMLElement {
         h('li', null, 'Periksa fisik (gratis) dan pilih pemeriksaan penunjang sesuai tujuan (memotong budget pasien).'),
         h('li', null, 'Susun diagnosis banding, nilai komplikasi, lalu putuskan diagnosis & disposisi. Seluruh proses klinis Anda dinilai.'),
       ),
+      h(
+        'label',
+        { class: 'title-focus' },
+        h('span', null, 'Pasien yang datang'),
+        h(
+          'select',
+          {
+            class: 'select',
+            'aria-label': 'Fokus kelompok penyakit',
+            onchange: (e: Event) => app.updateSettings({ focusSystem: (e.target as HTMLSelectElement).value || null }),
+          },
+          h('option', { value: '', selected: !app.focusSystem }, `Semua penyakit (${app.content.diseases.length})`),
+          diseaseSystems(app.content).map(({ system, count }) => h('option', { value: system, selected: app.focusSystem === system }, `${system} (${count})`)),
+        ),
+      ),
       saved
         ? h(
             'div',
@@ -29,7 +45,7 @@ export function renderTitle(app: App): HTMLElement {
             h(
               'button',
               { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.resumeGame() },
-              `Lanjutkan praktek (pasien #${saved.run.patientIndex}, reputasi ${saved.run.reputation})`,
+              `Lanjutkan praktek (pasien #${saved.run.patientIndex}, reputasi ${saved.run.reputation}${saved.run.focusSystem ? ` · ${saved.run.focusSystem}` : ''})`,
             ),
             h('button', { class: 'btn', type: 'button', onclick: () => app.startGame() }, 'Mulai praktek baru'),
           )

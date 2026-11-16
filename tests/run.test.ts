@@ -98,6 +98,22 @@ describe('sesi permainan', () => {
     expect(ids.some((id, i) => i > 0 && ids[i - 1] === id)).toBe(true);
   });
 
+  it('fokus sistem organ: hanya penyakit dari sistem itu yang datang', async () => {
+    const { diseasePool, diseaseSystems } = await import('../src/core/run');
+    const systems = diseaseSystems(content);
+    expect(systems.reduce((s, x) => s + x.count, 0)).toBe(content.diseases.length);
+    const mata = systems.find((x) => x.system === 'Mata')!;
+    let run = createRun(5, config, 'Mata');
+    expect(diseasePool(run, content)).toHaveLength(mata.count);
+    for (let i = 0; i < 12; i++) {
+      run = playWell(startNextPatient(run, content, config));
+      expect(content.diseasesById.get(run.history.at(-1)!.diseaseId)!.system).toBe('Mata');
+    }
+    // Sistem yang tidak dikenal → kembali ke semua penyakit.
+    expect(diseasePool({ focusSystem: 'Tidak ada' }, content)).toHaveLength(content.diseases.length);
+    expect(createRun(5, config)).not.toHaveProperty('focusSystem');
+  });
+
   it('statistik sesi', () => {
     let run = createRun(31, config);
     run = playWell(startNextPatient(run, content, config));

@@ -46,7 +46,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua-tiga tahun ini berat badan naik terus, Dok, sekarang hampir seratus kilo.",
+        "text": "{LamaSakit} ini berat badan naik terus, Dok, sekarang hampir seratus kilo.",
         "when": { "traits": ["obesitas2"] },
         "clue": "BB naik progresif bertahun-tahun"
       },

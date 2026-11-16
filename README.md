@@ -109,23 +109,40 @@ Perintah lain:
 
 ## Konten saat ini
 
-13 penyakit dalam 4 klaster yang sengaja saling mengecoh:
+**146 penyakit — seluruh 144 penyakit tingkat kemampuan 4A SKDI 2012** ditambah 2 penyakit 3A
+(angina pektoris stabil, batu saluran kemih) yang sengaja dipertahankan sebagai pengecoh. Daftar
+lengkap per sistem organ beserta id datanya ada di **`docs/skdi-4a.md`**.
 
-| Klaster | Penyakit | Contoh jebakan |
-|---|---|---|
-| Demam akut | Infeksi dengue, demam tifoid, malaria | Trombosit turun pada dengue **dan** malaria; Widal sering positif palsu |
-| Nyeri dada / ulu hati | GERD, angina pektoris stabil*, dispepsia fungsional, gastritis akut | "Dada nggak enak, kayak masuk angin"; EKG istirahat angina sering normal; "maag" kronik berbulan-bulan tanpa pemicu (dispepsia fungsional) vs perih mendadak setelah jamu pegal linu/OAINS atau alkohol yang bisa berdarah (gastritis) |
-| Berkemih / pinggang | ISK bawah, batu saluran kemih*, DM tipe 2 | "Sering kencing" bisa ISK (sedikit-sedikit, perih) atau poliuria DM |
-| Batuk / sesak | TB paru, pneumonia komunitas, asma | Batuk + BB turun: TB atau DM? |
+| Sistem organ | Contoh penyakit |
+|---|---|
+| Mata (13) | konjungtivitis, hordeolum, mata kering, kelainan refraksi, buta senja |
+| THT & saluran napas atas (13) + pernapasan (6) | OMA, serumen prop, rinitis alergi, epistaksis, faringitis/tonsilitis, pertusis, TB paru, asma |
+| Saraf & jiwa (8) | kejang demam, tetanus, migren, BPPV, Bell's palsy, insomnia |
+| Pencernaan (18) | gastroenteritis, disentri, cacingan, hepatitis A, hemoroid, GERD, gastritis, dispepsia |
+| Infeksi tropis, darah & imunologi (9) | dengue, malaria, tifoid, leptospirosis, filariasis, HIV, anafilaksis |
+| Endokrin & metabolik (9) + kardiovaskular (2) | DM tipe 1 & 2, hipoglikemia, gizi buruk, dislipidemia, gout, hipertensi |
+| Kulit & kelamin (46) + kelamin & reproduksi (8) + saluran kemih (3) | tinea, skabies, kusta, sifilis, dermatitis, akne, gonore, vaginitis, ISK, pielonefritis |
+| Obstetri (7) | kehamilan normal, anemia kehamilan, ruptur perineum, mastitis, masalah puting |
+| Trauma & forensik (4) | vulnus, luka bakar derajat 1–2, luka akibat kekerasan tumpul & tajam (dokumentasi/VeR) |
 
-\* Tingkat SKDI 3A (bukan 4A) — sengaja dimasukkan karena dokter umum wajib mengenalinya.
+Pasien berusia **0–75 tahun**. Pasien di bawah 10 tahun datang bersama pengantar (ibu/ayah/nenek)
+yang menjawab anamnesis (**alloanamnesis**); di ruang 3D, bayi & batita digendong lalu dipangku,
+anak yang lebih besar duduk di kursi pasien sementara pengantar duduk di sampingnya. Nilai rujukan
+tanda vital & antropometri menyesuaikan usia.
 
-33 alat pemeriksaan (11 fisik, 16 lab termasuk tes antigen H. pylori, 4 pencitraan, EKG, spirometri),
-45 gejala, 16 topik anamnesis yang dinilai + keluhan utama + 8 topik percakapan (identitas, pendapat,
-kekhawatiran, harapan, haid & kehamilan; tidak dinilai), 10 tinjauan sistem, 5 komorbiditas,
-3 temuan insidental, 23 kondisi khusus diagnosis banding
-(mis. leptospirosis, sindrom koroner akut, pielonefritis, massa saluran kemih, kanker paru), 5 kepribadian.
-Detail lengkap untuk reviewer ada di **`REVIEW.md`**.
+80 alat pemeriksaan (30 pemeriksaan fisik gratis per sistem — termasuk mata, THT, saraf, kulit/status
+lokalis, genital, obstetri, payudara, anak — dan 50 penunjang berbayar), 171 gejala, topik anamnesis
+yang dinilai + tinjauan sistem, komorbiditas & temuan insidental, 144 kondisi tambahan untuk papan
+diagnosis banding, 5 kepribadian pasien.
+
+**Mode latihan per sistem organ:** di layar judul pilih *Pasien yang datang* untuk hanya menerima pasien
+dari satu sistem organ (mis. hanya penyakit mata). Papan diagnosis banding dapat disaring per sistem.
+
+**Mode OSCE:** setiap penyakit punya kunci stasiun (formularium 164 obat — oral, topikal, tetes
+mata/telinga, semprot hidung, injeksi, vaksin & serum, MDT kusta, OAT anak), ditambah 11 stasiun prosedur.
+Lihat `docs/osce.md`.
+
+Detail untuk reviewer ada di **`REVIEW.md`**.
 
 ## Main tanpa GitHub: satu file HTML
 
@@ -137,7 +154,7 @@ Hasilnya di `dist-single/`:
 
 | File | Kegunaan |
 |---|---|
-| `meja-praktek.html` | Seluruh game dalam **satu file** (± 1 MB, termasuk mesin 3D). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
+| `meja-praktek.html` | Seluruh game dalam **satu file** (± 2,7 MB, termasuk mesin 3D dan 146 penyakit). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
 | `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI bisa diaktifkan di Pengaturan; bawaannya tetap mode lokal tanpa kuota). |
 
 Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.

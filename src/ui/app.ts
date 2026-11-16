@@ -7,7 +7,7 @@
  *  - lapisan UI HTML di atasnya (monitor RME, HUD, dialog) — digambar ulang tiap perubahan.
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
-import { buildAppearance, chiefSite, bodySide, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
+import { bodySide, buildAppearance, buildCompanionAppearance, chiefSite, companionMode, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
 import { askQuestion, canSubmitDecision, EncounterError, interpretInContext, performExam, setDdx, startEncounter, submitDecision as submitEncounterDecision } from '../core/encounter';
 import { generateCase } from '../core/generator';
 import type { OsceContent } from '../core/osce/content';
@@ -19,7 +19,7 @@ import { DEFAULT_SETUP, EMPTY_DRAFT, type DraftLine, emptyWork, newSession, type
 import { briefingDialog, renderOsceFinal, renderOsceMenu, renderOsceResult, renderProcedure } from './osce/views';
 import type { Intent } from '../core/nlu';
 import { hashString, randomSeed } from '../core/rng';
-import { createRun, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
+import { createRun, diseaseSystems, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
 import type { ClinicalDecision, DdxStatus, Disposition, EncounterState, GameConfig, GameContent, RunState } from '../core/types';
 import { AiError, type AiAvailability, askAiPatient, getSample } from './ai/patientAi';
 import { medicalRecordDialog, settingsDialog, tutorialDialog } from './components/dialogs';
@@ -67,6 +67,8 @@ export interface UiState {
   /** Teks pertanyaan yang sedang diketik. */
   draft: string;
   catalogQuery: string;
+  /** Filter sistem organ di daftar kondisi ('' = semua). */
+  catalogSystem: string;
   secondaryQuery: string;
   decision: DecisionDraft;
   confirmDecision: boolean;
@@ -92,6 +94,7 @@ const INITIAL_UI: UiState = {
   actionTab: 'anamnesis',
   draft: '',
   catalogQuery: '',
+  catalogSystem: '',
   secondaryQuery: '',
   decision: EMPTY_DECISION,
   confirmDecision: false,
@@ -233,7 +236,7 @@ export class App {
   startGame(): void {
     this.cancelAi();
     this.stopOsce();
-    const run = createRun(randomSeed(), this.config);
+    const run = createRun(randomSeed(), this.config, this.focusSystem);
     this.run = startNextPatient(run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
     this.finalRecords = null;
@@ -272,7 +275,10 @@ export class App {
     this.ui = { ...this.ui, phase: instant ? 'konsultasi' : 'datang', intro: instant ? 2 : 0 };
     const site = chiefSite(c, this.content);
     const complaintGestures: GestureCue[] = site ? [{ kind: 'tunjuk', site, side: bodySide(c, this.content) }] : [];
-    void this.director.enter(this.appearance, c.seed, c.patient.callName, c.greeting, c.complaint, complaintGestures, instant);
+    const comp = c.patient.companion;
+    const companionLook = comp ? buildCompanionAppearance(c, this.content, this.appearance) : null;
+    const companion = comp && companionLook ? { look: companionLook, mode: companionMode(c.patient.age), name: `${comp.address} (${comp.relation})` } : null;
+    void this.director.enter(this.appearance, c.seed, c.patient.callName, c.greeting, c.complaint, complaintGestures, instant, companion);
   }
 
   /** Lewati adegan datang/pamit. */
@@ -383,6 +389,16 @@ export class App {
 
   setCatalogQuery(query: string): void {
     this.ui.catalogQuery = query;
+  }
+
+  setCatalogSystem(system: string): void {
+    this.ui.catalogSystem = system;
+  }
+
+  /** Fokus sistem organ yang tersimpan (diabaikan bila tidak lagi ada di konten). */
+  get focusSystem(): string | null {
+    const f = this.settings.focusSystem;
+    return f && diseaseSystems(this.content).some((x) => x.system === f) ? f : null;
   }
 
   setSecondaryQuery(query: string): void {

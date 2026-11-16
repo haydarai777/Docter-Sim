@@ -28,7 +28,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, selangkangan gatal sekali, merah kecoklatan, makin melebar ke bokong.",
+        "text": "Sudah {lamaSakit}, Dok, selangkangan gatal sekali, merah kecoklatan, makin melebar ke bokong.",
         "clue": "Subakut, meluas"
       }
     ],

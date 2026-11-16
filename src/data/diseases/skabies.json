@@ -43,7 +43,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga minggu, Dok, gatal sekali terutama malam, sampai nggak bisa tidur.",
+        "text": "Sudah {lamaSakit}, Dok, gatal sekali terutama malam, sampai nggak bisa tidur.",
         "clue": "Pruritus nokturna"
       }
     ],

@@ -24,7 +24,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, bulat-bulat seperti koin di kaki, gatal sekali, kadang basah.",
+        "text": "Sudah {lamaSakit}, Dok, bulat-bulat seperti koin di kaki, gatal sekali, kadang basah.",
         "clue": "Subakut, plak koin eksudatif"
       }
     ],

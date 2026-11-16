@@ -7,7 +7,8 @@
   "danger": "sedang",
   "prevalenceWeight": 1,
   "summary": "Diare dengan darah dan lendir disertai tenesmus. Basiler (Shigella): akut, demam tinggi, nyeri perut kram, sering anak, tinja sedikit-sedikit berlendir darah. Amuba (Entamoeba histolytica): lebih subakut, dewasa, demam ringan, tinja 'selai stroberi' berbau, dapat menimbulkan abses hati. Feses: leukosit & eritrosit banyak; trofozoit hematofagus pada amubiasis. Terapi antibiotik sesuai etiologi + rehidrasi + zinc.",
-  "presentationDay": [1, 10],
+  "presentationDay": [1, 4],
+  "presentationDayByTrait": [{ "trait": "amuba", "range": [5, 14] }],
   "demographics": {
     "ageBands": [
       { "min": 1, "max": 5, "weight": 3 },
@@ -37,12 +38,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sejak kemarin, Dok, mendadak panas tinggi, mencret sedikit-sedikit tapi sering, ada lendir dan darahnya.",
+        "text": "Sejak {lamaSakit} lalu, Dok, mendadak panas tinggi, mencret sedikit-sedikit tapi sering, ada lendir dan darahnya.",
         "when": { "notTraits": ["amuba"] },
         "clue": "Akut dengan demam tinggi (basiler)"
       },
       {
-        "text": "Sudah seminggu, Dok, mencret berlendir darah, baunya busuk, hilang-timbul.",
+        "text": "Sudah {lamaSakit}, Dok, mencret berlendir darah, baunya busuk, hilang-timbul.",
         "when": { "traits": ["amuba"] },
         "clue": "Subakut, berbau (amuba)"
       }

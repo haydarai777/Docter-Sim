@@ -197,3 +197,35 @@ describe('sinkronisasi mulut dengan teks', () => {
     }
   });
 });
+
+describe('pengantar pasien anak (3D)', () => {
+  it('pengantar: orang dewasa sehat tanpa isyarat klinis; bayi & batita dipangku', async () => {
+    const { buildCompanionAppearance, companionMode } = await import('../src/core/appearance');
+    expect(companionMode(0)).toBe('pangku');
+    expect(companionMode(2)).toBe('pangku');
+    expect(companionMode(3)).toBe('dampingi');
+    let seen = 0;
+    for (let seed = 1; seed < 400 && seen < 12; seed++) {
+      const c = generateCase(content, config, { diseaseId: 'kejang_demam', seed });
+      const kid = buildAppearance(c, content);
+      const comp = buildCompanionAppearance(c, content, kid);
+      if (!c.patient.companion) {
+        expect(comp).toBeNull();
+        continue;
+      }
+      seen++;
+      expect(comp).not.toBeNull();
+      expect(comp!.sex).toBe(c.patient.companion.sex);
+      expect(comp!.age).toBe(c.patient.companion.age);
+      expect(comp!.ageGroup === 'dewasa' || comp!.ageGroup === 'lansia').toBe(true);
+      expect(comp!.cues).toEqual({});
+      expect(comp!.hold).toBeNull();
+      expect(comp!.heightCm).toBeGreaterThan(kid.heightCm + 25);
+      // Deterministik.
+      expect(buildCompanionAppearance(c, content, kid)).toEqual(comp);
+    }
+    expect(seen).toBeGreaterThan(5);
+    const adult = generateCase(content, config, { diseaseId: 'gerd', seed: 3 });
+    expect(buildCompanionAppearance(adult, content)).toBeNull();
+  });
+});

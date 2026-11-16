@@ -52,7 +52,7 @@
   "misattributions": ["darah rendah", "kecapekan", "kurang tidur", "kurang vitamin"],
   "fears": ["kanker darah", "leukemia"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah dua-tiga bulan, Dok, makin lama makin gampang capek.", "clue": "Bertahap, kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, makin lama makin gampang capek.", "clue": "Bertahap, kronik" }],
     "pemberat_peringan": [
       {
         "text": "Kalau naik tangga atau jalan agak jauh langsung ngos-ngosan dan berdebar, Dok.",

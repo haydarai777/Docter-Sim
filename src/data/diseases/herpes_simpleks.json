@@ -42,12 +42,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua hari lalu bibir saya terasa panas dan gatal, Dok, terus muncul bintil berair berkelompok.",
+        "text": "{LamaSakit} lalu bibir saya terasa panas dan gatal, Dok, terus muncul bintil berair berkelompok.",
         "when": { "notTraits": ["genitalis"] },
         "clue": "Prodromal terbakar lalu vesikel berkelompok"
       },
       {
-        "text": "Tiga hari lalu kemaluan saya perih, Dok, terus muncul lepuh kecil-kecil yang pecah jadi luka.",
+        "text": "{LamaSakit} lalu kemaluan saya perih, Dok, terus muncul lepuh kecil-kecil yang pecah jadi luka.",
         "reveals": ["luka_kemaluan"],
         "when": { "traits": ["genitalis"], "symptoms": ["luka_kemaluan"] },
         "clue": "Vesikel berkelompok → erosi nyeri di genital"

@@ -459,6 +459,10 @@ function validateDisease(
   if (!DANGER_LEVELS.includes(d.danger)) err(path, `tingkat bahaya tidak valid "${d.danger}"`);
   if (!(d.prevalenceWeight > 0)) err(path, 'prevalenceWeight harus > 0');
   if (!isRange(d.presentationDay) || d.presentationDay[0] < 1) err(path, 'presentationDay tidak valid');
+  for (const r of d.presentationDayByTrait ?? []) {
+    if (!(d.traits ?? []).some((t) => t.id === r.trait)) err(path, `presentationDayByTrait: trait "${r.trait}" tidak ada`);
+    if (!isRange(r.range) || r.range[0] < 1) err(path, `presentationDayByTrait: rentang hari "${r.trait}" tidak valid`);
+  }
   if (!REVIEW_STATUSES.includes(d.review?.status)) err(path, 'review.status wajib diisi');
   if (!d.summary) err(path, 'summary kosong');
   if (!d.keyFindings?.length) err(path, 'keyFindings kosong');

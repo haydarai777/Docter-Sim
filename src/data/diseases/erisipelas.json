@@ -40,12 +40,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Kemarin tiba-tiba menggigil dan demam, Dok, terus kaki kanan merah, panas, bengkak, makin lebar.",
+        "text": "{LamaSakit} lalu tiba-tiba menggigil dan demam, Dok, terus kaki kanan merah, panas, bengkak, makin lebar.",
         "when": { "notTraits": ["wajah"] },
         "clue": "Onset mendadak dengan demam/menggigil"
       },
       {
-        "text": "Kemarin demam menggigil, Dok, terus pipi kanan merah, panas, bengkak.",
+        "text": "{LamaSakit} lalu demam menggigil, Dok, terus pipi kanan merah, panas, bengkak.",
         "when": { "traits": ["wajah"] },
         "clue": "Onset mendadak di wajah"
       }

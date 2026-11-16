@@ -7,9 +7,10 @@ import { createRng, deriveSeed } from './rng';
 import { applyReputation, isGameOver } from './scoring';
 import type { ClinicalDecision, EncounterState, GameConfig, GameContent, PatientRecord, RunState } from './types';
 
-export function createRun(runSeed: number, config: GameConfig): RunState {
+export function createRun(runSeed: number, config: GameConfig, focusSystem: string | null = null): RunState {
   return {
     runSeed: runSeed >>> 0,
+    ...(focusSystem ? { focusSystem } : {}),
     patientIndex: 0,
     reputation: config.reputation.initial,
     history: [],
@@ -23,11 +24,25 @@ export function patientSeed(run: RunState, index: number): number {
   return deriveSeed(run.runSeed, `pasien:${index}`);
 }
 
+/** Penyakit yang dapat muncul pada sesi ini (seluruhnya, atau satu sistem organ bila sesi berfokus). */
+export function diseasePool(run: Pick<RunState, 'focusSystem'>, content: GameContent): GameContent['diseases'] {
+  if (!run.focusSystem) return content.diseases;
+  const pool = content.diseases.filter((d) => d.system === run.focusSystem);
+  return pool.length ? pool : content.diseases;
+}
+
+/** Daftar sistem organ beserta jumlah penyakitnya (untuk pilihan fokus latihan). */
+export function diseaseSystems(content: GameContent): { system: string; count: number }[] {
+  const counts = new Map<string, number>();
+  for (const d of content.diseases) counts.set(d.system, (counts.get(d.system) ?? 0) + 1);
+  return [...counts].map(([system, count]) => ({ system, count })).sort((a, b) => a.system.localeCompare(b.system, 'id'));
+}
+
 /** Pilih penyakit pasien berikutnya (berbobot prevalensi, hindari pengulangan langsung). */
 export function chooseNextDisease(run: RunState, content: GameContent, config: GameConfig): string {
   const rng = createRng(deriveSeed(run.runSeed, `penyakit:${run.patientIndex}`));
   const last = run.history[run.history.length - 1]?.diseaseId;
-  let pool = content.diseases;
+  let pool = diseasePool(run, content);
   if (config.queue.avoidImmediateRepeat && last && pool.length > 1) {
     pool = pool.filter((d) => d.id !== last);
   }

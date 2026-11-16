@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga hari, Dok, perut bawah sakit kanan-kiri, mulainya beberapa hari setelah haid selesai.",
+        "text": "Sudah {lamaSakit}, Dok, perut bawah sakit kanan-kiri, mulainya beberapa hari setelah haid selesai.",
         "clue": "Nyeri perut bawah bilateral, awitan setelah haid"
       }
     ],

@@ -7,7 +7,7 @@
   "danger": "rendah",
   "prevalenceWeight": 0.8,
   "summary": "Erupsi papuloskuamosa akut swasirna (diduga reaktivasi HHV-6/7) pada remaja & dewasa muda: diawali satu lesi besar oval eritematosa-salmon berskuama koleret (herald patch), 1–2 minggu kemudian diikuti erupsi sekunder lesi oval lebih kecil di badan yang sumbu panjangnya sejajar garis kulit (pola pohon cemara), gatal ringan. Sembuh sendiri 6–8 minggu. Singkirkan sifilis sekunder & tinea.",
-  "presentationDay": [7, 21],
+  "presentationDay": [10, 21],
   "demographics": {
     "ageBands": [
       { "min": 10, "max": 20, "weight": 3 },
@@ -31,7 +31,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Dua minggu lalu muncul satu bercak besar di dada, Dok, seminggu kemudian bercak-bercak kecil menyebar di badan.",
+        "text": "{LamaSakit} lalu muncul satu bercak besar di dada, Dok, seminggu kemudian bercak-bercak kecil menyebar di badan.",
         "clue": "Herald patch diikuti erupsi sekunder"
       }
     ],

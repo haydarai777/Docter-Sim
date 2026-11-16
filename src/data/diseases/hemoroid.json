@@ -43,7 +43,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, tiap BAB keras ada darah segar menetes.",
+        "text": "Sudah {lamaSakit}, Dok, tiap BAB keras ada darah segar menetes.",
         "clue": "Perdarahan segar berulang terkait BAB keras"
       }
     ],

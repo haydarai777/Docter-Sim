@@ -41,7 +41,7 @@
   "misattributions": ["kecapekan", "kurang bersih", "masuk angin"],
   "fears": ["kanker serviks", "penyakit kelamin", "mandul"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah seminggu, Dok, keputihan banyak dan gatal.", "clue": "Subakut" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, keputihan banyak dan gatal.", "clue": "Subakut" }],
     "karakter": [
       {
         "text": "Keputihannya putih kental kayak susu basi, Dok, nggak bau tapi gatal sekali.",

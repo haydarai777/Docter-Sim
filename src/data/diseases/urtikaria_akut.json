@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sejak dua hari lalu, Dok, bentol-bentol merah gatal muncul di mana-mana, pindah-pindah.",
+        "text": "Sejak {lamaSakit} lalu, Dok, bentol-bentol merah gatal muncul di mana-mana, pindah-pindah.",
         "clue": "Akut, urtika berpindah"
       }
     ],

@@ -48,12 +48,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi pagi, Dok, tiba-tiba. Lagi naik motor kena angin, langsung ngganjal.",
+        "text": "{LamaSakit} lalu, Dok, tiba-tiba. Lagi naik motor kena angin, langsung ngganjal.",
         "when": { "notTraits": ["pekerjaan_gerinda"] },
         "clue": "Onset mendadak setelah kelilipan"
       },
       {
-        "text": "Tadi waktu kerja menggerinda besi, Dok, kayak ada yang loncat ke mata.",
+        "text": "{LamaSakit} lalu waktu kerja menggerinda besi, Dok, kayak ada yang loncat ke mata.",
         "when": { "traits": ["pekerjaan_gerinda"] },
         "clue": "Kelilipan saat menggerinda (risiko benda asing logam/trauma tembus)"
       }

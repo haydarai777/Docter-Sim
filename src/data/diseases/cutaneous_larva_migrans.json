@@ -22,7 +22,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Seminggu lalu, Dok, muncul garis merah gatal di telapak kaki, tiap hari makin panjang berkelok.",
+        "text": "{LamaSakit} lalu, Dok, muncul garis merah gatal di telapak kaki, tiap hari makin panjang berkelok.",
         "clue": "Lesi linear yang memanjang tiap hari"
       }
     ],

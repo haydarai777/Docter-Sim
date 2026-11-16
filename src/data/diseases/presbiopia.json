@@ -27,7 +27,7 @@
   "misattributions": ["mata minus", "katarak", "kurang vitamin"],
   "fears": ["katarak", "mata buta"],
   "anamnesis": {
-    "onset": [{ "text": "Setahun terakhir ini, Dok, pelan-pelan.", "clue": "Bertahap setelah usia 40" }],
+    "onset": [{ "text": "{LamaSakit} terakhir ini, Dok, pelan-pelan.", "clue": "Bertahap setelah usia 40" }],
     "karakter": [
       {
         "text": "Kalau baca koran atau HP harus dijauhkan, Dok, baru jelas. Lihat jauh masih bagus.",

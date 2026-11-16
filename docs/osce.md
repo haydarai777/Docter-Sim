@@ -48,13 +48,33 @@ serta pasien gawat yang dipulangkan.
 
 ## Isi
 
-- **13 stasiun klinis** (semua penyakit kasus): dengue, demam tifoid, malaria, GERD, angina pektoris
-  stabil, dispepsia fungsional, gastritis akut, ISK, batu saluran kemih, DM tipe 2, TB paru, pneumonia
-  komunitas, asma. Setiap stasiun punya kunci terapi (dengan alternatif yang diterima), daftar obat
-  yang harus dihindari, saran non-farmakologi & KIE (benar, pengecoh, berbahaya).
-- **Formularium latihan 44 obat** dengan sediaan, golongan alergi (penisilin, sulfa, metamizol,
-  ibuprofen), dan dosis harian maksimum. Dosis berbasis berat badan (DHP, OAT KDT, primakuin,
-  parasetamol anak) dinilai dari BB pasien — timbang dulu.
+- **146 stasiun klinis — satu untuk setiap penyakit di game** (144 penyakit SKDI 4A + angina pektoris
+  stabil & batu saluran kemih), dikelompokkan per klaster yang tidak membocorkan diagnosis (mis. *Mata —
+  mata merah*, *Kulit — infeksi jamur*, *Obstetri — nifas & menyusui*, *Forensik — luka akibat
+  kekerasan*). Daftarnya: `docs/skdi-4a.md`. Setiap stasiun punya kunci terapi (dengan alternatif yang
+  diterima, termasuk alternatif bila pasien alergi), obat yang harus dihindari, saran non-farmakologi &
+  KIE (benar, pengecoh, berbahaya).
+- **Formularium latihan 164 obat / 210 sediaan**: oral, sirup & drops anak, topikal (krim, salep, gel,
+  sampo, losion), tetes mata & telinga, semprot hidung, tablet vagina, supositoria, injeksi IM/IV/SK,
+  vaksin & serum (Td, HTIG), MDT kusta, OAT KDT dewasa & anak, ARV. Satuan pakai topikal/tetes dihitung
+  per oles/tetes/semprot; jumlah kemasan (No.) dihitung dari perkiraan isi tube/botol.
+- **Jenis butir terapi**:
+  - *utama* — wajib untuk skor ≥ 1;
+  - *pendukung* — diperlukan untuk skor penuh;
+  - *opsional* — boleh tidak diberikan, tetapi bila diberikan dosisnya harus tepat (mis. analgesik pada
+    laringitis, antihistamin pada pitiriasis rosea);
+  - butir *baris terpisah* — harus resep obat lain, mis. antihipertensi kedua golongan berbeda pada
+    hipertensi derajat 2 (monoterapi tetap mendapat skor 1).
+- **Kasus tanpa obat** (kelainan refraksi, lipoma, benda asing THT, epistaksis, inverted nipple,
+  intoleransi laktosa, obesitas, DM tipe 1 di FKTP, dsb.): skor 2 bila tidak meresepkan apa pun;
+  resep yang tidak perlu menurunkan skor. Kunci jawabannya menjelaskan tatalaksana nonfarmakologis.
+- **Dosis berbasis BB**: per kgBB (sirup/drops anak, injeksi neonatus dalam mL) atau per pita BB
+  (OAT KDT dewasa/anak, diazepam rektal). Sediaan yang pitanya tidak mencakup BB pasien ditandai
+  *tidak sesuai untuk BB*. Timbang pasien dulu.
+- **Kontraindikasi spesifik kasus** dinilai kritis, mis. kortikosteroid pada varisela & strongiloidiasis,
+  aspirin pada infeksi virus anak, obat tersangka pada erupsi obat, tetrasiklin/ACE-inhibitor pada
+  kehamilan, insulin saat hipoglikemia, antidiabetes oral pada DM tipe 1, loperamid pada disentri &
+  diare anak, steroid potensi kuat di area popok bayi.
 - **11 stasiun prosedur** dari modul acuan: kateterisasi uretra pria, tampon hidung anterior, ekstraksi
   benda asing hidung (anak), ekstraksi benda asing kornea, Pap smear, pemasangan IUD CuT 380A, kerokan
   kulit KOH, slit-skin smear kusta, resusitasi henti jantung VT tanpa nadi (ACLS), resusitasi cairan syok
@@ -64,16 +84,17 @@ serta pasien gawat yang dipulangkan.
 
 ## Belum tersedia (rencana)
 
-Kasus berikut di dokumen acuan baru tersedia sebagai **prosedur** atau belum ada sebagai pasien
-simulasi, karena memerlukan alat pemeriksaan & tampilan klinis baru: penyakit Graves, sirosis hati,
-Bell's palsy, fraktur Smith (pasien), sindrom koroner akut (pasien), syok hipovolemik (pasien), retensi
-urin BPH (pasien), ANC kunjungan pertama, konseling kontrasepsi, kusta & tinea (pasien), skizofrenia
-paranoid (status mentalis), epistaksis & benda asing (pasien).
+Kasus berikut di dokumen acuan masih berupa **prosedur** atau belum ada sebagai pasien simulasi karena
+tingkat kompetensinya bukan 4A atau memerlukan tampilan klinis baru: penyakit Graves, sirosis hati,
+fraktur Smith (pasien), sindrom koroner akut (pasien), syok hipovolemik (pasien), retensi urin BPH
+(pasien), konseling kontrasepsi, skizofrenia paranoid (status mentalis).
 
 ## Untuk pengembang
 
 - Kunci per penyakit: `src/data/osce/cases/<id>.json`; formularium: `src/data/osce/formulary.json`;
-  prosedur: `src/data/osce/procedures.json`.
+  prosedur: `src/data/osce/procedures.json`. Kunci 133 penyakit SKDI 4A baru & perluasan formularium
+  dibuat oleh generator `scripts/content-gen/` (`osce_formulary.py`, `osce_lib.py`, `o_*.py`,
+  `osce_build.py`) — ubah sumbernya di sana lalu jalankan ulang agar konsisten.
 - Mesin: `src/core/osce/` (`station.ts` rubrik, `prescription.ts` resep, `procedure.ts` prosedur,
   `validate.ts` validasi). `npm run validate-content` ikut memeriksa konten OSCE.
 - Tes `tests/osce.test.ts` memastikan "pemain ideal" mendapat Superior di semua penyakit dan

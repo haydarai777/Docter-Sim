@@ -30,7 +30,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah sebulan, Dok, ada bagian rambut yang botak bulat bersisik, makin lebar.",
+        "text": "Sudah {lamaSakit}, Dok, ada bagian rambut yang botak bulat bersisik, makin lebar.",
         "clue": "Kronik, bercak alopesia bersisik meluas"
       }
     ],

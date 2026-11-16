@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tiga hari ini benjolan di punggung jadi merah, panas, dan sakit sekali, Dok.",
+        "text": "{LamaSakit} ini benjolan di punggung jadi merah, panas, dan sakit sekali, Dok.",
         "clue": "Akut, benjolan meradang"
       }
     ],

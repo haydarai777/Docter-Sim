@@ -41,7 +41,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi pagi dikasih tahu istri/suami, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa.",
+        "text": "{LamaSakit} lalu dikasih tahu istri/suami, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa.",
         "clue": "Onset tiba-tiba tanpa nyeri, diketahui orang lain"
       }
     ],

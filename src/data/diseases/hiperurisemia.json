@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi subuh tiba-tiba jempol kaki kanan sakit sekali sampai terbangun, Dok, sekarang bengkak merah panas.",
+        "text": "{LamaSakit} lalu subuh tiba-tiba jempol kaki kanan sakit sekali sampai terbangun, Dok, sekarang bengkak merah panas.",
         "clue": "Monoartritis akut malam hari di MTP-1"
       }
     ],

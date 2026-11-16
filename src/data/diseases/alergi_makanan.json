@@ -7,7 +7,7 @@
   "danger": "sedang",
   "prevalenceWeight": 0.9,
   "summary": "Reaksi imunologis (umumnya IgE) terhadap protein makanan (udang/kerang, ikan, kacang, telur, susu sapi): menit–2 jam setelah makan timbul urtikaria, gatal, angioedema bibir/kelopak, kadang mual-muntah, nyeri perut, diare. Berbeda dari anafilaksis bila TIDAK ada gangguan napas atau sirkulasi. Terapi: hindari alergen, antihistamin, edukasi tanda anafilaksis.",
-  "presentationDay": [1, 2],
+  "presentationDay": [1, 1],
   "demographics": {
     "ageBands": [{ "min": 1, "max": 9, "weight": 3 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 2 }],
     "maleRatio": 0.5

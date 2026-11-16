@@ -75,6 +75,14 @@ function prng(seed: number): () => number {
   };
 }
 
+/** Posisi akar (dunia) & arah hadap untuk pasien yang digendong/dipangku. */
+export interface CarryAnchor {
+  x: number;
+  y: number;
+  z: number;
+  yaw: number;
+}
+
 export class Actor implements StageUpdatable {
   readonly character: Character;
   mode: ActorMode = 'stand';
@@ -96,6 +104,12 @@ export class Actor implements StageUpdatable {
   private sitDone: (() => void) | null = null;
   private readonly standPos = new Vector3();
   private readonly seatPos = new Vector3(LAYOUT.seat.x, 0, LAYOUT.seat.z);
+  /** Arah hadap kursi (radian, 0 = menghadap dokter). */
+  private seatYaw = 0;
+  /** Bila diisi: pasien (bayi/batita) digendong/dipangku — posisi & arah mengikuti penggendong. */
+  private carrier: (() => CarryAnchor) | null = null;
+  /** Anak yang sedang digendong/dipangku aktor ini (kedua tangan memegang pinggangnya). */
+  private held: Actor | null = null;
   private readonly ankleWorld = { L: new Vector3(), R: new Vector3() };
   // Napas
   private breath = 0;
@@ -163,11 +177,59 @@ export class Actor implements StageUpdatable {
   // Perintah
   // -------------------------------------------------------------------------
 
+  /** Pakai kursi lain (mis. kursi pengantar di samping). */
+  setSeat(x: number, z: number, yaw: number): void {
+    this.seatYaw = yaw;
+    this.seatPos.set(x, 0, z);
+    const f = this.ankleForward();
+    this.standPos.set(x + Math.sin(yaw) * f, 0, z + Math.cos(yaw) * f);
+  }
+
+  /** Digendong/dipangku: setiap frame posisi & arah diambil dari `anchor` (null = lepas). */
+  carry(anchor: (() => CarryAnchor) | null): void {
+    this.carrier = anchor;
+    if (anchor) {
+      this.mode = 'seated';
+      this.sitU = 1;
+      const a = anchor();
+      this.yaw = a.yaw;
+      this.character.root.position.set(a.x, a.y, a.z);
+      this.snap();
+    }
+  }
+
+  get carried(): boolean {
+    return this.carrier !== null;
+  }
+
+  /** Pegang anak yang digendong/dipangku dengan kedua tangan (null = lepas). */
+  hold(child: Actor | null): void {
+    this.held = child;
+  }
+
+  /** Titik pangkuan/gendongan di depan aktor ini (dunia), untuk menempatkan bayi/batita. */
+  lapAnchor(child: Actor): CarryAnchor {
+    const d = this.character.dims;
+    const root = this.character.root.position;
+    const seated = this.mode === 'seated' || this.mode === 'sit_down' || this.mode === 'stand_up';
+    const e = seated ? ease(this.sitU) : 0;
+    // Duduk: di atas paha · berdiri/berjalan: digendong setinggi pinggang-dada, sedikit ke samping.
+    const fwd = lerp(0.17, 0.2, e) * d.s / 1.0;
+    const side = lerp(0.09, 0, e);
+    const hostHips = lerp(d.hipsY, this.seatHipsY(), e);
+    const lapY = lerp(hostHips + 0.16 * d.s, hostHips + 0.07 * d.s, e);
+    const childHips = child.seatHipsY();
+    const yaw = this.yaw;
+    const x = root.x + Math.sin(yaw) * fwd + Math.cos(yaw) * side;
+    const z = root.z + Math.cos(yaw) * fwd - Math.sin(yaw) * side;
+    return { x, y: lapY - childHips, z, yaw };
+  }
+
   /** Letakkan pasien langsung duduk di kursi (mis. melanjutkan sesi tersimpan). */
   placeSeated(): void {
     this.mode = 'seated';
     this.sitU = 1;
-    this.yaw = 0;
+    this.yaw = this.seatYaw;
     this.character.root.position.copy(this.seatPos);
     this.plantFeet(this.standPos);
     this.snap();
@@ -280,6 +342,7 @@ export class Actor implements StageUpdatable {
     this.breathing(dt);
     this.cuePosture(dt);
     this.idle(dt);
+    this.holdChild();
     this.runClips(dt);
     this.talking_(dt);
     this.faceUpdate(dt);
@@ -292,7 +355,15 @@ export class Actor implements StageUpdatable {
     return 0.28 + 0.1 * this.character.dims.s;
   }
 
-  private seatHipsY(): number {
+  /** Saat duduk, apakah telapak tidak mampu menapak lantai (tungkai terlalu pendek untuk tinggi kursi)? */
+  private feetDangle(): boolean {
+    const d = this.character.dims;
+    const drop = this.seatHipsY() - d.footH;
+    const reach = Math.hypot(drop, this.ankleForward());
+    return reach > (d.thigh + d.shin) * 0.88;
+  }
+
+  seatHipsY(): number {
     return LAYOUT.seat.y + 0.088 * this.character.dims.s;
   }
 
@@ -300,8 +371,11 @@ export class Actor implements StageUpdatable {
   private plantFeet(at: Vector3): void {
     const d = this.character.dims;
     const apart = this.look.sex === 'female' ? d.hipHalf * 0.85 : d.hipHalf + 0.035 * d.s;
-    this.ankleWorld.L.set(at.x + apart, d.footH, at.z + 0.02);
-    this.ankleWorld.R.set(at.x - apart, d.footH, at.z + 0.02);
+    const c = Math.cos(this.seatYaw);
+    const sn = Math.sin(this.seatYaw);
+    // Offset (±apart, 0.02) diputar sesuai arah hadap kursi.
+    this.ankleWorld.L.set(at.x + apart * c + 0.02 * sn, d.footH, at.z - apart * sn + 0.02 * c);
+    this.ankleWorld.R.set(at.x - apart * c + 0.02 * sn, d.footH, at.z + apart * sn + 0.02 * c);
   }
 
   private locomotion(dt: number): void {
@@ -373,11 +447,17 @@ export class Actor implements StageUpdatable {
       }
     }
     const seatedLike = this.mode === 'sit_down' || this.mode === 'stand_up' || this.mode === 'seated';
-    if (seatedLike) {
+    if (seatedLike && this.carrier) {
+      const a = this.carrier();
+      root.position.set(a.x, a.y, a.z);
+      this.yaw = a.yaw;
+      F.hipsY = this.seatHipsY();
+    } else if (seatedLike) {
       const e = ease(this.sitU);
       root.position.x = lerp(this.standPos.x, this.seatPos.x, e);
       root.position.z = lerp(this.standPos.z, this.seatPos.z, e);
-      this.yaw = 0;
+      root.position.y = 0;
+      this.yaw = this.seatYaw;
       F.hipsY = lerp(d.hipsY, this.seatHipsY(), e);
       // Condong ke depan di tengah gerakan (menjaga keseimbangan).
       const mid = Math.sin(Math.PI * this.sitU);
@@ -423,9 +503,23 @@ export class Actor implements StageUpdatable {
     // Target pergelangan kaki (ruang akar) untuk berdiri/duduk.
     for (const side of ['L', 'R'] as const) {
       const a = this.ankle[side];
-      if (seatedLike) {
-        a.copy(this.ankleWorld[side]).sub(root.position);
+      if (seatedLike && this.carrier) {
+        // Dipangku/digendong: kaki menjulur ke depan, sedikit di bawah pinggul.
+        a.set(sign(side) * d.hipHalf * 0.9, this.seatHipsY() - 0.1 * d.s, (d.thigh + d.shin) * 0.75);
+      } else if (seatedLike) {
+        // Ruang dunia → ruang akar (akar diputar sebesar yaw kursi).
+        const wx = this.ankleWorld[side].x - root.position.x;
+        const wz = this.ankleWorld[side].z - root.position.z;
+        const cy = Math.cos(this.yaw);
+        const sy = Math.sin(this.yaw);
+        a.set(wx * cy - wz * sy, this.ankleWorld[side].y - root.position.y, wx * sy + wz * cy);
         a.z += side === 'L' ? this.shift.footL : this.shift.footR;
+        if (this.feetDangle()) {
+          // Anak bertungkai pendek: kaki tidak sampai lantai — lutut menekuk, telapak menggantung.
+          const e = ease(this.sitU);
+          const hy = this.seatHipsY();
+          a.set(lerp(a.x, sign(side) * d.hipHalf * 0.95, e), lerp(a.y, hy - d.shin * 0.94, e), lerp(a.z, d.thigh * 0.97 + (side === 'L' ? 0.02 : 0), e));
+        }
         if (this.mode === 'seated' && cues.pincang_kanan && side === 'R') a.z += 0.09;
       } else {
         a.set(sign(side) * d.hipHalf, d.footH, 0.012);
@@ -579,6 +673,25 @@ export class Actor implements StageUpdatable {
     } else if (site === 'kepala' || site === 'mata') {
       F.headX += 0.1 * w;
     }
+  }
+
+  /** Kedua telapak memegang sisi pinggang anak yang digendong/dipangku. */
+  private holdChild(): void {
+    const child = this.held;
+    if (!child) return;
+    const cd = child.character.dims;
+    const croot = child.character.root;
+    croot.updateMatrixWorld();
+    const center = this.v2.set(0, child.seatHipsY() + 0.07 * cd.s, -0.02);
+    croot.localToWorld(center);
+    for (const side of ['L', 'R'] as const) {
+      const p = this.v1.set(sign(side) * (cd.hipHalf + 0.045 * cd.s), child.seatHipsY() + 0.07 * cd.s, -0.02);
+      croot.localToWorld(p);
+      const palm = this.v3.copy(center).sub(p).normalize();
+      this.aimArm(side, p, 1, false, palm);
+    }
+    // Sedikit condong ke belakang menahan beban saat berdiri.
+    if (this.mode !== 'seated') this.F.spineX -= 0.05;
   }
 
   private hug(w: number): void {

@@ -34,7 +34,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sekitar sebulan ini, Dok, dia minum terus dan bolak-balik kencing, makannya banyak tapi makin kurus.",
+        "text": "Sekitar {lamaSakit} ini, Dok, dia minum terus dan bolak-balik kencing, makannya banyak tapi makin kurus.",
         "clue": "Poliuria, polidipsia, polifagia & BB turun dalam minggu"
       }
     ],

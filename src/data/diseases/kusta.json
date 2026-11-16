@@ -46,12 +46,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah setahun, Dok, ada bercak keputihan di lengan dan punggung, nggak gatal.",
+        "text": "Sudah {lamaSakit}, Dok, ada bercak keputihan di lengan dan punggung, nggak gatal.",
         "when": { "notTraits": ["mb"] },
         "clue": "Bercak kronik tidak gatal"
       },
       {
-        "text": "Sudah setahun, Dok, bercak kemerahan banyak di badan dan muka, cuping telinga menebal.",
+        "text": "Sudah {lamaSakit}, Dok, bercak kemerahan banyak di badan dan muka, cuping telinga menebal.",
         "when": { "traits": ["mb"] },
         "clue": "Lesi eritema multipel & infiltrat cuping telinga"
       }

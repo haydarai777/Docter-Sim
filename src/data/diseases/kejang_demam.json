@@ -48,7 +48,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi pagi, Dok, sejak kemarin panas tinggi, terus tiba-tiba kejang.",
+        "text": "{LamaSakit} lalu, Dok, sejak kemarin panas tinggi, terus tiba-tiba kejang.",
         "clue": "Kejang terjadi saat demam tinggi (hari pertama)"
       }
     ],

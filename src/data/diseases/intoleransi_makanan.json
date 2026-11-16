@@ -8,6 +8,7 @@
   "prevalenceWeight": 0.7,
   "summary": "Reaksi non-imunologis terhadap makanan, tersering intoleransi laktosa (defisiensi laktase primer pada dewasa Asia atau sekunder setelah diare): 30 menit–2 jam setelah minum susu/produk susu timbul kembung, banyak flatus, nyeri perut kram, diare cair asam. Tanpa urtikaria/angioedema (berbeda dari alergi). Membaik dengan mengurangi laktosa.",
   "presentationDay": [14, 180],
+  "presentationDayByTrait": [{ "trait": "sekunder_pasca_diare", "range": [10, 21] }],
   "demographics": {
     "ageBands": [{ "min": 3, "max": 9, "weight": 1 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 3 }],
     "maleRatio": 0.45
@@ -32,7 +33,7 @@
         "clue": "Kronik berulang"
       },
       {
-        "text": "Sejak sembuh mencret dua minggu lalu, Dok, tiap minum susu langsung kembung dan mencret lagi.",
+        "text": "Sejak sembuh mencret {lamaSakit} lalu, Dok, tiap minum susu langsung kembung dan mencret lagi.",
         "when": { "traits": ["sekunder_pasca_diare"] },
         "clue": "Setelah episode diare (sekunder)"
       }

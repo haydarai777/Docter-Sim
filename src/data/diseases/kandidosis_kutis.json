@@ -36,12 +36,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah dua minggu, Dok, kulit di lipatan merah, basah, perih dan gatal.",
+        "text": "Sudah {lamaSakit}, Dok, kulit di lipatan merah, basah, perih dan gatal.",
         "when": { "notTraits": ["interdigital_tangan"] },
         "clue": "Subakut"
       },
       {
-        "text": "Sudah dua minggu, Dok, sela jari tangan merah, putih basah, perih.",
+        "text": "Sudah {lamaSakit}, Dok, sela jari tangan merah, putih basah, perih.",
         "when": { "traits": ["interdigital_tangan"] },
         "clue": "Sela jari tangan"
       }

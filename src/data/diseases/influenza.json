@@ -45,7 +45,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Mendadak, Dok, kemarin sore tiba-tiba menggigil, langsung panas tinggi.",
+        "text": "Mendadak, Dok, {lamaSakit} lalu tiba-tiba menggigil, langsung panas tinggi.",
         "clue": "Onset mendadak demam tinggi"
       }
     ],

@@ -147,3 +147,15 @@ describe('umpan balik interpretasi', () => {
     expect(found).toBeGreaterThan(0);
   });
 });
+
+describe('lama sakit konsisten', () => {
+  // Durasi tetap di awal jawaban onset ("Sudah sebulan", "Sejak dua hari lalu") bertentangan dengan hari
+  // sakit kasus yang diacak; gunakan {lamaSakit}/{hariTeks} agar sama dengan detail gejala.
+  const DUR = '(?:se(?:minggu|bulan|tahun|hari)|(?:satu|dua|tiga|empat|lima|enam|tujuh|delapan|sepuluh)(?:-(?:dua|tiga|empat))?\\s+(?:hari|minggu|bulan|tahun))';
+  const fixed = new RegExp(`^(?:(?:Sudah|Sejak|Baru|Sekitar)(?: lebih dari)?\\s+${DUR}|${DUR}\\s+(?:ini|lalu|terakhir)\\b|Sejak kemarin\\b)`, 'i');
+  it('jawaban onset/durasi tidak diawali durasi tetap', () => {
+    const bad: string[] = [];
+    for (const d of content.diseases) for (const cat of ['onset', 'durasi'] as const) for (const v of d.anamnesis[cat] ?? []) if (fixed.test(v.text)) bad.push(`${d.id}: ${v.text}`);
+    expect(bad).toEqual([]);
+  });
+});

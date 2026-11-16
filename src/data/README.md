@@ -7,6 +7,25 @@ Setiap file punya blok `review` dengan `status`:
 - `SEDANG_DITINJAU`
 - `DISETUJUI` — isi juga `reviewer` dan `date`
 
+## Generator konten SKDI 4A
+
+133 penyakit SKDI 4A yang ditambahkan setelah 13 penyakit awal, beserta gejala, alat pemeriksaan,
+kondisi banding, kunci OSCE, dan perluasan formularium **dibuat oleh skrip Python** di
+`scripts/content-gen/` (bukan disunting langsung di JSON):
+
+| Skrip | Menghasilkan |
+|---|---|
+| `tools_new.py` | Alat pemeriksaan baru (mata, THT, saraf, kulit, genital, obstetri, anak, lab & pencitraan) & nilai rujukan per usia |
+| `lib.py`, `b_00_gejala.py` … `b_11_kulit_trauma.py`, `build.py` | Gejala & kelompok tinjauan, kondisi banding, file penyakit, `diseases/index.ts`, isyarat penampilan |
+| `osce_formulary.py` | Perluasan `osce/formulary.json` |
+| `osce_lib.py`, `o_01_mata.py` … `o_09_kulit_trauma.py`, `osce_build.py` | `osce/cases/<id>.json` & `osce/index.ts` |
+| `skdi_doc.py` | `docs/skdi-4a.md` (daftar cakupan SKDI 4A) |
+
+Cara memakai: jalankan skrip dengan `python3 -I` dari foldernya (`build.py` dan `osce_build.py` menerima
+nama batch tertentu), lalu `npm run format-data` dan `npm run validate-content`. Pustaka generator
+memuat pemeriksaan tambahan (mis. kalimat penyangkalan di riwayat, alternatif obat bila pasien alergi,
+kategori KIE wajib) agar kesalahan konten tertangkap sebelum validator TypeScript.
+
 ## Anatomi file penyakit (`diseases/*.json`)
 
 | Field | Isi |
@@ -36,8 +55,9 @@ Setiap file punya blok `review` dengan `status`:
 | `comorbidities.json` | Komorbiditas (peluang, syarat usia, gejala, temuan, riwayat yang diketahui pasien, `detectBy`, tata laksana) & temuan insidental. Kalimat `history` digabung ke jawaban anamnesis tanpa kontradiksi: penyangkalan umum ("Nggak ada penyakit apa-apa") dibuang, pembuka kepribadian dipertahankan, dan kalimat tidak ditambahkan bila jawaban sudah menyebut nama/alias kondisi atau frasa `history.mentions` |
 | `conditions.json` | Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah menjadi pasien) |
 | `anamnesis.json` | Topik anamnesis (kata kunci untuk pertanyaan bebas, bobot, alasan), templat percakapan, tinjauan sistem. Topik tanpa `core` (identitas, pendapat/kekhawatiran/harapan pasien, haid & kehamilan) bisa ditanyakan tetapi tidak dinilai. Tinjauan `weak: true` (perut, kepala, dada, mata, kulit) hanya dipakai bila pertanyaan tidak menyebut gejala spesifik. Setelah mengubah kata kunci, jalankan `npm run nlu-benchmark` |
-| `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang) |
-
+| `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang). Parameter teks boleh punya `normalFemale`; parameter angka boleh punya `refByAge` (nilai rujukan anak) |
+| `population.json` | Nama, pekerjaan (termasuk bayi/balita/anak TK/SD), nama anak (`childNames`), alergi |
+| `personalities.json` | Gaya jawaban per kepribadian, termasuk `pengantar` (sapaan & bingkai keluhan saat orang tua menjawab untuk anaknya) |
 | `osce/` | Mode OSCE: `formulary.json` (obat, sediaan, golongan alergi, dosis harian maksimum), `cases/<penyakit>.json` (kunci terapi beserta alternatif & rentang dosis, obat yang dihindari, saran non-farmakologi & KIE benar/pengecoh/berbahaya), `procedures.json` (langkah prosedur, pengecoh, pertanyaan). Lihat `docs/osce.md` |
 
 Parameter yang **tidak** disebut di `findings` otomatis bernilai normal.

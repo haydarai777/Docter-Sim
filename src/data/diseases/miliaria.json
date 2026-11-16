@@ -29,7 +29,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Baru tiga hari, Dok, muncul bintik-bintik kecil merah di leher dan punggung waktu cuaca panas.",
+        "text": "Baru {lamaSakit}, Dok, muncul bintik-bintik kecil merah di leher dan punggung waktu cuaca panas.",
         "clue": "Akut saat cuaca panas"
       }
     ],

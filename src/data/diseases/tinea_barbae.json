@@ -29,7 +29,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah tiga minggu, Dok, di janggut muncul bintil bernanah, merah, makin lebar.",
+        "text": "Sudah {lamaSakit}, Dok, di janggut muncul bintil bernanah, merah, makin lebar.",
         "clue": "Subakut di area janggut"
       }
     ],

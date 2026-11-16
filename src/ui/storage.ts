@@ -84,6 +84,8 @@ export interface Settings {
    * false (bawaan) = pemahaman bahasa lokal di perangkat, tanpa token.
    */
   aiPatient: boolean;
+  /** Fokus latihan praktek: sistem organ (null = semua penyakit). */
+  focusSystem: string | null;
 }
 
 /**
@@ -92,7 +94,7 @@ export interface Settings {
  */
 export const SETTINGS_VERSION = 2;
 
-export const DEFAULT_SETTINGS: Readonly<Settings> = { theme: 'system', realisticTests: true, tutorialSeen: false, aiPatient: false };
+export const DEFAULT_SETTINGS: Readonly<Settings> = { theme: 'system', realisticTests: true, tutorialSeen: false, aiPatient: false, focusSystem: null };
 
 /** Gabungkan pengaturan tersimpan dengan bawaan, termasuk migrasi dari versi lama. */
 export function migrateSettings(stored: unknown): Settings {

@@ -172,10 +172,16 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   };
 
   // --- Hari sakit, trait, gejala -----------------------------------------
-  const day = rng.fork('hari').int(disease.presentationDay[0], disease.presentationDay[1]);
+  let day = rng.fork('hari').int(disease.presentationDay[0], disease.presentationDay[1]);
   const traits = new Set<string>();
   const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, personality: personality.id, traits };
   sampleRules(disease.traits ?? [], baseCtx, rng.fork('trait'), traits);
+  // Varian dengan perjalanan waktu berbeda (mis. akut vs kronik) memakai rentang harinya sendiri.
+  const dayRule = disease.presentationDayByTrait?.find((r) => traits.has(r.trait));
+  if (dayRule) {
+    day = rng.fork('hari-trait').int(dayRule.range[0], dayRule.range[1]);
+    baseCtx.day = day;
+  }
 
   // --- Komorbiditas & temuan insidental (id-nya ikut menjadi trait) -------
   const comorbidities = sampleComorbidities(disease, content, baseCtx, rng.fork('komorbid'));

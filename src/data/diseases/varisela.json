@@ -43,7 +43,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Kemarin agak demam, Dok, terus muncul bintil berair di badan, sekarang makin banyak sampai ke muka dan kepala.",
+        "text": "{LamaSakit} lalu agak demam, Dok, terus muncul bintil berair di badan, sekarang makin banyak sampai ke muka dan kepala.",
         "clue": "Demam ringan lalu vesikel menyebar cepat"
       }
     ],
