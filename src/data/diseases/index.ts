@@ -12,10 +12,17 @@
  */
 // Anak
 import infeksiUmbilikus from './infeksi_umbilikus.json';
+import malnutrisiEnergiProtein from './malnutrisi_energi_protein.json';
 // Darah & imunologi
 import anemiaDefisiensiBesi from './anemia_defisiensi_besi.json';
 // Endokrin & metabolik
+import defisiensiMineral from './defisiensi_mineral.json';
+import defisiensiVitamin from './defisiensi_vitamin.json';
+import dislipidemia from './dislipidemia.json';
+import dmTipe1 from './dm_tipe1.json';
 import dmTipe2 from './dm_tipe2.json';
+import hipoglikemia from './hipoglikemia.json';
+import obesitas from './obesitas.json';
 // Infeksi & imunologi
 import hiv from './hiv.json';
 import limfadenitis from './limfadenitis.json';
@@ -63,6 +70,8 @@ import invertedNipple from './inverted_nipple.json';
 import kehamilanNormal from './kehamilan_normal.json';
 import mastitis from './mastitis.json';
 import rupturPerineum from './ruptur_perineum.json';
+// Otot & sendi
+import hiperurisemia from './hiperurisemia.json';
 // Pencernaan
 import askariasis from './askariasis.json';
 import cacingTambang from './cacing_tambang.json';
@@ -118,8 +127,15 @@ import tonsilitis from './tonsilitis.json';
 
 export const DISEASE_FILES: unknown[] = [
   infeksiUmbilikus,
+  malnutrisiEnergiProtein,
   anemiaDefisiensiBesi,
+  defisiensiMineral,
+  defisiensiVitamin,
+  dislipidemia,
+  dmTipe1,
   dmTipe2,
+  hipoglikemia,
+  obesitas,
   hiv,
   limfadenitis,
   reaksiAnafilaktik,
@@ -159,6 +175,7 @@ export const DISEASE_FILES: unknown[] = [
   kehamilanNormal,
   mastitis,
   rupturPerineum,
+  hiperurisemia,
   askariasis,
   cacingTambang,
   disentri,

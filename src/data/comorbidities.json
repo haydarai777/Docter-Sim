@@ -85,7 +85,8 @@
       "history": { "known": "", "habit": "Saya juga suka ngemil dan jarang olahraga.", "mentions": ["olahraga", "ngemil"] },
       "detectBy": { "tools": ["timbangan", "keadaan_umum"] },
       "management": ["Target penurunan berat badan 5–10% dalam 6 bulan.", "Diet seimbang dan aktivitas fisik 150 menit/minggu."],
-      "when": { "ageMin": 10 }
+      "when": { "ageMin": 10 },
+      "excludePrimary": ["obesitas"]
     },
     {
       "id": "anemia_defisiensi_besi",
@@ -131,7 +132,8 @@
       ],
       "history": { "known": "Kata dokter dulu kolesterol saya agak tinggi." },
       "detectBy": { "tools": ["profil_lipid"] },
-      "management": ["Nilai risiko kardiovaskular total.", "Diet rendah lemak jenuh, aktivitas fisik; terapi sesuai risiko."]
+      "management": ["Nilai risiko kardiovaskular total.", "Diet rendah lemak jenuh, aktivitas fisik; terapi sesuai risiko."],
+      "excludePrimary": ["dislipidemia"]
     }
   ],
   "incidentals": [

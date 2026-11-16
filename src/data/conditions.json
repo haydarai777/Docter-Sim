@@ -122,14 +122,6 @@
       "summary": "Disuria dengan duh uretra; riwayat hubungan seksual berisiko."
     },
     {
-      "id": "sepsis",
-      "name": "Sepsis",
-      "aliases": ["Infeksi berat"],
-      "system": "Infeksi tropis",
-      "danger": "kritis",
-      "summary": "Infeksi dengan disfungsi organ: hipotensi, takikardia, takipnea, penurunan kesadaran."
-    },
-    {
       "id": "glaukoma_akut",
       "name": "Glaukoma akut sudut tertutup",
       "aliases": ["Glaukoma akut", "Glaukoma sudut tertutup"],
@@ -240,14 +232,6 @@
       "system": "Kulit & kelamin",
       "danger": "rendah",
       "summary": "Eritema dengan skuama kekuningan berminyak di kulit kepala, alis, lipatan nasolabial."
-    },
-    {
-      "id": "malnutrisi_energi_protein",
-      "name": "Malnutrisi energi-protein",
-      "aliases": [],
-      "system": "Endokrin & metabolik",
-      "danger": "tinggi",
-      "summary": "Gizi kurang/buruk pada anak (marasmus, kwashiorkor)."
     },
     {
       "id": "mastoiditis",
@@ -840,6 +824,110 @@
       "system": "Obstetri & ginekologi",
       "danger": "tinggi",
       "summary": "Komplikasi mastitis: massa nyeri berfluktuasi — aspirasi/insisi."
+    },
+    {
+      "id": "ketoasidosis_diabetik",
+      "name": "Ketoasidosis diabetik",
+      "aliases": ["KAD"],
+      "system": "Endokrin & metabolik",
+      "danger": "kritis",
+      "summary": "Hiperglikemia + ketonuria + asidosis: muntah, nyeri perut, napas Kussmaul, dehidrasi, penurunan kesadaran. Rujuk segera."
+    },
+    {
+      "id": "diabetes_insipidus",
+      "name": "Diabetes insipidus",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Poliuria & polidipsia berat dengan urin encer tanpa hiperglikemia."
+    },
+    {
+      "id": "hipoglikemia_berat",
+      "name": "Hipoglikemia berat",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "kritis",
+      "summary": "Gula darah rendah dengan penurunan kesadaran/kejang, butuh bantuan orang lain — dekstrosa IV & rujuk."
+    },
+    {
+      "id": "leukemia",
+      "name": "Leukemia",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "kritis",
+      "summary": "Pucat, perdarahan gusi/petekie, demam, hepatosplenomegali, limfadenopati; hitung darah abnormal. Rujuk."
+    },
+    {
+      "id": "hipertiroid",
+      "name": "Hipertiroid (penyakit Graves)",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Berdebar, BB turun, tremor, tidak tahan panas, gondok difus, eksoftalmus; TSH rendah FT4 tinggi."
+    },
+    {
+      "id": "karsinoma_tiroid",
+      "name": "Karsinoma tiroid",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "Nodul tiroid soliter keras, cepat membesar, suara serak, KGB leher. Rujuk."
+    },
+    {
+      "id": "hipotiroid",
+      "name": "Hipotiroid",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Lelah, BB naik, tidak tahan dingin, kulit kering, konstipasi; TSH tinggi."
+    },
+    {
+      "id": "hiperkolesterolemia_familial",
+      "name": "Hiperkolesterolemia familial",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "LDL sangat tinggi (> 190 mg/dL) sejak muda, xantoma tendon, riwayat PJK dini di keluarga."
+    },
+    {
+      "id": "artritis_septik",
+      "name": "Artritis septik",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "kritis",
+      "summary": "Monoartritis akut dengan demam tinggi, sendi sangat nyeri & tidak dapat digerakkan; cairan sendi purulen. Rujuk segera."
+    },
+    {
+      "id": "osteoartritis",
+      "name": "Osteoartritis",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "rendah",
+      "summary": "Nyeri sendi lutut/panggul kronik pada lansia, memberat saat aktivitas, krepitasi, kaku pagi < 30 menit."
+    },
+    {
+      "id": "artritis_reumatoid",
+      "name": "Artritis reumatoid",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "sedang",
+      "summary": "Poliartritis simetris sendi kecil tangan dengan kaku pagi > 1 jam."
+    },
+    {
+      "id": "sindrom_cushing",
+      "name": "Sindrom Cushing",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Obesitas sentral, moon face, striae ungu, hipertensi; sering akibat steroid jangka panjang."
+    },
+    {
+      "id": "sepsis",
+      "name": "Sepsis",
+      "aliases": [],
+      "system": "Infeksi & imunologi",
+      "danger": "kritis",
+      "summary": "Infeksi dengan disfungsi organ: demam/hipotermia, takikardia, takipnea, hipotensi, penurunan kesadaran. Rujuk segera."
     }
   ]
 }

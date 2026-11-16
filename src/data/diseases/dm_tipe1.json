@@ -1,0 +1,186 @@
+{
+  "id": "dm_tipe1",
+  "name": "Diabetes melitus tipe 1",
+  "aliases": ["DM tipe 1", "Diabetes anak", "Diabetes juvenil", "IDDM"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.4,
+  "summary": "Defisiensi insulin absolut akibat destruksi autoimun sel beta pankreas, tersering pada anak & remaja. Poliuria (sering mengompol lagi), polidipsia, polifagia, BB turun cepat, lemas dalam beberapa minggu. Sering pertama kali datang sebagai ketoasidosis diabetik (muntah, nyeri perut, napas Kussmaul, dehidrasi, penurunan kesadaran). Gula darah sewaktu ≥ 200 mg/dL + gejala klasik; glukosuria & ketonuria. Butuh insulin seumur hidup — rujuk untuk inisiasi insulin.",
+  "presentationDay": [14, 60],
+  "demographics": {
+    "ageBands": [{ "min": 5, "max": 9, "weight": 3 }, { "min": 10, "max": 18, "weight": 4 }, { "min": 19, "max": 30, "weight": 1 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "anak_sd", "weight": 2 }, { "id": "pelajar_sd", "weight": 2 }, { "id": "pelajar", "weight": 3 }],
+    "occupationBias": 0.4
+  },
+  "traits": [{ "id": "kad", "probability": 0.2 }, { "id": "mengompol", "probability": 0.5, "when": { "ageMax": 12 } }],
+  "traitLabels": { "kad": "Ketoasidosis diabetik.", "mengompol": "Mengompol kembali (enuresis sekunder)." },
+  "symptoms": [
+    { "id": "mual_muntah", "probability": 1, "when": { "traits": ["kad"] } },
+    { "id": "nyeri_perut", "probability": 0.7, "when": { "traits": ["kad"] } },
+    { "id": "sesak_napas", "probability": 0.7, "when": { "traits": ["kad"] } },
+    { "id": "bingung", "probability": 0.4, "when": { "traits": ["kad"] } },
+    { "id": "sering_kencing", "probability": 1 },
+    { "id": "haus", "probability": 1 },
+    { "id": "berat_badan_turun", "probability": 0.9 },
+    { "id": "lapar", "probability": 0.6 },
+    { "id": "lemas", "probability": 0.8 }
+  ],
+  "chiefComplaint": { "primary": ["sering_kencing", "haus"], "extraPool": ["berat_badan_turun"] },
+  "clueSymptoms": ["berat_badan_turun", "lapar", "lemas", "mual_muntah", "nyeri_perut", "sesak_napas"],
+  "misattributions": ["kebanyakan minum", "cacingan", "kurang gizi"],
+  "fears": ["kencing manis seumur hidup", "harus disuntik terus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sekitar sebulan ini, Dok, dia minum terus dan bolak-balik kencing, makannya banyak tapi makin kurus.",
+        "clue": "Poliuria, polidipsia, polifagia & BB turun dalam minggu"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Malam-malam dia jadi ngompol lagi, Dok, padahal sudah lama nggak ngompol.",
+        "when": { "traits": ["mengompol"] },
+        "clue": "Enuresis sekunder (nokturia)"
+      },
+      {
+        "text": "Malam bisa tiga-empat kali bangun buat kencing, Dok.",
+        "when": { "notTraits": ["mengompol"] },
+        "clue": "Nokturia"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Dari kemarin muntah-muntah, perutnya sakit, napasnya cepat dalam, sekarang lemas sekali dan susah diajak bicara.",
+        "reveals": ["mual_muntah", "sesak_napas"],
+        "when": { "traits": ["kad"], "symptoms": ["mual_muntah", "sesak_napas"] },
+        "clue": "Muntah, nyeri perut, napas Kussmaul, penurunan kesadaran (KAD)"
+      },
+      { "text": "Masih sekolah, Dok, cuma cepat capek.", "when": { "notTraits": ["kad"] }, "clue": "Tanpa tanda KAD" }
+    ],
+    "riwayat_keluarga": [{ "text": "Di keluarga nggak ada yang kencing manis, Dok.", "clue": "Tanpa riwayat DM keluarga (khas tipe 1)" }],
+    "kebiasaan": [{ "text": "Badannya kurus dari dulu, Dok, nggak gemuk.", "clue": "Tidak obesitas" }]
+  },
+  "findings": [
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["kad"] }, "diagnostic": true, "range": [380, 520] },
+    { "tool": "urinalisis", "param": "keton", "when": { "traits": ["kad"] }, "values": ["+2", "+3"] },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["kad"] }, "range": [30, 38] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["kad"] }, "range": [120, 140] },
+    { "tool": "keadaan_umum", "param": "kesadaran", "when": { "traits": ["kad"] }, "values": ["Somnolen"] },
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["kad"] },
+      "values": ["Mukosa sangat kering, mata cekung, turgor kembali lambat"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["kad"] },
+      "values": ["Tampak sakit berat, napas cepat dalam (Kussmaul), bau keton"]
+    },
+    { "tool": "gula_darah", "param": "gds", "diagnostic": true, "range": [260, 420] },
+    { "tool": "urinalisis", "param": "glukosa", "diagnostic": true, "values": ["+3", "+4"] },
+    { "tool": "urinalisis", "param": "keton", "values": ["+1", "Negatif"] },
+    { "tool": "hba1c", "param": "hba1c", "range": [9.5, 13.5] },
+    { "tool": "timbangan", "param": "imt", "range": [14.5, 16.5] }
+  ],
+  "differentials": [
+    {
+      "id": "ketoasidosis_diabetik",
+      "howToDistinguish": "KAD: muntah, nyeri perut, napas Kussmaul, dehidrasi, ketonuria berat, penurunan kesadaran — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["urinalisis", "tanda_vital", "keadaan_umum"] }
+    },
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "DM tipe 2: obesitas, akantosis nigrikans, riwayat keluarga kuat, onset lambat, jarang ketosis.",
+      "excludeBy": { "topics": ["kebiasaan", "riwayat_keluarga"], "tools": ["timbangan"] }
+    },
+    {
+      "id": "diabetes_insipidus",
+      "howToDistinguish": "Diabetes insipidus: poliuria-polidipsia dengan gula darah normal & glukosuria negatif.",
+      "excludeBy": { "tools": ["gula_darah"] }
+    },
+    {
+      "id": "isk",
+      "howToDistinguish": "ISK: frekuensi dengan volume sedikit & disuria, tanpa poliuria-polidipsia.",
+      "excludeBy": { "tools": ["urinalisis"] }
+    }
+  ],
+  "keyFindings": [
+    "Anak/remaja kurus dengan poliuria, polidipsia, polifagia, BB turun cepat, enuresis sekunder",
+    "GDS ≥ 200 mg/dL, glukosuria, ± ketonuria",
+    "Waspadai KAD"
+  ],
+  "teachingPoints": [
+    "Anak dengan poliuria + BB turun: periksa gula darah kapiler HARI ITU juga — jangan tunda (risiko KAD).",
+    "DM tipe 1 butuh insulin; obat hipoglikemik oral tidak efektif."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus Tipe 2 Dewasa di Indonesia (2021)",
+      "IDAI. Konsensus Nasional Pengelolaan DM Tipe 1 (2017)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "kad",
+      "name": "Ketoasidosis diabetik",
+      "trait": "kad",
+      "redFlag": true,
+      "assess": { "tools": ["urinalisis", "tanda_vital", "keadaan_umum"] },
+      "explanation": "Rehidrasi NaCl 0,9% & rujuk segera ke RS (insulin IV)."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "pola", "keparahan", "riwayat_keluarga", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "BB/IMT & penurunan BB." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Dehidrasi, kesadaran, napas Kussmaul." }
+    ],
+    "tests": [
+      { "tool": "gula_darah", "role": "kunci", "reason": "Hiperglikemia." },
+      { "tool": "urinalisis", "role": "kunci", "reason": "Glukosuria & ketonuria." },
+      { "tool": "hba1c", "role": "pendukung", "reason": "Kontrol glikemik jangka panjang." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    { "value": "rujuk_segera", "reason": "KAD: infus NaCl 0,9% lalu rujuk segera.", "when": { "traits": ["kad"] } },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "DM tipe 1 baru: rujuk ke dokter spesialis anak/endokrin untuk inisiasi insulin & edukasi; tindak lanjut bersama di FKTP."
+    }
+  ],
+  "management": [
+    "Insulin seumur hidup (basal-bolus) — inisiasi oleh spesialis; FKTP melanjutkan pemantauan.",
+    "Edukasi pemantauan gula darah mandiri, tanda hipoglikemia & KAD, aturan hari sakit.",
+    "Diet seimbang sesuai kebutuhan tumbuh kembang, aktivitas fisik teratur.",
+    "Dukungan psikososial keluarga & sekolah."
+  ],
+  "approach": ["Poliuria-polidipsia + BB turun pada anak → GDS & urinalisis segera.", "Nilai tanda KAD sebelum rujuk."]
+}
