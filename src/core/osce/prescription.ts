@@ -153,14 +153,17 @@ export function evaluatePrescription(
   for (const item of caseDef.therapy.items) {
     if (!matchesCondition(item.when, ctx)) continue;
     let best: ItemEvaluation = { item, status: 'tidak_ada', line: null, problems: [] };
+    // Urutan preferensi: tepat > kurang tepat; baris yang belum dipakai butir lain; masalah paling sedikit.
+    const rank = (e: ItemEvaluation) => (e.status === 'tepat' ? 0 : 1000) + (e.line !== null && used.has(e.line) ? 100 : 0) + e.problems.length;
     lines.forEach((line, i) => {
+      if (item.separateLine && used.has(i)) return;
       const options = item.options.filter((o) => o.drug === line.drug);
       const entry = osce.formsById.get(line.form);
       if (!options.length || !entry) return;
       for (const option of options) {
         const problems = lineProblems(line, option, entry.form, weightKg, weighed);
         const candidate: ItemEvaluation = { item, status: problems.length ? 'kurang_tepat' : 'tepat', line: i, problems };
-        if (best.status === 'tidak_ada' || (best.status === 'kurang_tepat' && (candidate.status === 'tepat' || candidate.problems.length < best.problems.length))) best = candidate;
+        if (best.status === 'tidak_ada' || rank(candidate) < rank(best)) best = candidate;
       }
     });
     if (best.line !== null) {
@@ -212,16 +215,20 @@ export function scorePrescription(ev: PrescriptionEvaluation, lines: readonly Pr
   if (critical.length) return { score: 0, critical };
   const utama = ev.items.filter((i) => i.item.role === 'utama');
   const pendukung = ev.items.filter((i) => i.item.role === 'pendukung');
+  const opsional = ev.items.filter((i) => i.item.role === 'opsional');
   const allUtamaPresent = utama.every((i) => i.status !== 'tidak_ada');
   if (!allUtamaPresent) return { score: 0, critical };
   const extraAntibiotic = ev.extras.some((i) => osce.drugsById.get(lines[i]!.drug)?.class === 'antibiotik');
+  // Kasus tanpa obat (mis. kelainan refraksi): resep apa pun tidak diperlukan.
+  if (ev.items.length === 0) return { score: lines.length === 0 ? 2 : extraAntibiotic || lines.length > 1 ? 0 : 1, critical };
   const perfect =
     utama.every((i) => i.status === 'tepat') &&
     pendukung.every((i) => i.status === 'tepat') &&
+    opsional.every((i) => i.status !== 'kurang_tepat') &&
     ev.avoided.length === 0 &&
     !extraAntibiotic &&
     ev.extras.length <= 1 &&
     ev.quantityIssues.length === 0;
-  if (perfect && (utama.length > 0 || pendukung.length > 0 || lines.length === 0)) return { score: 2, critical };
+  if (perfect) return { score: 2, critical };
   return { score: utama.length > 0 || lines.length > 0 ? 1 : 0, critical };
 }

@@ -1,0 +1,175 @@
+{
+  "disease": "kejang_demam",
+  "setting": "Puskesmas",
+  "station": "Saraf — kejang & kaku",
+  "therapy": {
+    "items": [
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik",
+        "role": "utama",
+        "reason": "Kenyamanan anak (tidak mencegah kejang).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      },
+      {
+        "id": "diazepam",
+        "label": "Diazepam rektal bila kejang",
+        "role": "pendukung",
+        "reason": "Pertolongan pertama di rumah bila kejang > 5 menit.",
+        "options": [
+          {
+            "drug": "diazepam_rektal",
+            "label": "Diazepam rektal 5 mg (BB < 12 kg) bila kejang, dapat diulang 1 × setelah 5 menit",
+            "schedules": ["prn"],
+            "forms": ["diazepam-rek5"],
+            "unitsByWeight": [{ "minKg": 0, "maxKg": 11, "units": 1 }, { "minKg": 12, "maxKg": 60, "units": 2 }],
+            "timesPerDay": [1, 2],
+            "days": [1, 2]
+          },
+          {
+            "drug": "diazepam_rektal",
+            "label": "Diazepam rektal 10 mg (BB ≥ 12 kg) bila kejang, dapat diulang 1 × setelah 5 menit",
+            "schedules": ["prn"],
+            "forms": ["diazepam-rek10"],
+            "dosePerKg": [0.4, 0.9],
+            "unitsByWeight": [{ "minKg": 12, "maxKg": 60, "units": 1 }],
+            "timesPerDay": [1, 2],
+            "days": [1, 2]
+          }
+        ]
+      },
+      {
+        "id": "ab_oma",
+        "label": "Antibiotik untuk sumber demam (OMA)",
+        "role": "utama",
+        "reason": "Obati sumber infeksi.",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 15–30 mg/kgBB/kali 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-syr125", "amoksisilin-syr250"],
+            "dosePerKg": [13, 30],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 10 mg/kgBB 1 × sehari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-syr200"],
+            "dosePerKg": [8, 12],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["sumber_oma"] }
+      },
+      {
+        "id": "zinc",
+        "label": "Zinc",
+        "role": "pendukung",
+        "reason": "Sumber demam: diare akut.",
+        "options": [
+          {
+            "drug": "zinc",
+            "label": "Zinc 10 mg (< 6 bulan) / 20 mg (≥ 6 bulan) 1 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "traits": ["sumber_diare"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["diazepam"],
+        "reason": "Obat antikejang rumatan tidak rutin diberikan pada kejang demam sederhana.",
+        "severity": "salah",
+        "when": { "notTraits": ["kompleks"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "miring",
+      "text": "Saat kejang: baringkan miring, longgarkan pakaian, jangan masukkan benda ke mulut",
+      "kind": "benar"
+    },
+    { "id": "catat", "text": "Catat lama kejang & ke fasilitas kesehatan bila > 5 menit", "kind": "benar" },
+    { "id": "minum", "text": "Cukup minum & kompres air hangat saat demam", "kind": "benar" },
+    {
+      "id": "oralit",
+      "text": "Beri oralit setiap habis BAB cair",
+      "kind": "benar",
+      "when": { "traits": ["sumber_diare"] }
+    },
+    {
+      "id": "sendok",
+      "text": "Masukkan sendok/jari ke mulut anak agar lidah tidak tergigit",
+      "kind": "berbahaya",
+      "why": "Cedera mulut/gigi & aspirasi."
+    },
+    {
+      "id": "kopi",
+      "text": "Beri kopi agar tidak kejang",
+      "kind": "berbahaya",
+      "why": "Tidak bermanfaat & berbahaya bagi anak."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kejang demam: kejang dipicu demam, umumnya tidak merusak otak",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat penurun panas untuk kenyamanan; diazepam rektal hanya bila kejang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila kejang > 5 menit, berulang, anak tidak sadar setelah kejang, kaku kuduk, atau tampak sangat sakit",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–3 hari atau saat demam belum turun", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "ulang",
+      "text": "Kejang demam dapat berulang saat demam berikutnya — siapkan pertolongan pertama",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "epilepsi",
+      "text": "Anak pasti akan menjadi epilepsi",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Risiko epilepsi hanya sedikit meningkat."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)",
+      "IDAI. Rekomendasi Penatalaksanaan Kejang Demam (2016)"
+    ]
+  }
+}

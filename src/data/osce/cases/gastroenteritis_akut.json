@@ -1,0 +1,208 @@
+{
+  "disease": "gastroenteritis_akut",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — diare & muntah",
+  "therapy": {
+    "items": [
+      {
+        "id": "oralit",
+        "label": "Rehidrasi oral",
+        "role": "utama",
+        "reason": "Mengganti cairan & elektrolit (Rencana A/B).",
+        "options": [
+          {
+            "drug": "oralit",
+            "label": "Oralit 200 mL setiap BAB cair/muntah",
+            "schedules": ["prn", "rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "oralit_anak",
+        "label": "Rehidrasi oral (anak)",
+        "role": "utama",
+        "reason": "Mengganti cairan & elektrolit (Rencana A/B).",
+        "options": [
+          {
+            "drug": "oralit",
+            "label": "Oralit 50–200 mL (¼–1 sachet) setiap BAB cair (< 2 th 50–100 mL; 2–10 th 100–200 mL)",
+            "schedules": ["prn", "rutin"],
+            "dose": [0.25, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "zinc",
+        "label": "Zinc",
+        "role": "utama",
+        "reason": "Mengurangi lama & beratnya diare anak.",
+        "options": [
+          {
+            "drug": "zinc",
+            "label": "Zinc 1 × 10 mg (< 6 bulan) / 20 mg (≥ 6 bulan) selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "kolera",
+        "label": "Antibiotik kolera",
+        "role": "utama",
+        "reason": "Kolera: mengurangi lama diare & ekskresi kuman.",
+        "options": [
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 300 mg dosis tunggal",
+            "schedules": ["tunggal"],
+            "dose": [300, 300]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 g dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [1000, 1000]
+          }
+        ],
+        "when": { "traits": ["kolera"], "ageMin": 12 }
+      },
+      {
+        "id": "kolera_anak",
+        "label": "Antibiotik kolera (anak)",
+        "role": "utama",
+        "reason": "Kolera.",
+        "options": [
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 20 mg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["azitromisin-syr200"],
+            "dosePerKg": [18, 22]
+          }
+        ],
+        "when": { "traits": ["kolera"], "ageMax": 11 }
+      },
+      {
+        "id": "giardia",
+        "label": "Antiprotozoa",
+        "role": "utama",
+        "reason": "Giardiasis.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 3 × 250–500 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [250, 500],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["giardia"], "ageMin": 12 }
+      },
+      {
+        "id": "giardia_anak",
+        "label": "Antiprotozoa (anak)",
+        "role": "utama",
+        "reason": "Giardiasis.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 5–10 mg/kgBB/kali 3 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-syr125"],
+            "dosePerKg": [4.5, 10],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["giardia"], "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Antibiotik tidak diperlukan pada diare cair akut tanpa kolera/disentri/giardia.",
+        "severity": "salah",
+        "when": { "notTraits": ["kolera", "giardia"] }
+      },
+      {
+        "drugs": ["loperamid"],
+        "reason": "Loperamid dikontraindikasikan pada anak (ileus, depresi napas).",
+        "severity": "kritis",
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "makan", "text": "Lanjutkan ASI & makan seperti biasa (porsi kecil sering)", "kind": "benar" },
+    {
+      "id": "infus",
+      "text": "Infus RL 100 mL/kgBB & rujuk segera",
+      "kind": "benar",
+      "when": { "traits": ["dehidrasi_berat"] }
+    },
+    {
+      "id": "observasi",
+      "text": "Rehidrasi oral terpantau (Rencana B) di fasilitas kesehatan",
+      "kind": "benar",
+      "when": { "traits": ["dehidrasi_ringan_sedang"] }
+    },
+    { "id": "air", "text": "Cuci tangan pakai sabun, air minum dimasak, jamban sehat", "kind": "benar" },
+    {
+      "id": "puasa",
+      "text": "Puasakan/hentikan makan dan ASI sampai diare berhenti",
+      "kind": "berbahaya",
+      "why": "Memperberat malnutrisi & dehidrasi."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini diare akut karena infeksi saluran cerna", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Oralit diminum sedikit-sedikit tapi sering setiap BAB cair; zinc (anak) tetap 10 hari walau diare berhenti",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila tidak mau minum, muntah terus, BAB berdarah, kencing sedikit, sangat lemas, atau demam tinggi",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila diare tidak membaik dalam 3 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Cuci tangan pakai sabun sebelum makan & sesudah BAB",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "teh_pahit",
+      "text": "Ganti oralit dengan teh pahit/air kelapa saja",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Elektrolit tidak sesuai untuk rehidrasi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Lintas Diare"
+    ]
+  }
+}

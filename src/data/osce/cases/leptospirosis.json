@@ -1,0 +1,140 @@
+{
+  "disease": "leptospirosis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam & infeksi",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_ringan",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Leptospirosis ringan.",
+        "options": [
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          },
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 3 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [7, 7]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 g hari 1 lalu 500 mg hari 2–3",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          }
+        ],
+        "when": { "notTraits": ["weil"] }
+      },
+      {
+        "id": "ab_berat",
+        "label": "Antibiotik parenteral pra-rujukan",
+        "role": "utama",
+        "reason": "Leptospirosis berat (Weil).",
+        "options": [
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 1–2 g IV dosis pertama sebelum rujuk",
+            "schedules": ["tunggal"],
+            "dose": [1000, 2000]
+          },
+          {
+            "drug": "ampisilin",
+            "label": "Ampisilin 1 g IV dosis pertama sebelum rujuk",
+            "schedules": ["tunggal"],
+            "dose": [1000, 2000]
+          }
+        ],
+        "when": { "traits": ["weil"] }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Demam & mialgia (hindari OAINS).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "avoid": [{ "groups": ["oains"], "reason": "OAINS meningkatkan risiko perdarahan & gangguan ginjal.", "severity": "salah" }]
+  },
+  "nonPharm": [
+    { "id": "minum", "text": "Cukup minum & pantau produksi urin", "kind": "benar" },
+    { "id": "rujuk", "text": "Pasang infus & rujuk segera", "kind": "benar", "when": { "traits": ["weil"] } },
+    {
+      "id": "pelindung",
+      "text": "Pakai sepatu bot & sarung tangan saat di sawah/selokan/banjir; kendalikan tikus",
+      "kind": "benar"
+    },
+    {
+      "id": "rendam",
+      "text": "Rendam kaki di air banjir agar otot tidak pegal",
+      "kind": "berbahaya",
+      "why": "Pajanan ulang leptospira."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini leptospirosis, infeksi dari kencing tikus lewat air/tanah tercemar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Antibiotik diminum sampai habis 7 hari", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila mata/kulit kuning, kencing sedikit, sesak, batuk darah, atau perdarahan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–3 hari untuk menilai fungsi ginjal & hati",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Gunakan alat pelindung saat kontak air/lumpur & jaga rumah bebas tikus",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Petunjuk Teknis Pengendalian Leptospirosis (2017)"
+    ]
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "disease": "alergi_makanan",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — diare & muntah",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "utama",
+        "reason": "Gejala kulit/gatal akibat alergi makanan.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "utama",
+        "reason": "Gejala kulit/gatal akibat alergi makanan.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "hindari", "text": "Hentikan & hindari makanan pencetus; biasakan membaca label makanan", "kind": "benar" },
+    {
+      "id": "asi",
+      "text": "Lanjutkan ASI dengan ibu diet bebas susu sapi / formula terhidrolisat ekstensif",
+      "kind": "benar",
+      "when": { "traits": ["susu_sapi"] }
+    },
+    { "id": "rujuk", "text": "Rujuk ke konsultan alergi untuk evaluasi", "kind": "benar" },
+    {
+      "id": "tantang",
+      "text": "Coba makan pencetus sedikit-sedikit di rumah agar kebal",
+      "kind": "berbahaya",
+      "why": "Risiko anafilaksis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini alergi makanan: reaksi sistem imun terhadap makanan tertentu",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antihistamin meredakan gejala; pencegahan utama adalah menghindari pencetus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak, bengkak bibir/lidah, suara serak, pusing/pingsan, atau muntah hebat setelah makan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Beritahu sekolah/tempat makan tentang alergi & bawa kartu alergi",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "masak",
+      "text": "Makanan pencetus aman bila dimasak lama",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Banyak alergen tetap aktif setelah dimasak."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

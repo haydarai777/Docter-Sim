@@ -1,0 +1,211 @@
+{
+  "disease": "otitis_eksterna",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan telinga",
+  "therapy": {
+    "items": [
+      {
+        "id": "tetes_ab",
+        "label": "Antibiotik tetes telinga",
+        "role": "utama",
+        "reason": "Otitis eksterna difus.",
+        "options": [
+          {
+            "drug": "ofloksasin_tt",
+            "label": "Ofloksasin 0,3% tetes telinga 5–10 tetes 2 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [5, 10],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "notTraits": ["sirkumskripta", "jamur"] }
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral antistafilokokus",
+        "role": "utama",
+        "reason": "Furunkel liang telinga.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [5, 7]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["sirkumskripta"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_oral_anak",
+        "label": "Antibiotik oral antistafilokokus (anak)",
+        "role": "utama",
+        "reason": "Furunkel liang telinga.",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["sirkumskripta"], "ageMax": 11 }
+      },
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal liang telinga",
+        "role": "utama",
+        "reason": "Otomikosis.",
+        "options": [
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% dioles tipis di liang telinga 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% dioles di liang telinga 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["jamur"] }
+      },
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri telinga.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Nyeri telinga.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "toilet", "text": "Bersihkan liang telinga (aural toilet) dengan hati-hati", "kind": "benar" },
+    { "id": "kering", "text": "Jaga telinga tetap kering; hindari berenang 1–2 minggu", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres hangat pada telinga", "kind": "benar", "when": { "traits": ["sirkumskripta"] } },
+    {
+      "id": "gula",
+      "text": "Periksa gula darah (waspada otitis eksterna maligna)",
+      "kind": "benar",
+      "when": { "traits": ["dm_curiga"] }
+    },
+    {
+      "id": "korek",
+      "text": "Bersihkan telinga dengan cotton bud/lidi lebih dalam setiap hari",
+      "kind": "berbahaya",
+      "why": "Mendorong serumen & melukai liang/membran timpani."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini radang kulit liang telinga", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Gunakan obat sesuai aturan sampai habis walau nyeri sudah berkurang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila bengkak meluas ke wajah/belakang telinga, demam tinggi, atau pendengaran sangat turun",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Jangan mengorek telinga dan keringkan telinga setelah mandi/berenang",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "minyak",
+      "text": "Teteskan minyak kayu putih agar telinga hangat",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Iritasi kulit liang telinga."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

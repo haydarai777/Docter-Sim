@@ -190,7 +190,7 @@ export function evaluateStation(
     for (const it of ev.items) {
       if (it.status === 'tepat') done.push(`${it.item.label}: ${drugName(it.line!)} tepat`);
       else if (it.status === 'kurang_tepat') missed.push(`${it.item.label}: ${drugName(it.line!)} — ${it.problems.join('; ')}`);
-      else missed.push(`${it.item.label} (${it.item.role}) belum diresepkan — ${it.item.reason}`);
+      else if (it.item.role !== 'opsional') missed.push(`${it.item.label} (${it.item.role}) belum diresepkan — ${it.item.reason}`);
     }
     for (const a of ev.avoided) if (a.rule.severity === 'salah') missed.push(`${a.drug.name} tidak tepat: ${a.rule.reason}`);
     for (const i of ev.extras) missed.push(`${drugName(i)} tidak diperlukan pada kasus ini`);

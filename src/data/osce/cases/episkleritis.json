@@ -1,0 +1,123 @@
+{
+  "disease": "episkleritis",
+  "setting": "Puskesmas",
+  "station": "Mata — mata merah",
+  "therapy": {
+    "items": [
+      {
+        "id": "pelumas",
+        "label": "Air mata buatan",
+        "role": "utama",
+        "reason": "Suportif; episkleritis umumnya swasirna.",
+        "options": [
+          {
+            "drug": "air_mata_buatan",
+            "label": "Air mata buatan 1 tetes 4–6 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [7, 30]
+          }
+        ]
+      },
+      {
+        "id": "oains",
+        "label": "OAINS oral",
+        "role": "pendukung",
+        "reason": "Episkleritis nodular/nyeri.",
+        "options": [
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "natrium_diklofenak",
+            "label": "Natrium diklofenak 2 × 50 mg sesudah makan 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [50, 50],
+            "timesPerDay": [2, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["nodular"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["kloramfenikol_tm", "gentamisin_tm", "levofloksasin_tm", "kloramfenikol_sm"],
+        "reason": "Antibiotik tidak diperlukan.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres dingin pada mata", "kind": "benar" },
+    {
+      "id": "autoimun",
+      "text": "Rujuk untuk mencari penyakit autoimun karena berulang",
+      "kind": "benar",
+      "when": { "traits": ["berulang"] }
+    },
+    { "id": "ab", "text": "Beri antibiotik tetes mata", "kind": "pengecoh", "why": "Bukan infeksi." },
+    {
+      "id": "herbal",
+      "text": "Teteskan air sirih/ASI/obat herbal ke mata",
+      "kind": "berbahaya",
+      "why": "Iritasi & infeksi kornea."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Radang lapisan tipis di permukaan putih mata; umumnya jinak",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Biasanya sembuh sendiri 1–2 minggu dengan obat pelumas",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila nyeri hebat menembus ke dalam, penglihatan kabur, atau silau (curiga skleritis/uveitis)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "steroid_sendiri",
+      "text": "Beli tetes mata steroid sendiri bila kambuh",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Risiko glaukoma & katarak."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

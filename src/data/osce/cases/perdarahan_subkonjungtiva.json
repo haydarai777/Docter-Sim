@@ -1,0 +1,74 @@
+{
+  "disease": "perdarahan_subkonjungtiva",
+  "setting": "Puskesmas",
+  "station": "Mata — mata merah",
+  "therapy": {
+    "items": [],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Tidak memerlukan obat (swasirna). Air mata buatan hanya bila terasa mengganjal; atasi hipertensi bila ada."
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres dingin 24 jam pertama, lalu kompres hangat", "kind": "benar" },
+    { "id": "tensi", "text": "Periksa & kendalikan tekanan darah", "kind": "benar" },
+    {
+      "id": "antikoag",
+      "text": "Tinjau obat pengencer darah bersama dokter yang meresepkan (jangan dihentikan sendiri)",
+      "kind": "benar",
+      "when": { "traits": ["antikoagulan"] }
+    },
+    {
+      "id": "ab_tetes",
+      "text": "Beri tetes mata antibiotik agar merahnya cepat hilang",
+      "kind": "pengecoh",
+      "why": "Tidak ada infeksi; darah diserap sendiri."
+    },
+    {
+      "id": "stop_obat",
+      "text": "Hentikan sendiri obat pengencer darah",
+      "kind": "berbahaya",
+      "why": "Risiko stroke/trombosis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Pembuluh darah kecil di selaput mata pecah; tidak mengganggu penglihatan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak perlu obat; akan hilang sendiri dalam 1–3 minggu dan warnanya berubah kekuningan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur, nyeri, atau muncul perdarahan di tempat lain",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu atau bila berulang", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "menular",
+      "text": "Hindari bertemu orang karena mata merah ini menular",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Tidak menular."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

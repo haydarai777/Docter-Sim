@@ -7,7 +7,19 @@
  */
 import type { Condition, ReviewInfo } from '../types';
 
-export type Route = 'oral' | 'sublingual' | 'inhalasi' | 'topikal' | 'tetes_mata' | 'intravena' | 'intramuskular';
+export type Route =
+  | 'oral'
+  | 'sublingual'
+  | 'inhalasi'
+  | 'topikal'
+  | 'tetes_mata'
+  | 'tetes_telinga'
+  | 'semprot_hidung'
+  | 'vaginal'
+  | 'rektal'
+  | 'intravena'
+  | 'intramuskular'
+  | 'subkutan';
 
 export interface DrugForm {
   id: string;
@@ -15,7 +27,8 @@ export interface DrugForm {
   label: string;
   /** Kekuatan per satuan pakai (per tablet/puff/sendok takar), dalam `unit`. */
   strength: number;
-  unit: 'mg' | 'mcg' | 'g' | 'mL' | 'tablet' | 'sachet';
+  /** Topikal/tetes memakai satuan pakai (oles, tetes, semprot); vaksin & serum memakai IU atau mL. */
+  unit: 'mg' | 'mcg' | 'g' | 'mL' | 'IU' | 'tablet' | 'sachet' | 'oles' | 'tetes' | 'semprot' | 'paket';
   /** Satuan yang ditulis di signa: tablet, kapsul, puff, sachet, sendok takar 5 mL. */
   dosageUnit: string;
   route: Route;
@@ -72,11 +85,13 @@ export interface TherapyItem {
   id: string;
   /** Nama butir, mis. "Antibiotik empiris". */
   label: string;
-  /** utama = wajib untuk skor ≥ 1 · pendukung = diperlukan untuk skor penuh. */
-  role: 'utama' | 'pendukung';
+  /** utama = wajib untuk skor ≥ 1 · pendukung = diperlukan untuk skor penuh · opsional = boleh (bila diberi, dosis harus tepat). */
+  role: 'utama' | 'pendukung' | 'opsional';
   reason: string;
   when?: Condition;
   options: DoseOption[];
+  /** Harus dipenuhi baris resep yang belum dipakai butir lain (mis. obat antihipertensi kedua golongan berbeda). */
+  separateLine?: boolean;
 }
 
 export interface AvoidRule {
@@ -117,6 +132,7 @@ export interface OsceCaseDef {
   /** Kelompok stasiun yang tidak membocorkan diagnosis, mis. "Penyakit Dalam — demam akut". */
   station: string;
   therapy: {
+    /** Boleh kosong untuk penyakit yang tatalaksananya tanpa obat (mis. kacamata); `note` wajib menjelaskannya. */
     items: TherapyItem[];
     avoid?: AvoidRule[];
     /** Catatan kunci jawaban (mis. dosis berbasis BB, pertimbangan rujukan). */

@@ -1,0 +1,86 @@
+{
+  "disease": "skistosomiasis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — cacingan & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "prazikuantel",
+        "label": "Prazikuantel",
+        "role": "utama",
+        "reason": "Obat pilihan skistosomiasis.",
+        "options": [
+          {
+            "drug": "prazikuantel",
+            "label": "Prazikuantel 60 mg/kgBB dibagi 2 dosis dalam 1 hari (30 mg/kgBB/kali)",
+            "schedules": ["rutin"],
+            "forms": ["prazikuantel-tab600"],
+            "dosePerKg": [25, 35],
+            "timesPerDay": [2, 2],
+            "days": [1, 1]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "bot", "text": "Gunakan sepatu bot saat ke sawah/danau/sungai", "kind": "benar" },
+    { "id": "jamban", "text": "BAB di jamban sehat (jangan di badan air)", "kind": "benar" },
+    { "id": "lapor", "text": "Laporkan ke program pengendalian skistosomiasis", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk untuk tatalaksana hipertensi portal",
+      "kind": "benar",
+      "when": { "traits": ["asites"] }
+    },
+    {
+      "id": "mandi_danau",
+      "text": "Tetap mandi & mencuci di danau karena airnya mengalir",
+      "kind": "berbahaya",
+      "why": "Serkaria menembus kulit di air tawar."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini skistosomiasis (demam keong), cacing dari keong di air tawar yang menembus kulit",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat cacing diminum sesuai dosis; ulangi sesuai jadwal program",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perut kembung hebat, muntah terus/muntah cacing, tidak bisa BAB/kentut, atau sangat pucat & sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu (periksa ulang feses/Hb)", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Seluruh anggota keluarga ikut menjaga kebersihan & minum obat cacing berkala",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "sekali",
+      "text": "Sekali minum obat cacing akan kebal seumur hidup",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Reinfeksi sering terjadi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Pengendalian Schistosomiasis"
+    ]
+  }
+}

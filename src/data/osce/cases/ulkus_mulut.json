@@ -1,0 +1,137 @@
+{
+  "disease": "ulkus_mulut",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — keluhan mulut",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Terapi topikal aftosa",
+        "role": "utama",
+        "reason": "Mengurangi nyeri & mempercepat penyembuhan.",
+        "options": [
+          {
+            "drug": "triamsinolon_orabase",
+            "label": "Triamsinolon asetonid 0,1% in orabase dioles 2–3 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "klorheksidin_kumur",
+            "label": "Klorheksidin 0,2% kumur 10 mL 2 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "notTraits": ["herpetik"] }
+      },
+      {
+        "id": "asiklovir",
+        "label": "Antivirus",
+        "role": "utama",
+        "reason": "Gingivostomatitis herpetika primer (< 72 jam).",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 15 mg/kgBB/kali 5 × sehari selama 7 hari (maks. 200 mg/kali)",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-syr200"],
+            "dosePerKg": [10, 17],
+            "timesPerDay": [5, 5],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["herpetik"] }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Nyeri & demam, agar anak mau minum.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["herpetik"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["triamsinolon_orabase"],
+        "reason": "Steroid topikal memperburuk infeksi herpes.",
+        "severity": "salah",
+        "when": { "traits": ["herpetik"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "makanan", "text": "Hindari makanan pedas, asam, & keras; gunakan sikat gigi lembut", "kind": "benar" },
+    {
+      "id": "minum",
+      "text": "Pastikan cukup minum (waspada dehidrasi pada anak)",
+      "kind": "benar",
+      "when": { "traits": ["herpetik"] }
+    },
+    {
+      "id": "defisiensi",
+      "text": "Periksa anemia/defisiensi nutrisi",
+      "kind": "benar",
+      "when": { "traits": ["defisiensi_curiga"] }
+    },
+    {
+      "id": "garam",
+      "text": "Tempelkan garam kasar atau kapur sirih pada sariawan",
+      "kind": "berbahaya",
+      "why": "Melukai mukosa & memperluas ulkus."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini sariawan; penyebabnya dinilai dari pola & usia (aftosa atau infeksi virus herpes)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Gunakan obat sesuai aturan; sariawan biasa sembuh 7–14 hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila tidak mau minum, kencing sedikit, demam tinggi, atau sariawan > 3 minggu tidak sembuh",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila tidak sembuh 2 minggu atau sering kambuh",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "vit_c",
+      "text": "Sariawan pasti karena kurang vitamin C, cukup minum suplemen",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penyebab multifaktorial."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

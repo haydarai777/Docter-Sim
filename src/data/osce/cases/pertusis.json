@@ -1,0 +1,118 @@
+{
+  "disease": "pertusis",
+  "setting": "Puskesmas",
+  "station": "THT — nyeri tenggorok & batuk",
+  "therapy": {
+    "items": [
+      {
+        "id": "makrolid",
+        "label": "Antibiotik makrolid",
+        "role": "utama",
+        "reason": "Eradikasi B. pertussis & mengurangi penularan.",
+        "options": [
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 500 mg hari 1 lalu 250 mg hari 2–5",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [250, 500],
+            "timesPerDay": [1, 1],
+            "days": [5, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 4 × 500 mg selama 14 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [14, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "makrolid_anak",
+        "label": "Antibiotik makrolid (anak)",
+        "role": "utama",
+        "reason": "Eradikasi B. pertussis & mengurangi penularan.",
+        "options": [
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 10 mg/kgBB hari 1 lalu 5 mg/kgBB hari 2–5",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-syr200"],
+            "dosePerKg": [4.5, 11],
+            "timesPerDay": [1, 1],
+            "days": [5, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 14 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [14, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "avoid": [{ "classes": ["antitusif"], "reason": "Antitusif tidak bermanfaat & berbahaya pada anak.", "severity": "salah" }]
+  },
+  "nonPharm": [
+    { "id": "nutrisi", "text": "Makan/minum porsi kecil tapi sering", "kind": "benar" },
+    { "id": "asap", "text": "Hindari asap & pencetus batuk", "kind": "benar" },
+    {
+      "id": "profilaksis",
+      "text": "Profilaksis makrolid untuk kontak serumah & lengkapi imunisasi DPT",
+      "kind": "benar"
+    },
+    {
+      "id": "rujuk",
+      "text": "Rujuk segera bayi dengan apnea/sianosis",
+      "kind": "benar",
+      "when": { "traits": ["apnea_bayi"] }
+    },
+    {
+      "id": "obat_batuk",
+      "text": "Beri obat penekan batuk (kodein/dekstrometorfan) agar batuk berhenti",
+      "kind": "berbahaya",
+      "why": "Tidak efektif & berbahaya pada anak."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini batuk rejan (pertusis), sangat menular", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Antibiotik diminum sampai habis untuk mengurangi penularan; batuk dapat menetap berminggu-minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila henti napas, kebiruan, kejang, sulit minum, atau sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3–5 hari", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Lengkapi imunisasi DPT anak di rumah", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "tidak_menular",
+      "text": "Batuk ini tidak menular sehingga anak boleh langsung bersekolah",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Menular hingga 5 hari terapi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL",
+      "IDAI. Pedoman Pelayanan Medis — Pertusis"
+    ]
+  }
+}

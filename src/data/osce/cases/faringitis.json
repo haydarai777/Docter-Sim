@@ -1,0 +1,255 @@
+{
+  "disease": "faringitis",
+  "setting": "Puskesmas",
+  "station": "THT — nyeri tenggorok & batuk",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_dewasa",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Faringitis streptokokus (Centor tinggi): cegah demam rematik.",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 3 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [10, 10]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 × 500 mg selama 3–5 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 4 × 500 mg selama 10 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [2, 3],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "traits": ["streptokokus"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_anak",
+        "label": "Antibiotik (anak)",
+        "role": "utama",
+        "reason": "Faringitis streptokokus (Centor tinggi): cegah demam rematik.",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 15–30 mg/kgBB/kali 3 × sehari (≈ 50–90 mg/kgBB/hari) selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-syr125", "amoksisilin-syr250"],
+            "dosePerKg": [13, 30],
+            "timesPerDay": [3, 3],
+            "days": [10, 10]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 10 mg/kgBB 1 × sehari selama 3–5 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-syr200"],
+            "dosePerKg": [8, 12],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["streptokokus"], "ageMax": 11 }
+      },
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "utama",
+        "reason": "Faringitis virus: simptomatik.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "notTraits": ["streptokokus"], "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "utama",
+        "reason": "Faringitis virus: simptomatik.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "notTraits": ["streptokokus"], "ageMax": 11 }
+      },
+      {
+        "id": "analgesik_strep_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri tenggorok & demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["streptokokus"], "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_strep_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Nyeri tenggorok & demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["streptokokus"], "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Tidak ada indikasi antibiotik.",
+        "severity": "salah",
+        "when": { "notTraits": ["streptokokus"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kumur", "text": "Kumur air garam hangat & minum hangat", "kind": "benar" },
+    { "id": "istirahat", "text": "Istirahat, makanan lunak", "kind": "benar" },
+    {
+      "id": "es",
+      "text": "Hindari minum es & gorengan selamanya",
+      "kind": "pengecoh",
+      "why": "Tidak terbukti menjadi penyebab."
+    },
+    {
+      "id": "ab_sisa",
+      "text": "Minum antibiotik sisa milik keluarga",
+      "kind": "berbahaya",
+      "why": "Dosis & jenis tidak tepat; resistansi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang tenggorokan; penyebab dinilai dari gejala (virus/bakteri)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum obat sesuai aturan; antibiotik (bila diberikan) dihabiskan 10 hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sulit membuka mulut, tidak bisa menelan ludah, sesak, atau leher bengkak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 3 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

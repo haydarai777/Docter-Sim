@@ -1,0 +1,84 @@
+{
+  "disease": "insomnia",
+  "setting": "Puskesmas",
+  "station": "Jiwa — keluhan psikosomatik & tidur",
+  "therapy": {
+    "items": [
+      {
+        "id": "hipnotik",
+        "label": "Hipnotik jangka pendek",
+        "role": "opsional",
+        "reason": "Hanya bila sangat mengganggu, dosis rendah ≤ 2 minggu.",
+        "options": [
+          {
+            "drug": "lorazepam",
+            "label": "Lorazepam 0,5–1 mg malam hari, maksimal 2 minggu",
+            "schedules": ["rutin", "prn"],
+            "forms": ["lorazepam-tab05"],
+            "dose": [0.5, 1],
+            "timesPerDay": [1, 1],
+            "days": [3, 14]
+          }
+        ],
+        "when": { "notTraits": ["osa_curiga"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["benzodiazepin"],
+        "reason": "Benzodiazepin memperberat apnea tidur.",
+        "severity": "kritis",
+        "when": { "traits": ["osa_curiga"] }
+      }
+    ],
+    "note": "Tatalaksana utama higiene tidur & CBT-I; hipnotik hanya opsional jangka pendek."
+  },
+  "nonPharm": [
+    { "id": "jadwal", "text": "Jadwal tidur-bangun tetap, kasur hanya untuk tidur (kontrol stimulus)", "kind": "benar" },
+    { "id": "kafein", "text": "Hindari kafein sore hari, alkohol, & gawai 1 jam sebelum tidur", "kind": "benar" },
+    { "id": "relaksasi", "text": "Teknik relaksasi & atasi stresor", "kind": "benar" },
+    { "id": "osa", "text": "Rujuk untuk evaluasi sleep apnea", "kind": "benar", "when": { "traits": ["osa_curiga"] } },
+    {
+      "id": "alkohol",
+      "text": "Minum alkohol sebelum tidur agar cepat terlelap",
+      "kind": "berbahaya",
+      "why": "Memperburuk kualitas tidur & ketergantungan."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini insomnia: sulit memulai/mempertahankan tidur", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Perbaikan kebiasaan tidur adalah terapi utama; obat tidur hanya jangka pendek",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera datang bila muncul pikiran bunuh diri, sedih berkepanjangan, atau henti napas saat tidur",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–4 minggu dengan catatan harian tidur",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "obat_tidur",
+      "text": "Obat tidur aman diminum setiap malam jangka panjang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Toleransi & ketergantungan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. PNPK Jiwa / PPDGJ-III"
+    ]
+  }
+}

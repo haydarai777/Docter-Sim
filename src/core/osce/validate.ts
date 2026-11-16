@@ -34,7 +34,7 @@ export function validateOsceContent(osce: OsceContent, content: GameContent): st
       for (const t of [...(w.traits ?? []), ...(w.notTraits ?? [])]) if (!traits.has(t)) err(p, `trait "${t}" tidak ada di penyakit`);
       for (const s of [...(w.symptoms ?? []), ...(w.notSymptoms ?? [])]) if (!symptoms.has(s)) err(p, `gejala "${s}" tidak ada di penyakit`);
     };
-    if (!def.therapy.items.some((i) => i.role === 'utama')) err(path, 'tidak ada butir terapi utama');
+    if (!def.therapy.items.some((i) => i.role === 'utama') && !def.therapy.note) err(path, 'tidak ada butir terapi utama (tatalaksana tanpa obat wajib dijelaskan di catatan)');
     const itemIds = new Set<string>();
     for (const item of def.therapy.items) {
       const ip = `${path}.terapi.${item.id}`;
