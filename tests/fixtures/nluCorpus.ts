@@ -198,7 +198,7 @@ export const NLU_CORPUS: NluCase[] = [
   { q: 'Susah BAB?', expect: [S('konstipasi')] },
   { q: 'Sembelit?', expect: [S('konstipasi')] },
   { q: 'Ada bintik merah?', expect: [S('bintik_merah')] },
-  { q: 'Ada ruam?', expect: [S('bintik_merah')] },
+  { q: 'Ada ruam?', expect: [S('ruam_kulit')] },
   { q: 'Bintik-bintik di kulit?', expect: [S('bintik_merah')] },
   { q: 'Mimisan?', expect: [S('perdarahan_mukosa')] },
   { q: 'Gusi berdarah?', expect: [S('perdarahan_mukosa')] },

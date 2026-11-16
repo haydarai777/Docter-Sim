@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { performExam, startEncounter, submitDecision } from '../src/core/encounter';
 import { generateCase } from '../src/core/generator';
 import type { PatientCase } from '../src/core/types';
-import { config, content, DISEASE_IDS } from './helpers';
+import { config, content, DISEASE_IDS, perDisease } from './helpers';
 
 /**
  * Tes regresi untuk bug konsistensi kasus yang ditemukan lewat fuzzing:
@@ -10,9 +10,10 @@ import { config, content, DISEASE_IDS } from './helpers';
  * sumber temuan turunan, dan umpan balik negatif palsu.
  */
 
-function* cases(perDisease: number, salt = 0): Generator<PatientCase> {
+function* cases(n: number, salt = 0): Generator<PatientCase> {
+  const count = perDisease(n);
   for (const diseaseId of DISEASE_IDS) {
-    for (let i = 1; i <= perDisease; i++) yield generateCase(content, config, { diseaseId, seed: i * 7919 + salt });
+    for (let i = 1; i <= count; i++) yield generateCase(content, config, { diseaseId, seed: i * 7919 + salt });
   }
 }
 

@@ -5,7 +5,7 @@ import { deriveSeed } from '../src/core/rng';
 import { findUnfilledPlaceholders } from '../src/core/text';
 import type { DiseaseTemplate, GameContent } from '../src/core/types';
 import { validateContent } from '../src/core/validate';
-import { config, content, configWith } from './helpers';
+import { config, content, configWith, perDisease } from './helpers';
 
 /** Salinan konten dengan satu penyakit dimodifikasi (untuk menguji validator). */
 function withDisease(mutate: (d: DiseaseTemplate) => void): GameContent {
@@ -81,7 +81,7 @@ describe('integritas konten', () => {
 
   it('ratusan kasus per penyakit ter-generate tanpa placeholder tersisa', () => {
     for (const disease of content.diseases) {
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < perDisease(150, 20); i++) {
         const c = generateCase(content, config, { diseaseId: disease.id, seed: deriveSeed(99, `${disease.id}:${i}`) });
         const texts = [c.greeting, c.complaint, ...Object.values(c.answers).map((a) => a.text)];
         for (const r of content.reviews) texts.push(...r.normal);

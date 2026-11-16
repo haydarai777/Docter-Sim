@@ -1,0 +1,172 @@
+{
+  "id": "miopia",
+  "name": "Miopia ringan",
+  "aliases": ["Rabun jauh", "Mata minus", "Myopia"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.2,
+  "summary": "Kelainan refraksi: bayangan benda jauh jatuh di depan retina. Kabur melihat jauh (papan tulis, rambu), dekat tetap jelas, sering menyipitkan mata. Visus membaik dengan pinhole. Koreksi dengan lensa sferis negatif (minus) TERKECIL yang memberi visus terbaik. Faktor risiko: kerja dekat lama, kurang aktivitas luar ruang, riwayat keluarga.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 7, "max": 9, "weight": 2 }, { "min": 10, "max": 18, "weight": 4 }, { "min": 19, "max": 30, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "pelajar_sd", "weight": 2 },
+      { "id": "anak_sd", "weight": 2 },
+      { "id": "pelajar", "weight": 3 },
+      { "id": "mahasiswa", "weight": 2 }
+    ],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "anak_sekolah", "probability": 1, "when": { "ageMax": 18 } },
+    { "id": "miopia_kiri_lebih", "probability": 0.3 }
+  ],
+  "traitLabels": { "anak_sekolah": "Anak usia sekolah (keluhan papan tulis).", "miopia_kiri_lebih": "Anisometropia ringan." },
+  "symptoms": [
+    { "id": "kabur_jauh", "probability": 1 },
+    { "id": "mata_lelah", "probability": 0.5 },
+    { "id": "nyeri_kepala", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["kabur_jauh"], "extraPool": ["mata_lelah"] },
+  "clueSymptoms": ["mata_lelah", "nyeri_kepala"],
+  "misattributions": ["kebanyakan main HP", "kurang vitamin A", "mata capek"],
+  "fears": ["minusnya terus bertambah", "mata buta"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah beberapa bulan, Dok, makin lama makin kabur kalau lihat jauh.",
+        "clue": "Kabur jauh progresif lambat"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Tulisan di papan tulis nggak kelihatan, Dok, harus maju ke depan. Kalau baca buku jelas.",
+        "when": { "traits": ["anak_sekolah"] },
+        "clue": "Kabur jauh, dekat jelas"
+      },
+      {
+        "text": "Kalau lihat rambu atau nomor bus dari jauh nggak jelas, Dok. Baca HP masih jelas.",
+        "when": { "notTraits": ["anak_sekolah"] },
+        "clue": "Kabur jauh, dekat jelas"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau saya sipitkan mata jadi agak jelas, Dok.",
+        "clue": "Membaik bila menyipitkan mata (efek pinhole)"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Main HP dan baca bisa berjam-jam, Dok. Jarang main di luar.",
+        "clue": "Kerja dekat lama, kurang aktivitas luar ruang"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Bapak dan ibu saya dua-duanya pakai kacamata minus, Dok.", "clue": "Riwayat keluarga miopia" }]
+  },
+  "findings": [
+    { "tool": "visus", "param": "visus_od", "values": ["6/15", "6/18", "6/12"] },
+    {
+      "tool": "visus",
+      "param": "visus_os",
+      "when": { "notTraits": ["miopia_kiri_lebih"] },
+      "values": ["6/15", "6/18", "6/12"]
+    },
+    { "tool": "visus", "param": "visus_os", "when": { "traits": ["miopia_kiri_lebih"] }, "values": ["6/24", "6/30"] },
+    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] },
+    {
+      "tool": "visus",
+      "param": "koreksi",
+      "when": { "notTraits": ["miopia_kiri_lebih"] },
+      "values": ["OD S −1,50 D → 6/6; OS S −1,75 D → 6/6"]
+    },
+    {
+      "tool": "visus",
+      "param": "koreksi",
+      "when": { "traits": ["miopia_kiri_lebih"] },
+      "values": ["OD S −1,50 D → 6/6; OS S −2,50 D → 6/6"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "astigmatisma",
+      "howToDistinguish": "Astigmatisma: kabur jauh DAN dekat, bayangan distorsi; dikoreksi lensa silinder.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus"] }
+    },
+    {
+      "id": "ablasio_retina",
+      "howToDistinguish": "Ablasio retina (risiko pada miopia tinggi): kilatan cahaya, floaters, bayangan tirai mendadak — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keluhan_lain"], "tools": ["funduskopi"] }
+    },
+    {
+      "id": "katarak",
+      "howToDistinguish": "Katarak: kabur berkabut pada usia lanjut, refleks fundus berkurang, tidak membaik penuh dengan pinhole.",
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    }
+  ],
+  "keyFindings": [
+    "Kabur melihat jauh, dekat jelas, menyipitkan mata",
+    "Visus membaik dengan pinhole",
+    "Dikoreksi lensa sferis negatif menjadi 6/6"
+  ],
+  "teachingPoints": [
+    "Pada miopia, pilih lensa MINUS TERKECIL yang memberi visus terbaik (hindari koreksi berlebih).",
+    "Aktivitas luar ruang ≥ 2 jam/hari dan membatasi kerja dekat membantu memperlambat progresi miopia anak."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata",
+      "Kemenkes RI. Pedoman Penanggulangan Gangguan Penglihatan dan Kebutaan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "kebiasaan", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus, pinhole, dan koreksi lensa coba." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Media refraksi jernih." },
+      {
+        "tool": "funduskopi",
+        "role": "pendukung",
+        "reason": "Refleks fundus & retina (risiko ablasio pada miopia tinggi)."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Resep kacamata lensa sferis negatif; kontrol tiap 6–12 bulan (anak)." }],
+  "management": [
+    "Resep kacamata minus terkecil yang memberi visus 6/6.",
+    "Batasi kerja dekat, istirahat tiap 20–30 menit, perbanyak aktivitas luar ruang.",
+    "Kontrol berkala; rujuk bila visus tidak maju dengan koreksi, miopia tinggi, atau ada kilatan/floaters."
+  ],
+  "approach": [
+    "Visus tiap mata → pinhole (membaik = refraksi) → koreksi lensa coba.",
+    "Segmen anterior & funduskopi untuk menyingkirkan kelainan organik."
+  ]
+}

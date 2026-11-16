@@ -1,0 +1,135 @@
+{
+  "id": "hipermetropia",
+  "name": "Hipermetropia ringan",
+  "aliases": ["Rabun dekat", "Mata plus", "Hiperopia"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Kelainan refraksi: bayangan benda jatuh di belakang retina. Melihat dekat kabur dan mata cepat lelah (akomodasi terus-menerus), sakit kepala setelah membaca; hipermetropia ringan masih dapat melihat jauh dengan baik. Koreksi dengan lensa sferis positif (plus) terbesar yang memberi visus terbaik. Hipermetropia berisiko glaukoma sudut tertutup (BMD dangkal).",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 7, "max": 9, "weight": 1 }, { "min": 10, "max": 18, "weight": 2 }, { "min": 19, "max": 39, "weight": 3 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "pelajar", "weight": 2 }, { "id": "mahasiswa", "weight": 2 }, { "id": "pegawai_kantor", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "astenopia_berat", "probability": 0.4 }],
+  "traitLabels": { "astenopia_berat": "Astenopia akomodatif dengan sakit kepala." },
+  "symptoms": [
+    { "id": "kabur_dekat", "probability": 1 },
+    { "id": "mata_lelah", "probability": 0.9 },
+    { "id": "nyeri_kepala", "probability": 0.6 },
+    { "id": "nyeri_kepala", "probability": 1, "when": { "traits": ["astenopia_berat"] } },
+    { "id": "mata_berair", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["kabur_dekat"], "extraPool": ["mata_lelah"] },
+  "clueSymptoms": ["mata_lelah", "nyeri_kepala", "mata_berair"],
+  "misattributions": ["mata minus", "kurang vitamin", "mata tua"],
+  "fears": ["mata buta", "harus pakai kacamata seumur hidup"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah berbulan-bulan, Dok, pelan-pelan.", "clue": "Kronik progresif lambat" }],
+    "karakter": [
+      {
+        "text": "Kalau baca buku atau lihat HP lama, tulisannya jadi kabur dan mata pegal, Dok. Lihat jauh masih jelas.",
+        "clue": "Kabur dekat + astenopia, jauh masih jelas"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Habis baca lama kepala saya cekot-cekot, Dok. Istirahat sebentar enakan.",
+        "clue": "Sakit kepala setelah membaca, membaik dengan istirahat"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Ibu saya pakai kacamata plus dari muda, Dok.", "clue": "Riwayat keluarga hipermetropia" }],
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
+  },
+  "findings": [
+    { "tool": "visus", "param": "visus_od", "values": ["6/6", "6/7,5"] },
+    { "tool": "visus", "param": "visus_os", "values": ["6/6", "6/7,5"] },
+    {
+      "tool": "visus",
+      "param": "koreksi",
+      "diagnostic": true,
+      "values": ["Dengan S +1,50 D ODS membaca lebih nyaman; visus 6/6 ODS"]
+    },
+    { "tool": "visus", "param": "visus_dekat", "values": ["J4 tanpa koreksi; dengan S +1,50 D menjadi J1"] },
+    { "tool": "visus", "param": "pinhole", "values": ["Visus tetap baik dengan pinhole"] }
+  ],
+  "differentials": [
+    {
+      "id": "presbiopia",
+      "howToDistinguish": "Presbiopia: usia ≥ 40 tahun, akomodasi berkurang. Hipermetropia: dapat sejak muda.",
+      "excludeBy": { "topics": ["identitas_umur"], "tools": ["visus"] }
+    },
+    {
+      "id": "glaukoma_akut",
+      "howToDistinguish": "Glaukoma akut sudut tertutup (risiko pada mata hipermetrop): nyeri hebat, mata merah, halo, mual, TIO tinggi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "miopia",
+      "howToDistinguish": "Miopia: kabur melihat JAUH, dekat jelas; dikoreksi lensa minus.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus"] }
+    }
+  ],
+  "keyFindings": [
+    "Kabur melihat dekat, mata cepat lelah & sakit kepala setelah membaca",
+    "Koreksi lensa sferis positif memberi kenyamanan & visus terbaik",
+    "Segmen anterior & funduskopi normal"
+  ],
+  "teachingPoints": [
+    "Pada hipermetropia, pilih lensa PLUS TERBESAR yang masih memberi visus terbaik.",
+    "Mata hipermetrop dengan BMD dangkal berisiko glaukoma sudut tertutup — waspadai mata merah nyeri mendadak."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata",
+      "Kemenkes RI. Pedoman Penanggulangan Gangguan Penglihatan dan Kebutaan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus jauh-dekat, pinhole, dan koreksi lensa coba." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Singkirkan kelainan media & nilai BMD." },
+      { "tool": "funduskopi", "role": "pendukung", "reason": "Menyingkirkan kelainan retina/papil." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Resep kacamata lensa sferis positif; kontrol berkala." }],
+  "management": [
+    "Resep kacamata sferis positif sesuai hasil koreksi.",
+    "Istirahatkan mata saat membaca lama, pencahayaan cukup.",
+    "Anak: rujuk bila visus tidak mencapai 6/6 dengan koreksi (risiko ambliopia/strabismus)."
+  ],
+  "approach": [
+    "Periksa visus jauh & dekat, pinhole, lalu koreksi bertahap dengan lensa coba.",
+    "Singkirkan kelainan organik (segmen anterior, funduskopi)."
+  ]
+}

@@ -1,5 +1,5 @@
 /**
- * Daftar file penyakit.
+ * Daftar file penyakit (dibuat ulang otomatis oleh generator konten; urut per sistem organ).
  *
  * CARA MENAMBAH PENYAKIT BARU:
  *  1. Salin salah satu file JSON di folder ini sebagai templat.
@@ -10,36 +10,65 @@
  *
  * ⚠ Semua konten medis berstatus BELUM_DITINJAU_DOKTER sampai ditinjau dokter.
  */
-// Infeksi tropis (demam akut)
-import dengue from './dengue.json';
+// Endokrin & metabolik
+import dmTipe2 from './dm_tipe2.json';
+// Infeksi tropis
 import demamTifoid from './demam_tifoid.json';
+import dengue from './dengue.json';
 import malaria from './malaria.json';
-// Nyeri dada / ulu hati
-import gerd from './gerd.json';
+// Jantung & pembuluh darah
 import anginaStabil from './angina_stabil.json';
+// Mata
+import astigmatisma from './astigmatisma.json';
+import bendaAsingKonjungtiva from './benda_asing_konjungtiva.json';
+import blefaritis from './blefaritis.json';
+import butaSenja from './buta_senja.json';
+import episkleritis from './episkleritis.json';
+import hipermetropia from './hipermetropia.json';
+import hordeolum from './hordeolum.json';
+import konjungtivitis from './konjungtivitis.json';
+import mataKering from './mata_kering.json';
+import miopia from './miopia.json';
+import perdarahanSubkonjungtiva from './perdarahan_subkonjungtiva.json';
+import presbiopia from './presbiopia.json';
+import trikiasis from './trikiasis.json';
+// Pencernaan
 import dispepsia from './dispepsia.json';
 import gastritis from './gastritis.json';
-// Keluhan berkemih / pinggang
-import isk from './isk.json';
-import batuSaluranKemih from './batu_saluran_kemih.json';
-import dmTipe2 from './dm_tipe2.json';
-// Batuk / sesak
-import tbParu from './tb_paru.json';
-import pneumonia from './pneumonia.json';
+import gerd from './gerd.json';
+// Pernapasan
 import asma from './asma.json';
+import pneumonia from './pneumonia.json';
+import tbParu from './tb_paru.json';
+// Saluran kemih
+import batuSaluranKemih from './batu_saluran_kemih.json';
+import isk from './isk.json';
 
 export const DISEASE_FILES: unknown[] = [
-  dengue,
+  dmTipe2,
   demamTifoid,
+  dengue,
   malaria,
-  gerd,
   anginaStabil,
+  astigmatisma,
+  bendaAsingKonjungtiva,
+  blefaritis,
+  butaSenja,
+  episkleritis,
+  hipermetropia,
+  hordeolum,
+  konjungtivitis,
+  mataKering,
+  miopia,
+  perdarahanSubkonjungtiva,
+  presbiopia,
+  trikiasis,
   dispepsia,
   gastritis,
-  isk,
-  batuSaluranKemih,
-  dmTipe2,
-  tbParu,
-  pneumonia,
+  gerd,
   asma,
+  pneumonia,
+  tbParu,
+  batuSaluranKemih,
+  isk,
 ];

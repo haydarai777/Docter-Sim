@@ -1,0 +1,181 @@
+{
+  "id": "perdarahan_subkonjungtiva",
+  "name": "Perdarahan subkonjungtiva",
+  "aliases": ["Hematoma subkonjungtiva", "Mata merah darah"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.8,
+  "summary": "Pecahnya pembuluh darah kecil di bawah konjungtiva: bercak merah terang berbatas tegas di bagian putih mata, tanpa nyeri, tanpa sekret, visus normal. Pemicu: batuk/mengejan/muntah keras, mengucek, trauma ringan, hipertensi, atau antikoagulan. Sembuh sendiri 1–3 minggu.",
+  "presentationDay": [1, 3],
+  "demographics": {
+    "ageBands": [
+      { "min": 20, "max": 39, "weight": 2 },
+      { "min": 40, "max": 59, "weight": 3 },
+      { "min": 60, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "mengejan_batuk", "probability": 0.45 },
+    { "id": "trauma_ringan", "probability": 0.3, "when": { "notTraits": ["mengejan_batuk"] } },
+    { "id": "hipertensi_terkait", "probability": 0.25, "when": { "ageMin": 40 } },
+    { "id": "antikoagulan", "probability": 0.08, "when": { "ageMin": 50 } }
+  ],
+  "traitLabels": {
+    "mengejan_batuk": "Didahului batuk/muntah/mengejan keras (peningkatan tekanan vena).",
+    "trauma_ringan": "Didahului mengucek/trauma ringan.",
+    "hipertensi_terkait": "Tekanan darah tinggi — cari hipertensi.",
+    "antikoagulan": "Memakai obat pengencer darah."
+  },
+  "symptoms": [
+    { "id": "bercak_darah_mata", "probability": 1 },
+    { "id": "mata_mengganjal", "probability": 0.25 },
+    { "id": "batuk", "probability": 0.5, "when": { "traits": ["mengejan_batuk"] } },
+    { "id": "nyeri_kepala", "probability": 0.3, "when": { "traits": ["hipertensi_terkait"] } }
+  ],
+  "chiefComplaint": { "primary": ["bercak_darah_mata"] },
+  "clueSymptoms": ["mata_mengganjal", "batuk", "nyeri_kepala"],
+  "misattributions": ["mata pecah pembuluh darah", "kelilipan", "darah tinggi naik"],
+  "fears": ["mata buta", "stroke"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tadi pagi dikasih tahu istri/suami, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa.",
+        "clue": "Onset tiba-tiba tanpa nyeri, diketahui orang lain"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Nggak sakit sama sekali, Dok, nggak gatal, nggak belekan. Penglihatan juga jelas.",
+        "clue": "Tanpa nyeri, gatal, sekret; visus normal"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Semalam saya batuk-batuk keras sekali, Dok, sampai muntah.",
+        "when": { "traits": ["mengejan_batuk"] },
+        "clue": "Didahului batuk/muntah keras"
+      },
+      {
+        "text": "Kemarin mata saya kena kibasan kain waktu jemur, terus saya kucek.",
+        "when": { "traits": ["trauma_ringan"] },
+        "clue": "Didahului trauma ringan/mengucek"
+      },
+      {
+        "text": "Nggak ada apa-apa, Dok, tahu-tahu merah.",
+        "when": { "notTraits": ["mengejan_batuk", "trauma_ringan"] }
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya darah tinggi, Dok, tapi obatnya jarang diminum.",
+        "when": { "traits": ["hipertensi_terkait"] },
+        "clue": "Riwayat hipertensi tidak terkontrol"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Saya minum obat pengencer darah dari dokter jantung, Dok.",
+        "when": { "traits": ["antikoagulan"] },
+        "clue": "Memakai antikoagulan/antiplatelet"
+      }
+    ],
+    "episode_sebelumnya": [{ "text": "Belum pernah, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "values": ["Perdarahan subkonjungtiva merah terang berbatas tegas di temporal, tanpa injeksi siliar"]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [150, 178] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [92, 105] }
+  ],
+  "differentials": [
+    {
+      "id": "trauma_tembus_mata",
+      "howToDistinguish": "Trauma tembus: riwayat cedera bermakna, nyeri, visus turun, perdarahan subkonjungtiva luas 360° (bullous) dengan BMD dangkal/pupil tidak bulat.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "konjungtivitis",
+      "howToDistinguish": "Konjungtivitis: injeksi difus dengan sekret, gatal/mengganjal; bukan bercak darah berbatas tegas.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "hipertensi",
+      "howToDistinguish": "Hipertensi dapat menjadi pemicu — ukur tekanan darah setiap pasien perdarahan subkonjungtiva.",
+      "excludeBy": { "tools": ["tanda_vital"] }
+    }
+  ],
+  "keyFindings": [
+    "Bercak merah darah berbatas tegas di konjungtiva bulbi",
+    "Tanpa nyeri, sekret, maupun penurunan visus",
+    "Cari pemicu: batuk/mengejan, trauma ringan, hipertensi, antikoagulan"
+  ],
+  "teachingPoints": [
+    "Perdarahan subkonjungtiva tunggal tanpa trauma bermakna cukup diobservasi; ukur selalu tekanan darah.",
+    "Perdarahan berulang → periksa hipertensi dan gangguan pembekuan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "riwayat_penyakit", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus normal menyingkirkan cedera bola mata berat." },
+      {
+        "tool": "segmen_anterior",
+        "role": "kunci",
+        "reason": "Konfirmasi perdarahan subkonjungtiva dan singkirkan trauma tembus."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "hipertensi_terkait": "hipertensi" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Tidak memerlukan obat; diserap sendiri 1–3 minggu. Kontrol tekanan darah bila tinggi."
+    }
+  ],
+  "management": [
+    "Edukasi: jinak, akan hilang sendiri 1–3 minggu, warna berubah kekuningan.",
+    "Kompres dingin 24 jam pertama, lalu kompres hangat; air mata buatan bila mengganjal.",
+    "Kontrol tekanan darah/obati hipertensi; tinjau penggunaan antikoagulan.",
+    "Rujuk bila berulang, disertai trauma berat, atau visus turun."
+  ],
+  "approach": [
+    "Pastikan tidak nyeri dan visus normal.",
+    "Cari pemicu dan ukur tekanan darah.",
+    "Singkirkan trauma tembus bila ada riwayat cedera."
+  ]
+}

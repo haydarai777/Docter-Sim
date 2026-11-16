@@ -1120,7 +1120,7 @@
       "id": "bab",
       "label": "Buang air besar",
       "keywords": ["bab", "buang air besar", "berak", "bab bagaimana", "bab lancar", "feses", "tinja", "kotoran"],
-      "symptoms": ["diare", "konstipasi", "bab_hitam"],
+      "symptoms": ["diare", "konstipasi", "bab_hitam", "bab_darah", "keluar_cacing", "gatal_anus", "benjolan_anus", "bab_pucat"],
       "normal": ["BAB biasa saja, Dok, lancar, warnanya juga biasa.", "BAB lancar, Dok, nggak ada yang aneh."]
     },
     {
@@ -1151,21 +1151,58 @@
         "selera makan bagaimana",
         "menelan"
       ],
-      "symptoms": ["nafsu_makan_turun", "mual_muntah", "haus", "lapar", "sulit_menelan"],
+      "symptoms": [
+        "nafsu_makan_turun",
+        "mual_muntah",
+        "haus",
+        "lapar",
+        "sulit_menelan",
+        "sariawan",
+        "bercak_putih_mulut",
+        "malas_menyusu"
+      ],
       "normal": ["Makan minum biasa, Dok, nggak ada masalah.", "Makannya seperti biasa, Dok."]
     },
     {
       "id": "napas",
       "label": "Pernapasan",
       "keywords": ["napas bagaimana", "pernapasan", "bernapas bagaimana", "napas lancar"],
-      "symptoms": ["batuk", "sesak_napas", "mengi", "nyeri_dada_pleuritik"],
+      "symptoms": [
+        "batuk",
+        "sesak_napas",
+        "mengi",
+        "nyeri_dada_pleuritik",
+        "pilek",
+        "hidung_tersumbat",
+        "bersin",
+        "nyeri_tenggorokan",
+        "suara_serak"
+      ],
       "normal": ["Napas lega, Dok, nggak batuk juga.", "Napas biasa saja, Dok."]
     },
     {
       "id": "kulit",
       "label": "Kulit",
       "keywords": ["kulit bagaimana", "kulit ada", "perubahan kulit", "warna kulit", "kulit"],
-      "symptoms": ["bintik_merah", "kuning", "luka_sulit_sembuh"],
+      "symptoms": [
+        "bintik_merah",
+        "kuning",
+        "luka_sulit_sembuh",
+        "gatal_kulit",
+        "ruam_kulit",
+        "kulit_bersisik",
+        "bercak_putih_kulit",
+        "bintil_bernanah",
+        "bisul",
+        "lepuh_kulit",
+        "koreng",
+        "kutil",
+        "biduran",
+        "jerawat",
+        "kulit_kering",
+        "biang_keringat",
+        "benjolan_kulit"
+      ],
       "normal": ["Kulit saya biasa saja, Dok.", "Nggak ada apa-apa di kulit, Dok."],
       "weak": true
     },
@@ -1181,7 +1218,7 @@
         "berat naik atau turun",
         "berat naik turun"
       ],
-      "symptoms": ["berat_badan_turun"],
+      "symptoms": ["berat_badan_turun", "bb_tidak_naik", "bb_naik"],
       "normal": ["Berat badan tetap, Dok, nggak berubah.", "Kayaknya berat badan saya biasa saja, Dok."]
     },
     {
@@ -1196,7 +1233,8 @@
         "nyeri_suprapubik",
         "mual_muntah",
         "diare",
-        "konstipasi"
+        "konstipasi",
+        "perut_membuncit"
       ],
       "normal": ["Perut nggak ada keluhan, Dok.", "Perutnya biasa saja, Dok."],
       "weak": true
@@ -1205,7 +1243,7 @@
       "id": "kepala",
       "label": "Kepala",
       "keywords": ["kepala", "kepala bagaimana"],
-      "symptoms": ["nyeri_kepala", "nyeri_retroorbital"],
+      "symptoms": ["nyeri_kepala", "nyeri_retroorbital", "pusing_berputar", "sakit_kepala_sebelah", "tengkuk_tegang"],
       "normal": ["Kepala nggak apa-apa, Dok.", "Nggak ada keluhan di kepala, Dok."],
       "weak": true
     },
@@ -1213,7 +1251,7 @@
       "id": "dada",
       "label": "Dada",
       "keywords": ["dada", "dada bagaimana"],
-      "symptoms": ["nyeri_dada", "heartburn", "nyeri_dada_pleuritik", "sesak_napas", "nyeri_menjalar"],
+      "symptoms": ["nyeri_dada", "heartburn", "nyeri_dada_pleuritik", "sesak_napas", "nyeri_menjalar", "berdebar"],
       "normal": ["Dada nggak apa-apa, Dok.", "Dada saya biasa saja, Dok."],
       "weak": true
     },
@@ -1221,8 +1259,58 @@
       "id": "mata",
       "label": "Mata",
       "keywords": ["mata", "mata bagaimana"],
-      "symptoms": ["kuning", "nyeri_retroorbital", "pandangan_kabur"],
+      "symptoms": [
+        "kuning",
+        "nyeri_retroorbital",
+        "pandangan_kabur",
+        "mata_merah",
+        "mata_berair",
+        "belekan",
+        "mata_gatal",
+        "mata_mengganjal",
+        "nyeri_mata",
+        "silau",
+        "benjolan_kelopak",
+        "mata_kering",
+        "mata_lelah",
+        "kabur_jauh",
+        "kabur_dekat",
+        "rabun_senja",
+        "bercak_darah_mata"
+      ],
       "normal": ["Mata saya nggak apa-apa, Dok."],
+      "weak": true
+    },
+    {
+      "id": "telinga",
+      "label": "Telinga",
+      "keywords": ["telinga", "telinga bagaimana", "kuping", "pendengaran"],
+      "symptoms": ["nyeri_telinga", "telinga_berair", "pendengaran_turun", "telinga_penuh", "telinga_berdenging", "telinga_gatal"],
+      "normal": ["Telinga nggak ada keluhan, Dok.", "Kuping saya biasa saja, Dok, pendengaran juga baik."],
+      "weak": true
+    },
+    {
+      "id": "hidung",
+      "label": "Hidung",
+      "keywords": ["hidung", "hidung bagaimana"],
+      "symptoms": ["pilek", "hidung_tersumbat", "bersin", "ingus_satu_sisi", "hidung_bengkak_nyeri", "perdarahan_mukosa"],
+      "normal": ["Hidung nggak apa-apa, Dok.", "Hidung saya biasa saja, Dok."],
+      "weak": true
+    },
+    {
+      "id": "kelamin",
+      "label": "Kelamin",
+      "keywords": ["kelamin", "alat kelamin", "kemaluan", "daerah kemaluan"],
+      "symptoms": [
+        "duh_uretra",
+        "keputihan",
+        "gatal_kemaluan",
+        "luka_kemaluan",
+        "kulup_sempit",
+        "kulup_terjepit",
+        "perdarahan_pervaginam"
+      ],
+      "normal": ["Nggak ada keluhan di kemaluan, Dok.", "Daerah kemaluan biasa saja, Dok."],
       "weak": true
     }
   ]

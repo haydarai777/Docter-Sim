@@ -1,0 +1,159 @@
+{
+  "id": "hordeolum",
+  "name": "Hordeolum",
+  "aliases": ["Bintitan", "Timbilan", "Stye", "Hordeolum eksternum", "Hordeolum internum"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Infeksi akut (umumnya Staphylococcus aureus) kelenjar di kelopak: eksternum (Zeis/Moll, di tepi kelopak) atau internum (Meibom, menonjol ke konjungtiva). Benjolan merah, nyeri tekan, kadang bermata nanah. Sembuh dengan kompres hangat; insisi bila tidak membaik 48 jam. Bedakan dari kalazion (tidak nyeri) dan selulitis preseptal (bengkak difus + demam).",
+  "presentationDay": [1, 4],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 1 },
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 50, "weight": 3 },
+      { "min": 51, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "internum", "probability": 0.35 }, { "id": "berulang", "probability": 0.2 }],
+  "traitLabels": { "internum": "Hordeolum internum (kelenjar Meibom).", "berulang": "Hordeolum berulang — cari blefaritis atau DM." },
+  "symptoms": [
+    { "id": "benjolan_kelopak", "probability": 1 },
+    { "id": "nyeri_mata", "probability": 0.8 },
+    { "id": "mata_merah", "probability": 0.4 },
+    { "id": "mata_berair", "probability": 0.3 },
+    { "id": "mata_mengganjal", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["benjolan_kelopak"], "extraPool": ["nyeri_mata"] },
+  "clueSymptoms": ["nyeri_mata", "mata_merah", "mata_berair", "mata_mengganjal"],
+  "misattributions": ["kualat ngintip", "kelilipan", "jerawat di mata"],
+  "fears": ["mata infeksi parah", "harus dioperasi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru {hariTeks} hari, Dok, muncul benjolan, makin lama makin sakit.",
+        "clue": "Akut, progresif dalam hari"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di kelopak atas mata kanan, Dok, dekat bulu mata.",
+        "when": { "notTraits": ["internum"] },
+        "clue": "Lokal di tepi kelopak"
+      },
+      {
+        "text": "Di kelopak atas, Dok, benjolannya lebih kerasa dari dalam.",
+        "when": { "traits": ["internum"] },
+        "clue": "Benjolan di sisi dalam kelopak"
+      }
+    ],
+    "karakter": [{ "text": "Sakit kalau ditekan, Dok, cenut-cenut, merah.", "clue": "Nyeri tekan, merah (radang akut)" }],
+    "episode_sebelumnya": [
+      { "text": "Sudah sering bintitan begini, Dok.", "when": { "traits": ["berulang"] }, "clue": "Hordeolum berulang" },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["berulang"] } }
+    ],
+    "keparahan": [{ "text": "Nggak demam kok, Dok. Mata masih bisa lihat jelas.", "clue": "Tanpa demam, visus baik" }],
+    "riwayat_obat": [{ "text": "Sudah saya kompres air hangat sekali, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "when": { "notTraits": ["internum"] },
+      "values": ["Benjolan ±4 mm di tepi kelopak atas, hiperemis, nyeri tekan, dengan titik pus di pangkal bulu mata"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "when": { "traits": ["internum"] },
+      "values": ["Kelopak atas edema lokal dengan benjolan nyeri tekan"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_tarsal",
+      "when": { "traits": ["internum"] },
+      "values": ["Benjolan hiperemis dengan titik pus di konjungtiva tarsal superior"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "kalazion",
+      "howToDistinguish": "Kalazion: benjolan kenyal TIDAK nyeri, tidak hiperemis, berkembang dalam minggu.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "selulitis_preseptal",
+      "howToDistinguish": "Selulitis preseptal: bengkak merah difus seluruh kelopak, demam; orbita bila proptosis/nyeri gerak bola mata/visus turun.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "visus", "segmen_anterior"] }
+    },
+    {
+      "id": "blefaritis",
+      "howToDistinguish": "Blefaritis: radang difus tepi kelopak kronik dengan skuama, tanpa benjolan akut bernanah.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    }
+  ],
+  "keyFindings": [
+    "Benjolan kelopak akut, merah, nyeri tekan, kadang ada titik pus",
+    "Tanpa demam, edema difus, maupun penurunan visus"
+  ],
+  "teachingPoints": [
+    "Jangan memencet hordeolum — infeksi bisa menyebar menjadi selulitis.",
+    "Hordeolum berulang: cari blefaritis kronik dan diabetes."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "episode_sebelumnya", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "pendukung", "reason": "Visus untuk menyingkirkan keterlibatan orbita." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Lokasi (eksternum/internum), pus, dan luas radang." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Kompres hangat 3–4 kali sehari, salep antibiotik; insisi bila tidak membaik 48 jam atau abses."
+    }
+  ],
+  "management": [
+    "Kompres hangat 10–15 menit 3–4 kali sehari; jangan dipencet.",
+    "Salep antibiotik (mis. kloramfenikol/oksitetrasiklin) 3 kali sehari.",
+    "Antibiotik oral bila disertai selulitis lokal/multipel; insisi & drainase bila tidak pecah 48 jam.",
+    "Higiene kelopak; periksa gula darah bila berulang."
+  ],
+  "approach": [
+    "Pastikan benjolan nyeri akut (bukan kalazion).",
+    "Nilai tanda selulitis: edema difus, demam, gangguan gerak bola mata/visus."
+  ]
+}

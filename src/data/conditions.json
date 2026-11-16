@@ -184,6 +184,126 @@
       "system": "Infeksi tropis",
       "danger": "kritis",
       "summary": "Infeksi dengan disfungsi organ: hipotensi, takikardia, takipnea, penurunan kesadaran."
+    },
+    {
+      "id": "glaukoma_akut",
+      "name": "Glaukoma akut sudut tertutup",
+      "aliases": ["Glaukoma akut", "Glaukoma sudut tertutup"],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Peningkatan tekanan bola mata mendadak: mata merah, nyeri hebat, visus turun mendadak, halo, mual-muntah, kornea keruh, pupil mid-dilatasi, bola mata keras. Rujuk segera."
+    },
+    {
+      "id": "glaukoma_kronik",
+      "name": "Glaukoma kronik (sudut terbuka)",
+      "aliases": ["Glaukoma primer sudut terbuka"],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Neuropati optik progresif tanpa gejala awal; lapang pandang menyempit, cupping papil (C/D membesar). Perlu skrining pada usia > 40 tahun."
+    },
+    {
+      "id": "keratitis",
+      "name": "Keratitis / ulkus kornea",
+      "aliases": ["Ulkus kornea"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang/infeksi kornea: nyeri, silau, visus turun, injeksi siliar, uji fluoresein positif atau infiltrat kornea. Rujuk ke dokter mata."
+    },
+    {
+      "id": "uveitis_anterior",
+      "name": "Uveitis anterior",
+      "aliases": ["Iritis"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang iris & badan siliar: mata merah dengan injeksi siliar, nyeri, silau, visus turun, pupil miosis, sel/flare di bilik mata depan. Rujuk."
+    },
+    {
+      "id": "trauma_tembus_mata",
+      "name": "Trauma tembus bola mata / benda asing intraokular",
+      "aliases": ["Benda asing intraokular", "Ruptur bola mata"],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Curigai pada cedera kecepatan tinggi (gerinda, palu-pahat): visus turun, pupil tidak bulat, BMD dangkal, Seidel positif. Jangan ditekan; tutup dengan pelindung & rujuk segera."
+    },
+    {
+      "id": "skleritis",
+      "name": "Skleritis",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang sklera dalam: nyeri hebat menembus hingga membangunkan tidur, warna merah keunguan, tidak memucat dengan fenilefrin; sering terkait penyakit autoimun. Rujuk."
+    },
+    {
+      "id": "kalazion",
+      "name": "Kalazion",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "rendah",
+      "summary": "Benjolan kelopak akibat sumbatan kelenjar Meibom yang meradang kronik: tidak nyeri, kenyal, tidak hiperemis."
+    },
+    {
+      "id": "selulitis_preseptal",
+      "name": "Selulitis preseptal/orbita",
+      "aliases": ["Selulitis orbita"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Infeksi jaringan kelopak/orbita: kelopak bengkak merah difus, demam; bila orbita: proptosis, nyeri gerak bola mata, visus turun. Rujuk."
+    },
+    {
+      "id": "katarak",
+      "name": "Katarak",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Kekeruhan lensa: pandangan kabur perlahan seperti berkabut, silau, tanpa mata merah; refleks fundus berkurang. Terapi operasi."
+    },
+    {
+      "id": "ablasio_retina",
+      "name": "Ablasio retina",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Lepasnya retina: kilatan cahaya, floaters mendadak, bayangan tirai pada lapang pandang. Lebih sering pada miopia tinggi. Rujuk segera."
+    },
+    {
+      "id": "retinitis_pigmentosa",
+      "name": "Retinitis pigmentosa",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Distrofi retina herediter: rabun senja sejak kecil yang progresif, lapang pandang menyempit, funduskopi tampak pigmen bone-spicule."
+    },
+    {
+      "id": "entropion",
+      "name": "Entropion",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "rendah",
+      "summary": "Tepi kelopak melipat ke dalam sehingga bulu mata menggesek kornea. Terapi operasi."
+    },
+    {
+      "id": "sindrom_sjogren",
+      "name": "Sindrom Sjögren",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Penyakit autoimun dengan mata & mulut kering, kadang nyeri sendi."
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "name": "Dermatitis seboroik",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Eritema dengan skuama kekuningan berminyak di kulit kepala, alis, lipatan nasolabial."
+    },
+    {
+      "id": "malnutrisi_energi_protein",
+      "name": "Malnutrisi energi-protein",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "Gizi kurang/buruk pada anak (marasmus, kwashiorkor)."
     }
   ]
 }

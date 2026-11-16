@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { generateCase } from '../src/core/generator';
 import { deriveSeed } from '../src/core/rng';
 import type { NumericParamDef, PatientCase } from '../src/core/types';
-import { config, configWith, content, DISEASE_IDS } from './helpers';
+import { config, configWith, content, DISEASE_IDS, perDisease } from './helpers';
 
 function many(diseaseId: string, n: number, cfg = config): PatientCase[] {
   return Array.from({ length: n }, (_, i) =>
@@ -168,13 +168,15 @@ describe('generator kasus', () => {
 
   it('frekuensi EKG sama dengan nadi, irama mengikuti frekuensi', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 40)) {
+      for (const c of many(id, perDisease(40, 8))) {
         const nadi = c.findings.tanda_vital!.find((r) => r.paramId === 'nadi')!.value as number;
         const ekg = c.findings.ekg!;
         expect(ekg.find((r) => r.paramId === 'frekuensi')!.value).toBe(nadi);
         const irama = ekg.find((r) => r.paramId === 'irama')!.value;
-        if (nadi > 100) expect(irama).toBe('Sinus takikardia');
-        else if (nadi < 60) expect(irama).toBe('Sinus bradikardia');
+        // Ambang takikardia/bradikardia mengikuti rujukan usia (nadi bayi 130 = normal).
+        const flag = ekg.find((r) => r.paramId === 'frekuensi')!.flag;
+        if (flag === 'H') expect(irama).toBe('Sinus takikardia');
+        else if (flag === 'L') expect(irama).toBe('Sinus bradikardia');
         else expect(irama).toBe('Sinus ritme');
       }
     }

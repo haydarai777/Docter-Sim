@@ -87,6 +87,16 @@ export function ageAdjust(value: number, param: NumericParamDef, who: PatientBas
   return aHi === aLo ? lo : lo + ((value - aLo) / (aHi - aLo)) * (hi - lo);
 }
 
+/** Kebalikan ageAdjust: petakan nilai pasien anak ke skala rujukan dewasa (untuk pita teks seperti irama EKG). */
+export function toAdultScale(value: number, param: NumericParamDef, who: PatientBasics): number {
+  if (!ageBand(param, who)) return value;
+  const [aLo, aHi] = adultReference(param, who.sex);
+  const [lo, hi] = referenceRange(param, who);
+  if (value > hi) return aHi + (value - hi);
+  if (value < lo) return aLo - (lo - value);
+  return hi === lo ? aLo : aLo + ((value - lo) / (hi - lo)) * (aHi - aLo);
+}
+
 function roundToStep(value: number, param: NumericParamDef): number {
   const step = param.step ?? Math.pow(10, -param.decimals);
   const rounded = Math.round(value / step) * step;
@@ -296,7 +306,9 @@ function applyDerived(tool: ToolDef, results: ParamResult[], who: PatientBasics)
     // (nilai yang masih salah satu teks pita boleh disesuaikan lagi dengan angka terbaru).
     if (param.kind === 'text' && param.bands && (target.source === 'normal' || param.bands.ranges.some((b) => b.value === target.value))) {
       const from = byId.get(param.bands.from);
-      const value = from?.value as number;
+      const fromDef = tool.params.find((p) => p.id === param.bands!.from);
+      // Pita ditulis dalam skala dewasa; nilai anak (mis. nadi bayi 130) dipetakan dulu ke skala dewasa.
+      const value = fromDef?.kind === 'numeric' ? toAdultScale(from?.value as number, fromDef, who) : (from?.value as number);
       const band = param.bands.ranges.find((b) => b.max === undefined || value <= b.max);
       if (band) {
         // Teks turunan yang abnormal (mis. "Sinus takikardia" dari nadi tinggi) mewarisi sumber angkanya:

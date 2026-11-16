@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { doctorQuestion } from '../src/core/dialogue';
 import { generateCase } from '../src/core/generator';
 import { interpretQuestion, normalizeQuestion } from '../src/core/nlu';
-import { config, content } from './helpers';
+import { config, content, perDisease } from './helpers';
 
 const topicsOf = (q: string) =>
   interpretQuestion(q, content).intents.flatMap((i) => (i.kind === 'topic' ? [i.topic] : i.kind === 'symptom_detail' ? [`${i.topic}/${i.symptom}`] : []));
@@ -116,7 +116,7 @@ describe('tombol topik standar', () => {
   it('kalimat standar tiap topik (dengan semua sapaan) dipahami sebagai topik itu saja', () => {
     const seen = new Set<string>();
     for (const d of content.diseases) {
-      for (let seed = 1; seed <= 25; seed++) {
+      for (let seed = 1; seed <= perDisease(25, 4); seed++) {
         const c = generateCase(content, config, { diseaseId: d.id, seed });
         for (const t of content.anamnesis) {
           const q = doctorQuestion(t.question, c);

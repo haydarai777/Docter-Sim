@@ -146,7 +146,7 @@ export const NLU_HOLDOUT_2: NluCase[] = [
   { q: 'Badan pegal semua?', expect: [S('nyeri_otot_sendi')] },
   { q: 'Ada rasa mual?', expect: [S('mual_muntah')] },
   { q: 'Muntah berapa kali?', expect: [D('mual_muntah', 'pola')] },
-  { q: 'Ada ruam kemerahan?', expect: [S('bintik_merah')] },
+  { q: 'Ada ruam kemerahan?', expect: [S('ruam_kulit')] },
   { q: 'Kulitnya menguning?', expect: [S('kuning')] },
   { q: 'Ulu hatinya sakit?', expect: [S('nyeri_ulu_hati')] },
   { q: 'Dada seperti terbakar?', expect: [S('heartburn')] },

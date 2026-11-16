@@ -1,0 +1,190 @@
+{
+  "id": "blefaritis",
+  "name": "Blefaritis",
+  "aliases": ["Radang tepi kelopak mata", "Blefaritis seboroik", "Blefaritis stafilokokus"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Radang kronik tepi kelopak mata: tepi kelopak merah, gatal, panas, ada skuama/krusta di pangkal bulu mata, kadang bulu mata rontok (madarosis). Tipe seboroik (skuama berminyak, sering bersama dermatitis seboroik) atau stafilokokus (krusta kering, ulkus kecil). Kronik-kambuhan; terapi utama higiene kelopak.",
+  "presentationDay": [14, 90],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 2 },
+      { "min": 31, "max": 55, "weight": 3 },
+      { "min": 56, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "seboroik", "probability": 0.6 }, { "id": "madarosis", "probability": 0.3 }],
+  "traitLabels": { "seboroik": "Tipe seboroik (skuama berminyak, ketombe).", "madarosis": "Bulu mata rontok (madarosis)." },
+  "symptoms": [
+    { "id": "kelopak_bersisik", "probability": 1 },
+    { "id": "mata_gatal", "probability": 0.8 },
+    { "id": "mata_merah", "probability": 0.6 },
+    { "id": "mata_mengganjal", "probability": 0.5 },
+    { "id": "mata_berair", "probability": 0.3 },
+    { "id": "ketombe", "probability": 0.8, "when": { "traits": ["seboroik"] } }
+  ],
+  "chiefComplaint": { "primary": ["kelopak_bersisik"], "extraPool": ["mata_gatal"] },
+  "clueSymptoms": ["mata_gatal", "mata_merah", "mata_mengganjal", "mata_berair", "ketombe"],
+  "misattributions": ["iritasi debu", "kurang bersih", "alergi"],
+  "fears": ["mata infeksi", "bulu mata habis"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah lama, Dok, berbulan-bulan, hilang-timbul.", "clue": "Kronik kambuhan" }],
+    "karakter": [
+      {
+        "text": "Pinggir kelopak mata saya merah, gatal, dan ada kerak kayak ketombe di bulu mata, Dok.",
+        "clue": "Tepi kelopak merah bersisik/berkerak"
+      },
+      { "text": "Pagi-pagi bulu mata lengket, Dok." }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Kepala saya ketombean, Dok, alis dan pinggir hidung juga suka bersisik.",
+        "reveals": ["ketombe"],
+        "when": { "traits": ["seboroik"], "symptoms": ["ketombe"] },
+        "clue": "Dermatitis seboroik (ketombe) menyertai"
+      }
+    ],
+    "pola": [{ "text": "Kalau pagi bangun tidur paling terasa, Dok.", "clue": "Memberat pagi hari" }],
+    "progresi": [
+      {
+        "text": "Bulu mata saya jadi banyak yang rontok, Dok.",
+        "when": { "traits": ["madarosis"] },
+        "clue": "Madarosis"
+      }
+    ]
+  },
+  "findings": [
+    { "tool": "segmen_anterior", "param": "palpebra", "values": ["Tepi kelopak atas & bawah hiperemis dan menebal"] },
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "when": { "traits": ["seboroik"] },
+      "values": ["Skuama berminyak kekuningan di pangkal bulu mata"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "when": { "notTraits": ["seboroik"] },
+      "values": ["Krusta kering di pangkal bulu mata dengan ulkus kecil saat krusta diangkat"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "when": { "traits": ["madarosis"] },
+      "values": ["Skuama di pangkal bulu mata, beberapa bulu mata rontok (madarosis)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.5,
+      "values": ["Injeksi konjungtiva ringan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["seboroik"] },
+      "probability": 0.8,
+      "values": ["Kulit kepala, alis, dan lipatan nasolabial"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["seboroik"] },
+      "probability": 0.8,
+      "values": ["Eritema dengan skuama kekuningan berminyak"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "hordeolum",
+      "howToDistinguish": "Hordeolum: benjolan nyeri lokal akut dengan pus, bukan radang difus tepi kelopak.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "konjungtivitis",
+      "howToDistinguish": "Konjungtivitis: radang konjungtiva dengan sekret; tepi kelopak tidak berkerak.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "keratitis",
+      "howToDistinguish": "Keratitis: nyeri, silau, visus turun — komplikasi yang harus disingkirkan.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "howToDistinguish": "Dermatitis seboroik kulit kepala/wajah sering menyertai blefaritis seboroik — obati bersamaan.",
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Tepi kelopak hiperemis, menebal, gatal, kronik",
+    "Skuama berminyak (seboroik) atau krusta kering (stafilokokus) di pangkal bulu mata",
+    "Visus normal"
+  ],
+  "teachingPoints": [
+    "Terapi utama blefaritis adalah HIGIENE KELOPAK setiap hari (kompres hangat + membersihkan tepi kelopak), bukan antibiotik jangka panjang."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_penyakit", "pola", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus normal; singkirkan keterlibatan kornea." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Tepi kelopak, bulu mata, konjungtiva, kornea." },
+      {
+        "tool": "status_dermatologis",
+        "role": "pendukung",
+        "when": { "traits": ["seboroik"] },
+        "reason": "Dermatitis seboroik di kulit kepala/wajah."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Higiene kelopak rutin, salep antibiotik bila stafilokokus; obati dermatitis seboroik."
+    }
+  ],
+  "management": [
+    "Kompres hangat 5–10 menit, lalu bersihkan tepi kelopak dengan sampo bayi encer/kapas 2 kali sehari.",
+    "Salep antibiotik di tepi kelopak (tipe stafilokokus) 1–2 minggu.",
+    "Atasi ketombe/dermatitis seboroik; air mata buatan bila mata kering.",
+    "Rujuk bila tidak membaik atau ada keterlibatan kornea."
+  ],
+  "approach": [
+    "Inspeksi tepi kelopak dan pangkal bulu mata dengan loupe.",
+    "Bedakan seboroik vs stafilokokus, cari dermatitis seboroik."
+  ]
+}

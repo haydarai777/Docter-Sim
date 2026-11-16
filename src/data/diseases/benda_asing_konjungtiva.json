@@ -1,0 +1,226 @@
+{
+  "id": "benda_asing_konjungtiva",
+  "name": "Benda asing di konjungtiva",
+  "aliases": ["Corpus alienum konjungtiva", "Kelilipan", "Benda asing mata"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Partikel (pasir, serpihan logam/kayu, serangga) menempel di konjungtiva bulbi atau tarsal. Keluhan mendadak rasa mengganjal, berair, mata merah setelah kelilipan. Benda asing di tarsal superior hanya terlihat setelah eversi kelopak dan sering menimbulkan goresan kornea vertikal. Waspadai trauma tembus bila benda terlontar berkecepatan tinggi (gerinda, palu-pahat).",
+  "presentationDay": [1, 2],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 35, "weight": 3 },
+      { "min": 36, "max": 55, "weight": 3 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.75,
+    "occupations": [
+      { "id": "pekerja_proyek", "weight": 3 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "petani", "weight": 2 },
+      { "id": "ojek_online", "weight": 2 }
+    ],
+    "occupationBias": 0.6
+  },
+  "traits": [
+    { "id": "di_tarsal", "probability": 0.55 },
+    { "id": "abrasi_kornea", "probability": 0.4 },
+    { "id": "pekerjaan_gerinda", "probability": 0.25 }
+  ],
+  "traitLabels": {
+    "di_tarsal": "Benda asing tersembunyi di konjungtiva tarsal superior (perlu eversi kelopak).",
+    "abrasi_kornea": "Abrasi kornea akibat gesekan benda asing.",
+    "pekerjaan_gerinda": "Riwayat menggerinda/memalu — singkirkan trauma tembus."
+  },
+  "symptoms": [
+    { "id": "mata_mengganjal", "probability": 1 },
+    { "id": "mata_berair", "probability": 0.9 },
+    { "id": "mata_merah", "probability": 0.8 },
+    { "id": "nyeri_mata", "probability": 0.6 },
+    { "id": "silau", "probability": 0.6, "when": { "traits": ["abrasi_kornea"] } },
+    { "id": "silau", "probability": 0.15 }
+  ],
+  "chiefComplaint": { "primary": ["mata_mengganjal"], "extraPool": ["mata_berair", "mata_merah"] },
+  "clueSymptoms": ["mata_berair", "mata_merah", "nyeri_mata", "silau"],
+  "misattributions": ["kelilipan biasa", "iritasi debu", "sakit mata biasa"],
+  "fears": ["mata buta", "mata infeksi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tadi pagi, Dok, tiba-tiba. Lagi naik motor kena angin, langsung ngganjal.",
+        "when": { "notTraits": ["pekerjaan_gerinda"] },
+        "clue": "Onset mendadak setelah kelilipan"
+      },
+      {
+        "text": "Tadi waktu kerja menggerinda besi, Dok, kayak ada yang loncat ke mata.",
+        "when": { "traits": ["pekerjaan_gerinda"] },
+        "clue": "Kelilipan saat menggerinda (risiko benda asing logam/trauma tembus)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Rasanya kayak ada pasir, Dok, tiap kedip makin ngganjal.",
+        "clue": "Sensasi benda asing yang bertambah saat berkedip"
+      }
+    ],
+    "lokasi": [{ "text": "Mata kanan saja, Dok. Yang kiri nggak apa-apa.", "clue": "Unilateral" }],
+    "keparahan": [{ "text": "Ganggu sekali, Dok, mata nggak bisa dibuka lebar." }],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau kedip makin sakit. Sudah saya kucek dan basuh air, tetap ngganjal.",
+        "clue": "Sudah dibilas tetapi keluhan menetap"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Cuma saya basuh air, Dok, belum ditetesi obat." }],
+    "kebiasaan": [{ "text": "Kerja nggak pakai kacamata pelindung, Dok.", "clue": "Tidak memakai pelindung mata" }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_tarsal",
+      "when": { "traits": ["di_tarsal"] },
+      "values": ["Tampak benda asing serpihan kecil di konjungtiva tarsal superior setelah eversi kelopak"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "notTraits": ["di_tarsal"] },
+      "values": ["Benda asing kecil menempel di konjungtiva bulbi temporal dengan injeksi konjungtiva sekitarnya"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "traits": ["di_tarsal"] },
+      "values": ["Injeksi konjungtiva (+)"]
+    },
+    { "tool": "segmen_anterior", "param": "sekret_mata", "probability": 0.8, "values": ["Serosa (berair)"] },
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "when": { "traits": ["di_tarsal", "abrasi_kornea"] },
+      "values": ["Uji fluoresein (+): goresan linear vertikal di kornea superior"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "when": { "traits": ["abrasi_kornea"] },
+      "values": ["Uji fluoresein (+): erosi kecil di kornea"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "probability": 0.4,
+      "values": ["Kelopak sedikit edema, blefarospasme ringan"]
+    },
+    { "tool": "visus", "param": "visus_od", "when": { "traits": ["abrasi_kornea"] }, "values": ["6/9", "6/7,5"] }
+  ],
+  "differentials": [
+    {
+      "id": "trauma_tembus_mata",
+      "howToDistinguish": "Trauma tembus: riwayat benda terlontar cepat (gerinda), visus turun nyata, pupil tidak bulat, BMD dangkal/hifema. Benda asing konjungtiva: visus baik, BMD & pupil normal.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "konjungtivitis",
+      "howToDistinguish": "Konjungtivitis: onset bertahap, sering bilateral, ada sekret (belek) dan tanpa riwayat kelilipan; tidak ditemukan benda asing.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "keratitis",
+      "howToDistinguish": "Keratitis/ulkus: nyeri dan silau hebat, visus turun, infiltrat kornea putih. Abrasi akibat benda asing: goresan bersih tanpa infiltrat.",
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    }
+  ],
+  "otherDifferentials": ["Abrasi kornea", "Benda asing kornea"],
+  "keyFindings": [
+    "Riwayat kelilipan mendadak, unilateral",
+    "Rasa mengganjal yang bertambah saat berkedip, berair, injeksi konjungtiva",
+    "Benda asing tampak di konjungtiva bulbi atau setelah eversi kelopak atas",
+    "Visus, pupil, dan BMD normal (tidak ada trauma tembus)"
+  ],
+  "teachingPoints": [
+    "Selalu lakukan EVERSI kelopak atas pada keluhan kelilipan — benda asing di tarsal superior mudah terlewat.",
+    "Goresan vertikal di kornea pada uji fluoresein menunjukkan benda asing di tarsal superior.",
+    "Jangan pernah membekali pasien dengan tetes anestesi topikal — menghambat penyembuhan dan menyamarkan perburukan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "complications": [
+    {
+      "id": "abrasi_kornea",
+      "name": "Abrasi kornea",
+      "trait": "abrasi_kornea",
+      "redFlag": false,
+      "assess": { "tools": ["segmen_anterior", "visus"] },
+      "explanation": "Goresan epitel kornea (fluoresein +). Perlu salep antibiotik dan kontrol 24 jam; rujuk bila tidak membaik atau ada infiltrat."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "visus",
+        "role": "kunci",
+        "reason": "Visus wajib dicatat sebelum tindakan apa pun (medikolegal & deteksi trauma berat)."
+      },
+      {
+        "tool": "segmen_anterior",
+        "role": "kunci",
+        "reason": "Mencari benda asing (termasuk eversi kelopak), uji fluoresein, dan menyingkirkan trauma tembus."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Ekstraksi benda asing di klinik dengan anestesi topikal, salep antibiotik, kontrol 1–2 hari."
+    }
+  ],
+  "management": [
+    "Catat visus, lalu anestesi topikal (tetrakain/pantokain) dan irigasi NaCl 0,9%.",
+    "Angkat benda asing dengan kapas lidi steril atau jarum 23G di bawah penerangan; eversi kelopak untuk benda di tarsal.",
+    "Salep/tetes antibiotik (mis. kloramfenikol) beberapa hari; jangan bekali anestesi topikal.",
+    "Edukasi kacamata pelindung saat bekerja; rujuk bila visus turun, curiga trauma tembus, atau benda tertanam dalam."
+  ],
+  "approach": [
+    "Tanyakan mekanisme: kelilipan biasa vs benda terlontar cepat (gerinda).",
+    "Periksa visus dulu, lalu segmen anterior dengan eversi kelopak dan uji fluoresein.",
+    "Singkirkan trauma tembus (pupil, BMD, visus) sebelum mengangkat benda asing."
+  ],
+  "pitfalls": [
+    {
+      "when": { "traits": ["di_tarsal"], "notConsidered": "benda_asing_konjungtiva" },
+      "text": "Benda asing di tarsal superior hanya terlihat setelah eversi kelopak; goresan vertikal di kornea adalah petunjuknya."
+    }
+  ]
+}

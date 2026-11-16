@@ -83,7 +83,8 @@
       ],
       "history": { "known": "", "habit": "Saya juga suka ngemil dan jarang olahraga.", "mentions": ["olahraga", "ngemil"] },
       "detectBy": { "tools": ["timbangan", "keadaan_umum"] },
-      "management": ["Target penurunan berat badan 5–10% dalam 6 bulan.", "Diet seimbang dan aktivitas fisik 150 menit/minggu."]
+      "management": ["Target penurunan berat badan 5–10% dalam 6 bulan.", "Diet seimbang dan aktivitas fisik 150 menit/minggu."],
+      "when": { "ageMin": 10 }
     },
     {
       "id": "anemia_defisiensi_besi",
@@ -92,7 +93,7 @@
       "system": "Darah",
       "summary": "Anemia mikrositik (MCV rendah) akibat kekurangan besi; pada perempuan usia subur sering karena haid berlebih.",
       "probability": 0.18,
-      "when": { "sex": "female", "ageMax": 50 },
+      "when": { "sex": "female", "ageMin": 12, "ageMax": 50 },
       "excludePrimary": ["malaria"],
       "knownProbability": 0.3,
       "symptoms": [{ "id": "lemas", "probability": 0.6 }, { "id": "nyeri_kepala", "probability": 0.25 }],

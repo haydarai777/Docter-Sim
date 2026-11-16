@@ -1110,7 +1110,14 @@
           "unit": "×/menit",
           "decimals": 0,
           "ref": [60, 100],
-          "copyFrom": "tanda_vital.nadi"
+          "copyFrom": "tanda_vital.nadi",
+          "refByAge": [
+            { "maxAge": 0, "ref": [100, 160], "normal": [110, 150] },
+            { "maxAge": 2, "ref": [90, 150], "normal": [100, 140] },
+            { "maxAge": 5, "ref": [80, 130], "normal": [86, 120] },
+            { "maxAge": 9, "ref": [70, 120], "normal": [76, 110] },
+            { "maxAge": 12, "ref": [70, 110], "normal": [76, 102] }
+          ]
         },
         { "kind": "text", "id": "aksis", "label": "Aksis", "normal": ["Normal"] },
         { "kind": "text", "id": "gelombang_p_pr", "label": "Gelombang P & interval PR", "normal": ["Normal"] },

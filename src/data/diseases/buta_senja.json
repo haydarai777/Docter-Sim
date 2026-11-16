@@ -1,0 +1,207 @@
+{
+  "id": "buta_senja",
+  "name": "Buta senja (rabun senja / xeroftalmia XN)",
+  "aliases": ["Rabun senja", "Buta ayam", "Night blindness", "Xeroftalmia", "Defisiensi vitamin A (mata)"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.5,
+  "summary": "Gangguan adaptasi gelap akibat defisiensi vitamin A (xeroftalmia stadium XN), tersering pada balita dengan gizi kurang, diare berulang, campak, atau ASI/makanan rendah vitamin A. Anak tidak bisa melihat saat senja/gelap (menabrak benda, tidak mau bermain sore). Dapat disertai bercak Bitot (X1B) dan konjungtiva kering; bila kornea terkena (X2–X3) berisiko buta permanen — beri vitamin A segera & rujuk.",
+  "presentationDay": [14, 90],
+  "demographics": {
+    "ageBands": [{ "min": 1, "max": 5, "weight": 5 }, { "min": 6, "max": 9, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "balita", "weight": 3 }, { "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 1 }],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "bitot", "probability": 0.55 },
+    { "id": "gizi_kurang", "probability": 0.55 },
+    { "id": "diare_berulang", "probability": 0.4 },
+    { "id": "pasca_campak", "probability": 0.2 },
+    { "id": "xerosis_kornea", "probability": 0.08 }
+  ],
+  "traitLabels": {
+    "bitot": "Bercak Bitot (X1B).",
+    "gizi_kurang": "Gizi kurang.",
+    "diare_berulang": "Diare berulang (malabsorpsi vitamin A).",
+    "pasca_campak": "Baru sembuh campak.",
+    "xerosis_kornea": "Xerosis kornea (X2) — darurat."
+  },
+  "symptoms": [
+    { "id": "rabun_senja", "probability": 1 },
+    { "id": "mata_kering", "probability": 0.6 },
+    { "id": "bb_tidak_naik", "probability": 0.8, "when": { "traits": ["gizi_kurang"] } },
+    { "id": "diare", "probability": 0.6, "when": { "traits": ["diare_berulang"] } },
+    { "id": "silau", "probability": 0.6, "when": { "traits": ["xerosis_kornea"] } },
+    { "id": "nafsu_makan_turun", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["rabun_senja"], "extraPool": ["mata_kering"] },
+  "clueSymptoms": ["mata_kering", "bb_tidak_naik", "diare", "silau", "nafsu_makan_turun"],
+  "misattributions": ["kurang tidur", "anaknya penakut gelap", "mata minus"],
+  "fears": ["mata buta"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah beberapa minggu, Dok. Kalau magrib dia sering nabrak barang, nggak mau main di luar.",
+        "clue": "Gangguan penglihatan saat senja/gelap"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Siang hari dia lihat biasa, Dok. Cuma kalau sore atau di kamar yang gelap dia meraba-raba.",
+        "clue": "Penglihatan siang normal, buruk saat gelap"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Makannya susah, Dok, paling nasi sama kerupuk. Sayur dan buah nggak mau. Nggak pernah dapat kapsul vitamin A di posyandu.",
+        "clue": "Asupan vitamin A kurang, tidak mendapat kapsul vitamin A"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Sering mencret, Dok, hampir tiap bulan.",
+        "when": { "traits": ["diare_berulang"] },
+        "clue": "Diare berulang"
+      },
+      { "text": "Bulan lalu dia kena campak, Dok.", "when": { "traits": ["pasca_campak"] }, "clue": "Pasca campak" },
+      { "text": "Nggak ada sakit berat, Dok.", "when": { "notTraits": ["diare_berulang", "pasca_campak"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Matanya juga kelihatan kering, Dok, ada bercak putih kayak busa di pinggir mata.",
+        "when": { "traits": ["bitot"] },
+        "clue": "Mata kering dengan bercak berbusa (Bitot)"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "traits": ["bitot"] },
+      "values": ["Konjungtiva bulbi temporal kering, kusam, dengan bercak Bitot (busa keabuan seperti busa sabun)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "notTraits": ["bitot"] },
+      "probability": 0.5,
+      "values": ["Konjungtiva bulbi tampak kering dan kusam (xerosis konjungtiva)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "when": { "traits": ["xerosis_kornea"] },
+      "values": ["Kornea kering, kusam, tidak berkilau (xerosis kornea X2)"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "status_gizi",
+      "when": { "traits": ["gizi_kurang"] },
+      "values": ["Gizi kurang (BB/TB antara −3 dan −2 SD)"]
+    },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["gizi_kurang"] }, "range": [12, 13.4] }
+  ],
+  "differentials": [
+    {
+      "id": "malnutrisi_energi_protein",
+      "howToDistinguish": "Gizi buruk/kurang sering mendasari defisiensi vitamin A — nilai status gizi (z-skor) setiap anak rabun senja.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["timbangan", "pemeriksaan_anak"] }
+    },
+    {
+      "id": "retinitis_pigmentosa",
+      "howToDistinguish": "Retinitis pigmentosa: rabun senja sejak kecil yang progresif, ada riwayat keluarga, funduskopi tampak pigmen; tidak membaik dengan vitamin A.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["funduskopi"] }
+    },
+    {
+      "id": "miopia",
+      "howToDistinguish": "Miopia: kabur melihat jauh pada siang hari juga, bukan hanya saat gelap.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus"] }
+    }
+  ],
+  "keyFindings": [
+    "Balita dengan gangguan melihat saat senja/gelap",
+    "Bercak Bitot, konjungtiva kering",
+    "Faktor risiko: gizi kurang, diare berulang, pasca campak, tanpa kapsul vitamin A"
+  ],
+  "teachingPoints": [
+    "Xeroftalmia adalah KEDARURATAN gizi: vitamin A diberikan hari 1, hari 2, dan hari 15 (dosis sesuai umur).",
+    "Kerusakan kornea (X2–X3) dapat menyebabkan kebutaan permanen dalam hitungan hari — rujuk segera setelah vitamin A."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata",
+      "WHO. Xerophthalmia and night blindness for the assessment of clinical vitamin A deficiency (2014)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "xerosis_kornea",
+      "name": "Xerosis kornea / keratomalasia",
+      "trait": "xerosis_kornea",
+      "redFlag": true,
+      "assess": { "tools": ["segmen_anterior"] },
+      "explanation": "Kornea kering kusam hingga melunak — vitamin A segera dan rujuk ke dokter mata."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "riwayat_penyakit", "progresi", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "pendukung", "reason": "Visus siang hari umumnya normal." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Bercak Bitot, xerosis konjungtiva/kornea." },
+      { "tool": "timbangan", "role": "kunci", "reason": "BB & TB untuk status gizi." },
+      { "tool": "pemeriksaan_anak", "role": "kunci", "reason": "Z-skor status gizi & tanda dehidrasi." },
+      { "tool": "funduskopi", "role": "pendukung", "reason": "Menyingkirkan retinitis pigmentosa." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Xerosis kornea: vitamin A dosis pertama lalu rujuk segera ke dokter mata.",
+      "when": { "traits": ["xerosis_kornea"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Vitamin A dosis terapi (hari 1, 2, 15), perbaikan gizi, obati diare/infeksi; kontrol.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Vitamin A dosis terapi sesuai umur pada hari 1, hari 2, dan hari 15.",
+    "Perbaikan gizi: sumber vitamin A (hati, telur, sayur hijau, buah oranye), ASI.",
+    "Obati penyakit penyerta (diare, cacingan, campak) dan pantau status gizi.",
+    "Rujuk segera bila kornea terkena."
+  ],
+  "approach": [
+    "Alloanamnesis: penglihatan saat gelap vs terang, asupan, kapsul vitamin A, diare/campak.",
+    "Periksa konjungtiva & kornea, status gizi z-skor."
+  ]
+}

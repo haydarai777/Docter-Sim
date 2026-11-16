@@ -16,3 +16,11 @@ export function configWith(patch: {
 }
 
 export const DISEASE_IDS = content.diseases.map((d) => d.id);
+
+/**
+ * Jumlah kasus per penyakit untuk tes "banyak kasus": total dijaga setara dengan saat konten
+ * berisi 13 penyakit agar waktu tes tidak membengkak saat penyakit bertambah (minimal `min`).
+ */
+export function perDisease(n: number, min = 6): number {
+  return Math.max(min, Math.round((n * 13) / DISEASE_IDS.length));
+}

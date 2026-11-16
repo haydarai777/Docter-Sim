@@ -1,0 +1,134 @@
+{
+  "id": "astigmatisma",
+  "name": "Astigmatisma ringan",
+  "aliases": ["Mata silinder", "Astigmat"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Kelainan refraksi akibat kelengkungan kornea/lensa tidak sama di semua meridian sehingga bayangan tidak terfokus pada satu titik: kabur jauh maupun dekat, bayangan berbayang/distorsi, mata cepat lelah, sering memiringkan kepala. Visus membaik dengan pinhole; dikoreksi lensa silinder (dengan/tanpa sferis).",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 7, "max": 9, "weight": 1 }, { "min": 10, "max": 18, "weight": 3 }, { "min": 19, "max": 45, "weight": 3 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "pelajar", "weight": 2 }, { "id": "mahasiswa", "weight": 2 }, { "id": "pegawai_kantor", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "dengan_miopia", "probability": 0.5 }],
+  "traitLabels": { "dengan_miopia": "Astigmatisma miopia kompositus." },
+  "symptoms": [
+    { "id": "pandangan_kabur", "probability": 1 },
+    { "id": "mata_lelah", "probability": 0.8 },
+    { "id": "nyeri_kepala", "probability": 0.5 },
+    { "id": "kabur_jauh", "probability": 0.6, "when": { "traits": ["dengan_miopia"] } }
+  ],
+  "chiefComplaint": { "primary": ["pandangan_kabur"], "extraPool": ["mata_lelah"] },
+  "clueSymptoms": ["mata_lelah", "nyeri_kepala", "kabur_jauh"],
+  "misattributions": ["mata minus", "kurang vitamin", "mata capek"],
+  "fears": ["mata buta"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah lama, Dok, berbulan-bulan.", "clue": "Kronik" }],
+    "karakter": [
+      {
+        "text": "Lihat jauh dan dekat sama-sama agak kabur, Dok, tulisannya kayak berbayang dobel.",
+        "clue": "Kabur jauh & dekat dengan bayangan berbayang/distorsi"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau lama baca atau di depan komputer, mata pegal dan pusing, Dok.",
+        "clue": "Astenopia saat kerja dekat"
+      }
+    ],
+    "kebiasaan": [{ "text": "Saya suka memiringkan kepala biar jelas, kata teman-teman.", "clue": "Kompensasi memiringkan kepala" }],
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
+  },
+  "findings": [
+    { "tool": "visus", "param": "visus_od", "values": ["6/12", "6/9"] },
+    { "tool": "visus", "param": "visus_os", "values": ["6/12", "6/9"] },
+    { "tool": "visus", "param": "pinhole", "diagnostic": true, "values": ["Visus membaik dengan pinhole"] },
+    {
+      "tool": "visus",
+      "param": "koreksi",
+      "when": { "notTraits": ["dengan_miopia"] },
+      "values": ["ODS C −1,00 D aksis 180° → 6/6"]
+    },
+    {
+      "tool": "visus",
+      "param": "koreksi",
+      "when": { "traits": ["dengan_miopia"] },
+      "values": ["ODS S −0,75 D C −1,00 D aksis 180° → 6/6"]
+    },
+    { "tool": "visus", "param": "visus_dekat", "values": ["J3, huruf tampak berbayang"] }
+  ],
+  "differentials": [
+    {
+      "id": "miopia",
+      "howToDistinguish": "Miopia: kabur hanya jauh tanpa distorsi; koreksi sferis negatif saja cukup.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus"] }
+    },
+    {
+      "id": "hipermetropia",
+      "howToDistinguish": "Hipermetropia: kabur dekat, jauh relatif jelas; koreksi sferis positif.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["visus"] }
+    },
+    {
+      "id": "glaukoma_kronik",
+      "howToDistinguish": "Glaukoma kronik: tanpa keluhan awal, cupping papil, lapang pandang menyempit — singkirkan dengan funduskopi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["funduskopi"] }
+    }
+  ],
+  "keyFindings": ["Kabur jauh & dekat dengan bayangan distorsi/berbayang", "Pinhole membaik, dikoreksi lensa silinder"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata",
+      "Kemenkes RI. Pedoman Penanggulangan Gangguan Penglihatan dan Kebutaan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus, pinhole, koreksi silinder/sferis." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Kornea & media jernih." },
+      { "tool": "funduskopi", "role": "pendukung", "reason": "Papil & retina normal." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Resep kacamata dengan lensa silinder; rujuk bila tidak tercapai 6/6.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Kacamata dengan koreksi silinder sesuai hasil uji (fogging/kipas astigmat bila tersedia).",
+    "Rujuk bila astigmatisma tinggi/ireguler atau visus tidak maju."
+  ],
+  "approach": ["Visus → pinhole → koreksi sferis → tambahkan silinder bila belum 6/6."]
+}
