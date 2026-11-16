@@ -1,0 +1,168 @@
+{
+  "id": "pedikulosis_kapitis",
+  "name": "Pedikulosis kapitis",
+  "aliases": ["Kutu rambut", "Kutuan", "Head lice"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Infestasi Pediculus humanus capitis pada kulit kepala, tersering anak perempuan usia sekolah dan penghuni asrama. Gatal kulit kepala terutama oksipital & belakang telinga; telur (nits) putih keabuan melekat erat di batang rambut dekat kulit kepala; kutu dewasa terlihat. Ekskoriasi dapat terinfeksi sekunder (impetigo) dengan KGB oksipital. Terapi permetrin 1% diulang hari ke-7–10, sisir serit, obati kontak.",
+  "presentationDay": [7, 60],
+  "demographics": {
+    "ageBands": [{ "min": 3, "max": 9, "weight": 5 }, { "min": 10, "max": 15, "weight": 3 }],
+    "maleRatio": 0.25,
+    "occupations": [
+      { "id": "anak_tk", "weight": 2 },
+      { "id": "anak_sd", "weight": 3 },
+      { "id": "pelajar_sd", "weight": 2 },
+      { "id": "pelajar", "weight": 2 }
+    ],
+    "occupationBias": 0.5
+  },
+  "traits": [{ "id": "infeksi_sekunder", "probability": 0.2 }, { "id": "asrama", "probability": 0.3, "when": { "ageMin": 10 } }],
+  "traitLabels": { "infeksi_sekunder": "Impetiginisasi kulit kepala.", "asrama": "Tinggal di asrama/pesantren." },
+  "symptoms": [
+    { "id": "koreng", "probability": 0.8, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "benjolan_kgb", "probability": 0.5, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "gatal_kepala", "probability": 1 },
+    { "id": "kutu_rambut", "probability": 0.9 }
+  ],
+  "chiefComplaint": { "primary": ["gatal_kepala"], "extraPool": ["kutu_rambut"] },
+  "clueSymptoms": ["kutu_rambut", "koreng", "benjolan_kgb"],
+  "misattributions": ["ketombe", "kurang keramas", "alergi sampo"],
+  "fears": ["menular ke kakak/adik", "harus dibotak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah sebulan, Dok, kepalanya gatal terus, garuk-garuk terutama belakang kepala.",
+        "clue": "Gatal kulit kepala kronik, oksipital"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Ada telur putih-putih nempel di rambut, Dok, susah dilepas, kadang kelihatan kutunya.",
+        "reveals": ["kutu_rambut"],
+        "when": { "symptoms": ["kutu_rambut"] },
+        "clue": "Nits melekat erat & kutu terlihat"
+      }
+    ],
+    "riwayat_keluarga": [
+      { "text": "Kakaknya dan teman sekelas juga kutuan, Dok.", "clue": "Kontak serumah/sekolah" },
+      {
+        "text": "Di asrama banyak yang kutuan, Dok, sisir dan bantal suka dipakai bareng.",
+        "when": { "traits": ["asrama"] },
+        "clue": "Asrama & berbagi barang"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Kulit kepalanya sekarang luka-luka bernanah, Dok.",
+        "reveals": ["koreng"],
+        "when": { "traits": ["infeksi_sekunder"], "symptoms": ["koreng"] },
+        "clue": "Infeksi sekunder"
+      },
+      { "text": "Cuma gatal, Dok.", "when": { "notTraits": ["infeksi_sekunder"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["infeksi_sekunder"] },
+      "values": ["Ekskoriasi & papul eritematosa bekas garukan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Ekskoriasi dengan krusta kekuningan & pustul (impetiginisasi)"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["KGB oksipital membesar nyeri tekan"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Kulit kepala oksipital & retroaurikular"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "diagnostic": true,
+      "values": ["Telur (nits) putih keabuan melekat erat pada batang rambut dekat kulit kepala, kutu dewasa (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "impetigo",
+      "howToDistinguish": "Infeksi sekunder (impetiginisasi): krusta madu & pustul — perlu antibiotik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "howToDistinguish": "Ketombe: skuama mudah lepas dari rambut (nits melekat erat), tanpa kutu.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_kapitis",
+      "howToDistinguish": "Tinea kapitis: alopesia bersisik dengan rambut patah, KOH positif.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Gatal kulit kepala oksipital/retroaurikular",
+    "Nits melekat erat di batang rambut, kutu dewasa",
+    "Kontak serumah/sekolah/asrama"
+  ],
+  "teachingPoints": ["Permetrin tidak membunuh semua telur — ulangi pada hari ke-7–10; tidak perlu mencukur gundul."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_keluarga", "progresi", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Kutu & nits, infeksi sekunder." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB oksipital." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Permetrin 1% diulang 7–10 hari, sisir serit, obati anggota keluarga; kontrol 2 minggu."
+    }
+  ],
+  "management": [
+    "Permetrin 1% losion/krim bilas di rambut kering 10 menit lalu dibilas; ulang hari ke-7–10.",
+    "Sisir serit tiap hari setelah keramas; periksa & obati seluruh anggota keluarga serentak.",
+    "Cuci sarung bantal, topi, sisir dengan air panas; jangan berbagi sisir/topi.",
+    "Infeksi sekunder: antibiotik topikal/oral."
+  ],
+  "approach": ["Temukan kutu/nits; nilai infeksi sekunder & kontak."]
+}

@@ -1,0 +1,126 @@
+{
+  "id": "tinea_barbae",
+  "name": "Tinea barbae",
+  "aliases": ["Kurap janggut", "Tinea sycosis"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.3,
+  "summary": "Infeksi dermatofita pada kulit & folikel rambut janggut/kumis laki-laki dewasa, sering tertular dari hewan ternak (zoofilik). Plak eritematosa dengan papul-pustul folikular, kadang nodus mirip kerion, rambut janggut mudah dicabut; tepi berskuama. Sering salah diobati sebagai folikulitis bakteri. KOH rambut/kerokan positif. Terapi antijamur oral 4–6 minggu.",
+  "presentationDay": [14, 60],
+  "demographics": {
+    "ageBands": [{ "min": 18, "max": 40, "weight": 3 }, { "min": 41, "max": 65, "weight": 3 }],
+    "maleRatio": 1,
+    "occupations": [{ "id": "petani", "weight": 3 }, { "id": "pekerja_sawit", "weight": 1 }],
+    "occupationBias": 0.5
+  },
+  "traits": [{ "id": "ternak", "probability": 0.6 }],
+  "traitLabels": { "ternak": "Kontak hewan ternak." },
+  "symptoms": [
+    { "id": "bintil_bernanah", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 0.6 },
+    { "id": "rambut_rontok", "probability": 0.5 },
+    { "id": "ruam_kulit", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["bintil_bernanah"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "rambut_rontok", "ruam_kulit"],
+  "misattributions": ["jerawat", "iritasi cukur", "bisul"],
+  "fears": ["infeksi menyebar ke muka"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah tiga minggu, Dok, di janggut muncul bintil bernanah, merah, makin lebar.",
+        "clue": "Subakut di area janggut"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Sudah minum antibiotik dari warung, Dok, nggak sembuh.", "clue": "Tidak respons antibiotik" }],
+    "bepergian_lingkungan": [
+      {
+        "text": "Saya pelihara sapi, Dok, tiap hari memandikan sapi.",
+        "when": { "traits": ["ternak"] },
+        "clue": "Kontak ternak (zoofilik)"
+      },
+      { "text": "Kerja biasa, Dok.", "when": { "notTraits": ["ternak"] } }
+    ],
+    "karakter": [{ "text": "Bulu janggutnya gampang dicabut di bagian yang merah, Dok.", "clue": "Rambut mudah dicabut" }]
+  },
+  "findings": [
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Janggut & dagu"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Plak eritematosa dengan papul-pustul folikular, tepi aktif berskuama, rambut janggut mudah dicabut"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Hifa bersepta & spora pada rambut janggut (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "furunkel_karbunkel",
+      "howToDistinguish": "Furunkel/karbunkel: nodus dalam nyeri dengan mata bisul, kokus Gram positif, respons antibiotik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "folikulitis",
+      "howToDistinguish": "Folikulitis bakteri/pseudofolikulitis: pustul folikular tanpa plak bertepi aktif, KOH negatif.",
+      "excludeBy": { "tools": ["kerokan_koh"] }
+    },
+    {
+      "id": "akne_vulgaris",
+      "howToDistinguish": "Akne: komedo, wajah luas, usia remaja.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Laki-laki dewasa dengan plak eritematosa berpustul folikular di area janggut",
+    "Rambut mudah dicabut, tidak respons antibiotik",
+    "KOH positif"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "bepergian_lingkungan", "karakter", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Plak & pustul folikular." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "kunci", "reason": "Hifa/spora pada rambut." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Antijamur oral 4–6 minggu + topikal; hindari mencukur; kontrol 2 minggu." }],
+  "management": [
+    "Terbinafin 250 mg/hari atau griseofulvin 500–1000 mg/hari selama 4–6 minggu.",
+    "Antijamur topikal tambahan, kompres bila banyak pus.",
+    "Hindari mencukur selama terapi; obati sumber hewan."
+  ],
+  "approach": ["Pustul janggut yang tidak sembuh dengan antibiotik → KOH."]
+}

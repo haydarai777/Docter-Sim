@@ -1,0 +1,162 @@
+{
+  "id": "reaksi_gigitan_serangga",
+  "name": "Reaksi gigitan serangga",
+  "aliases": ["Gigitan serangga", "Prurigo", "Urtikaria papular", "Sengatan tawon"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.1,
+  "summary": "Reaksi kulit terhadap gigitan/sengatan serangga (nyamuk, kutu busuk, semut, tawon, lebah, ulat): papul-urtika gatal dengan punktum di tengah, sering berkelompok di area terbuka; pada anak dapat menjadi urtikaria papular berulang. Sengatan tawon/lebah menimbulkan bengkak lokal nyeri. Waspadai reaksi sistemik/anafilaksis. Terapi simtomatik: kompres dingin, antihistamin, steroid topikal ringan.",
+  "presentationDay": [1, 7],
+  "demographics": {
+    "ageBands": [{ "min": 1, "max": 9, "weight": 4 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 2 }],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "sengatan", "probability": 0.3 }, { "id": "infeksi_sekunder", "probability": 0.15 }],
+  "traitLabels": {
+    "sengatan": "Sengatan tawon/lebah dengan reaksi lokal besar.",
+    "infeksi_sekunder": "Infeksi sekunder akibat garukan."
+  },
+  "symptoms": [
+    { "id": "nyeri_luka", "probability": 0.8, "when": { "traits": ["sengatan"] } },
+    { "id": "koreng", "probability": 0.8, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "bentol_gigitan", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 0.9 }
+  ],
+  "chiefComplaint": { "primary": ["bentol_gigitan"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "nyeri_luka", "koreng"],
+  "misattributions": ["alergi makanan", "biduran", "cacar"],
+  "fears": ["alergi berat", "infeksi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Kemarin sore, Dok, habis main di kebun muncul bentol-bentol gatal di kaki dan tangan.",
+        "when": { "notTraits": ["sengatan"] },
+        "clue": "Akut setelah aktivitas luar"
+      },
+      {
+        "text": "Tadi pagi disengat tawon di lengan, Dok, sekarang bengkak merah dan sakit.",
+        "reveals": ["nyeri_luka"],
+        "when": { "traits": ["sengatan"], "symptoms": ["nyeri_luka"] },
+        "clue": "Sengatan tawon dengan reaksi lokal"
+      }
+    ],
+    "lokasi": [{ "text": "Cuma di tangan dan kaki yang terbuka, Dok, badan nggak.", "clue": "Area tubuh terbuka" }],
+    "keparahan": [
+      {
+        "text": "Nggak sesak, nggak pusing, bibir nggak bengkak, Dok.",
+        "clue": "Tanpa tanda reaksi sistemik/anafilaksis"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Yang lain di rumah nggak gatal-gatal, Dok, gatalnya nggak terutama malam.",
+        "clue": "Tidak mengenai kelompok (bukan skabies)"
+      }
+    ],
+    "bepergian_lingkungan": [{ "text": "Di kamar banyak nyamuk, Dok, kasurnya juga sudah lama.", "clue": "Paparan nyamuk/kutu busuk" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["sengatan"] },
+      "values": ["Lengan & tungkai (area terbuka)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["sengatan"] },
+      "diagnostic": true,
+      "values": ["Papul-urtika eritematosa dengan punktum di tengah, berkelompok, sebagian ekskoriasi"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["sengatan"] },
+      "values": ["Lengan bawah kanan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["sengatan"] },
+      "diagnostic": true,
+      "values": ["Edema eritematosa lokal ± 6 cm dengan punktum sengatan di tengah, hangat, nyeri tekan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "tanda_khusus",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Ekskoriasi dengan krusta kekuningan (impetiginisasi)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "reaksi_anafilaktik",
+      "howToDistinguish": "Anafilaksis: urtikaria luas DISERTAI sesak, mengi, hipotensi, atau angioedema — adrenalin IM.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "skabies",
+      "howToDistinguish": "Skabies: gatal malam, predileksi khas, terowongan, keluarga tertular.",
+      "excludeBy": { "topics": ["riwayat_keluarga", "lokasi"] }
+    },
+    {
+      "id": "varisela",
+      "howToDistinguish": "Varisela: vesikel menyeluruh berbagai stadium dengan demam.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": ["Papul-urtika gatal dengan punktum di area terbuka", "Riwayat paparan serangga", "Tanpa tanda sistemik"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "keparahan", "riwayat_keluarga", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & distribusi." },
+      { "tool": "pemeriksaan_paru", "role": "pendukung", "reason": "Mengi (reaksi sistemik)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Kompres dingin, antihistamin, steroid topikal ringan; edukasi tanda alergi berat."
+    }
+  ],
+  "management": [
+    "Lepaskan sengat lebah (kerok, jangan dipencet); cuci, kompres dingin.",
+    "Krim kortikosteroid ringan-sedang (hidrokortison/betametason) 2 × sehari beberapa hari; antihistamin oral.",
+    "Cegah garukan, potong kuku; antibiotik topikal bila infeksi sekunder.",
+    "Pencegahan: kelambu, repelan, bersihkan kasur (kutu busuk); kembali segera bila sesak/bengkak wajah."
+  ],
+  "approach": ["Pastikan tidak ada reaksi sistemik.", "Bedakan dari skabies & varisela."]
+}

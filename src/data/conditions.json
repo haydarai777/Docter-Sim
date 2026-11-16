@@ -690,14 +690,6 @@
       "summary": "Nyeri & bengkak skrotum bertahap dengan demam/disuria; komplikasi IMS/ISK."
     },
     {
-      "id": "reaksi_gigitan_serangga",
-      "name": "Reaksi gigitan serangga",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Urtika/papul gatal di bekas gigitan."
-    },
-    {
       "id": "mola_hidatidosa",
       "name": "Mola hidatidosa",
       "aliases": [],
@@ -1042,38 +1034,6 @@
       "summary": "Biang keringat."
     },
     {
-      "id": "tinea_kruris",
-      "name": "Tinea kruris",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Infeksi dermatofita lipat paha."
-    },
-    {
-      "id": "tinea_korporis",
-      "name": "Tinea korporis",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Infeksi dermatofita kulit badan."
-    },
-    {
-      "id": "kandidosis_kutis",
-      "name": "Kandidosis kutis",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Infeksi kandida kulit lipatan."
-    },
-    {
-      "id": "pitiriasis_versikolor",
-      "name": "Pitiriasis versikolor",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Panu."
-    },
-    {
       "id": "pitiriasis_rosea",
       "name": "Pitiriasis rosea",
       "aliases": [],
@@ -1096,6 +1056,70 @@
       "system": "Kulit & kelamin",
       "danger": "sedang",
       "summary": "Reaksi obat di kulit."
+    },
+    {
+      "id": "alopesia_areata",
+      "name": "Alopesia areata",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bercak botak bulat licin tanpa skuama/radang, rambut tanda seru di tepi."
+    },
+    {
+      "id": "lupus_kutan",
+      "name": "Lupus eritematosus kutan",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Ruam kupu-kupu/plak diskoid fotosensitif dengan atrofi & parut; dapat sistemik. Rujuk."
+    },
+    {
+      "id": "psoriasis",
+      "name": "Psoriasis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Plak eritematosa berbatas tegas dengan skuama tebal putih keperakan (Auspitz, Koebner), di siku/lutut/kulit kepala; kuku pitting."
+    },
+    {
+      "id": "melanoma_subungual",
+      "name": "Melanoma subungual",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Pita hitam-coklat di kuku yang melebar, pigmen meluas ke lipatan kuku (tanda Hutchinson). Rujuk biopsi."
+    },
+    {
+      "id": "pitiriasis_alba",
+      "name": "Pitiriasis alba",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bercak hipopigmentasi batas tidak tegas dengan skuama halus di wajah anak atopik."
+    },
+    {
+      "id": "skabies_krustosa",
+      "name": "Skabies krustosa (Norwegia)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Skabies dengan krusta tebal luas berisi ribuan tungau pada imunokompromais/lansia — sangat menular. Rujuk."
+    },
+    {
+      "id": "dermatitis_numularis",
+      "name": "Dermatitis numularis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Plak koin eksematosa."
+    },
+    {
+      "id": "dermatitis_atopik",
+      "name": "Dermatitis atopik",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Eksim atopik kronik."
     }
   ]
 }

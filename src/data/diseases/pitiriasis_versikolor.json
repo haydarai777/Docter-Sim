@@ -1,0 +1,149 @@
+{
+  "id": "pitiriasis_versikolor",
+  "name": "Pitiriasis versikolor",
+  "aliases": ["Panu", "Tinea versikolor"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Infeksi superfisial Malassezia (flora normal kulit) pada iklim panas-lembap, remaja & dewasa muda, banyak berkeringat: makula hipo-/hiperpigmentasi multipel berbatas tegas dengan skuama halus (tampak saat digores — evoked scale), di dada, punggung, leher, lengan atas; gatal ringan saat berkeringat. Lampu Wood: kuning keemasan; KOH: 'spaghetti & meatballs'. Kambuh sering; warna kulit pulih berbulan-bulan.",
+  "presentationDay": [30, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 12, "max": 25, "weight": 4 },
+      { "min": 26, "max": 45, "weight": 3 },
+      { "min": 46, "max": 60, "weight": 1 }
+    ],
+    "maleRatio": 0.6,
+    "occupations": [
+      { "id": "pelajar", "weight": 2 },
+      { "id": "mahasiswa", "weight": 2 },
+      { "id": "ojek_online", "weight": 2 },
+      { "id": "pekerja_proyek", "weight": 1 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "kambuhan", "probability": 0.5 }],
+  "traitLabels": { "kambuhan": "Sering kambuh." },
+  "symptoms": [{ "id": "bercak_putih_kulit", "probability": 1 }, { "id": "gatal_kulit", "probability": 0.4 }],
+  "chiefComplaint": { "primary": ["bercak_putih_kulit"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit"],
+  "misattributions": ["kurap", "kurang vitamin", "kusta"],
+  "fears": ["kusta", "belang permanen"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah dua bulan, Dok, ada bercak putih-putih di punggung dan dada.", "clue": "Kronik" }],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau keringatan agak gatal, Dok. Habis olahraga kelihatan lebih jelas.",
+        "clue": "Gatal ringan saat berkeringat"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bercaknya kalau digaruk keluar sisik halus kayak bedak, Dok. Masih terasa kalau disentuh.",
+        "clue": "Skuama halus saat digores; sensibilitas normal"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Tiap tahun kambuh, Dok, apalagi musim panas.",
+        "when": { "traits": ["kambuhan"] },
+        "clue": "Kambuh berulang"
+      },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["kambuhan"] } }
+    ],
+    "kebiasaan": [{ "text": "Kerja di luar, sering keringatan, mandi sekali sehari, Dok.", "clue": "Berkeringat banyak" }]
+  },
+  "findings": [
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Punggung, dada, leher"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Makula hipopigmentasi multipel berbatas tegas, sebagian konfluens, dengan skuama halus (evoked scale +)"]
+    },
+    { "tool": "lampu_wood", "param": "fluoresensi", "diagnostic": true, "values": ["Fluoresensi kuning keemasan"] },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Hifa pendek & spora bergerombol (spaghetti and meatballs)"]
+    },
+    { "tool": "status_dermatologis", "param": "sensibilitas_lesi", "values": ["Sensibilitas lesi normal"] }
+  ],
+  "differentials": [
+    {
+      "id": "kusta",
+      "howToDistinguish": "Kusta: bercak hipopigmentasi ANESTESI tanpa skuama halus, penebalan saraf.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "vitiligo",
+      "howToDistinguish": "Vitiligo: depigmentasi putih susu tanpa skuama, Wood putih terang (bukan kuning).",
+      "excludeBy": { "tools": ["lampu_wood", "status_dermatologis"] }
+    },
+    {
+      "id": "pitiriasis_alba",
+      "howToDistinguish": "Pitiriasis alba: anak atopik, wajah, batas tidak tegas, KOH negatif.",
+      "excludeBy": { "tools": ["kerokan_koh"] }
+    }
+  ],
+  "keyFindings": [
+    "Makula hipo/hiperpigmentasi berskuama halus di badan atas",
+    "Wood kuning keemasan; KOH spaghetti & meatballs",
+    "Sensibilitas normal"
+  ],
+  "teachingPoints": [
+    "Edukasi: setelah jamur hilang, warna kulit perlu berbulan-bulan untuk kembali normal; profilaksis sebulan sekali mencegah kambuh."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pemberat_peringan", "karakter", "episode_sebelumnya", "kebiasaan", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi, skuama, sensibilitas." }],
+    "tests": [
+      { "tool": "kerokan_koh", "role": "kunci", "reason": "Malassezia." },
+      { "tool": "lampu_wood", "role": "pendukung", "reason": "Fluoresensi kuning keemasan." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Antijamur topikal (sampo/krim); oral bila luas/sering kambuh; kontrol 2–4 minggu."
+    }
+  ],
+  "management": [
+    "Sampo ketokonazol 2%/selenium sulfida 2,5% dioles ke lesi 10–15 menit lalu dibilas, setiap hari 1–2 minggu; atau krim azol.",
+    "Luas/kambuhan: flukonazol 300 mg/minggu selama 2 minggu; profilaksis sebulan sekali.",
+    "Mandi setelah berkeringat, pakaian menyerap keringat, tidak berbagi pakaian/handuk."
+  ],
+  "approach": ["Bercak putih bersisik → Wood & KOH; uji sensibilitas (singkirkan kusta)."]
+}

@@ -1,0 +1,167 @@
+{
+  "id": "tinea_pedis",
+  "name": "Tinea pedis",
+  "aliases": ["Kutu air", "Athlete's foot", "Kurap kaki"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Dermatofitosis kaki, tersering tipe interdigital (maserasi putih, fisura, skuama di sela jari IV–V), juga tipe moccasin (skuama difus telapak) dan vesikobulosa. Gatal, bau, perih bila fisura. Faktor: sepatu tertutup, kaus kaki lembap, kamar mandi umum, banjir. Menjadi pintu masuk erisipelas/selulitis. KOH positif. Antijamur topikal 4 minggu & menjaga kaki kering.",
+  "presentationDay": [14, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 55, "weight": 4 },
+      { "min": 56, "max": 70, "weight": 2 }
+    ],
+    "maleRatio": 0.65,
+    "occupations": [
+      { "id": "satpam", "weight": 2 },
+      { "id": "tni", "weight": 1 },
+      { "id": "pekerja_proyek", "weight": 2 },
+      { "id": "petani", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [{ "id": "infeksi_sekunder", "probability": 0.1 }, { "id": "sepatu_boot", "probability": 0.6 }],
+  "traitLabels": { "infeksi_sekunder": "Infeksi bakteri sekunder.", "sepatu_boot": "Sepatu tertutup/sepatu bot seharian." },
+  "symptoms": [
+    { "id": "kulit_merah_panas", "probability": 1, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "gatal_kulit", "probability": 1 },
+    { "id": "kulit_bersisik", "probability": 0.8 },
+    { "id": "nyeri_luka", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["gatal_kulit"], "extraPool": ["kulit_bersisik"] },
+  "clueSymptoms": ["kulit_bersisik", "nyeri_luka", "kulit_merah_panas"],
+  "misattributions": ["kutu air biasa", "kena air banjir", "alergi sepatu"],
+  "fears": ["infeksi kaki", "bau kaki permanen"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah dua bulan, Dok, sela jari kaki gatal, putih basah, mengelupas, kadang perih.",
+        "clue": "Kronik interdigital"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Paling parah di sela jari manis dan kelingking kaki kanan-kiri, Dok.",
+        "clue": "Sela jari IV–V bilateral"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Kerja pakai sepatu bot seharian, kaki selalu lembap, Dok.",
+        "when": { "traits": ["sepatu_boot"] },
+        "clue": "Sepatu tertutup & lembap"
+      },
+      {
+        "text": "Sering kena air banjir dan pakai sandal basah, Dok.",
+        "when": { "notTraits": ["sepatu_boot"] },
+        "clue": "Kaki lembap"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang punggung kakinya merah, bengkak, panas, Dok.",
+        "reveals": ["kulit_merah_panas"],
+        "when": { "traits": ["infeksi_sekunder"], "symptoms": ["kulit_merah_panas"] },
+        "clue": "Selulitis sekunder"
+      },
+      { "text": "Cuma gatal dan bau, Dok.", "when": { "notTraits": ["infeksi_sekunder"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "kulit",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Punggung kaki kanan eritema, edema, hangat"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Sela jari kaki IV–V kanan & kiri"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Maserasi putih, fisura, & skuama di sela jari dengan eritema, berbau"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Hifa panjang bersepta bercabang & artrospora (+)"]
+    },
+    { "tool": "lampu_wood", "param": "fluoresensi", "values": ["Tidak ada fluoresensi khas"] }
+  ],
+  "differentials": [
+    {
+      "id": "erisipelas",
+      "howToDistinguish": "Erisipelas/selulitis (komplikasi): plak merah panas meluas, demam — antibiotik sistemik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis", "tanda_vital"] }
+    },
+    {
+      "id": "eritrasma",
+      "howToDistinguish": "Eritrasma interdigital: Wood merah bata, KOH negatif.",
+      "excludeBy": { "tools": ["lampu_wood"] }
+    },
+    {
+      "id": "dermatitis_kontak_iritan",
+      "howToDistinguish": "Dermatitis kontak (sepatu/karet): di punggung kaki area kontak, KOH negatif.",
+      "excludeBy": { "topics": ["lokasi"], "tools": ["kerokan_koh"] }
+    }
+  ],
+  "keyFindings": ["Maserasi, fisura, skuama sela jari IV–V, gatal & bau", "Sepatu tertutup/lembap", "KOH positif"],
+  "teachingPoints": ["Tinea pedis adalah pintu masuk tersering erisipelas tungkai — obati & cegah."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Sela jari & telapak." },
+      { "tool": "ekstremitas_kulit", "role": "pendukung", "reason": "Selulitis sekunder." }
+    ],
+    "tests": [
+      { "tool": "kerokan_koh", "role": "kunci", "reason": "Hifa dermatofita." },
+      { "tool": "lampu_wood", "role": "pendukung", "reason": "Menyingkirkan eritrasma." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Antijamur topikal 4 minggu, kaki kering; antibiotik bila infeksi sekunder; kontrol 2–4 minggu."
+    }
+  ],
+  "management": [
+    "Krim antijamur (terbinafin/mikonazol/ketokonazol) 2 × sehari 4 minggu; bedak antijamur di kaus kaki/sepatu.",
+    "Keringkan sela jari, kaus kaki katun diganti tiap hari, sepatu berventilasi/bergantian; sandal di kamar mandi umum.",
+    "Antibiotik sistemik bila selulitis."
+  ],
+  "approach": ["Inspeksi sela jari, KOH, Wood.", "Nilai infeksi sekunder."]
+}

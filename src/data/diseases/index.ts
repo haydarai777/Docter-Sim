@@ -49,6 +49,7 @@ import tetanus from './tetanus.json';
 // Kulit & kelamin
 import absesFolikel from './abses_folikel.json';
 import alergiMakanan from './alergi_makanan.json';
+import cutaneousLarvaMigrans from './cutaneous_larva_migrans.json';
 import ektima from './ektima.json';
 import erisipelas from './erisipelas.json';
 import eritrasma from './eritrasma.json';
@@ -57,12 +58,26 @@ import furunkelKarbunkel from './furunkel_karbunkel.json';
 import herpesSimpleks from './herpes_simpleks.json';
 import herpesZoster from './herpes_zoster.json';
 import impetigo from './impetigo.json';
+import kandidosisKutis from './kandidosis_kutis.json';
 import kusta from './kusta.json';
 import lipoma from './lipoma.json';
 import moluskumKontagiosum from './moluskum_kontagiosum.json';
 import morbili from './morbili.json';
+import pedikulosisKapitis from './pedikulosis_kapitis.json';
+import pedikulosisPubis from './pedikulosis_pubis.json';
+import pitiriasisVersikolor from './pitiriasis_versikolor.json';
+import reaksiGigitanSerangga from './reaksi_gigitan_serangga.json';
 import sifilis from './sifilis.json';
+import skabies from './skabies.json';
 import skrofuloderma from './skrofuloderma.json';
+import tineaBarbae from './tinea_barbae.json';
+import tineaFasialis from './tinea_fasialis.json';
+import tineaKapitis from './tinea_kapitis.json';
+import tineaKorporis from './tinea_korporis.json';
+import tineaKruris from './tinea_kruris.json';
+import tineaManus from './tinea_manus.json';
+import tineaPedis from './tinea_pedis.json';
+import tineaUnguium from './tinea_unguium.json';
 import ulkusTungkai from './ulkus_tungkai.json';
 import varisela from './varisela.json';
 import verukaVulgaris from './veruka_vulgaris.json';
@@ -174,6 +189,7 @@ export const DISEASE_FILES: unknown[] = [
   tetanus,
   absesFolikel,
   alergiMakanan,
+  cutaneousLarvaMigrans,
   ektima,
   erisipelas,
   eritrasma,
@@ -182,12 +198,26 @@ export const DISEASE_FILES: unknown[] = [
   herpesSimpleks,
   herpesZoster,
   impetigo,
+  kandidosisKutis,
   kusta,
   lipoma,
   moluskumKontagiosum,
   morbili,
+  pedikulosisKapitis,
+  pedikulosisPubis,
+  pitiriasisVersikolor,
+  reaksiGigitanSerangga,
   sifilis,
+  skabies,
   skrofuloderma,
+  tineaBarbae,
+  tineaFasialis,
+  tineaKapitis,
+  tineaKorporis,
+  tineaKruris,
+  tineaManus,
+  tineaPedis,
+  tineaUnguium,
   ulkusTungkai,
   varisela,
   verukaVulgaris,

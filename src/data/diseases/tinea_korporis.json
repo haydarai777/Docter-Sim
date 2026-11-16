@@ -1,0 +1,170 @@
+{
+  "id": "tinea_korporis",
+  "name": "Tinea korporis",
+  "aliases": ["Kurap", "Ringworm", "Kadas", "Dermatofitosis badan"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Dermatofitosis kulit badan & ekstremitas: plak eritematosa anular/polisiklik berbatas tegas dengan tepi aktif (papul, vesikel, skuama) dan central healing, sangat gatal terutama saat berkeringat. Penularan dari manusia, hewan, atau tanah; faktor lembap, pakaian ketat, berbagi handuk. KOH: hifa bersepta. Terapi antijamur topikal 2–4 minggu; oral bila luas.",
+  "presentationDay": [14, 90],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 2 },
+      { "min": 10, "max": 30, "weight": 4 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "pekerja_proyek", "weight": 2 }, { "id": "pelajar", "weight": 2 }, { "id": "buruh_pabrik", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "luas", "probability": 0.25 }, { "id": "kontak_serumah", "probability": 0.4 }],
+  "traitLabels": { "luas": "Lesi luas (indikasi antijamur oral).", "kontak_serumah": "Anggota keluarga mengalami hal serupa." },
+  "symptoms": [
+    { "id": "ruam_kulit", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 1 },
+    { "id": "kulit_bersisik", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "kulit_bersisik"],
+  "misattributions": ["alergi", "eksim", "panu"],
+  "fears": ["menular", "kusta"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah sebulan, Dok, bercak merah melingkar di punggung, makin lebar.",
+        "clue": "Bercak anular meluas perlahan"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Pinggirnya merah ada bintil-bintil dan sisik, tengahnya mulai pudar, Dok.",
+        "clue": "Tepi aktif dengan central healing"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Gatal sekali kalau keringatan, Dok.", "clue": "Gatal memberat saat berkeringat" }],
+    "kebiasaan": [
+      {
+        "text": "Handuk sering pakai bergantian dengan adik, Dok, bajunya juga sering lembap.",
+        "clue": "Berbagi handuk & lembap"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Adik saya juga ada bercak begitu, Dok.",
+        "when": { "traits": ["kontak_serumah"] },
+        "clue": "Kontak serumah"
+      },
+      { "text": "Yang lain di rumah kulitnya baik, Dok.", "when": { "notTraits": ["kontak_serumah"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["luas"] },
+      "values": ["Punggung & lengan atas"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["luas"] },
+      "diagnostic": true,
+      "values": ["Plak eritematosa anular polisiklik berbatas tegas dengan tepi aktif (papul, vesikel, skuama) & central healing"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["luas"] },
+      "values": ["Badan, bokong, kedua tungkai (luas)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["luas"] },
+      "diagnostic": true,
+      "values": ["Plak eritematosa anular polisiklik multipel dengan tepi aktif & central healing"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Hifa panjang bersepta bercabang & artrospora (+)"]
+    },
+    { "tool": "status_dermatologis", "param": "sensibilitas_lesi", "values": ["Sensibilitas lesi normal"] }
+  ],
+  "differentials": [
+    {
+      "id": "kusta",
+      "howToDistinguish": "Kusta: bercak anestesi tanpa gatal, penebalan saraf, KOH negatif.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_numularis",
+      "howToDistinguish": "Dermatitis numularis: plak koin bervesikel basah tanpa central healing, KOH negatif.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "pitiriasis_rosea",
+      "howToDistinguish": "Pitiriasis rosea: herald patch, skuama koleret, susunan pohon cemara.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "psoriasis",
+      "howToDistinguish": "Psoriasis: plak skuama tebal keperakan di siku/lutut/kulit kepala, Auspitz (+).",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Plak anular polisiklik bertepi aktif dengan central healing",
+    "Gatal memberat saat berkeringat",
+    "KOH: hifa bersepta"
+  ],
+  "teachingPoints": [
+    "Lanjutkan antijamur topikal 1–2 minggu setelah lesi bersih untuk mencegah kekambuhan.",
+    "Hindari kombinasi krim steroid-antijamur yang dijual bebas."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "kebiasaan", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & sensibilitas lesi." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "kunci", "reason": "Hifa dermatofita." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Antijamur topikal 2–4 minggu (oral bila luas), higiene; kontrol 2–4 minggu." }],
+  "management": [
+    "Krim mikonazol/ketokonazol/terbinafin 2 × sehari minimal 2–4 minggu, lanjut 1–2 minggu setelah sembuh.",
+    "Lesi luas: griseofulvin 500 mg/hari atau terbinafin 250 mg/hari 2–4 minggu.",
+    "Keringkan kulit, pakaian menyerap keringat, handuk tidak dipakai bersama; obati anggota keluarga/hewan."
+  ],
+  "approach": ["Lesi anular gatal → KOH.", "Uji sensibilitas untuk menyingkirkan kusta."]
+}
