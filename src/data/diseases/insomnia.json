@@ -85,7 +85,12 @@
       },
       {
         "text": "Kata istri saya ngorok keras sekali, kadang kayak berhenti napas, Dok.",
-        "when": { "traits": ["osa_curiga"] },
+        "when": { "traits": ["osa_curiga"], "sex": "male" },
+        "clue": "Mendengkur keras & henti napas (curiga OSA)"
+      },
+      {
+        "text": "Kata suami saya ngorok keras sekali, kadang kayak berhenti napas, Dok.",
+        "when": { "traits": ["osa_curiga"], "sex": "female" },
         "clue": "Mendengkur keras & henti napas (curiga OSA)"
       },
       {
@@ -101,7 +106,8 @@
       },
       { "text": "Saya takut besok nggak bisa kerja karena ngantuk, Dok.", "when": { "notTraits": ["depresi_curiga"] } }
     ],
-    "riwayat_obat": [{ "text": "Pernah coba obat tidur punya teman, Dok, cuma sekali.", "clue": "Penggunaan obat tidur tanpa resep" }]
+    "riwayat_obat": [{ "text": "Pernah coba obat tidur punya teman, Dok, cuma sekali.", "clue": "Penggunaan obat tidur tanpa resep" }],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma susah tidur." }]
   },
   "findings": [
     {

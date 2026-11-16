@@ -65,7 +65,7 @@
         "clue": "Serangga masuk telinga saat tidur"
       },
       {
-        "text": "Waktu main, dia masukin manik-manik ke telinga, Dok.",
+        "text": "{LamaSakit} lalu waktu main, dia masukin manik-manik ke telinga, Dok.",
         "when": { "notTraits": ["di_hidung", "serangga"] },
         "clue": "Benda dimasukkan ke telinga"
       }
@@ -89,6 +89,10 @@
         "text": "Sudah coba dikorek pakai lidi, Dok, malah makin masuk.",
         "clue": "Upaya mengeluarkan sendiri (risiko benda terdorong)"
       }
+    ],
+    "lokasi": [
+      { "text": "Di lubang hidung kanan, Dok.", "when": { "traits": ["di_hidung"] } },
+      { "text": "Di telinga kanan, Dok.", "when": { "notTraits": ["di_hidung"] } }
     ]
   },
   "findings": [

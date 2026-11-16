@@ -72,7 +72,8 @@
       }
     ],
     "riwayat_obat": [{ "text": "Baru minum parasetamol, Dok, panas turun sebentar terus naik lagi." }],
-    "bepergian_lingkungan": [{ "text": "Nggak ada genangan atau banyak nyamuk di rumah, Dok.", "clue": "Tanpa paparan khas dengue/lepto" }]
+    "bepergian_lingkungan": [{ "text": "Nggak ada genangan atau banyak nyamuk di rumah, Dok.", "clue": "Tanpa paparan khas dengue/lepto" }],
+    "lokasi": [{ "text": "Badan pegal semua, Dok, kepala juga pusing." }]
   },
   "findings": [
     {

@@ -57,7 +57,8 @@
         "text": "Biasa, Dok, setahun bisa dua-tiga kali pilek begini. Nggak pernah bersin-bersin tiap pagi.",
         "clue": "Tidak ada pola alergi"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di hidung, Dok, dua-duanya mampet dan meler." }]
   },
   "findings": [
     {

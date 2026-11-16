@@ -91,7 +91,11 @@
       },
       { "text": "Nggak ada yang sakit kulit di rumah, Dok.", "when": { "notTraits": ["kontak_kusta"] } }
     ],
-    "riwayat_obat": [{ "text": "Sudah dikasih salep panu, Dok, nggak sembuh.", "clue": "Tidak respons antijamur" }]
+    "riwayat_obat": [{ "text": "Sudah dikasih salep panu, Dok, nggak sembuh.", "clue": "Tidak respons antijamur" }],
+    "lokasi": [
+      { "text": "Di lengan kiri atas dan punggung, Dok.", "when": { "notTraits": ["mb"] } },
+      { "text": "Di muka, badan, tangan, dan kaki, Dok, banyak.", "when": { "traits": ["mb"] } }
+    ]
   },
   "findings": [
     {

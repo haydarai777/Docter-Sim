@@ -129,3 +129,31 @@ describe('tombol topik standar', () => {
     expect(seen.size).toBeGreaterThan(content.anamnesis.length * 3);
   });
 });
+
+describe('pertanyaan baku gejala & alloanamnesis', () => {
+  it('pertanyaan baku setiap gejala dipahami sebagai gejala itu (rujukan "anaknya" = pasien anak)', async () => {
+    const { stripChildReference } = await import('../src/core/nlu');
+    const wrong: string[] = [];
+    for (const s of content.symptoms) {
+      const ints = interpretQuestion(stripChildReference(s.question), content, 3).intents;
+      if (!ints.some((i) => (i.kind === 'symptom' || i.kind === 'symptom_detail') && i.symptom === s.id)) wrong.push(`${s.id}: ${s.question} → ${JSON.stringify(ints)}`);
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it('pasien anak: "anaknya/adik/bayinya" adalah pasien; "anak-anak lain/kakaknya" tetap riwayat keluarga', async () => {
+    const { askQuestion, startEncounter } = await import('../src/core/encounter');
+    const { generateCase } = await import('../src/core/generator');
+    let c = generateCase(content, config, { diseaseId: 'kejang_demam', seed: 1 });
+    for (let seed = 2; !c.patient.companion || !c.symptoms.includes('demam'); seed++) c = generateCase(content, config, { diseaseId: 'kejang_demam', seed });
+    const st = startEncounter(c);
+    for (const q of ['Apakah anaknya demam?', 'Adiknya demam?', 'Bayinya demam?', `${c.patient.callName} demam?`]) {
+      const r = askQuestion(st, q, content, config);
+      expect(r.intents, q).toContainEqual({ kind: 'symptom', symptom: 'demam' });
+      expect(r.state.revealedSymptoms, q).toContain('demam');
+    }
+    for (const q of ['Anak-anak lain di rumah ada yang demam?', 'Kakaknya ada yang sakit serupa?']) {
+      expect(askQuestion(st, q, content, config).intents, q).toContainEqual({ kind: 'topic', topic: 'riwayat_keluarga' });
+    }
+  });
+});

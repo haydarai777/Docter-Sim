@@ -72,7 +72,8 @@
         "clue": "Tanpa batuk kronik"
       }
     ],
-    "riwayat_keluarga": [{ "text": "Di rumah nggak ada yang batuk lama atau minum obat TBC, Dok.", "clue": "Tanpa kontak TB" }]
+    "riwayat_keluarga": [{ "text": "Di rumah nggak ada yang batuk lama atau minum obat TBC, Dok.", "clue": "Tanpa kontak TB" }],
+    "lokasi": [{ "text": "Batuknya dari dada, Dok, dada terasa berat kalau batuk terus." }]
   },
   "findings": [
     {

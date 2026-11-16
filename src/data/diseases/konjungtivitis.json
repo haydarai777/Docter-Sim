@@ -115,6 +115,10 @@
         "text": "Sempat saya tetesi obat mata dari warung, Dok, lupa mereknya.",
         "clue": "Tetes mata bebas tanpa resep (cek kandungan steroid)"
       }
+    ],
+    "lokasi": [
+      { "text": "Matanya, Dok, awalnya satu terus pindah ke yang satunya.", "when": { "traits": ["virus"] } },
+      { "text": "Dua-duanya, Dok.", "when": { "notTraits": ["virus"] } }
     ]
   },
   "findings": [

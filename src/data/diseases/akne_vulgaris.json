@@ -68,7 +68,8 @@
         "text": "Nggak ada benjolan besar yang sakit, Dok, cuma bintik-bintik dan komedo.",
         "clue": "Tanpa nodul/kista (ringan)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di muka, Dok, dahi, pipi, sama dagu." }]
   },
   "findings": [
     { "tool": "status_dermatologis", "param": "lokasi", "values": ["Wajah (dahi, pipi, dagu)"] },

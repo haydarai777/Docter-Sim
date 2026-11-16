@@ -62,7 +62,8 @@
         "clue": "Infeksi sekunder"
       },
       { "text": "Cuma gatal, Dok.", "when": { "notTraits": ["infeksi_sekunder"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Di kepala bagian belakang dan belakang telinga, Dok." }]
   },
   "findings": [
     {

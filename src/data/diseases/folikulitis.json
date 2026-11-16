@@ -30,8 +30,13 @@
     "lokasi": [
       {
         "text": "Di janggut dan dagu, Dok, sejak cukur pakai silet.",
-        "when": { "traits": ["mencukur"] },
+        "when": { "traits": ["mencukur"], "sex": "male" },
         "clue": "Area janggut setelah mencukur"
+      },
+      {
+        "text": "Di ketiak dan betis, Dok, sejak cukur bulu pakai silet.",
+        "when": { "traits": ["mencukur"], "sex": "female" },
+        "clue": "Area yang dicukur"
       },
       {
         "text": "Di paha dan bokong, Dok, mungkin karena celana ketat dan duduk lama di motor.",

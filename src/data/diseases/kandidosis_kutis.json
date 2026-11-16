@@ -67,7 +67,18 @@
       },
       { "text": "Belum pernah cek gula, Dok.", "when": { "notTraits": ["dm_curiga"] } }
     ],
-    "riwayat_obat": [{ "text": "Nggak minum antibiotik atau steroid belakangan ini, Dok." }]
+    "riwayat_obat": [{ "text": "Nggak minum antibiotik atau steroid belakangan ini, Dok." }],
+    "lokasi": [
+      { "text": "Di sela jari tangan, Dok.", "when": { "traits": ["interdigital_tangan"] } },
+      {
+        "text": "Di lipatan bawah payudara dan lipat paha, Dok.",
+        "when": { "notTraits": ["interdigital_tangan"], "sex": "female" }
+      },
+      {
+        "text": "Di lipat paha dan lipatan perut, Dok.",
+        "when": { "notTraits": ["interdigital_tangan"], "sex": "male" }
+      }
+    ]
   },
   "findings": [
     {

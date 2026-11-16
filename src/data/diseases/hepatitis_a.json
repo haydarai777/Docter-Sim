@@ -77,7 +77,8 @@
         "clue": "Sadar baik"
       }
     ],
-    "riwayat_obat": [{ "text": "Baru minum parasetamol sesekali, Dok.", "clue": "Tanpa obat hepatotoksik dosis besar" }]
+    "riwayat_obat": [{ "text": "Baru minum parasetamol sesekali, Dok.", "clue": "Tanpa obat hepatotoksik dosis besar" }],
+    "lokasi": [{ "text": "Mata sama kulitnya kuning, Dok. Perut kanan atas juga agak pegal." }]
   },
   "findings": [
     { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },

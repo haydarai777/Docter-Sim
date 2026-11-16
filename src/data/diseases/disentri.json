@@ -64,7 +64,8 @@
       },
       { "text": "Masih bisa makan minum, Dok.", "when": { "notTraits": ["dehidrasi"] }, "clue": "Tanpa dehidrasi" }
     ],
-    "bepergian_lingkungan": [{ "text": "Minumnya air sumur yang kadang nggak dimasak, Dok.", "clue": "Air minum tidak dimasak" }]
+    "bepergian_lingkungan": [{ "text": "Minumnya air sumur yang kadang nggak dimasak, Dok.", "clue": "Air minum tidak dimasak" }],
+    "lokasi": [{ "text": "Perutnya melilit di bagian bawah, Dok, mau BAB terus." }]
   },
   "findings": [
     {

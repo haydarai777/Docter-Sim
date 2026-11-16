@@ -491,7 +491,7 @@ D(id="vulnus", name="Vulnus laseratum dan punctum", aka=["Luka robek", "Luka tus
                     ("Tahun lalu saya disuntik tetanus waktu luka juga, Dok.", "Booster tetanus < 5 tahun", NT("tt_tidak_lengkap"))],
       "keparahan": [("Jari tengah saya nggak bisa ditekuk, Dok.", "Gangguan fleksi jari (curiga cedera tendon)", T("cedera_tendon")),
                     ("Jari-jari masih bisa gerak dan terasa semua, Dok.", "Fungsi motorik & sensorik distal baik", NT("cedera_tendon"))],
-      "riwayat_penyakit": [("Lukanya kena tanah dan kotor, Dok.", "Luka terkontaminasi", T("kotor")), ("Lukanya kelihatan bersih, Dok.", None, NT("kotor"))],
+      "karakter": [("Lukanya kena tanah dan kotor, Dok, perih sekali.", "Luka terkontaminasi", T("kotor")), ("Lukanya kelihatan bersih, Dok, perih dan cenut-cenut.", None, NT("kotor"))],
       "riwayat_obat": [("Belum diobati, cuma dibebat kain, Dok.", None)],
   },
   f=[F("status_lokalis", "luka", "Vulnus laseratum 4 × 0,5 × 0,5 cm di regio antebrachii dekstra, tepi tidak rata, jembatan jaringan (+), dasar otot, perdarahan aktif minimal",

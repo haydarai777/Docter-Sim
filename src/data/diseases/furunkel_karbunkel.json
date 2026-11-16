@@ -71,7 +71,11 @@
       },
       { "text": "Belum pernah dibilang kencing manis, Dok.", "when": { "notTraits": ["dm_curiga"] } }
     ],
-    "riwayat_obat": [{ "text": "Sudah saya pencet tapi malah makin bengkak, Dok.", "clue": "Dipencet sendiri" }]
+    "riwayat_obat": [{ "text": "Sudah saya pencet tapi malah makin bengkak, Dok.", "clue": "Dipencet sendiri" }],
+    "lokasi": [
+      { "text": "Di tengkuk, Dok, besar dan banyak mata nanahnya.", "when": { "traits": ["karbunkel"] } },
+      { "text": "Di bokong kanan, Dok.", "when": { "notTraits": ["karbunkel"] } }
+    ]
   },
   "findings": [
     { "tool": "status_dermatologis", "param": "lokasi", "when": { "traits": ["karbunkel"] }, "values": ["Tengkuk"] },

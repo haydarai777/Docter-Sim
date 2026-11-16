@@ -85,6 +85,18 @@
         "when": { "ageMax": 9 },
         "clue": "Status imunisasi anak"
       }
+    ],
+    "lokasi": [
+      { "text": "Di dada, perut, dan kedua lengan, Dok.", "when": { "traits": ["luas"] } },
+      { "text": "Di betis kanan, Dok, kena knalpot.", "when": { "traits": ["knalpot"], "notTraits": ["luas"] } },
+      {
+        "text": "Di dada dan lengan kanan atas, Dok, kena air panas.",
+        "when": { "traits": ["tersiram_anak"], "notTraits": ["luas"] }
+      },
+      {
+        "text": "Di punggung tangan dan lengan bawah kiri, Dok.",
+        "when": { "notTraits": ["luas", "knalpot", "tersiram_anak"] }
+      }
     ]
   },
   "findings": [

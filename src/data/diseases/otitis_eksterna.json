@@ -86,7 +86,8 @@
         "when": { "traits": ["jamur"] },
         "clue": "Gatal dominan (curiga jamur)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di telinga kanan, Dok, liangnya." }]
   },
   "findings": [
     {

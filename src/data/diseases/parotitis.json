@@ -79,6 +79,10 @@
         "when": { "notTraits": ["orkitis"] },
         "clue": "Tanpa tanda meningitis"
       }
+    ],
+    "lokasi": [
+      { "text": "Di depan telinga sampai rahang, Dok, dua-duanya.", "when": { "traits": ["bilateral"] } },
+      { "text": "Di depan telinga kanan sampai rahang, Dok.", "when": { "notTraits": ["bilateral"] } }
     ]
   },
   "findings": [

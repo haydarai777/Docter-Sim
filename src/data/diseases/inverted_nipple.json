@@ -56,7 +56,8 @@
         "text": "Nggak ada benjolan di payudara, Dok, nggak ada cairan berdarah.",
         "clue": "Tanpa massa/cairan abnormal"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Puting yang kanan, Dok, masuk ke dalam." }]
   },
   "findings": [
     {

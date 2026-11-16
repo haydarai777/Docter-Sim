@@ -153,7 +153,7 @@ S("kaku_badan", "Kekakuan / kejang otot badan", SARAF, "Apakah badan atau ototny
 S("wajah_mencong", "Wajah/mulut mencong", SARAF, "Apakah wajah atau mulutnya mencong?",
   ["mulut saya mencong", "wajah saya sebelah turun"], ["muka saya rasanya aneh"], ["muka saya miring sekali"], ["mulut agak miring sedikit"],
   kw=["mulut mencong", "wajah mencong", "muka mencong", "perot", "mulut miring", "wajah tidak simetris", "muka miring", "wajah miring", "mencong"], cue=("pegang", 0.4, "mulut"))
-S("mata_tidak_menutup", "Kelopak mata tidak bisa menutup", SARAF, "Apakah matanya bisa ditutup rapat?",
+S("mata_tidak_menutup", "Kelopak mata tidak bisa menutup", SARAF, "Apakah matanya tidak bisa menutup rapat?",
   ["mata saya nggak bisa merem rapat", "kelopak mata saya nggak bisa nutup"], None, ["mata saya terbuka terus, perih"], ["kadang mata agak susah merem"],
   kw=["mata tidak bisa menutup", "tidak bisa merem", "kelopak tidak menutup", "mata tidak bisa ditutup", "susah merem", "merem tidak rapat"])
 S("sakit_kepala_sebelah", "Sakit kepala sebelah berdenyut", SARAF, "Apakah sakit kepalanya di sebelah sisi dan berdenyut?",
@@ -219,10 +219,10 @@ S("pusar_bermasalah", "Pusar bayi merah/berbau/bernanah", ANAK, "Apakah pusarnya
 S("rewel", "Rewel / menangis terus", ANAK, "Apakah anaknya rewel atau menangis terus?",
   ["saya rewel terus", "saya nangis terus"], None, ["nangisnya nggak berhenti-berhenti semalaman"], ["agak rewel"],
   kw=["rewel", "menangis terus", "nangis terus", "cengeng", "tidak bisa diam", "susah ditenangkan"], cue=("gelisah", 0.4))
-S("malas_menyusu", "Malas menyusu / minum", ANAK, "Apakah anaknya mau menyusu atau minum seperti biasa?",
+S("malas_menyusu", "Malas menyusu / minum", ANAK, "Apakah anaknya malas menyusu atau malas minum?",
   ["saya nggak mau menyusu", "saya malas minum susu"], None, ["sama sekali nggak mau menyusu"], ["menyusunya agak berkurang"],
   kw=["tidak mau menyusu", "malas menyusu", "malas minum", "tidak mau minum", "menyusu", "menetek", "nyusu", "malas netek"])
-S("bb_tidak_naik", "Berat badan tidak naik", ANAK, "Apakah berat badannya naik sesuai umur?",
+S("bb_tidak_naik", "Berat badan tidak naik", ANAK, "Apakah berat badannya susah naik?",
   ["berat badan saya nggak naik-naik", "kata bidan berat badan saya di bawah garis merah"], None, ["berat badan saya malah turun terus"], ["berat agak susah naik"],
   kw=["berat badan tidak naik", "bb tidak naik", "tidak naik berat", "di bawah garis merah", "bgm", "gizi kurang", "susah gemuk", "kms"], cue=("kurus", 0.8))
 review_add("bab", "bab_darah", "keluar_cacing", "gatal_anus", "benjolan_anus", "bab_pucat")
@@ -248,7 +248,7 @@ S("nyeri_senggama", "Nyeri saat berhubungan seksual", KEL, "Apakah ada nyeri saa
 S("luka_kemaluan", "Luka/koreng di kemaluan", KEL, "Apakah ada luka atau koreng di kemaluan?",
   ["ada luka di kemaluan saya", "ada koreng di alat kelamin saya"], None, ["lukanya besar dan banyak"], ["ada luka kecil di kemaluan"],
   kw=["luka di kemaluan", "koreng di kemaluan", "luka di alat kelamin", "luka di penis", "luka di vagina", "lecet di kemaluan", "lepuh di kemaluan", "luka kelamin"], vol=False)
-S("kulup_sempit", "Kulup tidak bisa ditarik / menggelembung saat kencing", KEL, "Apakah kulup penisnya bisa ditarik? Menggelembung saat kencing?",
+S("kulup_sempit", "Kulup tidak bisa ditarik / menggelembung saat kencing", KEL, "Apakah kulup penisnya susah ditarik ke belakang, atau menggelembung saat kencing?",
   ["kulupnya nggak bisa ditarik, waktu kencing menggelembung", "ujung kulup saya sempit"], None, ["kencingnya sampai netes-netes karena kulupnya sempit"], ["kulup agak susah ditarik"],
   kw=["kulup", "kulup tidak bisa ditarik", "kulup sempit", "menggelembung saat kencing", "kencing menggelembung", "belum sunat", "kulit penis", "kencing menetes"])
 S("kulup_terjepit", "Kulup terjepit di belakang kepala penis", KEL, "Apakah kulupnya tertarik ke belakang dan tidak bisa dikembalikan?",
@@ -434,7 +434,7 @@ review_add("kulit", "gatal_kulit", "ruam_kulit", "kulit_bersisik", "bercak_putih
 
 # ------------------------------------------------------------------------------ TRAUMA
 S("luka_robek", "Luka robek / terbuka", TRAUMA, "Apakah ada luka robek atau luka terbuka?",
-  ["ada luka robek di badan saya", "kulit saya sobek dan berdarah"], None, ["lukanya lebar dan darahnya banyak sekali"], ["lukanya kecil"],
+  ["ada luka robek, Dok, berdarah", "kulit saya sobek dan berdarah"], None, ["lukanya lebar dan darahnya banyak sekali"], ["lukanya kecil"],
   kw=["luka robek", "luka sobek", "sobek", "luka terbuka", "luka menganga", "terluka", "berdarah terus", "kena pisau", "kena kaca", "kena seng"], cue=("pegang", 0.6, "lengan"), site="lengan")
 S("luka_tusuk", "Luka tusuk", TRAUMA, "Apakah ada luka tusuk?",
   ["saya tertusuk", "kaki saya tertusuk paku"], None, ["tusukannya dalam sekali"], ["cuma tertusuk sedikit"],
@@ -446,5 +446,5 @@ S("memar", "Memar / lebam / benjol", TRAUMA, "Apakah ada memar, lebam, atau benj
   ["badan saya memar-memar", "ada lebam biru di badan saya"], None, ["memarnya banyak sekali, biru semua"], ["ada memar sedikit"],
   kw=["memar", "lebam", "biru biru", "biru lebam", "bengkak kena pukul", "lebam biru"])
 S("nyeri_luka", "Nyeri di bagian yang cedera", TRAUMA, "Apakah bagian yang cedera terasa nyeri?",
-  ["bagian yang luka sakit sekali", "yang kena pukul sakit kalau ditekan"], None, ["sakitnya luar biasa"], ["agak nyeri"],
+  ["lukanya sakit sekali", "bagian yang luka sakit kalau ditekan"], None, ["sakitnya luar biasa"], ["agak nyeri"],
   kw=["sakit di luka", "nyeri luka", "lukanya sakit", "perih di luka", "sakit yang kena", "nyeri bekas pukulan", "sakit bekas"], cue=("diam_menahan", 0.4))

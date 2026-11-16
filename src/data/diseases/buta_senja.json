@@ -74,7 +74,8 @@
         "when": { "traits": ["bitot"] },
         "clue": "Mata kering dengan bercak berbusa (Bitot)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Matanya, Dok, dua-duanya. Kalau sore menjelang magrib dia nabrak-nabrak." }]
   },
   "findings": [
     {

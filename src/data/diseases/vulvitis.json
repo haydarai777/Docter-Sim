@@ -65,7 +65,8 @@
         "when": { "ageMax": 9 },
         "clue": "Tidak ada indikasi kekerasan seksual"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di kemaluan bagian luar, Dok." }]
   },
   "findings": [
     {

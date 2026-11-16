@@ -71,7 +71,11 @@
         "clue": "Tidak gatal, alopesia"
       }
     ],
-    "riwayat_keluarga": [{ "text": "Istri/pasangan saya belum diperiksa, Dok.", "clue": "Pasangan perlu diperiksa" }]
+    "riwayat_keluarga": [{ "text": "Istri/pasangan saya belum diperiksa, Dok.", "clue": "Pasangan perlu diperiksa" }],
+    "lokasi": [
+      { "text": "Di badan, Dok, sampai telapak tangan dan kaki.", "when": { "traits": ["stadium2"] } },
+      { "text": "Di kemaluan, Dok.", "when": { "notTraits": ["stadium2"] } }
+    ]
   },
   "findings": [
     {

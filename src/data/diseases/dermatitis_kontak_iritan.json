@@ -70,7 +70,8 @@
       }
     ],
     "pemberat_peringan": [{ "text": "Kalau libur nggak nyuci, tangan agak membaik, Dok.", "clue": "Membaik bila menghindari iritan" }],
-    "riwayat_penyakit": [{ "text": "Waktu kecil nggak ada eksim atau asma, Dok.", "clue": "Tanpa riwayat atopi" }]
+    "riwayat_penyakit": [{ "text": "Waktu kecil nggak ada eksim atau asma, Dok.", "clue": "Tanpa riwayat atopi" }],
+    "lokasi": [{ "text": "Di punggung tangan dan sela-sela jari, Dok, dua-duanya. Pas di bagian yang kena air sabun." }]
   },
   "findings": [
     {

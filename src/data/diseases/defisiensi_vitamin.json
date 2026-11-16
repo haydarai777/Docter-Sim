@@ -90,7 +90,12 @@
         "clue": "Belum diketahui DM (singkirkan neuropati diabetik)"
       }
     ],
-    "riwayat_obat": [{ "text": "Nggak minum vitamin apa pun, Dok." }]
+    "riwayat_obat": [{ "text": "Nggak minum vitamin apa pun, Dok." }],
+    "lokasi": [
+      { "text": "Gusinya gampang berdarah, Dok, kaki juga ada bintik-bintik.", "when": { "traits": ["skorbut"] } },
+      { "text": "Di sudut bibir pecah-pecah, lidah perih, Dok.", "when": { "traits": ["b_kompleks"] } },
+      { "text": "Kaki terasa kesemutan dan lemah, Dok, betis pegal.", "when": { "traits": ["beriberi"] } }
+    ]
   },
   "findings": [
     {

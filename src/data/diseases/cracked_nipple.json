@@ -61,7 +61,8 @@
       },
       { "text": "Posisinya sudah seperti diajari bidan, Dok.", "when": { "notTraits": ["pelekatan_salah"] } }
     ],
-    "keparahan": [{ "text": "Nggak demam, Dok, payudaranya juga nggak merah.", "clue": "Tanpa tanda mastitis" }]
+    "keparahan": [{ "text": "Nggak demam, Dok, payudaranya juga nggak merah.", "clue": "Tanpa tanda mastitis" }],
+    "lokasi": [{ "text": "Di puting, Dok, terutama yang kanan." }]
   },
   "findings": [
     {

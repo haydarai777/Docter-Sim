@@ -54,7 +54,8 @@
         "when": { "traits": ["madarosis"] },
         "clue": "Madarosis"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di pinggir kelopak mata, Dok, atas dan bawah, dua-duanya." }]
   },
   "findings": [
     {

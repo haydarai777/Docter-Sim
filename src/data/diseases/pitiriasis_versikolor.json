@@ -52,7 +52,8 @@
       },
       { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["kambuhan"] } }
     ],
-    "kebiasaan": [{ "text": "Kerja di luar, sering keringatan, mandi sekali sehari, Dok.", "clue": "Berkeringat banyak" }]
+    "kebiasaan": [{ "text": "Kerja di luar, sering keringatan, mandi sekali sehari, Dok.", "clue": "Berkeringat banyak" }],
+    "lokasi": [{ "text": "Di punggung, dada, dan leher, Dok." }]
   },
   "findings": [
     { "tool": "status_dermatologis", "param": "lokasi", "values": ["Punggung, dada, leher"] },

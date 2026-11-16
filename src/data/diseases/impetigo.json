@@ -56,7 +56,11 @@
       { "text": "Adiknya juga mulai ada koreng begitu, Dok.", "weight": 0.5, "clue": "Kontak serumah" },
       { "text": "Yang lain di rumah belum, Dok." }
     ],
-    "keparahan": [{ "text": "Nggak demam, Dok, masih main seperti biasa.", "clue": "Tanpa gejala sistemik" }]
+    "keparahan": [{ "text": "Nggak demam, Dok, masih main seperti biasa.", "clue": "Tanpa gejala sistemik" }],
+    "lokasi": [
+      { "text": "Di sekitar hidung, mulut, sama dagu, Dok.", "when": { "notTraits": ["bulosa"] } },
+      { "text": "Di ketiak, badan, sama lipatan, Dok.", "when": { "traits": ["bulosa"] } }
+    ]
   },
   "findings": [
     {

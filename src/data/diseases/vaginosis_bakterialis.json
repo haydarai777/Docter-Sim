@@ -36,7 +36,8 @@
     "haid_kehamilan": [
       { "text": "Haid teratur, Dok. Saya pakai KB spiral.", "when": { "traits": ["akdr"] }, "clue": "Pengguna AKDR" },
       { "text": "Haid teratur, Dok, nggak hamil.", "when": { "notTraits": ["akdr"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Dari jalan lahir, Dok, keputihan berbau." }]
   },
   "findings": [
     {

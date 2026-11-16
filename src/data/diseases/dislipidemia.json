@@ -61,7 +61,8 @@
         "text": "Belum pernah dibilang darah tinggi atau kencing manis, Dok. Nggak gampang kedinginan, nggak bengkak.",
         "clue": "Tanpa riwayat HT/DM; tanpa gejala hipotiroid/nefrotik"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok. Cuma hasil cek kolesterolnya tinggi." }]
   },
   "findings": [
     { "tool": "profil_lipid", "param": "tg", "when": { "traits": ["tg_tinggi"] }, "range": [220, 420] },

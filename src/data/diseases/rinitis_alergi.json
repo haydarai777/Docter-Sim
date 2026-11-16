@@ -49,7 +49,7 @@
         "when": { "ageMin": 13 },
         "clue": "Kronik kambuhan sejak usia muda"
       },
-      { "text": "Sudah lama, Dok, kambuh-kambuhan.", "when": { "ageMax": 12 }, "clue": "Kronik kambuhan" }
+      { "text": "Sudah {lamaSakit} ini, Dok, kambuh-kambuhan.", "when": { "ageMax": 12 }, "clue": "Kronik kambuhan" }
     ],
     "pola": [
       {
@@ -93,7 +93,8 @@
         "when": { "notTraits": ["persisten"] },
         "clue": "Intermiten ringan"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di hidung, Dok, mata juga ikut gatal." }]
   },
   "findings": [
     {

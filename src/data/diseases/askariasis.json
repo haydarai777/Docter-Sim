@@ -43,7 +43,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Tadi pagi waktu BAB keluar cacing panjang kayak mi, Dok, masih gerak.",
+        "text": "Sudah {lamaSakit} perutnya sering sakit dan susah makan, Dok. Tadi pagi waktu BAB keluar cacing panjang kayak mi, masih gerak.",
         "clue": "Cacing gelang keluar bersama tinja"
       }
     ],

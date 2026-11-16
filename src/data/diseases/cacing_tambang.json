@@ -63,7 +63,8 @@
         "clue": "Sesak & berdebar saat aktivitas"
       }
     ],
-    "bepergian_lingkungan": [{ "text": "Di rumah buang air besar di kebun, Dok, belum ada jamban.", "clue": "Sanitasi buruk (tanpa jamban)" }]
+    "bepergian_lingkungan": [{ "text": "Di rumah buang air besar di kebun, Dok, belum ada jamban.", "clue": "Sanitasi buruk (tanpa jamban)" }],
+    "lokasi": [{ "text": "Nggak ada yang sakit di satu tempat, Dok, lemas dan pucat saja. Kadang ulu hati nggak enak." }]
   },
   "findings": [
     { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["anemia_berat"] }, "range": [6, 7.9] },

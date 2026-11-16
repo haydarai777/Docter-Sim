@@ -61,7 +61,8 @@
       { "text": "Saya merokok sebungkus sehari, Dok.", "when": { "traits": ["perokok"] }, "clue": "Perokok" }
     ],
     "keparahan": [{ "text": "Napas biasa, Dok, nggak sesak, nelan ludah juga bisa.", "clue": "Tanpa sesak, stridor, maupun ngiler" }],
-    "episode_sebelumnya": [{ "text": "Biasanya kalau serak seminggu juga sembuh, Dok.", "clue": "Episode singkat (bukan serak kronik)" }]
+    "episode_sebelumnya": [{ "text": "Biasanya kalau serak seminggu juga sembuh, Dok.", "clue": "Episode singkat (bukan serak kronik)" }],
+    "lokasi": [{ "text": "Di tenggorokan, Dok, suaranya serak." }]
   },
   "findings": [
     {

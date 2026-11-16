@@ -41,7 +41,8 @@
       }
     ],
     "riwayat_penyakit": [{ "text": "Saya nggak ada kencing manis, Dok. Belum pernah cek mata." }],
-    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }],
+    "lokasi": [{ "text": "Matanya, Dok, dua-duanya, kalau baca tulisan kecil dari dekat." }]
   },
   "findings": [
     {

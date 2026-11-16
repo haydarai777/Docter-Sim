@@ -64,9 +64,15 @@
     ],
     "pola": [
       {
-        "text": "Kata suami/istri saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok.",
+        "text": "Kata istri saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok.",
         "reveals": ["mengantuk_siang"],
-        "when": { "traits": ["osa"], "symptoms": ["mengantuk_siang"] },
+        "when": { "traits": ["osa"], "sex": "male", "symptoms": ["mengantuk_siang"] },
+        "clue": "Mendengkur, henti napas, mengantuk siang (OSA)"
+      },
+      {
+        "text": "Kata suami saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok.",
+        "reveals": ["mengantuk_siang"],
+        "when": { "traits": ["osa"], "sex": "female", "symptoms": ["mengantuk_siang"] },
         "clue": "Mendengkur, henti napas, mengantuk siang (OSA)"
       },
       { "text": "Tidur biasa, Dok.", "when": { "notTraits": ["osa"] } }
@@ -83,7 +89,8 @@
         "clue": "Riwayat keluarga obesitas & DM"
       }
     ],
-    "harapan": [{ "text": "Saya mau turun berat badan, Dok, biar sehat.", "clue": "Motivasi menurunkan BB" }]
+    "harapan": [{ "text": "Saya mau turun berat badan, Dok, biar sehat.", "clue": "Motivasi menurunkan BB" }],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma berat badan terus naik. Lutut kadang pegal." }]
   },
   "findings": [
     {

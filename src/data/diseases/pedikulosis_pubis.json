@@ -43,7 +43,8 @@
         "clue": "Bercak darah & makula serulea"
       }
     ],
-    "riwayat_keluarga": [{ "text": "Pasangan saya juga mengeluh gatal di bawah, Dok.", "clue": "Pasangan bergejala" }]
+    "riwayat_keluarga": [{ "text": "Pasangan saya juga mengeluh gatal di bawah, Dok.", "clue": "Pasangan bergejala" }],
+    "lokasi": [{ "text": "Di rambut kemaluan, Dok, sampai paha dalam." }]
   },
   "findings": [
     {

@@ -134,7 +134,7 @@ D(id="hiv", name="HIV/AIDS tanpa komplikasi", aka=["HIV", "Infeksi HIV", "AIDS",
        ("lemas", 0.5)],
   cc=["berat_badan_turun", "risiko_ims"], ex=["benjolan_kgb", "diare"], mis=["kena guna-guna", "kecapekan", "maag"], fears=["AIDS", "mati", "dikucilkan keluarga"],
   ana={
-      "onset": [("Bulan lalu suami/istri saya dinyatakan HIV positif, Dok. Saya disuruh tes juga.", "Pasangan HIV positif", T("skrining_pasangan"), "risiko_ims"),
+      "onset": [("Bulan lalu pasangan saya dinyatakan HIV positif, Dok. Saya disuruh tes juga.", "Pasangan HIV positif", T("skrining_pasangan"), "risiko_ims"),
                 ("Tiga bulan ini berat badan turun hampir enam kilo, Dok, sering mencret dan demam hilang timbul.", "BB turun, diare & demam berulang", T("bb_turun"), "berat_badan_turun")],
       "kebiasaan": [("Dulu saya sering berhubungan dengan sesama jenis tanpa kondom, Dok.", "LSL tanpa kondom", T("lsl"), "risiko_ims"),
                     ("Dulu saya sering jajan di lokalisasi waktu kerja di luar kota, Dok, nggak pakai kondom.", "Hubungan seks berisiko tanpa kondom", NT("lsl"), "risiko_ims")],

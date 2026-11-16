@@ -106,7 +106,8 @@
         "text": "Nggak minum obat mual atau obat jiwa, Dok. Nggak digigit anjing juga.",
         "clue": "Tanpa obat pemicu distonia & gigitan hewan"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Rahang kaku susah buka mulut, Dok, leher dan perut juga kaku." }]
   },
   "findings": [
     {

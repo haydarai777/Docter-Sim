@@ -74,7 +74,8 @@
       },
       { "text": "Belum pernah diobati, Dok.", "when": { "notTraits": ["dipaksa_tarik"] } }
     ],
-    "keparahan": [{ "text": "Masih bisa kencing, Dok, nggak sampai tertahan.", "clue": "Tanpa retensi urin" }]
+    "keparahan": [{ "text": "Masih bisa kencing, Dok, nggak sampai tertahan.", "clue": "Tanpa retensi urin" }],
+    "lokasi": [{ "text": "Di ujung kemaluan, Dok, kulupnya nggak bisa ditarik." }]
   },
   "findings": [
     {

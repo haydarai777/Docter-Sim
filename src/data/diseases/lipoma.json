@@ -44,6 +44,10 @@
         "clue": "Riwayat keluarga lipoma"
       },
       { "text": "Di keluarga nggak ada yang begini, Dok.", "when": { "notTraits": ["multipel"] } }
+    ],
+    "lokasi": [
+      { "text": "Di punggung kanan atas, Dok.", "when": { "notTraits": ["multipel"] } },
+      { "text": "Ada beberapa, Dok, di punggung dan lengan.", "when": { "traits": ["multipel"] } }
     ]
   },
   "findings": [

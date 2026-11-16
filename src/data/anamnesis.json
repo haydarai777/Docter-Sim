@@ -91,7 +91,14 @@
         "baru tadi",
         "tadi malam",
         "merasa sehat",
-        "terakhir sehat"
+        "terakhir sehat",
+        "kena apa",
+        "kronologi",
+        "siapa yang memukul",
+        "dipukul siapa",
+        "pelaku",
+        "luka karena apa",
+        "kenapa bisa luka"
       ],
       "why": "Onset & lama sakit membedakan proses akut (infeksi, kolik) dari kronik (TB, DM, GERD).",
       "fallback": [{ "text": "Mulainya sekitar {hariTeks} hari yang lalu, Dok." }]
@@ -205,7 +212,10 @@
         "setiap kambuh"
       ],
       "why": "Lama tiap episode (mis. angina < 15 menit, kolik hilang-timbul) membantu membedakan penyebab.",
-      "fallback": [{ "text": "Nggak tentu, Dok. Pokoknya terasa terus." }]
+      "fallback": [
+        { "text": "Dari tadi terasa terus, Dok.", "when": { "dayMax": 1 } },
+        { "text": "Nggak tentu, Dok. Pokoknya terasa terus.", "when": { "dayMin": 2 } }
+      ]
     },
     {
       "id": "keparahan",
@@ -246,7 +256,11 @@
         "nilai",
         "0 sampai 10",
         "angka berapa",
-        "sampai harus"
+        "sampai harus",
+        "bisa digerakkan",
+        "digerakkan",
+        "bisa ditekuk",
+        "bisa jalan"
       ],
       "why": "Keparahan & dampak pada aktivitas menunjukkan derajat penyakit dan kebutuhan rujukan.",
       "fallback": [
@@ -297,7 +311,14 @@
         "kapan biasanya",
         "tiap hari",
         "tiap malam",
-        "tiap pagi"
+        "tiap pagi",
+        "kapan paling berat",
+        "paling berat kapan",
+        "paling parah kapan",
+        "kapan paling parah",
+        "kapan paling gatal",
+        "paling sakit kapan",
+        "kapan paling sakit"
       ],
       "why": "Pola waktu (sore–malam, berkala, malam/dini hari) adalah petunjuk klasik.",
       "fallback": [{ "text": "Terus-terusan, Dok. Nggak ada jam-jamnya." }]
@@ -345,7 +366,10 @@
         "ada perubahan"
       ],
       "why": "Perjalanan penyakit (memburuk/membaik/makin sering) menilai progresivitas dan kemungkinan komplikasi.",
-      "fallback": [{ "text": "Kayaknya makin hari makin nggak enak, Dok." }]
+      "fallback": [
+        { "text": "Dari tadi kurang lebih sama, Dok.", "when": { "dayMax": 1 } },
+        { "text": "Ya begitu-begitu saja, Dok, belum ada perubahan berarti.", "when": { "dayMin": 2 } }
+      ]
     },
     {
       "id": "pemberat_peringan",
@@ -519,7 +543,14 @@
         "tekanan darah tinggi",
         "gula darah",
         "gula tinggi",
-        "kadar gula"
+        "kadar gula",
+        "berat lahir",
+        "lahir di",
+        "lahirnya",
+        "riwayat kelahiran",
+        "lahir cukup bulan",
+        "ditolong siapa",
+        "lahir normal"
       ],
       "why": "Penyakit lain (hipertensi, DM, dll.) mengubah risiko, diagnosis banding, dan tata laksana.",
       "fallback": [
@@ -576,7 +607,21 @@
         "ke klinik",
         "ke bidan",
         "ke mantri",
-        "ke rumah sakit"
+        "ke rumah sakit",
+        "salep",
+        "krim",
+        "pakai salep",
+        "pakai krim",
+        "dioles",
+        "oles",
+        "tetes mata",
+        "obat tetes",
+        "kacamata",
+        "lensa kontak",
+        "tablet tambah darah",
+        "ttd",
+        "tablet besi",
+        "obat cacing"
       ],
       "why": "Obat yang sudah diminum (OAINS, antibiotik, obat rutin) memengaruhi gejala, hasil tes, dan pilihan terapi.",
       "fallback": [
@@ -651,7 +696,11 @@
         "sekolah ada yang",
         "kerja ada yang",
         "kampung ada yang",
-        "sekitar ada yang"
+        "sekitar ada yang",
+        "pasangan ada",
+        "pasangan ada keluhan",
+        "pasangan juga",
+        "pasangan sakit"
       ],
       "why": "Riwayat keluarga & kontak serumah menunjukkan risiko genetik (DM, PJK, asma) atau penularan (TB, dengue).",
       "fallback": [
@@ -750,7 +799,47 @@
         "makan telat",
         "telat makan",
         "makan terlambat",
-        "makan tidak tepat waktu"
+        "makan tidak tepat waktu",
+        "imunisasi",
+        "diimunisasi",
+        "vaksin",
+        "divaksin",
+        "vaksinasi",
+        "suntik tetanus",
+        "tetanus",
+        "posyandu",
+        "sabun",
+        "pakai sabun",
+        "berenang",
+        "mengorek telinga",
+        "korek telinga",
+        "cotton bud",
+        "kondom",
+        "pasangan lain",
+        "berganti pasangan",
+        "ganti ganti pasangan",
+        "hubungan seksual",
+        "berhubungan seks",
+        "berhubungan badan",
+        "berhubungan dengan",
+        "pekerja seks",
+        "menyusui",
+        "asi",
+        "minum asi",
+        "susu formula",
+        "popok",
+        "ganti popok",
+        "makan banyak",
+        "porsi makan",
+        "ngemil",
+        "banyak pikiran",
+        "stres",
+        "beban pikiran",
+        "cuci tangan",
+        "kebersihan",
+        "alas kaki",
+        "sandal",
+        "sepatu"
       ],
       "why": "Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit.",
       "fallback": [
@@ -1010,7 +1099,12 @@
         "datang untuk",
         "minta apa",
         "ingin bagaimana",
-        "ingin diperiksa"
+        "ingin diperiksa",
+        "lapor polisi",
+        "polisi",
+        "visum",
+        "melapor",
+        "surat visum"
       ],
       "why": "Mengetahui harapan pasien (expectation) membantu menyepakati rencana tata laksana.",
       "question": "Apa yang {sapaan} harapkan dari pemeriksaan hari ini?",
@@ -1063,7 +1157,19 @@
         "telat bulan",
         "telat haid",
         "menopause",
-        "siklus haid"
+        "siklus haid",
+        "hpht",
+        "haid terakhir",
+        "gerakan janin",
+        "gerak janin",
+        "janin",
+        "hamil ke",
+        "periksa kehamilan",
+        "kontrol kehamilan",
+        "usia kehamilan",
+        "melahirkan",
+        "nifas",
+        "keguguran"
       ],
       "why": "Pada perempuan usia subur, kemungkinan hamil memengaruhi diagnosis serta pilihan obat dan pemeriksaan.",
       "question": "Bagaimana haidnya, teratur? Kapan haid terakhir, ada kemungkinan hamil?",
@@ -1149,7 +1255,11 @@
         "makan dan minum",
         "nafsu makan bagaimana",
         "selera makan bagaimana",
-        "menelan"
+        "menelan",
+        "mau makan",
+        "makannya mau",
+        "mau minum",
+        "minumnya bagaimana"
       ],
       "symptoms": [
         "nafsu_makan_turun",

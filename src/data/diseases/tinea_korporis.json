@@ -57,6 +57,10 @@
         "clue": "Kontak serumah"
       },
       { "text": "Yang lain di rumah kulitnya baik, Dok.", "when": { "notTraits": ["kontak_serumah"] } }
+    ],
+    "lokasi": [
+      { "text": "Di punggung dan lengan atas, Dok.", "when": { "notTraits": ["luas"] } },
+      { "text": "Di badan, bokong, sampai kedua kaki, Dok.", "when": { "traits": ["luas"] } }
     ]
   },
   "findings": [

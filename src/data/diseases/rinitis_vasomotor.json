@@ -61,7 +61,8 @@
         "clue": "Semprot dekongestan berkepanjangan"
       },
       { "text": "Kadang minum obat flu warung, Dok.", "when": { "notTraits": ["pakai_semprot_dekongestan"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Di hidung, Dok, gantian kiri-kanan mampetnya." }]
   },
   "findings": [
     {

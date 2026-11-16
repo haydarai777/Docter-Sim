@@ -234,7 +234,15 @@
         "exaggerated": ["bintik merahnya banyak sekali di tangan dan kaki"],
         "downplayed": ["ada bintik merah sedikit, paling digigit nyamuk"]
       },
-      "keywords": ["bintik merah", "bintik bintik", "petekie", "bintik di kulit"]
+      "keywords": [
+        "bintik merah",
+        "bintik bintik",
+        "petekie",
+        "bintik di kulit",
+        "bintik merah di kulit",
+        "bintik bintik merah di kulit",
+        "bintik merah di badan"
+      ]
     },
     {
       "id": "perdarahan_mukosa",
@@ -357,7 +365,10 @@
         "dada rasanya panas",
         "dada terasa terbakar",
         "dada rasanya terbakar",
-        "dada seperti terbakar"
+        "dada seperti terbakar",
+        "terbakar di dada",
+        "panas atau terbakar di dada",
+        "panas terbakar di dada"
       ]
     },
     {
@@ -498,7 +509,17 @@
         "exaggerated": ["batuk saya keluar darah banyak"],
         "downplayed": ["ada bercak darah sedikit di dahak"]
       },
-      "keywords": ["batuk darah", "dahak berdarah", "batuk berdarah", "hemoptisis", "darah saat batuk", "dahak ada darah"]
+      "keywords": [
+        "batuk darah",
+        "dahak berdarah",
+        "batuk berdarah",
+        "hemoptisis",
+        "darah saat batuk",
+        "dahak ada darah",
+        "batuk keluar darah",
+        "batuk ada darah",
+        "batuk bercampur darah"
+      ]
     },
     {
       "id": "keringat_malam",
@@ -636,7 +657,12 @@
         "sakit kalau kencing",
         "nyeri kalau kencing",
         "kencing panas",
-        "pipis panas"
+        "pipis panas",
+        "perih saat buang air kecil",
+        "sakit saat buang air kecil",
+        "nyeri saat buang air kecil",
+        "sakit atau perih saat buang air kecil",
+        "sakit atau perih saat kencing"
       ]
     },
     {
@@ -718,7 +744,19 @@
         "exaggerated": ["kencing saya merah kayak darah"],
         "downplayed": ["kencing agak kemerahan sedikit"]
       },
-      "keywords": ["kencing merah", "kencing berdarah", "pipis merah", "air kencing merah", "hematuria", "kencing darah"]
+      "keywords": [
+        "kencing merah",
+        "kencing berdarah",
+        "pipis merah",
+        "air kencing merah",
+        "hematuria",
+        "kencing darah",
+        "kencing kemerahan",
+        "air kencing kemerahan",
+        "kencing berwarna merah",
+        "kencing warna merah",
+        "pipis kemerahan"
+      ]
     },
     {
       "id": "urin_keruh",
@@ -786,7 +824,11 @@
         "bab warna hitam",
         "warna bab",
         "warna tinja",
-        "warna feses"
+        "warna feses",
+        "bab berwarna hitam",
+        "hitam seperti aspal",
+        "seperti aspal",
+        "berak berwarna hitam"
       ],
       "volunteer": false
     },
@@ -957,7 +999,11 @@
         "kelopak bengkak",
         "bengkak di kelopak",
         "benjolan kelopak",
-        "kelopak mata bengkak"
+        "kelopak mata bengkak",
+        "benjolan atau bengkak di kelopak mata",
+        "bengkak di kelopak mata",
+        "benjolan di kelopak mata",
+        "kelopak mata membengkak"
       ]
     },
     {
@@ -1042,7 +1088,13 @@
         "papan tulis",
         "tulisan di papan",
         "jauh kabur",
-        "jauh tidak jelas"
+        "jauh tidak jelas",
+        "melihat benda yang jauh",
+        "melihat benda jauh",
+        "lihat benda jauh",
+        "sulit melihat jauh",
+        "susah melihat jauh",
+        "pandangan jauh kabur"
       ]
     },
     {
@@ -1065,7 +1117,11 @@
         "susah membaca",
         "membaca dekat",
         "tulisan kecil",
-        "harus dijauhkan"
+        "harus dijauhkan",
+        "baca dekat kabur",
+        "dekat kabur",
+        "baca dekat",
+        "lihat dekat kabur"
       ]
     },
     {
@@ -1086,7 +1142,14 @@
         "melihat di gelap",
         "kalau gelap",
         "saat gelap",
-        "waktu magrib"
+        "waktu magrib",
+        "melihat saat senja",
+        "saat senja",
+        "kalau senja",
+        "tempat gelap",
+        "melihat di tempat gelap",
+        "melihat malam hari",
+        "sulit melihat malam"
       ]
     },
     {
@@ -1105,7 +1168,12 @@
         "darah di mata",
         "putih mata merah",
         "bercak merah di mata",
-        "mata berdarah"
+        "mata berdarah",
+        "darah di putih mata",
+        "merah di putih mata",
+        "bercak merah seperti darah",
+        "bagian putih mata merah",
+        "putih mata ada darah"
       ]
     },
     {
@@ -1274,7 +1342,11 @@
         "ujung hidung",
         "jerawat di hidung",
         "hidung merah",
-        "lubang hidung sakit"
+        "lubang hidung sakit",
+        "nyeri di hidung",
+        "bisul yang nyeri di hidung",
+        "bengkak atau bisul di hidung",
+        "hidung sakit dan bengkak"
       ]
     },
     {
@@ -1472,7 +1544,7 @@
       "id": "mata_tidak_menutup",
       "label": "Kelopak mata tidak bisa menutup",
       "system": "Kepala & saraf",
-      "question": "Apakah matanya bisa ditutup rapat?",
+      "question": "Apakah matanya tidak bisa menutup rapat?",
       "phrases": {
         "lay": ["mata saya nggak bisa merem rapat", "kelopak mata saya nggak bisa nutup"],
         "exaggerated": ["mata saya terbuka terus, perih"],
@@ -1484,7 +1556,13 @@
         "kelopak tidak menutup",
         "mata tidak bisa ditutup",
         "susah merem",
-        "merem tidak rapat"
+        "merem tidak rapat",
+        "mata tidak bisa menutup rapat",
+        "tidak bisa menutup rapat",
+        "mata bisa ditutup rapat",
+        "ditutup rapat",
+        "menutup rapat",
+        "mata menutup rapat"
       ]
     },
     {
@@ -1730,7 +1808,17 @@
         "exaggerated": ["gatalnya nggak tahan sampai lecet"],
         "downplayed": ["agak gatal di dubur"]
       },
-      "keywords": ["gatal di dubur", "dubur gatal", "anus gatal", "gatal anus", "pantat gatal", "gatal di pantat"],
+      "keywords": [
+        "gatal di dubur",
+        "dubur gatal",
+        "anus gatal",
+        "gatal anus",
+        "pantat gatal",
+        "gatal di pantat",
+        "gatal di sekitar dubur",
+        "dubur terasa gatal",
+        "gatal di sekitar anus"
+      ],
       "volunteer": false
     },
     {
@@ -1777,7 +1865,16 @@
         "exaggerated": ["perut saya besar sekali kayak hamil"],
         "downplayed": ["perut agak buncit"]
       },
-      "keywords": ["perut buncit", "perut membesar", "perut membuncit", "perut besar", "perut makin besar"]
+      "keywords": [
+        "perut buncit",
+        "perut membesar",
+        "perut membuncit",
+        "perut besar",
+        "perut makin besar",
+        "perut makin membesar",
+        "perut makin buncit",
+        "perut membesar atau buncit"
+      ]
     },
     {
       "id": "pusar_bermasalah",
@@ -1801,13 +1898,23 @@
         "exaggerated": ["nangisnya nggak berhenti-berhenti semalaman"],
         "downplayed": ["agak rewel"]
       },
-      "keywords": ["rewel", "menangis terus", "nangis terus", "cengeng", "tidak bisa diam", "susah ditenangkan"]
+      "keywords": [
+        "rewel",
+        "menangis terus",
+        "nangis terus",
+        "cengeng",
+        "tidak bisa diam",
+        "susah ditenangkan",
+        "rewel atau menangis",
+        "sering rewel",
+        "menangis terus menerus"
+      ]
     },
     {
       "id": "malas_menyusu",
       "label": "Malas menyusu / minum",
       "system": "Anak",
-      "question": "Apakah anaknya mau menyusu atau minum seperti biasa?",
+      "question": "Apakah anaknya malas menyusu atau malas minum?",
       "phrases": {
         "lay": ["saya nggak mau menyusu", "saya malas minum susu"],
         "exaggerated": ["sama sekali nggak mau menyusu"],
@@ -1821,14 +1928,19 @@
         "menyusu",
         "menetek",
         "nyusu",
-        "malas netek"
+        "malas netek",
+        "malas menyusu atau malas minum",
+        "malas menyusu atau minum",
+        "susah menyusu",
+        "nggak mau menyusu",
+        "kuat menyusu"
       ]
     },
     {
       "id": "bb_tidak_naik",
       "label": "Berat badan tidak naik",
       "system": "Anak",
-      "question": "Apakah berat badannya naik sesuai umur?",
+      "question": "Apakah berat badannya susah naik?",
       "phrases": {
         "lay": ["berat badan saya nggak naik-naik", "kata bidan berat badan saya di bawah garis merah"],
         "exaggerated": ["berat badan saya malah turun terus"],
@@ -1842,7 +1954,12 @@
         "bgm",
         "gizi kurang",
         "susah gemuk",
-        "kms"
+        "kms",
+        "berat badan susah naik",
+        "susah naik berat badan",
+        "berat badan tidak bertambah",
+        "berat badan naik sesuai umur",
+        "berat badan sesuai umur"
       ]
     },
     {
@@ -1898,7 +2015,11 @@
         "gatal kemaluan",
         "gatal di alat kelamin",
         "gatal di bibir kemaluan",
-        "rambut kemaluan gatal"
+        "rambut kemaluan gatal",
+        "gatal di daerah kemaluan",
+        "gatal di area kemaluan",
+        "gatal di kelamin",
+        "kelamin gatal"
       ],
       "volunteer": false
     },
@@ -1918,7 +2039,13 @@
         "sakit waktu berhubungan",
         "sakit berhubungan",
         "dispareunia",
-        "nyeri senggama"
+        "nyeri senggama",
+        "berhubungan suami istri",
+        "nyeri saat berhubungan suami istri",
+        "sakit saat berhubungan suami istri",
+        "sakit waktu berhubungan suami istri",
+        "nyeri saat bersenggama",
+        "sakit saat bersenggama"
       ],
       "volunteer": false
     },
@@ -1948,7 +2075,7 @@
       "id": "kulup_sempit",
       "label": "Kulup tidak bisa ditarik / menggelembung saat kencing",
       "system": "Kelamin & reproduksi",
-      "question": "Apakah kulup penisnya bisa ditarik? Menggelembung saat kencing?",
+      "question": "Apakah kulup penisnya susah ditarik ke belakang, atau menggelembung saat kencing?",
       "phrases": {
         "lay": ["kulupnya nggak bisa ditarik, waktu kencing menggelembung", "ujung kulup saya sempit"],
         "exaggerated": ["kencingnya sampai netes-netes karena kulupnya sempit"],
@@ -1962,7 +2089,11 @@
         "kencing menggelembung",
         "belum sunat",
         "kulit penis",
-        "kencing menetes"
+        "kencing menetes",
+        "kulup susah ditarik",
+        "kulup penis susah ditarik",
+        "susah ditarik ke belakang",
+        "kulup menggelembung"
       ]
     },
     {
@@ -2001,7 +2132,10 @@
         "pendarahan dari jalan lahir",
         "perdarahan dari vagina",
         "darah dari kemaluan",
-        "keluar darah dari kemaluan"
+        "keluar darah dari kemaluan",
+        "keluar darah dari jalan lahir",
+        "darah dari jalan lahir",
+        "berdarah dari jalan lahir"
       ]
     },
     {
@@ -2170,7 +2304,11 @@
         "sendi merah",
         "sendi panas",
         "asam urat kambuh",
-        "pangkal jempol"
+        "pangkal jempol",
+        "sendi yang bengkak",
+        "sendi bengkak merah",
+        "sendi yang bengkak merah",
+        "bengkak di persendian"
       ]
     },
     {
@@ -2183,7 +2321,17 @@
         "exaggerated": ["benjolannya besar sekali sampai susah napas"],
         "downplayed": ["leher agak besar sedikit"]
       },
-      "keywords": ["gondok", "leher depan", "benjolan di leher depan", "leher membesar", "tiroid", "kelenjar gondok"]
+      "keywords": [
+        "gondok",
+        "leher depan",
+        "benjolan di leher depan",
+        "leher membesar",
+        "tiroid",
+        "kelenjar gondok",
+        "benjolan di leher bagian depan",
+        "leher bagian depan",
+        "benjolan leher depan"
+      ]
     },
     {
       "id": "kram_otot",
@@ -2331,7 +2479,11 @@
         "wajah bengkak",
         "mata bengkak",
         "lidah bengkak",
-        "bengkak tiba tiba"
+        "bengkak tiba tiba",
+        "bibir atau kelopak mata bengkak",
+        "bibir atau mata bengkak",
+        "bibir dan kelopak mata bengkak",
+        "bibir atau kelopak matanya bengkak"
       ]
     },
     {
@@ -2408,7 +2560,19 @@
         "exaggerated": ["tiap malam garuk-garuk sampai berdarah"],
         "downplayed": ["malam agak lebih gatal"]
       },
-      "keywords": ["gatal malam", "gatal kalau malam", "gatal waktu malam", "malam gatal", "gatal di malam hari"],
+      "keywords": [
+        "gatal malam",
+        "gatal kalau malam",
+        "gatal waktu malam",
+        "malam gatal",
+        "gatal di malam hari",
+        "gatal lebih berat di malam hari",
+        "gatal lebih berat malam hari",
+        "gatal lebih berat malam",
+        "gatal makin berat malam",
+        "gatal terutama malam",
+        "gatal paling berat malam"
+      ],
       "volunteer": false
     },
     {
@@ -2477,7 +2641,13 @@
         "kulit mati rasa",
         "tidak terasa disentuh",
         "mati rasa di bercak",
-        "bercak kebas"
+        "bercak kebas",
+        "kulit yang terasa baal",
+        "bercak yang baal",
+        "bercak yang mati rasa",
+        "bercak di kulit yang mati rasa",
+        "bercak di kulit yang terasa baal",
+        "kulit terasa baal"
       ],
       "volunteer": false
     },
@@ -2498,7 +2668,9 @@
         "jerawat bernanah",
         "pustul",
         "bisul kecil",
-        "bintil berisi nanah"
+        "bintil berisi nanah",
+        "bernanah",
+        "ada nanah"
       ]
     },
     {
@@ -2557,7 +2729,19 @@
         "exaggerated": ["bibir saya penuh lepuh, perih sekali"],
         "downplayed": ["ada bintil kecil di bibir"]
       },
-      "keywords": ["lepuh di bibir", "bintil di bibir", "bibir melepuh", "bibir berair", "luka di bibir", "dampa", "bibir lecet"]
+      "keywords": [
+        "lepuh di bibir",
+        "bintil di bibir",
+        "bibir melepuh",
+        "bibir berair",
+        "luka di bibir",
+        "dampa",
+        "bibir lecet",
+        "lepuh kecil berkelompok di bibir",
+        "berkelompok di bibir",
+        "lepuh kecil di bibir",
+        "bintil berair di bibir"
+      ]
     },
     {
       "id": "koreng",
@@ -2824,7 +3008,7 @@
       "system": "Trauma & luka",
       "question": "Apakah ada luka robek atau luka terbuka?",
       "phrases": {
-        "lay": ["ada luka robek di badan saya", "kulit saya sobek dan berdarah"],
+        "lay": ["ada luka robek, Dok, berdarah", "kulit saya sobek dan berdarah"],
         "exaggerated": ["lukanya lebar dan darahnya banyak sekali"],
         "downplayed": ["lukanya kecil"]
       },
@@ -2892,7 +3076,7 @@
       "system": "Trauma & luka",
       "question": "Apakah bagian yang cedera terasa nyeri?",
       "phrases": {
-        "lay": ["bagian yang luka sakit sekali", "yang kena pukul sakit kalau ditekan"],
+        "lay": ["lukanya sakit sekali", "bagian yang luka sakit kalau ditekan"],
         "exaggerated": ["sakitnya luar biasa"],
         "downplayed": ["agak nyeri"]
       },
@@ -2903,7 +3087,15 @@
         "perih di luka",
         "sakit yang kena",
         "nyeri bekas pukulan",
-        "sakit bekas"
+        "sakit bekas",
+        "bagian yang cedera terasa nyeri",
+        "bagian yang cedera",
+        "yang cedera terasa nyeri",
+        "cedera terasa nyeri",
+        "cedera sakit",
+        "luka terasa nyeri",
+        "lukanya nyeri",
+        "bekas luka sakit"
       ]
     },
     {

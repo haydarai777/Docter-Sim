@@ -59,7 +59,11 @@
         "clue": "Kontak teman"
       }
     ],
-    "riwayat_obat": [{ "text": "Sudah dikasih salep jamur dari warung, Dok, nggak sembuh.", "clue": "Gagal dengan topikal saja" }]
+    "riwayat_obat": [{ "text": "Sudah dikasih salep jamur dari warung, Dok, nggak sembuh.", "clue": "Gagal dengan topikal saja" }],
+    "lokasi": [
+      { "text": "Di kepala bagian belakang, Dok.", "when": { "notTraits": ["kerion"] } },
+      { "text": "Di kepala bagian atas, Dok, bengkak bernanah.", "when": { "traits": ["kerion"] } }
+    ]
   },
   "findings": [
     {

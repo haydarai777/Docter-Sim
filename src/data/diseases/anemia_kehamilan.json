@@ -106,7 +106,8 @@
         "text": "Nggak ada perdarahan dari jalan lahir, Dok. Gerak bayi aktif.",
         "clue": "Tanpa perdarahan antepartum, gerak janin baik"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma badan lemas dan kepala kliyengan." }]
   },
   "findings": [
     { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["berat"] }, "diagnostic": true, "range": [5.5, 6.9] },

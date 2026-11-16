@@ -68,7 +68,8 @@
         "text": "Badan nggak menggigil, Dok, cuma sendinya yang sakit.",
         "clue": "Tanpa demam tinggi/menggigil (artritis septik kurang mungkin)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di pangkal jempol kaki kanan, Dok." }]
   },
   "findings": [
     {

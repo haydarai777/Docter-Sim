@@ -48,7 +48,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "{LamaSakit} lalu, Dok, sejak kemarin panas tinggi, terus tiba-tiba kejang.",
+        "text": "Panasnya sudah {lamaSakit}, Dok, terus tadi pagi tiba-tiba kejang.",
         "clue": "Kejang terjadi saat demam tinggi (hari pertama)"
       }
     ],
@@ -120,6 +120,13 @@
         "when": { "notTraits": ["kompleks"] },
         "clue": "Sadar baik, tanpa tanda peningkatan TIK"
       }
+    ],
+    "lokasi": [
+      {
+        "text": "Seluruh badannya kaku lalu kelojotan, Dok, kedua tangan dan kaki.",
+        "when": { "notTraits": ["kompleks"] }
+      },
+      { "text": "Mulainya di tangan kanan, Dok, terus seluruh badan.", "when": { "traits": ["kompleks"] } }
     ]
   },
   "findings": [

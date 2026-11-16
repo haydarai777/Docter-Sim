@@ -42,7 +42,8 @@
       },
       { "text": "Kerja biasa, Dok.", "when": { "notTraits": ["ternak"] } }
     ],
-    "karakter": [{ "text": "Bulu janggutnya gampang dicabut di bagian yang merah, Dok.", "clue": "Rambut mudah dicabut" }]
+    "karakter": [{ "text": "Bulu janggutnya gampang dicabut di bagian yang merah, Dok.", "clue": "Rambut mudah dicabut" }],
+    "lokasi": [{ "text": "Di janggut dan dagu, Dok." }]
   },
   "findings": [
     { "tool": "status_dermatologis", "param": "lokasi", "values": ["Janggut & dagu"] },

@@ -87,7 +87,8 @@
         "clue": "Belum mendapat TTD/asam folat & TT"
       }
     ],
-    "harapan": [{ "text": "Saya mau cek kandungan, Dok, biar tahu sehat atau nggak." }]
+    "harapan": [{ "text": "Saya mau cek kandungan, Dok, biar tahu sehat atau nggak." }],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok. Mau periksa kehamilan." }]
   },
   "findings": [
     {

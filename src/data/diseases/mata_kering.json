@@ -91,7 +91,8 @@
         "when": { "traits": ["sjogren_curiga"] },
         "clue": "Mulut kering + nyeri sendi (curiga Sjögren)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Dua-duanya, Dok, terasa kering, perih, kayak berpasir." }]
   },
   "findings": [
     {

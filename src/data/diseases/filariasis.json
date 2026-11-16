@@ -91,7 +91,8 @@
         "text": "Saya nggak punya sakit jantung atau ginjal, Dok, kaki kiri nggak bengkak.",
         "clue": "Unilateral, tanpa penyakit jantung/ginjal"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di kaki kanan, Dok, bengkaknya dari betis sampai punggung kaki." }]
   },
   "findings": [
     {

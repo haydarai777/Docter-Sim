@@ -92,7 +92,8 @@
         "when": { "traits": ["apnea_bayi"], "symptoms": ["sesak_napas"] },
         "clue": "Apnea/sianosis saat batuk (bayi) — tanda bahaya"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Batuknya dari dada, Dok, sampai mukanya merah." }]
   },
   "findings": [
     {

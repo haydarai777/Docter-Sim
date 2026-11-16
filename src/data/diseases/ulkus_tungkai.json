@@ -65,7 +65,8 @@
         "when": { "notTraits": ["infeksi_sekunder"] },
         "clue": "Nyeri ringan (khas vena)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di atas mata kaki kiri, Dok, sebelah dalam." }]
   },
   "findings": [
     {

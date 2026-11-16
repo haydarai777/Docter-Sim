@@ -61,7 +61,8 @@
         "text": "Kalau nggak minum susu, perut saya enak, Dok. BB juga nggak turun.",
         "clue": "Membaik tanpa laktosa, tanpa tanda alarm"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Perutnya kembung di tengah, Dok, sekitar pusar." }]
   },
   "findings": [
     { "tool": "pemeriksaan_abdomen", "param": "inspeksi", "probability": 0.4, "values": ["Sedikit distensi"] },

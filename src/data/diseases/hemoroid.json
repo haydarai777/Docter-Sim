@@ -78,7 +78,8 @@
         "text": "Berat badan saya tetap, Dok, pola BAB nggak berubah selain keras.",
         "clue": "Tanpa tanda alarm (BB turun, perubahan pola BAB)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di dubur, Dok, darahnya menetes waktu BAB." }]
   },
   "findings": [
     {

@@ -64,7 +64,8 @@
         "clue": "Kerja dekat lama, kurang aktivitas luar ruang"
       }
     ],
-    "riwayat_keluarga": [{ "text": "Bapak dan ibu saya dua-duanya pakai kacamata minus, Dok.", "clue": "Riwayat keluarga miopia" }]
+    "riwayat_keluarga": [{ "text": "Bapak dan ibu saya dua-duanya pakai kacamata minus, Dok.", "clue": "Riwayat keluarga miopia" }],
+    "lokasi": [{ "text": "Matanya, Dok, dua-duanya. Paling kabur kalau lihat papan tulis atau tulisan jauh." }]
   },
   "findings": [
     {

@@ -59,7 +59,8 @@
         "when": { "traits": ["erosi_kornea"], "symptoms": ["silau"] },
         "clue": "Perburukan dengan silau (curiga erosi kornea)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di mata, Dok, kelopak bawah, rasanya ada yang menusuk." }]
   },
   "findings": [
     {

@@ -61,7 +61,11 @@
       },
       { "text": "Nggak demam, Dok, cuma sakit di benjolannya.", "when": { "notTraits": ["selulitis_sekitar"] } }
     ],
-    "riwayat_obat": [{ "text": "Sudah saya pencet tapi nggak keluar, Dok.", "clue": "Dipencet sendiri" }]
+    "riwayat_obat": [{ "text": "Sudah saya pencet tapi nggak keluar, Dok.", "clue": "Dipencet sendiri" }],
+    "lokasi": [
+      { "text": "Di punggung atas, Dok, dulu ada benjolan kecil di situ.", "when": { "traits": ["kista_sebelumnya"] } },
+      { "text": "Di ketiak kanan, Dok.", "when": { "notTraits": ["kista_sebelumnya"] } }
+    ]
   },
   "findings": [
     {

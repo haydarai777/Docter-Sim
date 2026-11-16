@@ -64,7 +64,8 @@
       }
     ],
     "keparahan": [{ "text": "Napas lega, Dok, nggak pusing atau mual.", "clue": "Tanpa gangguan napas/sirkulasi" }],
-    "episode_sebelumnya": [{ "text": "Baru kali ini, Dok, belum sampai berminggu-minggu.", "clue": "Durasi < 6 minggu (akut)" }]
+    "episode_sebelumnya": [{ "text": "Baru kali ini, Dok, belum sampai berminggu-minggu.", "clue": "Durasi < 6 minggu (akut)" }],
+    "lokasi": [{ "text": "Di badan, lengan, sama kaki, Dok, pindah-pindah." }]
   },
   "findings": [
     {

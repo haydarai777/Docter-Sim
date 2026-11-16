@@ -81,7 +81,8 @@
         "clue": "Memakai antikoagulan/antiplatelet"
       }
     ],
-    "episode_sebelumnya": [{ "text": "Belum pernah, Dok." }]
+    "episode_sebelumnya": [{ "text": "Belum pernah, Dok." }],
+    "lokasi": [{ "text": "Di bagian putih mata, Dok, sebelah luar." }]
   },
   "findings": [
     { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [150, 178] },

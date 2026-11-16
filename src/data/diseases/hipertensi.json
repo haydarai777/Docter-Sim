@@ -100,7 +100,8 @@
         "text": "Nggak minum obat rutin, Dok, juga nggak pakai obat flu atau jamu terus-menerus.",
         "clue": "Tanpa obat pemicu hipertensi"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Kadang tengkuk saja yang tegang, Dok. Selebihnya nggak ada yang sakit." }]
   },
   "findings": [
     {

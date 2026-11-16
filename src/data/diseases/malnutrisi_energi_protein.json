@@ -99,7 +99,8 @@
         "when": { "notTraits": ["kwashiorkor"] },
         "clue": "Sangat kurus (marasmus)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok. Badannya kurus, beratnya nggak naik-naik." }]
   },
   "findings": [
     {

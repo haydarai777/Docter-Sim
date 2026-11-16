@@ -61,7 +61,8 @@
         "clue": "Riwayat pengobatan program lama"
       }
     ],
-    "kebiasaan": [{ "text": "Nggak minum alkohol, Dok.", "clue": "Tanpa alkohol (sirosis alkoholik kurang mungkin)" }]
+    "kebiasaan": [{ "text": "Nggak minum alkohol, Dok.", "clue": "Tanpa alkohol (sirosis alkoholik kurang mungkin)" }],
+    "lokasi": [{ "text": "Perut kanan atas dan ulu hati, Dok, kadang seluruh perut." }]
   },
   "findings": [
     {

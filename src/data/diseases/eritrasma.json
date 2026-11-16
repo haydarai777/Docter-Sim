@@ -29,7 +29,8 @@
     "riwayat_penyakit": [
       { "text": "Saya kencing manis, Dok.", "when": { "traits": ["dm_curiga"] }, "clue": "DM" },
       { "text": "Belum pernah cek gula, Dok.", "when": { "notTraits": ["dm_curiga"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Di lipat paha kanan-kiri, Dok, sela jari kaki juga." }]
   },
   "findings": [
     { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 280] },

@@ -76,7 +76,8 @@
       },
       { "text": "Nggak minum antibiotik, Dok.", "when": { "notTraits": ["antibiotik"] } }
     ],
-    "keparahan": [{ "text": "Masih bisa minum dan menelan, Dok.", "clue": "Tanpa nyeri menelan berat (bukan esofagitis)" }]
+    "keparahan": [{ "text": "Masih bisa minum dan menelan, Dok.", "clue": "Tanpa nyeri menelan berat (bukan esofagitis)" }],
+    "lokasi": [{ "text": "Di lidah dan bagian dalam pipi, Dok, ada putih-putih." }]
   },
   "findings": [
     { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 290] },

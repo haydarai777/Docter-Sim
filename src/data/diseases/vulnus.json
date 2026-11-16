@@ -91,11 +91,19 @@
         "clue": "Fungsi motorik & sensorik distal baik"
       }
     ],
-    "riwayat_penyakit": [
-      { "text": "Lukanya kena tanah dan kotor, Dok.", "when": { "traits": ["kotor"] }, "clue": "Luka terkontaminasi" },
-      { "text": "Lukanya kelihatan bersih, Dok.", "when": { "notTraits": ["kotor"] } }
+    "karakter": [
+      {
+        "text": "Lukanya kena tanah dan kotor, Dok, perih sekali.",
+        "when": { "traits": ["kotor"] },
+        "clue": "Luka terkontaminasi"
+      },
+      { "text": "Lukanya kelihatan bersih, Dok, perih dan cenut-cenut.", "when": { "notTraits": ["kotor"] } }
     ],
-    "riwayat_obat": [{ "text": "Belum diobati, cuma dibebat kain, Dok." }]
+    "riwayat_obat": [{ "text": "Belum diobati, cuma dibebat kain, Dok." }],
+    "lokasi": [
+      { "text": "Di telapak kaki kanan, Dok.", "when": { "traits": ["punctum"] } },
+      { "text": "Di lengan bawah kanan, Dok.", "when": { "notTraits": ["punctum"] } }
+    ]
   },
   "findings": [
     {

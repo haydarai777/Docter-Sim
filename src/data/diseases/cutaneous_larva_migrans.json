@@ -44,7 +44,8 @@
         "text": "Nggak ada diare atau sakit ulu hati, Dok, garisnya nggak muncul di dubur.",
         "clue": "Tanpa gejala GI/larva currens perianal"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di telapak dan punggung kaki kanan, Dok. Garisnya pindah-pindah tiap hari." }]
   },
   "findings": [
     { "tool": "status_dermatologis", "param": "lokasi", "values": ["Telapak & punggung kaki kanan"] },

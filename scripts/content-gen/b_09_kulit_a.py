@@ -322,7 +322,8 @@ D(id="herpes_simpleks", name="Herpes simpleks tanpa komplikasi", aka=["Herpes la
   ana={
       "onset": [("Dua hari lalu bibir saya terasa panas dan gatal, Dok, terus muncul bintil berair berkelompok.", "Prodromal terbakar lalu vesikel berkelompok", NT("genitalis")),
                 ("Tiga hari lalu kemaluan saya perih, Dok, terus muncul lepuh kecil-kecil yang pecah jadi luka.", "Vesikel berkelompok → erosi nyeri di genital", T("genitalis"), "luka_kemaluan")],
-      "episode_sebelumnya": [("Sering kambuh di tempat yang sama, Dok, apalagi kalau capek atau mau haid.", "Rekuren di tempat yang sama dengan pencetus", T("rekuren")),
+      "episode_sebelumnya": [("Sering kambuh di tempat yang sama, Dok, apalagi kalau capek atau mau haid.", "Rekuren di tempat yang sama dengan pencetus", W(t=["rekuren"], sex="female")),
+                             ("Sering kambuh di tempat yang sama, Dok, apalagi kalau capek, kurang tidur, atau kena panas matahari.", "Rekuren di tempat yang sama dengan pencetus", W(t=["rekuren"], sex="male")),
                              ("Baru pertama kali, Dok, badan juga demam.", "Episode primer dengan demam", T("primer_berat"), "demam"),
                              ("Baru pertama kali, Dok.", "Episode pertama", W(nt=["rekuren", "primer_berat"]))],
       "karakter": [("Lukanya perih sekali, Dok, bukan luka yang nggak sakit.", "Erosi nyeri (bedakan dari sifilis)")],
@@ -434,7 +435,8 @@ D(id="folikulitis", name="Folikulitis superfisialis", aka=["Folikulitis", "Radan
   cc=["bintil_bernanah"], ex=["gatal_kulit"], mis=["jerawat", "biang keringat", "alergi celana"], fears=["bisul", "penyakit kulit menular"],
   ana={
       "onset": [("Seminggu ini, Dok, muncul bintil-bintil bernanah kecil.", "Subakut")],
-      "lokasi": [("Di janggut dan dagu, Dok, sejak cukur pakai silet.", "Area janggut setelah mencukur", T("mencukur")),
+      "lokasi": [("Di janggut dan dagu, Dok, sejak cukur pakai silet.", "Area janggut setelah mencukur", W(t=["mencukur"], sex="male")),
+                 ("Di ketiak dan betis, Dok, sejak cukur bulu pakai silet.", "Area yang dicukur", W(t=["mencukur"], sex="female")),
                  ("Di paha dan bokong, Dok, mungkin karena celana ketat dan duduk lama di motor.", "Paha & bokong (gesekan, oklusi)", NT("mencukur"))],
       "karakter": [("Bintilnya kecil-kecil, tiap bintil ada rambutnya di tengah, agak gatal dan perih, Dok.", "Pustul folikular ditembus rambut")],
       "episode_sebelumnya": [("Sering kambuh begini, Dok.", "Berulang", T("berulang")), ("Baru kali ini, Dok.", None, NT("berulang"))],

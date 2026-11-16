@@ -81,6 +81,10 @@
         "when": { "notTraits": ["iodium"], "sex": "female", "ageMin": 18, "ageMax": 45 },
         "clue": "Menyusui (kebutuhan kalsium meningkat)"
       }
+    ],
+    "lokasi": [
+      { "text": "Di leher depan, Dok, ada benjolan.", "when": { "traits": ["iodium"] } },
+      { "text": "Kramnya di betis dan tangan, Dok.", "when": { "notTraits": ["iodium"] } }
     ]
   },
   "findings": [

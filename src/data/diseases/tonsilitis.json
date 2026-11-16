@@ -63,7 +63,8 @@
       }
     ],
     "kebiasaan": [{ "text": "Suka jajan es dan gorengan, Dok.", "clue": "Kebiasaan jajan (pencetus yang diyakini pasien)" }],
-    "keparahan": [{ "text": "Masih bisa buka mulut lebar, Dok, minum masih bisa.", "clue": "Tanpa trismus (bukan abses)" }]
+    "keparahan": [{ "text": "Masih bisa buka mulut lebar, Dok, minum masih bisa.", "clue": "Tanpa trismus (bukan abses)" }],
+    "lokasi": [{ "text": "Di tenggorokan, Dok, amandelnya, kanan dan kiri." }]
   },
   "findings": [
     {

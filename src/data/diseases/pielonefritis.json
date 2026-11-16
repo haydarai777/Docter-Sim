@@ -83,7 +83,8 @@
         "clue": "Tidak hamil"
       }
     ],
-    "riwayat_penyakit": [{ "text": "Nggak ada kencing manis atau batu ginjal sebelumnya, Dok.", "clue": "Tanpa faktor penyulit" }]
+    "riwayat_penyakit": [{ "text": "Nggak ada kencing manis atau batu ginjal sebelumnya, Dok.", "clue": "Tanpa faktor penyulit" }],
+    "lokasi": [{ "text": "Di pinggang kanan, Dok, sampai ke perut bawah." }]
   },
   "findings": [
     { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["sepsis"] }, "range": [82, 92] },

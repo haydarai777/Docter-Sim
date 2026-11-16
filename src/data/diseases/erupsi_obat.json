@@ -76,6 +76,13 @@
         "when": { "notTraits": ["sjs_awal"] },
         "clue": "Tanpa keterlibatan mukosa/bula luas"
       }
+    ],
+    "lokasi": [
+      {
+        "text": "Di bibir bawah dan punggung tangan kanan, Dok, tempat yang sama seperti dulu.",
+        "when": { "traits": ["fde"] }
+      },
+      { "text": "Di badan sampai tangan dan kaki, Dok, rata kiri-kanan.", "when": { "notTraits": ["fde"] } }
     ]
   },
   "findings": [

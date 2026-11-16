@@ -51,7 +51,11 @@
       }
     ],
     "riwayat_keluarga": [{ "text": "Pasangan saya belum diperiksa, Dok.", "clue": "Pasangan belum diobati" }],
-    "episode_sebelumnya": [{ "text": "Belum pernah sakit kelamin sebelumnya, Dok." }]
+    "episode_sebelumnya": [{ "text": "Belum pernah sakit kelamin sebelumnya, Dok." }],
+    "lokasi": [
+      { "text": "Dari ujung kemaluan, Dok.", "when": { "notTraits": ["perempuan"] } },
+      { "text": "Dari jalan lahir, Dok.", "when": { "traits": ["perempuan"] } }
+    ]
   },
   "findings": [
     {

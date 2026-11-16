@@ -86,7 +86,8 @@
         "clue": "Bisul berulang (cari DM)"
       },
       { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["dm_curiga"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Di ujung hidung sebelah dalam, Dok, lubang kanan." }]
   },
   "findings": [
     {

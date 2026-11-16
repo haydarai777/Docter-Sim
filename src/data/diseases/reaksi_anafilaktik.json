@@ -93,7 +93,8 @@
       },
       { "text": "Saya punya asma waktu kecil, Dok.", "weight": 0.4, "clue": "Riwayat atopi/asma" },
       { "text": "Belum pernah alergi separah ini, Dok." }
-    ]
+    ],
+    "lokasi": [{ "text": "Bentolnya di seluruh badan, Dok, muka, bibir, sampai tangan kaki." }]
   },
   "findings": [
     {

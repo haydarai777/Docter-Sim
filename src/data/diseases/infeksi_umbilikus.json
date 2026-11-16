@@ -80,7 +80,8 @@
         "when": { "notTraits": ["meluas"] },
         "clue": "Menyusu baik, aktif"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di pusarnya, Dok." }]
   },
   "findings": [
     {

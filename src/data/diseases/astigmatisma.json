@@ -41,7 +41,8 @@
       }
     ],
     "kebiasaan": [{ "text": "Saya suka memiringkan kepala biar jelas, kata teman-teman.", "clue": "Kompensasi memiringkan kepala" }],
-    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }],
+    "lokasi": [{ "text": "Dua-duanya, Dok, jauh maupun dekat agak berbayang." }]
   },
   "findings": [
     {

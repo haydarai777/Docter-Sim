@@ -68,7 +68,8 @@
         "clue": "Masih bisa minum"
       }
     ],
-    "bepergian_lingkungan": [{ "text": "Nggak kena semprotan obat hama atau pestisida, Dok.", "clue": "Tanpa paparan pestisida" }]
+    "bepergian_lingkungan": [{ "text": "Nggak kena semprotan obat hama atau pestisida, Dok.", "clue": "Tanpa paparan pestisida" }],
+    "lokasi": [{ "text": "Perutnya mules di ulu hati sampai bawah, Dok." }]
   },
   "findings": [
     {

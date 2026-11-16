@@ -265,7 +265,7 @@ export async function askAiPatient(
   if (!usedTools && fallbackIntents.length > 0) {
     // Claude tidak mengambil fakta untuk pertanyaan klinis → pakai jawaban mesin agar tetap konsisten.
     const r = applyIntents(state, fallbackIntents, content);
-    const reply = r.parts.join(' ');
+    const reply = r.parts.filter(Boolean).join(' ');
     return { state: recordExchange(r.state, question, reply), reply, usedTools: false, intents: [...fallbackIntents], parts: r.parts, model };
   }
   if (!text) throw new AiError('empty_completion', false);

@@ -102,7 +102,8 @@
       },
       { "text": "Air minumnya air galon, Dok.", "when": { "notTraits": ["sumber_air_tercemar"] } }
     ],
-    "riwayat_obat": [{ "text": "Sudah dikasih oralit sedikit, Dok, tapi dimuntahkan.", "clue": "Oralit sudah dicoba" }]
+    "riwayat_obat": [{ "text": "Sudah dikasih oralit sedikit, Dok, tapi dimuntahkan.", "clue": "Oralit sudah dicoba" }],
+    "lokasi": [{ "text": "Perutnya mules di sekitar pusar, Dok, hilang-timbul sebelum mencret." }]
   },
   "findings": [
     { "tool": "keadaan_umum", "param": "kesadaran", "when": { "traits": ["dehidrasi_berat"] }, "values": ["Letargis"] },

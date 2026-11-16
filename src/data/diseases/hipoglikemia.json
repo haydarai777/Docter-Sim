@@ -80,7 +80,8 @@
         "clue": "Gangguan ginjal"
       },
       { "text": "Saya cuma kencing manis, Dok.", "when": { "notTraits": ["gangguan_ginjal"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Nggak sakit di satu tempat, Dok. Badan gemetar, keringat dingin." }]
   },
   "findings": [
     { "tool": "fungsi_ginjal", "param": "kreatinin", "when": { "traits": ["gangguan_ginjal"] }, "range": [1.6, 2.4] },

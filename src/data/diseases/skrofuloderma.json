@@ -63,7 +63,8 @@
         "clue": "Batuk kronik (TB paru)"
       },
       { "text": "Nggak batuk lama, Dok.", "when": { "notTraits": ["tb_paru_aktif"] } }
-    ]
+    ],
+    "lokasi": [{ "text": "Di leher kanan, Dok." }]
   },
   "findings": [
     {

@@ -58,7 +58,8 @@
         "text": "Yang lain di rumah belum diperiksa, Dok, kami makan menu yang sama.",
         "clue": "Anggota keluarga perlu skrining"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Perutnya nggak enak di sekitar pusar, Dok. Dari dubur kadang keluar potongan cacing." }]
   },
   "findings": [
     {

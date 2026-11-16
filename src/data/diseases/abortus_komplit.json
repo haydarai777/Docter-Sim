@@ -59,7 +59,8 @@
         "text": "Saya takut nggak bisa punya anak lagi, Dok.",
         "clue": "Kekhawatiran fertilitas — perlu dukungan psikologis"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Dari jalan lahir, Dok, perut bawah juga mulas." }]
   },
   "findings": [
     { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["anemia_ringan"] }, "range": [9.5, 10.9] },

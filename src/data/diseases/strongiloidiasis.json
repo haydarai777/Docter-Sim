@@ -67,7 +67,14 @@
         "clue": "Tidak membaik dengan obat maag"
       }
     ],
-    "kebiasaan": [{ "text": "Kerja di kebun nggak pakai sepatu, Dok.", "clue": "Kontak kulit dengan tanah" }]
+    "kebiasaan": [{ "text": "Kerja di kebun nggak pakai sepatu, Dok.", "clue": "Kontak kulit dengan tanah" }],
+    "lokasi": [
+      { "text": "Di ulu hati, Dok.", "when": { "traits": ["dominan_ulu_hati"] } },
+      {
+        "text": "Perutnya di sekitar pusar, Dok. Kadang di bokong ada garis gatal.",
+        "when": { "notTraits": ["dominan_ulu_hati"] }
+      }
+    ]
   },
   "findings": [
     {

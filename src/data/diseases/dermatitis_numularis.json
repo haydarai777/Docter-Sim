@@ -40,7 +40,8 @@
         "text": "Kulit saya memang kering, Dok, sering mandi air panas pakai sabun antiseptik.",
         "clue": "Kulit kering & sabun keras"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Di tungkai bawah dan punggung tangan, Dok." }]
   },
   "findings": [
     {

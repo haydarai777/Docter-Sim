@@ -57,7 +57,12 @@
     "episode_sebelumnya": [
       {
         "text": "Sering, Dok, hampir tiap bulan, apalagi kalau mau haid atau lagi banyak pikiran.",
-        "when": { "traits": ["pencetus_haid_stres"] },
+        "when": { "traits": ["pencetus_haid_stres"], "sex": "female" },
+        "clue": "Rekuren dengan pencetus"
+      },
+      {
+        "text": "Sering, Dok, hampir tiap bulan, apalagi kalau lagi banyak pikiran atau tergigit.",
+        "when": { "traits": ["pencetus_haid_stres"], "sex": "male" },
         "clue": "Rekuren dengan pencetus"
       },
       {
@@ -86,6 +91,10 @@
         "clue": "Tanpa faktor risiko keganasan rongga mulut"
       },
       { "text": "Dia makannya susah, Dok.", "when": { "ageMax": 17 } }
+    ],
+    "lokasi": [
+      { "text": "Di gusi, langit-langit, dan bibir, Dok.", "when": { "traits": ["herpetik"] } },
+      { "text": "Di bibir bagian dalam, Dok.", "when": { "notTraits": ["herpetik"] } }
     ]
   },
   "findings": [

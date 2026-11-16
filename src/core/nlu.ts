@@ -254,7 +254,7 @@ const TIME_GREETINGS = new Set(['pagi', 'siang', 'sore', 'malam']);
 const QUESTION_WORDS = /\b(ada|apakah|apa|kapan|sejak|berapa|bagaimana|kenapa|mengapa|pernah|mana|masih|sering|kah)\b/;
 
 /** Kata pengisi yang boleh menyisip di antara kata-kata sebuah frasa kunci. */
-const FILLERS = new Set(['terasa', 'rasanya', 'rasa', 'agak', 'sedikit', 'saya', 'yang', 'seperti', 'sering', 'suka', 'terus', 'jadi', 'sangat', 'sekali', 'kok', 'lagi', 'juga', 'ada', 'ke', 'di', 'kalau', 'pas', 'saat', 'waktu', 'masih', 'keluar', 'sakit', 'nyeri', 'merasa', 'berwarna', 'warna', 'bapak', 'ibu', 'mas', 'mbak', 'dek', 'pak', 'bu']);
+const FILLERS = new Set(['daerah', 'bagian', 'sekitar', 'area', 'pernah', 'terasa', 'rasanya', 'rasa', 'agak', 'sedikit', 'saya', 'yang', 'seperti', 'sering', 'suka', 'terus', 'jadi', 'sangat', 'sekali', 'kok', 'lagi', 'juga', 'ada', 'ke', 'di', 'kalau', 'pas', 'saat', 'waktu', 'masih', 'keluar', 'sakit', 'nyeri', 'merasa', 'berwarna', 'warna', 'bapak', 'ibu', 'mas', 'mbak', 'dek', 'pak', 'bu']);
 
 /**
  * Kata umum bahasa Indonesia yang sah. Kata yang dikenal (di sini atau di teks konten permainan)
@@ -848,6 +848,19 @@ function interpretClause(tokens: readonly string[], rawTokens: readonly string[]
     intents.push({ kind: 'review', group: r.group });
   }
   return result;
+}
+
+/**
+ * Alloanamnesis: pengantar ditanya tentang anaknya. "Apakah anaknya rewel?", "Adik demam?",
+ * "Bayinya mau menyusu?" menanyakan PASIEN — rujukan ke anak dihapus agar tidak dibaca sebagai
+ * riwayat keluarga. "Anak-anak lain/kakaknya/di rumah" tetap tentang anggota keluarga lain.
+ */
+const CHILD_REFERENCE = /\b(?:anak(?:nya)?(?: (?:ibu|bapak|nenek|kakek|anda))?|cucu(?:nya)?(?: (?:ibu|bapak|nenek|kakek))?|si kecil|adik(?:nya)?|adek(?:nya)?|dedek|dek|bayi(?:nya)?(?: (?:ibu|bapak))?)\b(?![-‑](?:anak|adik))(?! (?:lain|yang lain|lainnya|tetangga))/gi;
+
+export function stripChildReference(question: string, callNames: readonly string[] = []): string {
+  let out = question.replace(CHILD_REFERENCE, ' ');
+  for (const n of callNames) if (n && n.length > 1) out = out.replace(new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi'), ' ');
+  return out.replace(/\s{2,}/g, ' ').trim();
 }
 
 /** Klausa beserta tanda baca penutupnya ("Ada alergi? Minum obat apa?" → dua klausa). */

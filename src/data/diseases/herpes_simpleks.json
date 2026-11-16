@@ -56,7 +56,12 @@
     "episode_sebelumnya": [
       {
         "text": "Sering kambuh di tempat yang sama, Dok, apalagi kalau capek atau mau haid.",
-        "when": { "traits": ["rekuren"] },
+        "when": { "traits": ["rekuren"], "sex": "female" },
+        "clue": "Rekuren di tempat yang sama dengan pencetus"
+      },
+      {
+        "text": "Sering kambuh di tempat yang sama, Dok, apalagi kalau capek, kurang tidur, atau kena panas matahari.",
+        "when": { "traits": ["rekuren"], "sex": "male" },
         "clue": "Rekuren di tempat yang sama dengan pencetus"
       },
       {
@@ -89,6 +94,10 @@
         "when": { "notTraits": ["genitalis"] },
         "clue": "Stres/kurang tidur sebagai pencetus"
       }
+    ],
+    "lokasi": [
+      { "text": "Di bibir bawah kanan, Dok.", "when": { "notTraits": ["genitalis"] } },
+      { "text": "Di kemaluan, Dok.", "when": { "traits": ["genitalis"] } }
     ]
   },
   "findings": [

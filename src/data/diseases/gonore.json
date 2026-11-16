@@ -76,7 +76,11 @@
       },
       { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["berulang"] } }
     ],
-    "riwayat_keluarga": [{ "text": "Istri/pasangan saya belum tahu, Dok, belum diperiksa.", "clue": "Pasangan belum diperiksa/diobati" }]
+    "riwayat_keluarga": [{ "text": "Istri/pasangan saya belum tahu, Dok, belum diperiksa.", "clue": "Pasangan belum diperiksa/diobati" }],
+    "lokasi": [
+      { "text": "Dari ujung kemaluan, Dok, keluar nanah.", "when": { "notTraits": ["perempuan"] } },
+      { "text": "Dari jalan lahir, Dok, keputihan, kencing juga perih.", "when": { "traits": ["perempuan"] } }
+    ]
   },
   "findings": [
     {

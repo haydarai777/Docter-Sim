@@ -35,7 +35,11 @@
       },
       { "text": "Belum pakai obat, Dok.", "when": { "notTraits": ["steroid_topikal"] } }
     ],
-    "riwayat_penyakit": [{ "text": "Nggak ada nyeri sendi, sariawan, atau rambut rontok, Dok.", "clue": "Tanpa gejala sistemik lupus" }]
+    "riwayat_penyakit": [{ "text": "Nggak ada nyeri sendi, sariawan, atau rambut rontok, Dok.", "clue": "Tanpa gejala sistemik lupus" }],
+    "lokasi": [
+      { "text": "Di pipi kanan, Dok.", "when": { "notTraits": ["steroid_topikal"] } },
+      { "text": "Di pipi kanan, Dok, sekarang melebar ke dagu.", "when": { "traits": ["steroid_topikal"] } }
+    ]
   },
   "findings": [
     {

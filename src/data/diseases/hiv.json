@@ -54,7 +54,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Bulan lalu suami/istri saya dinyatakan HIV positif, Dok. Saya disuruh tes juga.",
+        "text": "Bulan lalu pasangan saya dinyatakan HIV positif, Dok. Saya disuruh tes juga.",
         "reveals": ["risiko_ims"],
         "when": { "traits": ["skrining_pasangan"], "symptoms": ["risiko_ims"] },
         "clue": "Pasangan HIV positif"
@@ -103,6 +103,13 @@
       {
         "text": "Anak kami satu, umur tiga tahun, belum pernah dites, Dok.",
         "clue": "Anak perlu dites (notifikasi keluarga)"
+      }
+    ],
+    "lokasi": [
+      { "text": "Nggak ada yang sakit di satu tempat, Dok.", "when": { "traits": ["skrining_pasangan"] } },
+      {
+        "text": "Nggak ada yang sakit khusus, Dok, badan saja yang makin kurus dan lemas.",
+        "when": { "notTraits": ["skrining_pasangan"] }
       }
     ]
   },

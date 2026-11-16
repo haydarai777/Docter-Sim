@@ -17,7 +17,8 @@
     "format-data": "tsx scripts/format-data.ts",
     "review-sheet": "tsx scripts/review-sheet.ts",
     "balance-report": "tsx scripts/balance-report.ts",
-    "nlu-benchmark": "tsx scripts/nlu-benchmark.ts"
+    "nlu-benchmark": "tsx scripts/nlu-benchmark.ts",
+    "dialog-audit": "tsx scripts/dialog-audit.ts"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",

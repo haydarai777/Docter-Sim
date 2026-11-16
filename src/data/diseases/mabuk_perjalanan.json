@@ -63,7 +63,8 @@
         "clue": "Asimtomatik di luar perjalanan, tanpa vertigo spontan"
       }
     ],
-    "riwayat_penyakit": [{ "text": "Saya punya migren, Dok.", "when": { "traits": ["riwayat_migren"] }, "clue": "Riwayat migren" }]
+    "riwayat_penyakit": [{ "text": "Saya punya migren, Dok.", "when": { "traits": ["riwayat_migren"] }, "clue": "Riwayat migren" }],
+    "lokasi": [{ "text": "Bukan sakit di satu tempat, Dok. Perut mual dan kepala pusing kalau naik kendaraan." }]
   },
   "findings": [{ "tool": "keadaan_umum", "param": "kesan_sakit", "probability": 0.3, "values": ["Tampak sehat, sedikit pucat"] }],
   "differentials": [

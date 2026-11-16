@@ -19,7 +19,7 @@ import {
   symptomOnsetDays,
 } from './dialogue';
 import { evaluateEncounter } from './evaluation';
-import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion } from './nlu';
+import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion, stripChildReference } from './nlu';
 import { fillTemplate } from './text';
 import { toolPrice } from './scoring';
 import type {
@@ -204,7 +204,16 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
   const next: EncounterState = { ...state, askedTopics, askedSymptoms, revealedSymptoms: revealed };
   if (focus) next.focus = focus;
   else delete next.focus;
-  return { state: next, parts };
+  // Satu pertanyaan yang menyentuh dua gejala ("bintik merah di kulit" → petekie & ruam) tidak dijawab
+  // dua kali dengan kalimat yang sama ("Nggak ada, Dok. Nggak ada, Dok."). Posisi tetap sejajar intent.
+  const seen = new Set<string>();
+  const unique = parts.map((p) => {
+    const k = p.trim().toLowerCase();
+    if (!k || seen.has(k)) return '';
+    seen.add(k);
+    return p;
+  });
+  return { state: next, parts: unique };
 }
 
 /**
@@ -213,7 +222,10 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
  * — sama seperti percakapan sungguhan ("Ada batuk?" "Iya, Dok." "Sejak kapan?").
  */
 export function interpretInContext(state: EncounterState, question: string, content: GameContent, config: GameConfig): Interpretation {
-  const interp = interpretQuestion(question, content, config.anamnesis.maxIntentsPerQuestion);
+  // Alloanamnesis: "anaknya/adik/bayinya" adalah pasien itu sendiri.
+  const p = state.case.patient;
+  const text = p.companion ? stripChildReference(question, [p.callName, p.name.split(' ')[0] ?? '']) || question : question;
+  const interp = interpretQuestion(text, content, config.anamnesis.maxIntentsPerQuestion);
   const focus = state.focus;
   if (!focus || interp.intents.length === 0) return interp;
   const gap = state.questionCount - focus.turn;
@@ -255,7 +267,7 @@ export function askQuestion(state: EncounterState, question: string, content: Ga
     return { state: recordExchange(state, text, reply), reply, intents, parts: [], understood: false };
   }
   const answered = applyIntents(state, intents, content, durationDays === undefined ? {} : { durationDays });
-  const reply = answered.parts.join(' ');
+  const reply = answered.parts.filter(Boolean).join(' ');
   return { state: recordExchange(answered.state, text, reply), reply, intents, parts: answered.parts, understood: true };
 }
 

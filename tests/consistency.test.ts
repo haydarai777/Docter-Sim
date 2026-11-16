@@ -159,3 +159,27 @@ describe('lama sakit konsisten', () => {
     expect(bad).toEqual([]);
   });
 });
+
+describe('kelengkapan jawaban', () => {
+  it('setiap penyakit punya jawaban "di bagian mana" sendiri (bukan cadangan "seluruh badan")', () => {
+    expect(content.diseases.filter((d) => !(d.anamnesis.lokasi ?? []).length).map((d) => d.id)).toEqual([]);
+  });
+
+  it('jawaban "sejak kapan" selalu memuat keterangan waktu', () => {
+    const time = /\{(lamaSakit|LamaSakit|hariTeks|hari)\}|\b(hari|minggu|bulan|tahun|kemarin|tadi|semalam|jam|sejak|mulai|lalu|baru|seminggu|sebulan|setahun|setelah)\b/i;
+    const bad: string[] = [];
+    for (const d of content.diseases) for (const v of d.anamnesis.onset ?? []) if (!time.test(v.text)) bad.push(`${d.id}: ${v.text}`);
+    expect(bad).toEqual([]);
+  });
+
+  it('satu pertanyaan yang menyentuh dua gejala tidak dijawab dengan kalimat ganda', async () => {
+    const { askQuestion, startEncounter } = await import('../src/core/encounter');
+    const { generateCase } = await import('../src/core/generator');
+    for (let seed = 1; seed <= 6; seed++) {
+      const c = generateCase(content, config, { diseaseId: 'dengue', seed });
+      const r = askQuestion(startEncounter(c), 'Apakah ada bintik-bintik merah di kulit?', content, config);
+      const sents = r.reply.split(/(?<=[.!?])\s+/).map((x) => x.trim().toLowerCase()).filter((x) => x.length > 8);
+      expect(new Set(sents).size, r.reply).toBe(sents.length);
+    }
+  });
+});

@@ -84,7 +84,8 @@
         "clue": "Riwayat serumen berulang"
       },
       { "text": "Baru kali ini, Dok." }
-    ]
+    ],
+    "lokasi": [{ "text": "Di telinga kanan, Dok." }]
   },
   "findings": [
     {

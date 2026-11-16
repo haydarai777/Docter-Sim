@@ -52,6 +52,10 @@
         "text": "Nggak demam, Dok, nggak batuk pilek, masih aktif.",
         "clue": "Tanpa demam/gejala sistemik (bukan eksantem infeksi)"
       }
+    ],
+    "lokasi": [
+      { "text": "Di leher, dada, punggung, dan lipatan, Dok.", "when": { "notTraits": ["kristalina"] } },
+      { "text": "Di dahi, leher, sama badan atas, Dok.", "when": { "traits": ["kristalina"] } }
     ]
   },
   "findings": [

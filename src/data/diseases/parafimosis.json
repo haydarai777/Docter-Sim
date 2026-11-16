@@ -59,7 +59,8 @@
         "clue": "Glans masih viabel"
       }
     ],
-    "riwayat_penyakit": [{ "text": "Dari dulu kulupnya agak sempit, Dok.", "clue": "Riwayat fimosis" }]
+    "riwayat_penyakit": [{ "text": "Dari dulu kulupnya agak sempit, Dok.", "clue": "Riwayat fimosis" }],
+    "lokasi": [{ "text": "Di kepala kemaluan, Dok, kulupnya terjepit di belakang." }]
   },
   "findings": [
     {

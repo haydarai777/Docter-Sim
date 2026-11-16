@@ -42,7 +42,8 @@
       }
     ],
     "riwayat_keluarga": [{ "text": "Ibu saya pakai kacamata plus dari muda, Dok.", "clue": "Riwayat keluarga hipermetropia" }],
-    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }]
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }],
+    "lokasi": [{ "text": "Matanya, Dok, dua-duanya. Paling terasa kalau baca lama." }]
   },
   "findings": [
     { "tool": "visus", "param": "visus_od", "values": ["6/6", "6/7,5"] },

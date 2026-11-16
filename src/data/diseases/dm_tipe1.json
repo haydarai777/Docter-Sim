@@ -60,7 +60,8 @@
       { "text": "Masih sekolah, Dok, cuma cepat capek.", "when": { "notTraits": ["kad"] }, "clue": "Tanpa tanda KAD" }
     ],
     "riwayat_keluarga": [{ "text": "Di keluarga nggak ada yang kencing manis, Dok.", "clue": "Tanpa riwayat DM keluarga (khas tipe 1)" }],
-    "kebiasaan": [{ "text": "Badannya kurus dari dulu, Dok, nggak gemuk.", "clue": "Tidak obesitas" }]
+    "kebiasaan": [{ "text": "Badannya kurus dari dulu, Dok, nggak gemuk.", "clue": "Tidak obesitas" }],
+    "lokasi": [{ "text": "Nggak sakit di mana-mana, Dok. Cuma haus terus dan bolak-balik kencing." }]
   },
   "findings": [
     { "tool": "gula_darah", "param": "gds", "when": { "traits": ["kad"] }, "diagnostic": true, "range": [380, 520] },

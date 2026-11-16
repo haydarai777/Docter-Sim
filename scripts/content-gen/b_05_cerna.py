@@ -85,7 +85,8 @@ D(id="ulkus_mulut", name="Ulkus mulut (stomatitis aftosa/herpetik)", aka=["Saria
   ana={
       "onset": [("Baru {hariTeks} hari, Dok, mulainya panas tinggi, terus mulut penuh luka, nggak mau makan.", "Demam diikuti ulkus multipel (herpetik)", T("herpetik"), "demam"),
                 ("Baru {hariTeks} hari, Dok, muncul sariawan, perih kalau makan.", "Akut", NT("herpetik"))],
-      "episode_sebelumnya": [("Sering, Dok, hampir tiap bulan, apalagi kalau mau haid atau lagi banyak pikiran.", "Rekuren dengan pencetus", T("pencetus_haid_stres")),
+      "episode_sebelumnya": [("Sering, Dok, hampir tiap bulan, apalagi kalau mau haid atau lagi banyak pikiran.", "Rekuren dengan pencetus", W(t=["pencetus_haid_stres"], sex="female")),
+                             ("Sering, Dok, hampir tiap bulan, apalagi kalau lagi banyak pikiran atau tergigit.", "Rekuren dengan pencetus", W(t=["pencetus_haid_stres"], sex="male")),
                              ("Sering sekali kambuh, Dok, badan juga gampang capek.", "Sering kambuh + lemas (curiga defisiensi)", T("defisiensi_curiga")),
                              ("Baru kali ini begini, Dok.", "Episode pertama", T("herpetik")),
                              ("Kadang-kadang saja, Dok, kalau tergigit.", "Kadang, dipicu trauma", W(nt=["herpetik", "pencetus_haid_stres", "defisiensi_curiga"]))],
@@ -491,7 +492,7 @@ D(id="askariasis", name="Askariasis", aka=["Cacingan", "Cacing gelang", "Ascaris
        ("bb_tidak_naik", 0.8, T("gizi_kurang")), ("konstipasi", 1, T("obstruksi"))],
   cc=["keluar_cacing"], ex=["nyeri_perut"], mis=["kebanyakan makan permen", "masuk angin", "sawan"], fears=["cacingnya naik ke otak", "usus tersumbat"],
   ana={
-      "onset": [("Tadi pagi waktu BAB keluar cacing panjang kayak mi, Dok, masih gerak.", "Cacing gelang keluar bersama tinja")],
+      "onset": [("Sudah {lamaSakit} perutnya sering sakit dan susah makan, Dok. Tadi pagi waktu BAB keluar cacing panjang kayak mi, masih gerak.", "Cacing gelang keluar bersama tinja")],
       "lokasi": [("Perutnya sering sakit di sekitar pusar, Dok, hilang-timbul.", "Nyeri periumbilikal samar")],
       "kebiasaan": [("Dia suka main tanah, jarang cuci tangan, suka jajan sembarangan, Dok. Belum pernah minum obat cacing.", "Higiene tangan buruk, belum obat cacing")],
       "keparahan": [("Sekarang muntah terus, Dok, perutnya kembung keras, dua hari nggak BAB.", "Muntah, distensi, tidak BAB (curiga obstruksi)", T("obstruksi"), ["mual_muntah", "konstipasi"]),

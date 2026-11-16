@@ -60,7 +60,11 @@
         "clue": "Lipatan tidak terkena (iritan)"
       }
     ],
-    "keparahan": [{ "text": "Masih mau menyusu, nggak demam, Dok.", "clue": "Tanpa gejala sistemik" }]
+    "keparahan": [{ "text": "Masih mau menyusu, nggak demam, Dok.", "clue": "Tanpa gejala sistemik" }],
+    "lokasi": [
+      { "text": "Di pantat dan kemaluan, Dok, bagian yang kena popok.", "when": { "notTraits": ["kandida"] } },
+      { "text": "Di pantat, kemaluan, sampai lipatan paha, Dok.", "when": { "traits": ["kandida"] } }
+    ]
   },
   "findings": [
     {

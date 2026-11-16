@@ -78,6 +78,10 @@
         "text": "Sakitnya sesuai yang kelihatan, Dok, nggak ada lepuh hitam, masih bisa jalan pelan.",
         "clue": "Tanpa tanda infeksi dalam/nekrotikans"
       }
+    ],
+    "lokasi": [
+      { "text": "Di pipi kanan, Dok.", "when": { "traits": ["wajah"] } },
+      { "text": "Di tungkai bawah kanan, Dok.", "when": { "notTraits": ["wajah"] } }
     ]
   },
   "findings": [

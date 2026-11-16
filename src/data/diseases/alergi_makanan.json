@@ -77,7 +77,8 @@
         "text": "Belum minum obat apa pun hari ini, Dok, nggak ada obat baru juga.",
         "clue": "Tanpa obat baru (bukan erupsi obat)"
       }
-    ]
+    ],
+    "lokasi": [{ "text": "Bentolnya di muka, leher, badan, sampai tangan kaki, Dok." }]
   },
   "findings": [
     {
