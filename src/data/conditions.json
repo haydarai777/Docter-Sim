@@ -106,14 +106,6 @@
       "summary": "Nyeri periumbilikal berpindah ke kanan bawah, demam, McBurney (+)."
     },
     {
-      "id": "hepatitis_a",
-      "name": "Hepatitis A",
-      "aliases": ["Sakit kuning", "Hepatitis virus"],
-      "system": "Pencernaan",
-      "danger": "sedang",
-      "summary": "Demam, mual, ikterik, urin gelap; transaminase sangat tinggi."
-    },
-    {
       "id": "pielonefritis",
       "name": "Pielonefritis Akut",
       "aliases": ["ISK atas", "Infeksi ginjal"],
@@ -394,14 +386,6 @@
       "summary": "Pustul kecil di folikel rambut."
     },
     {
-      "id": "gastroenteritis_akut",
-      "name": "Gastroenteritis akut",
-      "aliases": [],
-      "system": "Pencernaan",
-      "danger": "sedang",
-      "summary": "Diare akut ± muntah."
-    },
-    {
       "id": "meningitis",
       "name": "Meningitis / ensefalitis",
       "aliases": ["Ensefalitis", "Radang selaput otak"],
@@ -594,12 +578,140 @@
       "summary": "Limfadenitis TB yang pecah membentuk ulkus/fistel."
     },
     {
-      "id": "parotitis",
-      "name": "Parotitis",
+      "id": "leukoplakia",
+      "name": "Leukoplakia oral",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Plak putih yang TIDAK dapat dikerok, premaligna; sering pada perokok/penyirih. Rujuk biopsi."
+    },
+    {
+      "id": "kanker_rongga_mulut",
+      "name": "Keganasan rongga mulut",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Ulkus mulut > 3 minggu yang tidak sembuh, indurasi, mudah berdarah, pada perokok/penyirih. Rujuk."
+    },
+    {
+      "id": "hfmd",
+      "name": "Penyakit tangan-kaki-mulut (HFMD)",
       "aliases": [],
       "system": "Pencernaan",
       "danger": "rendah",
-      "summary": "Bengkak kelenjar parotis."
+      "summary": "Infeksi enterovirus pada anak: ulkus mulut disertai vesikel di telapak tangan & kaki."
+    },
+    {
+      "id": "parotitis_supuratif",
+      "name": "Parotitis supuratif bakterial",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Parotis bengkak sangat nyeri dengan pus keluar dari duktus Stensen, sering pada lansia dehidrasi."
+    },
+    {
+      "id": "sialolitiasis",
+      "name": "Sialolitiasis (batu kelenjar ludah)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Bengkak kelenjar ludah berulang yang muncul saat makan, sering submandibula."
+    },
+    {
+      "id": "granuloma_umbilikus",
+      "name": "Granuloma umbilikus",
+      "aliases": [],
+      "system": "Anak",
+      "danger": "rendah",
+      "summary": "Jaringan granulasi merah lembap di dasar pusar setelah tali pusat lepas, tanpa tanda radang."
+    },
+    {
+      "id": "sindrom_iritasi_usus",
+      "name": "Sindrom iritasi usus (IBS)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Nyeri perut berulang terkait BAB dengan perubahan frekuensi/konsistensi tinja, tanpa tanda alarm."
+    },
+    {
+      "id": "keracunan_organofosfat",
+      "name": "Keracunan organofosfat (pestisida)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Muntah, diare, hipersalivasi, berkeringat, miosis, bradikardia, fasikulasi, sesak setelah paparan pestisida. Atropin & rujuk segera."
+    },
+    {
+      "id": "strongiloidiasis_hiperinfeksi",
+      "name": "Hiperinfeksi Strongyloides",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Diseminasi larva pada pasien steroid/imunokompromais: sepsis Gram negatif, pneumonia. Rujuk segera."
+    },
+    {
+      "id": "enterobiasis",
+      "name": "Enterobiasis (cacing kremi)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Gatal anus malam hari pada anak; telur dengan tes pita perekat (scotch tape)."
+    },
+    {
+      "id": "ileus_obstruksi",
+      "name": "Ileus obstruktif",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Nyeri kolik, muntah, perut kembung, tidak bisa BAB & flatus; bising usus metalik. Rujuk segera."
+    },
+    {
+      "id": "sirosis_hati",
+      "name": "Sirosis hati",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Penyakit hati kronik dengan asites, splenomegali, varises, ikterus, stigmata hati kronik."
+    },
+    {
+      "id": "neurosistiserkosis",
+      "name": "Neurosistiserkosis",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "tinggi",
+      "summary": "Kista larva Taenia solium di otak: kejang, nyeri kepala, nodul subkutan. Rujuk."
+    },
+    {
+      "id": "hepatitis_b",
+      "name": "Hepatitis B",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Infeksi virus hepatitis B (HBsAg reaktif); akut atau kronik."
+    },
+    {
+      "id": "gagal_hati_fulminan",
+      "name": "Gagal hati akut (fulminan)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Ikterus dengan ensefalopati (bingung, mengantuk) dan gangguan pembekuan. Rujuk segera."
+    },
+    {
+      "id": "intususepsi",
+      "name": "Intususepsi",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Bayi/balita menangis kolik hilang-timbul, muntah, BAB lendir darah 'selai kismis', massa sosis di perut. Rujuk segera."
+    },
+    {
+      "id": "fisura_ani",
+      "name": "Fisura ani",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Nyeri tajam hebat saat & setelah BAB dengan darah segar sedikit; robekan di garis tengah posterior anus."
     }
   ]
 }

@@ -1,0 +1,166 @@
+{
+  "id": "cacing_tambang",
+  "name": "Penyakit cacing tambang (ankilostomiasis)",
+  "aliases": ["Ankilostomiasis", "Nekatoriasis", "Cacingan (cacing tambang)", "Hookworm"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Infeksi Necator americanus/Ancylostoma duodenale; larva menembus kulit kaki yang tidak beralas di tanah lembap (petani, pekerja perkebunan, anak). Cacing dewasa mengisap darah di usus halus → anemia defisiensi besi kronik: lemas, pucat, sesak saat aktivitas; kadang nyeri epigastrium, gatal di kaki (ground itch). Feses: telur cacing tambang; eosinofilia. Terapi albendazol + besi.",
+  "presentationDay": [30, 180],
+  "demographics": {
+    "ageBands": [{ "min": 5, "max": 9, "weight": 2 }, { "min": 10, "max": 25, "weight": 2 }, { "min": 26, "max": 60, "weight": 4 }],
+    "maleRatio": 0.6,
+    "occupations": [{ "id": "petani", "weight": 4 }, { "id": "pekerja_sawit", "weight": 3 }, { "id": "pekerja_tambang", "weight": 2 }],
+    "occupationBias": 0.6
+  },
+  "traits": [{ "id": "anemia_berat", "probability": 0.25 }, { "id": "ground_itch", "probability": 0.3 }],
+  "traitLabels": { "anemia_berat": "Anemia berat.", "ground_itch": "Riwayat gatal di kaki (ground itch)." },
+  "symptoms": [
+    { "id": "sesak_napas", "probability": 0.7, "when": { "traits": ["anemia_berat"] } },
+    { "id": "gatal_kulit", "probability": 1, "when": { "traits": ["ground_itch"] } },
+    { "id": "lemas", "probability": 1 },
+    { "id": "pucat", "probability": 0.8 },
+    { "id": "nyeri_ulu_hati", "probability": 0.4 },
+    { "id": "sesak_napas", "probability": 0.25 },
+    { "id": "berdebar", "probability": 0.4 },
+    { "id": "ngidam_es", "probability": 0.2 },
+    { "id": "nafsu_makan_turun", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["lemas"], "extraPool": ["pucat"] },
+  "clueSymptoms": ["pucat", "nyeri_ulu_hati", "sesak_napas", "berdebar", "ngidam_es", "gatal_kulit"],
+  "misattributions": ["kecapekan", "darah rendah", "kurang tidur"],
+  "fears": ["kanker darah", "sakit jantung"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah berbulan-bulan, Dok, makin lama makin gampang capek dan ngos-ngosan.",
+        "clue": "Kronik progresif"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Tiap hari ke kebun/sawah nyeker, Dok, nggak pakai sandal.",
+        "clue": "Tidak memakai alas kaki di tanah"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu kaki saya pernah gatal-gatal merah di sela jari, Dok.",
+        "reveals": ["gatal_kulit"],
+        "when": { "traits": ["ground_itch"], "symptoms": ["gatal_kulit"] },
+        "clue": "Riwayat ground itch"
+      },
+      {
+        "text": "Belum pernah dirawat, Dok, belum pernah minum obat cacing.",
+        "when": { "notTraits": ["ground_itch"] },
+        "clue": "Tidak pernah obat cacing"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau kerja berat atau naik bukit cepat ngos-ngosan dan berdebar, Dok.",
+        "clue": "Sesak & berdebar saat aktivitas"
+      }
+    ],
+    "bepergian_lingkungan": [{ "text": "Di rumah buang air besar di kebun, Dok, belum ada jamban.", "clue": "Sanitasi buruk (tanpa jamban)" }]
+  },
+  "findings": [
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["anemia_berat"] }, "range": [6, 7.9] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["anemia_berat"] }, "range": [100, 115] },
+    { "tool": "kepala_leher", "param": "konjungtiva", "diagnostic": true, "values": ["Anemis (pucat)"] },
+    { "tool": "darah_lengkap", "param": "hb", "range": [8, 10.8] },
+    { "tool": "darah_lengkap", "param": "mcv", "range": [62, 76] },
+    { "tool": "darah_lengkap", "param": "eosinofil", "diagnostic": true, "range": [7, 15] },
+    {
+      "tool": "feses_rutin",
+      "param": "telur_cacing",
+      "probability": 0.92,
+      "diagnostic": true,
+      "values": ["Telur cacing tambang (+)"]
+    },
+    { "tool": "apusan_darah_tepi", "param": "eritrosit", "values": ["Hipokrom mikrositer"] }
+  ],
+  "differentials": [
+    {
+      "id": "anemia_defisiensi_besi",
+      "howToDistinguish": "Anemia defisiensi besi karena sebab lain (haid banyak, asupan kurang, perdarahan GI).",
+      "excludeBy": { "tools": ["feses_rutin"], "topics": ["kebiasaan"] }
+    },
+    {
+      "id": "askariasis",
+      "howToDistinguish": "Askariasis: telur Ascaris, keluhan perut & keluar cacing; anemia tidak menonjol.",
+      "excludeBy": { "tools": ["feses_rutin"] }
+    },
+    {
+      "id": "kanker_kolorektal",
+      "howToDistinguish": "Perdarahan/keganasan GI pada dewasa > 45 th dengan anemia: BAB hitam/berdarah, BB turun — cari bila feses tanpa telur cacing.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit", "keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Anemia kronik (lemas, pucat, sesak aktivitas) pada pekerja tanpa alas kaki",
+    "Feses: telur cacing tambang; eosinofilia",
+    "Anemia hipokrom mikrositer"
+  ],
+  "teachingPoints": ["Cacing tambang menembus kulit kaki — alas kaki dan jamban sehat adalah kunci pencegahan."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Permenkes 15/2017 tentang Penanggulangan Cacingan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "pemberat_peringan", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "kunci", "reason": "Konjungtiva anemis." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Takikardia/murmur pada anemia berat." }
+    ],
+    "tests": [
+      { "tool": "feses_rutin", "role": "kunci", "reason": "Telur cacing tambang." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Hb, MCV, eosinofil." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Anemia berat simtomatik: rujuk (pertimbangkan transfusi).",
+      "when": { "traits": ["anemia_berat"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Albendazol dosis tunggal + besi oral; edukasi alas kaki & jamban; kontrol Hb."
+    }
+  ],
+  "management": [
+    "Albendazol 400 mg dosis tunggal (atau mebendazol 2 × 100 mg 3 hari); ulang sesuai program.",
+    "Sulfas ferosus untuk anemia hingga cadangan besi pulih.",
+    "Pakai alas kaki, jamban sehat, cuci tangan; obat cacing massal sesuai program."
+  ],
+  "approach": ["Anemia mikrositer + pajanan tanah tanpa alas kaki → periksa feses.", "Nilai derajat anemia."]
+}

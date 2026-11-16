@@ -1,0 +1,168 @@
+{
+  "id": "keracunan_makanan",
+  "name": "Keracunan makanan",
+  "aliases": ["Food poisoning", "Keracunan nasi kotak", "Intoksikasi makanan"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Gastroenteritis akibat toksin/bakteri dari makanan terkontaminasi (S. aureus, B. cereus, Salmonella, E. coli): mual dan MUNTAH hebat 1–6 jam setelah makan (toksin praformasi) atau diare 8–48 jam kemudian, nyeri perut kram; sering mengenai beberapa orang yang makan bersama (kluster/KLB). Umumnya sembuh 24–48 jam dengan rehidrasi. Waspadai keracunan pestisida/organofosfat dan botulisme.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 1 },
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "kluster", "probability": 0.7 }, { "id": "dehidrasi", "probability": 0.3 }],
+  "traitLabels": {
+    "kluster": "Kluster: beberapa orang sakit setelah makan makanan yang sama.",
+    "dehidrasi": "Dehidrasi ringan–sedang."
+  },
+  "symptoms": [
+    { "id": "haus", "probability": 0.8, "when": { "traits": ["dehidrasi"] } },
+    { "id": "mual_muntah", "probability": 1 },
+    { "id": "nyeri_perut", "probability": 0.8 },
+    { "id": "diare", "probability": 0.7 },
+    { "id": "lemas", "probability": 0.6 },
+    { "id": "demam", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["mual_muntah"], "extraPool": ["nyeri_perut", "diare"] },
+  "clueSymptoms": ["nyeri_perut", "diare", "lemas", "demam", "haus"],
+  "misattributions": ["masuk angin", "maag", "salah makan"],
+  "fears": ["diracun orang", "kolera"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tiga jam lalu, Dok, habis makan nasi kotak di acara kantor, langsung mual dan muntah terus.",
+        "clue": "Muntah 1–6 jam setelah makan (toksin praformasi)"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Teman-teman yang makan nasi kotak yang sama juga banyak yang muntah-mencret, Dok.",
+        "when": { "traits": ["kluster"] },
+        "clue": "Kluster setelah makan bersama"
+      },
+      { "text": "Yang lain di rumah baik-baik, Dok, cuma saya yang makan itu.", "when": { "notTraits": ["kluster"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Muntahnya banyak, Dok, terus mules dan mencret cair, nggak ada darah.",
+        "clue": "Muntah dominan, diare cair tanpa darah"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Lemas dan haus sekali, Dok, kencing jadi sedikit.",
+        "reveals": ["haus"],
+        "when": { "traits": ["dehidrasi"], "symptoms": ["haus"] },
+        "clue": "Tanda dehidrasi"
+      },
+      {
+        "text": "Masih bisa minum sedikit-sedikit, Dok.",
+        "when": { "notTraits": ["dehidrasi"] },
+        "clue": "Masih bisa minum"
+      }
+    ],
+    "bepergian_lingkungan": [{ "text": "Nggak kena semprotan obat hama atau pestisida, Dok.", "clue": "Tanpa paparan pestisida" }]
+  },
+  "findings": [
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["dehidrasi"] },
+      "values": ["Mukosa bibir kering, turgor kembali lambat"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["dehidrasi"] }, "range": [100, 116] },
+    { "tool": "pemeriksaan_abdomen", "param": "auskultasi", "values": ["Bising usus meningkat"] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "probability": 0.6,
+      "values": ["Nyeri tekan ringan epigastrium & difus"]
+    },
+    { "tool": "kepala_leher", "param": "pupil", "values": ["Isokor 3 mm, refleks cahaya +/+"] }
+  ],
+  "differentials": [
+    {
+      "id": "keracunan_organofosfat",
+      "howToDistinguish": "Organofosfat: hipersalivasi, berkeringat, miosis (pupil pin-point), bradikardia, fasikulasi, sesak — atropin & rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["kepala_leher", "tanda_vital"], "topics": ["bepergian_lingkungan"] }
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "howToDistinguish": "Gastroenteritis viral: diare dominan, tanpa kluster makanan yang jelas.",
+      "excludeBy": { "topics": ["riwayat_keluarga", "onset"] }
+    },
+    {
+      "id": "apendisitis_akut",
+      "howToDistinguish": "Apendisitis: nyeri perut kanan bawah menetap, McBurney (+).",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    }
+  ],
+  "keyFindings": [
+    "Mual-muntah hebat 1–6 jam setelah makan, diare cair",
+    "Kluster orang yang makan makanan sama",
+    "Nilai dehidrasi; pupil & nadi normal (bukan organofosfat)"
+  ],
+  "teachingPoints": ["Kluster keracunan makanan adalah KLB — laporkan ke Dinas Kesehatan dan simpan sampel makanan."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Penyelidikan & Penanggulangan KLB Keracunan Pangan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_keluarga", "karakter", "keparahan", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Derajat dehidrasi." },
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Nyeri tekan, bedah akut." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Pupil (singkirkan organofosfat)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "observasi",
+      "reason": "Dehidrasi: rehidrasi oral/IV dan observasi.",
+      "when": { "traits": ["dehidrasi"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    { "value": "rawat_jalan", "reason": "Rehidrasi oral, antiemetik, makan bertahap; lapor KLB bila kluster." }
+  ],
+  "management": [
+    "Rehidrasi oralit sedikit-sedikit tapi sering; infus bila muntah terus/dehidrasi.",
+    "Antiemetik (domperidon/ondansetron) pada dewasa; tanpa antibiotik.",
+    "Makan bertahap makanan lunak.",
+    "Laporkan KLB keracunan makanan ke Dinkes, amankan sampel makanan."
+  ],
+  "approach": ["Hubungan waktu dengan makanan & kluster.", "Nilai dehidrasi; singkirkan keracunan kimia (pupil, nadi, salivasi)."]
+}

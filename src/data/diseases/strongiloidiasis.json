@@ -1,0 +1,176 @@
+{
+  "id": "strongiloidiasis",
+  "name": "Strongiloidiasis",
+  "aliases": ["Infeksi Strongyloides", "Cacing benang"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.4,
+  "summary": "Infeksi Strongyloides stercoralis (larva menembus kulit dari tanah tercemar) yang dapat bertahan puluhan tahun karena autoinfeksi. Nyeri epigastrium seperti maag, diare intermiten, kembung, larva currens (ruam urtikaria linear yang cepat berpindah di bokong/perianal), eosinofilia. Pada pengguna steroid/imunokompromais dapat menjadi hiperinfeksi fatal. Terapi ivermektin.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 18, "max": 40, "weight": 2 }, { "min": 41, "max": 75, "weight": 3 }],
+    "maleRatio": 0.6,
+    "occupations": [{ "id": "petani", "weight": 3 }, { "id": "pekerja_sawit", "weight": 2 }, { "id": "pekerja_tambang", "weight": 1 }],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "dominan_ulu_hati", "probability": 0.5 },
+    { "id": "larva_currens", "probability": 0.4 },
+    { "id": "pakai_steroid", "probability": 0.08 }
+  ],
+  "traitLabels": {
+    "dominan_ulu_hati": "Keluhan dominan nyeri epigastrium.",
+    "larva_currens": "Larva currens.",
+    "pakai_steroid": "Memakai steroid jangka panjang (risiko hiperinfeksi)."
+  },
+  "symptoms": [
+    { "id": "nyeri_ulu_hati", "probability": 1, "when": { "traits": ["dominan_ulu_hati"] } },
+    { "id": "diare", "probability": 1, "when": { "notTraits": ["dominan_ulu_hati"] } },
+    { "id": "garis_berkelok", "probability": 1, "when": { "traits": ["larva_currens"] } },
+    { "id": "nyeri_ulu_hati", "probability": 0.5 },
+    { "id": "diare", "probability": 0.6 },
+    { "id": "kembung", "probability": 0.5 },
+    { "id": "gatal_anus", "probability": 0.3 },
+    { "id": "berat_badan_turun", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_ulu_hati", "diare"], "extraPool": ["kembung"] },
+  "clueSymptoms": ["kembung", "garis_berkelok", "gatal_anus", "berat_badan_turun"],
+  "misattributions": ["maag", "masuk angin", "salah makan"],
+  "fears": ["kanker lambung", "maag kronis"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah berbulan-bulan, Dok, hilang-timbul.", "clue": "Kronik intermiten" }],
+    "karakter": [
+      {
+        "text": "Ulu hati perih kayak maag, Dok, mencret juga kadang-kadang.",
+        "clue": "Nyeri epigastrium & diare intermiten"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Di bokong saya sering muncul garis merah gatal yang pindah-pindah cepat, Dok.",
+        "reveals": ["garis_berkelok"],
+        "when": { "traits": ["larva_currens"], "symptoms": ["garis_berkelok"] },
+        "clue": "Larva currens (urtikaria linear berpindah cepat)"
+      },
+      { "text": "Kulit saya biasa saja, Dok.", "when": { "notTraits": ["larva_currens"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah minum obat maag berbulan-bulan, Dok, nggak sembuh-sembuh. Saya juga minum obat rematik deksametason dari warung.",
+        "when": { "traits": ["pakai_steroid"] },
+        "clue": "Tidak membaik dengan obat maag; memakai steroid"
+      },
+      {
+        "text": "Sudah minum obat maag berbulan-bulan, Dok, nggak sembuh-sembuh.",
+        "when": { "notTraits": ["pakai_steroid"] },
+        "clue": "Tidak membaik dengan obat maag"
+      }
+    ],
+    "kebiasaan": [{ "text": "Kerja di kebun nggak pakai sepatu, Dok.", "clue": "Kontak kulit dengan tanah" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["larva_currens"] },
+      "values": ["Urtika linear serpiginosa yang berpindah cepat (larva currens)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["larva_currens"] },
+      "values": ["Bokong & perianal"]
+    },
+    { "tool": "darah_lengkap", "param": "eosinofil", "diagnostic": true, "range": [10, 22] },
+    {
+      "tool": "feses_rutin",
+      "param": "larva",
+      "probability": 0.6,
+      "diagnostic": true,
+      "values": ["Larva rabditiform Strongyloides stercoralis (+)"]
+    },
+    { "tool": "pemeriksaan_abdomen", "param": "nyeri_tekan", "probability": 0.6, "values": ["Nyeri tekan epigastrium"] }
+  ],
+  "differentials": [
+    {
+      "id": "strongiloidiasis_hiperinfeksi",
+      "howToDistinguish": "Hiperinfeksi: pada pengguna steroid/imunokompromais, demam, sesak, sepsis — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_obat"], "tools": ["tanda_vital"] }
+    },
+    {
+      "id": "gastritis",
+      "howToDistinguish": "Gastritis/dispepsia: tanpa eosinofilia, larva, maupun diare kronik.",
+      "excludeBy": { "tools": ["darah_lengkap"] }
+    },
+    {
+      "id": "cacing_tambang",
+      "howToDistinguish": "Cacing tambang: telur (bukan larva) di feses, anemia menonjol.",
+      "excludeBy": { "tools": ["feses_rutin"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri epigastrium & diare kronik intermiten pada pekerja tanah",
+    "Larva currens, eosinofilia",
+    "Larva rabditiform di feses (sensitivitas rendah, ulangi)"
+  ],
+  "teachingPoints": [
+    "Eosinofilia yang tidak dapat dijelaskan + gejala GI kronik: pikirkan strongiloidiasis, terutama sebelum memberi steroid jangka panjang."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Permenkes 15/2017 tentang Penanggulangan Cacingan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_penyakit", "riwayat_obat", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Nyeri tekan, organomegali." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Larva currens." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "kunci", "reason": "Eosinofilia." },
+      { "tool": "feses_rutin", "role": "kunci", "reason": "Larva Strongyloides." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Curiga hiperinfeksi pada pengguna steroid: rujuk segera.",
+      "when": { "traits": ["pakai_steroid"], "symptoms": ["diare"] },
+      "alsoAccept": ["rujuk_spesialis"]
+    },
+    { "value": "rawat_jalan", "reason": "Ivermektin, hentikan steroid bebas, edukasi alas kaki; kontrol eosinofil." }
+  ],
+  "management": [
+    "Ivermektin 200 µg/kg dosis tunggal selama 1–2 hari (alternatif albendazol 2 × 400 mg 7 hari).",
+    "Hentikan penggunaan steroid tanpa indikasi.",
+    "Alas kaki, jamban sehat; skrining sebelum terapi imunosupresif."
+  ],
+  "approach": ["Gejala GI kronik + eosinofilia → periksa feses berulang.", "Nilai risiko hiperinfeksi (steroid, HIV)."]
+}

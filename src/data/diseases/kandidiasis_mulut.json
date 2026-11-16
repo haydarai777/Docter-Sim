@@ -1,0 +1,171 @@
+{
+  "id": "kandidiasis_mulut",
+  "name": "Kandidiasis mulut (oral thrush)",
+  "aliases": ["Sariawan putih", "Oral thrush", "Kandidiasis oral", "Jamur mulut"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.8,
+  "summary": "Infeksi Candida albicans di mukosa mulut: plak putih seperti susu/keju di lidah, mukosa pipi, palatum, yang DAPAT DIKEROK meninggalkan dasar kemerahan, kadang perih. Tersering pada bayi (dot, puting ibu), lansia bergigi palsu, pengguna antibiotik/steroid inhalasi, diabetes, dan imunokompromais (HIV). Kandidiasis berulang/luas pada dewasa tanpa faktor risiko: skrining HIV & DM.",
+  "presentationDay": [2, 14],
+  "demographics": {
+    "ageBands": [
+      { "min": 0, "max": 0, "weight": 4 },
+      { "min": 1, "max": 2, "weight": 1 },
+      { "min": 20, "max": 54, "weight": 1 },
+      { "min": 55, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.5,
+    "infantAge": { "unit": "bulan", "range": [1, 6] }
+  },
+  "traits": [
+    { "id": "gigi_palsu", "probability": 0.5, "when": { "ageMin": 55 } },
+    { "id": "antibiotik", "probability": 0.3 },
+    { "id": "steroid_inhaler", "probability": 0.15, "when": { "ageMin": 20 } },
+    { "id": "dm_curiga", "probability": 0.1, "when": { "ageMin": 40 } },
+    { "id": "dot_kotor", "probability": 0.6, "when": { "ageMax": 1 } }
+  ],
+  "traitLabels": {
+    "gigi_palsu": "Gigi palsu tidak dilepas/dibersihkan.",
+    "antibiotik": "Baru minum antibiotik.",
+    "steroid_inhaler": "Memakai steroid inhalasi tanpa kumur.",
+    "dm_curiga": "Faktor risiko diabetes.",
+    "dot_kotor": "Dot/puting tidak bersih."
+  },
+  "symptoms": [
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 1 } },
+    { "id": "rewel", "probability": 0.5, "when": { "ageMax": 1 } },
+    { "id": "bercak_putih_mulut", "probability": 1 },
+    { "id": "sariawan", "probability": 0.4 },
+    { "id": "sulit_menelan", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["bercak_putih_mulut"], "extraPool": ["malas_menyusu"] },
+  "clueSymptoms": ["sariawan", "malas_menyusu", "rewel", "sulit_menelan"],
+  "misattributions": ["sisa susu", "panas dalam", "sariawan biasa"],
+  "fears": ["penyakit menular", "kanker mulut"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {hariTeks} hari, Dok, di lidahnya ada putih-putih.", "clue": "Subakut" }],
+    "karakter": [
+      {
+        "text": "Putihnya kayak sisa susu, Dok, tapi kalau diusap susah hilang dan bawahnya merah.",
+        "clue": "Plak putih dapat dikerok dengan dasar eritema"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Minumnya pakai dot, Dok, dotnya cuma dibilas air.",
+        "when": { "traits": ["dot_kotor"] },
+        "clue": "Dot tidak disterilkan"
+      },
+      {
+        "text": "Saya pakai gigi palsu, Dok, jarang dilepas, malam juga dipakai tidur.",
+        "when": { "traits": ["gigi_palsu"] },
+        "clue": "Gigi palsu tidak dilepas/dibersihkan"
+      },
+      {
+        "text": "Saya pakai obat semprot asma tiap hari, Dok, habis itu nggak kumur.",
+        "when": { "traits": ["steroid_inhaler"] },
+        "clue": "Steroid inhalasi tanpa kumur"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Minggu lalu habis minum antibiotik lima hari, Dok.",
+        "when": { "traits": ["antibiotik"] },
+        "clue": "Baru menggunakan antibiotik"
+      },
+      { "text": "Nggak minum antibiotik, Dok.", "when": { "notTraits": ["antibiotik"] } }
+    ],
+    "keparahan": [{ "text": "Masih bisa minum dan menelan, Dok.", "clue": "Tanpa nyeri menelan berat (bukan esofagitis)" }]
+  },
+  "findings": [
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 290] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "diagnostic": true,
+      "values": ["Plak putih seperti susu di lidah, mukosa bukal & palatum, dapat dikerok meninggalkan dasar eritema"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "probability": 0.9,
+      "diagnostic": true,
+      "values": ["Pseudohifa dan blastospora (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "leukoplakia",
+      "howToDistinguish": "Leukoplakia: plak putih yang TIDAK dapat dikerok, pada perokok/penyirih — rujuk biopsi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "ulkus_mulut",
+      "howToDistinguish": "Stomatitis aftosa: ulkus dangkal nyeri dengan dasar putih kekuningan, bukan plak yang dapat dikerok.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "hiv",
+      "howToDistinguish": "Kandidiasis oral berulang/luas pada dewasa tanpa faktor risiko lokal: tawarkan tes HIV.",
+      "excludeBy": { "topics": ["kebiasaan", "riwayat_obat"] }
+    }
+  ],
+  "keyFindings": [
+    "Plak putih dapat dikerok dengan dasar eritema di mukosa mulut",
+    "Faktor risiko: bayi/dot, gigi palsu, antibiotik, steroid inhalasi, DM, HIV",
+    "KOH: pseudohifa & blastospora"
+  ],
+  "teachingPoints": ["Sisa susu mudah dihapus tanpa dasar merah; plak kandida melekat dan meninggalkan eritema/perdarahan titik."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PGI/PPHI. Konsensus Nasional Penatalaksanaan Gangguan Saluran Cerna"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "riwayat_obat", "keparahan", "keluhan_lain"],
+    "exams": [{ "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Plak putih, dapat dikerok, luas lesi." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "pendukung", "reason": "Konfirmasi pseudohifa/blastospora." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "gula_darah", "reason": "Dewasa dengan kandidiasis berulang." },
+      { "tool": "tes_hiv", "reason": "Dewasa tanpa faktor risiko lokal (dengan konseling)." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Nistatin suspensi oral 7–14 hari, atasi faktor risiko; kontrol bila tidak membaik."
+    }
+  ],
+  "management": [
+    "Nistatin suspensi oral 4 × sehari (bayi 1 mL, dewasa 4–6 mL dikulum) dioleskan ke lesi, 7–14 hari / 48 jam setelah sembuh.",
+    "Bayi: sterilkan dot/botol, bersihkan puting ibu; dewasa: lepas & rendam gigi palsu tiap malam, kumur setelah inhaler steroid.",
+    "Cari & kendalikan DM; tawarkan tes HIV bila berulang tanpa sebab lokal."
+  ],
+  "approach": ["Pastikan plak dapat dikerok; cari faktor risiko.", "KOH bila ragu; skrining DM/HIV sesuai indikasi."]
+}

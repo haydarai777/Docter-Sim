@@ -1,0 +1,205 @@
+{
+  "id": "parotitis",
+  "name": "Parotitis epidemika (gondongan)",
+  "aliases": ["Gondongan", "Mumps", "Parotitis"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.8,
+  "summary": "Infeksi virus mumps pada anak usia sekolah/remaja yang belum vaksin MMR: demam, nyeri kepala, lalu pembengkakan kelenjar parotis (unilateral lalu bilateral pada 70%) di depan-bawah telinga, nyeri saat mengunyah/makanan asam, lobulus telinga terangkat. Menular sejak 2 hari sebelum hingga 5 hari setelah bengkak. Komplikasi: orkitis (pascapubertas), meningitis aseptik, pankreatitis.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [{ "min": 4, "max": 9, "weight": 4 }, { "min": 10, "max": 15, "weight": 4 }, { "min": 16, "max": 30, "weight": 1 }],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "anak_sd", "weight": 3 }, { "id": "pelajar_sd", "weight": 3 }, { "id": "pelajar", "weight": 2 }],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "bilateral", "probability": 0.7 },
+    { "id": "orkitis", "probability": 0.25, "when": { "sex": "male", "ageMin": 13 } },
+    { "id": "kontak_sekolah", "probability": 0.7 },
+    { "id": "tidak_mmr", "probability": 0.8 }
+  ],
+  "traitLabels": {
+    "bilateral": "Bengkak bilateral.",
+    "orkitis": "Komplikasi orkitis.",
+    "kontak_sekolah": "Teman sekolah sakit serupa.",
+    "tidak_mmr": "Belum vaksin MMR/MR."
+  },
+  "symptoms": [
+    { "id": "nyeri_testis", "probability": 1, "when": { "traits": ["orkitis"] } },
+    { "id": "bengkak_rahang", "probability": 1 },
+    { "id": "demam", "probability": 0.8 },
+    { "id": "nyeri_kepala", "probability": 0.5 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 },
+    { "id": "sulit_menelan", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["bengkak_rahang"], "extraPool": ["demam"] },
+  "clueSymptoms": ["demam", "nyeri_kepala", "nafsu_makan_turun", "sulit_menelan", "nyeri_testis"],
+  "misattributions": ["sakit gigi", "kelenjar", "panas dalam"],
+  "fears": ["bisa mandul", "kelenjar membesar terus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Dua hari lalu demam dan pusing, Dok, kemarin pipi kanan bengkak, sekarang kiri juga.",
+        "when": { "traits": ["bilateral"] },
+        "clue": "Prodromal lalu bengkak parotis unilateral → bilateral"
+      },
+      {
+        "text": "Dua hari lalu demam, Dok, kemarin pipi kanan bengkak.",
+        "when": { "notTraits": ["bilateral"] },
+        "clue": "Prodromal lalu bengkak parotis unilateral"
+      }
+    ],
+    "karakter": [{ "text": "Sakit kalau ngunyah, Dok, apalagi makan yang asam-asam.", "clue": "Nyeri mengunyah & makanan asam" }],
+    "riwayat_keluarga": [
+      {
+        "text": "Di sekolah banyak temannya yang gondongan, Dok.",
+        "when": { "traits": ["kontak_sekolah"] },
+        "clue": "Kontak di sekolah"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Imunisasinya waktu bayi saja, Dok, yang campak-rubela waktu SD nggak ikut.",
+        "when": { "traits": ["tidak_mmr"] },
+        "clue": "Belum vaksin MMR/MR"
+      },
+      { "text": "Imunisasi lengkap, Dok.", "when": { "notTraits": ["tidak_mmr"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Buah zakarnya sekarang bengkak dan sakit, Dok.",
+        "reveals": ["nyeri_testis"],
+        "when": { "traits": ["orkitis"], "symptoms": ["nyeri_testis"] },
+        "clue": "Nyeri & bengkak testis (orkitis)"
+      },
+      {
+        "text": "Nggak muntah-muntah, nggak kaku leher, Dok.",
+        "when": { "notTraits": ["orkitis"] },
+        "clue": "Tanpa tanda meningitis"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "kelenjar_ludah",
+      "when": { "traits": ["bilateral"] },
+      "diagnostic": true,
+      "values": [
+        "Pembengkakan parotis bilateral, nyeri tekan, lobulus telinga terangkat, muara duktus Stensen hiperemis tanpa pus"
+      ]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38, 39.2] },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "when": { "traits": ["orkitis"] },
+      "values": ["Testis kanan membesar, nyeri tekan, skrotum hiperemis"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "kelenjar_ludah",
+      "diagnostic": true,
+      "values": ["Pembengkakan parotis kanan, nyeri tekan, lobulus telinga terangkat, muara duktus Stensen hiperemis tanpa pus"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "meningitis",
+      "howToDistinguish": "Meningitis (komplikasi mumps): nyeri kepala hebat, muntah, kaku kuduk, penurunan kesadaran — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["neurologis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "limfadenitis",
+      "howToDistinguish": "Limfadenitis servikal: benjolan di bawah sudut rahang, lobulus telinga tidak terangkat.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok", "kepala_leher"] }
+    },
+    {
+      "id": "parotitis_supuratif",
+      "howToDistinguish": "Parotitis supuratif: sangat nyeri, kemerahan, pus dari duktus Stensen, biasanya unilateral pada lansia dehidrasi.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    }
+  ],
+  "keyFindings": [
+    "Bengkak parotis nyeri (unilateral → bilateral) dengan lobulus telinga terangkat",
+    "Demam prodromal, nyeri mengunyah/asam",
+    "Kontak, belum vaksin MMR"
+  ],
+  "teachingPoints": [
+    "Penderita gondongan dianjurkan tidak sekolah sampai 5 hari setelah onset bengkak.",
+    "Orkitis jarang menyebabkan infertilitas total — edukasi orang tua."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (Manajemen Terpadu Balita Sakit)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "orkitis",
+      "name": "Orkitis mumps",
+      "trait": "orkitis",
+      "redFlag": false,
+      "assess": { "tools": ["pemeriksaan_genital"], "topics": ["keparahan"] },
+      "explanation": "Testis bengkak nyeri pada remaja/dewasa: analgesik, kompres dingin, penyangga skrotum; rujuk bila berat."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_keluarga", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Kelenjar parotis & duktus Stensen." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Membedakan dari KGB leher." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Tanda meningitis." },
+      {
+        "tool": "pemeriksaan_genital",
+        "role": "pendukung",
+        "when": { "sex": "male", "ageMin": 13 },
+        "reason": "Orkitis pada laki-laki pascapubertas."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Simptomatik, isolasi 5 hari, makanan lunak; kembali bila nyeri kepala hebat, muntah, nyeri perut/testis."
+    }
+  ],
+  "management": [
+    "Simptomatik: parasetamol/ibuprofen, kompres hangat/dingin, makanan lunak, hindari asam, cukup minum.",
+    "Istirahat & tidak sekolah sampai 5 hari setelah onset bengkak.",
+    "Orkitis: analgesik, kompres dingin, penyangga skrotum.",
+    "Vaksinasi MMR/MR untuk pencegahan."
+  ],
+  "approach": [
+    "Pastikan bengkak adalah parotis (lobulus terangkat, duktus Stensen).",
+    "Nilai komplikasi: meningitis, orkitis, pankreatitis."
+  ]
+}

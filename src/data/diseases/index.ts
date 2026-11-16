@@ -10,6 +10,8 @@
  *
  * ⚠ Semua konten medis berstatus BELUM_DITINJAU_DOKTER sampai ditinjau dokter.
  */
+// Anak
+import infeksiUmbilikus from './infeksi_umbilikus.json';
 // Darah & imunologi
 import anemiaDefisiensiBesi from './anemia_defisiensi_besi.json';
 // Endokrin & metabolik
@@ -37,6 +39,8 @@ import kejangDemam from './kejang_demam.json';
 import migren from './migren.json';
 import tensionHeadache from './tension_headache.json';
 import tetanus from './tetanus.json';
+// Kulit & kelamin
+import alergiMakanan from './alergi_makanan.json';
 // Mata
 import astigmatisma from './astigmatisma.json';
 import bendaAsingKonjungtiva from './benda_asing_konjungtiva.json';
@@ -52,9 +56,23 @@ import perdarahanSubkonjungtiva from './perdarahan_subkonjungtiva.json';
 import presbiopia from './presbiopia.json';
 import trikiasis from './trikiasis.json';
 // Pencernaan
+import askariasis from './askariasis.json';
+import cacingTambang from './cacing_tambang.json';
+import disentri from './disentri.json';
 import dispepsia from './dispepsia.json';
 import gastritis from './gastritis.json';
+import gastroenteritisAkut from './gastroenteritis_akut.json';
 import gerd from './gerd.json';
+import hemoroid from './hemoroid.json';
+import hepatitisA from './hepatitis_a.json';
+import intoleransiMakanan from './intoleransi_makanan.json';
+import kandidiasisMulut from './kandidiasis_mulut.json';
+import keracunanMakanan from './keracunan_makanan.json';
+import parotitis from './parotitis.json';
+import skistosomiasis from './skistosomiasis.json';
+import strongiloidiasis from './strongiloidiasis.json';
+import taeniasis from './taeniasis.json';
+import ulkusMulut from './ulkus_mulut.json';
 // Pernapasan
 import asma from './asma.json';
 import bronkitisAkut from './bronkitis_akut.json';
@@ -81,6 +99,7 @@ import serumenProp from './serumen_prop.json';
 import tonsilitis from './tonsilitis.json';
 
 export const DISEASE_FILES: unknown[] = [
+  infeksiUmbilikus,
   anemiaDefisiensiBesi,
   dmTipe2,
   hiv,
@@ -101,6 +120,7 @@ export const DISEASE_FILES: unknown[] = [
   migren,
   tensionHeadache,
   tetanus,
+  alergiMakanan,
   astigmatisma,
   bendaAsingKonjungtiva,
   blefaritis,
@@ -114,9 +134,23 @@ export const DISEASE_FILES: unknown[] = [
   perdarahanSubkonjungtiva,
   presbiopia,
   trikiasis,
+  askariasis,
+  cacingTambang,
+  disentri,
   dispepsia,
   gastritis,
+  gastroenteritisAkut,
   gerd,
+  hemoroid,
+  hepatitisA,
+  intoleransiMakanan,
+  kandidiasisMulut,
+  keracunanMakanan,
+  parotitis,
+  skistosomiasis,
+  strongiloidiasis,
+  taeniasis,
+  ulkusMulut,
   asma,
   bronkitisAkut,
   influenza,

@@ -1,0 +1,213 @@
+{
+  "id": "hepatitis_a",
+  "name": "Hepatitis A",
+  "aliases": ["Penyakit kuning", "Hepatitis virus A", "Sakit liver"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi virus hepatitis A melalui fekal-oral (makanan/air tercemar), sering KLB di sekolah/asrama. Fase prodromal (demam, lemas, mual, muntah, anoreksia, nyeri perut kanan atas) diikuti fase ikterik: mata & kulit kuning, urin seperti teh, tinja pucat. Hepatomegali nyeri tekan, SGOT/SGPT sangat tinggi, IgM anti-HAV reaktif. Swasirna 2–6 minggu; tidak menjadi kronik. Waspadai gagal hati fulminan.",
+  "presentationDay": [5, 14],
+  "demographics": {
+    "ageBands": [{ "min": 5, "max": 9, "weight": 2 }, { "min": 10, "max": 25, "weight": 4 }, { "min": 26, "max": 50, "weight": 2 }],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "pelajar", "weight": 3 }, { "id": "mahasiswa", "weight": 3 }, { "id": "anak_sd", "weight": 1 }],
+    "occupationBias": 0.4
+  },
+  "traits": [{ "id": "kluster", "probability": 0.5 }, { "id": "fulminan", "probability": 0.02 }],
+  "traitLabels": { "kluster": "Kasus serupa di sekolah/asrama.", "fulminan": "Tanda gagal hati fulminan." },
+  "symptoms": [
+    { "id": "bingung", "probability": 1, "when": { "traits": ["fulminan"] } },
+    { "id": "kuning", "probability": 1 },
+    { "id": "urin_gelap", "probability": 0.9 },
+    { "id": "nafsu_makan_turun", "probability": 0.9 },
+    { "id": "mual_muntah", "probability": 0.8 },
+    { "id": "lemas", "probability": 0.9 },
+    { "id": "demam", "probability": 0.6 },
+    { "id": "nyeri_perut", "probability": 0.5 },
+    { "id": "bab_pucat", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["kuning"], "extraPool": ["urin_gelap", "lemas"] },
+  "clueSymptoms": ["urin_gelap", "nafsu_makan_turun", "mual_muntah", "lemas", "demam", "nyeri_perut"],
+  "misattributions": ["kecapekan", "maag", "kurang tidur"],
+  "fears": ["kanker hati", "liver kronis", "menular ke keluarga"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Seminggu lalu demam, lemas, mual, nggak nafsu makan, Dok. Dua hari ini mata kuning dan kencing kayak teh.",
+        "reveals": ["urin_gelap"],
+        "when": { "symptoms": ["urin_gelap"] },
+        "clue": "Prodromal 1 minggu lalu ikterus & urin gelap"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Di asrama/sekolah ada beberapa teman yang kuning juga, Dok.",
+        "when": { "traits": ["kluster"] },
+        "clue": "Kluster kasus (KLB)"
+      },
+      {
+        "text": "Teman sekelas saya ada yang kuning bulan lalu, Dok.",
+        "when": { "notTraits": ["kluster"] },
+        "clue": "Kontak penderita"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Sering jajan di kantin dan warung pinggir jalan, Dok. Nggak minum alkohol.",
+        "clue": "Makanan/minuman kurang higienis; tanpa alkohol"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Belum pernah transfusi, nggak pakai narkoba suntik, Dok.",
+        "clue": "Tanpa faktor risiko parenteral (hepatitis B/C)"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Dia sekarang ngantuk terus, bicaranya ngelantur, Dok.",
+        "reveals": ["bingung"],
+        "when": { "traits": ["fulminan"], "symptoms": ["bingung"] },
+        "clue": "Perubahan kesadaran (curiga ensefalopati/fulminan)"
+      },
+      {
+        "text": "Masih sadar dan bisa jalan sendiri, Dok, cuma lemas.",
+        "when": { "notTraits": ["fulminan"] },
+        "clue": "Sadar baik"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Baru minum parasetamol sesekali, Dok.", "clue": "Tanpa obat hepatotoksik dosis besar" }]
+  },
+  "findings": [
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesadaran",
+      "when": { "traits": ["fulminan"] },
+      "values": ["Somnolen, disorientasi"]
+    },
+    { "tool": "kepala_leher", "param": "sklera", "diagnostic": true, "values": ["Ikterik"] },
+    { "tool": "ekstremitas_kulit", "param": "kulit", "probability": 0.6, "values": ["Tampak kuning (ikterik)"] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "hepar",
+      "probability": 0.8,
+      "values": ["Teraba 2 jari BAC, tepi tajam, permukaan rata, nyeri tekan"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "probability": 0.6,
+      "values": ["Nyeri tekan kuadran kanan atas"]
+    },
+    { "tool": "fungsi_hati", "param": "sgpt", "diagnostic": true, "range": [600, 2200] },
+    { "tool": "fungsi_hati", "param": "sgot", "range": [400, 1600] },
+    { "tool": "fungsi_hati", "param": "bilirubin", "range": [3.5, 9] },
+    { "tool": "igm_anti_hav", "param": "hasil", "diagnostic": true, "values": ["Reaktif"] },
+    { "tool": "urinalisis", "param": "warna", "values": ["Coklat pekat seperti teh"] }
+  ],
+  "differentials": [
+    {
+      "id": "gagal_hati_fulminan",
+      "howToDistinguish": "Gagal hati fulminan: ensefalopati (bingung, mengantuk), perdarahan, INR memanjang — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["keadaan_umum"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "hepatitis_b",
+      "howToDistinguish": "Hepatitis B: faktor risiko parenteral/seksual, HBsAg reaktif.",
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["hbsag"] }
+    },
+    {
+      "id": "leptospirosis",
+      "howToDistinguish": "Leptospirosis: ikterus dengan mialgia betis hebat, conjunctival suffusion, gangguan ginjal, paparan banjir.",
+      "excludeBy": { "topics": ["bepergian_lingkungan"], "tools": ["muskuloskeletal"] }
+    },
+    {
+      "id": "kolik_bilier",
+      "howToDistinguish": "Ikterus obstruktif (batu saluran empedu): nyeri kolik kanan atas, Murphy (+), transaminase tidak setinggi hepatitis.",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    }
+  ],
+  "keyFindings": [
+    "Prodromal (demam, mual, anoreksia) lalu ikterus, urin seperti teh, tinja pucat",
+    "Hepatomegali nyeri tekan; SGPT/SGOT sangat tinggi",
+    "IgM anti-HAV reaktif; kluster/kontak"
+  ],
+  "teachingPoints": [
+    "Hepatitis A tidak menjadi kronik; terapi suportif. Hindari obat hepatotoksik dan alkohol.",
+    "Kenali tanda gagal hati fulminan: perubahan kesadaran & perdarahan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PGI/PPHI. Konsensus Nasional Penatalaksanaan Gangguan Saluran Cerna"
+    ]
+  },
+  "complications": [
+    {
+      "id": "fulminan",
+      "name": "Gagal hati fulminan",
+      "trait": "fulminan",
+      "redFlag": true,
+      "assess": { "tools": ["keadaan_umum"], "topics": ["keparahan"] },
+      "explanation": "Ensefalopati & koagulopati — rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "riwayat_keluarga", "kebiasaan", "riwayat_penyakit", "keparahan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "kunci", "reason": "Sklera ikterik." },
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Hepatomegali nyeri tekan, Murphy." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Kesadaran (ensefalopati)." }
+    ],
+    "tests": [
+      { "tool": "fungsi_hati", "role": "kunci", "reason": "Transaminase & bilirubin." },
+      { "tool": "urinalisis", "role": "pendukung", "reason": "Bilirubinuria (urin gelap)." },
+      { "tool": "igm_anti_hav", "role": "pendukung", "reason": "Konfirmasi hepatitis A." },
+      { "tool": "hbsag", "role": "pendukung", "reason": "Menyingkirkan hepatitis B." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Tanda gagal hati fulminan: rujuk segera.",
+      "when": { "traits": ["fulminan"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Suportif: istirahat, nutrisi, hindari alkohol & obat hepatotoksik; kontrol fungsi hati 1–2 minggu; lapor bila KLB.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Istirahat sesuai toleransi, makan cukup kalori, cukup minum.",
+    "Hindari alkohol & obat hepatotoksik; parasetamol hanya dosis rendah bila perlu.",
+    "Simptomatik untuk mual (domperidon).",
+    "Cuci tangan, jamban, makanan matang; laporkan KLB; vaksin/profilaksis kontak bila tersedia."
+  ],
+  "approach": ["Ikterus akut: hepatitis vs obstruktif vs infeksi sistemik (lepto, malaria).", "Nilai tanda gagal hati fulminan."]
+}

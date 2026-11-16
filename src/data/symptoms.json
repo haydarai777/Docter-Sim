@@ -2928,6 +2928,19 @@
         "hubungan seks"
       ],
       "volunteer": false
+    },
+    {
+      "id": "nyeri_testis",
+      "label": "Nyeri/bengkak buah zakar",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah buah zakarnya nyeri atau bengkak?",
+      "phrases": {
+        "lay": ["buah zakar saya bengkak dan sakit", "testis saya nyeri"],
+        "exaggerated": ["buah zakar saya bengkak besar sekali, sakit sekali"],
+        "downplayed": ["agak nyeri di bawah"]
+      },
+      "keywords": ["buah zakar", "testis", "zakar bengkak", "skrotum", "biji kemaluan", "pelir"],
+      "volunteer": false
     }
   ]
 }
