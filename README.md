@@ -59,6 +59,8 @@ klinis**, bukan sekadar tebakan diagnosis.
 - **Pemeriksaan fisik per sistem (gratis)** dengan **paket tanda vital** (TD, nadi, napas, suhu, SpO₂).
 - **Penunjang dengan tujuan klinis** (identifikasi, fungsi organ, struktur, komplikasi, skrining),
   termasuk eGFR CKD-EPI 2021, USG, BNO, CT. Hasil bergantung hari sakit; bisa negatif/positif palsu.
+  Laboratorium dikelompokkan (hematologi, kimia, urin/feses, tes cepat & serologi, mikroskopis); tab
+  Fisik dan Penunjang punya **kolom cari** (nama alat, organ, atau penyakit yang dicurigai).
 - **Papan diagnosis banding** (diagnosis kerja / dipertimbangkan / disingkirkan) dan **keputusan akhir**
   (diagnosis kerja, komplikasi, masalah lain, disposisi: rawat jalan · observasi · rujuk spesialis · rujuk segera).
 - **Penilaian berbobot** — anamnesis 25 · fisik 15 · penunjang 20 · diagnosis banding 20 ·

@@ -479,3 +479,21 @@ ekg = next(t for t in data["tools"] if t["id"] == "ekg")
 fr = next(p for p in ekg["params"] if p["id"] == "frekuensi")
 fr["refByAge"] = [{k: v for k, v in b.items()} for b in nadi["refByAge"]]
 json.dump(data, open(PATH, "w"), ensure_ascii=False, indent=2)
+
+# Subkelompok laboratorium (agar daftar 37 tes lab mudah dipindai di tab Penunjang).
+LAB_GROUPS = {
+    "hematologi": ["darah_lengkap", "apusan_darah_tepi", "profil_besi"],
+    "kimia": ["gula_darah", "hba1c", "fungsi_hati", "fungsi_ginjal", "profil_lipid", "elektrolit", "asam_urat", "fungsi_tiroid"],
+    "urin_feses": ["urinalisis", "feses_rutin", "tes_kehamilan", "tes_h_pylori"],
+    "serologi": ["ns1_dengue", "serologi_dengue", "rdt_malaria", "widal", "tubex", "tes_hiv", "cd4", "tes_sifilis", "hbsag",
+                 "igm_anti_hav", "igm_leptospira", "swab_antigen"],
+    "mikrobiologi": ["mikroskopis_malaria", "mikroskopis_filaria", "bta_sputum", "tcm_tb", "kerokan_koh", "kerokan_skabies",
+                     "tzanck", "gram_sekret", "sediaan_basah_vagina", "bta_kulit"],
+}
+data = json.load(open(PATH))
+group_of = {tid: g for g, ids in LAB_GROUPS.items() for tid in ids}
+for t in data["tools"]:
+    if t["category"] == "lab":
+        assert t["id"] in group_of, f"lab {t['id']} belum punya subkelompok"
+        t["group"] = group_of[t["id"]]
+json.dump(data, open(PATH, "w"), ensure_ascii=False, indent=2)

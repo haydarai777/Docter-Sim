@@ -1277,6 +1277,15 @@ h3 {
 .tool-group + .tool-group {
   margin-top: 0.25rem;
 }
+/* Kolom cari alat menempel di atas saat daftar digulir (menutup celah padding monitor). */
+.tool-search-bar {
+  position: sticky;
+  top: -0.75rem;
+  z-index: 2;
+  margin: 0 -0.75rem 0.35rem;
+  padding: 0.4rem 0.75rem 0.45rem;
+  background: var(--surface);
+}
 .pick__tags {
   grid-column: 1;
   display: flex;

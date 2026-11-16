@@ -29,6 +29,8 @@ export type DdxStatus = 'utama' | 'mungkin' | 'disingkirkan';
 export const ECONOMY_CLASSES: readonly EconomyClass[] = ['miskin', 'menengah', 'kaya'];
 export const DANGER_LEVELS: readonly DangerLevel[] = ['rendah', 'sedang', 'tinggi', 'kritis'];
 export const TOOL_CATEGORIES: readonly ToolCategory[] = ['fisik', 'lab', 'pencitraan', 'lainnya'];
+/** Subkelompok laboratorium (urutan tampil di tab Penunjang). */
+export const LAB_GROUPS: readonly string[] = ['hematologi', 'kimia', 'urin_feses', 'serologi', 'mikrobiologi'];
 export const OBJECTIVES: readonly Objective[] = ['identifikasi', 'fungsi_organ', 'struktur', 'komplikasi', 'skrining'];
 export const DISPOSITIONS: readonly Disposition[] = ['rawat_jalan', 'observasi', 'rujuk_spesialis', 'rujuk_segera'];
 
@@ -167,7 +169,7 @@ export interface ToolDef {
   id: string;
   name: string;
   category: ToolCategory;
-  /** Kelompok pemeriksaan fisik (umum, kepala & leher, thorax, abdomen, ekstremitas, khusus). */
+  /** Kelompok: sistem organ untuk pemeriksaan fisik, subkelompok untuk laboratorium (hematologi, kimia, …). */
   group?: string;
   /** Tujuan klinis (untuk pemeriksaan penunjang). */
   objectives?: Objective[];

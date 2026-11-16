@@ -4,6 +4,7 @@ import { generateCase } from '../src/core/generator';
 import { deriveSeed } from '../src/core/rng';
 import { findUnfilledPlaceholders } from '../src/core/text';
 import type { DiseaseTemplate, GameContent } from '../src/core/types';
+import { LAB_GROUPS } from '../src/core/types';
 import { validateContent } from '../src/core/validate';
 import { config, content, configWith, perDisease } from './helpers';
 
@@ -27,6 +28,16 @@ function withDisease(mutate: (d: DiseaseTemplate) => void): GameContent {
 describe('integritas konten', () => {
   it('semua konten bawaan valid', () => {
     expect(validateContent(content, config)).toEqual([]);
+  });
+
+  it('setiap tes laboratorium punya subkelompok yang dikenal (tab Penunjang)', () => {
+    const labs = content.tools.filter((t) => t.category === 'lab');
+    expect(labs.length).toBeGreaterThan(30);
+    for (const t of labs) expect(LAB_GROUPS, t.id).toContain(t.group);
+    for (const g of LAB_GROUPS) expect(labs.some((t) => t.group === g), g).toBe(true);
+    const tools = structuredClone(content.tools);
+    delete tools.find((t) => t.category === 'lab')!.group;
+    expect(validateContent({ ...content, tools }, config).join('\n')).toMatch(/laboratorium butuh group/);
   });
 
   it('semua konten ditandai status tinjauan medis', () => {

@@ -12,7 +12,7 @@ import { DISPOSITION_LABEL } from '../../core/evaluation';
 import { reputationTitle, toolPrice } from '../../core/scoring';
 import { formatRupiah, normalizeForSearch } from '../../core/text';
 import type { CatalogEntry, DdxStatus, EncounterState, LogEntry, ToolDef } from '../../core/types';
-import { DISPOSITIONS } from '../../core/types';
+import { DISPOSITIONS, LAB_GROUPS } from '../../core/types';
 import type { ActionTab, App } from '../app';
 import { osceHudItems, treatmentTab } from '../osce/views';
 import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
@@ -20,7 +20,7 @@ import { modal } from '../components/modal';
 import { resultCard } from '../components/resultCard';
 import { cx, h, replaceChildren } from '../dom';
 import { patientAgeText } from '../../core/text';
-import { CATALOG_KIND_LABEL, CATEGORY_LABEL, DDX_STATUS_LABEL, ECONOMY_LABEL, OBJECTIVE_LABEL, PHYSICAL_GROUP_LABEL, SEX_LABEL } from '../labels';
+import { CATALOG_KIND_LABEL, CATEGORY_LABEL, DDX_STATUS_LABEL, ECONOMY_LABEL, LAB_GROUP_LABEL, OBJECTIVE_LABEL, PHYSICAL_GROUP_LABEL, SEX_LABEL } from '../labels';
 
 export function renderConsult(app: App): HTMLElement {
   const enc = app.encounter!;
@@ -408,6 +408,58 @@ function toolItem(app: App, enc: EncounterState, tool: ToolDef, extra?: HTMLElem
   );
 }
 
+interface ToolSection {
+  title: string;
+  tools: ToolDef[];
+}
+
+/** Cocok bila setiap kata kunci muncul di nama, kegunaan, deskripsi, atau nama kelompok alat. */
+function toolMatches(tool: ToolDef, section: string, words: string[]): boolean {
+  if (!words.length) return true;
+  const hay = normalizeForSearch(`${tool.name} ${tool.purpose ?? ''} ${tool.description} ${section}`);
+  return words.every((w) => hay.includes(w));
+}
+
+/** Kolom pencarian + daftar alat berkelompok; mengetik hanya menyaring daftar (fokus tidak hilang). */
+function toolBrowser(app: App, enc: EncounterState, tab: 'fisik' | 'penunjang', sections: ToolSection[], extra?: (t: ToolDef) => HTMLElement | null): HTMLElement[] {
+  const total = sections.reduce((n, sec) => n + sec.tools.length, 0);
+  const body = h('div', { class: 'tool-groups' });
+  const renderGroups = () => {
+    const words = normalizeForSearch(app.ui.toolQuery[tab]).split(' ').filter(Boolean);
+    const shown = sections
+      .map((sec) => ({ title: sec.title, tools: sec.tools.filter((t) => toolMatches(t, sec.title, words)) }))
+      .filter((sec) => sec.tools.length);
+    replaceChildren(
+      body,
+      shown.length
+        ? shown.map((sec) =>
+            h(
+              'section',
+              { class: 'tool-group' },
+              h('h3', { class: 'section-title' }, sec.title),
+              h('ul', { class: 'pick-list' }, sec.tools.map((t) => toolItem(app, enc, t, extra?.(t)))),
+            ),
+          )
+        : h('p', { class: 'empty' }, 'Tidak ada pemeriksaan yang cocok. Coba kata lain: nama organ, alat, atau penyakit yang dicurigai.'),
+    );
+  };
+  renderGroups();
+  const search = h('input', {
+    class: 'search',
+    type: 'search',
+    placeholder: `Cari ${total} pemeriksaan… mis. ${tab === 'fisik' ? 'mata, paru' : 'dengue, ginjal'}`,
+    title: 'Cari menurut nama pemeriksaan, organ, atau penyakit yang dicurigai',
+    'aria-label': tab === 'fisik' ? 'Cari pemeriksaan fisik' : 'Cari pemeriksaan penunjang',
+    'data-focus-key': `alat-${tab}`,
+    value: app.ui.toolQuery[tab],
+    oninput: (e: Event) => {
+      app.setToolQuery(tab, (e.target as HTMLInputElement).value);
+      renderGroups();
+    },
+  });
+  return [h('div', { class: 'tool-search-bar' }, search), body];
+}
+
 function physicalTab(app: App, enc: EncounterState): HTMLElement {
   const tools = app.content.tools.filter((t) => t.category === 'fisik');
   const groups = [...new Set(tools.map((t) => t.group ?? 'umum'))];
@@ -415,19 +467,25 @@ function physicalTab(app: App, enc: EncounterState): HTMLElement {
     'div',
     { class: 'tab-panel' },
     h('p', { class: 'hint' }, 'Gratis. Mulai dari tanda vital lengkap (TD, nadi, napas, suhu, SpO₂), lalu periksa terarah sesuai keluhan dan kecurigaan komplikasi. Amati juga pasien di hadapan Anda.'),
-    groups.map((g) =>
-      h(
-        'section',
-        { class: 'tool-group' },
-        h('h3', { class: 'section-title' }, PHYSICAL_GROUP_LABEL[g] ?? g),
-        h('ul', { class: 'pick-list' }, tools.filter((t) => (t.group ?? 'umum') === g).map((t) => toolItem(app, enc, t))),
-      ),
+    toolBrowser(
+      app,
+      enc,
+      'fisik',
+      groups.map((g) => ({ title: PHYSICAL_GROUP_LABEL[g] ?? g, tools: tools.filter((t) => (t.group ?? 'umum') === g) })),
     ),
   );
 }
 
 function investigationTab(app: App, enc: EncounterState): HTMLElement {
-  const categories = (['lab', 'pencitraan', 'lainnya'] as const).filter((c) => app.content.tools.some((t) => t.category === c));
+  const tools = app.content.tools;
+  const labGroups = [...LAB_GROUPS, ...new Set(tools.filter((t) => t.category === 'lab' && !LAB_GROUPS.includes(t.group ?? '')).map((t) => t.group ?? ''))];
+  const sections: ToolSection[] = [
+    ...labGroups.map((g) => ({
+      title: LAB_GROUP_LABEL[g] ? `${CATEGORY_LABEL.lab} · ${LAB_GROUP_LABEL[g]}` : CATEGORY_LABEL.lab,
+      tools: tools.filter((t) => t.category === 'lab' && (t.group ?? '') === g),
+    })),
+    ...(['pencitraan', 'lainnya'] as const).map((c) => ({ title: CATEGORY_LABEL[c], tools: tools.filter((t) => t.category === c) })),
+  ].filter((sec) => sec.tools.length);
   return h(
     'div',
     { class: 'tab-panel' },
@@ -436,26 +494,8 @@ function investigationTab(app: App, enc: EncounterState): HTMLElement {
       { class: 'hint' },
       `Biaya dipotong dari budget pasien (sisa ${formatRupiah(enc.budgetRemaining)}). Pilih sesuai tujuan: memastikan diagnosis, menilai fungsi organ, struktur, atau komplikasi.`,
     ),
-    categories.map((cat) =>
-      h(
-        'section',
-        { class: 'tool-group' },
-        h('h3', { class: 'section-title' }, CATEGORY_LABEL[cat]),
-        h(
-          'ul',
-          { class: 'pick-list' },
-          app.content.tools
-            .filter((t) => t.category === cat)
-            .map((t) =>
-              toolItem(
-                app,
-                enc,
-                t,
-                t.objectives?.length ? h('span', { class: 'pick__tags' }, t.objectives.map((o) => h('span', { class: `tag tag--${o}` }, OBJECTIVE_LABEL[o]))) : null,
-              ),
-            ),
-        ),
-      ),
+    toolBrowser(app, enc, 'penunjang', sections, (t) =>
+      t.objectives?.length ? h('span', { class: 'pick__tags' }, t.objectives.map((o) => h('span', { class: `tag tag--${o}` }, OBJECTIVE_LABEL[o]))) : null,
     ),
   );
 }

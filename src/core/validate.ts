@@ -21,7 +21,7 @@ import type {
   Range,
   ToolDef,
 } from './types';
-import { BODY_SITES, CUE_IDS, DANGER_LEVELS, DISPOSITIONS, ECONOMY_CLASSES, OBJECTIVES, TOOL_CATEGORIES } from './types';
+import { BODY_SITES, CUE_IDS, DANGER_LEVELS, DISPOSITIONS, ECONOMY_CLASSES, LAB_GROUPS, OBJECTIVES, TOOL_CATEGORIES } from './types';
 
 /** Placeholder yang selalu tersedia di teks kasus (diisi oleh generator). */
 export const BUILTIN_PLACEHOLDERS = [
@@ -124,6 +124,7 @@ function validateTools(content: GameContent, config: GameConfig, err: ErrFn): vo
     else if (tool.category !== 'fisik' && price === 0) err(path, 'pemeriksaan penunjang harus berbayar (harga > 0)');
     else if (tool.category === 'fisik' && price !== 0) err(path, 'pemeriksaan fisik seharusnya gratis (harga 0)');
     if (tool.category === 'fisik' && !tool.group) err(path, 'pemeriksaan fisik butuh group (sistem organ)');
+    if (tool.category === 'lab' && !LAB_GROUPS.includes(tool.group ?? '')) err(path, `laboratorium butuh group salah satu dari ${LAB_GROUPS.join(', ')}`);
     if (tool.category !== 'fisik') {
       if (!tool.objectives?.length) err(path, 'pemeriksaan penunjang butuh objectives (tujuan klinis)');
       if (!tool.purpose) err(path, 'pemeriksaan penunjang butuh purpose');

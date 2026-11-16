@@ -536,7 +536,8 @@
         }
       ],
       "objectives": ["identifikasi", "komplikasi"],
-      "purpose": "Infeksi/peradangan (leukosit, hitung jenis), anemia (Hb, MCV), trombositopenia, dan hemokonsentrasi (hematokrit)."
+      "purpose": "Infeksi/peradangan (leukosit, hitung jenis), anemia (Hb, MCV), trombositopenia, dan hemokonsentrasi (hematokrit).",
+      "group": "hematologi"
     },
     {
       "id": "ns1_dengue",
@@ -555,7 +556,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Antigen dengue untuk diagnosis dini (hari 1–5). Negatif setelah hari ke-5 TIDAK menyingkirkan dengue."
+      "purpose": "Antigen dengue untuk diagnosis dini (hari 1–5). Negatif setelah hari ke-5 TIDAK menyingkirkan dengue.",
+      "group": "serologi"
     },
     {
       "id": "serologi_dengue",
@@ -568,7 +570,8 @@
         { "kind": "text", "id": "igg", "label": "IgG anti-dengue", "normal": ["Negatif"] }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Antibodi dengue: IgM positif mulai hari ke-4–5; IgG menandakan infeksi sekunder/lampau."
+      "purpose": "Antibodi dengue: IgM positif mulai hari ke-4–5; IgG menandakan infeksi sekunder/lampau.",
+      "group": "serologi"
     },
     {
       "id": "rdt_malaria",
@@ -595,7 +598,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Antigen Plasmodium (tes cepat). Positif mendukung malaria; konfirmasi spesies dengan mikroskopis."
+      "purpose": "Antigen Plasmodium (tes cepat). Positif mendukung malaria; konfirmasi spesies dengan mikroskopis.",
+      "group": "serologi"
     },
     {
       "id": "mikroskopis_malaria",
@@ -614,7 +618,8 @@
         }
       ],
       "objectives": ["identifikasi", "komplikasi"],
-      "purpose": "Baku emas malaria: spesies dan kepadatan parasit (hiperparasitemia = tanda malaria berat)."
+      "purpose": "Baku emas malaria: spesies dan kepadatan parasit (hiperparasitemia = tanda malaria berat).",
+      "group": "mikrobiologi"
     },
     {
       "id": "widal",
@@ -643,7 +648,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Titer antibodi Salmonella. Murah tetapi spesifisitas rendah di daerah endemis; titer tunggal kurang dapat diandalkan."
+      "purpose": "Titer antibodi Salmonella. Murah tetapi spesifisitas rendah di daerah endemis; titer tunggal kurang dapat diandalkan.",
+      "group": "serologi"
     },
     {
       "id": "tubex",
@@ -663,7 +669,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "IgM anti-Salmonella O9 — lebih spesifik daripada Widal untuk demam tifoid."
+      "purpose": "IgM anti-Salmonella O9 — lebih spesifik daripada Widal untuk demam tifoid.",
+      "group": "serologi"
     },
     {
       "id": "gula_darah",
@@ -684,7 +691,8 @@
         }
       ],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Hiperglikemia/DM; juga skrining komorbid pada pasien berisiko."
+      "purpose": "Hiperglikemia/DM; juga skrining komorbid pada pasien berisiko.",
+      "group": "kimia"
     },
     {
       "id": "hba1c",
@@ -705,7 +713,8 @@
         }
       ],
       "objectives": ["identifikasi", "komplikasi"],
-      "purpose": "Rerata glukosa 2–3 bulan: diagnosis DM dan menilai kendali gula."
+      "purpose": "Rerata glukosa 2–3 bulan: diagnosis DM dan menilai kendali gula.",
+      "group": "kimia"
     },
     {
       "id": "urinalisis",
@@ -800,7 +809,8 @@
         }
       ],
       "objectives": ["identifikasi", "komplikasi"],
-      "purpose": "Kelainan urin: infeksi (leukosit esterase, nitrit, bakteri), hematuria, glukosuria, dan proteinuria (tanda kerusakan ginjal)."
+      "purpose": "Kelainan urin: infeksi (leukosit esterase, nitrit, bakteri), hematuria, glukosuria, dan proteinuria (tanda kerusakan ginjal).",
+      "group": "urin_feses"
     },
     {
       "id": "fungsi_hati",
@@ -838,7 +848,8 @@
         }
       ],
       "objectives": ["fungsi_organ", "komplikasi"],
-      "purpose": "Fungsi & kerusakan hati (SGOT, SGPT, bilirubin)."
+      "purpose": "Fungsi & kerusakan hati (SGOT, SGPT, bilirubin).",
+      "group": "kimia"
     },
     {
       "id": "fungsi_ginjal",
@@ -879,7 +890,8 @@
         }
       ],
       "objectives": ["fungsi_organ", "komplikasi"],
-      "purpose": "Fungsi ginjal (ureum, kreatinin, eGFR). Fungsi ginjal NORMAL tidak menyingkirkan batu atau infeksi saluran kemih."
+      "purpose": "Fungsi ginjal (ureum, kreatinin, eGFR). Fungsi ginjal NORMAL tidak menyingkirkan batu atau infeksi saluran kemih.",
+      "group": "kimia"
     },
     {
       "id": "profil_lipid",
@@ -931,7 +943,8 @@
         }
       ],
       "objectives": ["skrining"],
-      "purpose": "Faktor risiko kardiovaskular (kolesterol, LDL, HDL, trigliserida)."
+      "purpose": "Faktor risiko kardiovaskular (kolesterol, LDL, HDL, trigliserida).",
+      "group": "kimia"
     },
     {
       "id": "bta_sputum",
@@ -950,7 +963,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Mikroskopis BTA dahak. Murah; sensitivitas sedang — negatif tidak menyingkirkan TB."
+      "purpose": "Mikroskopis BTA dahak. Murah; sensitivitas sedang — negatif tidak menyingkirkan TB.",
+      "group": "mikrobiologi"
     },
     {
       "id": "tcm_tb",
@@ -960,7 +974,8 @@
       "action": "Dahak pasien dikirim untuk pemeriksaan TCM.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Hasil TCM", "normal": ["MTB not detected"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA."
+      "purpose": "Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA.",
+      "group": "mikrobiologi"
     },
     {
       "id": "tes_h_pylori",
@@ -979,7 +994,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Mencari infeksi H. pylori pada dispepsia/gastritis (strategi \"test and treat\"). Positif → pertimbangkan eradikasi; tidak wajib bila tanpa tanda alarm."
+      "purpose": "Mencari infeksi H. pylori pada dispepsia/gastritis (strategi \"test and treat\"). Positif → pertimbangkan eradikasi; tidak wajib bila tanpa tanda alarm.",
+      "group": "urin_feses"
     },
     {
       "id": "rontgen_thorax",
@@ -1744,7 +1760,8 @@
         { "kind": "text", "id": "protozoa", "label": "Protozoa", "normal": ["Tidak ditemukan"] }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Diare inflamasi (leukosit/eritrosit), cacing (telur, larva, proglotid), dan protozoa (amuba, Giardia)."
+      "purpose": "Diare inflamasi (leukosit/eritrosit), cacing (telur, larva, proglotid), dan protozoa (amuba, Giardia).",
+      "group": "urin_feses"
     },
     {
       "id": "elektrolit",
@@ -1791,7 +1808,8 @@
         }
       ],
       "objectives": ["fungsi_organ", "komplikasi"],
-      "purpose": "Gangguan elektrolit akibat muntah/diare berat, kejang, atau kelemahan otot. Tidak menentukan penyebab penyakit."
+      "purpose": "Gangguan elektrolit akibat muntah/diare berat, kejang, atau kelemahan otot. Tidak menentukan penyebab penyakit.",
+      "group": "kimia"
     },
     {
       "id": "asam_urat",
@@ -1813,7 +1831,8 @@
         }
       ],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Hiperurisemia (> 7 mg/dL laki-laki, > 6 mg/dL perempuan). Kadar bisa normal saat serangan gout akut."
+      "purpose": "Hiperurisemia (> 7 mg/dL laki-laki, > 6 mg/dL perempuan). Kadar bisa normal saat serangan gout akut.",
+      "group": "kimia"
     },
     {
       "id": "tes_kehamilan",
@@ -1823,7 +1842,8 @@
       "action": "Urin pasien diteteskan pada strip tes kehamilan.",
       "params": [{ "kind": "text", "id": "hcg", "label": "β-hCG urin", "normal": ["Negatif"] }],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Kehamilan (positif ± 10–14 hari setelah konsepsi). Wajib sebelum obat/rontgen tertentu dan pada nyeri perut/perdarahan perempuan usia subur."
+      "purpose": "Kehamilan (positif ± 10–14 hari setelah konsepsi). Wajib sebelum obat/rontgen tertentu dan pada nyeri perut/perdarahan perempuan usia subur.",
+      "group": "urin_feses"
     },
     {
       "id": "tes_hiv",
@@ -1833,7 +1853,8 @@
       "action": "Setelah konseling pra-tes dan persetujuan pasien, darah diperiksa dengan reagen tes cepat HIV.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Non-reaktif"] }],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Infeksi HIV (reaktif pada ketiga reagen). Periode jendela 3 bulan dapat memberi hasil non-reaktif palsu."
+      "purpose": "Infeksi HIV (reaktif pada ketiga reagen). Periode jendela 3 bulan dapat memberi hasil non-reaktif palsu.",
+      "group": "serologi"
     },
     {
       "id": "cd4",
@@ -1854,7 +1875,8 @@
         }
       ],
       "objectives": ["komplikasi", "fungsi_organ"],
-      "purpose": "Derajat imunosupresi pada HIV (< 200 sel/µL berisiko infeksi oportunistik). Bukan alat diagnosis HIV."
+      "purpose": "Derajat imunosupresi pada HIV (< 200 sel/µL berisiko infeksi oportunistik). Bukan alat diagnosis HIV.",
+      "group": "serologi"
     },
     {
       "id": "tes_sifilis",
@@ -1867,7 +1889,8 @@
         { "kind": "text", "id": "tpha", "label": "TPHA", "normal": ["Non-reaktif"] }
       ],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Sifilis: TPHA reaktif + RPR reaktif = sifilis aktif. Pada chancre dini serologi bisa masih negatif."
+      "purpose": "Sifilis: TPHA reaktif + RPR reaktif = sifilis aktif. Pada chancre dini serologi bisa masih negatif.",
+      "group": "serologi"
     },
     {
       "id": "hbsag",
@@ -1877,7 +1900,8 @@
       "action": "Darah pasien diperiksa dengan tes cepat HBsAg.",
       "params": [{ "kind": "text", "id": "hasil", "label": "HBsAg", "normal": ["Non-reaktif"] }],
       "objectives": ["identifikasi", "skrining"],
-      "purpose": "Infeksi hepatitis B. Bagian skrining tripel eliminasi pada ibu hamil."
+      "purpose": "Infeksi hepatitis B. Bagian skrining tripel eliminasi pada ibu hamil.",
+      "group": "serologi"
     },
     {
       "id": "igm_anti_hav",
@@ -1887,7 +1911,8 @@
       "action": "Serum pasien dikirim untuk pemeriksaan IgM anti-HAV.",
       "params": [{ "kind": "text", "id": "hasil", "label": "IgM anti-HAV", "normal": ["Non-reaktif"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Konfirmasi hepatitis A akut. Tidak menilai beratnya kerusakan hati."
+      "purpose": "Konfirmasi hepatitis A akut. Tidak menilai beratnya kerusakan hati.",
+      "group": "serologi"
     },
     {
       "id": "igm_leptospira",
@@ -1897,7 +1922,8 @@
       "action": "Serum pasien diperiksa dengan tes cepat IgM leptospira.",
       "params": [{ "kind": "text", "id": "hasil", "label": "IgM leptospira", "normal": ["Negatif"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Leptospirosis. Bisa negatif pada minggu pertama; diagnosis awal tetap klinis-epidemiologis."
+      "purpose": "Leptospirosis. Bisa negatif pada minggu pertama; diagnosis awal tetap klinis-epidemiologis.",
+      "group": "serologi"
     },
     {
       "id": "apusan_darah_tepi",
@@ -1921,7 +1947,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Jenis anemia (mis. hipokrom mikrositer pada defisiensi besi), sel muda, atau kelainan morfologi lain."
+      "purpose": "Jenis anemia (mis. hipokrom mikrositer pada defisiensi besi), sel muda, atau kelainan morfologi lain.",
+      "group": "hematologi"
     },
     {
       "id": "profil_besi",
@@ -1970,7 +1997,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Membuktikan defisiensi besi (feritin rendah). Mahal; di layanan primer biasanya cukup dengan klinis, darah lengkap, dan apusan."
+      "purpose": "Membuktikan defisiensi besi (feritin rendah). Mahal; di layanan primer biasanya cukup dengan klinis, darah lengkap, dan apusan.",
+      "group": "hematologi"
     },
     {
       "id": "fungsi_tiroid",
@@ -1999,7 +2027,8 @@
         }
       ],
       "objectives": ["fungsi_organ"],
-      "purpose": "Hipotiroid/hipertiroid. Pada gondok endemik akibat kurang yodium biasanya eutiroid."
+      "purpose": "Hipotiroid/hipertiroid. Pada gondok endemik akibat kurang yodium biasanya eutiroid.",
+      "group": "kimia"
     },
     {
       "id": "kerokan_koh",
@@ -2016,7 +2045,8 @@
         }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Infeksi jamur: hifa bersepta (dermatofita), spaghetti & meatball (Malassezia), pseudohifa & blastospora (Candida)."
+      "purpose": "Infeksi jamur: hifa bersepta (dermatofita), spaghetti & meatball (Malassezia), pseudohifa & blastospora (Candida).",
+      "group": "mikrobiologi"
     },
     {
       "id": "lampu_wood",
@@ -2036,7 +2066,8 @@
       "action": "Anda meneteskan minyak mineral pada terowongan kulit, mengeroknya, lalu memeriksanya di mikroskop.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Tidak ditemukan tungau, telur, maupun skibala"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Konfirmasi skabies. Sensitivitas rendah — hasil negatif TIDAK menyingkirkan skabies."
+      "purpose": "Konfirmasi skabies. Sensitivitas rendah — hasil negatif TIDAK menyingkirkan skabies.",
+      "group": "mikrobiologi"
     },
     {
       "id": "tzanck",
@@ -2046,7 +2077,8 @@
       "action": "Anda memecah vesikel, mengerok dasarnya, dan membuat sediaan Giemsa.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Tidak ditemukan sel datia berinti banyak"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Infeksi virus herpes (HSV/VZV): sel datia berinti banyak. Tidak membedakan HSV dari VZV."
+      "purpose": "Infeksi virus herpes (HSV/VZV): sel datia berinti banyak. Tidak membedakan HSV dari VZV.",
+      "group": "mikrobiologi"
     },
     {
       "id": "gram_sekret",
@@ -2059,7 +2091,8 @@
         { "kind": "text", "id": "bakteri", "label": "Bakteri", "normal": ["Tidak ditemukan bakteri patogen"] }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Diplokokus Gram negatif intrasel (gonore), PMN tanpa diplokokus (uretritis non-gonore), kokus Gram positif (pioderma)."
+      "purpose": "Diplokokus Gram negatif intrasel (gonore), PMN tanpa diplokokus (uretritis non-gonore), kokus Gram positif (pioderma).",
+      "group": "mikrobiologi"
     },
     {
       "id": "sediaan_basah_vagina",
@@ -2084,7 +2117,8 @@
         { "kind": "text", "id": "pseudohifa", "label": "Pseudohifa / blastospora", "normal": ["Tidak ditemukan"] }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Vaginosis bakterial (pH > 4,5, whiff +, clue cells), trikomoniasis, dan kandidiasis vulvovaginal."
+      "purpose": "Vaginosis bakterial (pH > 4,5, whiff +, clue cells), trikomoniasis, dan kandidiasis vulvovaginal.",
+      "group": "mikrobiologi"
     },
     {
       "id": "bta_kulit",
@@ -2094,7 +2128,8 @@
       "action": "Anda menjepit dan menyayat kecil kulit lesi serta cuping telinga, lalu membuat sediaan BTA.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Indeks bakteri", "normal": ["BTA negatif (IB 0)"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Kusta: menentukan tipe PB/MB (BTA positif = MB). Hasil negatif tidak menyingkirkan kusta."
+      "purpose": "Kusta: menentukan tipe PB/MB (BTA positif = MB). Hasil negatif tidak menyingkirkan kusta.",
+      "group": "mikrobiologi"
     },
     {
       "id": "mikroskopis_filaria",
@@ -2104,7 +2139,8 @@
       "action": "Darah ujung jari pasien diambil malam hari dan dibuat sediaan tebal untuk mencari mikrofilaria.",
       "params": [{ "kind": "text", "id": "hasil", "label": "Mikrofilaria", "normal": ["Tidak ditemukan"] }],
       "objectives": ["identifikasi"],
-      "purpose": "Filariasis limfatik aktif (mikrofilaremia). Sering negatif pada fase kronis/limfedema."
+      "purpose": "Filariasis limfatik aktif (mikrofilaremia). Sering negatif pada fase kronis/limfedema.",
+      "group": "mikrobiologi"
     },
     {
       "id": "tes_mantoux",
@@ -2158,7 +2194,8 @@
         { "kind": "text", "id": "influenza", "label": "Antigen influenza A/B", "normal": ["Negatif"] }
       ],
       "objectives": ["identifikasi"],
-      "purpose": "Membedakan COVID-19 dan influenza pada ISPA. Sensitivitas antigen influenza sedang."
+      "purpose": "Membedakan COVID-19 dan influenza pada ISPA. Sensitivitas antigen influenza sedang.",
+      "group": "serologi"
     },
     {
       "id": "usg_obstetri",

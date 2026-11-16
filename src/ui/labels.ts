@@ -38,6 +38,15 @@ export const PHYSICAL_GROUP_LABEL: Record<string, string> = {
   khusus: 'Pemeriksaan khusus',
 };
 
+/** Subkelompok laboratorium (lihat LAB_GROUPS). */
+export const LAB_GROUP_LABEL: Record<string, string> = {
+  hematologi: 'Hematologi',
+  kimia: 'Kimia darah & hormon',
+  urin_feses: 'Urin, feses & tes kehamilan',
+  serologi: 'Tes cepat & serologi infeksi',
+  mikrobiologi: 'Mikroskopis & mikrobiologi',
+};
+
 export const OBJECTIVE_LABEL: Record<Objective, string> = {
   identifikasi: 'Identifikasi penyakit',
   fungsi_organ: 'Fungsi organ',

@@ -70,6 +70,8 @@ export interface UiState {
   /** Filter sistem organ di daftar kondisi ('' = semua). */
   catalogSystem: string;
   secondaryQuery: string;
+  /** Kata kunci pencarian alat di tab Fisik & Penunjang. */
+  toolQuery: { fisik: string; penunjang: string };
   decision: DecisionDraft;
   confirmDecision: boolean;
   /** Pesan singkat (mis. aksi ditolak). */
@@ -96,6 +98,7 @@ const INITIAL_UI: UiState = {
   catalogQuery: '',
   catalogSystem: '',
   secondaryQuery: '',
+  toolQuery: { fisik: '', penunjang: '' },
   decision: EMPTY_DECISION,
   confirmDecision: false,
   notice: null,
@@ -389,6 +392,10 @@ export class App {
 
   setCatalogQuery(query: string): void {
     this.ui.catalogQuery = query;
+  }
+
+  setToolQuery(tab: 'fisik' | 'penunjang', query: string): void {
+    this.ui.toolQuery = { ...this.ui.toolQuery, [tab]: query };
   }
 
   setCatalogSystem(system: string): void {
