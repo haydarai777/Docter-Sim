@@ -115,7 +115,7 @@ D(id="hipoglikemia", name="Hipoglikemia ringan", aka=["Gula darah rendah", "Hipo
 
 # 3 ---------------------------------------------------------------------------------- malnutrisi energi protein
 D(id="malnutrisi_energi_protein", name="Malnutrisi energi-protein", aka=["Gizi buruk", "Gizi kurang", "Marasmus", "Kwashiorkor", "MEP", "Wasting"],
-  sys="Anak", prev=0.8, danger="tinggi",
+  sys="Endokrin & metabolik", prev=0.8, danger="tinggi",
   summary="Kekurangan energi & protein pada balita. Gizi kurang: BB/TB −3 s.d. < −2 SD. Gizi buruk: BB/TB < −3 SD, LiLA < 11,5 cm, atau edema bilateral; marasmus (sangat kurus, iga gambang, baggy pants), kwashiorkor (edema, rambut kemerahan mudah dicabut, crazy pavement dermatosis). Gizi buruk dengan komplikasi (tidak nafsu makan, infeksi berat, dehidrasi, hipoglikemia, hipotermia) dirawat inap; tanpa komplikasi rawat jalan (RUTF, PMT). Cari penyakit penyerta (diare, TB, HIV, cacing).",
   day=(30, 180), ages=[(0, 0, 1), (1, 4, 5)], male=0.5, infant=("bulan", (6, 11)),
   occ=[("balita", 4), ("bayi", 1)], bias=0.5,
@@ -318,7 +318,7 @@ D(id="dislipidemia", name="Dislipidemia", aka=["Kolesterol tinggi", "Hiperkolest
 
 # 7 ---------------------------------------------------------------------------------- hiperurisemia/gout
 D(id="hiperurisemia", name="Hiperurisemia & artritis gout", aka=["Asam urat", "Gout", "Pirai", "Artritis gout akut", "Encok asam urat"],
-  sys="Otot & sendi", prev=1.3,
+  sys="Endokrin & metabolik", prev=1.3,
   summary="Kadar asam urat serum tinggi (> 7 mg/dL laki-laki, > 6 mg/dL perempuan); manifestasi tersering artritis gout akut: monoartritis mendadak (sering malam hari) dengan sendi sangat nyeri, merah, bengkak, panas — klasik di pangkal ibu jari kaki (podagra) — dipicu jeroan, daging merah, seafood, alkohol, minuman manis, diuretik. Kadar asam urat bisa normal saat serangan. Terapi serangan: kolkisin/OAINS/steroid; penurun asam urat (alopurinol) setelah serangan reda bila indikasi.",
   day=(1, 3), ages=[(30, 44, 3), (45, 59, 4), (60, 75, 2)], male=0.85,
   traits=[("tofus", 0.15), ("berulang", 0.45), ("diuretik", 0.1, W(amin=50)), ("hipertensi_menyertai", 0.3)],

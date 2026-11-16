@@ -169,7 +169,7 @@ export const GAME_CONFIG: GameConfig = {
     perScorePoint: 0.25,
 
     // Penalti tambahan bila diagnosis UTAMA salah: −(wrongBase × pengali bahaya penyakit yang terlewat).
-    wrongBase: 4,
+    wrongBase: 4.5,
     // Penalti keselamatan: pasien yang perlu dirujuk segera justru dipulangkan/diobservasi.
     unsafeDispositionPenalty: 6,
     dangerMultiplier: {

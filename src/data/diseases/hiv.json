@@ -2,7 +2,7 @@
   "id": "hiv",
   "name": "HIV/AIDS tanpa komplikasi",
   "aliases": ["HIV", "Infeksi HIV", "AIDS", "ODHIV"],
-  "system": "Infeksi & imunologi",
+  "system": "Darah & imunologi",
   "skdiLevel": "4A",
   "danger": "tinggi",
   "prevalenceWeight": 0.7,

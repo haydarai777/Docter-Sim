@@ -1,7 +1,7 @@
 """Batch SALURAN KEMIH & KELAMIN: gonore, uretritis non-gonore, pielonefritis, fimosis, parafimosis, vulvitis, vaginitis, vaginosis bakterial, salpingitis."""
 from lib import C, CX, D, F, PF, T, NT, SY, W, X, REF_PPK
 
-SYS = "Saluran kemih & kelamin"
+SYS = "Kelamin & reproduksi"
 REF_IMS = [REF_PPK, "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"]
 REF_URO = [REF_PPK, "IAUI. Guideline Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)"]
 REF_OBGIN = [REF_PPK, "POGI. Panduan Nasional Pelayanan Kedokteran Obstetri & Ginekologi"]
@@ -102,7 +102,7 @@ D(id="uretritis_non_gonore", name="Sindrom duh genital non-gonore (uretritis/ser
 
 # 3 ---------------------------------------------------------------------------------- pielonefritis
 D(id="pielonefritis", name="Pielonefritis akut tanpa komplikasi", aka=["ISK atas", "Infeksi ginjal", "Pielonefritis"],
-  sys=SYS, prev=0.9, danger="sedang",
+  sys="Saluran kemih", prev=0.9, danger="sedang",
   summary="Infeksi bakteri (tersering E. coli) parenkim & pelvis ginjal, umumnya perempuan muda tidak hamil tanpa kelainan saluran kemih. Demam tinggi, menggigil, nyeri pinggang/flank, nyeri ketok CVA, mual-muntah, sering didahului gejala ISK bawah. Leukositosis, leukosituria, bakteriuria, nitrit. Rawat jalan bila bisa minum obat oral & tidak sepsis; rujuk bila hamil, sepsis, muntah terus, obstruksi, atau tidak membaik 48–72 jam.",
   day=(1, 5), ages=[(16, 30, 4), (31, 50, 3), (51, 65, 1)], male=0.15,
   traits=[("muntah_berat", 0.15), ("sepsis", 0.05), ("didahului_sistitis", 0.6)],

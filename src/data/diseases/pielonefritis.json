@@ -2,7 +2,7 @@
   "id": "pielonefritis",
   "name": "Pielonefritis akut tanpa komplikasi",
   "aliases": ["ISK atas", "Infeksi ginjal", "Pielonefritis"],
-  "system": "Saluran kemih & kelamin",
+  "system": "Saluran kemih",
   "skdiLevel": "4A",
   "danger": "sedang",
   "prevalenceWeight": 0.9,

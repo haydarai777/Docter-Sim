@@ -160,7 +160,7 @@ D(id="parotitis", name="Parotitis epidemika (gondongan)", aka=["Gondongan", "Mum
 
 # 4 ---------------------------------------------------------------------------------- infeksi umbilikus
 D(id="infeksi_umbilikus", name="Infeksi pada umbilikus (omfalitis)", aka=["Omfalitis", "Infeksi tali pusat", "Pusar bayi bernanah"],
-  sys="Anak", prev=0.6, danger="tinggi",
+  sys="Pencernaan", prev=0.6, danger="tinggi",
   summary="Infeksi bakteri pada tunggul tali pusat/umbilikus neonatus: kemerahan periumbilikal, bengkak, pus, berbau. Risiko meningkat pada perawatan tali pusat yang tidak bersih (diberi abu, ramuan, kopi). Kemerahan meluas > 1 cm ke kulit perut atau tanda sepsis (malas menyusu, demam/hipotermia, letargi) adalah infeksi bakteri berat — rujuk segera setelah dosis antibiotik pertama.",
   day=(1, 5), ages=[(0, 0, 1)], male=0.5, infant=("hari", (5, 21)),
   occ=[("bayi", 1)], bias=1.0,

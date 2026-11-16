@@ -1,0 +1,237 @@
+{
+  "id": "luka_bakar",
+  "name": "Luka bakar derajat 1 dan 2",
+  "aliases": ["Luka bakar", "Kena air panas", "Kena knalpot", "Combustio"],
+  "system": "Trauma & forensik",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Kerusakan kulit akibat panas (air panas, api, knalpot), listrik, atau kimia. Derajat 1: eritema nyeri tanpa bula (epidermis). Derajat 2 superfisial: bula, dasar merah muda basah, sangat nyeri; derajat 2 dalam: dasar pucat, nyeri berkurang. Luas dihitung dengan rule of nines (dewasa) / Lund-Browder (anak) atau telapak tangan pasien = 1%. Rujuk bila > 10% (anak) / > 15–20% (dewasa) derajat 2, mengenai wajah/tangan/kaki/genital/sendi, trauma inhalasi, listrik/kimia, atau curiga kekerasan.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 3 },
+      { "min": 6, "max": 9, "weight": 1 },
+      { "min": 10, "max": 40, "weight": 3 },
+      { "min": 41, "max": 70, "weight": 2 }
+    ],
+    "maleRatio": 0.55
+  },
+  "traits": [
+    { "id": "derajat2", "probability": 0.7 },
+    { "id": "luas", "probability": 0.12, "when": { "traits": ["derajat2"] } },
+    { "id": "knalpot", "probability": 0.35, "when": { "ageMin": 10 } },
+    { "id": "tersiram_anak", "probability": 1, "when": { "ageMax": 9 } }
+  ],
+  "traitLabels": {
+    "derajat2": "Derajat 2 superfisial.",
+    "luas": "Luas melebihi kriteria rawat jalan.",
+    "knalpot": "Kena knalpot motor.",
+    "tersiram_anak": "Anak tersiram air panas."
+  },
+  "symptoms": [
+    { "id": "lepuh_kulit", "probability": 1, "when": { "traits": ["derajat2"] } },
+    { "id": "rewel", "probability": 0.8, "when": { "ageMax": 5 } },
+    { "id": "luka_bakar", "probability": 1 },
+    { "id": "nyeri_luka", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["luka_bakar"], "extraPool": ["nyeri_luka"] },
+  "clueSymptoms": ["nyeri_luka", "lepuh_kulit", "rewel"],
+  "misattributions": ["cukup dioles odol", "luka ringan"],
+  "fears": ["bekas luka", "infeksi", "cacat"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Setengah jam lalu, Dok, betis kanan kena knalpot motor.",
+        "when": { "traits": ["knalpot"] },
+        "clue": "Kontak knalpot 30 menit lalu"
+      },
+      {
+        "text": "Satu jam lalu, Dok, dia narik taplak meja, termos air panas tumpah ke dada dan lengan.",
+        "when": { "traits": ["tersiram_anak"] },
+        "clue": "Tersiram air panas (anak)"
+      },
+      {
+        "text": "Satu jam lalu, Dok, kena air panas waktu masak.",
+        "when": { "notTraits": ["knalpot", "tersiram_anak"] },
+        "clue": "Tersiram air panas"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah saya olesi pasta gigi, Dok, katanya biar dingin.",
+        "clue": "Pertolongan pertama keliru (pasta gigi)"
+      },
+      { "text": "Langsung saya siram air keran lama, Dok.", "weight": 0.6, "clue": "Pendinginan air mengalir (benar)" }
+    ],
+    "keparahan": [
+      {
+        "text": "Sakit sekali, Dok, kulitnya melepuh.",
+        "reveals": ["lepuh_kulit"],
+        "when": { "traits": ["derajat2"], "symptoms": ["lepuh_kulit"] },
+        "clue": "Nyeri hebat dengan bula (derajat 2)"
+      },
+      {
+        "text": "Merah dan perih, Dok, tapi nggak melepuh.",
+        "when": { "notTraits": ["derajat2"] },
+        "clue": "Eritema tanpa bula (derajat 1)"
+      }
+    ],
+    "bepergian_lingkungan": [{ "text": "Bukan di ruangan yang terbakar, Dok, nggak menghirup asap.", "clue": "Tanpa risiko trauma inhalasi" }],
+    "kebiasaan": [
+      { "text": "Imunisasi tetanus saya sudah lengkap, Dok.", "when": { "ageMin": 10 }, "clue": "Status tetanus" },
+      {
+        "text": "Imunisasinya lengkap, Dok, sesuai buku KIA.",
+        "when": { "ageMax": 9 },
+        "clue": "Status imunisasi anak"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "luka_bakar",
+      "when": { "traits": ["luas"] },
+      "diagnostic": true,
+      "values": [
+        "Luka bakar derajat II superfisial ± 18% LPTT (dada, perut, kedua lengan): bula & dasar merah muda basah, sangat nyeri"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka_bakar",
+      "when": { "traits": ["derajat2", "knalpot"], "notTraits": ["luas"] },
+      "diagnostic": true,
+      "values": [
+        "Luka bakar derajat II superfisial ± 2% LPTT di betis kanan (pola knalpot): bula & dasar merah muda basah, sangat nyeri"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka_bakar",
+      "when": { "traits": ["derajat2", "tersiram_anak"], "notTraits": ["luas"] },
+      "diagnostic": true,
+      "values": [
+        "Luka bakar derajat II superfisial ± 5% LPTT di dada & lengan kanan atas (pola tumpahan, batas ireguler): bula & dasar merah muda basah"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka_bakar",
+      "when": { "traits": ["derajat2"], "notTraits": ["luas", "knalpot", "tersiram_anak"] },
+      "diagnostic": true,
+      "values": [
+        "Luka bakar derajat II superfisial ± 3% LPTT di punggung tangan & lengan bawah kiri: bula & dasar merah muda basah"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka_bakar",
+      "when": { "notTraits": ["derajat2"] },
+      "diagnostic": true,
+      "values": ["Luka bakar derajat I ± 3% LPTT: eritema tanpa bula, nyeri tekan"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["luas"] }, "range": [125, 150] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak kesakitan, menangis"] },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "hidung_luar",
+      "values": ["Bentuk normal, tidak ada jelaga, bulu hidung utuh"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "trauma_inhalasi",
+      "howToDistinguish": "Trauma inhalasi: kebakaran di ruang tertutup, suara serak, jelaga di hidung/mulut, sesak — amankan jalan napas & rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["bepergian_lingkungan"], "tools": ["pemeriksaan_hidung"] }
+    },
+    {
+      "id": "luka_bakar_derajat3",
+      "howToDistinguish": "Derajat 3: kulit putih/kehitaman kaku, kering, tidak nyeri, tanpa bula — rujuk.",
+      "excludeBy": { "tools": ["status_lokalis"] }
+    },
+    {
+      "id": "kekerasan_anak",
+      "howToDistinguish": "Kekerasan pada anak: pola luka bakar celup (sarung tangan/kaus kaki), sundutan rokok, cerita tidak konsisten — lindungi & laporkan.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["status_lokalis"] }
+    }
+  ],
+  "keyFindings": [
+    "Mekanisme (air panas, knalpot, api) & waktu",
+    "Derajat (eritema vs bula) & luas (% LPTT)",
+    "Area khusus, trauma inhalasi, kesesuaian dengan riwayat"
+  ],
+  "teachingPoints": [
+    "Pertolongan pertama: alirkan air mengalir suhu ruang 20 menit — jangan es, pasta gigi, mentega, kecap.",
+    "Telapak tangan pasien (termasuk jari) ≈ 1% luas permukaan tubuh."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "ATLS (American College of Surgeons) — prinsip penanganan luka",
+      "Kemenkes RI. Pedoman Penatalaksanaan Luka Bakar (PNPK 2019)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "luas",
+      "name": "Luka bakar luas (indikasi rujuk/resusitasi)",
+      "trait": "luas",
+      "redFlag": true,
+      "assess": { "tools": ["status_lokalis", "tanda_vital"] },
+      "explanation": "Luas > 10% (anak)/> 15–20% (dewasa) — resusitasi cairan (Parkland) & rujuk."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "keparahan", "bepergian_lingkungan", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_lokalis", "role": "kunci", "reason": "Derajat, luas (% LPTT), lokasi." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Keadaan umum & tanda syok." },
+      { "tool": "pemeriksaan_hidung", "role": "pendukung", "reason": "Tanda trauma inhalasi." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Luka bakar luas: resusitasi cairan, analgesik, tutup kasa steril, rujuk segera ke RS.",
+      "when": { "traits": ["luas"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Pendinginan, analgesik, perawatan luka & balutan, profilaksis tetanus; kontrol 1–2 hari."
+    }
+  ],
+  "management": [
+    "Hentikan proses: alirkan air mengalir 20 menit, lepas perhiasan/pakaian yang tidak lengket.",
+    "Analgesik (parasetamol/ibuprofen); bersihkan dengan NaCl.",
+    "Bula kecil dibiarkan; bula besar/pecah dibersihkan steril; tutup dengan tulle/salep (silver sulfadiazin — tidak untuk wajah & bayi < 2 bulan) dan kasa.",
+    "Profilaksis tetanus; kontrol & ganti balutan 1–2 hari; luas: cairan Parkland 4 mL × BB × %LPTT dan rujuk."
+  ],
+  "approach": ["Nilai ABC & trauma inhalasi.", "Tentukan derajat & luas; kriteria rujuk; kesesuaian dengan riwayat (anak)."]
+}

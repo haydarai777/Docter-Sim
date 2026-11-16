@@ -2,7 +2,7 @@
   "id": "infeksi_umbilikus",
   "name": "Infeksi pada umbilikus (omfalitis)",
   "aliases": ["Omfalitis", "Infeksi tali pusat", "Pusar bayi bernanah"],
-  "system": "Anak",
+  "system": "Pencernaan",
   "skdiLevel": "4A",
   "danger": "tinggi",
   "prevalenceWeight": 0.6,

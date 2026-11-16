@@ -1,0 +1,180 @@
+{
+  "id": "dermatitis_seboroik",
+  "name": "Dermatitis seboroik",
+  "aliases": ["Ketombe", "Seborrheic dermatitis", "Cradle cap", "Kerak kepala bayi"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.2,
+  "summary": "Dermatitis kronik-kambuhan di area kaya kelenjar sebasea (kulit kepala, alis, lipatan nasolabial, retroaurikular, dada, lipatan) dengan eritema & skuama kekuningan berminyak, gatal ringan; terkait Malassezia. Bayi: krusta kuning tebal di kulit kepala (cradle cap). Dermatitis seboroik berat/luas mendadak pada dewasa muda: pikirkan HIV. Terapi sampo & krim antijamur, steroid ringan jangka pendek.",
+  "presentationDay": [14, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 0, "max": 0, "weight": 2 },
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.6,
+    "infantAge": { "unit": "bulan", "range": [1, 6] }
+  },
+  "traits": [
+    { "id": "bayi_cradle", "probability": 1, "when": { "ageMax": 0 } },
+    { "id": "berat_luas", "probability": 0.06, "when": { "ageMin": 18, "ageMax": 45 } }
+  ],
+  "traitLabels": { "bayi_cradle": "Cradle cap (bayi).", "berat_luas": "Berat/luas mendadak — skrining HIV." },
+  "symptoms": [
+    { "id": "gatal_kepala", "probability": 0.5, "when": { "notTraits": ["bayi_cradle"] } },
+    { "id": "ketombe", "probability": 1 },
+    { "id": "ruam_kulit", "probability": 0.7 },
+    { "id": "gatal_kulit", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["ketombe"], "extraPool": ["ruam_kulit"] },
+  "clueSymptoms": ["ruam_kulit", "gatal_kulit", "gatal_kepala"],
+  "misattributions": ["kurang keramas", "alergi sampo", "panu"],
+  "fears": ["botak", "menular"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah berbulan-bulan, Dok, kambuh-kambuhan.",
+        "when": { "notTraits": ["bayi_cradle"] },
+        "clue": "Kronik kambuhan"
+      },
+      {
+        "text": "Sejak umur sebulan, Dok, kepalanya ada kerak kuning tebal berminyak.",
+        "when": { "traits": ["bayi_cradle"] },
+        "clue": "Krusta kulit kepala bayi"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di kepala, alis, samping hidung, dan belakang telinga, Dok, merah bersisik.",
+        "when": { "notTraits": ["bayi_cradle"] },
+        "clue": "Area sebore"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau stres dan kurang tidur makin parah, Dok.",
+        "when": { "notTraits": ["bayi_cradle"] },
+        "clue": "Memberat dengan stres"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Belakangan ini makin luas dan berat, Dok, berat badan juga turun, sering diare.",
+        "when": { "traits": ["berat_luas"] },
+        "clue": "Berat/luas mendadak + gejala sistemik (curiga HIV)"
+      },
+      { "text": "Saya sehat, Dok, nggak pernah sakit berat.", "when": { "notTraits": ["berat_luas"] } }
+    ],
+    "riwayat_obat": [{ "text": "Sudah ganti-ganti sampo, Dok, belum sembuh.", "clue": "Belum memakai sampo antijamur" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["bayi_cradle"] },
+      "values": ["Kulit kepala, alis, lipatan nasolabial, retroaurikular"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["bayi_cradle"] },
+      "diagnostic": true,
+      "values": ["Eritema dengan skuama kekuningan berminyak"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["bayi_cradle"] },
+      "values": ["Kulit kepala verteks & frontal"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["bayi_cradle"] },
+      "diagnostic": true,
+      "values": ["Krusta kuning tebal berminyak melekat (cradle cap), eritema ringan"]
+    },
+    { "tool": "status_dermatologis", "param": "rambut_kuku", "values": ["Rambut normal, tidak ada alopesia"] },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "probability": 0.6,
+      "values": ["Spora ragi (Malassezia) (+), tanpa hifa dermatofita"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "hiv",
+      "howToDistinguish": "Dermatitis seboroik berat/luas mendadak pada dewasa muda: tawarkan tes HIV.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "psoriasis",
+      "howToDistinguish": "Psoriasis: plak tebal skuama keperakan berbatas tegas, siku/lutut, kuku pitting.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_kapitis",
+      "howToDistinguish": "Tinea kapitis: alopesia dengan rambut patah, KOH hifa/spora pada rambut.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "dermatitis_atopik",
+      "howToDistinguish": "Dermatitis atopik bayi: sangat gatal, pipi & ekstensor, riwayat atopi.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": ["Eritema dengan skuama kuning berminyak di area sebore", "Bayi: cradle cap", "Kronik kambuhan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "pemberat_peringan", "riwayat_penyakit", "riwayat_obat", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Distribusi sebore & morfologi." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "kerokan_koh", "reason": "Bila ragu dengan tinea." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Sampo/krim antijamur, steroid ringan singkat; bayi: lunakkan krusta; kontrol 2–4 minggu."
+    }
+  ],
+  "management": [
+    "Sampo ketokonazol 2%/selenium sulfida/zinc pirition 2–3 × seminggu (diamkan 5 menit).",
+    "Wajah: krim ketokonazol 2%; kortikosteroid ringan (hidrokortison 1%) jangka pendek saat kambuh.",
+    "Bayi: oles minyak zaitun/kelapa untuk melunakkan krusta, sisir lembut, keramas sampo bayi.",
+    "Kelola stres & tidur."
+  ],
+  "approach": ["Kenali distribusi sebore; singkirkan psoriasis & tinea.", "Kasus berat mendadak: skrining HIV."]
+}

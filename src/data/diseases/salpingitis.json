@@ -2,7 +2,7 @@
   "id": "salpingitis",
   "name": "Salpingitis (penyakit radang panggul)",
   "aliases": ["PID", "Penyakit radang panggul", "Radang saluran telur", "Adneksitis"],
-  "system": "Saluran kemih & kelamin",
+  "system": "Kelamin & reproduksi",
   "skdiLevel": "4A",
   "danger": "tinggi",
   "prevalenceWeight": 0.8,

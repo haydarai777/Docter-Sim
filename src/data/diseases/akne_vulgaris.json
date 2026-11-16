@@ -1,0 +1,168 @@
+{
+  "id": "akne_vulgaris",
+  "name": "Akne vulgaris ringan",
+  "aliases": ["Jerawat", "Acne", "Akne"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Peradangan kronik unit pilosebasea pada remaja-dewasa muda: komedo terbuka (blackhead) & tertutup (whitehead), papul, pustul di wajah, dada, punggung. Ringan: dominan komedo atau papulopustul sedikit tanpa nodul/kista. Pencetus: hormon (menjelang haid), kosmetik komedogenik, memencet, stres. Terapi topikal: retinoid ± benzoil peroksida ± antibiotik topikal (kombinasi), 8–12 minggu.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 12, "max": 18, "weight": 5 }, { "min": 19, "max": 30, "weight": 3 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "pelajar", "weight": 4 }, { "id": "mahasiswa", "weight": 3 }],
+    "occupationBias": 0.5
+  },
+  "traits": [
+    { "id": "kosmetik", "probability": 0.35, "when": { "sex": "female" } },
+    { "id": "memencet", "probability": 0.6 },
+    { "id": "pencetus_haid", "probability": 0.5, "when": { "sex": "female" } }
+  ],
+  "traitLabels": {
+    "kosmetik": "Kosmetik/krim tebal komedogenik.",
+    "memencet": "Kebiasaan memencet jerawat.",
+    "pencetus_haid": "Kambuh menjelang haid."
+  },
+  "symptoms": [{ "id": "jerawat", "probability": 1 }],
+  "chiefComplaint": { "primary": ["jerawat"] },
+  "misattributions": ["kotor", "makanan berminyak", "masa puber biasa"],
+  "fears": ["bekas jerawat permanen", "minder"],
+  "anamnesis": {
+    "onset": [{ "text": "Sejak SMP, Dok, jerawatan di muka, kambuh-kambuhan.", "clue": "Onset remaja, kronik" }],
+    "pola": [
+      {
+        "text": "Makin banyak menjelang haid, Dok.",
+        "when": { "traits": ["pencetus_haid"] },
+        "clue": "Kambuh menjelang haid"
+      },
+      {
+        "text": "Kalau stres ujian makin banyak, Dok.",
+        "when": { "notTraits": ["pencetus_haid"] },
+        "clue": "Memberat saat stres"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Pakai krim pemutih dan foundation tebal tiap hari, Dok.",
+        "when": { "traits": ["kosmetik"] },
+        "clue": "Kosmetik komedogenik"
+      },
+      { "text": "Sering saya pencet-pencet, Dok.", "when": { "traits": ["memencet"] }, "clue": "Memencet jerawat" },
+      { "text": "Cuci muka pakai sabun biasa, Dok.", "when": { "notTraits": ["kosmetik", "memencet"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Haid saya teratur, Dok, nggak ada bulu berlebih.",
+        "when": { "sex": "female" },
+        "clue": "Tanpa tanda hiperandrogenisme"
+      },
+      {
+        "text": "Nggak pernah minum obat steroid atau suplemen otot, Dok.",
+        "when": { "sex": "male" },
+        "clue": "Tanpa pencetus obat"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Nggak ada benjolan besar yang sakit, Dok, cuma bintik-bintik dan komedo.",
+        "clue": "Tanpa nodul/kista (ringan)"
+      }
+    ]
+  },
+  "findings": [
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Wajah (dahi, pipi, dagu)"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Komedo terbuka & tertutup multipel, papul eritematosa < 10, beberapa pustul; tanpa nodul/kista"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "tanda_khusus",
+      "values": ["Hiperpigmentasi pascainflamasi bekas memencet"]
+    },
+    { "tool": "status_dermatologis", "param": "rambut_kuku", "values": ["Tidak ada hirsutisme"] }
+  ],
+  "differentials": [
+    {
+      "id": "sindrom_ovarium_polikistik",
+      "howToDistinguish": "PCOS: akne membandel dengan haid tidak teratur, hirsutisme, obesitas — evaluasi lanjut.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_perioral",
+      "howToDistinguish": "Dermatitis perioral: papul-pustul sekitar mulut tanpa komedo, riwayat steroid topikal.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "folikulitis",
+      "howToDistinguish": "Folikulitis: pustul folikular monomorf tanpa komedo.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "rosasea",
+      "howToDistinguish": "Rosasea: dewasa, flushing, eritema & telangiektasis tanpa komedo.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Komedo terbuka/tertutup dengan papul-pustul sedikit di wajah remaja",
+    "Tanpa nodul/kista (ringan)",
+    "Pencetus: hormon, kosmetik, memencet"
+  ],
+  "teachingPoints": [
+    "Efek terapi akne baru tampak 6–8 minggu; retinoid dapat memerah/mengelupas di awal — oles tipis malam hari.",
+    "Antibiotik topikal selalu dikombinasi benzoil peroksida untuk mencegah resistansi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)",
+      "Kelompok Studi Dermatologi Kosmetik Indonesia. Konsensus Akne (2019)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "kebiasaan", "riwayat_penyakit", "keparahan", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Jenis & jumlah lesi (derajat akne), hirsutisme." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Terapi topikal kombinasi 8–12 minggu, edukasi perawatan kulit; kontrol 6–8 minggu."
+    }
+  ],
+  "management": [
+    "Cuci muka 2 × sehari dengan pembersih lembut; kosmetik non-komedogenik; jangan memencet.",
+    "Retinoid topikal (tretinoin 0,025%) malam hari ± benzoil peroksida 2,5–5% pagi.",
+    "Papulopustul: tambahkan klindamisin topikal (selalu bersama benzoil peroksida).",
+    "Tabir surya; rujuk bila nodulokistik/berparut."
+  ],
+  "approach": ["Tentukan derajat akne (komedonal, papulopustular, nodulokistik).", "Cari pencetus & tanda hiperandrogenisme."]
+}

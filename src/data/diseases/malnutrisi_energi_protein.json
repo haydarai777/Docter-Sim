@@ -2,7 +2,7 @@
   "id": "malnutrisi_energi_protein",
   "name": "Malnutrisi energi-protein",
   "aliases": ["Gizi buruk", "Gizi kurang", "Marasmus", "Kwashiorkor", "MEP", "Wasting"],
-  "system": "Anak",
+  "system": "Endokrin & metabolik",
   "skdiLevel": "4A",
   "danger": "tinggi",
   "prevalenceWeight": 0.8,

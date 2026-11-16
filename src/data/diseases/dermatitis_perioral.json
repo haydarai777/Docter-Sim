@@ -1,0 +1,139 @@
+{
+  "id": "dermatitis_perioral",
+  "name": "Dermatitis perioral",
+  "aliases": ["Dermatitis periorifisial", "Ruam sekitar mulut"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.5,
+  "summary": "Erupsi papul-papulovesikel-pustul kecil eritematosa berkelompok di sekitar mulut (juga nasolabial/periokular) dengan zona bebas lesi di tepi bibir (vermilion), rasa terbakar/gatal ringan; tersering perempuan muda, dipicu pemakaian krim kortikosteroid wajah, krim/kosmetik tebal, atau pasta gigi berfluorida. Terapi: hentikan steroid ('zero therapy', dapat flare sementara), metronidazol/eritromisin topikal, tetrasiklin oral bila berat.",
+  "presentationDay": [14, 90],
+  "demographics": { "ageBands": [{ "min": 15, "max": 25, "weight": 3 }, { "min": 26, "max": 45, "weight": 4 }], "maleRatio": 0.15 },
+  "traits": [{ "id": "steroid_topikal", "probability": 0.65 }],
+  "traitLabels": { "steroid_topikal": "Pemakaian krim kortikosteroid/krim pemutih bersteroid di wajah." },
+  "symptoms": [
+    { "id": "ruam_kulit", "probability": 1 },
+    { "id": "nyeri_terbakar_kulit", "probability": 0.5 },
+    { "id": "gatal_kulit", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit"], "extraPool": ["nyeri_terbakar_kulit"] },
+  "clueSymptoms": ["nyeri_terbakar_kulit", "gatal_kulit"],
+  "misattributions": ["jerawat", "alergi lipstik", "panas dalam"],
+  "fears": ["bekas di wajah"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah sebulan, Dok, bintil-bintil merah kecil di sekitar mulut, rasanya panas.",
+        "clue": "Papul sekitar mulut, terbakar"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Saya pakai krim pemutih dari klinik kecantikan berbulan-bulan, Dok, katanya ada steroidnya. Kalau dihentikan makin merah.",
+        "when": { "traits": ["steroid_topikal"] },
+        "clue": "Krim kortikosteroid wajah jangka panjang"
+      },
+      {
+        "text": "Pakai pelembap tebal dan foundation tiap hari, Dok.",
+        "when": { "notTraits": ["steroid_topikal"] },
+        "clue": "Kosmetik tebal"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di sekitar mulut dan samping hidung, Dok, tapi pinggir bibirnya bersih.",
+        "clue": "Perioral dengan sparing vermilion"
+      }
+    ],
+    "karakter": [{ "text": "Nggak ada komedo, Dok, beda sama jerawat.", "clue": "Tanpa komedo" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "values": ["Perioral & nasolabial, zona bebas di tepi bibir (vermilion)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Papul-papulovesikel & pustul eritematosa kecil berkelompok di atas dasar eritema dengan skuama halus"]
+    },
+    { "tool": "kerokan_koh", "param": "hasil", "values": ["Tidak ditemukan hifa, spora, maupun pseudohifa"] }
+  ],
+  "differentials": [
+    {
+      "id": "lupus_kutan",
+      "howToDistinguish": "Lupus kutan: plak fotosensitif/ruam kupu-kupu dengan atrofi; gejala sistemik — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "akne_vulgaris",
+      "howToDistinguish": "Akne: komedo & distribusi wajah luas.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "howToDistinguish": "Dermatitis seboroik: skuama kuning berminyak di nasolabial & alis.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_fasialis",
+      "howToDistinguish": "Tinea fasialis: plak anular bertepi aktif, KOH positif.",
+      "excludeBy": { "tools": ["kerokan_koh"] }
+    }
+  ],
+  "keyFindings": [
+    "Papul-pustul kecil berkelompok perioral dengan sparing vermilion",
+    "Riwayat krim steroid/kosmetik tebal",
+    "Tanpa komedo"
+  ],
+  "teachingPoints": ["Hentikan steroid topikal wajah — gejala dapat memburuk 1–2 minggu (rebound) sebelum membaik."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "lokasi", "karakter", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Distribusi perioral & sparing vermilion." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "pendukung", "reason": "Menyingkirkan tinea." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Hentikan steroid & kosmetik tebal, metronidazol topikal; tetrasiklin oral bila berat; kontrol 4 minggu."
+    }
+  ],
+  "management": [
+    "Hentikan krim kortikosteroid & kosmetik tebal (zero therapy); pembersih lembut saja.",
+    "Metronidazol 0,75–1% krim atau eritromisin topikal 2 × sehari 4–8 minggu.",
+    "Berat: doksisiklin/tetrasiklin oral 6–8 minggu (eritromisin bila hamil)."
+  ],
+  "approach": ["Tanyakan riwayat krim wajah; perhatikan sparing vermilion."]
+}

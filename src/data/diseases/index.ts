@@ -10,23 +10,21 @@
  *
  * ⚠ Semua konten medis berstatus BELUM_DITINJAU_DOKTER sampai ditinjau dokter.
  */
-// Anak
-import infeksiUmbilikus from './infeksi_umbilikus.json';
-import malnutrisiEnergiProtein from './malnutrisi_energi_protein.json';
 // Darah & imunologi
 import anemiaDefisiensiBesi from './anemia_defisiensi_besi.json';
+import hiv from './hiv.json';
+import limfadenitis from './limfadenitis.json';
+import reaksiAnafilaktik from './reaksi_anafilaktik.json';
 // Endokrin & metabolik
 import defisiensiMineral from './defisiensi_mineral.json';
 import defisiensiVitamin from './defisiensi_vitamin.json';
 import dislipidemia from './dislipidemia.json';
 import dmTipe1 from './dm_tipe1.json';
 import dmTipe2 from './dm_tipe2.json';
+import hiperurisemia from './hiperurisemia.json';
 import hipoglikemia from './hipoglikemia.json';
+import malnutrisiEnergiProtein from './malnutrisi_energi_protein.json';
 import obesitas from './obesitas.json';
-// Infeksi & imunologi
-import hiv from './hiv.json';
-import limfadenitis from './limfadenitis.json';
-import reaksiAnafilaktik from './reaksi_anafilaktik.json';
 // Infeksi tropis
 import demamTifoid from './demam_tifoid.json';
 import dengue from './dengue.json';
@@ -39,6 +37,15 @@ import hipertensi from './hipertensi.json';
 // Jiwa
 import gangguanSomatoform from './gangguan_somatoform.json';
 import insomnia from './insomnia.json';
+// Kelamin & reproduksi
+import fimosis from './fimosis.json';
+import gonore from './gonore.json';
+import parafimosis from './parafimosis.json';
+import salpingitis from './salpingitis.json';
+import uretritisNonGonore from './uretritis_non_gonore.json';
+import vaginitis from './vaginitis.json';
+import vaginosisBakterialis from './vaginosis_bakterialis.json';
+import vulvitis from './vulvitis.json';
 // Kepala & saraf
 import bellsPalsy from './bells_palsy.json';
 import bppv from './bppv.json';
@@ -48,23 +55,34 @@ import tensionHeadache from './tension_headache.json';
 import tetanus from './tetanus.json';
 // Kulit & kelamin
 import absesFolikel from './abses_folikel.json';
+import akneVulgaris from './akne_vulgaris.json';
 import alergiMakanan from './alergi_makanan.json';
 import cutaneousLarvaMigrans from './cutaneous_larva_migrans.json';
+import dermatitisAtopik from './dermatitis_atopik.json';
+import dermatitisKontakIritan from './dermatitis_kontak_iritan.json';
+import dermatitisNumularis from './dermatitis_numularis.json';
+import dermatitisPerioral from './dermatitis_perioral.json';
+import dermatitisSeboroik from './dermatitis_seboroik.json';
 import ektima from './ektima.json';
 import erisipelas from './erisipelas.json';
 import eritrasma from './eritrasma.json';
+import erupsiObat from './erupsi_obat.json';
 import folikulitis from './folikulitis.json';
 import furunkelKarbunkel from './furunkel_karbunkel.json';
 import herpesSimpleks from './herpes_simpleks.json';
 import herpesZoster from './herpes_zoster.json';
+import hidradenitisSupurativa from './hidradenitis_supurativa.json';
 import impetigo from './impetigo.json';
 import kandidosisKutis from './kandidosis_kutis.json';
 import kusta from './kusta.json';
 import lipoma from './lipoma.json';
+import miliaria from './miliaria.json';
 import moluskumKontagiosum from './moluskum_kontagiosum.json';
 import morbili from './morbili.json';
+import napkinEczema from './napkin_eczema.json';
 import pedikulosisKapitis from './pedikulosis_kapitis.json';
 import pedikulosisPubis from './pedikulosis_pubis.json';
+import pitiriasisRosea from './pitiriasis_rosea.json';
 import pitiriasisVersikolor from './pitiriasis_versikolor.json';
 import reaksiGigitanSerangga from './reaksi_gigitan_serangga.json';
 import sifilis from './sifilis.json';
@@ -79,6 +97,7 @@ import tineaManus from './tinea_manus.json';
 import tineaPedis from './tinea_pedis.json';
 import tineaUnguium from './tinea_unguium.json';
 import ulkusTungkai from './ulkus_tungkai.json';
+import urtikariaAkut from './urtikaria_akut.json';
 import varisela from './varisela.json';
 import verukaVulgaris from './veruka_vulgaris.json';
 // Mata
@@ -103,8 +122,6 @@ import invertedNipple from './inverted_nipple.json';
 import kehamilanNormal from './kehamilan_normal.json';
 import mastitis from './mastitis.json';
 import rupturPerineum from './ruptur_perineum.json';
-// Otot & sendi
-import hiperurisemia from './hiperurisemia.json';
 // Pencernaan
 import askariasis from './askariasis.json';
 import cacingTambang from './cacing_tambang.json';
@@ -115,6 +132,7 @@ import gastroenteritisAkut from './gastroenteritis_akut.json';
 import gerd from './gerd.json';
 import hemoroid from './hemoroid.json';
 import hepatitisA from './hepatitis_a.json';
+import infeksiUmbilikus from './infeksi_umbilikus.json';
 import intoleransiMakanan from './intoleransi_makanan.json';
 import kandidiasisMulut from './kandidiasis_mulut.json';
 import keracunanMakanan from './keracunan_makanan.json';
@@ -133,16 +151,7 @@ import tbParu from './tb_paru.json';
 // Saluran kemih
 import batuSaluranKemih from './batu_saluran_kemih.json';
 import isk from './isk.json';
-// Saluran kemih & kelamin
-import fimosis from './fimosis.json';
-import gonore from './gonore.json';
-import parafimosis from './parafimosis.json';
 import pielonefritis from './pielonefritis.json';
-import salpingitis from './salpingitis.json';
-import uretritisNonGonore from './uretritis_non_gonore.json';
-import vaginitis from './vaginitis.json';
-import vaginosisBakterialis from './vaginosis_bakterialis.json';
-import vulvitis from './vulvitis.json';
 // Telinga, hidung & tenggorok
 import bendaAsingTht from './benda_asing_tht.json';
 import epistaksis from './epistaksis.json';
@@ -157,21 +166,26 @@ import rinitisAlergi from './rinitis_alergi.json';
 import rinitisVasomotor from './rinitis_vasomotor.json';
 import serumenProp from './serumen_prop.json';
 import tonsilitis from './tonsilitis.json';
+// Trauma & forensik
+import kekerasanTajam from './kekerasan_tajam.json';
+import kekerasanTumpul from './kekerasan_tumpul.json';
+import lukaBakar from './luka_bakar.json';
+import vulnus from './vulnus.json';
 
 export const DISEASE_FILES: unknown[] = [
-  infeksiUmbilikus,
-  malnutrisiEnergiProtein,
   anemiaDefisiensiBesi,
+  hiv,
+  limfadenitis,
+  reaksiAnafilaktik,
   defisiensiMineral,
   defisiensiVitamin,
   dislipidemia,
   dmTipe1,
   dmTipe2,
+  hiperurisemia,
   hipoglikemia,
+  malnutrisiEnergiProtein,
   obesitas,
-  hiv,
-  limfadenitis,
-  reaksiAnafilaktik,
   demamTifoid,
   dengue,
   filariasis,
@@ -181,6 +195,14 @@ export const DISEASE_FILES: unknown[] = [
   hipertensi,
   gangguanSomatoform,
   insomnia,
+  fimosis,
+  gonore,
+  parafimosis,
+  salpingitis,
+  uretritisNonGonore,
+  vaginitis,
+  vaginosisBakterialis,
+  vulvitis,
   bellsPalsy,
   bppv,
   kejangDemam,
@@ -188,23 +210,34 @@ export const DISEASE_FILES: unknown[] = [
   tensionHeadache,
   tetanus,
   absesFolikel,
+  akneVulgaris,
   alergiMakanan,
   cutaneousLarvaMigrans,
+  dermatitisAtopik,
+  dermatitisKontakIritan,
+  dermatitisNumularis,
+  dermatitisPerioral,
+  dermatitisSeboroik,
   ektima,
   erisipelas,
   eritrasma,
+  erupsiObat,
   folikulitis,
   furunkelKarbunkel,
   herpesSimpleks,
   herpesZoster,
+  hidradenitisSupurativa,
   impetigo,
   kandidosisKutis,
   kusta,
   lipoma,
+  miliaria,
   moluskumKontagiosum,
   morbili,
+  napkinEczema,
   pedikulosisKapitis,
   pedikulosisPubis,
+  pitiriasisRosea,
   pitiriasisVersikolor,
   reaksiGigitanSerangga,
   sifilis,
@@ -219,6 +252,7 @@ export const DISEASE_FILES: unknown[] = [
   tineaPedis,
   tineaUnguium,
   ulkusTungkai,
+  urtikariaAkut,
   varisela,
   verukaVulgaris,
   astigmatisma,
@@ -241,7 +275,6 @@ export const DISEASE_FILES: unknown[] = [
   kehamilanNormal,
   mastitis,
   rupturPerineum,
-  hiperurisemia,
   askariasis,
   cacingTambang,
   disentri,
@@ -251,6 +284,7 @@ export const DISEASE_FILES: unknown[] = [
   gerd,
   hemoroid,
   hepatitisA,
+  infeksiUmbilikus,
   intoleransiMakanan,
   kandidiasisMulut,
   keracunanMakanan,
@@ -267,15 +301,7 @@ export const DISEASE_FILES: unknown[] = [
   tbParu,
   batuSaluranKemih,
   isk,
-  fimosis,
-  gonore,
-  parafimosis,
   pielonefritis,
-  salpingitis,
-  uretritisNonGonore,
-  vaginitis,
-  vaginosisBakterialis,
-  vulvitis,
   bendaAsingTht,
   epistaksis,
   faringitis,
@@ -289,4 +315,8 @@ export const DISEASE_FILES: unknown[] = [
   rinitisVasomotor,
   serumenProp,
   tonsilitis,
+  kekerasanTajam,
+  kekerasanTumpul,
+  lukaBakar,
+  vulnus,
 ];

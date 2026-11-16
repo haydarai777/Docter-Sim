@@ -1,0 +1,172 @@
+{
+  "id": "napkin_eczema",
+  "name": "Napkin eczema (dermatitis popok)",
+  "aliases": ["Ruam popok", "Diaper rash", "Dermatitis popok", "Dermatitis area popok"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Dermatitis kontak iritan pada area popok bayi akibat kelembapan, gesekan, urin & feses (amonia, enzim feses), sering memburuk saat diare. Eritema mengilat pada permukaan cembung (bokong, genital, paha atas) dengan lipatan TIDAK terkena. Bila lipatan ikut terkena dengan lesi satelit → infeksi Candida sekunder. Terapi: popok sering diganti, salep pelindung (zinc oxide), antijamur bila kandida.",
+  "presentationDay": [2, 14],
+  "demographics": {
+    "ageBands": [{ "min": 0, "max": 0, "weight": 4 }, { "min": 1, "max": 2, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "bayi", "weight": 3 }, { "id": "balita", "weight": 1 }],
+    "occupationBias": 0.5,
+    "infantAge": { "unit": "bulan", "range": [2, 11] }
+  },
+  "traits": [{ "id": "kandida", "probability": 0.3 }, { "id": "diare_baru", "probability": 0.3 }],
+  "traitLabels": { "kandida": "Infeksi Candida sekunder.", "diare_baru": "Baru diare." },
+  "symptoms": [
+    { "id": "diare", "probability": 1, "when": { "traits": ["diare_baru"] } },
+    { "id": "ruam_popok", "probability": 1 },
+    { "id": "rewel", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_popok"], "extraPool": ["rewel"] },
+  "clueSymptoms": ["rewel", "diare"],
+  "misattributions": ["alergi popok", "kepanasan", "tumbuh gigi"],
+  "fears": ["infeksi", "alergi susu"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah lima hari, Dok, pantat dan kemaluannya merah, rewel kalau ganti popok.",
+        "clue": "Akut di area popok"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Popoknya diganti kalau sudah penuh saja, Dok, kadang semalaman. Dibersihkan pakai tisu basah wangi.",
+        "clue": "Popok jarang diganti, tisu basah beralkohol/wangi"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Tiga hari lalu dia mencret, Dok.",
+        "reveals": ["diare"],
+        "when": { "traits": ["diare_baru"], "symptoms": ["diare"] },
+        "clue": "Diare memperburuk"
+      },
+      { "text": "Nggak ada mencret, Dok.", "when": { "notTraits": ["diare_baru"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Merahnya sekarang sampai lipatan paha, ada bintil-bintil kecil di pinggirnya, Dok.",
+        "when": { "traits": ["kandida"] },
+        "clue": "Lipatan terkena dengan satelit (kandida)"
+      },
+      {
+        "text": "Lipatan pahanya bersih, Dok, cuma bagian yang kena popok.",
+        "when": { "notTraits": ["kandida"] },
+        "clue": "Lipatan tidak terkena (iritan)"
+      }
+    ],
+    "keparahan": [{ "text": "Masih mau menyusu, nggak demam, Dok.", "clue": "Tanpa gejala sistemik" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["kandida"] },
+      "values": ["Bokong, genital, paha atas (permukaan cembung); lipatan tidak terkena"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["kandida"] },
+      "diagnostic": true,
+      "values": ["Eritema mengilat, maserasi, skuama halus"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["kandida"] },
+      "values": ["Bokong, genital, & lipatan inguinal"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["kandida"] },
+      "diagnostic": true,
+      "values": ["Eritema merah terang basah termasuk lipatan dengan lesi satelit papul-pustul"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "when": { "traits": ["kandida"] },
+      "diagnostic": true,
+      "values": ["Pseudohifa & blastospora (+)"]
+    },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak sehat, aktif"] }
+  ],
+  "differentials": [
+    {
+      "id": "ssss",
+      "howToDistinguish": "SSSS/infeksi kulit berat: eritema meluas, bula, Nikolsky (+), bayi tampak sakit & demam — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis", "keadaan_umum"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Kandidosis: lipatan terkena dengan lesi satelit — butuh antijamur.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "howToDistinguish": "Dermatitis seboroik bayi: lipatan terkena, skuama kuning berminyak, kulit kepala ikut.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Bayi dengan eritema di area popok permukaan cembung",
+    "Lipatan tidak terkena (iritan) / terkena dengan satelit (kandida)",
+    "Popok jarang diganti, diare"
+  ],
+  "teachingPoints": [
+    "ABCDE dermatitis popok: Air (biarkan tanpa popok), Barrier (zinc oxide), Cleansing (air hangat), Diaper (ganti sering), Education."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "progresi", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Lipatan & lesi satelit." },
+      { "tool": "keadaan_umum", "role": "pendukung", "reason": "Tanda sakit sistemik." }
+    ],
+    "tests": [{ "tool": "kerokan_koh", "role": "pendukung", "when": { "traits": ["kandida"] }, "reason": "Konfirmasi kandida." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Perawatan popok, salep pelindung, antijamur bila kandida; kontrol 1 minggu." }],
+  "management": [
+    "Ganti popok sesering mungkin (segera setelah basah/BAB), bersihkan dengan air hangat, keringkan, beri waktu tanpa popok.",
+    "Salep pelindung zinc oxide tebal setiap ganti popok; hindari tisu basah beralkohol/wangi & bedak.",
+    "Kandida: krim mikonazol/nistatin 2 × sehari 1–2 minggu.",
+    "Hidrokortison 1% singkat (≤ 1 minggu) bila sangat meradang."
+  ],
+  "approach": ["Perhatikan keterlibatan lipatan & satelit.", "Edukasi perawatan popok."]
+}

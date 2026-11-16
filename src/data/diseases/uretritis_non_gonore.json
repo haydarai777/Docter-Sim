@@ -2,7 +2,7 @@
   "id": "uretritis_non_gonore",
   "name": "Sindrom duh genital non-gonore (uretritis/servisitis non-gonore)",
   "aliases": ["Uretritis non-gonore", "UNG", "Klamidia", "Duh genital non gonore"],
-  "system": "Saluran kemih & kelamin",
+  "system": "Kelamin & reproduksi",
   "skdiLevel": "4A",
   "danger": "rendah",
   "prevalenceWeight": 0.8,

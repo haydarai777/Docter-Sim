@@ -1,0 +1,132 @@
+{
+  "id": "dermatitis_numularis",
+  "name": "Dermatitis numularis",
+  "aliases": ["Eksim koin", "Nummular eczema", "Dermatitis diskoid"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Dermatitis dengan plak berbentuk koin (numular) berbatas tegas berisi papulovesikel, eksudatif lalu berkrusta & berskuama, sangat gatal, terutama di tungkai & ekstensor lengan; sering pada dewasa/lansia dengan kulit kering, musim kering, atau setelah trauma ringan. Tidak ada central healing (berbeda dari tinea) dan KOH negatif. Kronik-kambuhan.",
+  "presentationDay": [14, 120],
+  "demographics": { "ageBands": [{ "min": 18, "max": 44, "weight": 2 }, { "min": 45, "max": 75, "weight": 4 }], "maleRatio": 0.6 },
+  "traits": [{ "id": "infeksi_sekunder", "probability": 0.2 }],
+  "traitLabels": { "infeksi_sekunder": "Infeksi sekunder (eksudat purulen)." },
+  "symptoms": [
+    { "id": "ruam_kulit", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 1 },
+    { "id": "kulit_kering", "probability": 0.6 },
+    { "id": "koreng", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "kulit_kering", "koreng"],
+  "misattributions": ["kurap", "alergi", "kudis"],
+  "fears": ["kurap menular", "kanker kulit"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah sebulan, Dok, bulat-bulat seperti koin di kaki, gatal sekali, kadang basah.",
+        "clue": "Subakut, plak koin eksudatif"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bulatnya penuh bintil berair, tengahnya nggak sembuh, Dok, beda sama kurap.",
+        "clue": "Tanpa central healing"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Sudah pakai salep kurap, Dok, nggak sembuh.", "clue": "Gagal antijamur" }],
+    "kebiasaan": [
+      {
+        "text": "Kulit saya memang kering, Dok, sering mandi air panas pakai sabun antiseptik.",
+        "clue": "Kulit kering & sabun keras"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "tanda_khusus",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Eksudat purulen & krusta kuning (infeksi sekunder)"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Tungkai bawah & punggung tangan"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": [
+        "Plak eritematosa berbentuk koin 2–4 cm berbatas tegas dengan papulovesikel, eksudat & krusta, tanpa central healing"
+      ]
+    },
+    { "tool": "kerokan_koh", "param": "hasil", "values": ["Tidak ditemukan hifa, spora, maupun pseudohifa"] }
+  ],
+  "differentials": [
+    {
+      "id": "karsinoma_sel_skuamosa_kulit",
+      "howToDistinguish": "Penyakit Bowen/keganasan: plak tunggal persisten tidak respons terapi pada lansia — biopsi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["riwayat_obat"] }
+    },
+    {
+      "id": "tinea_korporis",
+      "howToDistinguish": "Tinea korporis: tepi aktif dengan central healing, KOH positif.",
+      "excludeBy": { "tools": ["kerokan_koh", "status_dermatologis"] }
+    },
+    {
+      "id": "psoriasis",
+      "howToDistinguish": "Psoriasis: skuama tebal keperakan, Auspitz, di siku/lutut/kulit kepala.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Plak koin berbatas tegas, papulovesikel eksudatif, sangat gatal",
+    "Tanpa central healing; KOH negatif",
+    "Kulit kering"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_obat", "kebiasaan", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi numular." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "kunci", "reason": "Menyingkirkan tinea." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Kortikosteroid topikal potensi sedang-tinggi, emolien, antihistamin; kontrol 2 minggu."
+    }
+  ],
+  "management": [
+    "Kortikosteroid topikal potensi sedang-tinggi (betametason 0,1%) ± oklusi 2–3 minggu.",
+    "Kompres NaCl untuk lesi basah; antibiotik bila infeksi sekunder.",
+    "Emolien rutin, mandi air hangat singkat, sabun lembut; antihistamin untuk gatal."
+  ],
+  "approach": ["Plak koin gatal → KOH untuk menyingkirkan tinea."]
+}

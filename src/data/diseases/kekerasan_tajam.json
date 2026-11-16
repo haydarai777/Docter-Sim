@@ -1,0 +1,248 @@
+{
+  "id": "kekerasan_tajam",
+  "name": "Luka akibat kekerasan tajam",
+  "aliases": ["Luka iris", "Luka bacok", "Luka sayat", "Luka tusuk senjata tajam", "Kekerasan tajam"],
+  "system": "Trauma & forensik",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.8,
+  "summary": "Cedera akibat benda bermata tajam (pisau, golok, pecahan kaca): luka iris/sayat (panjang > dalam), luka tusuk (dalam > panjang), luka bacok. Ciri: tepi rata, kedua sudut lancip (atau satu tumpul pada pisau bermata satu), tanpa jembatan jaringan, perdarahan sering banyak. Luka tangkis di telapak/lengan bawah menandakan perlawanan. Luka tusuk dada/perut berisiko menembus rongga (syok, pneumotoraks, eviserasi) — rujuk segera, jangan cabut benda tertancap. Dokumentasi untuk Visum et Repertum.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 50, "weight": 3 },
+      { "min": 51, "max": 65, "weight": 1 }
+    ],
+    "maleRatio": 0.75
+  },
+  "traits": [
+    { "id": "tusuk_rongga", "probability": 0.12 },
+    { "id": "luka_tangkis", "probability": 0.4 },
+    { "id": "permintaan_ver", "probability": 0.4 },
+    { "id": "tt_tidak_lengkap", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "tusuk_rongga": "Luka tusuk menembus rongga perut.",
+    "luka_tangkis": "Luka tangkis.",
+    "permintaan_ver": "Permintaan visum dari penyidik.",
+    "tt_tidak_lengkap": "Imunisasi tetanus tidak lengkap."
+  },
+  "symptoms": [
+    { "id": "nyeri_perut", "probability": 1, "when": { "traits": ["tusuk_rongga"] } },
+    { "id": "mau_pingsan", "probability": 0.7, "when": { "traits": ["tusuk_rongga"] } },
+    { "id": "luka_robek", "probability": 1 },
+    { "id": "nyeri_luka", "probability": 1 },
+    { "id": "cemas", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["luka_robek"], "extraPool": ["nyeri_luka"] },
+  "clueSymptoms": ["nyeri_luka", "nyeri_perut", "mau_pingsan", "cemas"],
+  "misattributions": ["luka kecil", "kena pisau dapur"],
+  "fears": ["kehabisan darah", "dilaporkan", "pelaku datang lagi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Satu jam lalu, Dok, saya disabet pisau orang waktu ribut di pasar.",
+        "when": { "notTraits": ["tusuk_rongga"] },
+        "clue": "Disabet pisau 1 jam lalu"
+      },
+      {
+        "text": "Setengah jam lalu, Dok, perut kanan saya ditusuk pisau.",
+        "reveals": ["nyeri_perut"],
+        "when": { "traits": ["tusuk_rongga"], "symptoms": ["nyeri_perut"] },
+        "clue": "Luka tusuk perut 30 menit lalu"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di lengan kiri, Dok, telapak tangan kanan juga tergores waktu saya menangkis.",
+        "when": { "traits": ["luka_tangkis"] },
+        "clue": "Luka tangkis di telapak/lengan"
+      },
+      { "text": "Di lengan kiri, Dok.", "when": { "notTraits": ["luka_tangkis", "tusuk_rongga"] } },
+      {
+        "text": "Di perut kanan atas, Dok, perut makin sakit dan saya rasanya mau pingsan.",
+        "reveals": ["mau_pingsan"],
+        "when": { "traits": ["tusuk_rongga"], "symptoms": ["mau_pingsan"] },
+        "clue": "Perut nyeri & presinkop (curiga perdarahan dalam)"
+      }
+    ],
+    "harapan": [
+      {
+        "text": "Saya diantar polisi, Dok, katanya perlu visum.",
+        "when": { "traits": ["permintaan_ver"] },
+        "clue": "Permintaan visum penyidik"
+      },
+      { "text": "Saya mau diobati dulu, Dok.", "when": { "notTraits": ["permintaan_ver"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Seingat saya belum pernah suntik tetanus sejak SD, Dok.",
+        "when": { "traits": ["tt_tidak_lengkap"] },
+        "clue": "Imunisasi tetanus tidak lengkap"
+      },
+      { "text": "Tahun lalu sudah suntik tetanus, Dok.", "when": { "notTraits": ["tt_tidak_lengkap"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Darahnya tadi deras, Dok, sudah saya tekan pakai kain, sekarang agak berhenti.",
+        "when": { "notTraits": ["tusuk_rongga"] },
+        "clue": "Perdarahan berkurang dengan penekanan"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "notTraits": ["tusuk_rongga"] },
+      "diagnostic": true,
+      "values": [
+        "Luka terbuka 5 cm di lengan bawah kiri sisi ekstensor, tepi rata, kedua sudut lancip, tanpa jembatan jaringan, dasar otot (luka iris)"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "traits": ["tusuk_rongga"] },
+      "diagnostic": true,
+      "values": [
+        "Luka tusuk 2 cm di regio hipokondrium kanan, tepi rata, satu sudut lancip & satu tumpul, kedalaman belum dapat ditentukan, tanpa eviserasi"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "traits": ["luka_tangkis"] },
+      "values": ["Luka iris kecil 2 cm di telapak tangan kanan (luka tangkis)"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "distal",
+      "when": { "notTraits": ["tusuk_rongga"] },
+      "values": ["Sensorik, motorik, dan pulsasi distal baik"]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["tusuk_rongga"] }, "range": [82, 95] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["tusuk_rongga"] }, "range": [115, 135] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "when": { "traits": ["tusuk_rongga"] },
+      "values": ["Nyeri tekan seluruh perut dengan defans muskular"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["tusuk_rongga"] },
+      "values": ["Tampak sakit berat, pucat, gelisah"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "akral",
+      "when": { "traits": ["tusuk_rongga"] },
+      "values": ["Dingin, lembap"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "trauma_tembus_abdomen",
+      "howToDistinguish": "Trauma tembus rongga: syok, defans, eviserasi, sesak — resusitasi, jangan cabut benda tertancap, rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "cedera_tendon_saraf",
+      "howToDistinguish": "Cedera tendon/saraf/pembuluh pada luka ekstremitas — nilai distal; rujuk bila terganggu.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_lokalis"] }
+    },
+    {
+      "id": "kekerasan_tumpul",
+      "howToDistinguish": "Kekerasan tumpul: tepi tidak rata, jembatan jaringan, memar di sekitar luka.",
+      "excludeBy": { "tools": ["status_lokalis"] }
+    }
+  ],
+  "keyFindings": [
+    "Riwayat serangan benda tajam",
+    "Luka tepi rata, sudut lancip, tanpa jembatan jaringan; luka tangkis",
+    "Nilai penetrasi rongga, perdarahan, neurovaskular distal"
+  ],
+  "teachingPoints": [
+    "Jangan mencabut benda tajam yang masih tertancap — stabilkan & rujuk.",
+    "Bedakan luka tajam (tepi rata, tanpa jembatan jaringan) dari tumpul untuk keperluan visum."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Budiyanto A, dkk. Ilmu Kedokteran Forensik — Visum et Repertum",
+      "UU No. 23/2004 tentang Penghapusan KDRT",
+      "ATLS (American College of Surgeons) — prinsip penanganan luka"
+    ]
+  },
+  "complications": [
+    {
+      "id": "tusuk_rongga",
+      "name": "Trauma tembus abdomen dengan syok",
+      "trait": "tusuk_rongga",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "pemeriksaan_abdomen"] },
+      "explanation": "Syok & peritonitis — resusitasi & rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_lokalis", "role": "kunci", "reason": "Dokumentasi luka & neurovaskular distal." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Tanda syok." },
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "when": { "traits": ["tusuk_rongga"] },
+        "reason": "Tanda penetrasi peritoneum."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Luka tusuk menembus rongga dengan syok: resusitasi cairan, tutup luka steril, rujuk segera ke bedah.",
+      "when": { "traits": ["tusuk_rongga"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Hentikan perdarahan, eksplorasi & jahit luka superfisial, profilaksis tetanus, antibiotik bila perlu, dokumentasi/visum; kontrol 2–3 hari."
+    }
+  ],
+  "management": [
+    "ABCDE; hentikan perdarahan dengan penekanan langsung/bebat tekan.",
+    "Luka superfisial: anestesi lokal, irigasi, eksplorasi, penjahitan lapis demi lapis.",
+    "Profilaksis tetanus sesuai status; antibiotik bila kotor; analgesik.",
+    "Luka tembus rongga: jangan cabut benda tertancap, infus, rujuk segera.",
+    "Dokumentasi forensik rinci; VeR atas permintaan penyidik; nilai keselamatan pasien."
+  ],
+  "approach": ["Prioritaskan kegawatan; nilai penetrasi rongga.", "Dokumentasi karakteristik luka tajam."]
+}

@@ -122,7 +122,7 @@ D(id="hipertensi", name="Hipertensi esensial", aka=["Darah tinggi", "Tensi tingg
 
 # 3 ---------------------------------------------------------------------------------- HIV
 D(id="hiv", name="HIV/AIDS tanpa komplikasi", aka=["HIV", "Infeksi HIV", "AIDS", "ODHIV"],
-  sys="Infeksi & imunologi", prev=0.7, danger="tinggi",
+  sys="Darah & imunologi", prev=0.7, danger="tinggi",
   summary="Infeksi Human Immunodeficiency Virus. Datang untuk tes karena pajanan berisiko/pasangan positif, atau dengan gejala stadium klinis 1–3 (limfadenopati generalisata persisten, BB turun, diare/demam berulang, kandidiasis oral, herpes zoster). Diagnosis dengan tes cepat 3 metode setelah konseling dan persetujuan. Tanpa infeksi oportunistik berat, ART dapat dimulai segera di layanan primer disertai skrining TB, IMS, dan profilaksis kotrimoksazol bila indikasi.",
   day=(14, 120), ages=[(18, 30, 4), (31, 45, 4), (46, 60, 1)], male=0.65,
   occ=[("ojek_online", 1), ("sopir_truk", 2), ("pekerja_tambang", 1), ("mahasiswa", 1)], bias=0.2,
@@ -175,7 +175,7 @@ D(id="hiv", name="HIV/AIDS tanpa komplikasi", aka=["HIV", "Infeksi HIV", "AIDS",
 
 # 4 ---------------------------------------------------------------------------------- limfadenitis
 D(id="limfadenitis", name="Limfadenitis akut", aka=["Radang kelenjar getah bening", "Kelenjar bengkak", "Limfadenitis bakterial"],
-  sys="Infeksi & imunologi", prev=0.8,
+  sys="Darah & imunologi", prev=0.8,
   summary="Radang KGB akibat penyebaran infeksi dari daerah drainasenya (tonsil/gigi → leher, luka tangan → aksila, luka kaki → inguinal), tersering S. aureus/Streptococcus. KGB membesar, nyeri tekan, hangat, kemerahan, kadang demam; dapat menjadi abses (fluktuasi). Bedakan dari limfadenitis TB (kronik, tidak nyeri, konglomerasi) dan limfoma (tidak nyeri, progresif).",
   day=(2, 7), ages=[(3, 9, 2), (10, 30, 3), (31, 55, 2)], male=0.55,
   traits=[("leher", 0.45), ("aksila", 0.25, NT("leher")), ("inguinal", 1, W(nt=["leher", "aksila"])), ("abses", 0.2)],
@@ -284,7 +284,7 @@ D(id="leptospirosis", name="Leptospirosis tanpa komplikasi", aka=["Lepto", "Peny
 
 # 6 ---------------------------------------------------------------------------------- reaksi anafilaktik
 D(id="reaksi_anafilaktik", name="Reaksi anafilaktik", aka=["Anafilaksis", "Syok anafilaktik", "Reaksi alergi berat"],
-  sys="Infeksi & imunologi", prev=0.6, danger="kritis",
+  sys="Darah & imunologi", prev=0.6, danger="kritis",
   summary="Reaksi hipersensitivitas sistemik akut yang mengancam nyawa, menit hingga jam setelah pajanan alergen (obat suntik/oral, sengatan tawon, makanan laut/kacang): urtikaria & angioedema DISERTAI gangguan napas (sesak, mengi, stridor) dan/atau sirkulasi (hipotensi, pingsan) atau gejala GI. Terapi utama: ADRENALIN intramuskular segera di paha anterolateral, posisi, oksigen, cairan; lalu rujuk/observasi (reaksi bifasik).",
   day=(1, 1), ages=[(5, 9, 1), (10, 30, 3), (31, 60, 3), (61, 75, 1)], male=0.5,
   traits=[("pencetus_obat", 0.4), ("pencetus_sengatan", 0.3, NT("pencetus_obat")), ("pencetus_makanan", 1, W(nt=["pencetus_obat", "pencetus_sengatan"])), ("syok", 0.45)],

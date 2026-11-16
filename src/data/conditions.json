@@ -226,14 +226,6 @@
       "summary": "Penyakit autoimun dengan mata & mulut kering, kadang nyeri sendi."
     },
     {
-      "id": "dermatitis_seboroik",
-      "name": "Dermatitis seboroik",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Eritema dengan skuama kekuningan berminyak di kulit kepala, alis, lipatan nasolabial."
-    },
-    {
       "id": "mastoiditis",
       "name": "Mastoiditis",
       "aliases": [],
@@ -514,14 +506,6 @@
       "summary": "Oliguria, ureum-kreatinin meningkat mendadak."
     },
     {
-      "id": "urtikaria_akut",
-      "name": "Urtikaria akut",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Biduran < 6 minggu."
-    },
-    {
       "id": "leukoplakia",
       "name": "Leukoplakia oral",
       "aliases": [],
@@ -661,7 +645,7 @@
       "id": "retensi_urin",
       "name": "Retensi urin akut",
       "aliases": [],
-      "system": "Saluran kemih & kelamin",
+      "system": "Kelamin & reproduksi",
       "danger": "kritis",
       "summary": "Tidak bisa berkemih dengan kandung kemih penuh teraba & nyeri suprapubik. Kateterisasi segera."
     },
@@ -677,7 +661,7 @@
       "id": "torsio_ovarium",
       "name": "Torsio adneksa/kista ovarium terpuntir",
       "aliases": [],
-      "system": "Saluran kemih & kelamin",
+      "system": "Kelamin & reproduksi",
       "danger": "kritis",
       "summary": "Nyeri perut bawah unilateral mendadak hebat dengan mual-muntah; massa adneksa. Rujuk segera."
     },
@@ -685,7 +669,7 @@
       "id": "epididimitis",
       "name": "Epididimitis",
       "aliases": [],
-      "system": "Saluran kemih & kelamin",
+      "system": "Kelamin & reproduksi",
       "danger": "sedang",
       "summary": "Nyeri & bengkak skrotum bertahap dengan demam/disuria; komplikasi IMS/ISK."
     },
@@ -1010,54 +994,6 @@
       "summary": "Papul → vesikel → eskar hitam tidak nyeri dengan edema luas, kontak ternak/daging. Lapor & rujuk."
     },
     {
-      "id": "hidradenitis_supurativa",
-      "name": "Hidradenitis supurativa",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Nodus/abses berulang di aksila/inguinal dengan sinus & parut."
-    },
-    {
-      "id": "akne_vulgaris",
-      "name": "Akne vulgaris",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Komedo, papul, pustul di wajah/dada/punggung."
-    },
-    {
-      "id": "miliaria",
-      "name": "Miliaria",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Biang keringat."
-    },
-    {
-      "id": "pitiriasis_rosea",
-      "name": "Pitiriasis rosea",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Herald patch lalu erupsi sekunder."
-    },
-    {
-      "id": "dermatitis_kontak_iritan",
-      "name": "Dermatitis kontak iritan",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Dermatitis akibat iritan."
-    },
-    {
-      "id": "erupsi_obat",
-      "name": "Erupsi obat",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "sedang",
-      "summary": "Reaksi obat di kulit."
-    },
-    {
       "id": "alopesia_areata",
       "name": "Alopesia areata",
       "aliases": [],
@@ -1106,20 +1042,116 @@
       "summary": "Skabies dengan krusta tebal luas berisi ribuan tungau pada imunokompromais/lansia — sangat menular. Rujuk."
     },
     {
-      "id": "dermatitis_numularis",
-      "name": "Dermatitis numularis",
+      "id": "dermatitis_kontak_alergi",
+      "name": "Dermatitis kontak alergi",
       "aliases": [],
       "system": "Kulit & kelamin",
       "danger": "rendah",
-      "summary": "Plak koin eksematosa."
+      "summary": "Reaksi tipe IV terhadap alergen (nikel, karet, pewarna rambut): gatal dominan, vesikel, dapat menyebar di luar area kontak."
     },
     {
-      "id": "dermatitis_atopik",
-      "name": "Dermatitis atopik",
+      "id": "eksema_herpetikum",
+      "name": "Eksema herpetikum",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Infeksi HSV luas pada dermatitis atopik: vesikel & erosi punched-out monomorf, demam. Asiklovir & rujuk segera."
+    },
+    {
+      "id": "rosasea",
+      "name": "Rosasea",
       "aliases": [],
       "system": "Kulit & kelamin",
       "danger": "rendah",
-      "summary": "Eksim atopik kronik."
+      "summary": "Dewasa dengan flushing, eritema sentral wajah, telangiektasis, papul-pustul tanpa komedo."
+    },
+    {
+      "id": "sindrom_ovarium_polikistik",
+      "name": "Sindrom ovarium polikistik",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "sedang",
+      "summary": "Haid tidak teratur, hirsutisme, akne membandel, obesitas."
+    },
+    {
+      "id": "sindrom_stevens_johnson",
+      "name": "Sindrom Stevens-Johnson / NET",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Reaksi obat berat: erosi ≥ 2 mukosa, lesi target atipikal, bula, epidermolisis (Nikolsky +), demam. Hentikan obat & rujuk segera."
+    },
+    {
+      "id": "urtikaria_vaskulitis",
+      "name": "Urtikaria vaskulitis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Urtika menetap > 24 jam, nyeri/terbakar, meninggalkan purpura/hiperpigmentasi."
+    },
+    {
+      "id": "cedera_tendon_saraf",
+      "name": "Cedera tendon/saraf/pembuluh pada luka",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Gangguan gerak, sensorik, atau perfusi distal pada luka — eksplorasi & repair oleh spesialis."
+    },
+    {
+      "id": "fraktur_terbuka",
+      "name": "Fraktur terbuka",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Luka yang berhubungan dengan patah tulang (tulang tampak/krepitasi/deformitas). Antibiotik, imobilisasi, rujuk segera."
+    },
+    {
+      "id": "trauma_inhalasi",
+      "name": "Trauma inhalasi",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Kebakaran di ruang tertutup, suara serak, jelaga di hidung/mulut, bulu hidung terbakar, stridor — amankan jalan napas & rujuk segera."
+    },
+    {
+      "id": "luka_bakar_derajat3",
+      "name": "Luka bakar derajat III",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Kulit putih/kehitaman seperti kulit, kering, tidak nyeri, tidak berbula — butuh skin graft. Rujuk."
+    },
+    {
+      "id": "kekerasan_anak",
+      "name": "Kekerasan terhadap anak",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Pola luka tidak sesuai riwayat/perkembangan anak, keterlambatan berobat, luka berbagai usia, luka bakar celup — lindungi anak & laporkan."
+    },
+    {
+      "id": "cedera_kepala",
+      "name": "Cedera kepala",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Riwayat benturan kepala dengan penurunan kesadaran, amnesia, muntah berulang, nyeri kepala hebat, defisit neurologis. Rujuk segera."
+    },
+    {
+      "id": "fraktur_tertutup",
+      "name": "Fraktur tertutup",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Nyeri hebat, deformitas, krepitasi, gangguan fungsi setelah trauma. Imobilisasi & rontgen."
+    },
+    {
+      "id": "trauma_tembus_abdomen",
+      "name": "Trauma tembus rongga tubuh",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Luka tusuk dada/perut yang menembus rongga: syok, defans, eviserasi, sesak. Jangan cabut benda tertancap; rujuk segera."
     }
   ]
 }

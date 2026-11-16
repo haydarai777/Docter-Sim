@@ -1,0 +1,159 @@
+{
+  "id": "miliaria",
+  "name": "Miliaria",
+  "aliases": ["Biang keringat", "Keringat buntet", "Prickly heat", "Miliaria rubra"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.1,
+  "summary": "Sumbatan saluran kelenjar ekrin akibat panas & keringat berlebih, tersering bayi dan orang di lingkungan panas-lembap. Miliaria kristalina: vesikel jernih 1–2 mm superfisial mudah pecah tanpa radang. Miliaria rubra: papul-papulovesikel eritematosa kecil non-folikular, gatal menyengat, di leher, dada, punggung, lipatan, area tertutup pakaian. Membaik dengan mendinginkan kulit.",
+  "presentationDay": [1, 10],
+  "demographics": {
+    "ageBands": [{ "min": 0, "max": 0, "weight": 3 }, { "min": 1, "max": 5, "weight": 2 }, { "min": 10, "max": 40, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "bayi", "weight": 3 }, { "id": "pekerja_proyek", "weight": 1 }],
+    "occupationBias": 0.3,
+    "infantAge": { "unit": "bulan", "range": [1, 6] }
+  },
+  "traits": [{ "id": "kristalina", "probability": 0.3 }, { "id": "dibedong_tebal", "probability": 0.6, "when": { "ageMax": 1 } }],
+  "traitLabels": { "kristalina": "Miliaria kristalina.", "dibedong_tebal": "Bayi dibedong/berpakaian terlalu tebal." },
+  "symptoms": [
+    { "id": "gatal_kulit", "probability": 0.7, "when": { "notTraits": ["kristalina"] } },
+    { "id": "rewel", "probability": 0.5, "when": { "ageMax": 1 } },
+    { "id": "biang_keringat", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["biang_keringat"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "rewel"],
+  "misattributions": ["alergi", "campak", "kepanasan biasa"],
+  "fears": ["campak", "alergi susu"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru tiga hari, Dok, muncul bintik-bintik kecil merah di leher dan punggung waktu cuaca panas.",
+        "clue": "Akut saat cuaca panas"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Bayinya saya bedong dan pakaikan baju tebal biar nggak masuk angin, Dok. Kamarnya panas.",
+        "when": { "traits": ["dibedong_tebal"] },
+        "clue": "Berpakaian terlalu tebal, kamar panas"
+      },
+      {
+        "text": "Saya kerja di tempat panas, keringatan terus, Dok.",
+        "when": { "ageMin": 10 },
+        "clue": "Lingkungan panas & berkeringat"
+      },
+      { "text": "Rumahnya memang panas, Dok.", "when": { "notTraits": ["dibedong_tebal"], "ageMax": 9 } }
+    ],
+    "pemberat_peringan": [{ "text": "Kalau dikipas atau mandi air dingin agak mendingan, Dok.", "clue": "Membaik bila didinginkan" }],
+    "keparahan": [
+      {
+        "text": "Nggak demam, Dok, nggak batuk pilek, masih aktif.",
+        "clue": "Tanpa demam/gejala sistemik (bukan eksantem infeksi)"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["kristalina"] },
+      "values": ["Leher, dada, punggung, lipatan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["kristalina"] },
+      "diagnostic": true,
+      "values": ["Papul & papulovesikel eritematosa kecil multipel non-folikular"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["kristalina"] },
+      "values": ["Dahi, leher, badan atas"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["kristalina"] },
+      "diagnostic": true,
+      "values": ["Vesikel jernih 1–2 mm superfisial seperti titik embun, mudah pecah, tanpa radang"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "range": [36.8, 37.4] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak sehat, aktif"] }
+  ],
+  "differentials": [
+    {
+      "id": "sepsis",
+      "howToDistinguish": "Infeksi berat dengan ruam pada bayi: demam/hipotermia, letargi, malas menyusu, ruam petekie — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "keadaan_umum"] }
+    },
+    {
+      "id": "folikulitis",
+      "howToDistinguish": "Folikulitis: pustul folikular ditembus rambut.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Kandidosis: eritema basah di lipatan dengan satelit, KOH pseudohifa.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "varisela",
+      "howToDistinguish": "Varisela: vesikel berbagai stadium dengan demam, menyebar sentripetal.",
+      "excludeBy": { "topics": ["keparahan"], "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Papul/vesikel kecil non-folikular di area tertutup & berkeringat",
+    "Lingkungan panas, pakaian tebal",
+    "Membaik bila didinginkan; tanpa demam"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "pemberat_peringan", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & distribusi." },
+      { "tool": "keadaan_umum", "role": "pendukung", "reason": "Tanda sakit sistemik." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Dinginkan kulit, pakaian tipis, losion kalamin; kontrol bila tidak membaik." }],
+  "management": [
+    "Hindari panas berlebih: pakaian tipis menyerap keringat, ruangan berventilasi/sejuk, mandi air sejuk.",
+    "Losion kalamin/bedak salisil tipis; hindari bedak tebal, minyak, krim oklusif.",
+    "Bayi: jangan dibedong/berpakaian terlalu tebal."
+  ],
+  "approach": ["Kaitkan dengan panas & pakaian; pastikan tanpa demam/tanda sistemik."]
+}

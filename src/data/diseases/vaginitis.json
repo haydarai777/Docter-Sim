@@ -2,7 +2,7 @@
   "id": "vaginitis",
   "name": "Vaginitis (kandidiasis vulvovaginal / trikomoniasis)",
   "aliases": ["Keputihan patologis", "Kandidiasis vagina", "Trikomoniasis", "Vaginitis"],
-  "system": "Saluran kemih & kelamin",
+  "system": "Kelamin & reproduksi",
   "skdiLevel": "4A",
   "danger": "rendah",
   "prevalenceWeight": 1.3,

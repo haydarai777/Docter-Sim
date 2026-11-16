@@ -2,7 +2,7 @@
   "id": "reaksi_anafilaktik",
   "name": "Reaksi anafilaktik",
   "aliases": ["Anafilaksis", "Syok anafilaktik", "Reaksi alergi berat"],
-  "system": "Infeksi & imunologi",
+  "system": "Darah & imunologi",
   "skdiLevel": "4A",
   "danger": "kritis",
   "prevalenceWeight": 0.6,
