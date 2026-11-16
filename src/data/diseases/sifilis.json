@@ -1,0 +1,241 @@
+{
+  "id": "sifilis",
+  "name": "Sifilis stadium 1 dan 2",
+  "aliases": ["Raja singa", "Sifilis primer", "Sifilis sekunder", "Lues"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.7,
+  "summary": "IMS Treponema pallidum. Stadium 1 (± 3 minggu pascapajanan): ulkus durum — ulkus tunggal TIDAK nyeri, bersih, indurasi, dengan limfadenopati inguinal tidak nyeri. Stadium 2 (6–12 minggu): ruam papuloskuamosa tidak gatal termasuk telapak tangan & kaki, kondiloma lata, mucous patch, alopesia 'moth-eaten', limfadenopati generalisata, demam ringan. RPR/VDRL & TPHA reaktif. Terapi benzatin penisilin G 2,4 juta IU IM; obati pasangan; tes HIV.",
+  "presentationDay": [10, 60],
+  "demographics": { "ageBands": [{ "min": 18, "max": 30, "weight": 4 }, { "min": 31, "max": 50, "weight": 3 }], "maleRatio": 0.65 },
+  "traits": [{ "id": "stadium2", "probability": 0.45 }, { "id": "lsl", "probability": 0.3, "when": { "sex": "male" } }],
+  "traitLabels": { "stadium2": "Sifilis sekunder.", "lsl": "Laki-laki seks dengan laki-laki." },
+  "symptoms": [
+    { "id": "luka_kemaluan", "probability": 1, "when": { "notTraits": ["stadium2"] } },
+    { "id": "ruam_kulit", "probability": 1, "when": { "traits": ["stadium2"] } },
+    { "id": "demam", "probability": 0.4, "when": { "traits": ["stadium2"] } },
+    { "id": "rambut_rontok", "probability": 0.25, "when": { "traits": ["stadium2"] } },
+    { "id": "sariawan", "probability": 0.3, "when": { "traits": ["stadium2"] } },
+    { "id": "benjolan_kgb", "probability": 0.7 },
+    { "id": "risiko_ims", "probability": 0.9 }
+  ],
+  "chiefComplaint": { "primary": ["luka_kemaluan", "ruam_kulit"], "extraPool": ["benjolan_kgb"] },
+  "clueSymptoms": ["benjolan_kgb", "risiko_ims", "demam", "rambut_rontok", "sariawan"],
+  "misattributions": ["lecet biasa", "alergi", "panu"],
+  "fears": ["raja singa", "HIV", "menular ke istri"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Dua minggu lalu muncul luka di kemaluan, Dok, nggak sakit sama sekali, pinggirnya keras.",
+        "when": { "notTraits": ["stadium2"] },
+        "clue": "Ulkus tunggal tidak nyeri dengan indurasi"
+      },
+      {
+        "text": "Dua minggu ini muncul bintik kemerahan di badan sampai telapak tangan dan kaki, Dok, nggak gatal.",
+        "when": { "traits": ["stadium2"] },
+        "clue": "Ruam papuloskuamosa termasuk telapak, tidak gatal"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dua bulan lalu ada luka di kemaluan yang nggak sakit, Dok, sembuh sendiri.",
+        "when": { "traits": ["stadium2"] },
+        "clue": "Riwayat chancre (S1) sebelumnya"
+      },
+      { "text": "Belum pernah sakit kelamin sebelumnya, Dok.", "when": { "notTraits": ["stadium2"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya pernah berhubungan dengan sesama jenis tanpa kondom, Dok.",
+        "reveals": ["risiko_ims"],
+        "when": { "traits": ["lsl"], "symptoms": ["risiko_ims"] },
+        "clue": "LSL tanpa kondom"
+      },
+      {
+        "text": "Sebulan lalu saya berhubungan dengan pekerja seks tanpa kondom, Dok.",
+        "reveals": ["risiko_ims"],
+        "when": { "notTraits": ["lsl"], "symptoms": ["risiko_ims"] },
+        "clue": "Seks berisiko tanpa kondom"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Lukanya bersih, nggak bernanah, nggak sakit, Dok.",
+        "when": { "notTraits": ["stadium2"] },
+        "clue": "Ulkus bersih tidak nyeri"
+      },
+      {
+        "text": "Bintiknya nggak gatal, Dok, rambut juga rontok tambal-tambal.",
+        "when": { "traits": ["stadium2"] },
+        "clue": "Tidak gatal, alopesia"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Istri/pasangan saya belum diperiksa, Dok.", "clue": "Pasangan perlu diperiksa" }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "lesi_genital",
+      "when": { "notTraits": ["stadium2"] },
+      "diagnostic": true,
+      "values": ["Ulkus tunggal 1 cm, bulat, bersih, dasar merah daging, tepi indurasi (keras), tidak nyeri"]
+    },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "kgb_inguinal",
+      "when": { "notTraits": ["stadium2"] },
+      "diagnostic": true,
+      "values": ["KGB inguinal bilateral membesar, kenyal, tidak nyeri"]
+    },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "lesi_genital",
+      "when": { "traits": ["stadium2"] },
+      "probability": 0.4,
+      "values": ["Kondiloma lata (papul datar basah) di perianal"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["stadium2"] },
+      "values": ["Badan, telapak tangan & kaki"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["stadium2"] },
+      "diagnostic": true,
+      "values": ["Makula-papul eritematosa-tembaga dengan skuama halus (papuloskuamosa), tidak gatal"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "when": { "traits": ["stadium2"] },
+      "probability": 0.25,
+      "values": ["Alopesia 'moth-eaten'"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["stadium2"] },
+      "values": ["Limfadenopati generalisata kecil, kenyal, tidak nyeri"]
+    },
+    {
+      "tool": "tes_sifilis",
+      "param": "rpr",
+      "when": { "traits": ["stadium2"] },
+      "diagnostic": true,
+      "values": ["Reaktif 1:32"]
+    },
+    {
+      "tool": "tes_sifilis",
+      "param": "tpha",
+      "when": { "traits": ["stadium2"] },
+      "diagnostic": true,
+      "values": ["Reaktif"]
+    },
+    {
+      "tool": "tes_sifilis",
+      "param": "rpr",
+      "when": { "notTraits": ["stadium2"] },
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Reaktif 1:8"]
+    },
+    {
+      "tool": "tes_sifilis",
+      "param": "tpha",
+      "when": { "notTraits": ["stadium2"] },
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Reaktif"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "hiv",
+      "howToDistinguish": "Koinfeksi HIV sangat sering pada sifilis — tes HIV wajib dengan konseling.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tes_hiv"] }
+    },
+    {
+      "id": "herpes_simpleks",
+      "howToDistinguish": "Herpes genital: vesikel berkelompok & erosi NYERI, rekuren.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["pemeriksaan_genital"] }
+    },
+    {
+      "id": "ulkus_mole",
+      "howToDistinguish": "Ulkus mole: ulkus multipel nyeri, kotor, tepi bergaung, bubo nyeri.",
+      "excludeBy": { "topics": ["karakter"] }
+    },
+    {
+      "id": "pitiriasis_rosea",
+      "howToDistinguish": "Pitiriasis rosea: herald patch, susunan pohon cemara, tidak di telapak, serologi negatif.",
+      "excludeBy": { "tools": ["status_dermatologis", "tes_sifilis"] }
+    }
+  ],
+  "keyFindings": [
+    "S1: ulkus tunggal tidak nyeri berindurasi + KGB inguinal tidak nyeri",
+    "S2: ruam papuloskuamosa tidak gatal termasuk telapak, kondiloma lata, limfadenopati",
+    "RPR & TPHA reaktif"
+  ],
+  "teachingPoints": [
+    "Ruam di telapak tangan & kaki pada dewasa aktif seksual: selalu periksa serologi sifilis.",
+    "Edukasi reaksi Jarisch-Herxheimer (demam, menggigil) beberapa jam setelah penisilin."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_penyakit", "kebiasaan", "karakter", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_genital", "role": "kunci", "reason": "Ulkus, kondiloma lata, KGB inguinal." },
+      { "tool": "status_dermatologis", "role": "kunci", "when": { "traits": ["stadium2"] }, "reason": "Ruam sekunder." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Limfadenopati." }
+    ],
+    "tests": [
+      { "tool": "tes_sifilis", "role": "kunci", "reason": "RPR & TPHA." },
+      { "tool": "tes_hiv", "role": "pendukung", "reason": "Koinfeksi HIV." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Benzatin penisilin G dosis tunggal, obati pasangan, tes HIV; kontrol serologi 6 & 12 bulan."
+    }
+  ],
+  "management": [
+    "Benzatin penisilin G 2,4 juta IU IM dosis tunggal (alergi penisilin: doksisiklin 2 × 100 mg 14 hari).",
+    "Notifikasi & terapi pasangan; abstinensi/kondom.",
+    "Konseling & tes HIV, hepatitis B; ibu hamil wajib skrining.",
+    "Pantau RPR 6 & 12 bulan (target turun ≥ 4 kali)."
+  ],
+  "approach": ["Anamnesis seksual & riwayat lesi sebelumnya.", "Pemeriksaan ulkus/ruam & KGB; serologi sifilis & HIV."]
+}

@@ -1,0 +1,127 @@
+{
+  "id": "eritrasma",
+  "name": "Eritrasma",
+  "aliases": ["Erythrasma", "Infeksi Corynebacterium kulit"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.5,
+  "summary": "Infeksi superfisial Corynebacterium minutissimum di daerah lipatan (lipat paha, aksila, sela jari kaki IV–V, submamaria), sering pada obesitas, DM, iklim lembap. Makula/patch coklat kemerahan berbatas tegas dengan skuama halus, tanpa tepi aktif/vesikel, gatal ringan. Lampu Wood: fluoresensi merah bata (coral red); KOH negatif.",
+  "presentationDay": [30, 180],
+  "demographics": { "ageBands": [{ "min": 18, "max": 39, "weight": 2 }, { "min": 40, "max": 65, "weight": 4 }], "maleRatio": 0.55 },
+  "traits": [{ "id": "dm_curiga", "probability": 0.2 }, { "id": "obesitas_menyertai", "probability": 0.4 }],
+  "traitLabels": { "dm_curiga": "Diabetes menyertai.", "obesitas_menyertai": "Obesitas." },
+  "symptoms": [{ "id": "ruam_kulit", "probability": 1 }, { "id": "gatal_kulit", "probability": 0.4 }],
+  "chiefComplaint": { "primary": ["ruam_kulit"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit"],
+  "misattributions": ["panu", "kurap", "daki"],
+  "fears": ["penyakit kelamin", "jamur menahun"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah beberapa bulan, Dok, di lipat paha ada bercak coklat kemerahan.", "clue": "Kronik" }],
+    "karakter": [
+      {
+        "text": "Bercaknya rata, agak bersisik halus, cuma sedikit gatal, Dok. Pinggirnya nggak ada bintil-bintil.",
+        "clue": "Patch coklat-merah skuama halus tanpa tepi aktif"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Sudah pakai salep jamur dari warung, Dok, nggak ada perubahan.", "clue": "Tidak respons antijamur" }],
+    "kebiasaan": [{ "text": "Kerja di tempat panas, sering keringatan, Dok.", "clue": "Lembap & berkeringat" }],
+    "riwayat_penyakit": [
+      { "text": "Saya kencing manis, Dok.", "when": { "traits": ["dm_curiga"] }, "clue": "DM" },
+      { "text": "Belum pernah cek gula, Dok.", "when": { "notTraits": ["dm_curiga"] } }
+    ]
+  },
+  "findings": [
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 280] },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas_menyertai"] }, "range": [27, 32] },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Lipat paha kanan & kiri, sela jari kaki IV–V"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Patch coklat kemerahan berbatas tegas dengan skuama halus, tanpa tepi aktif/vesikel"]
+    },
+    {
+      "tool": "lampu_wood",
+      "param": "fluoresensi",
+      "diagnostic": true,
+      "values": ["Fluoresensi merah bata (coral red)"]
+    },
+    { "tool": "kerokan_koh", "param": "hasil", "values": ["Tidak ditemukan hifa, spora, maupun pseudohifa"] }
+  ],
+  "differentials": [
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "Eritrasma luas/berulang sering pada DM — skrining gula darah.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["gula_darah"] }
+    },
+    {
+      "id": "tinea_kruris",
+      "howToDistinguish": "Tinea kruris: tepi aktif polisiklik dengan vesikel/papul, gatal, KOH hifa (+).",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Kandidosis intertriginosa: eritema basah dengan lesi satelit, KOH pseudohifa.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    }
+  ],
+  "keyFindings": [
+    "Patch coklat-merah berbatas tegas skuama halus di lipatan",
+    "Lampu Wood: merah bata; KOH negatif",
+    "Obesitas/DM, lembap"
+  ],
+  "teachingPoints": [
+    "Lampu Wood membedakan eritrasma (merah bata) dari pitiriasis versikolor (kuning keemasan) dan tinea (umumnya tanpa fluoresensi)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_obat", "kebiasaan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & lokasi lipatan." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Obesitas." }
+    ],
+    "tests": [
+      { "tool": "lampu_wood", "role": "kunci", "reason": "Fluoresensi merah bata." },
+      { "tool": "kerokan_koh", "role": "pendukung", "reason": "Menyingkirkan jamur." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "obesitas_menyertai": "obesitas" },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Eritromisin oral/klindamisin topikal, jaga area kering; kontrol 2 minggu." }],
+  "management": [
+    "Eritromisin 4 × 250 mg 14 hari, atau eritromisin/klindamisin topikal, atau asam fusidat krim.",
+    "Jaga lipatan kering, sabun antibakteri, pakaian longgar menyerap keringat.",
+    "Kelola DM & berat badan."
+  ],
+  "approach": ["Lesi lipatan tanpa tepi aktif → lampu Wood & KOH.", "Skrining DM."]
+}

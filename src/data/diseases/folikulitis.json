@@ -1,0 +1,152 @@
+{
+  "id": "folikulitis",
+  "name": "Folikulitis superfisialis",
+  "aliases": ["Folikulitis", "Radang folikel rambut", "Bisul kecil"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi superfisial folikel rambut, tersering S. aureus: pustul kecil berdinding tipis yang ditembus rambut di tengahnya dengan dasar eritema, gatal atau perih, di area berambut yang tergesek/dicukur (janggut, kulit kepala, paha, bokong, tungkai). Faktor: mencukur, pakaian ketat, keringat, oklusi, kolam/air hangat. Bedakan dari akne, miliaria, folikulitis Malassezia, dan furunkel (nodul dalam).",
+  "presentationDay": [3, 21],
+  "demographics": {
+    "ageBands": [
+      { "min": 12, "max": 25, "weight": 3 },
+      { "min": 26, "max": 50, "weight": 3 },
+      { "min": 51, "max": 65, "weight": 1 }
+    ],
+    "maleRatio": 0.6,
+    "occupations": [{ "id": "ojek_online", "weight": 2 }, { "id": "pekerja_proyek", "weight": 1 }, { "id": "satpam", "weight": 1 }],
+    "occupationBias": 0.2
+  },
+  "traits": [{ "id": "mencukur", "probability": 0.4 }, { "id": "berulang", "probability": 0.3 }],
+  "traitLabels": { "mencukur": "Dipicu mencukur.", "berulang": "Folikulitis berulang." },
+  "symptoms": [{ "id": "bintil_bernanah", "probability": 1 }, { "id": "gatal_kulit", "probability": 0.6 }],
+  "chiefComplaint": { "primary": ["bintil_bernanah"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit"],
+  "misattributions": ["jerawat", "biang keringat", "alergi celana"],
+  "fears": ["bisul", "penyakit kulit menular"],
+  "anamnesis": {
+    "onset": [{ "text": "Seminggu ini, Dok, muncul bintil-bintil bernanah kecil.", "clue": "Subakut" }],
+    "lokasi": [
+      {
+        "text": "Di janggut dan dagu, Dok, sejak cukur pakai silet.",
+        "when": { "traits": ["mencukur"] },
+        "clue": "Area janggut setelah mencukur"
+      },
+      {
+        "text": "Di paha dan bokong, Dok, mungkin karena celana ketat dan duduk lama di motor.",
+        "when": { "notTraits": ["mencukur"] },
+        "clue": "Paha & bokong (gesekan, oklusi)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bintilnya kecil-kecil, tiap bintil ada rambutnya di tengah, agak gatal dan perih, Dok.",
+        "clue": "Pustul folikular ditembus rambut"
+      }
+    ],
+    "episode_sebelumnya": [
+      { "text": "Sering kambuh begini, Dok.", "when": { "traits": ["berulang"] }, "clue": "Berulang" },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["berulang"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Nggak ada benjolan besar yang sakit, Dok, nggak demam.",
+        "clue": "Tanpa nodus dalam/demam (bukan furunkel)"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["mencukur"] },
+      "values": ["Paha posterior & bokong"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["mencukur"] },
+      "diagnostic": true,
+      "values": ["Pustul folikular kecil multipel dengan dasar eritema, ditembus rambut di tengahnya"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["mencukur"] },
+      "values": ["Janggut & dagu"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["mencukur"] },
+      "diagnostic": true,
+      "values": ["Pustul folikular kecil multipel dengan dasar eritema, ditembus rambut di tengahnya"]
+    },
+    { "tool": "gram_sekret", "param": "bakteri", "probability": 0.8, "values": ["Kokus Gram positif bergerombol (+)"] }
+  ],
+  "differentials": [
+    {
+      "id": "furunkel_karbunkel",
+      "howToDistinguish": "Furunkel/karbunkel: nodus dalam nyeri dengan mata bisul, kadang demam — butuh antibiotik sistemik/insisi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "akne_vulgaris",
+      "howToDistinguish": "Akne: komedo, papul-pustul di wajah/dada/punggung, bukan terutama folikel area cukur/gesekan.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "miliaria",
+      "howToDistinguish": "Miliaria pustulosa: vesikel/pustul kecil non-folikular di area berkeringat.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": ["Pustul kecil folikular ditembus rambut dengan dasar eritema", "Area cukur/gesekan/oklusi", "Tanpa nodus dalam"],
+  "teachingPoints": [
+    "Folikulitis berulang: periksa karier S. aureus di hidung dan hentikan kebiasaan mencukur searah/berlawanan arah rambut."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "episode_sebelumnya", "keparahan", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Pustul folikular & distribusi." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "gram_sekret", "reason": "Bila berulang/ragu." }]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Antiseptik, antibiotik topikal, hindari pencetus; kontrol 1–2 minggu." }],
+  "management": [
+    "Kompres/antiseptik (klorheksidin), antibiotik topikal (mupirosin/asam fusidat/eritromisin) 2–3 × sehari 7–10 hari.",
+    "Hindari mencukur sementara, pakaian longgar dari bahan menyerap keringat.",
+    "Antibiotik oral bila luas/berulang."
+  ],
+  "approach": ["Kenali pustul folikular; cari pencetus.", "Bedakan dari furunkel, akne, miliaria."]
+}

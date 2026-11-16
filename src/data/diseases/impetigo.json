@@ -1,0 +1,179 @@
+{
+  "id": "impetigo",
+  "name": "Impetigo",
+  "aliases": ["Impetigo krustosa", "Impetigo bulosa", "Koreng kuning", "Pioderma superfisial"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.2,
+  "summary": "Pioderma superfisial menular (S. aureus/Streptococcus) tersering anak 2–10 tahun. Krustosa: makula eritema → vesikel/pustul cepat pecah menjadi krusta kuning seperti madu, sering di sekitar hidung & mulut. Bulosa: bula kendur berisi cairan jernih-keruh (hipopion) yang pecah meninggalkan koleret, di badan/aksila/lipatan. Higiene buruk, gigitan serangga, dermatitis atopik sebagai pintu masuk. Terapi antibiotik topikal (luas: sistemik).",
+  "presentationDay": [3, 10],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 4 },
+      { "min": 6, "max": 9, "weight": 4 },
+      { "min": 10, "max": 18, "weight": 2 },
+      { "min": 19, "max": 40, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 2 }, { "id": "balita", "weight": 2 }],
+    "occupationBias": 0.4
+  },
+  "traits": [{ "id": "bulosa", "probability": 0.25 }, { "id": "luas", "probability": 0.2 }],
+  "traitLabels": { "bulosa": "Impetigo bulosa.", "luas": "Lesi luas/multipel (butuh antibiotik sistemik)." },
+  "symptoms": [
+    { "id": "koreng", "probability": 1, "when": { "notTraits": ["bulosa"] } },
+    { "id": "lepuh_kulit", "probability": 1, "when": { "traits": ["bulosa"] } },
+    { "id": "gatal_kulit", "probability": 0.6 },
+    { "id": "demam", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["koreng", "lepuh_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "demam"],
+  "misattributions": ["kudis", "alergi", "kena air kotor"],
+  "fears": ["menular ke saudara", "bekas luka"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Seminggu lalu awalnya bintil merah di bawah hidung, Dok, terus pecah jadi koreng kuning dan menyebar.",
+        "when": { "notTraits": ["bulosa"] },
+        "clue": "Mulai bintil → krusta kuning menyebar"
+      },
+      {
+        "text": "Beberapa hari ini muncul lepuh berisi air di ketiak dan badan, Dok, gampang pecah.",
+        "when": { "traits": ["bulosa"] },
+        "clue": "Bula kendur mudah pecah"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Korengnya kuning kayak madu, Dok, gatal, kalau digaruk makin menyebar.",
+        "when": { "notTraits": ["bulosa"] },
+        "clue": "Krusta madu, gatal, autoinokulasi"
+      }
+    ],
+    "kebiasaan": [{ "text": "Dia suka main tanah dan jarang mandi sore, Dok. Kukunya panjang.", "clue": "Higiene kurang" }],
+    "riwayat_keluarga": [
+      { "text": "Adiknya juga mulai ada koreng begitu, Dok.", "weight": 0.5, "clue": "Kontak serumah" },
+      { "text": "Yang lain di rumah belum, Dok." }
+    ],
+    "keparahan": [{ "text": "Nggak demam, Dok, masih main seperti biasa.", "clue": "Tanpa gejala sistemik" }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["bulosa"] },
+      "values": ["Sekitar lubang hidung, perioral, dagu"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["bulosa"] },
+      "diagnostic": true,
+      "values": ["Krusta tebal kuning seperti madu di atas dasar eritema; erosi basah bila krusta diangkat"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["bulosa"] },
+      "values": ["Aksila, badan, lipatan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["bulosa"] },
+      "diagnostic": true,
+      "values": ["Bula kendur berisi cairan jernih-keruh (hipopion), sebagian pecah meninggalkan erosi dengan koleret"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "notTraits": ["bulosa"] },
+      "probability": 0.3,
+      "values": ["KGB submandibula kecil nyeri tekan"]
+    },
+    {
+      "tool": "gram_sekret",
+      "param": "bakteri",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Kokus Gram positif bergerombol (+)"]
+    },
+    { "tool": "gram_sekret", "param": "pmn", "values": ["10–20 /LPB"] }
+  ],
+  "differentials": [
+    {
+      "id": "ssss",
+      "howToDistinguish": "SSSS: anak dengan eritema generalisata nyeri, bula luas, Nikolsky (+), demam — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "herpes_simpleks",
+      "howToDistinguish": "Herpes simpleks: vesikel berkelompok nyeri, rekuren, tanpa krusta madu tebal.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "ektima",
+      "howToDistinguish": "Ektima: krusta tebal coklat-hitam dengan ulkus 'punched-out' di bawahnya, di tungkai.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Anak dengan krusta kuning madu di sekitar hidung-mulut (krustosa) atau bula kendur (bulosa)",
+    "Menular, autoinokulasi",
+    "Gram: kokus Gram positif"
+  ],
+  "teachingPoints": ["Lepaskan krusta dengan kompres sebelum mengoles antibiotik topikal agar obat menembus lesi."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "riwayat_keluarga", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Krusta madu/bula, luas lesi, Nikolsky." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB regional." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "gram_sekret", "reason": "Konfirmasi kokus Gram positif bila ragu." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Kompres & lepaskan krusta, antibiotik topikal (sistemik bila luas), higiene; kontrol 1 minggu."
+    }
+  ],
+  "management": [
+    "Kompres NaCl 0,9%/permanganat kalium encer untuk melepas krusta.",
+    "Mupirosin/asam fusidat salep 3 × sehari 7 hari.",
+    "Lesi luas/multipel/bulosa luas: antibiotik oral (amoksisilin-klavulanat/dikloksasilin/sefaleksin) 7 hari.",
+    "Potong kuku, mandi sabun, handuk terpisah; libur sekolah 24–48 jam setelah terapi."
+  ],
+  "approach": ["Kenali krusta madu/bula kendur; nilai luas lesi.", "Singkirkan SSSS & herpes."]
+}

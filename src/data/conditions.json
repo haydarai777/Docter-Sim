@@ -346,14 +346,6 @@
       "summary": "Defisit neurologis fokal mendadak (kelemahan, bicara pelo, wajah mencong, ataksia, diplopia). Rujuk segera."
     },
     {
-      "id": "folikulitis",
-      "name": "Folikulitis superfisialis",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Pustul kecil di folikel rambut."
-    },
-    {
       "id": "meningitis",
       "name": "Meningitis / ensefalitis",
       "aliases": ["Ensefalitis", "Radang selaput otak"],
@@ -522,28 +514,12 @@
       "summary": "Oliguria, ureum-kreatinin meningkat mendadak."
     },
     {
-      "id": "erisipelas",
-      "name": "Erisipelas",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "sedang",
-      "summary": "Plak eritematosa berbatas tegas, panas, nyeri, demam."
-    },
-    {
       "id": "urtikaria_akut",
       "name": "Urtikaria akut",
       "aliases": [],
       "system": "Kulit & kelamin",
       "danger": "rendah",
       "summary": "Biduran < 6 minggu."
-    },
-    {
-      "id": "skrofuloderma",
-      "name": "Skrofuloderma (TB kulit)",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "sedang",
-      "summary": "Limfadenitis TB yang pecah membentuk ulkus/fistel."
     },
     {
       "id": "leukoplakia",
@@ -712,14 +688,6 @@
       "system": "Saluran kemih & kelamin",
       "danger": "sedang",
       "summary": "Nyeri & bengkak skrotum bertahap dengan demam/disuria; komplikasi IMS/ISK."
-    },
-    {
-      "id": "herpes_simpleks",
-      "name": "Herpes simpleks",
-      "aliases": [],
-      "system": "Kulit & kelamin",
-      "danger": "rendah",
-      "summary": "Vesikel berkelompok di atas dasar eritema yang pecah menjadi erosi nyeri."
     },
     {
       "id": "reaksi_gigitan_serangga",
@@ -928,6 +896,206 @@
       "system": "Infeksi & imunologi",
       "danger": "kritis",
       "summary": "Infeksi dengan disfungsi organ: demam/hipotermia, takikardia, takipnea, hipotensi, penurunan kesadaran. Rujuk segera."
+    },
+    {
+      "id": "penyakit_arteri_perifer",
+      "name": "Penyakit arteri perifer",
+      "aliases": [],
+      "system": "Jantung & pembuluh darah",
+      "danger": "tinggi",
+      "summary": "Klaudikasio, kaki dingin pucat, pulsasi lemah, ABI < 0,9; ulkus arterial nyeri di ujung jari. Rujuk."
+    },
+    {
+      "id": "kista_epidermoid",
+      "name": "Kista epidermoid (ateroma)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Benjolan kistik subkutan melekat ke kulit dengan punctum di tengah."
+    },
+    {
+      "id": "sarkoma_jaringan_lunak",
+      "name": "Sarkoma jaringan lunak",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Massa > 5 cm, dalam, keras, cepat membesar, nyeri. Rujuk."
+    },
+    {
+      "id": "klavus",
+      "name": "Klavus (mata ikan)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Penebalan kulit berinti di titik tekanan, nyeri saat ditekan langsung, garis kulit tetap."
+    },
+    {
+      "id": "karsinoma_sel_skuamosa_kulit",
+      "name": "Keganasan kulit (KSS/KSB)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Nodul/ulkus kulit yang tumbuh progresif, mudah berdarah, tidak sembuh, pada kulit terpapar matahari/luka kronik. Rujuk biopsi."
+    },
+    {
+      "id": "rubela",
+      "name": "Rubela",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Demam ringan, ruam makulopapular halus, KGB retroaurikular/oksipital; berbahaya bagi ibu hamil."
+    },
+    {
+      "id": "eksantema_subitum",
+      "name": "Eksantema subitum (roseola)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bayi demam tinggi 3 hari, ruam muncul setelah demam turun."
+    },
+    {
+      "id": "mpox",
+      "name": "Mpox (cacar monyet)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Lesi vesikopustul dalam stadium SAMA, umbilikasi, limfadenopati menonjol, riwayat kontak; lapor & isolasi."
+    },
+    {
+      "id": "ulkus_mole",
+      "name": "Ulkus mole (chancroid)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Ulkus genital multipel, NYERI, tepi bergaung, dasar kotor, bubo inguinal nyeri."
+    },
+    {
+      "id": "vitiligo",
+      "name": "Vitiligo",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Makula depigmentasi putih susu berbatas tegas, sensibilitas normal."
+    },
+    {
+      "id": "reaksi_kusta",
+      "name": "Reaksi kusta",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Lesi lama meradang/nodus eritema nyeri, neuritis (nyeri & fungsi saraf turun), demam — prednison & rujuk."
+    },
+    {
+      "id": "selulitis",
+      "name": "Selulitis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Infeksi dermis-subkutis: eritema batas tidak tegas, hangat, nyeri, edema, demam."
+    },
+    {
+      "id": "fasiitis_nekrotikans",
+      "name": "Fasiitis nekrotikans",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Nyeri hebat tidak sebanding temuan, bula hemoragik, krepitasi, syok. Rujuk segera untuk debridemen."
+    },
+    {
+      "id": "ssss",
+      "name": "Staphylococcal scalded skin syndrome",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Anak dengan eritema generalisata nyeri, bula kendur luas, Nikolsky (+). Rujuk segera."
+    },
+    {
+      "id": "antraks_kulit",
+      "name": "Antraks kulit",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Papul → vesikel → eskar hitam tidak nyeri dengan edema luas, kontak ternak/daging. Lapor & rujuk."
+    },
+    {
+      "id": "hidradenitis_supurativa",
+      "name": "Hidradenitis supurativa",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Nodus/abses berulang di aksila/inguinal dengan sinus & parut."
+    },
+    {
+      "id": "akne_vulgaris",
+      "name": "Akne vulgaris",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Komedo, papul, pustul di wajah/dada/punggung."
+    },
+    {
+      "id": "miliaria",
+      "name": "Miliaria",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Biang keringat."
+    },
+    {
+      "id": "tinea_kruris",
+      "name": "Tinea kruris",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Infeksi dermatofita lipat paha."
+    },
+    {
+      "id": "tinea_korporis",
+      "name": "Tinea korporis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Infeksi dermatofita kulit badan."
+    },
+    {
+      "id": "kandidosis_kutis",
+      "name": "Kandidosis kutis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Infeksi kandida kulit lipatan."
+    },
+    {
+      "id": "pitiriasis_versikolor",
+      "name": "Pitiriasis versikolor",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Panu."
+    },
+    {
+      "id": "pitiriasis_rosea",
+      "name": "Pitiriasis rosea",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Herald patch lalu erupsi sekunder."
+    },
+    {
+      "id": "dermatitis_kontak_iritan",
+      "name": "Dermatitis kontak iritan",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Dermatitis akibat iritan."
+    },
+    {
+      "id": "erupsi_obat",
+      "name": "Erupsi obat",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Reaksi obat di kulit."
     }
   ]
 }

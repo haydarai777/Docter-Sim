@@ -47,7 +47,25 @@ import migren from './migren.json';
 import tensionHeadache from './tension_headache.json';
 import tetanus from './tetanus.json';
 // Kulit & kelamin
+import absesFolikel from './abses_folikel.json';
 import alergiMakanan from './alergi_makanan.json';
+import ektima from './ektima.json';
+import erisipelas from './erisipelas.json';
+import eritrasma from './eritrasma.json';
+import folikulitis from './folikulitis.json';
+import furunkelKarbunkel from './furunkel_karbunkel.json';
+import herpesSimpleks from './herpes_simpleks.json';
+import herpesZoster from './herpes_zoster.json';
+import impetigo from './impetigo.json';
+import kusta from './kusta.json';
+import lipoma from './lipoma.json';
+import moluskumKontagiosum from './moluskum_kontagiosum.json';
+import morbili from './morbili.json';
+import sifilis from './sifilis.json';
+import skrofuloderma from './skrofuloderma.json';
+import ulkusTungkai from './ulkus_tungkai.json';
+import varisela from './varisela.json';
+import verukaVulgaris from './veruka_vulgaris.json';
 // Mata
 import astigmatisma from './astigmatisma.json';
 import bendaAsingKonjungtiva from './benda_asing_konjungtiva.json';
@@ -154,7 +172,25 @@ export const DISEASE_FILES: unknown[] = [
   migren,
   tensionHeadache,
   tetanus,
+  absesFolikel,
   alergiMakanan,
+  ektima,
+  erisipelas,
+  eritrasma,
+  folikulitis,
+  furunkelKarbunkel,
+  herpesSimpleks,
+  herpesZoster,
+  impetigo,
+  kusta,
+  lipoma,
+  moluskumKontagiosum,
+  morbili,
+  sifilis,
+  skrofuloderma,
+  ulkusTungkai,
+  varisela,
+  verukaVulgaris,
   astigmatisma,
   bendaAsingKonjungtiva,
   blefaritis,
