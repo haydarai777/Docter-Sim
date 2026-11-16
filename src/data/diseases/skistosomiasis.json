@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah berbulan-bulan, Dok, perut sering sakit dan mencret berlendir darah hilang-timbul.",
+        "text": "Sudah {lamaSakit}, Dok, perut sering sakit dan mencret berlendir darah hilang-timbul.",
         "clue": "Kronik dengan diare berdarah intermiten"
       }
     ],

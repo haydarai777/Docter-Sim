@@ -28,7 +28,7 @@
   "misattributions": ["mata minus", "kurang vitamin", "mata tua"],
   "fears": ["mata buta", "harus pakai kacamata seumur hidup"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah berbulan-bulan, Dok, pelan-pelan.", "clue": "Kronik progresif lambat" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, pelan-pelan.", "clue": "Kronik progresif lambat" }],
     "karakter": [
       {
         "text": "Kalau baca buku atau lihat HP lama, tulisannya jadi kabur dan mata pegal, Dok. Lihat jauh masih jelas.",

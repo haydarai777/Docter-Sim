@@ -39,7 +39,7 @@
   "misattributions": ["maag", "masuk angin", "salah makan"],
   "fears": ["kanker lambung", "maag kronis"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah berbulan-bulan, Dok, hilang-timbul.", "clue": "Kronik intermiten" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang-timbul.", "clue": "Kronik intermiten" }],
     "karakter": [
       {
         "text": "Ulu hati perih kayak maag, Dok, mencret juga kadang-kadang.",

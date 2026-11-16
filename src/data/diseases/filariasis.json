@@ -44,12 +44,12 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah bertahun-tahun, Dok, pelan-pelan kaki kanan makin besar.",
+        "text": "Sudah {lamaSakit}, Dok, pelan-pelan kaki kanan makin besar.",
         "when": { "notTraits": ["akut_adl"] },
         "clue": "Bengkak tungkai kronik progresif"
       },
       {
-        "text": "Sudah beberapa bulan bengkak, Dok, tiga hari ini demam dan kaki merah panas.",
+        "text": "Sudah {lamaSakit} bengkak, Dok, tiga hari ini demam dan kaki merah panas.",
         "reveals": ["demam"],
         "when": { "traits": ["akut_adl"], "symptoms": ["demam"] },
         "clue": "Serangan akut pada bengkak kronik"

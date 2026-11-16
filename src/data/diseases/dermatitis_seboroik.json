@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah berbulan-bulan, Dok, kambuh-kambuhan.",
+        "text": "Sudah {lamaSakit}, Dok, kambuh-kambuhan.",
         "when": { "notTraits": ["bayi_cradle"] },
         "clue": "Kronik kambuhan"
       },

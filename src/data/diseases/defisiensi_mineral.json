@@ -33,7 +33,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah {lamaSakit}an, Dok, leher depan saya pelan-pelan membesar.",
+        "text": "Sudah {lamaSakit}, Dok, leher depan saya pelan-pelan membesar.",
         "when": { "traits": ["iodium"] },
         "clue": "Gondok membesar perlahan"
       },

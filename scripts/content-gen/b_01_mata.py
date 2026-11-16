@@ -164,7 +164,7 @@ D(id="perdarahan_subkonjungtiva", name="Perdarahan subkonjungtiva", aka=["Hemato
   sym=[("bercak_darah_mata", 1), ("mata_mengganjal", 0.25), ("batuk", 0.5, T("mengejan_batuk")), ("nyeri_kepala", 0.3, T("hipertensi_terkait"))],
   cc=["bercak_darah_mata"], mis=["mata pecah pembuluh darah", "kelilipan", "darah tinggi naik"], fears=["mata buta", "stroke"],
   ana={
-      "onset": [("Tadi pagi dikasih tahu istri/suami, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa.", "Onset tiba-tiba tanpa nyeri, diketahui orang lain")],
+      "onset": [("Tadi pagi dikasih tahu orang rumah, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa.", "Onset tiba-tiba tanpa nyeri, diketahui orang lain")],
       "karakter": [("Nggak sakit sama sekali, Dok, nggak gatal, nggak belekan. Penglihatan juga jelas.", "Tanpa nyeri, gatal, sekret; visus normal")],
       "pemberat_peringan": [("Semalam saya batuk-batuk keras sekali, Dok, sampai muntah.", "Didahului batuk/muntah keras", T("mengejan_batuk")),
                             ("Kemarin mata saya kena kibasan kain waktu jemur, terus saya kucek.", "Didahului trauma ringan/mengucek", T("trauma_ringan")),

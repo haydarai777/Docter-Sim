@@ -17,7 +17,7 @@
   "misattributions": ["panu", "kurap", "daki"],
   "fears": ["penyakit kelamin", "jamur menahun"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah beberapa bulan, Dok, di lipat paha ada bercak coklat kemerahan.", "clue": "Kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, di lipat paha ada bercak coklat kemerahan.", "clue": "Kronik" }],
     "karakter": [
       {
         "text": "Bercaknya rata, agak bersisik halus, cuma sedikit gatal, Dok. Pinggirnya nggak ada bintil-bintil.",

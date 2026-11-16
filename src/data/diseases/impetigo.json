@@ -39,7 +39,7 @@
         "clue": "Mulai bintil → krusta kuning menyebar"
       },
       {
-        "text": "Beberapa hari ini muncul lepuh berisi air di ketiak dan badan, Dok, gampang pecah.",
+        "text": "{LamaSakit} ini muncul lepuh berisi air di ketiak dan badan, Dok, gampang pecah.",
         "when": { "traits": ["bulosa"] },
         "clue": "Bula kendur mudah pecah"
       }

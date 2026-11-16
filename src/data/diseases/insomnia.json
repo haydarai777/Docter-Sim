@@ -61,7 +61,7 @@
         "when": { "traits": ["kronik"] },
         "clue": "Kronik ≥ 3 bulan"
       },
-      { "text": "Sudah beberapa minggu, Dok.", "when": { "notTraits": ["kronik", "stresor"] } }
+      { "text": "Sudah {lamaSakit}, Dok.", "when": { "notTraits": ["kronik", "stresor"] } }
     ],
     "pola": [
       {

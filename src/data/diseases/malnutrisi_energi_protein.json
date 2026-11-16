@@ -48,7 +48,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah beberapa bulan, Dok, berat badannya nggak naik-naik, di KMS di bawah garis merah.",
+        "text": "Sudah {lamaSakit}, Dok, berat badannya nggak naik-naik, di KMS di bawah garis merah.",
         "clue": "BB tidak naik berbulan-bulan, di bawah garis merah"
       }
     ],

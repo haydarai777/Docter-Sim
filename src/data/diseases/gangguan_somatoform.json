@@ -44,7 +44,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah berbulan-bulan, Dok, bahkan dua tahunan, macam-macam keluhannya.",
+        "text": "Sudah {lamaSakit}, Dok, macam-macam keluhannya, ganti-ganti, sudah ke beberapa dokter.",
         "clue": "Kronik, keluhan multipel"
       }
     ],

@@ -17,7 +17,7 @@
   "misattributions": ["kurang bersih", "keputihan biasa", "kecapekan"],
   "fears": ["kanker serviks", "penyakit kelamin"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah beberapa minggu, Dok, keputihan dan baunya amis.", "clue": "Subakut–kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, keputihan dan baunya amis.", "clue": "Subakut–kronik" }],
     "karakter": [
       {
         "text": "Keputihannya encer abu-abu, Dok, baunya amis kayak ikan, apalagi habis berhubungan.",

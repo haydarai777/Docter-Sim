@@ -32,12 +32,7 @@
   "misattributions": ["kecapekan", "darah rendah", "kurang tidur"],
   "fears": ["kanker darah", "sakit jantung"],
   "anamnesis": {
-    "onset": [
-      {
-        "text": "Sudah berbulan-bulan, Dok, makin lama makin gampang capek dan ngos-ngosan.",
-        "clue": "Kronik progresif"
-      }
-    ],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, makin lama makin gampang capek dan ngos-ngosan.", "clue": "Kronik progresif" }],
     "kebiasaan": [
       {
         "text": "Tiap hari ke kebun/sawah nyeker, Dok, nggak pakai sandal.",

@@ -36,7 +36,7 @@ D(id="kejang_demam", name="Kejang demam", aka=["Step", "Kejang demam sederhana",
        ("telinga_berair", 0.3, T("sumber_oma")), ("diare", 1, T("sumber_diare")), ("mual_muntah", 0.5, T("sumber_diare"))],
   cc=["kejang"], ex=["demam"], mis=["step karena panas", "kesambet", "kemasukan"], fears=["epilepsi", "otak rusak", "anaknya meninggal"],
   ana={
-      "onset": [("Panasnya sudah {lamaSakit}, Dok, terus tadi pagi tiba-tiba kejang.", "Kejang terjadi saat demam tinggi (hari pertama)")],
+      "onset": [("Panasnya sudah {lamaSakit}, Dok, terus barusan tiba-tiba kejang.", "Kejang terjadi saat demam tinggi (hari pertama)")],
       "karakter": [("Seluruh badannya kaku lalu kelojotan, matanya mendelik ke atas, Dok.", "Kejang umum tonik-klonik", NT("kompleks")),
                    ("Kelojotannya cuma tangan dan kaki kanan, Dok, matanya melirik ke kanan.", "Kejang fokal (kompleks)", T("kompleks"))],
       "durasi": [("Sebentar, Dok, kurang dari lima menit.", "Durasi < 15 menit", NT("kompleks")),
@@ -329,7 +329,7 @@ D(id="gangguan_somatoform", name="Gangguan somatoform", aka=["Gangguan somatisas
        ("cemas", 0.6), ("sulit_tidur", 0.5)],
   cc=["keluhan_berpindah"], ex=["berdebar", "nyeri_kepala"], mis=["sakit jantung", "kena guna-guna", "penyakit langka"], fears=["sakit jantung", "kanker", "penyakit yang belum ketemu"],
   ana={
-      "onset": [("Sudah berbulan-bulan, Dok, bahkan dua tahunan, macam-macam keluhannya.", "Kronik, keluhan multipel")],
+      "onset": [("Sudah {lamaSakit}, Dok, macam-macam keluhannya, ganti-ganti, sudah ke beberapa dokter.", "Kronik, keluhan multipel")],
       "lokasi": [("Pindah-pindah, Dok. Kadang kepala, kadang dada berdebar, kadang perut, kadang kesemutan.", "Keluhan berpindah lokasi")],
       "riwayat_obat": [("Sudah ke banyak dokter dan rumah sakit, Dok, cek darah, rontgen, rekam jantung, katanya normal semua. Tapi saya masih merasa sakit.",
                         "Pemeriksaan berulang selalu normal, sulit diyakinkan", T("doctor_shopping")),

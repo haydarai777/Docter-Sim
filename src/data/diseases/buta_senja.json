@@ -43,7 +43,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah beberapa minggu, Dok. Kalau magrib dia sering nabrak barang, nggak mau main di luar.",
+        "text": "Sudah {lamaSakit}, Dok. Kalau magrib dia sering nabrak barang, nggak mau main di luar.",
         "clue": "Gangguan penglihatan saat senja/gelap"
       }
     ],

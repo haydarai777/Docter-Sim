@@ -28,7 +28,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah berbulan-bulan, Dok, hilang-timbul.",
+        "text": "Sudah {lamaSakit}, Dok, hilang-timbul.",
         "when": { "notTraits": ["sekunder_pasca_diare"] },
         "clue": "Kronik berulang"
       },

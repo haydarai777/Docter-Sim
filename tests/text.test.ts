@@ -33,6 +33,23 @@ describe('format & teks', () => {
     expect(durationText(4)).toBe('empat hari');
     expect(durationText(21)).toBe('tiga minggu');
     expect(durationText(75)).toBe('tiga bulan');
+    expect(durationText(1)).toBe('sehari');
+    expect(durationText(360)).toBe('setahun');
+    expect(durationText(720)).toBe('dua tahun');
+  });
+
+  it('fillTemplate: hari sakit pertama berbunyi "tadi", bukan "sehari lalu"', () => {
+    const day1 = { hari: '1', lamaSakit: 'sehari' };
+    expect(fillTemplate('{LamaSakit} lalu, Dok, tiba-tiba mimisan.', day1)).toBe('Tadi, Dok, tiba-tiba mimisan.');
+    expect(fillTemplate('Sudah {lamaSakit}, Dok, gatal.', day1)).toBe('Sejak tadi, Dok, gatal.');
+    expect(fillTemplate('Panasnya sudah {lamaSakit} ini, Dok.', day1)).toBe('Panasnya sejak tadi, Dok.');
+    expect(fillTemplate('Mendadak, Dok, {lamaSakit} lalu menggigil.', day1)).toBe('Mendadak, Dok, tadi menggigil.');
+    expect(fillTemplate('{LamaSakit} ini pusarnya merah.', day1)).toBe('Hari ini pusarnya merah.');
+    const d1 = { ...day1, hariTeks: 'satu' };
+    expect(fillTemplate('Sudah {hariTeks} hari ini, Dok, hilang-timbul.', d1)).toBe('Sejak tadi, Dok, hilang-timbul.');
+    expect(fillTemplate('Mulainya sekitar {hariTeks} hari yang lalu, Dok.', d1)).toBe('Mulainya sejak tadi, Dok.');
+    expect(fillTemplate('Panasnya mulai {hariTeks} hari yang lalu, Dok.', d1)).toBe('Panasnya mulai tadi, Dok.');
+    expect(fillTemplate('Sudah {lamaSakit}, Dok.', { hari: '3', lamaSakit: 'tiga hari' })).toBe('Sudah tiga hari, Dok.');
   });
 
   it('fillTemplate mengisi placeholder, termasuk versi kapital', () => {

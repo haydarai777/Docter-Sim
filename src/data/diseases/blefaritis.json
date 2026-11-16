@@ -31,7 +31,7 @@
   "misattributions": ["iritasi debu", "kurang bersih", "alergi"],
   "fears": ["mata infeksi", "bulu mata habis"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah lama, Dok, berbulan-bulan, hilang-timbul.", "clue": "Kronik kambuhan" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang-timbul.", "clue": "Kronik kambuhan" }],
     "karakter": [
       {
         "text": "Pinggir kelopak mata saya merah, gatal, dan ada kerak kayak ketombe di bulu mata, Dok.",

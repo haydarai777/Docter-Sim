@@ -25,7 +25,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah {lamaSakit}an, Dok, benjolan di punggung, makin lama sedikit membesar pelan-pelan.",
+        "text": "Sudah {lamaSakit}, Dok, benjolan di punggung, makin lama sedikit membesar pelan-pelan.",
         "clue": "Tumbuh sangat lambat dalam tahun"
       }
     ],

@@ -34,7 +34,7 @@
   "misattributions": ["sinusitis", "alergi", "polip"],
   "fears": ["polip hidung", "sinusitis kronis"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah berbulan-bulan, Dok, hilang-timbul.", "clue": "Kronik kambuhan" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang-timbul.", "clue": "Kronik kambuhan" }],
     "pola": [
       {
         "text": "Kalau masuk ruangan AC atau pagi-pagi dingin langsung mampet dan meler, Dok.",

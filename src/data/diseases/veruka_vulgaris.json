@@ -21,7 +21,7 @@
   "misattributions": ["mata ikan", "tahi lalat", "kapalan"],
   "fears": ["kanker kulit", "menular"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah beberapa bulan, Dok, mulai satu lalu jadi banyak.", "clue": "Bertambah jumlah dalam bulan" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, mulai satu lalu jadi banyak.", "clue": "Bertambah jumlah dalam bulan" }],
     "lokasi": [{ "text": "Di punggung jari tangan kanan, Dok, ada juga di pinggir kuku.", "clue": "Jari & periungual" }],
     "karakter": [
       {

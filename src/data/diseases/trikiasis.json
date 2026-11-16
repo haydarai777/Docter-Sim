@@ -31,7 +31,7 @@
   "misattributions": ["kelilipan terus", "mata tua", "iritasi debu"],
   "fears": ["mata buta"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah berminggu-minggu, Dok, ngganjal terus.", "clue": "Kronik/berulang" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, ngganjal terus.", "clue": "Kronik/berulang" }],
     "karakter": [
       {
         "text": "Tiap kedip rasanya ada yang menusuk, Dok, kayak ada bulu mata yang kena mata.",

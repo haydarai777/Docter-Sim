@@ -36,7 +36,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah beberapa bulan, Dok, makin lama makin kabur kalau lihat jauh.",
+        "text": "Sudah {lamaSakit}, Dok, makin lama makin kabur kalau lihat jauh.",
         "clue": "Kabur jauh progresif lambat"
       }
     ],

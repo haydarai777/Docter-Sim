@@ -25,7 +25,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah beberapa minggu, Dok, di kotoran saya ada potongan putih pipih kayak pita, kadang gerak.",
+        "text": "Sudah {lamaSakit}, Dok, di kotoran saya ada potongan putih pipih kayak pita, kadang gerak.",
         "clue": "Proglotid pipih keluar bersama tinja"
       }
     ],

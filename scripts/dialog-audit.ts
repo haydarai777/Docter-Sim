@@ -33,7 +33,14 @@ for (const s of content.symptoms) {
 }
 for (const d of content.diseases) {
   const lines: string[] = [];
-  for (let seed = 1; seed <= 4; seed++) {
+  // 4 kasus acak + (bila ada) satu kasus hari sakit pertama, agar frasa "tadi/baru tadi" ikut teraudit.
+  const seeds = [1, 2, 3, 4];
+  const dayOf = (seed: number) => generateCase(content, config, { diseaseId: d.id, seed: seed * 101 }).day;
+  if (!seeds.some((x) => dayOf(x) === 1)) {
+    const first = Array.from({ length: 60 }, (_, i) => i + 5).find((x) => dayOf(x) === 1);
+    if (first) seeds.push(first);
+  }
+  for (const seed of seeds) {
     const c = generateCase(content, config, { diseaseId: d.id, seed: seed * 101 });
     let st: EncounterState = startEncounter({ ...c, patient: { ...c.patient, budget: 9e9 } });
     lines.push(`## ${d.id} #${seed} — ${c.patient.name}, ${c.patient.age} th, ${c.patient.sex}${c.patient.companion ? ` (diantar ${c.patient.companion.relation})` : ''} · hari ${c.day} · ${c.traits.join(', ')}`, `P: ${c.complaint}`);
@@ -44,6 +51,7 @@ for (const d of content.diseases) {
       if (!r.understood) unknown.set(q, (unknown.get(q) ?? 0) + 1);
       const tag = `${d.id}#${seed} «${q}»`;
       if (/\{[A-Za-z]/.test(r.reply)) issues.push(`placeholder ${tag}: ${r.reply}`);
+      if (c.day === 1 && /\b(sehari (?:lalu|ini)|sudah sehari)\b/i.test(r.reply)) issues.push(`hari pertama berbunyi "sehari" ${tag}: ${r.reply}`);
       const sents = r.reply.split(/(?<=[.!?])\s+/).map((x) => x.trim().toLowerCase()).filter((x) => x.length > 12);
       if (new Set(sents).size < sents.length) issues.push(`kalimat ganda ${tag}: ${r.reply}`);
       if (c.patient.companion && /\b(badan|kepala|perut|mata|telinga|kulit|kaki|tangan|dada|leher|gigi|mulut) saya\b/i.test(r.reply)) issues.push(`suara pengantar ${tag}: ${r.reply}`);
@@ -61,5 +69,5 @@ for (const d of content.diseases) {
 }
 for (const [q, n] of [...unknown].sort((a, b) => b[1] - a[1])) issues.push(`tidak dipahami ×${n}: ${q}`);
 console.log(issues.length ? issues.join('\n') : '✓ Tidak ada temuan.');
-console.log(`\n${content.diseases.length} penyakit × 4 kasus diaudit; ${issues.length} temuan.`);
+console.log(`\n${content.diseases.length} penyakit × 4–5 kasus (termasuk hari sakit pertama bila mungkin) diaudit; ${issues.length} temuan.`);
 process.exit(issues.length ? 1 : 0);

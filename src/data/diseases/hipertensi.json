@@ -63,7 +63,7 @@
         "clue": "Ditemukan saat skrining, asimtomatik"
       },
       {
-        "text": "Beberapa minggu ini tengkuk saya berat, Dok, kepala juga kadang pusing.",
+        "text": "{LamaSakit} ini tengkuk saya berat, Dok, kepala juga kadang pusing.",
         "when": { "notTraits": ["datang_skrining"] },
         "clue": "Tengkuk berat & pusing (tidak spesifik)"
       }

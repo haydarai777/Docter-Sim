@@ -745,7 +745,7 @@ Keluhan utama (prioritas): berat_badan_turun → risiko_ims; tambahan: benjolan_
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Bulan lalu suami/istri saya dinyatakan HIV positif, Dok. Saya disuruh tes juga." → **Pasangan HIV positif**
+- _onset_: "Bulan lalu pasangan saya dinyatakan HIV positif, Dok. Saya disuruh tes juga." → **Pasangan HIV positif**
 - _onset_: "{LamaSakit} ini berat badan turun hampir enam kilo, Dok, sering mencret dan demam hilang timbul." → **BB turun, diare & demam berulang**
 - _kebiasaan_: "Dulu saya sering berhubungan dengan sesama jenis tanpa kondom, Dok." → **LSL tanpa kondom**
 - _kebiasaan_: "Dulu saya sering jajan di lokalisasi waktu kerja di luar kota, Dok, nggak pakai kondom." → **Hubungan seks berisiko tanpa kondom**
@@ -1176,7 +1176,7 @@ Keluhan utama (prioritas): benjolan_leher_depan → kram_otot; tambahan: —. Sa
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah {lamaSakit}an, Dok, leher depan saya pelan-pelan membesar." → **Gondok membesar perlahan**
+- _onset_: "Sudah {lamaSakit}, Dok, leher depan saya pelan-pelan membesar." → **Gondok membesar perlahan**
 - _onset_: "{LamaSakit} ini, Dok, sering kram di betis dan tangan, bibir kadang kesemutan." → **Kram & parestesia perioral**
 - _bepergian_lingkungan_: "Saya tinggal di desa di pegunungan, Dok. Banyak tetangga juga lehernya besar." → **Daerah endemis GAKY**
 - _kebiasaan_: "Garamnya garam krosok dari pasar, Dok, bukan yang bungkus beryodium." → **Garam tidak beryodium**
@@ -2224,7 +2224,7 @@ Keluhan utama (prioritas): bb_tidak_naik; tambahan: nafsu_makan_turun. Salah kap
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa bulan, Dok, berat badannya nggak naik-naik, di KMS di bawah garis merah." → **BB tidak naik berbulan-bulan, di bawah garis merah**
+- _onset_: "Sudah {lamaSakit}, Dok, berat badannya nggak naik-naik, di KMS di bawah garis merah." → **BB tidak naik berbulan-bulan, di bawah garis merah**
 - _kebiasaan_: "ASI berhenti umur enam bulan, Dok. Makannya bubur nasi sama kecap, jarang lauk. Uangnya pas-pasan." → **Asupan energi-protein kurang, MPASI tidak adekuat**
 - _kebiasaan_: "Makannya susah sekali, Dok, cuma mau ngemil chiki." → **Pola makan buruk**
 - _riwayat_penyakit_: "Sering mencret, Dok, hampir tiap bulan." → **Diare berulang**
@@ -2378,9 +2378,10 @@ Keluhan utama (prioritas): bb_naik; tambahan: sesak_napas. Salah kaprah pasien: 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
 - _onset_: "{LamaSakit} ini berat badan naik terus, Dok, sekarang hampir seratus kilo." → **BB naik progresif bertahun-tahun**
-- _onset_: "Beberapa tahun ini berat badan naik, Dok, celana sudah nggak muat." → **BB naik bertahap**
+- _onset_: "{LamaSakit} ini berat badan naik, Dok, celana sudah nggak muat." → **BB naik bertahap**
 - _kebiasaan_: "Suka ngemil dan minum manis, Dok, makan malam larut, jarang olahraga, kerja duduk terus." → **Asupan kalori tinggi & sedentari**
-- _pola_: "Kata suami/istri saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok." → **Mendengkur, henti napas, mengantuk siang (OSA)**
+- _pola_: "Kata istri saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok." → **Mendengkur, henti napas, mengantuk siang (OSA)**
+- _pola_: "Kata suami saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok." → **Mendengkur, henti napas, mengantuk siang (OSA)**
 - _riwayat_penyakit_: "Belum pernah cek gula atau kolesterol, Dok. Nggak pernah minum obat steroid lama." → **Belum skrining komorbid; tanpa obat pemicu**
 - _riwayat_keluarga_: "Orang tua saya dua-duanya gemuk, ibu saya kencing manis, Dok." → **Riwayat keluarga obesitas & DM**
 - _harapan_: "Saya mau turun berat badan, Dok, biar sehat." → **Motivasi menurunkan BB**
@@ -2956,8 +2957,8 @@ Keluhan utama (prioritas): bengkak_kaki; tambahan: demam. Salah kaprah pasien: a
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah bertahun-tahun, Dok, pelan-pelan kaki kanan makin besar." → **Bengkak tungkai kronik progresif**
-- _onset_: "Sudah beberapa bulan bengkak, Dok, tiga hari ini demam dan kaki merah panas." → **Serangan akut pada bengkak kronik**
+- _onset_: "Sudah {lamaSakit}, Dok, pelan-pelan kaki kanan makin besar." → **Bengkak tungkai kronik progresif**
+- _onset_: "Sudah {lamaSakit} bengkak, Dok, tiga hari ini demam dan kaki merah panas." → **Serangan akut pada bengkak kronik**
 - _pola_: "Hampir tiap bulan saya demam-demam, Dok, lipat paha bengkak sakit, terus kaki makin besar." → **Demam berulang dengan adenolimfangitis**
 - _bepergian_lingkungan_: "Saya dari kecil tinggal di desa dekat rawa di Sumba, Dok, banyak nyamuk. Tetangga ada yang kakinya besar juga." → **Tinggal di daerah endemis filaria**
 - _riwayat_obat_: "Waktu ada pembagian obat cacing massal dari puskesmas, saya nggak ikut minum, Dok." → **Tidak ikut POPM filariasis**
@@ -3685,7 +3686,7 @@ Keluhan utama (prioritas): hasil_cek_abnormal → tengkuk_tegang; tambahan: nyer
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
 - _onset_: "Pas cek kesehatan di kantor/posbindu bulan lalu tensinya 160, Dok, disuruh periksa. Saya sih nggak merasa apa-apa." → **Ditemukan saat skrining, asimtomatik**
-- _onset_: "Beberapa minggu ini tengkuk saya berat, Dok, kepala juga kadang pusing." → **Tengkuk berat & pusing (tidak spesifik)**
+- _onset_: "{LamaSakit} ini tengkuk saya berat, Dok, kepala juga kadang pusing." → **Tengkuk berat & pusing (tidak spesifik)**
 - _riwayat_penyakit_: "Dulu pernah dibilang tensinya tinggi, Dok, tapi nggak minum obat." → **Riwayat TD tinggi tidak diobati**
 - _riwayat_keluarga_: "Bapak saya darah tinggi, meninggal karena stroke, Dok." → **Riwayat keluarga hipertensi & stroke**
 - _kebiasaan_: "Saya suka makanan asin, ikan asin, mi instan, Dok. Jarang olahraga." → **Asupan garam tinggi, kurang aktivitas**
@@ -3827,7 +3828,7 @@ Keluhan utama (prioritas): keluhan_berpindah; tambahan: berdebar, nyeri_kepala. 
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, bahkan dua tahunan, macam-macam keluhannya." → **Kronik, keluhan multipel**
+- _onset_: "Sudah {lamaSakit}, Dok, macam-macam keluhannya, ganti-ganti, sudah ke beberapa dokter." → **Kronik, keluhan multipel**
 - _lokasi_: "Pindah-pindah, Dok. Kadang kepala, kadang dada berdebar, kadang perut, kadang kesemutan." → **Keluhan berpindah lokasi**
 - _riwayat_obat_: "Sudah ke banyak dokter dan rumah sakit, Dok, cek darah, rontgen, rekam jantung, katanya normal semua. Tapi saya masih merasa sakit." → **Pemeriksaan berulang selalu normal, sulit diyakinkan**
 - _riwayat_obat_: "Sudah dua kali periksa di puskesmas, Dok, katanya hasilnya bagus, tapi saya tetap merasa sakit." → **Pemeriksaan sebelumnya normal**
@@ -3967,6 +3968,7 @@ Keluhan utama (prioritas): sulit_tidur; tambahan: mengantuk_siang. Salah kaprah 
 - _keparahan_: "Siangnya ngantuk dan susah konsentrasi, Dok, gampang marah." → **Gangguan fungsi siang hari**
 - _kebiasaan_: "Saya minum kopi sore-sore, Dok, terus main HP di kasur sampai larut." → **Higiene tidur buruk (kafein, gawai)**
 - _kebiasaan_: "Kata istri saya ngorok keras sekali, kadang kayak berhenti napas, Dok." → **Mendengkur keras & henti napas (curiga OSA)**
+- _kebiasaan_: "Kata suami saya ngorok keras sekali, kadang kayak berhenti napas, Dok." → **Mendengkur keras & henti napas (curiga OSA)**
 - _kekhawatiran_: "Akhir-akhir ini saya sedih terus, Dok, nggak semangat ngapa-ngapain. Tapi nggak pernah kepikiran menyakiti diri." → **Mood depresif (tanpa ide bunuh diri)**
 - _riwayat_obat_: "Pernah coba obat tidur punya teman, Dok, cuma sekali." → **Penggunaan obat tidur tanpa resep**
 
@@ -4913,7 +4915,7 @@ Keluhan utama (prioritas): keputihan; tambahan: —. Salah kaprah pasien: kurang
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa minggu, Dok, keputihan dan baunya amis." → **Subakut–kronik**
+- _onset_: "Sudah {lamaSakit}, Dok, keputihan dan baunya amis." → **Subakut–kronik**
 - _karakter_: "Keputihannya encer abu-abu, Dok, baunya amis kayak ikan, apalagi habis berhubungan." → **Duh tipis keabuan berbau amis, memberat pascasanggama**
 - _pemberat_peringan_: "Nggak terlalu gatal, Dok, cuma malu sama baunya." → **Gatal minimal**
 - _kebiasaan_: "Saya sering bilas ke dalam pakai sabun antiseptik, Dok." → **Douching**
@@ -5440,7 +5442,7 @@ Keluhan utama (prioritas): kejang; tambahan: demam. Salah kaprah pasien: step ka
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "{LamaSakit} lalu, Dok, sejak kemarin panas tinggi, terus tiba-tiba kejang." → **Kejang terjadi saat demam tinggi (hari pertama)**
+- _onset_: "Panasnya sudah {lamaSakit}, Dok, terus barusan tiba-tiba kejang." → **Kejang terjadi saat demam tinggi (hari pertama)**
 - _karakter_: "Seluruh badannya kaku lalu kelojotan, matanya mendelik ke atas, Dok." → **Kejang umum tonik-klonik**
 - _karakter_: "Kelojotannya cuma tangan dan kaki kanan, Dok, matanya melirik ke kanan." → **Kejang fokal (kompleks)**
 - _durasi_: "Sebentar, Dok, kurang dari lima menit." → **Durasi < 15 menit**
@@ -7024,7 +7026,7 @@ Keluhan utama (prioritas): ketombe; tambahan: ruam_kulit. Salah kaprah pasien: k
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, kambuh-kambuhan." → **Kronik kambuhan**
+- _onset_: "Sudah {lamaSakit}, Dok, kambuh-kambuhan." → **Kronik kambuhan**
 - _onset_: "Sejak umur sebulan, Dok, kepalanya ada kerak kuning tebal berminyak." → **Krusta kulit kepala bayi**
 - _lokasi_: "Di kepala, alis, samping hidung, dan belakang telinga, Dok, merah bersisik." → **Area sebore**
 - _pemberat_peringan_: "Kalau stres dan kurang tidur makin parah, Dok." → **Memberat dengan stres**
@@ -7412,7 +7414,7 @@ Keluhan utama (prioritas): ruam_kulit; tambahan: gatal_kulit. Salah kaprah pasie
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa bulan, Dok, di lipat paha ada bercak coklat kemerahan." → **Kronik**
+- _onset_: "Sudah {lamaSakit}, Dok, di lipat paha ada bercak coklat kemerahan." → **Kronik**
 - _karakter_: "Bercaknya rata, agak bersisik halus, cuma sedikit gatal, Dok. Pinggirnya nggak ada bintil-bintil." → **Patch coklat-merah skuama halus tanpa tepi aktif**
 - _riwayat_obat_: "Sudah pakai salep jamur dari warung, Dok, nggak ada perubahan." → **Tidak respons antijamur**
 - _kebiasaan_: "Kerja di tempat panas, sering keringatan, Dok." → **Lembap & berkeringat**
@@ -7686,6 +7688,7 @@ Keluhan utama (prioritas): bintil_bernanah; tambahan: gatal_kulit. Salah kaprah 
 
 - _onset_: "{LamaSakit} ini, Dok, muncul bintil-bintil bernanah kecil." → **Subakut**
 - _lokasi_: "Di janggut dan dagu, Dok, sejak cukur pakai silet." → **Area janggut setelah mencukur**
+- _lokasi_: "Di ketiak dan betis, Dok, sejak cukur bulu pakai silet." → **Area yang dicukur**
 - _lokasi_: "Di paha dan bokong, Dok, mungkin karena celana ketat dan duduk lama di motor." → **Paha & bokong (gesekan, oklusi)**
 - _karakter_: "Bintilnya kecil-kecil, tiap bintil ada rambutnya di tengah, agak gatal dan perih, Dok." → **Pustul folikular ditembus rambut**
 - _episode_sebelumnya_: "Sering kambuh begini, Dok." → **Berulang**
@@ -7952,6 +7955,7 @@ Keluhan utama (prioritas): lepuh_bibir → luka_kemaluan; tambahan: nyeri_terbak
 - _onset_: "{LamaSakit} lalu bibir saya terasa panas dan gatal, Dok, terus muncul bintil berair berkelompok." → **Prodromal terbakar lalu vesikel berkelompok**
 - _onset_: "{LamaSakit} lalu kemaluan saya perih, Dok, terus muncul lepuh kecil-kecil yang pecah jadi luka." → **Vesikel berkelompok → erosi nyeri di genital**
 - _episode_sebelumnya_: "Sering kambuh di tempat yang sama, Dok, apalagi kalau capek atau mau haid." → **Rekuren di tempat yang sama dengan pencetus**
+- _episode_sebelumnya_: "Sering kambuh di tempat yang sama, Dok, apalagi kalau capek, kurang tidur, atau kena panas matahari." → **Rekuren di tempat yang sama dengan pencetus**
 - _episode_sebelumnya_: "Baru pertama kali, Dok, badan juga demam." → **Episode primer dengan demam**
 - _episode_sebelumnya_: "Baru pertama kali, Dok." → **Episode pertama**
 - _karakter_: "Lukanya perih sekali, Dok, bukan luka yang nggak sakit." → **Erosi nyeri (bedakan dari sifilis)**
@@ -8350,7 +8354,7 @@ Keluhan utama (prioritas): koreng → lepuh_kulit; tambahan: —. Salah kaprah p
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
 - _onset_: "{LamaSakit} lalu awalnya bintil merah di bawah hidung, Dok, terus pecah jadi koreng kuning dan menyebar." → **Mulai bintil → krusta kuning menyebar**
-- _onset_: "Beberapa hari ini muncul lepuh berisi air di ketiak dan badan, Dok, gampang pecah." → **Bula kendur mudah pecah**
+- _onset_: "{LamaSakit} ini muncul lepuh berisi air di ketiak dan badan, Dok, gampang pecah." → **Bula kendur mudah pecah**
 - _karakter_: "Korengnya kuning kayak madu, Dok, gatal, kalau digaruk makin menyebar." → **Krusta madu, gatal, autoinokulasi**
 - _kebiasaan_: "Dia suka main tanah dan jarang mandi sore, Dok. Kukunya panjang." → **Higiene kurang**
 - _riwayat_keluarga_: "Adiknya juga mulai ada koreng begitu, Dok." → **Kontak serumah**
@@ -8753,7 +8757,7 @@ Keluhan utama (prioritas): benjolan_kulit; tambahan: —. Salah kaprah pasien: k
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah {lamaSakit}an, Dok, benjolan di punggung, makin lama sedikit membesar pelan-pelan." → **Tumbuh sangat lambat dalam tahun**
+- _onset_: "Sudah {lamaSakit}, Dok, benjolan di punggung, makin lama sedikit membesar pelan-pelan." → **Tumbuh sangat lambat dalam tahun**
 - _karakter_: "Lunak, Dok, nggak sakit, bisa digeser-geser." → **Lunak, mobile, tidak nyeri**
 - _keparahan_: "Nggak mengganggu sih, Dok, cuma malu kalau pakai baju tipis." → **Keluhan kosmetik**
 - _progresi_: "Nggak pernah tiba-tiba membesar cepat atau jadi merah, Dok." → **Tanpa pertumbuhan cepat/tanda radang**
@@ -11062,7 +11066,7 @@ Keluhan utama (prioritas): kulit_bersisik; tambahan: gatal_kulit. Salah kaprah p
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa bulan, Dok, telapak tangan kanan kering bersisik, garis-garisnya jadi jelas." → **Kronik, telapak bersisik**
+- _onset_: "Sudah {lamaSakit}, Dok, telapak tangan kanan kering bersisik, garis-garisnya jadi jelas." → **Kronik, telapak bersisik**
 - _lokasi_: "Cuma tangan kanan, Dok, yang kiri bagus. Telapak kaki juga bersisik dua-duanya." → **Unilateral tangan + kedua kaki (two feet–one hand)**
 - _kebiasaan_: "Kaki saya sering saya garuk pakai tangan kanan, Dok, kutu air." → **Autoinokulasi dari tinea pedis**
 - _kebiasaan_: "Kerjaan saya nggak banyak kena air atau sabun, Dok." → **Bukan pekerjaan basah**
@@ -11837,7 +11841,7 @@ Keluhan utama (prioritas): kutil; tambahan: —. Salah kaprah pasien: mata ikan,
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa bulan, Dok, mulai satu lalu jadi banyak." → **Bertambah jumlah dalam bulan**
+- _onset_: "Sudah {lamaSakit}, Dok, mulai satu lalu jadi banyak." → **Bertambah jumlah dalam bulan**
 - _lokasi_: "Di punggung jari tangan kanan, Dok, ada juga di pinggir kuku." → **Jari & periungual**
 - _karakter_: "Kasar, keras, nggak sakit, Dok. Ada titik-titik hitamnya." → **Permukaan kasar, titik hitam, tidak nyeri**
 - _kebiasaan_: "Suka saya gigit-gigit dan korek, Dok." → **Menggigit/mengorek (autoinokulasi)**
@@ -11961,7 +11965,7 @@ Keluhan utama (prioritas): pandangan_kabur; tambahan: mata_lelah. Salah kaprah p
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah lama, Dok, berbulan-bulan." → **Kronik**
+- _onset_: "Sudah {lamaSakit}, Dok." → **Kronik**
 - _karakter_: "Lihat jauh dan dekat sama-sama agak kabur, Dok, tulisannya kayak berbayang dobel." → **Kabur jauh & dekat dengan bayangan berbayang/distorsi**
 - _pemberat_peringan_: "Kalau lama baca atau di depan komputer, mata pegal dan pusing, Dok." → **Astenopia saat kerja dekat**
 - _kebiasaan_: "Saya suka memiringkan kepala biar jelas, kata teman-teman." → **Kompensasi memiringkan kepala**
@@ -12234,7 +12238,7 @@ Keluhan utama (prioritas): kelopak_bersisik; tambahan: mata_gatal. Salah kaprah 
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah lama, Dok, berbulan-bulan, hilang-timbul." → **Kronik kambuhan**
+- _onset_: "Sudah {lamaSakit}, Dok, hilang-timbul." → **Kronik kambuhan**
 - _karakter_: "Pinggir kelopak mata saya merah, gatal, dan ada kerak kayak ketombe di bulu mata, Dok." → **Tepi kelopak merah bersisik/berkerak**
 - _riwayat_penyakit_: "Kepala saya ketombean, Dok, alis dan pinggir hidung juga suka bersisik." → **Dermatitis seboroik (ketombe) menyertai**
 - _pola_: "Kalau pagi bangun tidur paling terasa, Dok." → **Memberat pagi hari**
@@ -12368,7 +12372,7 @@ Keluhan utama (prioritas): rabun_senja; tambahan: mata_kering. Salah kaprah pasi
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa minggu, Dok. Kalau magrib dia sering nabrak barang, nggak mau main di luar." → **Gangguan penglihatan saat senja/gelap**
+- _onset_: "Sudah {lamaSakit}, Dok. Kalau magrib dia sering nabrak barang, nggak mau main di luar." → **Gangguan penglihatan saat senja/gelap**
 - _karakter_: "Siang hari dia lihat biasa, Dok. Cuma kalau sore atau di kamar yang gelap dia meraba-raba." → **Penglihatan siang normal, buruk saat gelap**
 - _kebiasaan_: "Makannya susah, Dok, paling nasi sama kerupuk. Sayur dan buah nggak mau. Nggak pernah dapat kapsul vitamin A di posyandu." → **Asupan vitamin A kurang, tidak mendapat kapsul vitamin A**
 - _riwayat_penyakit_: "Sering mencret, Dok, hampir tiap bulan." → **Diare berulang**
@@ -12627,7 +12631,7 @@ Keluhan utama (prioritas): kabur_dekat; tambahan: mata_lelah. Salah kaprah pasie
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, pelan-pelan." → **Kronik progresif lambat**
+- _onset_: "Sudah {lamaSakit}, Dok, pelan-pelan." → **Kronik progresif lambat**
 - _karakter_: "Kalau baca buku atau lihat HP lama, tulisannya jadi kabur dan mata pegal, Dok. Lihat jauh masih jelas." → **Kabur dekat + astenopia, jauh masih jelas**
 - _pemberat_peringan_: "Habis baca lama kepala saya cekot-cekot, Dok. Istirahat sebentar enakan." → **Sakit kepala setelah membaca, membaik dengan istirahat**
 - _riwayat_keluarga_: "Ibu saya pakai kacamata plus dari muda, Dok." → **Riwayat keluarga hipermetropia**
@@ -13032,7 +13036,7 @@ Keluhan utama (prioritas): mata_kering; tambahan: mata_mengganjal, mata_lelah. S
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, pelan-pelan makin sering." → **Kronik, bertahap**
+- _onset_: "Sudah {lamaSakit}, Dok, pelan-pelan makin sering." → **Kronik, bertahap**
 - _pola_: "Paling parah sore hari setelah seharian di depan komputer, Dok." → **Memberat sore hari/setelah kerja layar**
 - _pola_: "Terasa terus, Dok, apalagi kalau di ruangan ber-AC atau kena kipas." → **Memberat di ruangan AC/berangin**
 - _karakter_: "Rasanya kering, perih, kayak berpasir, Dok. Kadang malah berair." → **Kering berpasir dengan berair paradoks**
@@ -13164,7 +13168,7 @@ Keluhan utama (prioritas): kabur_jauh; tambahan: mata_lelah. Salah kaprah pasien
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa bulan, Dok, makin lama makin kabur kalau lihat jauh." → **Kabur jauh progresif lambat**
+- _onset_: "Sudah {lamaSakit}, Dok, makin lama makin kabur kalau lihat jauh." → **Kabur jauh progresif lambat**
 - _karakter_: "Tulisan di papan tulis nggak kelihatan, Dok, harus maju ke depan. Kalau baca buku jelas." → **Kabur jauh, dekat jelas**
 - _karakter_: "Kalau lihat rambu atau nomor bus dari jauh nggak jelas, Dok. Baca HP masih jelas." → **Kabur jauh, dekat jelas**
 - _pemberat_peringan_: "Kalau saya sipitkan mata jadi agak jelas, Dok." → **Membaik bila menyipitkan mata (efek pinhole)**
@@ -13292,7 +13296,7 @@ Keluhan utama (prioritas): bercak_darah_mata; tambahan: —. Salah kaprah pasien
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "{LamaSakit} lalu dikasih tahu istri/suami, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa." → **Onset tiba-tiba tanpa nyeri, diketahui orang lain**
+- _onset_: "{LamaSakit} lalu dikasih tahu orang rumah, Dok, mata saya merah darah. Saya sendiri nggak merasa apa-apa." → **Onset tiba-tiba tanpa nyeri, diketahui orang lain**
 - _karakter_: "Nggak sakit sama sekali, Dok, nggak gatal, nggak belekan. Penglihatan juga jelas." → **Tanpa nyeri, gatal, sekret; visus normal**
 - _pemberat_peringan_: "Semalam saya batuk-batuk keras sekali, Dok, sampai muntah." → **Didahului batuk/muntah keras**
 - _pemberat_peringan_: "Kemarin mata saya kena kibasan kain waktu jemur, terus saya kucek." → **Didahului trauma ringan/mengucek**
@@ -13542,7 +13546,7 @@ Keluhan utama (prioritas): bulu_mata_menusuk → mata_mengganjal; tambahan: mata
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berminggu-minggu, Dok, ngganjal terus." → **Kronik/berulang**
+- _onset_: "Sudah {lamaSakit}, Dok, ngganjal terus." → **Kronik/berulang**
 - _karakter_: "Tiap kedip rasanya ada yang menusuk, Dok, kayak ada bulu mata yang kena mata." → **Sensasi tertusuk tiap berkedip**
 - _riwayat_penyakit_: "Dulu kelopak mata saya sering merah bersisik, Dok." → **Riwayat blefaritis kronik**
 - _riwayat_obat_: "Sering saya cabut sendiri bulu matanya, Dok, tapi tumbuh lagi." → **Sudah dicabut sendiri tetapi tumbuh kembali**
@@ -14608,7 +14612,7 @@ Topik anamnesis kunci: Onset, Keparahan, Pemberat & peringan, Riwayat penyakit d
 
 | Trait | Peluang | Kondisi | Keterangan |
 |---|---|---|---|
-| gizi_kurang | 35% | — | Gizi kurang. |
+| gizi_kurang | 35% | usia …–15 | Gizi kurang. |
 | obstruksi | 4% | — | Obstruksi usus oleh gumpalan cacing. |
 
 **Gejala**
@@ -14640,7 +14644,7 @@ Keluhan utama (prioritas): keluar_cacing; tambahan: nyeri_perut. Salah kaprah pa
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Tadi pagi waktu BAB keluar cacing panjang kayak mi, Dok, masih gerak." → **Cacing gelang keluar bersama tinja**
+- _onset_: "Sudah {lamaSakit} perutnya sering sakit dan susah makan, Dok. Tadi pagi waktu BAB keluar cacing panjang kayak mi, masih gerak." → **Cacing gelang keluar bersama tinja**
 - _lokasi_: "Perutnya sering sakit di sekitar pusar, Dok, hilang-timbul." → **Nyeri periumbilikal samar**
 - _kebiasaan_: "Dia suka main tanah, jarang cuci tangan, suka jajan sembarangan, Dok. Belum pernah minum obat cacing." → **Higiene tangan buruk, belum obat cacing**
 - _keparahan_: "Sekarang muntah terus, Dok, perutnya kembung keras, dua hari nggak BAB." → **Muntah, distensi, tidak BAB (curiga obstruksi)**
@@ -14784,7 +14788,7 @@ Keluhan utama (prioritas): lemas; tambahan: pucat. Salah kaprah pasien: kecapeka
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, makin lama makin gampang capek dan ngos-ngosan." → **Kronik progresif**
+- _onset_: "Sudah {lamaSakit}, Dok, makin lama makin gampang capek dan ngos-ngosan." → **Kronik progresif**
 - _kebiasaan_: "Tiap hari ke kebun/sawah nyeker, Dok, nggak pakai sandal." → **Tidak memakai alas kaki di tanah**
 - _riwayat_penyakit_: "Dulu kaki saya pernah gatal-gatal merah di sela jari, Dok." → **Riwayat ground itch**
 - _riwayat_penyakit_: "Belum pernah dirawat, Dok, belum pernah minum obat cacing." → **Tidak pernah obat cacing**
@@ -16131,7 +16135,7 @@ Keluhan utama (prioritas): kembung; tambahan: diare. Salah kaprah pasien: masuk 
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, hilang-timbul." → **Kronik berulang**
+- _onset_: "Sudah {lamaSakit}, Dok, hilang-timbul." → **Kronik berulang**
 - _onset_: "Sejak sembuh mencret {lamaSakit} lalu, Dok, tiap minum susu langsung kembung dan mencret lagi." → **Setelah episode diare (sekunder)**
 - _pemberat_peringan_: "Kalau minum susu atau makan es krim, setengah jam kemudian perut kembung, banyak kentut, terus mencret, Dok." → **Gejala 30 menit–2 jam setelah produk susu**
 - _karakter_: "Mencretnya cair, berbuih, baunya asam, Dok. Nggak ada darah." → **Diare cair asam berbuih tanpa darah**
@@ -16668,7 +16672,7 @@ Keluhan utama (prioritas): nyeri_perut; tambahan: diare, bab_darah. Salah kaprah
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, perut sering sakit dan mencret berlendir darah hilang-timbul." → **Kronik dengan diare berdarah intermiten**
+- _onset_: "Sudah {lamaSakit}, Dok, perut sering sakit dan mencret berlendir darah hilang-timbul." → **Kronik dengan diare berdarah intermiten**
 - _bepergian_lingkungan_: "Saya tinggal di Lembah Napu, Sulawesi Tengah, Dok, tiap hari turun ke sawah dan danau tanpa sepatu bot." → **Daerah endemis skistosomiasis, kontak air sawah/danau**
 - _progresi_: "Perut saya makin lama makin besar, Dok, kaki juga agak bengkak." → **Perut membesar (asites)**
 - _riwayat_penyakit_: "Dulu pernah minum obat keong dari petugas, tapi sudah lama sekali, Dok." → **Riwayat pengobatan program lama**
@@ -16804,7 +16808,7 @@ Keluhan utama (prioritas): nyeri_ulu_hati → diare; tambahan: kembung. Salah ka
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, hilang-timbul." → **Kronik intermiten**
+- _onset_: "Sudah {lamaSakit}, Dok, hilang-timbul." → **Kronik intermiten**
 - _karakter_: "Ulu hati perih kayak maag, Dok, mencret juga kadang-kadang." → **Nyeri epigastrium & diare intermiten**
 - _riwayat_penyakit_: "Di bokong saya sering muncul garis merah gatal yang pindah-pindah cepat, Dok." → **Larva currens (urtikaria linear berpindah cepat)**
 - _riwayat_obat_: "Sudah minum obat maag berbulan-bulan, Dok, nggak sembuh-sembuh. Saya juga minum obat rematik deksametason dari warung." → **Tidak membaik dengan obat maag; memakai steroid**
@@ -16931,7 +16935,7 @@ Keluhan utama (prioritas): keluar_cacing; tambahan: nyeri_perut. Salah kaprah pa
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah beberapa minggu, Dok, di kotoran saya ada potongan putih pipih kayak pita, kadang gerak." → **Proglotid pipih keluar bersama tinja**
+- _onset_: "Sudah {lamaSakit}, Dok, di kotoran saya ada potongan putih pipih kayak pita, kadang gerak." → **Proglotid pipih keluar bersama tinja**
 - _karakter_: "Bentuknya pipih kayak biji ketimun, Dok, kadang keluar sendiri dari dubur." → **Proglotid motil keluar spontan**
 - _kebiasaan_: "Saya suka makan sate babi dan lawar yang setengah matang, Dok." → **Konsumsi daging babi kurang matang**
 - _kebiasaan_: "Saya suka makan daging sapi yang masih merah, steak setengah matang, Dok." → **Konsumsi daging sapi kurang matang**
@@ -17065,6 +17069,7 @@ Keluhan utama (prioritas): sariawan; tambahan: nafsu_makan_turun. Salah kaprah p
 - _onset_: "Baru {hariTeks} hari, Dok, mulainya panas tinggi, terus mulut penuh luka, nggak mau makan." → **Demam diikuti ulkus multipel (herpetik)**
 - _onset_: "Baru {hariTeks} hari, Dok, muncul sariawan, perih kalau makan." → **Akut**
 - _episode_sebelumnya_: "Sering, Dok, hampir tiap bulan, apalagi kalau mau haid atau lagi banyak pikiran." → **Rekuren dengan pencetus**
+- _episode_sebelumnya_: "Sering, Dok, hampir tiap bulan, apalagi kalau lagi banyak pikiran atau tergigit." → **Rekuren dengan pencetus**
 - _episode_sebelumnya_: "Sering sekali kambuh, Dok, badan juga gampang capek." → **Sering kambuh + lemas (curiga defisiensi)**
 - _episode_sebelumnya_: "Baru kali ini begini, Dok." → **Episode pertama**
 - _episode_sebelumnya_: "Kadang-kadang saja, Dok, kalau tergigit." → **Kadang, dipicu trauma**
@@ -18717,7 +18722,7 @@ Keluhan utama (prioritas): benda_masuk; tambahan: ingus_satu_sisi, telinga_penuh
 - _onset_: "{LamaSakit} lalu, Dok, kakaknya lihat dia masukin biji ke hidung." → **Kejadian disaksikan (hidung)**
 - _onset_: "Katanya tadi masukin manik-manik ke hidung, Dok." → **Kejadian disaksikan (hidung)**
 - _onset_: "Tadi malam waktu tidur ada yang masuk ke telinga, Dok, kayak serangga, bunyi kresek-kresek." → **Serangga masuk telinga saat tidur**
-- _onset_: "Waktu main, dia masukin manik-manik ke telinga, Dok." → **Benda dimasukkan ke telinga**
+- _onset_: "{LamaSakit} lalu waktu main, dia masukin manik-manik ke telinga, Dok." → **Benda dimasukkan ke telinga**
 - _karakter_: "Dari satu lubang hidung keluar ingus bau, Dok, yang sebelah bersih." → **Rinore unilateral berbau (khas benda asing hidung)**
 - _karakter_: "Sakit sekali, Dok, kayak ada yang bergerak di dalam." → **Nyeri & sensasi bergerak (serangga hidup)**
 - _keparahan_: "Napasnya biasa, Dok, nggak batuk atau sesak." → **Tanpa batuk/sesak (bukan aspirasi)**
@@ -19942,7 +19947,7 @@ Keluhan utama (prioritas): bersin; tambahan: pilek, hidung_tersumbat. Salah kapr
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
 - _onset_: "Sudah lama, Dok, kambuh-kambuhan sejak SMP." → **Kronik kambuhan sejak usia muda**
-- _onset_: "Sudah lama, Dok, kambuh-kambuhan." → **Kronik kambuhan**
+- _onset_: "Sudah {lamaSakit} ini, Dok, kambuh-kambuhan." → **Kronik kambuhan**
 - _pola_: "Paling parah pagi-pagi bangun tidur, Dok, bersinnya bisa sepuluh kali berturut-turut." → **Bersin beruntun pagi hari**
 - _pemberat_peringan_: "Kalau bersih-bersih kamar atau kena debu langsung kambuh, Dok." → **Dipicu debu/tungau**
 - _pemberat_peringan_: "Kalau dekat kucing langsung kambuh, Dok." → **Dipicu bulu hewan**
@@ -20071,7 +20076,7 @@ Keluhan utama (prioritas): hidung_tersumbat; tambahan: pilek. Salah kaprah pasie
 
 **Petunjuk anamnesis** (jawaban bertanda petunjuk)
 
-- _onset_: "Sudah berbulan-bulan, Dok, hilang-timbul." → **Kronik kambuhan**
+- _onset_: "Sudah {lamaSakit}, Dok, hilang-timbul." → **Kronik kambuhan**
 - _pola_: "Kalau masuk ruangan AC atau pagi-pagi dingin langsung mampet dan meler, Dok." → **Dipicu suhu dingin/AC**
 - _pola_: "Kalau kena asap rokok atau bau parfum langsung mampet, Dok." → **Dipicu iritan/bau menyengat**
 - _karakter_: "Mampetnya gantian kanan-kiri, Dok, apalagi kalau tiduran miring. Nggak gatal." → **Tersumbat bergantian, tanpa gatal**
@@ -20909,7 +20914,7 @@ Keluhan utama (prioritas): luka_robek → luka_tusuk; tambahan: nyeri_luka. Sala
 - _kebiasaan_: "Tahun lalu saya disuntik tetanus waktu luka juga, Dok." → **Booster tetanus < 5 tahun**
 - _keparahan_: "Jari tengah saya nggak bisa ditekuk, Dok." → **Gangguan fleksi jari (curiga cedera tendon)**
 - _keparahan_: "Jari-jari masih bisa gerak dan terasa semua, Dok." → **Fungsi motorik & sensorik distal baik**
-- _riwayat_penyakit_: "Lukanya kena tanah dan kotor, Dok." → **Luka terkontaminasi**
+- _karakter_: "Lukanya kena tanah dan kotor, Dok, perih sekali." → **Luka terkontaminasi**
 
 **Rencana pemeriksaan sesuai indikasi** (dasar penilaian)
 

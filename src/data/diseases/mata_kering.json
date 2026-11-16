@@ -50,7 +50,7 @@
   "misattributions": ["mata lelah biasa", "minus bertambah", "kurang vitamin"],
   "fears": ["mata buta", "katarak"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah berbulan-bulan, Dok, pelan-pelan makin sering.", "clue": "Kronik, bertahap" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, pelan-pelan makin sering.", "clue": "Kronik, bertahap" }],
     "pola": [
       {
         "text": "Paling parah sore hari setelah seharian di depan komputer, Dok.",

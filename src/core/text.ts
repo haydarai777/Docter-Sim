@@ -53,7 +53,28 @@ export function durationText(days: number): string {
   if (days <= 1) return 'sehari';
   if (days < 14) return `${numberToWords(days)} hari`;
   if (days < 60) return `${numberToWords(Math.round(days / 7))} minggu`;
-  return `${numberToWords(Math.round(days / 30))} bulan`;
+  if (days < 330) return `${numberToWords(Math.round(days / 30))} bulan`;
+  const years = Math.round(days / 365);
+  return years <= 1 ? 'setahun' : `${numberToWords(years)} tahun`;
+}
+
+/**
+ * Hari sakit pertama ({hari} = 1): "{LamaSakit} lalu" → "Tadi", "Sudah {lamaSakit}" → "Sejak tadi", agar
+ * selaras dengan detail gejala ("baru tadi, belum sampai sehari") dan tidak berbunyi "Sehari lalu …".
+ */
+const FIRST_DAY_REWRITES: readonly [RegExp, string][] = [
+  [/\{hariTeks\} hari/g, '{lamaSakit}'],
+  [/\{HariTeks\} hari/g, '{LamaSakit}'],
+  [/\b([Ss])(?:udah|ekitar) (?:sekitar )?\{lamaSakit\}(?: (?:ini|lebih|(?:yang )?lalu))?/g, '$1ejak tadi'],
+  [/\b([Bb])aru \{lamaSakit\}/g, '$1aru tadi'],
+  [/\{LamaSakit\} (?:yang )?lalu/g, 'Tadi'],
+  [/\{lamaSakit\} (?:yang )?lalu/g, 'tadi'],
+  [/\{LamaSakit\} ini/g, 'Hari ini'],
+  [/\{lamaSakit\} ini/g, 'hari ini'],
+];
+
+function firstDayPhrasing(template: string): string {
+  return FIRST_DAY_REWRITES.reduce((t, [rx, rep]) => t.replace(rx, rep), template);
 }
 
 /**
@@ -62,6 +83,7 @@ export function durationText(days: number): string {
  * Placeholder yang tidak dikenal dibiarkan apa adanya (dideteksi oleh tes konten).
  */
 export function fillTemplate(template: string, values: Readonly<Record<string, string>>): string {
+  if (values.hari === '1' && /\{(?:[Ll]amaSakit|[Hh]ariTeks)\}/.test(template)) template = firstDayPhrasing(template);
   return template.replace(/\{([A-Za-z][A-Za-z0-9_]*)\}/g, (match, key: string) => {
     if (key in values) return values[key]!;
     const lower = key[0]!.toLowerCase() + key.slice(1);

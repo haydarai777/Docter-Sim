@@ -227,13 +227,17 @@ def _conditional_first(rules, key):
 
 import re as _re_lama
 
-_DUR = r"(?:se(?:minggu|bulan|tahun|hari)|(?:satu|dua|tiga|empat|lima|enam|tujuh|delapan|sepuluh)(?:-(?:dua|tiga|empat))?\s+(?:hari|minggu|bulan|tahun))"
+_UNIT = r"(?:hari|minggu|bulan|tahun)"
+_DUR = (r"(?:(?:se(?:minggu|bulan|tahun|hari)|(?:satu|dua|tiga|empat|lima|enam|tujuh|delapan|sepuluh)(?:-(?:dua|tiga|empat))?\s+" + _UNIT
+        + r")(?:an)?|beberapa\s+" + _UNIT + r"|ber" + _UNIT + r"-" + _UNIT + r")(?![\w-])")
 _LAMA_RULES = [
     # "Sudah sebulan", "Sejak dua hari lalu", "Baru tiga hari", "Sekitar sebulan ini", "Sudah lebih dari tiga bulan"
     (_re_lama.compile(r"^(Sudah|Sejak|Baru|Sekitar)((?: lebih dari)?)\s+" + _DUR, _re_lama.I), r"\1\2 {lamaSakit}"),
     # "Seminggu ini", "Dua hari lalu", "Setahun terakhir ini", "Dua-tiga tahun ini"
     (_re_lama.compile(r"^" + _DUR + r"(?=\s+(?:ini|lalu|terakhir)\b)", _re_lama.I), "{LamaSakit}"),
     (_re_lama.compile(r"^Sejak kemarin\b", _re_lama.I), "Sejak {lamaSakit} lalu"),
+    # "Sudah lama, Dok, berbulan-bulan" → "Sudah {lamaSakit}, Dok"
+    (_re_lama.compile(r"^Sudah lama, Dok, ber" + _UNIT + r"-" + _UNIT + r"(?![\w-])", _re_lama.I), "Sudah {lamaSakit}, Dok"),
 ]
 _LAMA_ACUTE = [
     # Hanya untuk penyakit akut (hari sakit ≤ 7): "Kemarin sore ...", "Tadi pagi ...", "Mendadak, Dok, kemarin sore ..."

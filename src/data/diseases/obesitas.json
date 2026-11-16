@@ -51,7 +51,7 @@
         "clue": "BB naik progresif bertahun-tahun"
       },
       {
-        "text": "Beberapa tahun ini berat badan naik, Dok, celana sudah nggak muat.",
+        "text": "{LamaSakit} ini berat badan naik, Dok, celana sudah nggak muat.",
         "when": { "notTraits": ["obesitas2"] },
         "clue": "BB naik bertahap"
       }

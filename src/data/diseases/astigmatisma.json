@@ -27,7 +27,7 @@
   "misattributions": ["mata minus", "kurang vitamin", "mata capek"],
   "fears": ["mata buta"],
   "anamnesis": {
-    "onset": [{ "text": "Sudah lama, Dok, berbulan-bulan.", "clue": "Kronik" }],
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok.", "clue": "Kronik" }],
     "karakter": [
       {
         "text": "Lihat jauh dan dekat sama-sama agak kabur, Dok, tulisannya kayak berbayang dobel.",

@@ -19,7 +19,7 @@
   "anamnesis": {
     "onset": [
       {
-        "text": "Sudah beberapa bulan, Dok, telapak tangan kanan kering bersisik, garis-garisnya jadi jelas.",
+        "text": "Sudah {lamaSakit}, Dok, telapak tangan kanan kering bersisik, garis-garisnya jadi jelas.",
         "clue": "Kronik, telapak bersisik"
       }
     ],
