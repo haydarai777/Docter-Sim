@@ -104,7 +104,7 @@ describe('generator kasus', () => {
       for (const r of results) {
         const param = tool.params.find((p) => p.id === r.paramId)!;
         expect(r.display.length).toBeGreaterThan(0);
-        if (param.kind === 'text' && r.flag === null) expect(param.normal).toContain(r.value);
+        if (param.kind === 'text' && r.flag === null) expect([...param.normal, ...(param.normalFemale ?? [])]).toContain(r.value);
         if (param.kind === 'numeric') expect(typeof r.value).toBe('number');
       }
     }

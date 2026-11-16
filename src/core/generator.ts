@@ -17,8 +17,9 @@ import { matchesCondition } from './conditions';
 import { buildCategoryAnswer, buildComplaint } from './dialogue';
 import { type FindingSource, generateToolFindings, linkFindings } from './findings';
 import { createRng, type Rng } from './rng';
-import { durationText, fillTemplate, numberToWords } from './text';
+import { ageText, durationText, fillTemplate, numberToWords, toCompanionVoice } from './text';
 import type {
+  CompanionProfile,
   DiseaseTemplate,
   EconomyClass,
   GameConfig,
@@ -37,12 +38,16 @@ import type {
 const YOUNG_ADDRESS_MAX_AGE = 29;
 /** Usia sampai batas ini disapa "Dik". */
 const CHILD_ADDRESS_MAX_AGE = 14;
+/** Pasien di bawah usia ini diantar & diwakili pengantar (alloanamnesis). */
+export const COMPANION_BELOW_AGE = 10;
+
 /** Maksimal komorbiditas tambahan per pasien (selain yang sudah dimodelkan oleh penyakit utama). */
 const MAX_COMORBIDITIES = 2;
 
 /** Kegiatan sehari-hari pasien untuk kalimat seperti "biar bisa {kegiatan} lagi". */
 function activityOf(occupationId: string): string {
-  if (occupationId === 'pelajar_sd' || occupationId === 'pelajar') return 'sekolah';
+  if (occupationId === 'bayi' || occupationId === 'balita') return 'main';
+  if (occupationId === 'pelajar_sd' || occupationId === 'pelajar' || occupationId === 'anak_tk' || occupationId === 'anak_sd') return 'sekolah';
   if (occupationId === 'mahasiswa') return 'kuliah';
   if (occupationId === 'ibu_rumah_tangga') return 'mengurus rumah';
   if (occupationId === 'pensiunan') return 'beraktivitas';
@@ -64,7 +69,12 @@ function sampleDemographics(disease: DiseaseTemplate, content: GameContent, conf
   const demo = disease.demographics;
   const sex: Sex = rng.chance(demo.maleRatio) ? 'male' : 'female';
   const { minAge, maxAge } = config.patient;
-  const all = content.population.occupations.filter((o) => occupationFits(o, sex, minAge, maxAge));
+  // Pekerjaan khusus anak kecil (bayi, balita, TK, SD awal) hanya untuk penyakit yang memang mengenai anak < 10 tahun,
+  // sehingga undian pekerjaan penyakit dewasa tidak berubah.
+  const childOk = demo.ageBands.some((b) => b.weight > 0 && b.min < COMPANION_BELOW_AGE);
+  const all = content.population.occupations.filter(
+    (o) => occupationFits(o, sex, minAge, maxAge) && (childOk || o.age[1] >= COMPANION_BELOW_AGE),
+  );
 
   for (let attempt = 0; attempt < 30; attempt++) {
     // 1) Pekerjaan: dari daftar berisiko penyakit (bias) atau populasi umum.
@@ -135,15 +145,24 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const { sex, age, occupation } = sampleDemographics(disease, content, config, demoRng);
   const { economy, budget } = sampleEconomy(occupation, config, demoRng);
   const personality = demoRng.weighted(content.personalities, (p) => p.weight);
-  const { name, call } = nameOf(demoRng.pick(content.population.names[sex]));
+  const child = age < COMPANION_BELOW_AGE;
+  const childNames = content.population.childNames;
+  const { name, call } = nameOf(
+    child && childNames?.[sex].length ? rng.fork('nama_anak').pick(childNames[sex]) : demoRng.pick(content.population.names[sex]),
+  );
   const honorific =
     age <= CHILD_ADDRESS_MAX_AGE ? 'Dik' : age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
+  const infantRange = disease.demographics.infantAge ?? { unit: 'bulan' as const, range: [2, 11] as [number, number] };
+  const shownAge = ageText(age, age === 0 ? { unit: infantRange.unit, value: rng.fork('usia_bayi').int(infantRange.range[0], infantRange.range[1]) } : undefined);
+  const companion = child ? sampleCompanion(content, rng.fork('pengantar')) : undefined;
 
   const patient: PatientProfile = {
     name,
     callName: call,
-    address: `${honorific} ${call}`,
+    address: age === 0 ? 'adik bayi' : `${honorific} ${call}`,
     age,
+    ageText: shownAge,
+    ...(companion ? { companion } : {}),
     sex,
     occupationId: occupation.id,
     occupationLabel: occupation.label,
@@ -188,9 +207,16 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     lamaSakit: durationText(day),
     nama: name,
     panggilan: call,
-    sapaan: patient.address,
+    // Anak < 10 tahun: dokter berbicara dengan pengantarnya.
+    sapaan: companion ? companion.address : patient.address,
+    yangSakit: companion ? (age === 0 ? 'adik bayi' : `Dik ${call}`) : patient.address,
     kegiatan: activityOf(occupation.id),
     usia: String(age),
+    usiaTeks: shownAge,
+    saya: 'saya',
+    namaPengantar: companion?.name ?? name,
+    panggilanPengantar: companion?.callName ?? call,
+    hubungan: companion ? `${companion.relation}nya` : 'saya sendiri',
     pekerjaan: occupation.intro,
     salahKira: ctxRng.pick(disease.misattributions),
     ketakutan: ctxRng.pick(disease.fears?.length ? disease.fears : ['penyakit yang parah']),
@@ -207,13 +233,15 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   let chiefComplaintSymptoms = [...primary, ...extras];
   if (chiefComplaintSymptoms.length === 0) chiefComplaintSymptoms = [...symptoms].slice(0, 1);
 
+  const voice = companion && personality.pengantar ? personality.pengantar : null;
   const complaint = buildComplaint(
     chiefComplaintSymptoms.map((id) => content.symptomsById.get(id)!),
-    personality,
+    voice ? { ...personality, complaintFrames: voice.complaintFrames } : personality,
     context,
     ccRng,
+    !!companion,
   );
-  const greeting = fillTemplate(ccRng.pick(personality.greetings), context);
+  const greeting = fillTemplate(ccRng.pick(voice ? voice.greetings : personality.greetings), context);
 
   // Gejala lain akan disebut (sebagian) saat ditanya "keluhan lain"; gejala yang
   // tidak disebut sukarela (mis. BAB hitam) hanya terungkap bila ditanya spesifik.
@@ -228,7 +256,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     if (cat.type !== 'static') continue;
     if (cat.id === 'alergi') {
       answers[cat.id] = allergy
-        ? { text: `Saya alergi ${allergy}, Dok. Dulu pernah gatal-gatal dan bengkak.`, clue: `Alergi ${allergy}` }
+        ? { text: `${companion ? 'Dia' : 'Saya'} alergi ${allergy}, Dok. Dulu pernah gatal-gatal dan bengkak.`, clue: `Alergi ${allergy}` }
         : { text: 'Nggak ada alergi, Dok.' };
       continue;
     }
@@ -236,14 +264,17 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
       cat.id,
       disease.anamnesis[cat.id],
       cat.fallback,
-      personality,
+      voice
+        ? { ...personality, answerPrefixes: voice.answerPrefixes ?? personality.answerPrefixes, answerSuffixes: voice.answerSuffixes ?? personality.answerSuffixes }
+        : personality,
       fullCtx,
       context,
       rng.fork(`anamnesis:${cat.id}`),
+      !!companion,
     );
   }
 
-  mergeComorbidityHistory(answers, comorbidities, content, personality, context, { sex, age }, rng.fork('riwayat_komorbid'));
+  mergeComorbidityHistory(answers, comorbidities, content, personality, context, { sex, age }, rng.fork('riwayat_komorbid'), !!companion);
 
   // --- Hasil semua pemeriksaan --------------------------------------------
   const ruleSets: FindingSource[] = [
@@ -299,6 +330,26 @@ function sampleComorbidities(
   return out.sort((a, b) => a.id.localeCompare(b.id));
 }
 
+const COMPANION_RELATIONS: { relation: CompanionProfile['relation']; sex: Sex; age: [number, number]; weight: number }[] = [
+  { relation: 'ibu', sex: 'female', age: [20, 42], weight: 7 },
+  { relation: 'ayah', sex: 'male', age: [23, 48], weight: 2 },
+  { relation: 'nenek', sex: 'female', age: [48, 70], weight: 1 },
+];
+
+/** Pengantar pasien anak: ibu (tersering), ayah, atau nenek. */
+function sampleCompanion(content: GameContent, rng: Rng): CompanionProfile {
+  const pick = rng.weighted(COMPANION_RELATIONS, (r) => r.weight);
+  const { name, call } = nameOf(rng.pick(content.population.names[pick.sex]));
+  return {
+    relation: pick.relation,
+    name,
+    callName: call,
+    address: `${pick.sex === 'male' ? 'Pak' : 'Bu'} ${call}`,
+    sex: pick.sex,
+    age: rng.int(pick.age[0], pick.age[1]),
+  };
+}
+
 function sampleIncidentals(content: GameContent, ctx: ConditionContext, rng: Rng): string[] {
   for (const inc of rng.shuffle(content.incidentals)) {
     if (!fitsPopulation(inc.when, ctx)) continue;
@@ -350,12 +401,14 @@ function mergeComorbidityHistory(
   values: Record<string, string>,
   who: { sex: Sex; age: number },
   rng: Rng,
+  companion = false,
 ): void {
   /** "Saya juga …"/"Ibu saya juga …" tanpa kalimat lain yang dirujuk → buang "juga". */
   const withoutAlso = (sentence: string) => sentence.replace(/\bjuga\s+/i, '');
   const add = (topic: string, raw: string | undefined, clue: string, mentions: readonly RegExp[], dropAlso = false) => {
     if (!raw) return;
     let sentence = dropAlso ? withoutAlso(raw) : raw;
+    if (companion) sentence = toCompanionVoice(sentence);
     const current = answers[topic];
     if (!current) {
       answers[topic] = { text: sentence, clue };

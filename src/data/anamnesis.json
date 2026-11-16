@@ -251,7 +251,8 @@
       "why": "Keparahan & dampak pada aktivitas menunjukkan derajat penyakit dan kebutuhan rujukan.",
       "fallback": [
         { "text": "Lumayan mengganggu, Dok. Kerja jadi nggak enak.", "when": { "ageMin": 18 } },
-        { "text": "Lumayan mengganggu, Dok. Sekolah jadi nggak konsen.", "when": { "ageMax": 17 } }
+        { "text": "Lumayan mengganggu, Dok. Sekolah jadi nggak konsen.", "when": { "ageMin": 10, "ageMax": 17 } },
+        { "text": "Lumayan, Dok. Jadi rewel, mainnya juga nggak semangat.", "when": { "ageMax": 9 } }
       ]
     },
     {
@@ -523,7 +524,8 @@
       "why": "Penyakit lain (hipertensi, DM, dll.) mengubah risiko, diagnosis banding, dan tata laksana.",
       "fallback": [
         { "text": "Nggak ada penyakit apa-apa, Dok.", "weight": 3 },
-        { "text": "Paling maag kadang kambuh, Dok.", "weight": 1 }
+        { "text": "Paling maag kadang kambuh, Dok.", "weight": 1, "when": { "ageMin": 10 } },
+        { "text": "Paling batuk pilek biasa, Dok. Belum pernah dirawat.", "when": { "ageMax": 9 } }
       ]
     },
     {
@@ -587,7 +589,7 @@
       "label": "Alergi",
       "rubric": "Riwayat",
       "core": true,
-      "question": "Apakah {sapaan} punya alergi obat atau makanan?",
+      "question": "Apakah {yangSakit} punya alergi obat atau makanan?",
       "type": "static",
       "keywords": [
         "alergi",
@@ -654,7 +656,8 @@
       "why": "Riwayat keluarga & kontak serumah menunjukkan risiko genetik (DM, PJK, asma) atau penularan (TB, dengue).",
       "fallback": [
         { "text": "Nggak ada yang sakit kayak gini, Dok.", "weight": 3 },
-        { "text": "Bapak saya darah tinggi, Dok. Yang lain sehat.", "weight": 1 }
+        { "text": "Bapak saya darah tinggi, Dok. Yang lain sehat.", "weight": 1, "when": { "ageMin": 10 } },
+        { "text": "Kakeknya darah tinggi, Dok. Yang lain sehat.", "when": { "ageMax": 9 } }
       ]
     },
     {
@@ -708,7 +711,8 @@
       "why": "Riwayat bepergian, pekerjaan, dan lingkungan mengarahkan ke penyakit endemis atau paparan tertentu.",
       "fallback": [
         { "text": "Nggak ke mana-mana, Dok. Di rumah dan tempat kerja saja.", "when": { "ageMin": 18 } },
-        { "text": "Nggak ke mana-mana, Dok. Di rumah dan sekolah saja.", "when": { "ageMax": 17 } }
+        { "text": "Nggak ke mana-mana, Dok. Di rumah dan sekolah saja.", "when": { "ageMin": 5, "ageMax": 17 } },
+        { "text": "Nggak ke mana-mana, Dok. Di rumah saja, main sama anak tetangga.", "when": { "ageMax": 4 } }
       ]
     },
     {
@@ -750,8 +754,16 @@
       ],
       "why": "Gaya hidup (rokok, pola makan, aktivitas, minum) adalah faktor risiko dan pemicu banyak penyakit.",
       "fallback": [
-        { "text": "Biasa saja, Dok. Nggak merokok, makan juga teratur." },
-        { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male", "ageMin": 18 } }
+        { "text": "Biasa saja, Dok. Nggak merokok, makan juga teratur.", "when": { "ageMin": 10 } },
+        { "text": "Saya merokok, Dok, tapi nggak banyak.", "when": { "sex": "male", "ageMin": 18 } },
+        {
+          "text": "Masih minum ASI, Dok, sudah mulai makan bubur. Imunisasinya lengkap sesuai jadwal posyandu.",
+          "when": { "ageMax": 0 }
+        },
+        {
+          "text": "Makannya biasa, Dok, tiga kali sehari. Imunisasi lengkap kok, rutin ke posyandu.",
+          "when": { "ageMin": 1, "ageMax": 9 }
+        }
       ]
     },
     {
@@ -787,7 +799,7 @@
       "why": "Usia mengubah kemungkinan penyakit dan nilai rujukan pemeriksaan.",
       "question": "Usianya berapa sekarang?",
       "type": "static",
-      "fallback": [{ "text": "Umur saya {usia} tahun, Dok." }, { "text": "{usia} tahun, Dok." }]
+      "fallback": [{ "text": "Umur saya {usiaTeks}, Dok." }, { "text": "{UsiaTeks}, Dok." }]
     },
     {
       "id": "identitas_pekerjaan",
@@ -844,7 +856,7 @@
       "question": "Sudah berkeluarga? Tinggal dengan siapa di rumah?",
       "type": "static",
       "fallback": [
-        { "text": "Saya tinggal sama Bapak sama Ibu, Dok.", "when": { "ageMax": 14 } },
+        { "text": "Saya tinggal sama Bapak sama Ibu, Dok.", "when": { "ageMin": 10, "ageMax": 14 } },
         { "text": "Belum menikah, Dok. Masih tinggal sama orang tua.", "when": { "ageMin": 15, "ageMax": 21 } },
         { "text": "Belum, Dok, masih sendiri.", "when": { "ageMin": 22, "ageMax": 29 } },
         { "text": "Sudah, Dok, baru setahun. Belum punya anak.", "when": { "ageMin": 22, "ageMax": 29 } },
@@ -854,7 +866,9 @@
           "text": "Sudah, Dok. Anak-anak sudah besar, yang sulung sudah kerja.",
           "when": { "ageMin": 51, "ageMax": 59 }
         },
-        { "text": "Sudah, Dok. Anak-anak sudah berkeluarga semua, cucu saya empat.", "when": { "ageMin": 60 } }
+        { "text": "Sudah, Dok. Anak-anak sudah berkeluarga semua, cucu saya empat.", "when": { "ageMin": 60 } },
+        { "text": "Dia anak pertama, Dok. Tinggal sama {saya} dan bapaknya.", "when": { "ageMax": 9 } },
+        { "text": "Anak kedua, Dok. Serumah sama orang tua dan kakaknya.", "when": { "ageMax": 9 } }
       ]
     },
     {
@@ -890,21 +904,34 @@
       "fallback": [
         {
           "text": "Wah, saya sudah baca-baca di internet, Dok. Ini pasti {salahKira}.",
-          "when": { "personality": ["sok_tahu"] }
+          "when": { "personality": ["sok_tahu"], "ageMin": 10 }
         },
         {
           "text": "Paling {salahKira} biasa, Dok. Nanti juga sembuh sendiri.",
-          "when": { "personality": ["meremehkan"] }
+          "when": { "personality": ["meremehkan"], "ageMin": 10 }
         },
         {
           "text": "Saya kira {salahKira}, Dok... tapi saya takut ini sesuatu yang parah.",
-          "when": { "personality": ["cemas"] }
+          "when": { "personality": ["cemas"], "ageMin": 10 }
         },
-        { "text": "Saya kira {salahKira}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } },
+        { "text": "Saya kira {salahKira}, Dok.", "when": { "personality": ["kooperatif", "pelupa"], "ageMin": 10 } },
         {
           "text": "Kalau menurut saya sih {salahKira}, Dok. Betul nggak?",
-          "when": { "personality": ["kooperatif", "pelupa"] }
-        }
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMin": 10 }
+        },
+        {
+          "text": "Wah, {saya} sudah baca-baca di internet, Dok. Ini pasti {salahKira}.",
+          "when": { "personality": ["sok_tahu"], "ageMax": 9 }
+        },
+        {
+          "text": "Paling {salahKira} biasa, Dok. Anak-anak kan sering begitu.",
+          "when": { "personality": ["meremehkan"], "ageMax": 9 }
+        },
+        {
+          "text": "{Saya} kira {salahKira}, Dok... tapi {saya} takut ini sesuatu yang parah.",
+          "when": { "personality": ["cemas"], "ageMax": 9 }
+        },
+        { "text": "{Saya} kira {salahKira}, Dok.", "when": { "personality": ["kooperatif", "pelupa"], "ageMax": 9 } }
       ]
     },
     {
@@ -930,15 +957,40 @@
       "fallback": [
         {
           "text": "Saya takut sekali ini {ketakutan}, Dok. Sampai susah tidur mikirinnya.",
-          "when": { "personality": ["cemas"] }
+          "when": { "personality": ["cemas"], "ageMin": 10 }
         },
         {
           "text": "Ah, nggak terlalu khawatir sih, Dok. Paling {salahKira} biasa.",
-          "when": { "personality": ["meremehkan"] }
+          "when": { "personality": ["meremehkan"], "ageMin": 10 }
         },
-        { "text": "Takutnya {ketakutan}, Dok. Tapi kayaknya sih {salahKira}.", "when": { "personality": ["sok_tahu"] } },
-        { "text": "Saya takut ini {ketakutan}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } },
-        { "text": "Jujur saya khawatir kena {ketakutan}, Dok.", "when": { "personality": ["kooperatif", "pelupa"] } }
+        {
+          "text": "Takutnya {ketakutan}, Dok. Tapi kayaknya sih {salahKira}.",
+          "when": { "personality": ["sok_tahu"], "ageMin": 10 }
+        },
+        {
+          "text": "Saya takut ini {ketakutan}, Dok.",
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMin": 10 }
+        },
+        {
+          "text": "Jujur saya khawatir kena {ketakutan}, Dok.",
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMin": 10 }
+        },
+        {
+          "text": "{Saya} takut sekali dia kena {ketakutan}, Dok. Sampai nggak bisa tidur.",
+          "when": { "personality": ["cemas"], "ageMax": 9 }
+        },
+        {
+          "text": "Ah, nggak terlalu khawatir sih, Dok. Paling {salahKira} biasa.",
+          "when": { "personality": ["meremehkan"], "ageMax": 9 }
+        },
+        {
+          "text": "Takutnya {ketakutan}, Dok. Tapi kayaknya sih {salahKira}.",
+          "when": { "personality": ["sok_tahu"], "ageMax": 9 }
+        },
+        {
+          "text": "{Saya} takut ini {ketakutan}, Dok. Namanya juga anak masih kecil.",
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMax": 9 }
+        }
       ]
     },
     {
@@ -964,18 +1016,33 @@
       "question": "Apa yang {sapaan} harapkan dari pemeriksaan hari ini?",
       "type": "static",
       "fallback": [
-        { "text": "Saya cuma mau tahu ini bahaya atau nggak, Dok. Biar tenang.", "when": { "personality": ["cemas"] } },
+        {
+          "text": "Saya cuma mau tahu ini bahaya atau nggak, Dok. Biar tenang.",
+          "when": { "personality": ["cemas"], "ageMin": 10 }
+        },
         {
           "text": "Saya mau dicek {salahKira}, Dok, terus dikasih obat yang paling ampuh.",
-          "when": { "personality": ["sok_tahu"] }
+          "when": { "personality": ["sok_tahu"], "ageMin": 10 }
         },
         {
           "text": "Dikasih obat saja, Dok, biar cepat bisa {kegiatan} lagi.",
-          "when": { "personality": ["meremehkan"] }
+          "when": { "personality": ["meremehkan"], "ageMin": 10 }
         },
         {
           "text": "Pengennya cepat sembuh, Dok, biar bisa {kegiatan} lagi.",
-          "when": { "personality": ["kooperatif", "pelupa"] }
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMin": 10 }
+        },
+        {
+          "text": "{Saya} cuma mau tahu ini bahaya atau nggak, Dok. Biar tenang.",
+          "when": { "personality": ["cemas"], "ageMax": 9 }
+        },
+        {
+          "text": "Dikasih obat yang paling ampuh saja, Dok, biar cepat sembuh.",
+          "when": { "personality": ["sok_tahu", "meremehkan"], "ageMax": 9 }
+        },
+        {
+          "text": "Pengennya cepat sembuh, Dok, biar bisa {kegiatan} lagi.",
+          "when": { "personality": ["kooperatif", "pelupa"], "ageMax": 9 }
         }
       ]
     },
@@ -1031,7 +1098,7 @@
         "Iya, Dok, {gejala}. Mulainya kira-kira {lamaGejala} yang lalu.",
         "{Gejala}, Dok, sudah sekitar {lamaGejala} ini."
       ],
-      "keparahan": ["Iya, Dok, {gejala}, tapi nggak seberat keluhan utama saya."],
+      "keparahan": ["Iya, Dok, {gejala}, tapi nggak seberat keluhan yang utama."],
       "progresi": ["Iya, Dok, {gejala}. Rasanya sama saja dari kemarin."],
       "default": ["Iya, Dok, {gejala}. Munculnya bareng keluhan yang lain, nggak terlalu saya perhatikan."],
       "pola": ["Iya, Dok, {gejala}. Datangnya hilang timbul, nggak tentu waktunya."],

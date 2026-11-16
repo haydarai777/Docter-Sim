@@ -8,7 +8,7 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { createRng, deriveSeed, type Rng } from './rng';
-import { capitalize, durationText, fillTemplate, joinList } from './text';
+import { capitalize, durationText, fillTemplate, joinList, toCompanionVoice } from './text';
 import type {
   AnswerResult,
   AnswerVariant,
@@ -19,10 +19,16 @@ import type {
   SymptomDef,
 } from './types';
 
-/** Pilih satu frasa gejala sesuai gaya; jatuh ke 'lay' jika gaya itu tidak ada. */
-export function symptomPhrase(symptom: SymptomDef, style: PhraseStyle, rng: Rng): string {
+/** Pilih satu frasa gejala sesuai gaya; jatuh ke 'lay' jika gaya itu tidak ada. companion = diucapkan pengantar anak. */
+export function symptomPhrase(symptom: SymptomDef, style: PhraseStyle, rng: Rng, companion = false): string {
   const list = symptom.phrases[style] ?? symptom.phrases.lay;
-  return rng.pick(list);
+  const phrase = rng.pick(list);
+  return companion ? toCompanionVoice(phrase) : phrase;
+}
+
+/** Kasus anak < 10 tahun: yang berbicara adalah pengantarnya. */
+export function spokenByCompanion(c: PatientCase): boolean {
+  return !!c.patient.companion;
 }
 
 /**
@@ -52,10 +58,11 @@ export function buildComplaint(
   personality: PersonalityDef,
   values: Record<string, string>,
   rng: Rng,
+  companion = false,
 ): string {
   const fragments = symptoms.map((s) => {
     const style: PhraseStyle = s.phrases.vague && rng.chance(personality.vagueRate) ? 'vague' : personality.complaintStyle;
-    return symptomPhrase(s, style, rng);
+    return symptomPhrase(s, style, rng, companion);
   });
   const frame = rng.pick(personality.complaintFrames);
   return fillTemplate(frame, { ...values, keluhan: joinList(fragments) });
@@ -77,10 +84,13 @@ export function buildCategoryAnswer(
   ctx: ConditionContext,
   values: Record<string, string>,
   rng: Rng,
+  companion = false,
 ): AnswerResult {
   const chosen = pickVariant(variants ?? [], ctx, rng) ?? pickVariant(fallback, ctx, rng);
   if (!chosen) return { text: 'Hmm, saya kurang tahu, Dok.' };
-  const text = fillTemplate(applyPersonalityAffix(chosen.text, personality, rng, categoryId), values);
+  // Pengantar anak: kalimat tentang pasien diubah ke orang ketiga SEBELUM imbuhan kepribadian & placeholder.
+  const raw = companion ? toCompanionVoice(chosen.text) : chosen.text;
+  const text = fillTemplate(applyPersonalityAffix(raw, personality, rng, categoryId), values);
   const result: AnswerResult = { text };
   if (chosen.clue) result.clue = chosen.clue;
   if (chosen.reveals?.length) result.reveals = [...chosen.reveals];
@@ -109,7 +119,7 @@ export function answerOtherComplaints(
   const next = c.revealOrder.filter((id) => !alreadyRevealed.includes(id)).slice(0, personality.otherComplaintCount);
   if (next.length === 0) return { text: rng.pick(templates.none), revealed: [] };
 
-  const fragments = next.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng));
+  const fragments = next.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng, spokenByCompanion(c)));
   const text = fillTemplate(rng.pick(templates.found), caseValues(c, { daftar: joinList(fragments) }));
   return { text, revealed: next };
 }
@@ -131,7 +141,7 @@ export function answerSymptomQuestion(
   if (c.symptoms.includes(symptomId)) {
     // Saat ditanya langsung, pasien mengonfirmasi dengan jelas (frasa kabur diganti awam).
     const style: PhraseStyle = personality.complaintStyle === 'vague' ? 'lay' : personality.complaintStyle;
-    const phrase = symptomPhrase(symptom, style, rng);
+    const phrase = symptomPhrase(symptom, style, rng, spokenByCompanion(c));
     return { text: fillTemplate(rng.pick(personality.symptomYes), caseValues(c, { gejala: phrase })), revealed: true };
   }
   if (personality.symptomUncertain?.length && rng.chance(personality.uncertainAbsentRate)) {
@@ -203,7 +213,7 @@ export function answerSymptomDetail(
   const symptom = content.symptomsById.get(symptomId)!;
   const rng = createRng(deriveSeed(c.seed, `detail:${topic}:${symptomId}`));
   const templates = content.conversation.detail[topic] ?? content.conversation.detail.default;
-  const phrase = symptomPhrase(symptom, 'lay', rng);
+  const phrase = symptomPhrase(symptom, 'lay', rng, spokenByCompanion(c));
   const lamaGejala = durationText(symptomOnsetDays(c, symptomId));
   return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase, lamaGejala })), revealed: true };
 }
@@ -232,7 +242,11 @@ export function answerReview(
   const personality = content.personalitiesById.get(c.patient.personalityId)!;
   const rng = createRng(deriveSeed(c.seed, `tinjauan:${groupId}`));
   const present = group.symptoms.filter((id) => c.symptoms.includes(id));
-  if (present.length === 0) return { text: fillTemplate(rng.pick(group.normal), caseValues(c)), revealed: [] };
-  const phrases = present.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng));
+  const companion = spokenByCompanion(c);
+  if (present.length === 0) {
+    const normal = rng.pick(group.normal);
+    return { text: fillTemplate(companion ? toCompanionVoice(normal) : normal, caseValues(c)), revealed: [] };
+  }
+  const phrases = present.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng, companion));
   return { text: fillTemplate(rng.pick(personality.symptomYes), caseValues(c, { gejala: joinList(phrases) })), revealed: present };
 }

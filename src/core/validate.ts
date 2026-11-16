@@ -36,6 +36,13 @@ export const BUILTIN_PLACEHOLDERS = [
   'ketakutan',
   'panggilan',
   'kegiatan',
+  // Pasien anak (alloanamnesis) & usia bayi.
+  'usiaTeks',
+  'saya',
+  'yangSakit',
+  'namaPengantar',
+  'panggilanPengantar',
+  'hubungan',
 ] as const;
 
 const REVIEW_STATUSES = ['BELUM_DITINJAU_DOKTER', 'SEDANG_DITINJAU', 'DISETUJUI'];
@@ -84,6 +91,10 @@ export function validateContent(content: GameContent, config: GameConfig): strin
       ...p.complaintFrames,
       ...(p.answerPrefixes ?? []),
       ...(p.answerSuffixes ?? []),
+      ...(p.pengantar?.greetings ?? []),
+      ...(p.pengantar?.complaintFrames ?? []),
+      ...(p.pengantar?.answerPrefixes ?? []),
+      ...(p.pengantar?.answerSuffixes ?? []),
     ];
     // {keluhan} & {gejala} hanya bermakna di bingkai keluhan / jawaban gejala.
     const allowed = new Set([...globalPlaceholders, 'keluhan', 'gejala']);
@@ -188,11 +199,12 @@ function validateParam(param: ParamDef, path: string, err: ErrFn): void {
     }
   } else {
     if (!Array.isArray(param.normal) || param.normal.length === 0) err(path, 'nilai normal kosong');
+    if (param.normalFemale !== undefined && (!Array.isArray(param.normalFemale) || param.normalFemale.length === 0)) err(path, 'normalFemale kosong');
     if ((param.falsePositiveRate ?? 0) > 0 && !(param.falsePositiveValues?.length)) {
       err(path, 'falsePositiveRate > 0 tetapi falsePositiveValues kosong');
     }
     for (const v of param.falsePositiveValues ?? []) {
-      if (param.normal.includes(v)) err(path, `nilai positif palsu "${v}" sama dengan nilai normal`);
+      if (param.normal.includes(v) || param.normalFemale?.includes(v)) err(path, `nilai positif palsu "${v}" sama dengan nilai normal`);
     }
   }
 }
@@ -406,6 +418,9 @@ function validatePersonalities(content: GameContent, err: ErrFn): void {
       if (!p[key]?.length) err(path, `${key} kosong`);
     }
     if (!p.complaintFrames.every((f) => /\{[kK]eluhan\}/.test(f))) err(path, 'setiap complaintFrames harus memuat {keluhan}');
+    // Pasien anak < 10 tahun diwakili pengantar: kepribadian wajib punya gaya bicara pengantar.
+    if (!p.pengantar?.greetings.length || !p.pengantar.complaintFrames.length) err(path, 'pengantar.greetings/complaintFrames kosong');
+    else if (!p.pengantar.complaintFrames.every((f) => /\{[kK]eluhan\}/.test(f))) err(path, 'setiap pengantar.complaintFrames harus memuat {keluhan}');
     for (const c of p.affixCategories ?? []) {
       if (!content.anamnesisById.has(c)) err(path, `affixCategories: kategori "${c}" tidak ada`);
     }

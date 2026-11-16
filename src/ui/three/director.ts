@@ -35,6 +35,13 @@ const EXAM_REACTION: Record<string, ExamReaction> = {
   pemeriksaan_paru: 'napas_dalam',
   pemeriksaan_jantung: 'napas_dalam',
   spirometri: 'napas_dalam',
+  pemeriksaan_tenggorok: 'buka_mulut',
+  segmen_anterior: 'tegak',
+  visus: 'tegak',
+  funduskopi: 'tegak',
+  pemeriksaan_telinga: 'tegak',
+  pemeriksaan_hidung: 'tegak',
+  saraf_kranial: 'tegak',
 };
 
 export class Director implements StageUpdatable {

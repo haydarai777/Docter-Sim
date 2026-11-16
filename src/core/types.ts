@@ -131,6 +131,8 @@ export interface TextParamDef {
   label: string;
   /** Kemungkinan nilai normal (dipilih acak). Nilai di luar daftar ini ditandai abnormal. */
   normal: string[];
+  /** Nilai normal khusus pasien perempuan (mis. genitalia eksterna, inspekulo). */
+  normalFemale?: string[];
   refText?: string;
   /** Lihat NumericParamDef.falsePositiveRate. */
   falsePositiveRate?: number;
@@ -352,6 +354,20 @@ export interface PersonalityDef {
   affixRate: number;
   /** Kategori anamnesis yang boleh diberi prefix/suffix (agar tetap wajar). */
   affixCategories?: string[];
+  /** Gaya bicara bila yang berbicara adalah pengantar pasien anak (< 10 tahun). */
+  pengantar?: CompanionVoice;
+}
+
+/**
+ * Gaya bicara PENGANTAR (orang tua/nenek) untuk pasien anak < 10 tahun (alloanamnesis).
+ * Kalimat lain kepribadian (symptomYes/No, dll.) tetap dipakai; frasa gejala diubah ke orang ketiga.
+ */
+export interface CompanionVoice {
+  /** Placeholder tambahan: {namaPengantar}, {hubungan} (mis. "ibunya"), {panggilan} anak, {usiaTeks}. */
+  greetings: string[];
+  complaintFrames: string[];
+  answerPrefixes?: string[];
+  answerSuffixes?: string[];
 }
 
 export interface PersonalitiesFile {
@@ -376,6 +392,8 @@ export interface OccupationDef {
 
 export interface PopulationFile {
   names: { male: NameEntry[]; female: NameEntry[] };
+  /** Nama anak (< 10 tahun). Bila kosong, memakai names. */
+  childNames?: { male: NameEntry[]; female: NameEntry[] };
   occupations: OccupationDef[];
   /** Nilai placeholder umum untuk teks, mis. {kotaWisata}. */
   context: Record<string, string[]>;
@@ -537,6 +555,8 @@ export interface DiseaseTemplate {
     occupations?: { id: string; weight: number }[];
     /** Peluang memakai daftar pekerjaan berisiko (sisanya: populasi umum). */
     occupationBias?: number;
+    /** Usia bayi (< 1 tahun) dalam hari atau bulan. Default: 2–11 bulan. */
+    infantAge?: { unit: 'hari' | 'bulan'; range: Range };
   };
   /** Variabel laten kasus (mis. "fase_kritis"). Aturan pertama yang cocok per id dipakai. */
   traits?: TraitRule[];
@@ -846,6 +866,17 @@ export interface GameContent {
 // 2. KASUS (hasil generator, tersembunyi dari pemain)
 // ---------------------------------------------------------------------------
 
+/** Pengantar pasien anak (< 10 tahun) yang menjawab anamnesis (alloanamnesis). */
+export interface CompanionProfile {
+  relation: 'ibu' | 'ayah' | 'nenek';
+  name: string;
+  callName: string;
+  /** Sapaan dokter, mis. "Bu Rina". */
+  address: string;
+  sex: Sex;
+  age: number;
+}
+
 export interface PatientProfile {
   name: string;
   /** Nama panggilan. */
@@ -853,6 +884,10 @@ export interface PatientProfile {
   /** Sapaan dokter, mis. "Pak Budi". */
   address: string;
   age: number;
+  /** Usia untuk ditampilkan, mis. "35 tahun", "8 bulan", "12 hari" (kasus lama: tidak ada). */
+  ageText?: string;
+  /** Pengantar yang berbicara mewakili pasien anak (< 10 tahun). */
+  companion?: CompanionProfile;
   sex: Sex;
   occupationId: string;
   occupationLabel: string;

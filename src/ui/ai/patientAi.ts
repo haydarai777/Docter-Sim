@@ -19,6 +19,7 @@
  */
 import { applyIntents, recordExchange } from '../../core/encounter';
 import type { Intent } from '../../core/nlu';
+import { patientAgeText } from '../../core/text';
 import type { EncounterState, GameContent } from '../../core/types';
 
 /* Bentuk minimal API `sample` yang dipakai (lihat definisi tipe platform). */
@@ -123,11 +124,14 @@ function personaPrompt(state: EncounterState, content: GameContent, question: st
     .slice(-MAX_HISTORY)
     .map((e) => `${e.kind === 'doctor' ? 'Dokter' : 'Pasien'}: ${'text' in e ? e.text : ''}`)
     .join('\n');
+  const kid = p.companion;
   return [
-    'Kamu memerankan PASIEN di sebuah simulasi edukasi praktik dokter umum di Indonesia. Pemain adalah dokter.',
+    kid
+      ? `Kamu memerankan PENGANTAR pasien anak (${kid.relation} pasien, bernama ${kid.name}, dipanggil ${kid.address}) di sebuah simulasi edukasi praktik dokter umum di Indonesia. Pemain adalah dokter. Kamu menjawab tentang anakmu (alloanamnesis): sebut anakmu "dia"/"anak saya", bukan "saya".`
+      : 'Kamu memerankan PASIEN di sebuah simulasi edukasi praktik dokter umum di Indonesia. Pemain adalah dokter.',
     '',
     'IDENTITAS PASIEN',
-    `- Nama: ${p.name} (dipanggil ${p.address}), ${p.age} tahun, ${p.sex === 'male' ? 'laki-laki' : 'perempuan'}, ${p.occupationLabel.toLowerCase()}.`,
+    `- Nama: ${p.name} (dipanggil ${p.address}), ${patientAgeText(p)}, ${p.sex === 'male' ? 'laki-laki' : 'perempuan'}, ${p.occupationLabel.toLowerCase()}.`,
     `- Gaya bicara: ${personality.label} — ${personality.impression}. Contoh cara dia bicara: "${personality.symptomYes[0]}", "${personality.symptomNo[0]}".`,
     `- Keluhan yang sudah dia ceritakan di awal: "${c.complaint}"`,
     '',

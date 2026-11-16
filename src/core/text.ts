@@ -83,3 +83,41 @@ export function normalizeForSearch(text: string): string {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 }
+
+/** Kata sebelum "saya" yang menandakan "saya" adalah SUBJEK kalimat (→ "dia"), bukan pemilik ("badan saya" → "badannya"). */
+const SUBJECT_CUES = new Set([
+  'dan', 'tapi', 'tetapi', 'terus', 'lalu', 'kalau', 'kalo', 'waktu', 'pas', 'saat', 'karena', 'soalnya', 'jadi', 'sampai', 'sampe',
+  'kadang', 'kadang-kadang', 'juga', 'sudah', 'udah', 'masih', 'belum', 'yang', 'kok', 'eh', 'oh', 'iya', 'ya', 'nah', 'dok', 'dokter',
+  'hari', 'minggu', 'bulan', 'tahun', 'malam', 'pagi', 'siang', 'sore', 'ini', 'itu', 'sekarang', 'kemarin', 'tadi', 'dulu', 'habis',
+  'setelah', 'sebelum', 'begitu', 'makanya', 'katanya', 'mungkin', 'kayaknya', 'sepertinya', 'cuma', 'hanya', 'sering', 'jarang',
+  'tiap', 'setiap', 'baru', 'langsung', 'lagi', 'pun', 'kemudian', 'sehingga', 'agar', 'supaya', 'biar', 'padahal', 'walaupun',
+]);
+/** Kata depan/kerja sebelum "saya" sebagai objek (→ "dia"). */
+const OBJECT_CUES = new Set(['sama', 'dengan', 'untuk', 'buat', 'ke', 'dari', 'pada', 'bagi', 'kepada', 'oleh', 'bikin', 'membuat', 'bilang']);
+
+/**
+ * Ubah kalimat sudut pandang pasien ("Badan saya panas", "Saya batuk") menjadi sudut pandang
+ * pengantar yang membicarakan anaknya ("Badannya panas", "Dia batuk"). "{saya}" (placeholder)
+ * dan "anak saya" tidak diubah — dipakai bila kalimat memang tentang si pengantar.
+ */
+export function toCompanionVoice(text: string): string {
+  return text.replace(/(\S+)?(\s*)(?<![{\w])(saya|aku)(?![}\w])/gi, (match, prev: string | undefined, space: string, pronoun: string) => {
+    const upper = pronoun[0] === pronoun[0]!.toUpperCase();
+    if (prev === undefined || /[.,!?…:;"“(—-]$/.test(prev)) return `${prev ?? ''}${space}${upper ? 'Dia' : 'dia'}`;
+    const word = prev.toLowerCase();
+    if (word === 'anak' || prev.includes('{')) return match;
+    if (SUBJECT_CUES.has(word) || OBJECT_CUES.has(word)) return `${prev}${space}dia`;
+    return /^[A-Z0-9]+$/.test(prev) ? `${prev}-nya` : `${prev}nya`;
+  });
+}
+
+/** Usia untuk ditampilkan: "35 tahun", atau untuk bayi "8 bulan"/"12 hari". */
+export function ageText(age: number, infant?: { unit: 'hari' | 'bulan'; value: number }): string {
+  if (age === 0 && infant) return `${infant.value} ${infant.unit}`;
+  return `${age} tahun`;
+}
+
+/** Usia pasien untuk ditampilkan (kasus lama tanpa ageText: "{age} tahun"). */
+export function patientAgeText(p: { age: number; ageText?: string }): string {
+  return p.ageText ?? `${p.age} tahun`;
+}

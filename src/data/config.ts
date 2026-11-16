@@ -14,9 +14,10 @@ import type { GameConfig } from '../core/types';
  */
 export const GAME_CONFIG: GameConfig = {
   patient: {
-    // Anak (10–12 th) & remaja hanya muncul pada penyakit yang kelompok usianya mengizinkan
-    // (dengue, tifoid, asma). Rujukan tanda vital/antropometri menurut usia ada di tools.json (refByAge).
-    minAge: 10,
+    // Anak & remaja hanya muncul pada penyakit yang kelompok usianya mengizinkan. Pasien < 10 tahun
+    // diantar & diwakili pengantarnya (alloanamnesis). Rujukan tanda vital/antropometri menurut usia
+    // ada di tools.json (refByAge).
+    minAge: 0,
     maxAge: 75,
     // Peluang pasien punya alergi obat/makanan.
     allergyRate: 0.15,
@@ -74,6 +75,25 @@ export const GAME_CONFIG: GameConfig = {
     kaki_diabetik: 0,
     neurologis: 0,
     uji_tourniquet: 0,
+    visus: 0,
+    segmen_anterior: 0,
+    funduskopi: 0,
+    pemeriksaan_telinga: 0,
+    pemeriksaan_hidung: 0,
+    pemeriksaan_tenggorok: 0,
+    saraf_kranial: 0,
+    tes_vestibular: 0,
+    refleks_tonus: 0,
+    status_mentalis: 0,
+    pemeriksaan_genital: 0,
+    inspekulo_bimanual: 0,
+    pemeriksaan_obstetri: 0,
+    pemeriksaan_payudara: 0,
+    pemeriksaan_anus: 0,
+    status_dermatologis: 0,
+    status_lokalis: 0,
+    pemeriksaan_anak: 0,
+    muskuloskeletal: 0,
     // Laboratorium
     gula_darah: 25_000,
     widal: 40_000,
@@ -91,14 +111,42 @@ export const GAME_CONFIG: GameConfig = {
     tcm_tb: 150_000,
     serologi_dengue: 175_000,
     tes_h_pylori: 120_000,
+    feses_rutin: 40_000,
+    elektrolit: 90_000,
+    asam_urat: 30_000,
+    tes_kehamilan: 25_000,
+    tes_hiv: 75_000,
+    cd4: 300_000,
+    tes_sifilis: 60_000,
+    hbsag: 50_000,
+    igm_anti_hav: 180_000,
+    igm_leptospira: 200_000,
+    apusan_darah_tepi: 50_000,
+    profil_besi: 250_000,
+    fungsi_tiroid: 250_000,
+    kerokan_koh: 35_000,
+    kerokan_skabies: 35_000,
+    tzanck: 50_000,
+    gram_sekret: 40_000,
+    sediaan_basah_vagina: 50_000,
+    bta_kulit: 50_000,
+    mikroskopis_filaria: 50_000,
+    swab_antigen: 150_000,
     // Pencitraan
     foto_bno: 120_000,
     rontgen_thorax: 175_000,
     usg_abdomen: 300_000,
     ct_abdomen: 1_200_000,
+    usg_obstetri: 200_000,
+    rontgen_ekstremitas: 150_000,
+    usg_superfisial: 200_000,
     // Lainnya
     spirometri: 25_000,
     ekg: 75_000,
+    tes_schirmer: 25_000,
+    lampu_wood: 20_000,
+    tes_mantoux: 50_000,
+    abi_doppler: 50_000,
   },
 
 

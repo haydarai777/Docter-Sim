@@ -19,6 +19,7 @@ import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
 import { modal } from '../components/modal';
 import { resultCard } from '../components/resultCard';
 import { cx, h, replaceChildren } from '../dom';
+import { patientAgeText } from '../../core/text';
 import { CATALOG_KIND_LABEL, CATEGORY_LABEL, DDX_STATUS_LABEL, ECONOMY_LABEL, OBJECTIVE_LABEL, PHYSICAL_GROUP_LABEL, SEX_LABEL } from '../labels';
 
 export function renderConsult(app: App): HTMLElement {
@@ -169,7 +170,7 @@ function patientStrip(app: App, enc: EncounterState): HTMLElement {
       h('h2', { class: 'patient__name' }, p.name),
       h('button', { class: 'btn btn--small btn--ghost patient__record', type: 'button', onclick: () => app.openDialog('record') }, '📋 Rekam medis'),
     ),
-    h('p', { class: 'patient__meta' }, `${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
+    h('p', { class: 'patient__meta' }, `${patientAgeText(p)} · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}${p.companion ? ` · diantar ${p.companion.relation} (${p.companion.address})` : ''}`),
     h(
       'div',
       { class: 'patient__row patient__row--stats' },
@@ -212,8 +213,10 @@ function transcript(app: App, enc: EncounterState): HTMLElement {
     h(
       'div',
       { class: 'bubble bubble--system' },
-      `${enc.case.patient.name} masuk ke ruang praktik.`,
-      enc.case.patient.age <= 14 ? ' Diantar orang tuanya, yang menunggu di luar.' : null,
+      enc.case.patient.companion
+        ? `${enc.case.patient.name} (${patientAgeText(enc.case.patient)}) masuk ke ruang praktik diantar ${enc.case.patient.companion.relation}nya, ${enc.case.patient.companion.name}, yang akan menjawab pertanyaan Anda.`
+        : `${enc.case.patient.name} masuk ke ruang praktik.`,
+      !enc.case.patient.companion && enc.case.patient.age <= 14 ? ' Diantar orang tuanya, yang menunggu di luar.' : null,
       personality ? ` Kesan umum: ${personality.impression.toLowerCase()}.` : null,
       // Tanpa tampilan 3D, yang "terlihat" pada pasien dituliskan agar informasinya tidak hilang.
       !app.stage && look?.observations.length ? ` Tampak: ${look.observations.join(', ')}.` : null,

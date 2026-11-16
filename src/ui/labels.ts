@@ -28,7 +28,13 @@ export const PHYSICAL_GROUP_LABEL: Record<string, string> = {
   kepala_leher: 'Kepala & leher',
   thorax: 'Thorax',
   abdomen: 'Abdomen',
-  ekstremitas: 'Ekstremitas & kulit',
+  ekstremitas: 'Ekstremitas & sendi',
+  mata: 'Mata',
+  tht: 'Telinga, hidung & tenggorok',
+  saraf: 'Saraf & jiwa',
+  kulit: 'Kulit & luka',
+  genital: 'Genitalia, obstetri & payudara',
+  anak: 'Anak',
   khusus: 'Pemeriksaan khusus',
 };
 

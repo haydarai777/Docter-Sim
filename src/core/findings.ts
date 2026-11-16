@@ -25,6 +25,7 @@ import type {
   Range,
   ResultSource,
   Sex,
+  TextParamDef,
   ToolDef,
 } from './types';
 
@@ -48,6 +49,16 @@ export function referenceRange(param: NumericParamDef, who: PatientBasics): Rang
   const band = ageBand(param, who);
   if (band) return who.sex === 'female' && band.refFemale ? band.refFemale : band.ref;
   return adultReference(param, who.sex);
+}
+
+/** Daftar nilai normal parameter teks untuk pasien ini (perempuan bisa berbeda, mis. genitalia). */
+export function textNormals(param: TextParamDef, who: PatientBasics): readonly string[] {
+  return who.sex === 'female' && param.normalFemale?.length ? param.normalFemale : param.normal;
+}
+
+/** Nilai teks dianggap normal bila termasuk salah satu daftar normal (laki-laki maupun perempuan). */
+export function isTextNormal(param: TextParamDef, text: string): boolean {
+  return param.normal.includes(text) || (param.normalFemale?.includes(text) ?? false);
 }
 
 /** Rentang nilai normal yang di-generate (default: rujukan dipersempit 10% di tiap sisi). */
@@ -140,7 +151,7 @@ function makeBaseResult(param: ParamDef, value: number | string, source: ResultS
     value: text,
     display: text,
     refText: formatReference(param, who),
-    flag: param.normal.includes(text) ? null : '+',
+    flag: isTextNormal(param, text) ? null : '+',
     source,
   };
 }
@@ -195,7 +206,7 @@ function generateParam(
   }
 
   const normalValue =
-    param.kind === 'numeric' ? sampleNumeric(rng, normalRange(param, who), param) : rng.pick(param.normal);
+    param.kind === 'numeric' ? sampleNumeric(rng, normalRange(param, who), param) : rng.pick(textNormals(param, who));
   return makeResult(param, normalValue, 'normal', who);
 }
 
@@ -290,7 +301,7 @@ function applyDerived(tool: ToolDef, results: ParamResult[], who: PatientBasics)
       if (band) {
         // Teks turunan yang abnormal (mis. "Sinus takikardia" dari nadi tinggi) mewarisi sumber angkanya:
         // takikardia karena demam adalah temuan penyakit, bukan "normal".
-        const abnormal = !param.normal.includes(band.value);
+        const abnormal = !isTextNormal(param, band.value);
         const source: ResultSource = abnormal && from && from.source !== 'normal' ? from.source : 'normal';
         assignResult(target, makeResult(param, band.value, source, who, source === 'normal' ? undefined : from?.origin));
       }

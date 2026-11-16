@@ -1,7 +1,7 @@
 /**
  * Dialog: panduan bermain, pengaturan, dan rekam medis pasien.
  */
-import { formatRupiah } from '../../core/text';
+import { formatRupiah, patientAgeText } from '../../core/text';
 import { AI_PATIENT_MODEL_LABEL } from '../ai/patientAi';
 import type { App } from '../app';
 import { type Child, cx, h } from '../dom';
@@ -230,7 +230,7 @@ export function medicalRecordDialog(app: App): HTMLElement {
     h(
       'div',
       { class: 'record' },
-      h('p', null, h('strong', null, p.name), ` · ${p.age} th · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}`),
+      h('p', null, h('strong', null, p.name), ` · ${patientAgeText(p)} · ${SEX_LABEL[p.sex]} · ${p.occupationLabel}${p.companion ? ` · alloanamnesis dari ${p.companion.relation} (${p.companion.name})` : ''}`),
       personality ? h('p', { class: 'muted' }, `Kesan umum: ${personality.impression.toLowerCase()}.`) : null,
       h('h3', null, 'Keluhan utama'),
       // Keluhan baru tercatat setelah pasien mengucapkannya (adegan kedatangan).

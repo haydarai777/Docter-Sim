@@ -8,7 +8,7 @@ import { procedureCards } from '../../core/osce/procedure';
 import { CATEGORY_LABEL } from '../../core/osce/station';
 import type { AdviceOption, OsceCategory, PrescriptionLine, ProcedureResult } from '../../core/osce/types';
 import { createRng } from '../../core/rng';
-import { normalizeForSearch } from '../../core/text';
+import { normalizeForSearch, patientAgeText } from '../../core/text';
 import type { EncounterState } from '../../core/types';
 import type { App } from '../app';
 import { modal } from '../components/modal';
@@ -155,7 +155,9 @@ export function briefingDialog(app: App): HTMLElement {
     body: h(
       'div',
       { class: 'briefing' },
-      h('p', null, h('strong', null, 'Skenario: '), `${c.patient.name}, ${c.patient.age} tahun, ${SEX_LABEL[c.patient.sex].toLowerCase()}, ${c.patient.occupationLabel.toLowerCase()}, datang ke ${def.setting} dengan keluhan yang akan ia sampaikan sendiri.`),
+      h('p', null, h('strong', null, 'Skenario: '), c.patient.companion
+        ? `${c.patient.name}, ${patientAgeText(c.patient)}, ${SEX_LABEL[c.patient.sex].toLowerCase()}, dibawa ${c.patient.companion.relation}nya ke ${def.setting}. Pengantar akan menyampaikan keluhan anaknya (alloanamnesis).`
+        : `${c.patient.name}, ${patientAgeText(c.patient)}, ${SEX_LABEL[c.patient.sex].toLowerCase()}, ${c.patient.occupationLabel.toLowerCase()}, datang ke ${def.setting} dengan keluhan yang akan ia sampaikan sendiri.`),
       h('h3', { class: 'section-title' }, 'Tugas peserta'),
       h('ol', null, TASKS.map((t) => h('li', null, t))),
       h(
@@ -234,7 +236,7 @@ export function treatmentTab(app: App, enc: EncounterState): HTMLElement {
               );
             })
           : h('p', { class: 'hint' }, 'Belum ada obat. Tambahkan di bawah (atau biarkan kosong bila memang tidak perlu obat).'),
-        h('p', { class: 'rx__pro' }, `Pro: ${c.patient.name} (${c.patient.age} th) · BB: ${weighed && kg ? `${String(kg).replace('.', ',')} kg` : '— (belum ditimbang)'}`),
+        h('p', { class: 'rx__pro' }, `Pro: ${c.patient.companion ? 'An. ' : ''}${c.patient.name} (${patientAgeText(c.patient).replace(' tahun', ' th')}) · BB: ${weighed && kg ? `${String(kg).replace('.', ',')} kg` : '— (belum ditimbang)'}`),
       ),
       drugForm(app, disabled),
     ),
