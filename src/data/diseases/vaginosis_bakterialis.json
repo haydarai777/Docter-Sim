@@ -1,0 +1,119 @@
+{
+  "id": "vaginosis_bakterialis",
+  "name": "Vaginosis bakterialis",
+  "aliases": ["Bacterial vaginosis", "BV", "Keputihan bau amis"],
+  "system": "Saluran kemih & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Pergeseran flora vagina (Lactobacillus berkurang, Gardnerella & anaerob bertambah): keputihan tipis homogen keabu-abuan dengan bau amis (lebih tercium setelah berhubungan/haid), gatal minimal, tanpa radang berat. Kriteria Amsel (≥ 3 dari 4): duh homogen, pH > 4,5, tes amin positif, clue cells > 20%. Terapi metronidazol 7 hari; pasangan tidak perlu diobati.",
+  "presentationDay": [7, 60],
+  "demographics": { "ageBands": [{ "min": 15, "max": 25, "weight": 3 }, { "min": 26, "max": 45, "weight": 4 }], "maleRatio": 0 },
+  "traits": [{ "id": "douching", "probability": 0.5 }, { "id": "akdr", "probability": 0.15 }],
+  "traitLabels": { "douching": "Kebiasaan bilas vagina/douching.", "akdr": "Menggunakan AKDR." },
+  "symptoms": [{ "id": "keputihan", "probability": 1 }, { "id": "gatal_kemaluan", "probability": 0.2 }],
+  "chiefComplaint": { "primary": ["keputihan"] },
+  "clueSymptoms": ["gatal_kemaluan"],
+  "misattributions": ["kurang bersih", "keputihan biasa", "kecapekan"],
+  "fears": ["kanker serviks", "penyakit kelamin"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah beberapa minggu, Dok, keputihan dan baunya amis.", "clue": "Subakut–kronik" }],
+    "karakter": [
+      {
+        "text": "Keputihannya encer abu-abu, Dok, baunya amis kayak ikan, apalagi habis berhubungan.",
+        "clue": "Duh tipis keabuan berbau amis, memberat pascasanggama"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Nggak terlalu gatal, Dok, cuma malu sama baunya.", "clue": "Gatal minimal" }],
+    "kebiasaan": [
+      {
+        "text": "Saya sering bilas ke dalam pakai sabun antiseptik, Dok.",
+        "when": { "traits": ["douching"] },
+        "clue": "Douching"
+      },
+      { "text": "Cebok biasa pakai air, Dok.", "when": { "notTraits": ["douching"] } }
+    ],
+    "haid_kehamilan": [
+      { "text": "Haid teratur, Dok. Saya pakai KB spiral.", "when": { "traits": ["akdr"] }, "clue": "Pengguna AKDR" },
+      { "text": "Haid teratur, Dok, nggak hamil.", "when": { "notTraits": ["akdr"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "duh_vagina",
+      "diagnostic": true,
+      "values": ["Duh tipis homogen keabu-abuan melapisi dinding vagina, berbau amis"]
+    },
+    { "tool": "inspekulo_bimanual", "param": "dinding_vagina", "values": ["Rugae normal, tidak hiperemis"] },
+    { "tool": "sediaan_basah_vagina", "param": "ph_vagina", "diagnostic": true, "range": [5, 6] },
+    { "tool": "sediaan_basah_vagina", "param": "whiff", "diagnostic": true, "values": ["Positif (bau amis)"] },
+    {
+      "tool": "sediaan_basah_vagina",
+      "param": "clue_cell",
+      "diagnostic": true,
+      "values": ["Ditemukan (> 20% sel epitel)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "salpingitis",
+      "howToDistinguish": "PID: nyeri perut bawah, demam, nyeri goyang serviks.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["inspekulo_bimanual"] }
+    },
+    {
+      "id": "vaginitis",
+      "howToDistinguish": "Trikomoniasis/kandidiasis: radang vagina-vulva, gatal, duh hijau berbusa atau seperti keju.",
+      "excludeBy": { "tools": ["sediaan_basah_vagina"] }
+    },
+    {
+      "id": "gonore",
+      "howToDistinguish": "Servisitis: duh mukopurulen dari OUE.",
+      "excludeBy": { "tools": ["inspekulo_bimanual"] }
+    }
+  ],
+  "keyFindings": ["Duh tipis homogen keabuan berbau amis, gatal minimal", "pH > 4,5, tes amin (+), clue cells (kriteria Amsel)"],
+  "teachingPoints": ["Douching meningkatkan risiko vaginosis bakterial; pasangan laki-laki tidak perlu diobati."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "kebiasaan", "keluhan_lain"],
+    "exams": [{ "tool": "inspekulo_bimanual", "role": "kunci", "reason": "Karakter duh & serviks." }],
+    "tests": [{ "tool": "sediaan_basah_vagina", "role": "kunci", "reason": "Kriteria Amsel." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Metronidazol 7 hari, hentikan douching; kontrol bila berulang." }],
+  "management": [
+    "Metronidazol 2 × 500 mg oral 7 hari (alternatif klindamisin krim vaginal); hindari alkohol.",
+    "Hentikan douching & sabun antiseptik vagina.",
+    "Pada kehamilan tetap diobati (risiko persalinan prematur)."
+  ],
+  "approach": ["Karakter duh & bau; nilai kriteria Amsel.", "Singkirkan servisitis & PID."]
+}

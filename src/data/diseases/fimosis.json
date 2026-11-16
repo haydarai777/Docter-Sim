@@ -1,0 +1,177 @@
+{
+  "id": "fimosis",
+  "name": "Fimosis",
+  "aliases": ["Kulup sempit", "Phimosis"],
+  "system": "Saluran kemih & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Preputium tidak dapat diretraksi melewati glans penis. Fisiologis pada bayi-balita (perlekatan alami yang membaik sendiri). Patologis bila ada jaringan parut/cincin fibrotik, balanitis berulang, ISK, atau gangguan berkemih (menggelembung/ballooning, pancaran kecil). Tata laksana: edukasi, kortikosteroid topikal + retraksi lembut, sirkumsisi bila patologis.",
+  "presentationDay": [7, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 3 },
+      { "min": 6, "max": 9, "weight": 3 },
+      { "min": 10, "max": 17, "weight": 2 },
+      { "min": 18, "max": 60, "weight": 1 }
+    ],
+    "maleRatio": 1,
+    "occupations": [{ "id": "balita", "weight": 2 }, { "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 2 }],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "balanitis", "probability": 0.3 },
+    { "id": "isk_berulang", "probability": 0.15 },
+    { "id": "dipaksa_tarik", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "balanitis": "Balanopostitis menyertai.",
+    "isk_berulang": "ISK berulang.",
+    "dipaksa_tarik": "Kulup pernah ditarik paksa (risiko parut/parafimosis)."
+  },
+  "symptoms": [
+    { "id": "disuria", "probability": 0.8, "when": { "traits": ["balanitis"] } },
+    { "id": "demam", "probability": 0.6, "when": { "traits": ["isk_berulang"] } },
+    { "id": "rewel", "probability": 0.4, "when": { "ageMax": 5 } },
+    { "id": "kulup_sempit", "probability": 1 },
+    { "id": "disuria", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["kulup_sempit"], "extraPool": ["disuria"] },
+  "clueSymptoms": ["disuria", "demam", "rewel"],
+  "misattributions": ["kemaluan kecil", "belum waktunya sunat", "infeksi biasa"],
+  "fears": ["tidak bisa sunat", "kemaluan rusak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sejak kecil, Dok, kulupnya nggak bisa ditarik. Kalau pipis ujungnya menggelembung kayak balon.",
+        "clue": "Kulup tidak dapat ditarik, ballooning saat berkemih"
+      }
+    ],
+    "karakter": [{ "text": "Pancaran kencingnya kecil, Dok, kadang menetes.", "clue": "Pancaran kecil" }],
+    "progresi": [
+      {
+        "text": "Tiga hari ini ujung kemaluannya merah, bengkak, keluar kotoran putih, sakit kalau pipis.",
+        "reveals": ["disuria"],
+        "when": { "traits": ["balanitis"], "symptoms": ["disuria"] },
+        "clue": "Balanopostitis"
+      },
+      { "text": "Nggak pernah merah atau bengkak, Dok.", "when": { "notTraits": ["balanitis"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Sudah dua kali kena infeksi saluran kencing, Dok, demam tinggi.",
+        "reveals": ["demam"],
+        "when": { "traits": ["isk_berulang"], "symptoms": ["demam"] },
+        "clue": "ISK berulang"
+      },
+      { "text": "Belum pernah infeksi saluran kencing, Dok.", "when": { "notTraits": ["isk_berulang"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Pernah saya coba tarik paksa, Dok, malah nangis dan lecet.",
+        "when": { "traits": ["dipaksa_tarik"] },
+        "clue": "Retraksi paksa (risiko parut)"
+      },
+      { "text": "Belum pernah diobati, Dok.", "when": { "notTraits": ["dipaksa_tarik"] } }
+    ],
+    "keparahan": [{ "text": "Masih bisa kencing, Dok, nggak sampai tertahan.", "clue": "Tanpa retensi urin" }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "when": { "traits": ["balanitis"] },
+      "diagnostic": true,
+      "values": ["Preputium tidak dapat diretraksi; glans & preputium hiperemis, edema, smegma & sekret purulen"]
+    },
+    {
+      "tool": "urinalisis",
+      "param": "leukosit_esterase",
+      "when": { "traits": ["isk_berulang"] },
+      "values": ["+1", "+2"]
+    },
+    { "tool": "urinalisis", "param": "sedimen_leukosit", "when": { "traits": ["isk_berulang"] }, "range": [10, 30] },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "diagnostic": true,
+      "values": ["Preputium tidak dapat diretraksi, ostium preputium sempit (pinpoint), menggelembung saat berkemih"]
+    },
+    { "tool": "pemeriksaan_abdomen", "param": "nyeri_tekan", "values": ["Supel, kandung kemih tidak teraba penuh"] }
+  ],
+  "differentials": [
+    {
+      "id": "retensi_urin",
+      "howToDistinguish": "Retensi urin: tidak bisa berkemih, kandung kemih penuh teraba — kateter/rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "parafimosis",
+      "howToDistinguish": "Parafimosis: kulup tertarik ke belakang glans dan tidak bisa kembali, glans edema — kedaruratan.",
+      "excludeBy": { "tools": ["pemeriksaan_genital"] }
+    },
+    {
+      "id": "isk",
+      "howToDistinguish": "ISK: disuria, demam, leukosituria — komplikasi fimosis.",
+      "excludeBy": { "tools": ["urinalisis"] }
+    }
+  ],
+  "keyFindings": [
+    "Preputium tidak dapat diretraksi dengan ostium sempit, ballooning",
+    "Pancaran kecil; dapat disertai balanitis/ISK berulang",
+    "Fisiologis pada balita tanpa komplikasi"
+  ],
+  "teachingPoints": ["Jangan menarik paksa kulup anak — menimbulkan robekan, parut, dan fimosis patologis atau parafimosis."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "IAUI. Guideline Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "progresi", "riwayat_penyakit", "riwayat_obat", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_genital", "role": "kunci", "reason": "Preputium, ostium, tanda balanitis." },
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Kandung kemih penuh (retensi)." }
+    ],
+    "tests": [{ "tool": "urinalisis", "role": "pendukung", "when": { "traits": ["isk_berulang"] }, "reason": "ISK menyertai." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Edukasi, higiene, steroid topikal dengan retraksi lembut; rencanakan sirkumsisi bila patologis.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Balita tanpa keluhan: edukasi (fisiologis), jangan ditarik paksa.",
+    "Kortikosteroid topikal (betametason 0,05%) 2 × sehari 4–8 minggu dengan retraksi lembut.",
+    "Balanitis: higiene, rendam air hangat, antibiotik topikal/oral bila perlu.",
+    "Sirkumsisi bila fimosis patologis, balanitis/ISK berulang, atau gagal terapi."
+  ],
+  "approach": ["Bedakan fisiologis vs patologis; tanyakan berkemih, balanitis, ISK.", "Singkirkan retensi urin & parafimosis."]
+}

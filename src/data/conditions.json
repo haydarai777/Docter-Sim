@@ -106,14 +106,6 @@
       "summary": "Nyeri periumbilikal berpindah ke kanan bawah, demam, McBurney (+)."
     },
     {
-      "id": "pielonefritis",
-      "name": "Pielonefritis Akut",
-      "aliases": ["ISK atas", "Infeksi ginjal"],
-      "system": "Saluran kemih",
-      "danger": "tinggi",
-      "summary": "Demam tinggi, menggigil, nyeri pinggang, nyeri ketok CVA, leukosituria."
-    },
-    {
       "id": "massa_saluran_kemih",
       "name": "Massa / Tumor Saluran Kemih",
       "aliases": ["Tumor ginjal", "Tumor kandung kemih", "Massa ureter"],
@@ -712,6 +704,54 @@
       "system": "Pencernaan",
       "danger": "rendah",
       "summary": "Nyeri tajam hebat saat & setelah BAB dengan darah segar sedikit; robekan di garis tengah posterior anus."
+    },
+    {
+      "id": "retensi_urin",
+      "name": "Retensi urin akut",
+      "aliases": [],
+      "system": "Saluran kemih & kelamin",
+      "danger": "kritis",
+      "summary": "Tidak bisa berkemih dengan kandung kemih penuh teraba & nyeri suprapubik. Kateterisasi segera."
+    },
+    {
+      "id": "kekerasan_seksual",
+      "name": "Kekerasan seksual",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Pertimbangkan pada anak dengan keluhan genital/IMS: lindungi anak, dokumentasi, rujuk/visum, laporkan."
+    },
+    {
+      "id": "torsio_ovarium",
+      "name": "Torsio adneksa/kista ovarium terpuntir",
+      "aliases": [],
+      "system": "Saluran kemih & kelamin",
+      "danger": "kritis",
+      "summary": "Nyeri perut bawah unilateral mendadak hebat dengan mual-muntah; massa adneksa. Rujuk segera."
+    },
+    {
+      "id": "epididimitis",
+      "name": "Epididimitis",
+      "aliases": [],
+      "system": "Saluran kemih & kelamin",
+      "danger": "sedang",
+      "summary": "Nyeri & bengkak skrotum bertahap dengan demam/disuria; komplikasi IMS/ISK."
+    },
+    {
+      "id": "herpes_simpleks",
+      "name": "Herpes simpleks",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Vesikel berkelompok di atas dasar eritema yang pecah menjadi erosi nyeri."
+    },
+    {
+      "id": "reaksi_gigitan_serangga",
+      "name": "Reaksi gigitan serangga",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Urtika/papul gatal di bekas gigitan."
     }
   ]
 }

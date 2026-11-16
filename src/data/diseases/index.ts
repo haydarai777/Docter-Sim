@@ -83,6 +83,16 @@ import tbParu from './tb_paru.json';
 // Saluran kemih
 import batuSaluranKemih from './batu_saluran_kemih.json';
 import isk from './isk.json';
+// Saluran kemih & kelamin
+import fimosis from './fimosis.json';
+import gonore from './gonore.json';
+import parafimosis from './parafimosis.json';
+import pielonefritis from './pielonefritis.json';
+import salpingitis from './salpingitis.json';
+import uretritisNonGonore from './uretritis_non_gonore.json';
+import vaginitis from './vaginitis.json';
+import vaginosisBakterialis from './vaginosis_bakterialis.json';
+import vulvitis from './vulvitis.json';
 // Telinga, hidung & tenggorok
 import bendaAsingTht from './benda_asing_tht.json';
 import epistaksis from './epistaksis.json';
@@ -159,6 +169,15 @@ export const DISEASE_FILES: unknown[] = [
   tbParu,
   batuSaluranKemih,
   isk,
+  fimosis,
+  gonore,
+  parafimosis,
+  pielonefritis,
+  salpingitis,
+  uretritisNonGonore,
+  vaginitis,
+  vaginosisBakterialis,
+  vulvitis,
   bendaAsingTht,
   epistaksis,
   faringitis,

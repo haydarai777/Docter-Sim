@@ -1,0 +1,219 @@
+{
+  "id": "vaginitis",
+  "name": "Vaginitis (kandidiasis vulvovaginal / trikomoniasis)",
+  "aliases": ["Keputihan patologis", "Kandidiasis vagina", "Trikomoniasis", "Vaginitis"],
+  "system": "Saluran kemih & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Radang vagina dengan keputihan abnormal. Kandidiasis vulvovaginal: keputihan putih kental seperti susu pecah/keju, gatal hebat, vulva eritema, pH normal (≤ 4,5), pseudohifa pada KOH; risiko kehamilan, DM, antibiotik. Trikomoniasis (IMS): keputihan kuning-hijau berbusa berbau, strawberry cervix, pH > 4,5, Trichomonas motil pada sediaan basah — obati pasangan.",
+  "presentationDay": [3, 21],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 25, "weight": 3 },
+      { "min": 26, "max": 40, "weight": 4 },
+      { "min": 41, "max": 55, "weight": 2 }
+    ],
+    "maleRatio": 0
+  },
+  "traits": [
+    { "id": "trikomonas", "probability": 0.35 },
+    { "id": "hamil", "probability": 0.1, "when": { "notTraits": ["trikomonas"] } },
+    { "id": "antibiotik", "probability": 0.25, "when": { "notTraits": ["trikomonas"] } },
+    { "id": "dm_curiga", "probability": 0.06, "when": { "ageMin": 35 } }
+  ],
+  "traitLabels": {
+    "trikomonas": "Trikomoniasis.",
+    "hamil": "Sedang hamil (risiko kandida).",
+    "antibiotik": "Baru minum antibiotik.",
+    "dm_curiga": "Faktor risiko diabetes."
+  },
+  "symptoms": [
+    { "id": "gatal_kemaluan", "probability": 1, "when": { "notTraits": ["trikomonas"] } },
+    { "id": "risiko_ims", "probability": 0.6, "when": { "traits": ["trikomonas"] } },
+    { "id": "keputihan", "probability": 1 },
+    { "id": "gatal_kemaluan", "probability": 0.5 },
+    { "id": "disuria", "probability": 0.4 },
+    { "id": "nyeri_senggama", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["keputihan"], "extraPool": ["gatal_kemaluan"] },
+  "clueSymptoms": ["gatal_kemaluan", "disuria", "nyeri_senggama", "risiko_ims"],
+  "misattributions": ["kecapekan", "kurang bersih", "masuk angin"],
+  "fears": ["kanker serviks", "penyakit kelamin", "mandul"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah seminggu, Dok, keputihan banyak dan gatal.", "clue": "Subakut" }],
+    "karakter": [
+      {
+        "text": "Keputihannya putih kental kayak susu basi, Dok, nggak bau tapi gatal sekali.",
+        "when": { "notTraits": ["trikomonas"] },
+        "clue": "Duh putih kental seperti keju, tidak berbau, gatal hebat (kandida)"
+      },
+      {
+        "text": "Keputihannya kuning kehijauan, berbusa, baunya nggak enak, Dok.",
+        "when": { "traits": ["trikomonas"] },
+        "clue": "Duh kuning-hijau berbusa berbau (trikomonas)"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Minggu lalu saya habis minum antibiotik buat sakit gigi, Dok.",
+        "when": { "traits": ["antibiotik"] },
+        "clue": "Baru menggunakan antibiotik"
+      },
+      { "text": "Nggak minum obat khusus akhir-akhir ini, Dok.", "when": { "notTraits": ["antibiotik"] } }
+    ],
+    "haid_kehamilan": [
+      { "text": "Saya sedang hamil lima bulan, Dok.", "when": { "traits": ["hamil"] }, "clue": "Kehamilan" },
+      { "text": "Haid teratur, Dok, nggak hamil.", "when": { "notTraits": ["hamil"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Suami saya sering kerja di luar kota, Dok.",
+        "reveals": ["risiko_ims"],
+        "when": { "traits": ["trikomonas"], "symptoms": ["risiko_ims"] },
+        "clue": "Pasangan berisiko (IMS)"
+      },
+      {
+        "text": "Saya sering pakai celana jins ketat, Dok.",
+        "when": { "notTraits": ["trikomonas"] },
+        "clue": "Lembap/celana ketat"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "duh_vagina",
+      "when": { "notTraits": ["trikomonas"] },
+      "diagnostic": true,
+      "values": ["Duh putih kental bergumpal seperti keju melekat di dinding vagina, tidak berbau"]
+    },
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "duh_vagina",
+      "when": { "traits": ["trikomonas"] },
+      "diagnostic": true,
+      "values": ["Duh kuning kehijauan berbusa, banyak, berbau"]
+    },
+    {
+      "tool": "inspekulo_bimanual",
+      "param": "serviks",
+      "when": { "traits": ["trikomonas"] },
+      "probability": 0.5,
+      "values": ["Serviks dengan bintik-bintik perdarahan (strawberry cervix)"]
+    },
+    {
+      "tool": "sediaan_basah_vagina",
+      "param": "pseudohifa",
+      "when": { "notTraits": ["trikomonas"] },
+      "diagnostic": true,
+      "values": ["Pseudohifa & blastospora (+)"]
+    },
+    {
+      "tool": "sediaan_basah_vagina",
+      "param": "trikomonas",
+      "when": { "traits": ["trikomonas"] },
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Trichomonas vaginalis motil (+)"]
+    },
+    { "tool": "sediaan_basah_vagina", "param": "ph_vagina", "when": { "traits": ["trikomonas"] }, "range": [5.5, 6.5] },
+    {
+      "tool": "sediaan_basah_vagina",
+      "param": "whiff",
+      "when": { "traits": ["trikomonas"] },
+      "probability": 0.5,
+      "values": ["Positif (bau amis)"]
+    },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 290] },
+    { "tool": "inspekulo_bimanual", "param": "dinding_vagina", "values": ["Dinding vagina hiperemis"] },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "probability": 0.8,
+      "values": ["Vulva eritema & edema, ekskoriasi"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "salpingitis",
+      "howToDistinguish": "PID: nyeri perut bawah, demam, nyeri goyang serviks — perlu antibiotik kombinasi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["inspekulo_bimanual"] }
+    },
+    {
+      "id": "vaginosis_bakterialis",
+      "howToDistinguish": "Vaginosis bakterial: duh tipis abu-abu homogen berbau amis, gatal minimal, clue cells, pH > 4,5.",
+      "excludeBy": { "tools": ["inspekulo_bimanual", "sediaan_basah_vagina"] }
+    },
+    {
+      "id": "gonore",
+      "howToDistinguish": "Servisitis gonore/klamidia: duh mukopurulen dari OUE, Gram diplokokus.",
+      "excludeBy": { "tools": ["inspekulo_bimanual"] }
+    }
+  ],
+  "keyFindings": [
+    "Keputihan abnormal dengan gatal/perih vulva",
+    "Kandida: duh seperti keju, pH ≤ 4,5, pseudohifa; trikomonas: duh hijau berbusa berbau, pH > 4,5, Trichomonas motil",
+    "Inspekulo untuk menilai serviks & menyingkirkan servisitis/PID"
+  ],
+  "teachingPoints": ["Trikomoniasis adalah IMS — pasangan wajib diobati; kandidiasis tidak perlu terapi pasangan (kecuali simtomatik)."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_obat", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "inspekulo_bimanual", "role": "kunci", "reason": "Karakter duh, serviks, nyeri goyang serviks." },
+      { "tool": "pemeriksaan_genital", "role": "pendukung", "reason": "Vulva." }
+    ],
+    "tests": [
+      { "tool": "sediaan_basah_vagina", "role": "kunci", "reason": "pH, KOH, NaCl, tes amin." },
+      {
+        "tool": "gula_darah",
+        "role": "pendukung",
+        "when": { "traits": ["dm_curiga"] },
+        "reason": "Kandidiasis berulang/faktor risiko DM."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Terapi sesuai etiologi; trikomoniasis: obati pasangan; kontrol bila tidak membaik."
+    }
+  ],
+  "management": [
+    "Kandida: flukonazol 150 mg oral dosis tunggal (hamil: klotrimazol vaginal 7 hari).",
+    "Trikomoniasis: metronidazol 2 g oral dosis tunggal (atau 2 × 500 mg 7 hari) + obati pasangan; hindari alkohol.",
+    "Hindari douching & sabun wangi; celana katun longgar.",
+    "Skrining IMS lain pada trikomoniasis."
+  ],
+  "approach": ["Karakter duh, bau, gatal; faktor risiko.", "Inspekulo + sediaan basah/KOH + pH."]
+}
