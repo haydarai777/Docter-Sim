@@ -10,14 +10,23 @@
  *
  * ⚠ Semua konten medis berstatus BELUM_DITINJAU_DOKTER sampai ditinjau dokter.
  */
+// Darah & imunologi
+import anemiaDefisiensiBesi from './anemia_defisiensi_besi.json';
 // Endokrin & metabolik
 import dmTipe2 from './dm_tipe2.json';
+// Infeksi & imunologi
+import hiv from './hiv.json';
+import limfadenitis from './limfadenitis.json';
+import reaksiAnafilaktik from './reaksi_anafilaktik.json';
 // Infeksi tropis
 import demamTifoid from './demam_tifoid.json';
 import dengue from './dengue.json';
+import filariasis from './filariasis.json';
+import leptospirosis from './leptospirosis.json';
 import malaria from './malaria.json';
 // Jantung & pembuluh darah
 import anginaStabil from './angina_stabil.json';
+import hipertensi from './hipertensi.json';
 // Jiwa
 import gangguanSomatoform from './gangguan_somatoform.json';
 import insomnia from './insomnia.json';
@@ -48,6 +57,7 @@ import gastritis from './gastritis.json';
 import gerd from './gerd.json';
 // Pernapasan
 import asma from './asma.json';
+import bronkitisAkut from './bronkitis_akut.json';
 import influenza from './influenza.json';
 import pertusis from './pertusis.json';
 import pneumonia from './pneumonia.json';
@@ -71,11 +81,18 @@ import serumenProp from './serumen_prop.json';
 import tonsilitis from './tonsilitis.json';
 
 export const DISEASE_FILES: unknown[] = [
+  anemiaDefisiensiBesi,
   dmTipe2,
+  hiv,
+  limfadenitis,
+  reaksiAnafilaktik,
   demamTifoid,
   dengue,
+  filariasis,
+  leptospirosis,
   malaria,
   anginaStabil,
+  hipertensi,
   gangguanSomatoform,
   insomnia,
   bellsPalsy,
@@ -101,6 +118,7 @@ export const DISEASE_FILES: unknown[] = [
   gastritis,
   gerd,
   asma,
+  bronkitisAkut,
   influenza,
   pertusis,
   pneumonia,

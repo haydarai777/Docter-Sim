@@ -1,0 +1,226 @@
+{
+  "id": "reaksi_anafilaktik",
+  "name": "Reaksi anafilaktik",
+  "aliases": ["Anafilaksis", "Syok anafilaktik", "Reaksi alergi berat"],
+  "system": "Infeksi & imunologi",
+  "skdiLevel": "4A",
+  "danger": "kritis",
+  "prevalenceWeight": 0.6,
+  "summary": "Reaksi hipersensitivitas sistemik akut yang mengancam nyawa, menit hingga jam setelah pajanan alergen (obat suntik/oral, sengatan tawon, makanan laut/kacang): urtikaria & angioedema DISERTAI gangguan napas (sesak, mengi, stridor) dan/atau sirkulasi (hipotensi, pingsan) atau gejala GI. Terapi utama: ADRENALIN intramuskular segera di paha anterolateral, posisi, oksigen, cairan; lalu rujuk/observasi (reaksi bifasik).",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 1 },
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "pencetus_obat", "probability": 0.4 },
+    { "id": "pencetus_sengatan", "probability": 0.3, "when": { "notTraits": ["pencetus_obat"] } },
+    { "id": "pencetus_makanan", "probability": 1, "when": { "notTraits": ["pencetus_obat", "pencetus_sengatan"] } },
+    { "id": "syok", "probability": 0.45 }
+  ],
+  "traitLabels": {
+    "pencetus_obat": "Pencetus obat.",
+    "pencetus_sengatan": "Pencetus sengatan tawon.",
+    "pencetus_makanan": "Pencetus makanan.",
+    "syok": "Syok anafilaktik (hipotensi)."
+  },
+  "symptoms": [
+    { "id": "mau_pingsan", "probability": 1, "when": { "traits": ["syok"] } },
+    { "id": "bentol_gigitan", "probability": 1, "when": { "traits": ["pencetus_sengatan"] } },
+    { "id": "biduran", "probability": 1 },
+    { "id": "bengkak_bibir_mata", "probability": 0.75 },
+    { "id": "sesak_napas", "probability": 0.85 },
+    { "id": "mengi", "probability": 0.5 },
+    { "id": "mau_pingsan", "probability": 0.7 },
+    { "id": "gatal_kulit", "probability": 0.8 },
+    { "id": "mual_muntah", "probability": 0.4 },
+    { "id": "nyeri_perut", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["biduran"], "extraPool": ["sesak_napas", "bengkak_bibir_mata"] },
+  "clueSymptoms": ["bengkak_bibir_mata", "sesak_napas", "mengi", "mau_pingsan", "gatal_kulit", "mual_muntah"],
+  "misattributions": ["alergi biasa", "masuk angin", "keracunan"],
+  "fears": ["meninggal", "tidak bisa napas"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru setengah jam lalu, Dok, habis disuntik obat di mantri/klinik dekat rumah.",
+        "when": { "traits": ["pencetus_obat"] },
+        "clue": "Onset menit setelah obat suntik"
+      },
+      {
+        "text": "Baru dua puluh menit lalu, Dok, habis disengat tawon di kebun.",
+        "reveals": ["bentol_gigitan"],
+        "when": { "traits": ["pencetus_sengatan"], "symptoms": ["bentol_gigitan"] },
+        "clue": "Onset menit setelah sengatan"
+      },
+      {
+        "text": "Baru setengah jam lalu, Dok, habis makan udang dan kepiting.",
+        "when": { "traits": ["pencetus_makanan"] },
+        "clue": "Onset menit setelah makanan laut"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Awalnya gatal bentol-bentol, terus bibir bengkak, sekarang napas sesak dan kepala melayang, Dok.",
+        "reveals": ["sesak_napas"],
+        "when": { "symptoms": ["sesak_napas"] },
+        "clue": "Progresi cepat kulit → napas → sirkulasi"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Rasanya mau pingsan, Dok, lemas sekali.",
+        "reveals": ["mau_pingsan"],
+        "when": { "traits": ["syok"], "symptoms": ["mau_pingsan"] },
+        "clue": "Presinkop/hipotensi"
+      },
+      {
+        "text": "Sesak, Dok, tenggorokan rasanya tercekik.",
+        "when": { "notTraits": ["syok"] },
+        "clue": "Gangguan napas"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu pernah gatal-gatal habis minum obat yang sama, Dok, tapi ringan.",
+        "when": { "traits": ["pencetus_obat"] },
+        "clue": "Riwayat reaksi alergi sebelumnya"
+      },
+      { "text": "Saya punya asma waktu kecil, Dok.", "weight": 0.4, "clue": "Riwayat atopi/asma" },
+      { "text": "Belum pernah alergi separah ini, Dok." }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "tanda_vital",
+      "param": "td_sistolik",
+      "when": { "traits": ["syok"] },
+      "diagnostic": true,
+      "range": [68, 86]
+    },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["syok"] }, "range": [40, 55] },
+    { "tool": "ekstremitas_kulit", "param": "akral", "when": { "traits": ["syok"] }, "values": ["Dingin, lembap"] },
+    { "tool": "ekstremitas_kulit", "param": "crt", "when": { "traits": ["syok"] }, "values": ["> 3 detik"] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "range": [100, 118] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [118, 140] },
+    { "tool": "tanda_vital", "param": "napas", "range": [24, 32] },
+    { "tool": "tanda_vital", "param": "spo2", "range": [89, 94] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak sakit berat, sesak, gelisah"] },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Generalisata (wajah, badan, ekstremitas)"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Urtika eritematosa multipel generalisata, angioedema bibir & kelopak mata"]
+    },
+    { "tool": "pemeriksaan_paru", "param": "auskultasi", "probability": 0.7, "values": ["Wheezing ekspirasi (+/+)"] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "probability": 0.4,
+      "values": ["Uvula dan dinding faring edema"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "urtikaria_akut",
+      "howToDistinguish": "Urtikaria akut: biduran ± angioedema TANPA gangguan napas, sirkulasi, atau GI berat.",
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "sinkop_vasovagal",
+      "howToDistinguish": "Sinkop vasovagal: pucat, bradikardia, mual, pulih cepat saat berbaring, tanpa urtikaria/mengi.",
+      "excludeBy": { "tools": ["tanda_vital", "status_dermatologis"] }
+    },
+    {
+      "id": "asma",
+      "howToDistinguish": "Serangan asma: sesak & mengi tanpa urtikaria/angioedema/hipotensi.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "aspirasi_benda_asing",
+      "howToDistinguish": "Aspirasi/tersedak makanan: sesak mendadak saat makan, stridor, tanpa urtikaria.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Onset menit–jam setelah alergen (obat, sengatan, makanan)",
+    "Urtikaria/angioedema + gangguan napas (sesak, mengi) dan/atau hipotensi",
+    "Takikardia, takipnea, SpO2 turun"
+  ],
+  "teachingPoints": [
+    "Adrenalin IM 0,01 mg/kg (maks. 0,5 mg dewasa, 0,3 mg anak) di paha anterolateral adalah terapi utama — jangan ditunda demi antihistamin/steroid.",
+    "Observasi minimal 4–6 jam (hingga 24 jam) karena reaksi bifasik."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WAO Anaphylaxis Guidance 2020"
+    ]
+  },
+  "complications": [
+    {
+      "id": "syok",
+      "name": "Syok anafilaktik",
+      "trait": "syok",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "ekstremitas_kulit"] },
+      "explanation": "Hipotensi & hipoperfusi — adrenalin IM, cairan cepat, rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "progresi", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Jalan napas, kesadaran, kesan sakit." },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Mengi/stridor." },
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Urtikaria & angioedema." },
+      { "tool": "ekstremitas_kulit", "role": "kunci", "reason": "Perfusi (akral, CRT)." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Edema uvula/faring (ancaman jalan napas)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Setelah adrenalin IM, oksigen, dan cairan: rujuk segera/observasi ketat di fasilitas gawat darurat (risiko bifasik).",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Hentikan pajanan; panggil bantuan; posisi telentang dengan tungkai diangkat (duduk bila sesak).",
+    "ADRENALIN 1:1000 0,01 mg/kg IM di paha anterolateral (maks. 0,5 mg), ulangi tiap 5–15 menit bila perlu.",
+    "Oksigen, akses IV, kristaloid 1–2 L cepat (anak 20 mL/kg) bila hipotensi.",
+    "Tambahan: antihistamin H1 (difenhidramin), kortikosteroid, salbutamol bila mengi.",
+    "Rujuk/observasi; edukasi hindari alergen, kartu alergi, catat di rekam medis."
+  ],
+  "approach": ["Kenali cepat: kulit + napas/sirkulasi setelah alergen.", "ABCDE dan adrenalin IM segera."]
+}

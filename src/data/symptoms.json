@@ -2905,6 +2905,29 @@
         "nyeri bekas pukulan",
         "sakit bekas"
       ]
+    },
+    {
+      "id": "risiko_ims",
+      "label": "Khawatir setelah pajanan berisiko (IMS/HIV)",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah pernah berhubungan seksual berisiko atau memakai jarum suntik bergantian?",
+      "phrases": {
+        "lay": ["saya khawatir karena pernah berhubungan berisiko", "pasangan saya ternyata positif HIV"],
+        "exaggerated": ["saya takut sekali sudah tertular"],
+        "downplayed": ["cuma mau cek saja"]
+      },
+      "keywords": [
+        "hubungan berisiko",
+        "seks bebas",
+        "jarum suntik",
+        "pasangan positif",
+        "tes hiv",
+        "pasangan hiv",
+        "berganti pasangan",
+        "jajan seks",
+        "hubungan seks"
+      ],
+      "volunteer": false
     }
   ]
 }

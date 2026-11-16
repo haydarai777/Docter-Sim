@@ -1,0 +1,250 @@
+{
+  "id": "leptospirosis",
+  "name": "Leptospirosis tanpa komplikasi",
+  "aliases": ["Lepto", "Penyakit kencing tikus", "Weil's disease"],
+  "system": "Infeksi tropis",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.8,
+  "summary": "Zoonosis Leptospira dari urin tikus melalui kulit lecet/mukosa saat banjir, sawah, selokan. Demam tinggi mendadak, nyeri kepala, MIALGIA terutama betis (nyeri tekan gastroknemius), conjunctival suffusion (mata merah tanpa sekret). Bentuk berat (Weil): ikterus, gangguan ginjal (oliguria), perdarahan — rujuk. Tata laksana: doksisiklin/amoksisilin pada kasus ringan.",
+  "presentationDay": [2, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 55, "weight": 4 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.75,
+    "occupations": [
+      { "id": "petani", "weight": 4 },
+      { "id": "pekerja_proyek", "weight": 2 },
+      { "id": "pedagang_pasar", "weight": 1 },
+      { "id": "pekerja_sawit", "weight": 2 }
+    ],
+    "occupationBias": 0.6
+  },
+  "traits": [
+    { "id": "banjir", "probability": 0.6 },
+    { "id": "sawah_selokan", "probability": 1, "when": { "notTraits": ["banjir"] } },
+    { "id": "weil", "probability": 0.15, "when": { "dayMin": 4 } },
+    { "id": "conj_suffusion", "probability": 0.6 }
+  ],
+  "traitLabels": {
+    "banjir": "Riwayat terendam banjir.",
+    "sawah_selokan": "Bekerja di sawah/selokan/tempat tikus.",
+    "weil": "Leptospirosis berat (Weil): ikterus, gangguan ginjal.",
+    "conj_suffusion": "Conjunctival suffusion."
+  },
+  "symptoms": [
+    { "id": "mata_merah", "probability": 1, "when": { "traits": ["conj_suffusion"] } },
+    { "id": "kuning", "probability": 1, "when": { "traits": ["weil"] } },
+    { "id": "urin_gelap", "probability": 0.8, "when": { "traits": ["weil"] } },
+    { "id": "demam", "probability": 1 },
+    { "id": "nyeri_betis", "probability": 0.9 },
+    { "id": "nyeri_otot_sendi", "probability": 0.8 },
+    { "id": "nyeri_kepala", "probability": 0.8 },
+    { "id": "menggigil", "probability": 0.5 },
+    { "id": "mual_muntah", "probability": 0.4 },
+    { "id": "lemas", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["nyeri_betis", "nyeri_kepala"] },
+  "clueSymptoms": ["nyeri_betis", "nyeri_otot_sendi", "nyeri_kepala", "mata_merah", "menggigil", "mual_muntah"],
+  "misattributions": ["masuk angin", "tifus", "demam berdarah"],
+  "fears": ["demam berdarah", "tifus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mendadak, Dok, {hariTeks} hari lalu langsung panas tinggi menggigil.",
+        "clue": "Demam tinggi mendadak"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Betis saya sakit sekali, Dok, sampai susah jalan.",
+        "reveals": ["nyeri_betis"],
+        "when": { "symptoms": ["nyeri_betis"] },
+        "clue": "Nyeri betis hebat"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Seminggu lalu rumah saya kebanjiran, Dok, saya bersih-bersih tanpa sepatu. Banyak tikus di sekitar rumah.",
+        "when": { "traits": ["banjir"] },
+        "clue": "Paparan banjir & tikus 1–2 minggu sebelumnya"
+      },
+      {
+        "text": "Saya kerja di sawah, Dok, kaki sering lecet, banyak tikus di sawah.",
+        "when": { "traits": ["sawah_selokan"] },
+        "clue": "Paparan sawah/tikus dengan kulit lecet"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang mata dan badan saya kuning, kencing sedikit dan warnanya pekat, Dok.",
+        "reveals": ["kuning", "urin_gelap"],
+        "when": { "traits": ["weil"], "symptoms": ["kuning", "urin_gelap"] },
+        "clue": "Ikterus & oliguria (curiga Weil)"
+      },
+      {
+        "text": "Lemas sekali, Dok, tapi masih bisa makan minum. Nggak ada mimisan atau gusi berdarah.",
+        "when": { "notTraits": ["weil"] },
+        "clue": "Tanpa tanda perdarahan/ikterus"
+      }
+    ],
+    "pola": [{ "text": "Panasnya terus-menerus, Dok, nggak turun-turun.", "clue": "Demam kontinu" }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "traits": ["conj_suffusion"] },
+      "values": ["Conjunctival suffusion: konjungtiva bulbi merah difus tanpa sekret"]
+    },
+    { "tool": "kepala_leher", "param": "sklera", "when": { "traits": ["weil"] }, "values": ["Ikterik"] },
+    { "tool": "fungsi_hati", "param": "bilirubin", "when": { "traits": ["weil"] }, "range": [3, 8] },
+    { "tool": "fungsi_hati", "param": "sgot", "when": { "traits": ["weil"] }, "range": [60, 150] },
+    { "tool": "fungsi_hati", "param": "sgpt", "when": { "traits": ["weil"] }, "range": [50, 120] },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["weil"] }, "range": [80, 160] },
+    { "tool": "fungsi_ginjal", "param": "kreatinin", "when": { "traits": ["weil"] }, "range": [2.2, 4.5] },
+    {
+      "tool": "igm_leptospira",
+      "param": "hasil",
+      "when": { "dayMin": 5 },
+      "probability": 0.75,
+      "diagnostic": true,
+      "values": ["Positif"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "range": [38.6, 39.8] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [96, 112] },
+    {
+      "tool": "muskuloskeletal",
+      "param": "otot",
+      "probability": 0.9,
+      "diagnostic": true,
+      "values": ["Nyeri tekan otot gastroknemius kedua betis"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.6, "range": [11000, 16000] },
+    { "tool": "darah_lengkap", "param": "neutrofil_segmen", "probability": 0.6, "range": [75, 85] },
+    { "tool": "darah_lengkap", "param": "trombosit", "probability": 0.5, "range": [70000, 140000] },
+    { "tool": "darah_lengkap", "param": "led", "probability": 0.6, "range": [30, 60] },
+    { "tool": "urinalisis", "param": "protein", "probability": 0.6, "values": ["+1", "+2"] },
+    { "tool": "urinalisis", "param": "sedimen_eritrosit", "probability": 0.4, "range": [3, 10] },
+    { "tool": "igm_leptospira", "param": "hasil", "probability": 0.35, "diagnostic": true, "values": ["Positif"] }
+  ],
+  "differentials": [
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam dengan nyeri retroorbital, uji tourniquet (+), leukopenia & trombositopenia, hemokonsentrasi; tanpa nyeri tekan betis khas.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["uji_tourniquet", "darah_lengkap"] }
+    },
+    {
+      "id": "malaria",
+      "howToDistinguish": "Malaria: demam periodik dengan riwayat daerah endemis; RDT/apusan positif.",
+      "excludeBy": { "topics": ["bepergian_lingkungan"], "tools": ["rdt_malaria"] }
+    },
+    {
+      "id": "demam_tifoid",
+      "howToDistinguish": "Tifoid: demam bertahap > 7 hari, gangguan GI, lidah kotor.",
+      "excludeBy": { "topics": ["onset", "pola"] }
+    },
+    {
+      "id": "hepatitis_a",
+      "howToDistinguish": "Hepatitis A: ikterus dengan prodromal GI, tanpa mialgia betis berat/gangguan ginjal; IgM anti-HAV.",
+      "excludeBy": { "topics": ["keparahan"], "tools": ["muskuloskeletal"] }
+    }
+  ],
+  "keyFindings": [
+    "Demam tinggi mendadak + mialgia betis (nyeri tekan gastroknemius) + conjunctival suffusion",
+    "Paparan banjir/sawah/tikus 1–2 minggu sebelumnya",
+    "Leukositosis neutrofilik, proteinuria; IgM leptospira positif (sering setelah hari ke-5)"
+  ],
+  "teachingPoints": [
+    "Diagnosis awal leptospirosis bersifat klinis-epidemiologis; jangan menunggu serologi untuk memulai antibiotik.",
+    "Tanda Weil (ikterus, oliguria, perdarahan) = rujuk segera."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Petunjuk Teknis Pengendalian Leptospirosis"
+    ]
+  },
+  "complications": [
+    {
+      "id": "weil",
+      "name": "Leptospirosis berat (sindrom Weil)",
+      "trait": "weil",
+      "redFlag": true,
+      "assess": { "tools": ["kepala_leher", "fungsi_ginjal"], "topics": ["keparahan"] },
+      "explanation": "Ikterus, gangguan ginjal akut, perdarahan — rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "bepergian_lingkungan", "keparahan", "pola", "keluhan_lain"],
+    "exams": [
+      { "tool": "muskuloskeletal", "role": "kunci", "reason": "Nyeri tekan betis (gastroknemius)." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Conjunctival suffusion." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Ikterus." },
+      { "tool": "uji_tourniquet", "role": "pendukung", "reason": "Menyingkirkan dengue." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Leukositosis, trombosit." },
+      { "tool": "urinalisis", "role": "pendukung", "reason": "Proteinuria, hematuria." },
+      { "tool": "igm_leptospira", "role": "kunci", "reason": "Konfirmasi serologis (positif setelah hari ke-5)." },
+      {
+        "tool": "fungsi_ginjal",
+        "role": "komplikasi",
+        "when": { "traits": ["weil"] },
+        "reason": "Gangguan ginjal pada Weil."
+      },
+      { "tool": "fungsi_hati", "role": "komplikasi", "when": { "traits": ["weil"] }, "reason": "Bilirubin pada Weil." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "ns1_dengue", "reason": "Menyingkirkan dengue pada demam hari 1–3." },
+      { "tool": "rdt_malaria", "reason": "Bila dari daerah endemis malaria." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Leptospirosis berat (Weil): rujuk segera untuk penisilin/seftriakson IV & dukungan ginjal.",
+      "when": { "traits": ["weil"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Doksisiklin 2 × 100 mg 7 hari (atau amoksisilin), simptomatik, kontrol 2–3 hari; kembali bila kuning/kencing sedikit.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Ringan: doksisiklin 2 × 100 mg selama 7 hari (amoksisilin/azitromisin bila kontraindikasi).",
+    "Parasetamol untuk demam & nyeri; cukup minum, pantau produksi urin.",
+    "Berat (Weil): rujuk segera untuk antibiotik IV & tatalaksana gangguan ginjal/perdarahan.",
+    "Pencegahan: sepatu bot & sarung tangan, kendalikan tikus, rawat luka."
+  ],
+  "approach": [
+    "Demam akut + mialgia betis + riwayat paparan → curigai leptospirosis.",
+    "Nilai tanda Weil; singkirkan dengue & malaria."
+  ]
+}

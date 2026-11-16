@@ -1,0 +1,246 @@
+{
+  "id": "hipertensi",
+  "name": "Hipertensi esensial",
+  "aliases": ["Darah tinggi", "Tensi tinggi", "Hipertensi primer", "HT"],
+  "system": "Jantung & pembuluh darah",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 2,
+  "summary": "Tekanan darah ≥ 140/90 mmHg pada ≥ 2 kali pengukuran di kunjungan berbeda tanpa penyebab sekunder. Sering tanpa gejala (ditemukan saat skrining) atau keluhan tidak spesifik (tengkuk berat, pusing). Nilai faktor risiko kardiovaskular (DM, dislipidemia, merokok, obesitas) dan kerusakan organ target (jantung/LVH, ginjal/proteinuria, retina, otak). Terapi: modifikasi gaya hidup + antihipertensi (lini pertama: CCB, ACEi/ARB, tiazid).",
+  "presentationDay": [7, 120],
+  "demographics": {
+    "ageBands": [
+      { "min": 30, "max": 44, "weight": 2 },
+      { "min": 45, "max": 59, "weight": 4 },
+      { "min": 60, "max": 75, "weight": 4 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "pedagang_pasar", "weight": 2 },
+      { "id": "pensiunan", "weight": 2 },
+      { "id": "sopir_truk", "weight": 1 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "datang_skrining", "probability": 0.5 },
+    { "id": "derajat2", "probability": 0.4 },
+    { "id": "obesitas_menyertai", "probability": 0.35 },
+    { "id": "merokok", "probability": 0.45, "when": { "sex": "male" } },
+    { "id": "garam_tinggi", "probability": 0.6 },
+    { "id": "retinopati", "probability": 0.2 },
+    { "id": "lvh", "probability": 0.15, "when": { "ageMin": 45 } },
+    { "id": "dm_menyertai", "probability": 0.12, "when": { "ageMin": 40 } }
+  ],
+  "traitLabels": {
+    "datang_skrining": "Ditemukan saat skrining (asimtomatik).",
+    "derajat2": "Hipertensi derajat 2 (≥ 160/100).",
+    "obesitas_menyertai": "Obesitas menyertai.",
+    "merokok": "Perokok.",
+    "garam_tinggi": "Asupan garam tinggi.",
+    "retinopati": "Retinopati hipertensi.",
+    "lvh": "Hipertrofi ventrikel kiri (kerusakan organ target).",
+    "dm_menyertai": "Diabetes menyertai."
+  },
+  "symptoms": [
+    { "id": "hasil_cek_abnormal", "probability": 1, "when": { "traits": ["datang_skrining"] } },
+    { "id": "tengkuk_tegang", "probability": 1, "when": { "notTraits": ["datang_skrining"] } },
+    { "id": "pandangan_kabur", "probability": 0.15, "when": { "traits": ["retinopati"] } },
+    { "id": "tengkuk_tegang", "probability": 0.3 },
+    { "id": "nyeri_kepala", "probability": 0.5 },
+    { "id": "berdebar", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["hasil_cek_abnormal", "tengkuk_tegang"], "extraPool": ["nyeri_kepala"] },
+  "clueSymptoms": ["nyeri_kepala", "berdebar", "pandangan_kabur"],
+  "misattributions": ["kecapekan", "masuk angin", "kurang tidur"],
+  "fears": ["stroke", "serangan jantung"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Pas cek kesehatan di kantor/posbindu bulan lalu tensinya 160, Dok, disuruh periksa. Saya sih nggak merasa apa-apa.",
+        "when": { "traits": ["datang_skrining"] },
+        "clue": "Ditemukan saat skrining, asimtomatik"
+      },
+      {
+        "text": "Beberapa minggu ini tengkuk saya berat, Dok, kepala juga kadang pusing.",
+        "when": { "notTraits": ["datang_skrining"] },
+        "clue": "Tengkuk berat & pusing (tidak spesifik)"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu pernah dibilang tensinya tinggi, Dok, tapi nggak minum obat.",
+        "clue": "Riwayat TD tinggi tidak diobati"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Bapak saya darah tinggi, meninggal karena stroke, Dok.",
+        "clue": "Riwayat keluarga hipertensi & stroke"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya suka makanan asin, ikan asin, mi instan, Dok. Jarang olahraga.",
+        "when": { "traits": ["garam_tinggi"] },
+        "clue": "Asupan garam tinggi, kurang aktivitas"
+      },
+      { "text": "Saya merokok, Dok, sebungkus sehari.", "when": { "traits": ["merokok"] }, "clue": "Merokok" },
+      { "text": "Makan biasa, Dok, jarang olahraga.", "when": { "notTraits": ["garam_tinggi", "merokok"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Nggak ada nyeri dada, sesak, atau lemah sebelah badan, Dok.",
+        "clue": "Tanpa gejala kerusakan organ akut"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Nggak minum obat rutin, Dok, juga nggak pakai obat flu atau jamu terus-menerus.",
+        "clue": "Tanpa obat pemicu hipertensi"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "tanda_vital",
+      "param": "td_sistolik",
+      "when": { "traits": ["derajat2"] },
+      "diagnostic": true,
+      "range": [160, 178]
+    },
+    {
+      "tool": "tanda_vital",
+      "param": "td_diastolik",
+      "when": { "traits": ["derajat2"] },
+      "diagnostic": true,
+      "range": [100, 108]
+    },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas_menyertai"] }, "range": [27.5, 33] },
+    { "tool": "timbangan", "param": "lingkar_perut", "when": { "traits": ["obesitas_menyertai"] }, "range": [92, 108] },
+    {
+      "tool": "funduskopi",
+      "param": "retina",
+      "when": { "traits": ["retinopati"] },
+      "values": ["A/V 1/2, refleks arteriol meningkat (copper wire), AV crossing (+)"]
+    },
+    {
+      "tool": "ekg",
+      "param": "qrs",
+      "when": { "traits": ["lvh"] },
+      "values": ["Voltase QRS tinggi (Sokolow-Lyon > 35 mm)"]
+    },
+    {
+      "tool": "ekg",
+      "param": "kesan",
+      "when": { "traits": ["lvh"] },
+      "requires": "qrs",
+      "values": ["Sinus ritme, hipertrofi ventrikel kiri"]
+    },
+    {
+      "tool": "pemeriksaan_jantung",
+      "param": "iktus",
+      "when": { "traits": ["lvh"] },
+      "probability": 0.6,
+      "values": ["Iktus kordis kuat angkat di ICS V linea midklavikula kiri"]
+    },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_menyertai"] }, "range": [205, 280] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "diagnostic": true, "range": [142, 158] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "diagnostic": true, "range": [90, 99] },
+    { "tool": "urinalisis", "param": "protein", "probability": 0.25, "values": ["Trace", "+1"] },
+    { "tool": "profil_lipid", "param": "ldl", "probability": 0.4, "range": [135, 175] },
+    { "tool": "profil_lipid", "param": "kolesterol", "probability": 0.4, "range": [205, 250] }
+  ],
+  "differentials": [
+    {
+      "id": "krisis_hipertensi",
+      "howToDistinguish": "Hipertensi emergensi: TD ≥ 180/120 dengan nyeri dada, sesak, defisit neurologis, papil edema — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "funduskopi"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "hipertensi_sekunder",
+      "howToDistinguish": "Hipertensi sekunder: usia < 30 th, onset mendadak/berat, resisten 3 obat, hipokalemia, kelainan ginjal.",
+      "excludeBy": { "topics": ["identitas_umur", "riwayat_obat"], "tools": ["fungsi_ginjal"] }
+    },
+    {
+      "id": "tension_headache",
+      "howToDistinguish": "TTH: nyeri kepala bilateral tegang dengan TD normal.",
+      "excludeBy": { "tools": ["tanda_vital"] }
+    }
+  ],
+  "keyFindings": [
+    "TD ≥ 140/90 pada ≥ 2 kali pengukuran",
+    "Faktor risiko: garam, obesitas, merokok, keluarga",
+    "Nilai kerusakan organ target: funduskopi, EKG, proteinuria, kreatinin"
+  ],
+  "teachingPoints": [
+    "Diagnosis hipertensi butuh pengukuran berulang dengan teknik benar (duduk 5 menit, manset sesuai, 2 kali).",
+    "Target umum < 140/90 (bila ditoleransi < 130/80); kombinasi dosis rendah lebih baik daripada satu obat dosis tinggi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHI. Konsensus Penatalaksanaan Hipertensi (2021)",
+      "ISH 2020 Global Hypertension Practice Guidelines"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_penyakit", "riwayat_keluarga", "kebiasaan", "keparahan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "IMT & lingkar perut (faktor risiko)." },
+      { "tool": "funduskopi", "role": "pendukung", "reason": "Retinopati hipertensi." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Tanda LVH/gagal jantung." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Defisit neurologis (stroke)." }
+    ],
+    "tests": [
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM (faktor risiko)." },
+      { "tool": "urinalisis", "role": "pendukung", "reason": "Proteinuria (kerusakan ginjal)." },
+      { "tool": "profil_lipid", "role": "pendukung", "reason": "Dislipidemia (faktor risiko)." },
+      { "tool": "fungsi_ginjal", "role": "pendukung", "reason": "Kreatinin/eGFR." },
+      { "tool": "ekg", "role": "pendukung", "reason": "Hipertrofi ventrikel kiri/iskemia." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "obesitas_menyertai": "obesitas", "dm_menyertai": "dm_tipe2" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Modifikasi gaya hidup + antihipertensi lini pertama; kontrol 2–4 minggu sampai target.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Modifikasi gaya hidup: garam < 5 g/hari (1 sdt), diet DASH, turunkan BB, olahraga 30 menit 5×/minggu, berhenti merokok, batasi alkohol.",
+    "Obat lini pertama: amlodipin, ACE-inhibitor (kaptopril/lisinopril)/ARB, atau tiazid; derajat 2: kombinasi dua obat.",
+    "Kelola faktor risiko lain (DM, dislipidemia); kontrol rutin & minum obat seumur hidup.",
+    "Rujuk: dugaan sekunder, usia muda, resisten, atau kerusakan organ berat."
+  ],
+  "approach": [
+    "Ukur TD dengan benar & ulangi; klasifikasikan derajat.",
+    "Cari faktor risiko, kerusakan organ target, & tanda hipertensi sekunder."
+  ]
+}

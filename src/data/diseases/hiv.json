@@ -1,0 +1,221 @@
+{
+  "id": "hiv",
+  "name": "HIV/AIDS tanpa komplikasi",
+  "aliases": ["HIV", "Infeksi HIV", "AIDS", "ODHIV"],
+  "system": "Infeksi & imunologi",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.7,
+  "summary": "Infeksi Human Immunodeficiency Virus. Datang untuk tes karena pajanan berisiko/pasangan positif, atau dengan gejala stadium klinis 1–3 (limfadenopati generalisata persisten, BB turun, diare/demam berulang, kandidiasis oral, herpes zoster). Diagnosis dengan tes cepat 3 metode setelah konseling dan persetujuan. Tanpa infeksi oportunistik berat, ART dapat dimulai segera di layanan primer disertai skrining TB, IMS, dan profilaksis kotrimoksazol bila indikasi.",
+  "presentationDay": [14, 120],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 4 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 1 }
+    ],
+    "maleRatio": 0.65,
+    "occupations": [
+      { "id": "ojek_online", "weight": 1 },
+      { "id": "sopir_truk", "weight": 2 },
+      { "id": "pekerja_tambang", "weight": 1 },
+      { "id": "mahasiswa", "weight": 1 }
+    ],
+    "occupationBias": 0.2
+  },
+  "traits": [
+    { "id": "skrining_pasangan", "probability": 0.4 },
+    { "id": "lsl", "probability": 0.25, "when": { "sex": "male" } },
+    { "id": "kandidiasis_oral", "probability": 0.25, "when": { "notTraits": ["skrining_pasangan"] } },
+    { "id": "lgp", "probability": 0.6 },
+    { "id": "bb_turun", "probability": 0.5, "when": { "notTraits": ["skrining_pasangan"] } }
+  ],
+  "traitLabels": {
+    "skrining_pasangan": "Datang tes karena pasangan HIV positif.",
+    "lsl": "Laki-laki seks dengan laki-laki.",
+    "kandidiasis_oral": "Kandidiasis oral (stadium klinis 3).",
+    "lgp": "Limfadenopati generalisata persisten.",
+    "bb_turun": "Penurunan BB."
+  },
+  "symptoms": [
+    { "id": "berat_badan_turun", "probability": 1, "when": { "traits": ["bb_turun"] } },
+    { "id": "benjolan_kgb", "probability": 0.8, "when": { "traits": ["lgp"] } },
+    { "id": "diare", "probability": 0.4, "when": { "notTraits": ["skrining_pasangan"] } },
+    { "id": "demam", "probability": 0.4, "when": { "notTraits": ["skrining_pasangan"] } },
+    { "id": "bercak_putih_mulut", "probability": 1, "when": { "traits": ["kandidiasis_oral"] } },
+    { "id": "risiko_ims", "probability": 1 },
+    { "id": "berat_badan_turun", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["berat_badan_turun", "risiko_ims"], "extraPool": ["benjolan_kgb", "diare"] },
+  "clueSymptoms": ["benjolan_kgb", "diare", "demam", "bercak_putih_mulut", "lemas"],
+  "misattributions": ["kena guna-guna", "kecapekan", "maag"],
+  "fears": ["AIDS", "mati", "dikucilkan keluarga"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Bulan lalu suami/istri saya dinyatakan HIV positif, Dok. Saya disuruh tes juga.",
+        "reveals": ["risiko_ims"],
+        "when": { "traits": ["skrining_pasangan"], "symptoms": ["risiko_ims"] },
+        "clue": "Pasangan HIV positif"
+      },
+      {
+        "text": "Tiga bulan ini berat badan turun hampir enam kilo, Dok, sering mencret dan demam hilang timbul.",
+        "reveals": ["berat_badan_turun"],
+        "when": { "traits": ["bb_turun"], "symptoms": ["berat_badan_turun"] },
+        "clue": "BB turun, diare & demam berulang"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Dulu saya sering berhubungan dengan sesama jenis tanpa kondom, Dok.",
+        "reveals": ["risiko_ims"],
+        "when": { "traits": ["lsl"], "symptoms": ["risiko_ims"] },
+        "clue": "LSL tanpa kondom"
+      },
+      {
+        "text": "Dulu saya sering jajan di lokalisasi waktu kerja di luar kota, Dok, nggak pakai kondom.",
+        "reveals": ["risiko_ims"],
+        "when": { "notTraits": ["lsl"], "symptoms": ["risiko_ims"] },
+        "clue": "Hubungan seks berisiko tanpa kondom"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Setahun ini saya pernah kena cacar ular, Dok, dan sering sariawan putih di mulut.",
+        "reveals": ["bercak_putih_mulut"],
+        "when": { "traits": ["kandidiasis_oral"], "symptoms": ["bercak_putih_mulut"] },
+        "clue": "Herpes zoster & kandidiasis oral (stadium klinis)"
+      },
+      {
+        "text": "Nggak pernah dirawat, Dok. Batuk lama juga nggak.",
+        "when": { "notTraits": ["kandidiasis_oral"] },
+        "clue": "Tanpa riwayat TB/infeksi oportunistik berat"
+      }
+    ],
+    "kekhawatiran": [
+      {
+        "text": "Saya takut ketahuan keluarga dan takut nggak bisa kerja lagi, Dok.",
+        "clue": "Kekhawatiran stigma (perlu konseling)"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Anak kami satu, umur tiga tahun, belum pernah dites, Dok.",
+        "clue": "Anak perlu dites (notifikasi keluarga)"
+      }
+    ]
+  },
+  "findings": [
+    { "tool": "cd4", "param": "cd4", "when": { "traits": ["kandidiasis_oral"] }, "range": [150, 300] },
+    { "tool": "cd4", "param": "cd4", "when": { "notTraits": ["kandidiasis_oral"] }, "range": [300, 480] },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["lgp"] },
+      "values": ["Limfadenopati generalisata (servikal, aksila, inguinal) < 2 cm, kenyal, tidak nyeri"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "when": { "traits": ["kandidiasis_oral"] },
+      "values": ["Plak putih yang dapat dikerok di mukosa bukal & lidah, dasar eritema (kandidiasis oral)"]
+    },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["bb_turun"] }, "range": [16.5, 18.4] },
+    { "tool": "tes_hiv", "param": "hasil", "diagnostic": true, "values": ["Reaktif (R1, R2, R3 reaktif)"] },
+    { "tool": "darah_lengkap", "param": "limfosit", "probability": 0.5, "range": [12, 18] },
+    { "tool": "darah_lengkap", "param": "hb", "probability": 0.4, "range": [10.5, 12.5] },
+    { "tool": "tes_sifilis", "param": "rpr", "probability": 0.12, "values": ["Reaktif 1:8"] },
+    { "tool": "tes_sifilis", "param": "tpha", "probability": 0.12, "values": ["Reaktif"] }
+  ],
+  "differentials": [
+    {
+      "id": "tb_paru",
+      "howToDistinguish": "Koinfeksi TB: batuk ≥ 2 minggu, demam, keringat malam, BB turun — wajib skrining TB setiap ODHIV.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_paru"], "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "limfadenitis",
+      "howToDistinguish": "Limfadenitis bakteri: KGB lokal nyeri dekat fokus infeksi, bukan generalisata.",
+      "excludeBy": { "tools": ["kepala_leher"] }
+    },
+    {
+      "id": "limfoma",
+      "howToDistinguish": "Limfoma: KGB progresif > 2 cm, keras, demam & keringat malam.",
+      "excludeBy": { "tools": ["kepala_leher"] }
+    }
+  ],
+  "keyFindings": [
+    "Faktor risiko/pajanan berisiko atau pasangan positif",
+    "Gejala stadium klinis (LGP, BB turun, kandidiasis oral) atau asimtomatik",
+    "Tes HIV 3 metode reaktif; CD4 untuk menilai imunosupresi"
+  ],
+  "teachingPoints": [
+    "Tes HIV didahului konseling & persetujuan (informed consent), hasil dirahasiakan.",
+    "Prinsip 'test and treat': ART dimulai sesegera mungkin tanpa menunggu CD4, setelah skrining TB.",
+    "Periode jendela: hasil non-reaktif dalam 3 bulan setelah pajanan perlu dites ulang."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. PNPK Tata Laksana HIV (KMK HK.01.07/MENKES/90/2019)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "kunci", "reason": "Limfadenopati generalisata." },
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Kandidiasis oral (stadium klinis)." },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Skrining TB." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Penurunan BB (stadium klinis)." }
+    ],
+    "tests": [
+      { "tool": "tes_hiv", "role": "kunci", "reason": "Diagnosis HIV (rapid 3 metode)." },
+      { "tool": "tes_sifilis", "role": "pendukung", "reason": "Skrining koinfeksi IMS." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Data dasar sebelum ART." },
+      { "tool": "cd4", "role": "pendukung", "reason": "Derajat imunosupresi & indikasi profilaksis." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Konseling pascates, mulai ART (bila TB disingkirkan), kotrimoksazol bila indikasi, notifikasi pasangan; kontrol 2 minggu.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Konseling pascates, jaga kerahasiaan, dukungan psikososial.",
+    "ART lini pertama (mis. TLD: tenofovir-lamivudin-dolutegravir) sesegera mungkin setelah skrining TB.",
+    "Kotrimoksazol profilaksis bila stadium 3–4 atau CD4 < 200; obati kandidiasis oral.",
+    "Skrining TB, sifilis, hepatitis B; tes pasangan & anak; kondom.",
+    "Rujuk bila infeksi oportunistik berat."
+  ],
+  "approach": [
+    "Gali faktor risiko secara empatik & rahasia.",
+    "Tentukan stadium klinis WHO; skrining TB.",
+    "Konseling → tes 3 metode → ART."
+  ]
+}
