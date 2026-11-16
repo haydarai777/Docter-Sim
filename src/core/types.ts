@@ -432,6 +432,11 @@ export interface FindingRule {
   requires?: string;
   /** Untuk parameter numerik. */
   range?: Range;
+  /**
+   * true = `range` ditulis langsung untuk skala usia pasien (mis. tinggi neonatus 48–54 cm,
+   * IMT gizi buruk anak) — tidak digeser dari skala rujukan dewasa seperti aturan biasa.
+   */
+  absolute?: boolean;
   /** Untuk parameter teks (dipilih acak). */
   values?: string[];
 }

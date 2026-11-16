@@ -212,9 +212,12 @@ export function answerSymptomDetail(
   if (!c.symptoms.includes(symptomId)) return answerSymptomQuestion(c, symptomId, content);
   const symptom = content.symptomsById.get(symptomId)!;
   const rng = createRng(deriveSeed(c.seed, `detail:${topic}:${symptomId}`));
-  const templates = content.conversation.detail[topic] ?? content.conversation.detail.default;
+  const onsetDays = symptomOnsetDays(c, symptomId);
+  // Gejala yang baru muncul hari ini: "baru tadi", bukan "kira-kira sehari yang lalu".
+  const today = onsetDays <= 1 ? content.conversation.detail[`${topic}_hari_ini`] : undefined;
+  const templates = today ?? content.conversation.detail[topic] ?? content.conversation.detail.default;
   const phrase = symptomPhrase(symptom, 'lay', rng, spokenByCompanion(c));
-  const lamaGejala = durationText(symptomOnsetDays(c, symptomId));
+  const lamaGejala = durationText(onsetDays);
   return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase, lamaGejala })), revealed: true };
 }
 

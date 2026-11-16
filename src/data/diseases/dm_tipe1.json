@@ -85,7 +85,7 @@
     { "tool": "urinalisis", "param": "glukosa", "diagnostic": true, "values": ["+3", "+4"] },
     { "tool": "urinalisis", "param": "keton", "values": ["+1", "Negatif"] },
     { "tool": "hba1c", "param": "hba1c", "range": [9.5, 13.5] },
-    { "tool": "timbangan", "param": "imt", "range": [14.5, 16.5] }
+    { "tool": "timbangan", "param": "imt", "absolute": true, "range": [14.5, 16.5] }
   ],
   "differentials": [
     {

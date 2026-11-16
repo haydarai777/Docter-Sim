@@ -111,8 +111,8 @@
       "diagnostic": true,
       "values": ["Kemerahan periumbilikal < 1 cm, pus sedikit, berbau"]
     },
-    { "tool": "timbangan", "param": "tb", "range": [48, 54] },
-    { "tool": "timbangan", "param": "imt", "range": [12, 14] }
+    { "tool": "timbangan", "param": "tb", "absolute": true, "range": [48, 54] },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "range": [12, 14] }
   ],
   "differentials": [
     {

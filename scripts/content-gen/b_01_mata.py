@@ -581,7 +581,7 @@ D(id="buta_senja", name="Buta senja (rabun senja / xeroftalmia XN)", aka=["Rabun
       F("segmen_anterior", "konjungtiva_bulbi", "Konjungtiva bulbi tampak kering dan kusam (xerosis konjungtiva)", when=NT("bitot"), p=0.5),
       F("segmen_anterior", "kornea", "Kornea kering, kusam, tidak berkilau (xerosis kornea X2)", when=T("xerosis_kornea")),
       F("pemeriksaan_anak", "status_gizi", "Gizi kurang (BB/TB antara −3 dan −2 SD)", when=T("gizi_kurang")),
-      F("timbangan", "imt", (12.0, 13.4), when=T("gizi_kurang")),
+      F("timbangan", "imt", (12.0, 13.4), when=T("gizi_kurang"), absolute=True),
   ],
   dd=[
       X("malnutrisi_energi_protein", "Gizi buruk/kurang sering mendasari defisiensi vitamin A — nilai status gizi (z-skor) setiap anak rabun senja.",

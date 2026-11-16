@@ -15,7 +15,7 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { buildCategoryAnswer, buildComplaint } from './dialogue';
-import { type FindingSource, generateToolFindings, linkFindings } from './findings';
+import { applyInfantGrowth, type FindingSource, generateToolFindings, linkFindings } from './findings';
 import { createRng, type Rng } from './rng';
 import { ageText, durationText, fillTemplate, numberToWords, toCompanionVoice } from './text';
 import type {
@@ -153,7 +153,9 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const honorific =
     age <= CHILD_ADDRESS_MAX_AGE ? 'Dik' : age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
   const infantRange = disease.demographics.infantAge ?? { unit: 'bulan' as const, range: [2, 11] as [number, number] };
-  const shownAge = ageText(age, age === 0 ? { unit: infantRange.unit, value: rng.fork('usia_bayi').int(infantRange.range[0], infantRange.range[1]) } : undefined);
+  const infantValue = age === 0 ? rng.fork('usia_bayi').int(infantRange.range[0], infantRange.range[1]) : null;
+  const shownAge = ageText(age, infantValue !== null ? { unit: infantRange.unit, value: infantValue } : undefined);
+  const infantMonths = infantValue === null ? null : infantRange.unit === 'hari' ? infantValue / 30 : infantValue;
   const companion = child ? sampleCompanion(content, rng.fork('pengantar')) : undefined;
 
   const patient: PatientProfile = {
@@ -291,6 +293,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const findings: PatientCase['findings'] = {};
   for (const tool of content.tools) {
     findings[tool.id] = generateToolFindings(tool, ruleSets, fullCtx, config, rng.fork(`temuan:${tool.id}`));
+    if (infantMonths !== null && tool.id === 'timbangan') applyInfantGrowth(tool, findings[tool.id]!, { sex, age }, infantMonths, rng.fork('tumbuh_bayi'));
   }
   linkFindings(content.tools, findings, { sex, age });
 

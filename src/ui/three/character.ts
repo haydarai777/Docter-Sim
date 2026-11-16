@@ -109,8 +109,11 @@ export class Character {
     const male = a.sex === 'male';
     const child = a.ageGroup === 'anak';
     const young = a.ageGroup === 'remaja';
-    const fat = Math.max(0, a.build);
-    const thin = Math.max(0, -a.build);
+    // Bayi & batita (< 3 th): tungkai relatif pendek, badan lebih panjang, tubuh lebih gempal.
+    const baby = a.age < 3 ? Math.min(1, (3 - a.age) / 3) : 0;
+    const legK = 1 - 0.27 * baby;
+    const fat = Math.max(0, a.build) + 0.35 * baby;
+    const thin = Math.max(0, -a.build) * (1 - baby);
     const h = hash(seed);
 
     // --- Proporsi ------------------------------------------------------------
@@ -119,13 +122,14 @@ export class Character {
     const shape = (this.headShape = new HeadShape({ hs, male, ageGroup: a.ageGroup, fat, thin, seed }));
     // Dagu sedikit di bawah sendi kepala; skala badan dipilih agar tinggi total = tinggi pasien.
     const chinDrop = 0.015 * hs;
-    const s = (a.heightCm / 100 - 2 * shape.hh + chinDrop) / 1.455;
+    // Panjang total (dalam satuan s): tungkai 0,87·legK + badan-leher-kepala 0,585.
+    const s = (a.heightCm / 100 - 2 * shape.hh + chinDrop) / (0.87 * legK + 0.585);
     const dims: Dims = (this.dims = {
       s,
-      thigh: 0.39 * s,
-      shin: 0.39 * s,
-      footH: 0.06 * s,
-      hipsY: 0.87 * s,
+      thigh: 0.39 * s * legK,
+      shin: 0.39 * s * legK,
+      footH: 0.06 * s * legK,
+      hipsY: 0.87 * s * legK,
       hipDrop: 0.03 * s,
       hipHalf: (male ? 0.085 : 0.093) * s * (1 + 0.08 * fat),
       spineUp: 0.09 * s,
@@ -136,8 +140,8 @@ export class Character {
       headCenter: shape.hh - chinDrop,
       shoulderHalf: (child ? 0.15 : male ? (young ? 0.165 : 0.173) : young ? 0.151 : 0.155) * s * (a.ageGroup === 'lansia' ? 0.975 : 1) * (1 + 0.1 * fat - 0.04 * thin),
       shoulderY: 0.2 * s,
-      upperArm: 0.27 * s,
-      foreArm: 0.24 * s,
+      upperArm: 0.27 * s * (1 - 0.12 * baby),
+      foreArm: 0.24 * s * (1 - 0.12 * baby),
       palm: 0.05 * s,
       bw: 1 + 0.34 * fat - 0.14 * thin,
       bd: 1 + 0.5 * fat - 0.12 * thin,

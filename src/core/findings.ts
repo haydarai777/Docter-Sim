@@ -196,7 +196,9 @@ function generateParam(
     const p = rule.diagnostic && !realistic ? 1 : (rule.probability ?? 1);
     if (rng.chance(p)) {
       const value =
-        param.kind === 'numeric' ? roundToStep(ageAdjust(sampleNumeric(rng, rule.range!, param), param, who), param) : rng.pick(rule.values!);
+        param.kind === 'numeric'
+          ? roundToStep(rule.absolute ? sampleNumeric(rng, rule.range!, param) : ageAdjust(sampleNumeric(rng, rule.range!, param), param, who), param)
+          : rng.pick(rule.values!);
       if (param.kind === 'text' && param.combine) {
         combined.push({ value: value as string, origin });
         continue;
@@ -346,6 +348,32 @@ export function linkFindings(tools: readonly ToolDef[], findings: Record<string,
  * `ruleSets` = aturan temuan penyakit utama, lalu tiap komorbiditas, lalu temuan insidental
  * (urutan = prioritas; dalam satu sumber, aturan pertama yang cocok per parameter dipakai).
  */
+/** Median panjang badan bayi (cm) menurut usia bulan — rata-rata laki-laki & perempuan (WHO 2006). */
+const INFANT_LENGTH: readonly [number, number][] = [[0, 49.5], [1, 54.2], [2, 57.8], [3, 60.8], [4, 63.2], [6, 66.8], [9, 71], [12, 74.5]];
+
+/**
+ * Bayi (< 1 th): rujukan usia "0 tahun" terlalu lebar untuk neonatus s.d. 11 bulan. Panjang badan
+ * NORMAL mengikuti usia dalam bulan (median WHO ± 2 cm), lalu berat dihitung ulang dari IMT.
+ * Nilai yang ditetapkan penyakit (sumber bukan "normal") dibiarkan.
+ */
+export function applyInfantGrowth(tool: ToolDef, results: ParamResult[], who: PatientBasics, months: number, rng: Rng): void {
+  const tb = results.find((r) => r.paramId === 'tb');
+  const param = tool.params.find((p) => p.id === 'tb');
+  if (!tb || tb.source !== 'normal' || param?.kind !== 'numeric') return;
+  const m = Math.max(0, Math.min(12, months));
+  let median = INFANT_LENGTH[INFANT_LENGTH.length - 1]![1];
+  for (let i = 1; i < INFANT_LENGTH.length; i++) {
+    const [m1, l1] = INFANT_LENGTH[i]!;
+    const [m0, l0] = INFANT_LENGTH[i - 1]!;
+    if (m <= m1) {
+      median = l0 + ((m - m0) / (m1 - m0)) * (l1 - l0);
+      break;
+    }
+  }
+  assignResult(tb, makeResult(param, roundToStep(median + rng.float(-2, 2), param), 'normal', who));
+  applyDerived(tool, results, who);
+}
+
 export function generateToolFindings(
   tool: ToolDef,
   ruleSets: readonly FindingSource[],

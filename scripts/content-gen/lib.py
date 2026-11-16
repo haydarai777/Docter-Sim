@@ -103,10 +103,13 @@ def A(text, clue=None, when=None, rev=None, w=None):
     return a
 
 
-def F(tool, param, v, p=None, when=None, diag=False, req=None):
+def F(tool, param, v, p=None, when=None, diag=False, req=None, absolute=False):
+    """absolute=True: rentang ditulis untuk skala usia pasien (antropometri anak), tidak digeser dari skala dewasa."""
     assert tool in TOOLS, tool
     assert any(x["id"] == param for x in TOOLS[tool]["params"]), (tool, param)
     f = {"tool": tool, "param": param}
+    if absolute:
+        f["absolute"] = True
     if when:
         f["when"] = when
     if p is not None:

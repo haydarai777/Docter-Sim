@@ -452,6 +452,12 @@ export class Actor implements StageUpdatable {
       root.position.set(a.x, a.y, a.z);
       this.yaw = a.yaw;
       F.hipsY = this.seatHipsY();
+      if (this.look.age === 0) {
+        // Bayi belum bisa duduk tegak: bersandar ke dada penggendong, kepala tetap memandang ke depan.
+        F.spineX -= 0.34;
+        F.chestX -= 0.06;
+        F.headX += 0.24;
+      }
     } else if (seatedLike) {
       const e = ease(this.sitU);
       root.position.x = lerp(this.standPos.x, this.seatPos.x, e);

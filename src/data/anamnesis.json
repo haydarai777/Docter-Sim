@@ -1208,7 +1208,9 @@
       "progresi": ["Iya, Dok, {gejala}. Rasanya sama saja dari kemarin."],
       "default": ["Iya, Dok, {gejala}. Munculnya bareng keluhan yang lain, nggak terlalu saya perhatikan."],
       "pola": ["Iya, Dok, {gejala}. Datangnya hilang timbul, nggak tentu waktunya."],
-      "karakter": ["Iya, Dok, {gejala}. Susah dijelaskan, pokoknya nggak enak."]
+      "karakter": ["Iya, Dok, {gejala}. Susah dijelaskan, pokoknya nggak enak."],
+      "onset_hari_ini": ["Iya, Dok, {gejala}. Mulainya tadi, belum sampai sehari.", "{Gejala}, Dok, baru tadi munculnya."],
+      "progresi_hari_ini": ["Iya, Dok, {gejala}. Dari tadi masih sama."]
     },
     "farewell": ["Terima kasih banyak, Dok. Saya permisi dulu.", "Baik, Dok, terima kasih. Permisi.", "Makasih ya, Dok. Mari, Dok."],
     "farewellReferral": [

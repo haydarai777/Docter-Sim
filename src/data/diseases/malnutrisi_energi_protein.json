@@ -113,10 +113,11 @@
     {
       "tool": "timbangan",
       "param": "imt",
+      "absolute": true,
       "when": { "traits": ["gizi_buruk"], "notTraits": ["kwashiorkor"] },
       "range": [10.5, 12]
     },
-    { "tool": "timbangan", "param": "imt", "when": { "traits": ["kwashiorkor"] }, "range": [12, 13] },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "when": { "traits": ["kwashiorkor"] }, "range": [12, 13] },
     {
       "tool": "keadaan_umum",
       "param": "gizi",
@@ -176,7 +177,7 @@
       "diagnostic": true,
       "values": ["Gizi kurang: BB/TB antara −3 dan −2 SD, LiLA 12 cm"]
     },
-    { "tool": "timbangan", "param": "imt", "range": [12.3, 13.3] },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "range": [12.3, 13.3] },
     { "tool": "keadaan_umum", "param": "gizi", "values": ["Tampak kurus"] },
     { "tool": "darah_lengkap", "param": "hb", "range": [7.5, 10] },
     { "tool": "feses_rutin", "param": "telur_cacing", "probability": 0.3, "values": ["Telur Ascaris lumbricoides (+)"] }

@@ -24,7 +24,7 @@
     ],
     "occupationBias": 0.5
   },
-  "traits": [{ "id": "gizi_kurang", "probability": 0.35 }, { "id": "obstruksi", "probability": 0.04 }],
+  "traits": [{ "id": "gizi_kurang", "probability": 0.35, "when": { "ageMax": 15 } }, { "id": "obstruksi", "probability": 0.04 }],
   "traitLabels": { "gizi_kurang": "Gizi kurang.", "obstruksi": "Obstruksi usus oleh gumpalan cacing." },
   "symptoms": [
     { "id": "mual_muntah", "probability": 1, "when": { "traits": ["obstruksi"] } },
@@ -94,7 +94,13 @@
       "when": { "traits": ["gizi_kurang"] },
       "values": ["Gizi kurang (BB/TB antara −3 dan −2 SD)"]
     },
-    { "tool": "timbangan", "param": "imt", "when": { "traits": ["gizi_kurang"] }, "range": [12, 13.5] },
+    {
+      "tool": "timbangan",
+      "param": "imt",
+      "absolute": true,
+      "when": { "traits": ["gizi_kurang"] },
+      "range": [12, 13.5]
+    },
     {
       "tool": "feses_rutin",
       "param": "telur_cacing",

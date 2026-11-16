@@ -181,7 +181,7 @@ D(id="infeksi_umbilikus", name="Infeksi pada umbilikus (omfalitis)", aka=["Omfal
   f=[
       F("pemeriksaan_anak", "umbilikus", "Kemerahan & indurasi meluas > 1 cm ke dinding perut sekitar pusar, pus (+), berbau", when=T("meluas"), diag=True),
       F("pemeriksaan_anak", "umbilikus", "Kemerahan periumbilikal < 1 cm, pus sedikit, berbau", diag=True),
-      F("timbangan", "tb", (48, 54)), F("timbangan", "imt", (12.0, 14.0)),
+      F("timbangan", "tb", (48, 54), absolute=True), F("timbangan", "imt", (12.0, 14.0), absolute=True),
       F("tanda_vital", "suhu", (37.8, 38.8), when=T("meluas")), F("tanda_vital", "nadi", (165, 185), when=T("meluas")),
       F("keadaan_umum", "kesan_sakit", "Tampak sakit sedang, letargi, menyusu lemah", when=T("meluas")),
       F("keadaan_umum", "kesan_sakit", "Tampak sehat, aktif, menangis kuat", when=NT("meluas")),
@@ -486,7 +486,7 @@ D(id="askariasis", name="Askariasis", aka=["Cacingan", "Cacing gelang", "Ascaris
   summary="Infeksi cacing gelang Ascaris lumbricoides melalui telur di tanah/makanan/tangan kotor, tersering anak 2–10 tahun. Nyeri perut samar sekitar pusar, mual, nafsu makan turun, perut buncit, gizi kurang; cacing keluar bersama tinja atau muntah. Komplikasi: obstruksi usus, askariasis bilier. Telur Ascaris pada feses. Terapi albendazol dosis tunggal; obat cacing massal tiap 6 bulan.",
   day=(7, 90), ages=[(1, 5, 4), (6, 9, 4), (10, 15, 2), (16, 50, 1)], male=0.5,
   occ=[("balita", 2), ("anak_tk", 2), ("anak_sd", 2), ("pelajar_sd", 2)], bias=0.5,
-  traits=[("gizi_kurang", 0.35), ("obstruksi", 0.04)],
+  traits=[("gizi_kurang", 0.35, W(amax=15)), ("obstruksi", 0.04)],
   tl={"gizi_kurang": "Gizi kurang.", "obstruksi": "Obstruksi usus oleh gumpalan cacing."},
   sym=[("keluar_cacing", 1), ("nyeri_perut", 0.8), ("nafsu_makan_turun", 0.6), ("perut_membuncit", 0.4), ("mual_muntah", 0.3), ("mual_muntah", 1, T("obstruksi")),
        ("bb_tidak_naik", 0.8, T("gizi_kurang")), ("konstipasi", 1, T("obstruksi"))],
@@ -506,7 +506,7 @@ D(id="askariasis", name="Askariasis", aka=["Cacingan", "Cacing gelang", "Ascaris
       F("pemeriksaan_abdomen", "auskultasi", "Bising usus meningkat bernada tinggi (metalik)", when=T("obstruksi")),
       F("pemeriksaan_abdomen", "inspeksi", "Sedikit buncit", when=SY("perut_membuncit")),
       F("pemeriksaan_anak", "status_gizi", "Gizi kurang (BB/TB antara −3 dan −2 SD)", when=T("gizi_kurang")),
-      F("timbangan", "imt", (12.0, 13.5), when=T("gizi_kurang")),
+      F("timbangan", "imt", (12.0, 13.5), when=T("gizi_kurang"), absolute=True),
   ],
   dd=[
       X("ileus_obstruksi", "Obstruksi usus (bolus cacing): muntah, distensi, tidak BAB/flatus, bising usus metalik — rujuk segera.", ["pemeriksaan_abdomen", "keparahan"], must=True),

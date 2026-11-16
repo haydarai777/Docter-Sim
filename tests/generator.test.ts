@@ -234,3 +234,35 @@ describe('generator kasus', () => {
     }
   });
 });
+
+describe('antropometri wajar untuk semua usia', () => {
+  it('tinggi, IMT, dan berat selalu masuk akal (termasuk neonatus & gizi buruk)', () => {
+    const bad: string[] = [];
+    for (const id of DISEASE_IDS) {
+      for (let seed = 1; seed <= perDisease(40, 8); seed++) {
+        const c = generateCase(content, config, { diseaseId: id, seed });
+        const v = (p: string) => Number(c.findings.timbangan!.find((r) => r.paramId === p)!.value);
+        const [tb, imt, bb] = [v('tb'), v('imt'), v('bb')];
+        const age = c.patient.age;
+        const ok =
+          tb >= 44 && tb <= 200 && imt >= 9 && imt <= 50 && bb >= 1.8 && bb <= 200 &&
+          (age > 0 || (tb <= 80 && bb <= 12)) && (age < 18 || tb >= 135);
+        if (!ok) bad.push(`${id}#${seed} ${c.patient.ageText ?? `${age} th`}: TB ${tb}, IMT ${imt}, BB ${bb}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it('panjang badan bayi mengikuti usia bulan (neonatus ± 50 cm, 11 bulan ± 73 cm)', () => {
+    const tbOf = (id: string, pred: (t: string) => boolean) => {
+      for (let seed = 1; seed < 300; seed++) {
+        const c = generateCase(content, config, { diseaseId: id, seed });
+        if (c.patient.age === 0 && pred(c.patient.ageText ?? '')) return Number(c.findings.timbangan!.find((r) => r.paramId === 'tb')!.value);
+      }
+      throw new Error(`tidak ada bayi ${id}`);
+    };
+    expect(tbOf('infeksi_umbilikus', (t) => t.includes('hari'))).toBeLessThanOrEqual(55);
+    expect(tbOf('miliaria', (t) => t === '1 bulan')).toBeLessThanOrEqual(58);
+    expect(tbOf('napkin_eczema', (t) => /^(10|11) bulan$/.test(t))).toBeGreaterThanOrEqual(68);
+  });
+});

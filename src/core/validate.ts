@@ -266,7 +266,9 @@ function validateConversation(content: GameContent, err: ErrFn): void {
   }
   if (!conv?.detail?.default?.length) err('anamnesis.conversation.detail.default', 'kosong');
   for (const [topic, list] of Object.entries(conv?.detail ?? {})) {
-    if (topic !== 'default' && !content.anamnesisById.has(topic)) err(`anamnesis.conversation.detail.${topic}`, 'topik tidak ada');
+    // "<topik>_hari_ini" = varian untuk gejala yang baru muncul hari ini.
+    const base = topic.replace(/_hari_ini$/, '');
+    if (topic !== 'default' && !content.anamnesisById.has(base)) err(`anamnesis.conversation.detail.${topic}`, 'topik tidak ada');
     for (const t of list) if (!/\{[gG]ejala\}/.test(t)) err(`anamnesis.conversation.detail.${topic}`, `templat harus memuat {gejala}: "${t}"`);
   }
   for (const t of conv?.chief ?? []) {

@@ -103,7 +103,13 @@
       "when": { "traits": ["gizi_kurang"] },
       "values": ["Gizi kurang (BB/TB antara −3 dan −2 SD)"]
     },
-    { "tool": "timbangan", "param": "imt", "when": { "traits": ["gizi_kurang"] }, "range": [12, 13.4] }
+    {
+      "tool": "timbangan",
+      "param": "imt",
+      "absolute": true,
+      "when": { "traits": ["gizi_kurang"] },
+      "range": [12, 13.4]
+    }
   ],
   "differentials": [
     {
