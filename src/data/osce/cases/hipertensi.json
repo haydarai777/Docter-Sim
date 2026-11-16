@@ -56,7 +56,7 @@
       {
         "id": "kombinasi",
         "label": "Antihipertensi kedua (golongan berbeda)",
-        "role": "utama",
+        "role": "pendukung",
         "reason": "Derajat 2: kombinasi dua obat sejak awal.",
         "options": [
           {

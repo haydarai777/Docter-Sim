@@ -1,0 +1,90 @@
+{
+  "disease": "uretritis_non_gonore",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "C. trachomatis/M. genitalium.",
+        "options": [
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 g oral dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [1000, 1000]
+          },
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "pasangan", "text": "Pasangan seksual diperiksa & diobati bersamaan", "kind": "benar" },
+    {
+      "id": "kondom",
+      "text": "Abstinensi atau kondom sampai 7 hari setelah terapi selesai (pasangan juga)",
+      "kind": "benar"
+    },
+    { "id": "tes", "text": "Konseling & tes HIV dan sifilis", "kind": "benar" },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini uretritis/servisitis non-gonore, infeksi menular seksual (sering klamidia)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum sesuai aturan sampai habis; pasangan juga diobati",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila nyeri perut bawah/buah zakar, demam, atau nyeri sendi",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila keluhan menetap setelah terapi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Setia pada satu pasangan & gunakan kondom untuk mencegah IMS",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "disease": "pedikulosis_pubis",
+  "setting": "Puskesmas",
+  "station": "Kulit — gatal & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "pedikulisida",
+        "label": "Pedikulisida",
+        "role": "utama",
+        "reason": "Kutu kemaluan.",
+        "options": [
+          {
+            "drug": "permetrin_losion",
+            "label": "Permetrin 1% di area pubis & berambut lain 10 menit lalu dibilas; ulang hari ke-7–10",
+            "schedules": ["tunggal"],
+            "dose": [1, 1]
+          },
+          {
+            "drug": "permetrin_krim",
+            "label": "Permetrin 5% krim di area pubis 8–12 jam lalu dibilas; ulang hari ke-7–10",
+            "schedules": ["tunggal"],
+            "dose": [1, 1]
+          }
+        ]
+      },
+      {
+        "id": "bulu_mata",
+        "label": "Oklusif bulu mata",
+        "role": "utama",
+        "reason": "Kutu di bulu mata (jangan permetrin).",
+        "options": [
+          {
+            "drug": "emolien",
+            "label": "Vaselin album dioles tebal di tepi kelopak 2 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "forms": ["vaselin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "traits": ["bulu_mata"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "pasangan", "text": "Obati pasangan seksual", "kind": "benar" },
+    { "id": "cuci", "text": "Cuci pakaian & sprei dengan air panas", "kind": "benar" },
+    { "id": "ims", "text": "Skrining IMS (HIV, sifilis, gonore)", "kind": "benar" },
+    {
+      "id": "cukur_bakar",
+      "text": "Bakar rambut kemaluan/oles minyak tanah",
+      "kind": "berbahaya",
+      "why": "Luka bakar."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kutu kemaluan (pedikulosis pubis), umumnya menular lewat hubungan seksual",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dioles sesuai petunjuk & diulang seminggu kemudian; pasangan juga diobati",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila kulit bernanah, ada luka/keputihan di kelamin, atau mata merah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Setia pada pasangan & gunakan kondom; skrining IMS",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "toilet",
+      "text": "Tertular karena duduk di toilet umum",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penularan utama kontak tubuh/seksual."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kemenkes RI. Pedoman Nasional Penanganan IMS (2016)"
+    ]
+  }
+}

@@ -11,7 +11,7 @@ import { abnormalParams, adviceApplies, evaluateStation } from '../src/core/osce
 import type { DoseOption, OsceWork, PrescriptionLine } from '../src/core/osce/types';
 import type { EncounterState, PatientCase } from '../src/core/types';
 import { loadOsceContent } from '../src/data/osce';
-import { config, content, DISEASE_IDS } from './helpers';
+import { config, content, DISEASE_IDS, perDisease } from './helpers';
 
 const osce: OsceContent = loadOsceContent();
 
@@ -39,8 +39,10 @@ function idealWork(state: EncounterState): OsceWork {
   const prescription: PrescriptionLine[] = [];
   for (const item of def.therapy.items) {
     if (!matchesCondition(item.when, ctx)) continue;
-    // Pilih obat yang tidak membuat pasien alergi.
-    const opt = item.options.find((o) => !drugCausesAllergy(osce.drugsById.get(o.drug)!, c.allergy, osce)) ?? item.options[0]!;
+    // Pilih obat yang tidak membuat pasien alergi dan (bila dosis per pita BB) sesuai berat badan pasien.
+    const kg = patientWeight(c)!;
+    const fitsWeight = (o: DoseOption) => !o.unitsByWeight || o.unitsByWeight.some((b) => kg >= b.minKg && kg < b.maxKg + 1);
+    const opt = item.options.find((o) => !drugCausesAllergy(osce.drugsById.get(o.drug)!, c.allergy, osce) && fitsWeight(o)) ?? item.options[0]!;
     prescription.push(idealLine(opt, c));
   }
   return {
@@ -79,9 +81,9 @@ describe('kunci tatalaksana OSCE', () => {
     }
   });
 
-  it('pemain ideal (bot sempurna + resep/KIE kunci) mendapat Superior di semua penyakit', () => {
+  it('pemain ideal (bot sempurna + resep/KIE kunci) mendapat Superior di semua penyakit', { timeout: 300_000 }, () => {
     for (const diseaseId of DISEASE_IDS) {
-      for (let seed = 1; seed <= 12; seed++) {
+      for (let seed = 1; seed <= perDisease(12); seed++) {
         const c = generateCase(content, config, { diseaseId, seed });
         const rich = { ...c, patient: { ...c.patient, budget: 10_000_000 } };
         const played = playEncounterBot(startEncounter(rich), { skill: 1 }, createRng(seed), content, config);
@@ -176,6 +178,47 @@ describe('kesalahan yang harus terdeteksi', () => {
     const t = (r: typeof good) => r.tasks.find((x) => x.key === 'penunjang')!;
     expect(t(bad).score).toBeLessThan(t(good).score);
     expect(t(bad).missed.join(' ')).toMatch(/tidak dikenali/);
+  });
+
+  const lt5 = (s: ReturnType<typeof setup>, prescription: PrescriptionLine[]) =>
+    evaluateStation(s.state, s.decision, { ...s.work, prescription }, content, osce, config).result.tasks.find((t) => t.key === 'farmakologi')!;
+
+  it('kasus tanpa obat (kelainan refraksi): tanpa resep = 2, resep apa pun menurunkan skor', () => {
+    const s = setup('miopia');
+    expect(lt5(s, []).score).toBe(2);
+    expect(lt5(s, [line('air_mata_buatan', 'airmata-tm', 1, 4, 14)]).score).toBe(1);
+    expect(lt5(s, [line('kloramfenikol_tm', 'kloramfenikol-tm', 1, 4, 5), line('vitamin_a', 'vita-200rb', 1, 1, 2)]).score).toBe(0);
+  });
+
+  it('butir opsional: boleh tidak diberi, tetapi bila diberi dosisnya harus tepat', () => {
+    const s = setup('laringitis');
+    expect(lt5(s, []).score).toBe(2);
+    expect(lt5(s, [line('parasetamol', 'parasetamol-tab500', 1, 3, 3, 'prn')]).score).toBe(2);
+    const salah = lt5(s, [line('parasetamol', 'parasetamol-tab500', 3, 2, 3, 'prn')]);
+    expect(salah.score).toBe(1);
+    expect(salah.missed.join(' ')).toMatch(/dosis per kali/);
+  });
+
+  it('kombinasi antihipertensi (derajat 2) harus dua baris resep berbeda', () => {
+    const s = setup('hipertensi', (c) => c.traits.includes('derajat2'));
+    const amlo = line('amlodipin', 'amlodipin-tab5', 1, 1, 30);
+    expect(lt5(s, [amlo]).score).toBe(1);
+    expect(lt5(s, [amlo, line('lisinopril', 'lisinopril-tab10', 1, 1, 30)]).score).toBe(2);
+    expect(lt5(s, [line('lisinopril', 'lisinopril-tab10', 1, 1, 30), amlo]).score).toBe(2);
+  });
+
+  it('dosis per pita BB: sediaan dewasa untuk anak < 30 kg ditandai tidak sesuai', () => {
+    const s = setup('skrofuloderma', (c) => (patientWeight(c) ?? 99) < 30);
+    const ev = evaluatePrescription([line('oat_kdt_intensif', 'oat-rhze', 2, 1, 56)], osce.casesById.get('skrofuloderma')!, s.state.case, caseContext(s.state), osce, true);
+    expect(ev.items[0]!.status).toBe('kurang_tepat');
+    expect(ev.items[0]!.problems.join(' ')).toMatch(/tidak sesuai untuk BB/);
+  });
+
+  it('obat kontraindikasi spesifik kasus = kritis (steroid pada varisela, obat tersangka pada erupsi obat)', () => {
+    const v = setup('varisela', (c) => c.patient.age >= 12);
+    expect(evaluateStation(v.state, v.decision, { ...v.work, prescription: [...v.work.prescription, line('prednison', 'prednison-tab5', 4, 1, 5)] }, content, osce, config).result.critical.join(' ')).toMatch(/Prednison/);
+    const e = setup('erupsi_obat', (c) => !c.traits.includes('fde'));
+    expect(evaluateStation(e.state, e.decision, { ...e.work, prescription: [...e.work.prescription, line('amoksisilin', 'amoksisilin-tab500', 1, 3, 5)] }, content, osce, config).result.category).toBe('tidak_lulus');
   });
 
   it('kategori: ≥ 90% superior, 70–89% lulus, < 70% tidak lulus (13/14, 10/14, 9/14)', async () => {

@@ -1,0 +1,75 @@
+{
+  "disease": "dm_tipe1",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [],
+    "avoid": [
+      {
+        "classes": ["antidiabetes"],
+        "reason": "Obat antidiabetes oral tidak efektif & menunda insulin pada DM tipe 1.",
+        "severity": "kritis"
+      }
+    ],
+    "note": "Inisiasi insulin dilakukan spesialis — tugas FKTP: diagnosis, stabilisasi, edukasi, & rujukan."
+  },
+  "nonPharm": [
+    { "id": "rujuk", "text": "Rujuk ke dokter spesialis anak/penyakit dalam untuk inisiasi insulin", "kind": "benar" },
+    {
+      "id": "kad",
+      "text": "Pasang infus NaCl 0,9% & rujuk segera (ketoasidosis diabetik)",
+      "kind": "benar",
+      "when": { "traits": ["kad"] }
+    },
+    { "id": "diet", "text": "Diet seimbang sesuai kebutuhan tumbuh kembang & aktivitas fisik teratur", "kind": "benar" },
+    { "id": "psikososial", "text": "Dukungan psikososial untuk keluarga & sekolah", "kind": "benar" },
+    {
+      "id": "stop_makan",
+      "text": "Hentikan semua makanan manis & nasi agar gula turun tanpa insulin",
+      "kind": "berbahaya",
+      "why": "Ketoasidosis & malnutrisi; DM tipe 1 wajib insulin."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini diabetes tipe 1: tubuh tidak lagi memproduksi insulin",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Pengobatan utama adalah suntikan insulin seumur hidup, dimulai oleh dokter spesialis",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila muntah, nyeri perut, napas cepat-dalam, napas berbau buah, lemas/mengantuk, atau gemetar-berkeringat-bingung (hipoglikemia)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol rutin bersama spesialis & pemantauan gula darah mandiri",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "tablet",
+      "text": "Bisa diobati dengan obat minum seperti diabetes orang tua",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "DM tipe 1 tidak responsif terhadap obat oral."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus (2021)",
+      "IDAI. Konsensus DM Tipe 1 pada Anak (2017)"
+    ]
+  }
+}

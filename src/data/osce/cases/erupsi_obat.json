@@ -1,0 +1,139 @@
+{
+  "disease": "erupsi_obat",
+  "setting": "Puskesmas",
+  "station": "Kulit — ruam, biduran & reaksi obat",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihistamin",
+        "label": "Antihistamin",
+        "role": "utama",
+        "reason": "Gatal & reaksi hipersensitivitas.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ]
+      },
+      {
+        "id": "steroid_top",
+        "label": "Kortikosteroid topikal",
+        "role": "pendukung",
+        "reason": "Lesi kulit tanpa erosi luas.",
+        "options": [
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason valerat 0,1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 21]
+          },
+          {
+            "drug": "mometason_krim",
+            "label": "Mometason furoat 0,1% krim 1 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [7, 21]
+          },
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 2,5% krim 2 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim25"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 21]
+          }
+        ],
+        "when": { "notTraits": ["sjs_awal"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["penisilin"],
+        "reason": "Obat tersangka (penisilin) tidak boleh diberikan lagi.",
+        "severity": "kritis",
+        "when": { "notTraits": ["fde"] }
+      },
+      {
+        "groups": ["metamizol", "oains"],
+        "reason": "Obat tersangka (metamizol/OAINS) tidak boleh diberikan lagi.",
+        "severity": "kritis",
+        "when": { "traits": ["fde"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "hentikan", "text": "Hentikan semua obat tersangka", "kind": "benar" },
+    { "id": "catat", "text": "Catat alergi obat di rekam medis & beri kartu alergi", "kind": "benar" },
+    { "id": "rujuk", "text": "Rujuk segera (curiga SJS/NET)", "kind": "benar", "when": { "traits": ["sjs_awal"] } },
+    {
+      "id": "lanjut_obat",
+      "text": "Lanjutkan obat sampai habis lalu beri antihistamin",
+      "kind": "berbahaya",
+      "why": "Reaksi memburuk hingga SJS/NET."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini reaksi alergi obat di kulit", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat penyebab dihentikan; antihistamin & krim untuk meredakan gejala",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila luka di mulut/mata/kelamin, kulit melepuh/mengelupas, demam tinggi, atau sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3–7 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Tunjukkan kartu alergi obat setiap berobat & jangan membeli obat yang sama/segolongan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "dosis_kecil",
+      "text": "Obat yang sama boleh diminum lagi asal dosisnya dikurangi",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Reaksi berulang dapat lebih berat."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

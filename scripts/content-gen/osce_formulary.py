@@ -232,6 +232,8 @@ DRUGS = [
     D("seftriakson", "Seftriakson", "antibiotik", [form("seftriakson-ml", "vial 1 g dilarutkan 4 mL (250 mg/mL)", 250, "mg", "mL", "intramuskular")], groups=["sefalosporin"]),
     D("sefiksim", "Sefiksim", "antibiotik", [syr("sefiksim-syr", 100, "sirup kering 100 mg/5 mL")]),
     D("oralit", "Oralit", "vitamin", []),
+    D("vitamin_c", "Vitamin C", "vitamin", [tab("vitc-tab500", 500)]),
+    D("oat_kdt_anak", "OAT KDT anak fase intensif (RHZ 75/50/150 mg)", "oat", [form("oat-anak-rhz", "tab dispersibel RHZ 75/50/150 mg", 1, "tablet", "tablet", "oral")], aliases=["KDT anak", "OAT anak"]),
     D("metoklopramid", "Metoklopramid", "prokinetik", []),
     # ---------------- obstetri
     D("oksitosin", "Oksitosin", "uterotonika", [form("oksitosin-amp10", "ampul 10 IU/mL", 10, "IU", "ampul", "intramuskular")]),

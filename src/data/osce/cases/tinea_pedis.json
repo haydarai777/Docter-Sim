@@ -1,0 +1,153 @@
+{
+  "disease": "tinea_pedis",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi jamur",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Antijamur topikal",
+        "role": "utama",
+        "reason": "Tinea pedis.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 2–4 minggu (lanjut 1–2 minggu setelah sembuh)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 42]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [28, 42]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 42]
+          },
+          {
+            "drug": "terbinafin_krim",
+            "label": "Terbinafin 1% krim 1–2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 28]
+          }
+        ]
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik sistemik",
+        "role": "utama",
+        "reason": "Infeksi bakteri sekunder.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["ketokonazol_tab"],
+        "reason": "Ketokonazol oral hepatotoksik — tidak untuk infeksi jamur kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "sela_jari",
+      "text": "Keringkan sela jari setelah mandi; kaus kaki katun diganti tiap hari",
+      "kind": "benar"
+    },
+    { "id": "sepatu", "text": "Sepatu berventilasi/bergantian; sandal di kamar mandi umum", "kind": "benar" },
+    {
+      "id": "bot",
+      "text": "Lepas sepatu bot saat istirahat & keringkan kaki",
+      "kind": "benar",
+      "when": { "traits": ["sepatu_boot"] }
+    },
+    {
+      "id": "krim_campur",
+      "text": "Pakai krim campuran steroid-antijamur-antibiotik yang dijual bebas",
+      "kind": "berbahaya",
+      "why": "Steroid memperberat infeksi jamur & atrofi kulit."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kutu air (tinea pedis): infeksi jamur di sela jari & telapak kaki",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Obat dipakai teratur minimal 4 minggu", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, bernanah/bengkak merah nyeri, demam, atau tidak membaik setelah 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Keringkan badan setelah mandi & jangan berbagi handuk/pakaian",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Hentikan obat jamur begitu gatal hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Jamur belum tuntas → kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

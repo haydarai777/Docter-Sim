@@ -1,0 +1,150 @@
+{
+  "disease": "herpes_zoster",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi virus & ruam demam",
+  "therapy": {
+    "items": [
+      {
+        "id": "antivirus",
+        "label": "Antivirus",
+        "role": "utama",
+        "reason": "Dalam 72 jam: mempercepat penyembuhan & mengurangi neuralgia.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 5 × 800 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab800"],
+            "dose": [800, 800],
+            "timesPerDay": [5, 5],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "pendukung",
+        "reason": "Nyeri akut.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["rutin", "prn"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ]
+      },
+      {
+        "id": "kalamin",
+        "label": "Bedak/losion kalamin",
+        "role": "opsional",
+        "reason": "Lesi vesikular belum pecah.",
+        "options": [
+          {
+            "drug": "kalamin",
+            "label": "Losion kalamin 2–3 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 10]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik tanpa antivirus tidak dianjurkan.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "vesikel", "text": "Jangan memecahkan vesikel; pakaian longgar", "kind": "benar" },
+    {
+      "id": "isolasi",
+      "text": "Hindari kontak dengan ibu hamil, bayi, & orang yang belum pernah cacar air sampai lesi berkrusta",
+      "kind": "benar"
+    },
+    {
+      "id": "mata",
+      "text": "Rujuk ke dokter mata (zoster oftalmikus)",
+      "kind": "benar",
+      "when": { "traits": ["oftalmikus"] }
+    },
+    {
+      "id": "hiv",
+      "text": "Tawarkan tes HIV (zoster usia muda)",
+      "kind": "benar",
+      "when": { "traits": ["imunokompromais"] }
+    },
+    {
+      "id": "tepung",
+      "text": "Oleskan tepung beras/ramuan dingin pada lepuh",
+      "kind": "berbahaya",
+      "why": "Infeksi sekunder."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini herpes zoster (cacar ular/dompo), aktifnya kembali virus cacar air di saraf",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antivirus diminum 5 kali sehari sampai habis 7 hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila mengenai mata (mata merah, kabur), lepuh menyebar luas, demam tinggi, atau kelemahan wajah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1 minggu; nyeri dapat menetap setelah ruam sembuh (neuralgia)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "melingkar",
+      "text": "Bila ruam melingkari pinggang penuh, penderita akan meninggal",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Mitos."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

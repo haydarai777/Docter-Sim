@@ -1,0 +1,118 @@
+{
+  "disease": "gonore",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "sefalosporin",
+        "label": "Sefalosporin generasi 3",
+        "role": "utama",
+        "reason": "N. gonorrhoeae.",
+        "options": [
+          {
+            "drug": "sefiksim",
+            "label": "Sefiksim 400 mg oral dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["sefiksim-kap200"],
+            "dose": [400, 400]
+          },
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 250 mg IM dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["seftriakson-ml"],
+            "dose": [250, 250]
+          }
+        ]
+      },
+      {
+        "id": "klamidia",
+        "label": "Terapi ko-infeksi klamidia",
+        "role": "utama",
+        "reason": "Gonore sering disertai C. trachomatis.",
+        "options": [
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 g oral dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [1000, 1000]
+          },
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          }
+        ]
+      }
+    ],
+    "avoid": [{ "groups": ["kuinolon"], "reason": "Resistansi gonokokus terhadap kuinolon tinggi.", "severity": "salah" }]
+  },
+  "nonPharm": [
+    { "id": "pasangan", "text": "Pasangan seksual diperiksa & diobati bersamaan", "kind": "benar" },
+    {
+      "id": "kondom",
+      "text": "Abstinensi atau kondom sampai 7 hari setelah terapi selesai (pasangan juga)",
+      "kind": "benar"
+    },
+    { "id": "tes", "text": "Konseling & tes HIV dan sifilis", "kind": "benar" },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kencing nanah (gonore), infeksi menular seksual",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum sesuai dosis; pasangan juga harus diobati agar tidak tertular kembali",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila nyeri perut bawah/buah zakar, demam, atau nyeri sendi & ruam kulit",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila keluhan menetap 3–5 hari setelah terapi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Setia pada satu pasangan & gunakan kondom untuk mencegah IMS",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

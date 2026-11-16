@@ -1,0 +1,81 @@
+{
+  "disease": "sifilis",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi kronik (TB kulit, kusta, sifilis)",
+  "therapy": {
+    "items": [
+      {
+        "id": "penisilin",
+        "label": "Antibiotik sifilis",
+        "role": "utama",
+        "reason": "Sifilis dini (primer/sekunder).",
+        "options": [
+          {
+            "drug": "benzatin_penisilin",
+            "label": "Benzatin penisilin G 2,4 juta IU IM dosis tunggal",
+            "schedules": ["tunggal"],
+            "dose": [2400000, 2400000]
+          },
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 14 hari (alergi penisilin, tidak hamil)",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "pasangan", "text": "Notifikasi & terapi pasangan seksual", "kind": "benar" },
+    { "id": "kondom", "text": "Abstinensi/kondom sampai lesi sembuh & pasangan diobati", "kind": "benar" },
+    { "id": "tes", "text": "Konseling & tes HIV, hepatitis B", "kind": "benar" },
+    {
+      "id": "antiseptik",
+      "text": "Bersihkan luka kelamin dengan cairan antiseptik saja tanpa suntikan",
+      "kind": "berbahaya",
+      "why": "Sifilis tidak sembuh tanpa antibiotik & tetap menular."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini sifilis (raja singa), infeksi menular seksual yang dapat disembuhkan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Satu kali suntikan cukup untuk sifilis dini; dapat terjadi demam/menggigil beberapa jam setelah suntik (reaksi Jarisch-Herxheimer)",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak/bengkak setelah suntikan, sakit kepala hebat, gangguan penglihatan/pendengaran, atau ruam meluas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Periksa RPR ulang 6 & 12 bulan", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Setia pada pasangan & gunakan kondom", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "hilang_sendiri",
+      "text": "Luka sudah hilang sendiri berarti sudah sembuh",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Kuman menetap & berlanjut ke stadium lanjut."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kemenkes RI. Pedoman Nasional Penanganan IMS (2016)"
+    ]
+  }
+}

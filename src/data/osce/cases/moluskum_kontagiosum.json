@@ -1,0 +1,84 @@
+{
+  "disease": "moluskum_kontagiosum",
+  "setting": "Puskesmas",
+  "station": "Kulit — benjolan, kutil & luka kronik",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Terapi topikal",
+        "role": "opsional",
+        "reason": "Alternatif bila enukleasi tidak memungkinkan.",
+        "options": [
+          {
+            "drug": "tretinoin",
+            "label": "Tretinoin 0,025% krim dioles pada lesi malam hari 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 28]
+          }
+        ]
+      }
+    ],
+    "avoid": [{ "classes": ["antibiotik"], "reason": "Infeksi virus — antibiotik tidak diperlukan.", "severity": "salah" }],
+    "note": "Tatalaksana utama enukleasi/krioterapi; terapi topikal hanya alternatif."
+  },
+  "nonPharm": [
+    { "id": "enukleasi", "text": "Enukleasi dengan ekstraktor komedo/jarum steril, lalu antiseptik", "kind": "benar" },
+    {
+      "id": "garuk",
+      "text": "Jangan digaruk; handuk terpisah; hindari berbagi kolam renang saat lesi aktif",
+      "kind": "benar"
+    },
+    {
+      "id": "ims",
+      "text": "Skrining IMS/HIV & periksa pasangan",
+      "kind": "benar",
+      "when": { "traits": ["genital_dewasa"] }
+    },
+    {
+      "id": "pencet",
+      "text": "Pencet semua bintil dengan kuku",
+      "kind": "berbahaya",
+      "why": "Infeksi sekunder & autoinokulasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini moluskum kontagiosum: infeksi virus kulit yang mudah menular lewat kontak",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Bintil dikeluarkan isinya; dapat sembuh sendiri dalam beberapa bulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila bintil sangat banyak/besar, merah meradang, atau di kelopak mata",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu untuk lesi baru", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Handuk & pakaian tidak dipakai bersama", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "antibiotik",
+      "text": "Minum antibiotik agar bintil hilang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Penyebabnya virus."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

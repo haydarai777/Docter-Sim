@@ -87,11 +87,13 @@ describe('sesi permainan', () => {
 
   it('pengulangan diizinkan jika config mematikannya', () => {
     const cfg = configWith({ queue: { avoidImmediateRepeat: false } });
+    // Kolam kecil (3 penyakit) agar pengulangan berurutan pasti muncul bila tidak dicegah.
+    const few = { ...content, diseases: content.diseases.filter((d) => ['dengue', 'demam_tifoid', 'malaria'].includes(d.id)) };
     let run = createRun(21, cfg);
     const ids: string[] = [];
     for (let i = 0; i < 60; i++) {
-      ids.push(chooseNextDisease(run, content, cfg));
-      run = playWell(startNextPatient(run, content, cfg), cfg);
+      ids.push(chooseNextDisease(run, few, cfg));
+      run = playWell(startNextPatient(run, few, cfg), cfg);
     }
     expect(ids.some((id, i) => i > 0 && ids[i - 1] === id)).toBe(true);
   });

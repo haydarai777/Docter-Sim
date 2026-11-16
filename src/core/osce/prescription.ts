@@ -103,7 +103,8 @@ export function lineProblems(line: PrescriptionLine, option: DoseOption, form: D
   }
   if (option.unitsByWeight && weightKg) {
     const band = option.unitsByWeight.find((b) => weightKg >= b.minKg && weightKg < b.maxKg + 1);
-    if (band && Math.abs(band.units - line.units) > 0.01) problems.push(`jumlah ${fmt(line.units)} ${form.dosageUnit} per kali (BB ${fmt(weightKg)} kg → ${fmt(band.units)} ${form.dosageUnit})`);
+    if (!band) problems.push(`sediaan ${form.label} tidak sesuai untuk BB ${fmt(weightKg)} kg`);
+    else if (Math.abs(band.units - line.units) > 0.01) problems.push(`jumlah ${fmt(line.units)} ${form.dosageUnit} per kali (BB ${fmt(weightKg)} kg → ${fmt(band.units)} ${form.dosageUnit})`);
     if (!weighed) problems.push('berat badan belum ditimbang (dosis berbasis BB)');
   }
   if (line.schedule !== 'tunggal' && option.timesPerDay) {

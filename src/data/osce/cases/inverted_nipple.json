@@ -1,0 +1,54 @@
+{
+  "disease": "inverted_nipple",
+  "setting": "Puskesmas",
+  "station": "Obstetri — nifas & menyusui",
+  "therapy": { "items": [], "note": "Tidak memerlukan obat — edukasi & teknik menyusui." },
+  "nonPharm": [
+    { "id": "pelekatan", "text": "Latih pelekatan yang mencakup areola (bukan hanya puting)", "kind": "benar" },
+    { "id": "tarik", "text": "Tarik puting sebelum menyusui dengan spuit modifikasi/pompa ASI", "kind": "benar" },
+    { "id": "perah", "text": "Bila bayi belum bisa melekat: perah ASI & beri dengan cangkir/sendok", "kind": "benar" },
+    { "id": "konselor", "text": "Rujuk konselor laktasi", "kind": "benar" },
+    {
+      "id": "formula",
+      "text": "Beri susu formula dengan dot sejak lahir karena puting tidak menonjol",
+      "kind": "berbahaya",
+      "why": "Bingung puting & kegagalan ASI eksklusif."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Puting datar/masuk ke dalam; sebagian besar ibu tetap dapat menyusui",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak perlu obat; latih pelekatan & tarik puting sebelum menyusui",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Periksa segera bila puting baru tertarik ke dalam di satu sisi, ada benjolan, atau keluar darah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol dengan konselor laktasi 1 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "operasi",
+      "text": "Harus dioperasi dulu sebelum bisa menyusui",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Mayoritas dapat menyusui dengan teknik yang benar."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

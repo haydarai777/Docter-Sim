@@ -1,0 +1,113 @@
+{
+  "disease": "ruptur_perineum",
+  "setting": "Puskesmas",
+  "station": "Obstetri — nifas & menyusui",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "utama",
+        "reason": "Nyeri luka perineum.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      },
+      {
+        "id": "ttd",
+        "label": "Tablet tambah darah",
+        "role": "pendukung",
+        "reason": "Suplementasi masa nifas.",
+        "options": [
+          {
+            "drug": "tablet_tambah_darah",
+            "label": "Tablet tambah darah (Fe 60 mg + asam folat 400 mcg) 1 × 1 setiap hari",
+            "schedules": ["rutin"],
+            "dose": [60, 60],
+            "timesPerDay": [1, 1],
+            "days": [30, 90]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Ruptur derajat 1–2 tidak memerlukan antibiotik rutin.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "jahit",
+      "text": "Penjahitan lapis demi lapis dengan benang dapat diserap setelah anestesi lokal",
+      "kind": "benar"
+    },
+    { "id": "higiene", "text": "Cebok air bersih dari depan ke belakang, ganti pembalut sering", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres dingin pada perineum", "kind": "benar" },
+    { "id": "serat", "text": "Makan tinggi serat & cukup minum agar tidak mengedan", "kind": "benar" },
+    {
+      "id": "ramuan",
+      "text": "Duduk di atas uap ramuan panas (tatobi/bertangas)",
+      "kind": "berbahaya",
+      "why": "Luka bakar & infeksi luka."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini robekan jalan lahir yang sudah dijahit", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat pereda nyeri diminum bila perlu sesudah makan; tetap menyusui",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perdarahan banyak, demam, luka bernanah/berbau, nyeri makin hebat, atau tidak bisa menahan BAB",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu (kunjungan nifas)", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "pantang",
+      "text": "Pantang makan ikan & telur agar luka cepat kering",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Protein dibutuhkan untuk penyembuhan luka."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

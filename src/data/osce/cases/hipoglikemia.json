@@ -1,0 +1,99 @@
+{
+  "disease": "hipoglikemia",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "dekstrosa",
+        "label": "Dekstrosa 40% IV",
+        "role": "opsional",
+        "reason": "Hanya bila tidak sadar/tidak dapat menelan.",
+        "options": [
+          {
+            "drug": "dekstrosa",
+            "label": "Dekstrosa 40% 25–50 mL (10–20 g) IV bolus",
+            "schedules": ["tunggal"],
+            "dose": [10, 20]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["sulfonilurea"],
+        "reason": "Sulfonilurea memperberat/memperpanjang hipoglikemia.",
+        "severity": "salah"
+      },
+      { "classes": ["insulin"], "reason": "Memberi insulin saat hipoglikemia membahayakan.", "severity": "kritis" }
+    ],
+    "note": "Pasien sadar: koreksi dengan glukosa oral (bukan resep). Dekstrosa IV hanya bila tidak dapat menelan."
+  },
+  "nonPharm": [
+    {
+      "id": "glukosa",
+      "text": "Beri 15–20 g glukosa oral (gula/teh manis), cek ulang 15 menit & ulangi bila masih rendah",
+      "kind": "benar"
+    },
+    { "id": "makan", "text": "Setelah normal, makan karbohidrat kompleks", "kind": "benar" },
+    {
+      "id": "obat",
+      "text": "Tinjau & sesuaikan obat penurun gula (ganti sulfonilurea kerja panjang/kurangi dosis insulin)",
+      "kind": "benar"
+    },
+    {
+      "id": "ginjal",
+      "text": "Perhatikan fungsi ginjal dalam penyesuaian obat",
+      "kind": "benar",
+      "when": { "traits": ["gangguan_ginjal"] }
+    },
+    {
+      "id": "insulin_lagi",
+      "text": "Lanjutkan dosis obat diabetes seperti biasa malam ini",
+      "kind": "berbahaya",
+      "why": "Hipoglikemia berulang (terutama sulfonilurea)."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini hipoglikemia: gula darah terlalu rendah, sering akibat obat diabetes & telat makan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diabetes disesuaikan; jangan melewatkan makan setelah minum obat",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Bila gemetar, keringat dingin, berdebar, atau bingung: segera makan/minum manis; ke IGD bila tidak sadar",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1 minggu untuk evaluasi obat & gula darah",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    { "id": "permen", "text": "Selalu bawa permen/gula", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "kurangi_makan",
+      "text": "Kurangi makan agar gula darah tetap terkendali",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Memicu hipoglikemia berulang."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus (2021)"
+    ]
+  }
+}

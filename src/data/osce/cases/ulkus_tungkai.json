@@ -1,0 +1,122 @@
+{
+  "disease": "ulkus_tungkai",
+  "setting": "Puskesmas",
+  "station": "Kulit — benjolan, kutil & luka kronik",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik sistemik",
+        "role": "utama",
+        "reason": "Infeksi sekunder/selulitis di sekitar ulkus.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Tanpa infeksi, antibiotik sistemik tidak diperlukan.",
+        "severity": "salah",
+        "when": { "notTraits": ["infeksi_sekunder"] }
+      }
+    ],
+    "note": "Tanpa infeksi: perawatan luka & kompresi tanpa obat sistemik."
+  },
+  "nonPharm": [
+    {
+      "id": "rawat",
+      "text": "Bersihkan dengan NaCl 0,9%, debridemen jaringan nekrotik, balutan lembap sesuai eksudat",
+      "kind": "benar"
+    },
+    {
+      "id": "kompresi",
+      "text": "Kompresi (perban elastis/stoking) bila ABI ≥ 0,8 & elevasi tungkai saat istirahat",
+      "kind": "benar"
+    },
+    { "id": "dm", "text": "Kendalikan gula darah", "kind": "benar", "when": { "traits": ["dm_menyertai"] } },
+    { "id": "jalan", "text": "Jalan kaki teratur & turunkan berat badan", "kind": "benar" },
+    {
+      "id": "ramuan",
+      "text": "Oleskan ramuan tradisional/pasta gigi pada bagian yang sakit",
+      "kind": "berbahaya",
+      "why": "Iritasi & infeksi sekunder."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini luka kronik di tungkai karena gangguan aliran darah balik (vena)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Perawatan luka & kompresi adalah pengobatan utama; antibiotik hanya bila infeksi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila kemerahan meluas, demam, luka berbau/bernanah, atau kaki dingin/pucat & sangat nyeri",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol & ganti balutan sesuai jadwal (2–3 × seminggu)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "kering",
+      "text": "Luka harus dibiarkan terbuka & kering di bawah sinar matahari",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Penyembuhan luka lebih baik dalam suasana lembap."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

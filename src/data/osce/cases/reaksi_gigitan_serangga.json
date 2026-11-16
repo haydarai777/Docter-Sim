@@ -1,0 +1,169 @@
+{
+  "disease": "reaksi_gigitan_serangga",
+  "setting": "Puskesmas",
+  "station": "Kulit — gatal & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid_top",
+        "label": "Kortikosteroid topikal",
+        "role": "utama",
+        "reason": "Reaksi inflamasi lokal.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1–2,5% krim 2 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason 0,1% krim 2 × sehari selama 5–7 hari (lesi tebal, bukan wajah)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "notTraits": ["infeksi_sekunder"] }
+      },
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "pendukung",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "pendukung",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Infeksi sekunder akibat garukan.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "sengat",
+      "text": "Lepaskan sengat dengan mengerok (jangan dipencet)",
+      "kind": "benar",
+      "when": { "traits": ["sengatan"] }
+    },
+    { "id": "kompres", "text": "Cuci & kompres dingin", "kind": "benar" },
+    { "id": "cegah", "text": "Kelambu, repelan, bersihkan kasur (kutu busuk)", "kind": "benar" },
+    { "id": "garuk", "text": "Potong kuku & hindari garukan", "kind": "benar" },
+    {
+      "id": "minyak_tanah",
+      "text": "Oleskan minyak tanah/odol pada bentol",
+      "kind": "berbahaya",
+      "why": "Iritasi & luka bakar kimia."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini reaksi kulit akibat gigitan/sengatan serangga",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Krim dioles tipis 2 × sehari beberapa hari; obat gatal bila perlu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak, bengkak bibir/wajah, pusing/pingsan setelah gigitan/sengatan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila tidak membaik 1 minggu atau bernanah",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "racun_hisap",
+      "text": "Isap racun sengatan dengan mulut",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Tidak efektif & berisiko infeksi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

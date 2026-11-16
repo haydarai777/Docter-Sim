@@ -195,7 +195,7 @@ ANTIHT = [O("amlodipin", "Amlodipin 1 × 5–10 mg", (5, 10), "rutin", (1, 1), (
           O("hidroklorotiazid", "Hidroklorotiazid 1 × 12,5–25 mg pagi", (12.5, 25), "rutin", (1, 1), (30, 30))]
 CASE("hipertensi", KARDIO,
      [IT("antihipertensi", "Antihipertensi lini pertama", "utama", "CCB, ACE-inhibitor/ARB, atau tiazid.", ANTIHT),
-      IT("kombinasi", "Antihipertensi kedua (golongan berbeda)", "utama", "Derajat 2: kombinasi dua obat sejak awal.",
+      IT("kombinasi", "Antihipertensi kedua (golongan berbeda)", "pendukung", "Derajat 2: kombinasi dua obat sejak awal.",
          ANTIHT[1:] + ANTIHT[:1], T("derajat2"), separate=True)],
      [NP("garam", "Batasi garam < 5 g/hari (1 sendok teh), diet DASH"),
       NP("olahraga", "Olahraga aerobik 30 menit 5 × seminggu"),

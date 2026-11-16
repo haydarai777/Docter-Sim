@@ -1,0 +1,133 @@
+{
+  "disease": "abortus_komplit",
+  "setting": "Puskesmas",
+  "station": "Obstetri — antenatal & pascakeguguran",
+  "therapy": {
+    "items": [
+      {
+        "id": "besi",
+        "label": "Preparat besi",
+        "role": "utama",
+        "reason": "Anemia akibat perdarahan.",
+        "options": [
+          {
+            "drug": "tablet_tambah_darah",
+            "label": "Tablet tambah darah (Fe 60 mg + asam folat 400 mcg) 1 × 1 setiap hari",
+            "schedules": ["rutin"],
+            "dose": [60, 60],
+            "timesPerDay": [1, 1],
+            "days": [30, 90]
+          },
+          {
+            "drug": "sulfas_ferosus",
+            "label": "Sulfas ferosus 300 mg 1–2 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["sf-tab300"],
+            "dose": [300, 300],
+            "timesPerDay": [1, 2],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "traits": ["anemia_ringan"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "opsional",
+        "reason": "Nyeri perut ringan.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["uterotonika"],
+        "reason": "Uterotonika tidak diperlukan pada abortus komplit tanpa perdarahan aktif.",
+        "severity": "salah"
+      },
+      { "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }
+    ],
+    "note": "Abortus komplit tanpa anemia tidak memerlukan obat rutin."
+  },
+  "nonPharm": [
+    {
+      "id": "observasi",
+      "text": "Observasi perdarahan; tidak perlu kuretase bila USG kavum uteri kosong",
+      "kind": "benar"
+    },
+    { "id": "psikologis", "text": "Dukungan psikologis untuk ibu & pasangan", "kind": "benar" },
+    { "id": "kb", "text": "Konseling KB pascakeguguran", "kind": "benar" },
+    {
+      "id": "riwayat",
+      "text": "Evaluasi penyebab keguguran berulang (rujuk)",
+      "kind": "benar",
+      "when": { "traits": ["riwayat_keguguran"] }
+    },
+    {
+      "id": "kuret",
+      "text": "Lakukan kuretase rutin agar rahim bersih",
+      "kind": "berbahaya",
+      "why": "Tindakan tidak perlu: risiko perforasi & sinekia."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Keguguran sudah lengkap; seluruh jaringan kehamilan sudah keluar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak perlu tindakan kuret; obat hanya bila anemia/nyeri",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perdarahan banyak, nyeri hebat, demam, atau keputihan berbau",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "kb",
+      "text": "Kesuburan dapat kembali dalam 2 minggu — gunakan kontrasepsi bila belum ingin hamil",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "salah_ibu",
+      "text": "Keguguran terjadi karena ibu terlalu banyak bekerja",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Umumnya kelainan kromosom; jangan menyalahkan ibu."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

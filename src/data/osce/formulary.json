@@ -2830,6 +2830,14 @@
           "unit": "mg",
           "dosageUnit": "tablet",
           "route": "oral"
+        },
+        {
+          "id": "vitc-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
         }
       ]
     },
@@ -3055,6 +3063,22 @@
           "dosageUnit": "kali kumur (10 mL)",
           "route": "topikal",
           "package": 15
+        }
+      ]
+    },
+    {
+      "id": "oat_kdt_anak",
+      "name": "OAT KDT anak fase intensif (RHZ 75/50/150 mg)",
+      "aliases": ["KDT anak", "OAT anak"],
+      "class": "oat",
+      "forms": [
+        {
+          "id": "oat-anak-rhz",
+          "label": "tab dispersibel RHZ 75/50/150 mg",
+          "strength": 1,
+          "unit": "tablet",
+          "dosageUnit": "tablet",
+          "route": "oral"
         }
       ]
     }

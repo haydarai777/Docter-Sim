@@ -1,0 +1,137 @@
+{
+  "disease": "dermatitis_kontak_iritan",
+  "setting": "Puskesmas",
+  "station": "Kulit — dermatitis & eksim",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid topikal",
+        "role": "utama",
+        "reason": "Mengurangi inflamasi.",
+        "options": [
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason valerat 0,1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 21]
+          },
+          {
+            "drug": "mometason_krim",
+            "label": "Mometason furoat 0,1% krim 1 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [7, 21]
+          },
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 2,5% krim 2 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim25"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 21]
+          }
+        ]
+      },
+      {
+        "id": "emolien",
+        "label": "Emolien",
+        "role": "pendukung",
+        "reason": "Memperbaiki sawar kulit.",
+        "options": [
+          {
+            "drug": "emolien",
+            "label": "Emolien (krim urea 10%/vaselin) 2–3 × sehari & setelah mandi",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [14, 30]
+          }
+        ]
+      },
+      {
+        "id": "kompres",
+        "label": "Kompres basah",
+        "role": "pendukung",
+        "reason": "DKI akut basah/vesikular.",
+        "options": [
+          {
+            "drug": "kompres_nacl",
+            "label": "Kompres NaCl 0,9% 15 menit 2–3 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["akut"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik tidak diperlukan & berisiko rebound.",
+        "severity": "salah"
+      },
+      { "classes": ["antijamur", "antijamur_topikal"], "reason": "Bukan infeksi jamur.", "severity": "salah" }
+    ]
+  },
+  "nonPharm": [
+    { "id": "hindari", "text": "Hindari/kurangi pajanan iritan (deterjen, sabun, semen, pelarut)", "kind": "benar" },
+    { "id": "sarung", "text": "Sarung tangan karet dengan lapisan katun di dalam saat bekerja basah", "kind": "benar" },
+    { "id": "emolien", "text": "Oleskan pelembap setiap selesai cuci tangan", "kind": "benar" },
+    {
+      "id": "semen",
+      "text": "Gunakan sarung tangan & sepatu pelindung saat mengaduk semen",
+      "kind": "benar",
+      "when": { "traits": ["pekerja_semen"] }
+    },
+    {
+      "id": "sabun_antiseptik",
+      "text": "Cuci kulit dengan sabun antiseptik/alkohol lebih sering agar bersih",
+      "kind": "berbahaya",
+      "why": "Merusak sawar kulit & memperberat dermatitis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dermatitis kontak iritan: kulit teriritasi bahan sehari-hari (sabun, air, deterjen), bukan alergi & tidak menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Krim steroid dioles tipis 1–2 minggu saja; pelembap dipakai terus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila kulit bernanah, bengkak meluas, demam, atau tidak membaik 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Lindungi tangan saat bekerja basah", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "steroid_terus",
+      "text": "Krim steroid boleh dipakai terus-menerus tanpa batas waktu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Atrofi kulit, striae, & rebound."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

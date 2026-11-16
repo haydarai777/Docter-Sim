@@ -1,0 +1,97 @@
+{
+  "disease": "eritrasma",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Corynebacterium minutissimum.",
+        "options": [
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 4 × 250 mg selama 14 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-tab500"],
+            "dose": [250, 250],
+            "timesPerDay": [4, 4],
+            "days": [14, 14]
+          },
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari selama 14 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          },
+          {
+            "drug": "eritromisin_topikal",
+            "label": "Eritromisin 2% gel 2 × sehari selama 14 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 2 × sehari selama 14 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kering", "text": "Jaga lipatan kulit tetap kering; pakaian longgar menyerap keringat", "kind": "benar" },
+    { "id": "sabun", "text": "Mandi dengan sabun antibakteri", "kind": "benar" },
+    {
+      "id": "dm",
+      "text": "Kendalikan gula darah & berat badan",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["dm_curiga"] }, { "traits": ["obesitas_menyertai"] }]
+    },
+    {
+      "id": "salep_jamur_steroid",
+      "text": "Oles krim campuran steroid-antijamur yang dibeli bebas",
+      "kind": "berbahaya",
+      "why": "Steroid menyebabkan atrofi kulit lipatan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini eritrasma: infeksi bakteri superfisial di lipatan kulit (bukan jamur)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Obat dipakai teratur 2 minggu", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, basah/bernanah, atau nyeri",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "panu",
+      "text": "Ini panu, cukup bedak antijamur",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Fluoresensi merah bata (Wood) & KOH negatif."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

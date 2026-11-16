@@ -1,0 +1,145 @@
+{
+  "disease": "pitiriasis_versikolor",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi jamur",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Antijamur topikal",
+        "role": "utama",
+        "reason": "Malassezia.",
+        "options": [
+          {
+            "drug": "ketokonazol_sampo",
+            "label": "Sampo ketokonazol 2% dioles ke lesi 10–15 menit lalu dibilas, setiap hari 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          },
+          {
+            "drug": "selenium_sulfida",
+            "label": "Selenium sulfida dioles ke lesi 10–15 menit lalu dibilas, setiap hari 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          },
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 2–4 minggu (lanjut 1–2 minggu setelah sembuh)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          }
+        ]
+      },
+      {
+        "id": "profilaksis",
+        "label": "Antijamur oral",
+        "role": "opsional",
+        "reason": "Luas/sering kambuh.",
+        "options": [
+          {
+            "drug": "flukonazol",
+            "label": "Flukonazol 300 mg dosis tunggal per minggu × 2 minggu",
+            "schedules": ["tunggal"],
+            "forms": ["flukonazol-kap150"],
+            "dose": [300, 300]
+          }
+        ],
+        "when": { "traits": ["kambuhan"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["ketokonazol_tab"],
+        "reason": "Ketokonazol oral hepatotoksik — tidak untuk infeksi jamur kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "mandi", "text": "Mandi setelah berkeringat; pakaian menyerap keringat", "kind": "benar" },
+    { "id": "berbagi", "text": "Tidak berbagi pakaian/handuk", "kind": "benar" },
+    { "id": "bercak", "text": "Bercak putih memerlukan waktu berbulan-bulan untuk kembali normal", "kind": "benar" },
+    {
+      "id": "cuka",
+      "text": "Gosok panu dengan cuka/lengkuas sampai lecet",
+      "kind": "berbahaya",
+      "why": "Iritasi & luka kulit."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini panu (pitiriasis versikolor): infeksi jamur ragi pada kulit",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai teratur 1–2 minggu; warna kulit pulih bertahap dalam beberapa bulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, bernanah/bengkak merah nyeri, demam, atau tidak membaik setelah 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Keringkan badan setelah mandi & jangan berbagi handuk/pakaian",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "profilaksis",
+      "text": "Pemakaian sampo antijamur sebulan sekali dapat mencegah kambuh",
+      "kind": "benar",
+      "category": "pencegahan",
+      "when": { "traits": ["kambuhan"] }
+    },
+    {
+      "id": "stop_dini",
+      "text": "Hentikan obat jamur begitu gatal hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Jamur belum tuntas → kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

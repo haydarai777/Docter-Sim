@@ -1,0 +1,145 @@
+{
+  "disease": "tinea_unguium",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi jamur",
+  "therapy": {
+    "items": [
+      {
+        "id": "oral",
+        "label": "Antijamur oral",
+        "role": "utama",
+        "reason": "Onikomikosis: terapi sistemik jangka panjang.",
+        "options": [
+          {
+            "drug": "terbinafin",
+            "label": "Terbinafin 1 × 250 mg selama 12 minggu (kuku kaki) / 6 minggu (kuku tangan)",
+            "schedules": ["rutin"],
+            "dose": [250, 250],
+            "timesPerDay": [1, 1],
+            "days": [42, 84]
+          },
+          {
+            "drug": "itrakonazol",
+            "label": "Itrakonazol 2 × 200 mg selama 7 hari/bulan (terapi denyut) 2–3 siklus",
+            "schedules": ["rutin"],
+            "forms": ["itrakonazol-kap100"],
+            "dose": [200, 200],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          }
+        ]
+      },
+      {
+        "id": "pedis",
+        "label": "Antijamur topikal kaki",
+        "role": "pendukung",
+        "reason": "Obati tinea pedis sekaligus.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 2–4 minggu (lanjut 1–2 minggu setelah sembuh)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "terbinafin_krim",
+            "label": "Terbinafin 1% krim 1–2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 28]
+          }
+        ],
+        "when": { "traits": ["tinea_pedis_menyertai"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["ketokonazol_tab"],
+        "reason": "Ketokonazol oral hepatotoksik — tidak untuk infeksi jamur kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kuku", "text": "Potong & kikir kuku pendek, kaki kering, sepatu berventilasi", "kind": "benar" },
+    { "id": "gula", "text": "Periksa & kendalikan gula darah", "kind": "benar", "when": { "traits": ["dm_curiga"] } },
+    {
+      "id": "cabut",
+      "text": "Cabut paksa kuku yang rusak di rumah",
+      "kind": "berbahaya",
+      "why": "Perdarahan & infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini infeksi jamur kuku (tinea unguium/onikomikosis)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai teratur selama 6–12 minggu; kuku baru tumbuh sehat dalam beberapa bulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, bernanah/bengkak merah nyeri, demam, atau tidak membaik setelah 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Keringkan badan setelah mandi & jangan berbagi handuk/pakaian",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "es",
+      "text": "Laporkan mual hebat, kulit/mata kuning, atau gangguan pengecapan (cek fungsi hati)",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Hentikan obat jamur begitu gatal hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Jamur belum tuntas → kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

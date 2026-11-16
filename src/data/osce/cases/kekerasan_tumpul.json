@@ -1,0 +1,145 @@
+{
+  "disease": "kekerasan_tumpul",
+  "setting": "Puskesmas",
+  "station": "Forensik — luka akibat kekerasan",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "utama",
+        "reason": "Nyeri memar/lecet.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "notTraits": ["cedera_kepala"] }
+      },
+      {
+        "id": "analgesik_ck",
+        "label": "Analgesik",
+        "role": "utama",
+        "reason": "Nyeri (curiga cedera kepala: parasetamol).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["cedera_kepala"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains"],
+        "reason": "OAINS dihindari pada curiga cedera kepala (risiko perdarahan).",
+        "severity": "salah",
+        "when": { "traits": ["cedera_kepala"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres dingin memar 24–48 jam; rawat lecet (bersihkan, antiseptik)", "kind": "benar" },
+    {
+      "id": "dokumentasi",
+      "text": "Dokumentasi luka rinci (lokasi, jenis, ukuran, bentuk, warna) di rekam medis",
+      "kind": "benar"
+    },
+    {
+      "id": "ver",
+      "text": "Buat Visum et Repertum sesuai surat permintaan tertulis penyidik",
+      "kind": "benar",
+      "when": { "traits": ["permintaan_ver"] }
+    },
+    {
+      "id": "kdrt",
+      "text": "Jaga kerahasiaan, nilai keselamatan, rujuk P2TP2A/UPTD PPA & konseling",
+      "kind": "benar",
+      "when": { "traits": ["kdrt"] }
+    },
+    {
+      "id": "bidai",
+      "text": "Pasang bidai & rujuk ortopedi",
+      "kind": "benar",
+      "when": { "traits": ["fraktur_curiga"] }
+    },
+    {
+      "id": "rujuk_ck",
+      "text": "Stabilisasi & rujuk segera untuk CT kepala",
+      "kind": "benar",
+      "when": { "traits": ["cedera_kepala"] }
+    },
+    {
+      "id": "tunda",
+      "text": "Tunda perawatan sampai surat permintaan visum datang",
+      "kind": "berbahaya",
+      "why": "Pertolongan medis tidak boleh ditunda."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Luka akibat kekerasan benda tumpul (memar & lecet) sudah diperiksa dan dicatat",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat nyeri diminum bila perlu; kompres dingin pada memar",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sakit kepala hebat, muntah berulang, mengantuk/bingung, kejang, sesak, atau nyeri perut hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3 hari atau bila keluhan bertambah", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "pelaku",
+      "text": "Dokter akan menuliskan siapa pelakunya di visum",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "VeR hanya mendeskripsikan luka & penyebab (benda tumpul), bukan pelaku."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Budiyanto A, dkk. Ilmu Kedokteran Forensik",
+      "UU No. 23/2004 tentang Penghapusan KDRT"
+    ]
+  }
+}

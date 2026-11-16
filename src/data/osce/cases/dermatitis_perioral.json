@@ -1,0 +1,120 @@
+{
+  "disease": "dermatitis_perioral",
+  "setting": "Puskesmas",
+  "station": "Kulit — wajah & folikel",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Antiinflamasi/antibiotik topikal",
+        "role": "utama",
+        "reason": "Dermatitis perioral.",
+        "options": [
+          {
+            "drug": "metronidazol_gel",
+            "label": "Metronidazol 0,75% gel/krim 2 × sehari selama 4–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [28, 56]
+          },
+          {
+            "drug": "eritromisin_topikal",
+            "label": "Eritromisin 2% gel 2 × sehari selama 4–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 56]
+          },
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari selama 4–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 56]
+          }
+        ]
+      },
+      {
+        "id": "oral",
+        "label": "Tetrasiklin oral",
+        "role": "opsional",
+        "reason": "Kasus berat.",
+        "options": [
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 1–2 × 100 mg selama 6–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [1, 2],
+            "days": [42, 56]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal adalah pencetus dermatitis perioral.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "stop_steroid",
+      "text": "Hentikan krim kortikosteroid/krim pemutih bersteroid (zero therapy)",
+      "kind": "benar",
+      "when": { "traits": ["steroid_topikal"] }
+    },
+    { "id": "kosmetik", "text": "Hentikan kosmetik/pelembap tebal; cukup pembersih lembut", "kind": "benar" },
+    {
+      "id": "flare",
+      "text": "Jelaskan gejala dapat memburuk sementara 1–2 minggu setelah steroid dihentikan",
+      "kind": "benar"
+    },
+    {
+      "id": "steroid_lagi",
+      "text": "Lanjutkan krim steroid karena saat dihentikan makin merah",
+      "kind": "berbahaya",
+      "why": "Ketergantungan steroid & perburukan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dermatitis perioral: radang kulit sekitar mulut yang sering dipicu krim steroid/kosmetik",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dioles 4–8 minggu; jangan memakai krim steroid",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas ke mata, bernanah, atau tidak membaik setelah 8 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "jerawat",
+      "text": "Ini jerawat — pakai obat jerawat yang dibeli bebas",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Tanpa komedo; distribusi khas perioral."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

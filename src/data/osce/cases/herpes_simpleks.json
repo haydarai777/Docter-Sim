@@ -1,0 +1,156 @@
+{
+  "disease": "herpes_simpleks",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi virus & ruam demam",
+  "therapy": {
+    "items": [
+      {
+        "id": "antivirus",
+        "label": "Antivirus episode primer",
+        "role": "utama",
+        "reason": "Episode primer: 7–10 hari.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 5 × 200 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab400"],
+            "dose": [200, 200],
+            "timesPerDay": [5, 5],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 3 × 400 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "notTraits": ["rekuren"] }
+      },
+      {
+        "id": "antivirus_rekuren",
+        "label": "Antivirus episode rekuren",
+        "role": "utama",
+        "reason": "Rekuren: 5 hari, mulai saat prodromal.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 5 × 200 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab400"],
+            "dose": [200, 200],
+            "timesPerDay": [5, 5],
+            "days": [5, 5]
+          },
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 3 × 400 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [5, 5]
+          },
+          {
+            "drug": "asiklovir_krim",
+            "label": "Asiklovir 5% krim 5 × sehari selama 5 hari (herpes labialis)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [5, 5],
+            "days": [5, 5]
+          }
+        ],
+        "when": { "traits": ["rekuren"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "opsional",
+        "reason": "Nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres NaCl & jaga lesi tetap kering", "kind": "benar" },
+    {
+      "id": "kondom",
+      "text": "Abstinensi saat lesi aktif & kondom; edukasi/periksa pasangan; skrining IMS/HIV",
+      "kind": "benar",
+      "when": { "traits": ["genitalis"] }
+    },
+    {
+      "id": "pencetus",
+      "text": "Kenali pencetus (stres, paparan matahari — tabir surya bibir)",
+      "kind": "benar",
+      "when": { "notTraits": ["genitalis"] }
+    },
+    {
+      "id": "pecah",
+      "text": "Pecahkan lepuh dengan jarum agar cepat kering",
+      "kind": "berbahaya",
+      "why": "Penyebaran virus & infeksi sekunder."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini infeksi virus herpes simpleks yang dapat kambuh",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antivirus diminum sesuai aturan sampai habis; mulai sedini mungkin saat kambuh",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila lesi mengenai mata, sangat luas, sulit kencing, sakit kepala hebat, atau demam tinggi",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila sering kambuh (> 6 kali/tahun) untuk terapi supresi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Hindari berciuman/berhubungan seksual saat lesi aktif",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "sembuh_total",
+      "text": "Setelah obat habis virus hilang selamanya",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Virus laten di saraf; dapat kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}
