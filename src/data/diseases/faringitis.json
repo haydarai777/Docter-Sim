@@ -1,0 +1,192 @@
+{
+  "id": "faringitis",
+  "name": "Faringitis akut",
+  "aliases": ["Radang tenggorokan", "Faringitis", "Strep throat", "Faringitis streptokokus"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.5,
+  "summary": "Radang faring, tersering virus (disertai batuk, pilek, suara serak, konjungtivitis) dan sebagian Streptococcus beta-hemolitikus grup A (demam, eksudat tonsil, KGB servikal anterior nyeri, tanpa batuk — skor Centor/McIsaac). Faringitis streptokokus diobati antibiotik 10 hari untuk mencegah demam rematik. Waspadai difteri dan abses peritonsil.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [
+      { "min": 3, "max": 9, "weight": 3 },
+      { "min": 10, "max": 25, "weight": 4 },
+      { "min": 26, "max": 50, "weight": 3 },
+      { "min": 51, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "streptokokus", "probability": 0.3 }],
+  "traitLabels": { "streptokokus": "Faringitis streptokokus (skor Centor tinggi)." },
+  "symptoms": [
+    { "id": "nyeri_tenggorokan", "probability": 1 },
+    { "id": "sulit_menelan", "probability": 0.7 },
+    { "id": "demam", "probability": 1, "when": { "traits": ["streptokokus"] } },
+    { "id": "demam", "probability": 0.5 },
+    { "id": "batuk", "probability": 0.1, "when": { "traits": ["streptokokus"] } },
+    { "id": "batuk", "probability": 0.7 },
+    { "id": "pilek", "probability": 0.05, "when": { "traits": ["streptokokus"] } },
+    { "id": "pilek", "probability": 0.6 },
+    { "id": "suara_serak", "probability": 0.2, "when": { "notTraits": ["streptokokus"] } },
+    { "id": "nyeri_kepala", "probability": 0.4 },
+    { "id": "benjolan_kgb", "probability": 0.7, "when": { "traits": ["streptokokus"] } }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_tenggorokan"], "extraPool": ["sulit_menelan", "demam"] },
+  "clueSymptoms": ["sulit_menelan", "demam", "batuk", "pilek", "suara_serak", "nyeri_kepala"],
+  "misattributions": ["panas dalam", "kebanyakan es", "makan gorengan"],
+  "fears": ["amandel harus operasi", "difteri"],
+  "anamnesis": {
+    "onset": [{ "text": "Baru {hariTeks} hari, Dok, tenggorokan sakit buat menelan.", "clue": "Akut" }],
+    "keparahan": [
+      {
+        "text": "Panasnya tinggi, Dok, tapi nggak batuk pilek sama sekali.",
+        "when": { "traits": ["streptokokus"] },
+        "clue": "Demam tanpa batuk/pilek (mendukung streptokokus)"
+      },
+      {
+        "text": "Ada batuk pilek juga, Dok, suara agak serak.",
+        "reveals": ["batuk"],
+        "when": { "notTraits": ["streptokokus"], "symptoms": ["batuk"] },
+        "clue": "Disertai batuk-pilek (mendukung virus)"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Makin sakit kalau menelan, Dok.",
+        "reveals": ["sulit_menelan"],
+        "when": { "symptoms": ["sulit_menelan"] }
+      }
+    ],
+    "kebiasaan": [
+      { "text": "Imunisasinya lengkap kok, Dok.", "when": { "ageMax": 17 }, "clue": "Imunisasi (difteri) lengkap" },
+      { "text": "Saya nggak merokok, Dok.", "when": { "ageMin": 18 } }
+    ],
+    "riwayat_keluarga": [
+      { "text": "Anak saya juga sakit tenggorokan minggu lalu, Dok.", "weight": 0.4, "clue": "Kontak serumah" },
+      { "text": "Di rumah cuma saya yang sakit, Dok." }
+    ],
+    "episode_sebelumnya": [{ "text": "Jarang, Dok, setahun sekali paling.", "clue": "Bukan tonsilitis berulang" }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["streptokokus"] },
+      "diagnostic": true,
+      "values": ["Faring hiperemis dengan eksudat, petekie di palatum molle"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "notTraits": ["streptokokus"] },
+      "diagnostic": true,
+      "values": ["Faring hiperemis, dinding posterior granular"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "tonsil",
+      "when": { "traits": ["streptokokus"] },
+      "probability": 0.6,
+      "values": ["T2–T2 hiperemis dengan eksudat"]
+    },
+    { "tool": "kepala_leher", "param": "faring", "values": ["Faring hiperemis"] },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["streptokokus"] },
+      "probability": 0.8,
+      "values": ["KGB servikal anterior membesar & nyeri tekan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["streptokokus"] }, "range": [38.3, 39.3] },
+    {
+      "tool": "tanda_vital",
+      "param": "suhu",
+      "when": { "symptoms": ["demam"], "notTraits": ["streptokokus"] },
+      "range": [37.6, 38.2]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "notTraits": ["streptokokus"] },
+      "probability": 0.2,
+      "values": ["Injeksi konjungtiva ringan"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "difteri",
+      "howToDistinguish": "Difteri: pseudomembran putih keabuan yang berdarah bila diangkat, bull neck, imunisasi tidak lengkap — rujuk segera & lapor.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"], "topics": ["kebiasaan"] }
+    },
+    {
+      "id": "abses_peritonsil",
+      "howToDistinguish": "Abses peritonsil: trismus, suara hot-potato, uvula terdorong, nyeri unilateral hebat.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "tonsilitis",
+      "howToDistinguish": "Tonsilitis: radang dominan di tonsil (membesar, kripta melebar, detritus).",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri tenggorok & menelan, faring hiperemis",
+    "Streptokokus: demam, eksudat, KGB servikal anterior nyeri, tanpa batuk (Centor)",
+    "Virus: disertai batuk, pilek, serak"
+  ],
+  "teachingPoints": [
+    "Skor Centor/McIsaac: demam, eksudat tonsil, KGB servikal anterior nyeri, tidak batuk, usia — membantu memutuskan antibiotik."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "keparahan", "kebiasaan", "riwayat_keluarga", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Faring, tonsil, eksudat, pseudomembran, uvula." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB servikal anterior." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Virus: simptomatik. Streptokokus: penisilin/amoksisilin 10 hari. Kontrol bila memburuk."
+    }
+  ],
+  "management": [
+    "Virus: istirahat, minum hangat, kumur air garam, parasetamol.",
+    "Streptokokus (Centor tinggi): amoksisilin/penisilin V 10 hari (eritromisin bila alergi penisilin).",
+    "Edukasi: habiskan antibiotik (cegah demam rematik); kembali bila sulit membuka mulut/menelan ludah."
+  ],
+  "approach": ["Hitung skor Centor/McIsaac.", "Inspeksi faring & tonsil; singkirkan difteri dan abses peritonsil."]
+}

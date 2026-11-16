@@ -1,0 +1,184 @@
+{
+  "id": "serumen_prop",
+  "name": "Serumen prop",
+  "aliases": ["Kotoran telinga menumpuk", "Impaksi serumen", "Serumen obsturan"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Penumpukan serumen yang menyumbat liang telinga: telinga terasa penuh, pendengaran turun (tuli konduktif), kadang tinitus/pusing; sering mendadak setelah kemasukan air (serumen mengembang) atau akibat kebiasaan mengorek dengan cotton bud. Tata laksana: serumenolitik lalu ekstraksi/irigasi bila membran timpani intak.",
+  "presentationDay": [1, 14],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 1 },
+      { "min": 10, "max": 30, "weight": 2 },
+      { "min": 31, "max": 59, "weight": 3 },
+      { "min": 60, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.55
+  },
+  "traits": [
+    { "id": "kemasukan_air", "probability": 0.45 },
+    { "id": "cotton_bud", "probability": 0.6 },
+    { "id": "riwayat_perforasi", "probability": 0.08 }
+  ],
+  "traitLabels": {
+    "kemasukan_air": "Mendadak setelah kemasukan air.",
+    "cotton_bud": "Kebiasaan memakai cotton bud.",
+    "riwayat_perforasi": "Riwayat telinga berair (curiga perforasi) — irigasi kontraindikasi."
+  },
+  "symptoms": [
+    { "id": "telinga_penuh", "probability": 1 },
+    { "id": "pendengaran_turun", "probability": 0.85 },
+    { "id": "telinga_berdenging", "probability": 0.3 },
+    { "id": "telinga_gatal", "probability": 0.3 },
+    { "id": "pusing_berputar", "probability": 0.08 }
+  ],
+  "chiefComplaint": { "primary": ["telinga_penuh"], "extraPool": ["pendengaran_turun"] },
+  "clueSymptoms": ["pendengaran_turun", "telinga_berdenging", "telinga_gatal", "pusing_berputar"],
+  "misattributions": ["kemasukan air", "masuk angin", "budek karena umur"],
+  "fears": ["telinga budek permanen"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tiba-tiba, Dok, habis mandi keramas kemarin telinga langsung buntu.",
+        "when": { "traits": ["kemasukan_air"] },
+        "clue": "Mendadak setelah kemasukan air"
+      },
+      {
+        "text": "Pelan-pelan, Dok, sudah {hariTeks} hari makin budek.",
+        "when": { "notTraits": ["kemasukan_air"] },
+        "clue": "Bertahap"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Nggak sakit, Dok, cuma penuh kayak tersumbat dan suara jadi pelan.",
+        "clue": "Penuh & tuli tanpa nyeri"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya bersihin telinga tiap hari pakai cotton bud, Dok.",
+        "when": { "traits": ["cotton_bud"] },
+        "clue": "Kebiasaan cotton bud (mendorong serumen)"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu waktu kecil telinga saya sering keluar cairan, Dok.",
+        "when": { "traits": ["riwayat_perforasi"] },
+        "clue": "Riwayat otore (curiga perforasi)"
+      },
+      {
+        "text": "Telinga saya belum pernah keluar cairan, Dok.",
+        "when": { "notTraits": ["riwayat_perforasi"] },
+        "clue": "Tanpa riwayat otore"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Pernah begini juga tahun lalu, Dok, dibersihkan di puskesmas.",
+        "weight": 0.4,
+        "clue": "Riwayat serumen berulang"
+      },
+      { "text": "Baru kali ini, Dok." }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "diagnostic": true,
+      "values": ["Serumen padat coklat kehitaman menutup seluruh liang telinga kanan"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "values": ["Telinga kanan tidak dapat dinilai (tertutup serumen); kiri intak"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "tes_penala",
+      "probability": 0.9,
+      "values": ["Rinne (−) kanan, Weber lateralisasi ke kanan (tuli konduktif)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "perforasi_membran_timpani",
+      "howToDistinguish": "Riwayat otore/OMSK atau trauma: irigasi telinga dikontraindikasikan — tanyakan sebelum tindakan.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["pemeriksaan_telinga"] }
+    },
+    {
+      "id": "otitis_media_efusi",
+      "howToDistinguish": "OME: telinga penuh setelah ISPA, liang bersih, membran timpani suram.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    },
+    {
+      "id": "otitis_eksterna",
+      "howToDistinguish": "Otitis eksterna: nyeri tarik aurikula, liang edema hiperemis.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "keyFindings": [
+    "Telinga penuh & tuli konduktif tanpa nyeri",
+    "Serumen padat menutup liang telinga",
+    "Riwayat cotton bud / kemasukan air"
+  ],
+  "teachingPoints": [
+    "Tanyakan riwayat telinga berair SEBELUM irigasi — perforasi membran timpani adalah kontraindikasi.",
+    "Cotton bud justru mendorong serumen lebih dalam."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_telinga",
+        "role": "kunci",
+        "reason": "Konfirmasi serumen, tes penala, dan nilai membran timpani setelah dibersihkan."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Tetes serumenolitik 3–5 hari lalu ekstraksi/irigasi di klinik." }],
+  "management": [
+    "Serumen lunak: ekstraksi dengan pengait/kuret serumen atau suction.",
+    "Serumen keras: tetes karbogliserin 10% 3 kali sehari 3–5 hari, lalu ekstraksi/irigasi air hangat suhu tubuh (bila membran timpani intak).",
+    "Edukasi: hentikan cotton bud; telinga membersihkan diri sendiri."
+  ],
+  "approach": [
+    "Pastikan tanpa nyeri hebat/otore; tanyakan riwayat perforasi.",
+    "Otoskopi & tes penala; nilai membran timpani setelah bersih."
+  ]
+}

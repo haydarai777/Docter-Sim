@@ -1,0 +1,159 @@
+{
+  "id": "rinitis_akut",
+  "name": "Rinitis akut (common cold)",
+  "aliases": ["Selesma", "Pilek", "Common cold", "Rinitis viral", "Nasofaringitis akut"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Infeksi virus (rhinovirus, dll.) mukosa hidung: pilek encer lalu kental, hidung tersumbat, bersin, nyeri/gatal tenggorokan, demam ringan, sembuh sendiri 7–10 hari. Mukosa hidung hiperemis & edema. Antibiotik tidak diperlukan; waspadai sinusitis bakterial bila > 10 hari atau memburuk setelah membaik.",
+  "presentationDay": [1, 6],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 9, "weight": 3 },
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "kontak_ispa", "probability": 0.6 }, { "id": "sekret_kental", "probability": 0.3, "when": { "dayMin": 3 } }],
+  "traitLabels": {
+    "kontak_ispa": "Kontak dengan penderita batuk-pilek.",
+    "sekret_kental": "Sekret menjadi mukoid kental (normal pada hari ke-3–5)."
+  },
+  "symptoms": [
+    { "id": "pilek", "probability": 1 },
+    { "id": "hidung_tersumbat", "probability": 0.9 },
+    { "id": "bersin", "probability": 0.7 },
+    { "id": "nyeri_tenggorokan", "probability": 0.5 },
+    { "id": "batuk", "probability": 0.5 },
+    { "id": "demam", "probability": 0.4 },
+    { "id": "nyeri_kepala", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["pilek"], "extraPool": ["hidung_tersumbat", "bersin"] },
+  "clueSymptoms": ["hidung_tersumbat", "bersin", "nyeri_tenggorokan", "batuk", "demam", "nyeri_kepala"],
+  "misattributions": ["masuk angin", "kehujanan", "alergi debu"],
+  "fears": ["sinusitis", "COVID"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru {hariTeks} hari, Dok, setelah kehujanan. Awalnya tenggorokan gatal, terus pilek.",
+        "clue": "Akut, diawali gatal tenggorokan lalu pilek"
+      }
+    ],
+    "karakter": [{ "text": "Ingusnya encer bening, Dok, lama-lama agak kental.", "clue": "Sekret encer → mukoid" }],
+    "riwayat_keluarga": [
+      {
+        "text": "Anak saya di rumah juga lagi pilek, Dok.",
+        "when": { "traits": ["kontak_ispa"] },
+        "clue": "Kontak serumah dengan ISPA"
+      }
+    ],
+    "keparahan": [{ "text": "Badan agak meriang saja, Dok, masih bisa beraktivitas.", "clue": "Gejala sistemik ringan" }],
+    "episode_sebelumnya": [
+      {
+        "text": "Biasa, Dok, setahun bisa dua-tiga kali pilek begini. Nggak pernah bersin-bersin tiap pagi.",
+        "clue": "Tidak ada pola alergi"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "mukosa_konka",
+      "diagnostic": true,
+      "values": ["Mukosa hiperemis dan edema, konka inferior membesar"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "sekret_hidung",
+      "when": { "notTraits": ["sekret_kental"] },
+      "values": ["Serosa encer"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "sekret_hidung",
+      "when": { "traits": ["sekret_kental"] },
+      "values": ["Mukoid kental"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "probability": 0.5,
+      "values": ["Faring hiperemis ringan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38.2] }
+  ],
+  "differentials": [
+    {
+      "id": "rinitis_alergi",
+      "howToDistinguish": "Rinitis alergi: bersin beruntun & gatal hidung/mata, kambuhan saat terpapar alergen, mukosa pucat livid, tanpa demam.",
+      "excludeBy": { "topics": ["episode_sebelumnya"], "tools": ["pemeriksaan_hidung"] }
+    },
+    {
+      "id": "influenza",
+      "howToDistinguish": "Influenza: demam tinggi mendadak, nyeri otot hebat, lemas berat.",
+      "excludeBy": { "tools": ["tanda_vital"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "sinusitis",
+      "howToDistinguish": "Rinosinusitis bakterial: > 10 hari, sekret purulen, nyeri wajah, nyeri tekan sinus, 'double worsening'.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["pemeriksaan_hidung"] }
+    }
+  ],
+  "keyFindings": [
+    "Pilek, hidung tersumbat, bersin, nyeri tenggorok ringan < 10 hari",
+    "Mukosa hidung hiperemis edema",
+    "Demam ringan atau tanpa demam"
+  ],
+  "teachingPoints": ["Rinitis akut disebabkan virus — antibiotik tidak bermanfaat dan memicu resistansi."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_keluarga", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_hidung", "role": "kunci", "reason": "Mukosa, konka, sekret, nyeri tekan sinus." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Faring/tonsil." },
+      { "tool": "pemeriksaan_paru", "role": "pendukung", "reason": "Menyingkirkan infeksi saluran napas bawah." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Simptomatik, istirahat, cukup minum; kembali bila > 10 hari atau memburuk." }],
+  "management": [
+    "Istirahat, cukup cairan, cuci hidung NaCl 0,9%.",
+    "Simptomatik: parasetamol bila demam/nyeri, dekongestan oral jangka pendek (dewasa), antihistamin bila bersin dominan.",
+    "Tanpa antibiotik.",
+    "Etiket batuk, cuci tangan; kembali bila sesak, demam tinggi, atau > 10 hari."
+  ],
+  "approach": ["Pastikan akut & tanpa pola alergi; nilai tanda sinusitis dan ISPA bawah."]
+}

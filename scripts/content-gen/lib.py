@@ -234,7 +234,7 @@ def D(**k):
     import re as _re
     denial = _re.compile(r"apa-apa|sehat semua|^(?:.*\.\s)?nggak ada, dok\.|nggak tahu", _re.I)
     for cat, variants in k.get("ana", {}).items():
-        assert cat in ANAM, (did, cat)
+        assert cat in ANAM and ANAM[cat]["type"] == "static", (did, cat)
         vs = []
         for v in variants if isinstance(variants, list) else [variants]:
             if isinstance(v, str):

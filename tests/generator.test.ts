@@ -32,7 +32,7 @@ describe('generator kasus', () => {
   it('demografi konsisten dengan penyakit, pekerjaan, dan config', () => {
     for (const id of DISEASE_IDS) {
       const disease = content.diseasesById.get(id)!;
-      for (const c of many(id, 200)) {
+      for (const c of many(id, perDisease(200, 20))) {
         const p = c.patient;
         const occ = content.occupationsById.get(p.occupationId)!;
         expect(p.age).toBeGreaterThanOrEqual(config.patient.minAge);
@@ -64,7 +64,7 @@ describe('generator kasus', () => {
   it('hari sakit dalam rentang presentasi penyakit', () => {
     for (const id of DISEASE_IDS) {
       const [lo, hi] = content.diseasesById.get(id)!.presentationDay;
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         expect(c.day).toBeGreaterThanOrEqual(lo);
         expect(c.day).toBeLessThanOrEqual(hi);
       }
@@ -73,7 +73,7 @@ describe('generator kasus', () => {
 
   it('keluhan utama hanya menyebut sebagian gejala yang benar-benar ada', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         expect(c.chiefComplaintSymptoms.length).toBeGreaterThan(0);
         for (const s of c.chiefComplaintSymptoms) expect(c.symptoms).toContain(s);
         // revealOrder = gejala sisanya
@@ -81,14 +81,14 @@ describe('generator kasus', () => {
       }
     }
     // Gejala tidak pernah disebut lengkap di awal (kecuali pasien hanya punya satu gejala).
-    for (const c of DISEASE_IDS.flatMap((id) => many(id, 100))) {
+    for (const c of DISEASE_IDS.flatMap((id) => many(id, perDisease(100, 10)))) {
       if (c.symptoms.length > 1) expect(c.revealOrder.length + c.hiddenSymptoms.length).toBeGreaterThan(0);
     }
   });
 
   it('jawaban anamnesis hanya mengungkap gejala yang ada', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         for (const a of Object.values(c.answers)) {
           for (const r of a.reveals ?? []) expect(c.symptoms).toContain(r);
         }
@@ -114,7 +114,7 @@ describe('generator kasus', () => {
     const tool = content.toolsById.get('darah_lengkap')!;
     const group = tool.groups![0]!;
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         const sum = c.findings.darah_lengkap!.filter((r) => group.params.includes(r.paramId)).reduce((s, r) => s + (r.value as number), 0);
         expect(sum).toBe(100);
       }
@@ -184,7 +184,7 @@ describe('generator kasus', () => {
 
   it('berat badan konsisten dengan IMT dan tinggi badan', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 40)) {
+      for (const c of many(id, perDisease(40, 6))) {
         const get = (p: string) => c.findings.timbangan!.find((r) => r.paramId === p)!.value as number;
         const expected = get('imt') * (get('tb') / 100) ** 2;
         expect(Math.abs(get('bb') - expected)).toBeLessThan(0.11);
@@ -194,7 +194,7 @@ describe('generator kasus', () => {
 
   it('kesan USG selalu konsisten dengan temuan organ (termasuk temuan insidental)', () => {
     for (const id of ['batu_saluran_kemih', 'dispepsia', 'gastritis', 'demam_tifoid', 'dm_tipe2']) {
-      for (const c of many(id, 250)) {
+      for (const c of many(id, perDisease(250, 25))) {
         const usg = c.findings.usg_abdomen!;
         const organs = usg.filter((r) => r.paramId !== 'kesan');
         const kesan = usg.find((r) => r.paramId === 'kesan')!;
@@ -221,7 +221,7 @@ describe('generator kasus', () => {
 
   it('setiap kategori anamnesis statis selalu punya jawaban untuk semua penyakit', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 50)) {
+      for (const c of many(id, perDisease(50, 6))) {
         for (const cat of content.anamnesis.filter((x) => x.type === 'static')) {
           expect(c.answers[cat.id]?.text.length, `${id}/${cat.id}`).toBeGreaterThan(3);
         }

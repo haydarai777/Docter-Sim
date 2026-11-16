@@ -209,7 +209,7 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     panggilan: call,
     // Anak < 10 tahun: dokter berbicara dengan pengantarnya.
     sapaan: companion ? companion.address : patient.address,
-    yangSakit: companion ? (age === 0 ? 'adik bayi' : `Dik ${call}`) : patient.address,
+    yangSakit: companion ? (age === 0 ? 'si kecil' : `Dik ${call}`) : patient.address,
     kegiatan: activityOf(occupation.id),
     usia: String(age),
     usiaTeks: shownAge,

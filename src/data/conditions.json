@@ -18,14 +18,6 @@
       "summary": "Demam akut dengan nyeri sendi hebat (poliartralgia) dan ruam; trombositopenia jarang berat."
     },
     {
-      "id": "influenza",
-      "name": "Influenza",
-      "aliases": ["Flu"],
-      "system": "Pernapasan",
-      "danger": "rendah",
-      "summary": "Demam akut, nyeri otot, batuk, pilek; sembuh sendiri dalam 1 minggu."
-    },
-    {
       "id": "ispa_virus",
       "name": "ISPA / Common cold",
       "aliases": ["Selesma", "Pilek", "Batuk pilek"],
@@ -40,14 +32,6 @@
       "system": "Pernapasan",
       "danger": "sedang",
       "summary": "Infeksi SARS-CoV-2: demam, batuk, anosmia; dapat berat pada lansia/komorbid."
-    },
-    {
-      "id": "bronkitis_akut",
-      "name": "Bronkitis Akut",
-      "aliases": ["Radang saluran napas"],
-      "system": "Pernapasan",
-      "danger": "rendah",
-      "summary": "Batuk akut (berdahak) pasca-ISPA tanpa konsolidasi pada pemeriksaan."
     },
     {
       "id": "ppok",
@@ -128,14 +112,6 @@
       "system": "Pencernaan",
       "danger": "tinggi",
       "summary": "Nyeri periumbilikal berpindah ke kanan bawah, demam, McBurney (+)."
-    },
-    {
-      "id": "gastroenteritis_akut",
-      "name": "Gastroenteritis Akut",
-      "aliases": ["Diare akut", "Muntaber"],
-      "system": "Pencernaan",
-      "danger": "sedang",
-      "summary": "Diare & muntah akut; risiko dehidrasi."
     },
     {
       "id": "hepatitis_a",
@@ -304,6 +280,150 @@
       "system": "Endokrin & metabolik",
       "danger": "tinggi",
       "summary": "Gizi kurang/buruk pada anak (marasmus, kwashiorkor)."
+    },
+    {
+      "id": "mastoiditis",
+      "name": "Mastoiditis",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Komplikasi otitis media: nyeri & bengkak di belakang telinga, daun telinga terdorong, demam tinggi. Rujuk segera."
+    },
+    {
+      "id": "otitis_media_efusi",
+      "name": "Otitis media efusi",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "rendah",
+      "summary": "Cairan di telinga tengah tanpa tanda radang akut: telinga penuh, pendengaran turun, membran timpani suram dengan air-fluid level."
+    },
+    {
+      "id": "perforasi_membran_timpani",
+      "name": "Perforasi membran timpani",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "sedang",
+      "summary": "Robekan gendang telinga (pasca OMA/trauma): kontraindikasi irigasi telinga."
+    },
+    {
+      "id": "sinusitis",
+      "name": "Rinosinusitis akut",
+      "aliases": ["Sinusitis"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "sedang",
+      "summary": "Radang sinus: hidung tersumbat, sekret purulen, nyeri wajah, > 10 hari atau memburuk setelah membaik."
+    },
+    {
+      "id": "tumor_nasofaring",
+      "name": "Karsinoma nasofaring",
+      "aliases": ["KNF"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Keganasan kepala-leher tersering: hidung tersumbat & mimisan unilateral berulang, telinga penuh unilateral, benjolan leher. Rujuk."
+    },
+    {
+      "id": "rinitis_medikamentosa",
+      "name": "Rinitis medikamentosa",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "rendah",
+      "summary": "Hidung tersumbat rebound akibat semprot dekongestan > 5–7 hari."
+    },
+    {
+      "id": "trombosis_sinus_kavernosus",
+      "name": "Trombosis sinus kavernosus",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Komplikasi infeksi segitiga bahaya wajah: demam tinggi, nyeri kepala hebat, kelopak bengkak, proptosis, oftalmoplegia. Rujuk segera."
+    },
+    {
+      "id": "aspirasi_benda_asing",
+      "name": "Aspirasi benda asing saluran napas",
+      "aliases": [],
+      "system": "Pernapasan",
+      "danger": "kritis",
+      "summary": "Benda asing masuk saluran napas: tersedak, batuk mendadak, sesak, stridor/mengi unilateral. Rujuk segera."
+    },
+    {
+      "id": "gangguan_pembekuan",
+      "name": "Gangguan pembekuan darah",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "tinggi",
+      "summary": "Perdarahan di banyak tempat/berulang (hemofilia, trombositopenia, antikoagulan)."
+    },
+    {
+      "id": "difteri",
+      "name": "Difteri",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "kritis",
+      "summary": "Infeksi C. diphtheriae pada anak tanpa imunisasi lengkap: pseudomembran putih keabuan yang berdarah bila diangkat, bull neck, stridor. Rujuk segera & lapor KLB."
+    },
+    {
+      "id": "abses_peritonsil",
+      "name": "Abses peritonsil",
+      "aliases": ["Quinsy"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Komplikasi tonsilitis: nyeri menelan hebat, trismus, suara hot-potato, uvula terdorong ke sisi sehat. Rujuk."
+    },
+    {
+      "id": "epiglotitis",
+      "name": "Epiglotitis akut",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "kritis",
+      "summary": "Radang epiglotis: demam tinggi, nyeri menelan hebat, ngiler, stridor, posisi tripod. Jangan periksa tenggorok paksa; rujuk segera."
+    },
+    {
+      "id": "tumor_laring",
+      "name": "Tumor laring",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Suara serak menetap > 3 minggu pada perokok usia > 40 tahun; dapat disertai sesak/benjolan leher. Rujuk."
+    },
+    {
+      "id": "stroke",
+      "name": "Stroke / vertigo sentral",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Defisit neurologis fokal mendadak (kelemahan, bicara pelo, wajah mencong, ataksia, diplopia). Rujuk segera."
+    },
+    {
+      "id": "bronkitis_akut",
+      "name": "Bronkitis akut",
+      "aliases": [],
+      "system": "Pernapasan",
+      "danger": "rendah",
+      "summary": "Batuk akut berdahak < 3 minggu pascainfeksi virus, tanpa tanda pneumonia."
+    },
+    {
+      "id": "folikulitis",
+      "name": "Folikulitis superfisialis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Pustul kecil di folikel rambut."
+    },
+    {
+      "id": "bppv",
+      "name": "Vertigo posisional paroksismal jinak (BPPV)",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "rendah",
+      "summary": "Vertigo singkat dipicu perubahan posisi kepala."
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "name": "Gastroenteritis akut",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Diare akut ± muntah."
     }
   ]
 }

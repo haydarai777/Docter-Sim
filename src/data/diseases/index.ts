@@ -38,11 +38,27 @@ import gastritis from './gastritis.json';
 import gerd from './gerd.json';
 // Pernapasan
 import asma from './asma.json';
+import influenza from './influenza.json';
+import pertusis from './pertusis.json';
 import pneumonia from './pneumonia.json';
 import tbParu from './tb_paru.json';
 // Saluran kemih
 import batuSaluranKemih from './batu_saluran_kemih.json';
 import isk from './isk.json';
+// Telinga, hidung & tenggorok
+import bendaAsingTht from './benda_asing_tht.json';
+import epistaksis from './epistaksis.json';
+import faringitis from './faringitis.json';
+import furunkelHidung from './furunkel_hidung.json';
+import laringitis from './laringitis.json';
+import mabukPerjalanan from './mabuk_perjalanan.json';
+import otitisEksterna from './otitis_eksterna.json';
+import otitisMediaAkut from './otitis_media_akut.json';
+import rinitisAkut from './rinitis_akut.json';
+import rinitisAlergi from './rinitis_alergi.json';
+import rinitisVasomotor from './rinitis_vasomotor.json';
+import serumenProp from './serumen_prop.json';
+import tonsilitis from './tonsilitis.json';
 
 export const DISEASE_FILES: unknown[] = [
   dmTipe2,
@@ -67,8 +83,23 @@ export const DISEASE_FILES: unknown[] = [
   gastritis,
   gerd,
   asma,
+  influenza,
+  pertusis,
   pneumonia,
   tbParu,
   batuSaluranKemih,
   isk,
+  bendaAsingTht,
+  epistaksis,
+  faringitis,
+  furunkelHidung,
+  laringitis,
+  mabukPerjalanan,
+  otitisEksterna,
+  otitisMediaAkut,
+  rinitisAkut,
+  rinitisAlergi,
+  rinitisVasomotor,
+  serumenProp,
+  tonsilitis,
 ];

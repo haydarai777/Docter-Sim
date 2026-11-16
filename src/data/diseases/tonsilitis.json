@@ -1,0 +1,178 @@
+{
+  "id": "tonsilitis",
+  "name": "Tonsilitis",
+  "aliases": ["Radang amandel", "Amandel", "Tonsilitis akut", "Tonsilitis kronik"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Radang tonsil palatina. Akut (bakteri/virus): nyeri menelan, demam, tonsil membesar hiperemis dengan detritus. Kronik: tonsilitis berulang, tonsil membesar dengan permukaan tidak rata, kripta melebar berisi detritus, napas bau, mengorok; indikasi tonsilektomi bila ≥ 7 episode/tahun, obstruksi, atau abses peritonsil.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [{ "min": 3, "max": 9, "weight": 4 }, { "min": 10, "max": 20, "weight": 4 }, { "min": 21, "max": 40, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "anak_tk", "weight": 2 },
+      { "id": "anak_sd", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 2 },
+      { "id": "pelajar", "weight": 2 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "kronik_eksaserbasi", "probability": 0.35 },
+    { "id": "mengorok", "probability": 0.5, "when": { "traits": ["kronik_eksaserbasi"] } }
+  ],
+  "traitLabels": {
+    "kronik_eksaserbasi": "Tonsilitis kronik eksaserbasi akut (berulang).",
+    "mengorok": "Mengorok/obstruksi saat tidur."
+  },
+  "symptoms": [
+    { "id": "nyeri_tenggorokan", "probability": 1 },
+    { "id": "sulit_menelan", "probability": 0.9 },
+    { "id": "demam", "probability": 0.8 },
+    { "id": "nyeri_telinga", "probability": 0.3 },
+    { "id": "nyeri_kepala", "probability": 0.3 },
+    { "id": "benjolan_kgb", "probability": 0.5 },
+    { "id": "malas_menyusu", "probability": 0.5, "when": { "ageMax": 3 } }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_tenggorokan"], "extraPool": ["sulit_menelan", "demam"] },
+  "clueSymptoms": ["sulit_menelan", "demam", "nyeri_telinga", "nyeri_kepala", "benjolan_kgb", "malas_menyusu"],
+  "misattributions": ["panas dalam", "kebanyakan es dan gorengan", "masuk angin"],
+  "fears": ["amandel harus dioperasi"],
+  "anamnesis": {
+    "onset": [{ "text": "Baru {hariTeks} hari, Dok, demam dan sakit buat menelan.", "clue": "Akut" }],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering sekali, Dok, setahun bisa tujuh-delapan kali kambuh begini.",
+        "when": { "traits": ["kronik_eksaserbasi"] },
+        "clue": "Tonsilitis berulang (≥ 7 kali/tahun)"
+      },
+      {
+        "text": "Baru kali ini separah ini, Dok.",
+        "when": { "notTraits": ["kronik_eksaserbasi"] },
+        "clue": "Episode pertama"
+      }
+    ],
+    "karakter": [{ "text": "Sakit buat menelan, Dok, sampai ke telinga.", "clue": "Odinofagia dengan nyeri alih ke telinga" }],
+    "pola": [
+      {
+        "text": "Kalau tidur dia ngorok keras, Dok, napas bau.",
+        "when": { "traits": ["mengorok"] },
+        "clue": "Mengorok & halitosis (tonsil hipertrofi)"
+      }
+    ],
+    "kebiasaan": [{ "text": "Suka jajan es dan gorengan, Dok.", "clue": "Kebiasaan jajan (pencetus yang diyakini pasien)" }],
+    "keparahan": [{ "text": "Masih bisa buka mulut lebar, Dok, minum masih bisa.", "clue": "Tanpa trismus (bukan abses)" }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "tonsil",
+      "when": { "traits": ["kronik_eksaserbasi"] },
+      "diagnostic": true,
+      "values": ["T3–T3 hiperemis, permukaan tidak rata, kripta melebar, detritus (+)"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "tonsil",
+      "when": { "notTraits": ["kronik_eksaserbasi"] },
+      "diagnostic": true,
+      "values": ["T2–T2 hiperemis, kripta melebar, detritus (+)"]
+    },
+    { "tool": "pemeriksaan_tenggorok", "param": "dinding_faring", "probability": 0.7, "values": ["Faring hiperemis"] },
+    { "tool": "kepala_leher", "param": "faring", "values": ["Faring hiperemis, tonsil membesar"] },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "probability": 0.6,
+      "values": ["KGB jugulodigastrik membesar, nyeri tekan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38, 39.2] }
+  ],
+  "differentials": [
+    {
+      "id": "abses_peritonsil",
+      "howToDistinguish": "Abses peritonsil: trismus, uvula terdorong ke sisi sehat, suara hot-potato, nyeri unilateral hebat — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "difteri",
+      "howToDistinguish": "Difteri: pseudomembran keabuan melekat & berdarah bila diangkat, bull neck — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "faringitis",
+      "howToDistinguish": "Faringitis: radang dominan di dinding faring, tonsil tidak membesar bermakna.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri menelan, demam, tonsil membesar hiperemis dengan detritus",
+    "Kronik: berulang, T3–T4, kripta melebar, mengorok"
+  ],
+  "teachingPoints": [
+    "Indikasi tonsilektomi (antara lain): ≥ 7 episode/tahun, ≥ 5/tahun selama 2 tahun, obstruksi napas/sleep apnea, abses peritonsil."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "episode_sebelumnya", "karakter", "pola", "keparahan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_tenggorok",
+        "role": "kunci",
+        "reason": "Ukuran tonsil, kripta, detritus, uvula, pseudomembran."
+      },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB leher." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Tonsilitis kronik berulang/obstruktif: rujuk THT untuk tonsilektomi setelah fase akut diobati.",
+      "when": { "traits": ["kronik_eksaserbasi"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    { "value": "rawat_jalan", "reason": "Antibiotik, analgesik-antipiretik, kumur; kontrol bila memburuk." }
+  ],
+  "management": [
+    "Antibiotik amoksisilin (atau eritromisin bila alergi) 10 hari pada tonsilitis bakteri.",
+    "Analgesik-antipiretik, cukup minum, makanan lunak, kumur air garam hangat.",
+    "Rujuk tonsilektomi bila memenuhi indikasi; segera bila curiga abses/difteri."
+  ],
+  "approach": [
+    "Nilai frekuensi episode, obstruksi, trismus.",
+    "Inspeksi tonsil (ukuran T1–T4, kripta, detritus), uvula, pseudomembran."
+  ]
+}

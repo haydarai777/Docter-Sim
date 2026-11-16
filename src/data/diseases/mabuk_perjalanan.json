@@ -1,0 +1,143 @@
+{
+  "id": "mabuk_perjalanan",
+  "name": "Mabuk perjalanan (motion sickness)",
+  "aliases": ["Motion sickness", "Mabuk darat", "Mabuk laut", "Kinetosis"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.6,
+  "summary": "Konflik informasi antara sistem vestibular, visual, dan proprioseptif saat bergerak di kendaraan: mual, muntah, pucat, keringat dingin, pusing, hipersalivasi; hilang setelah berhenti. Lebih sering pada anak 2–12 tahun, perempuan, dan riwayat migren. Pemeriksaan neurologis & vestibular normal.",
+  "presentationDay": [1, 3],
+  "demographics": {
+    "ageBands": [{ "min": 5, "max": 9, "weight": 2 }, { "min": 10, "max": 25, "weight": 3 }, { "min": 26, "max": 50, "weight": 2 }],
+    "maleRatio": 0.4
+  },
+  "traits": [
+    { "id": "akan_bepergian", "probability": 0.5 },
+    { "id": "riwayat_migren", "probability": 0.2, "when": { "ageMin": 12 } }
+  ],
+  "traitLabels": {
+    "akan_bepergian": "Datang minta pencegahan sebelum perjalanan.",
+    "riwayat_migren": "Riwayat migren (faktor risiko)."
+  },
+  "symptoms": [
+    { "id": "mabuk_kendaraan", "probability": 1 },
+    { "id": "mual_muntah", "probability": 1 },
+    { "id": "nyeri_kepala", "probability": 0.6 },
+    { "id": "keringat_dingin", "probability": 0.6 },
+    { "id": "pucat", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["mabuk_kendaraan"], "extraPool": ["mual_muntah"] },
+  "clueSymptoms": ["mual_muntah", "nyeri_kepala", "keringat_dingin", "pucat"],
+  "misattributions": ["masuk angin", "maag", "lemah jantung"],
+  "fears": ["ada penyakit otak", "vertigo"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tiap kali naik bus atau kapal, Dok, sejak kecil.",
+        "clue": "Berulang setiap naik kendaraan sejak kecil"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Mulai mual setengah jam setelah jalan, Dok, apalagi jalan berkelok atau sambil main HP.",
+        "clue": "Dipicu gerakan kendaraan/membaca di kendaraan"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Begitu turun dan istirahat, mualnya hilang sendiri, Dok.",
+        "clue": "Hilang setelah kendaraan berhenti"
+      }
+    ],
+    "harapan": [
+      {
+        "text": "Minggu depan saya mau mudik naik kapal, Dok, takut muntah terus.",
+        "when": { "traits": ["akan_bepergian"] },
+        "clue": "Akan bepergian — butuh pencegahan"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Di luar perjalanan saya sehat-sehat saja, Dok, nggak pernah pusing berputar.",
+        "clue": "Asimtomatik di luar perjalanan, tanpa vertigo spontan"
+      }
+    ],
+    "riwayat_penyakit": [{ "text": "Saya punya migren, Dok.", "when": { "traits": ["riwayat_migren"] }, "clue": "Riwayat migren" }]
+  },
+  "findings": [{ "tool": "keadaan_umum", "param": "kesan_sakit", "probability": 0.3, "values": ["Tampak sehat, sedikit pucat"] }],
+  "differentials": [
+    {
+      "id": "bppv",
+      "howToDistinguish": "BPPV: vertigo berputar singkat dipicu perubahan posisi kepala (bukan kendaraan), Dix-Hallpike (+).",
+      "excludeBy": { "topics": ["pola"], "tools": ["tes_vestibular"] }
+    },
+    {
+      "id": "stroke",
+      "howToDistinguish": "Vertigo sentral/stroke: defisit neurologis fokal, ataksia berat, nistagmus vertikal — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["saraf_kranial", "tes_vestibular"] }
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "howToDistinguish": "Gastroenteritis: mual-muntah dengan diare/demam, tidak terkait kendaraan.",
+      "excludeBy": { "topics": ["pola", "keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Mual, muntah, pucat, keringat dingin saat di kendaraan, hilang setelah berhenti",
+    "Pemeriksaan neurologis & vestibular normal di luar perjalanan"
+  ],
+  "teachingPoints": ["Antihistamin (dimenhidrinat) paling efektif bila diminum 30–60 menit SEBELUM perjalanan."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "pemberat_peringan", "keparahan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "tes_vestibular",
+        "role": "kunci",
+        "reason": "Menyingkirkan BPPV/vertigo lain (normal pada mabuk perjalanan)."
+      },
+      { "tool": "saraf_kranial", "role": "kunci", "reason": "Menyingkirkan defisit neurologis." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Edukasi pencegahan + antihistamin sebelum perjalanan." }],
+  "management": [
+    "Duduk di depan/dekat sayap (pesawat), di tengah kapal; pandang horizon; jangan membaca/main HP.",
+    "Ventilasi baik, makan ringan sebelum berangkat, hindari makanan berlemak.",
+    "Dimenhidrinat atau antihistamin lain 30–60 menit sebelum berangkat (waspada kantuk, jangan menyetir)."
+  ],
+  "approach": [
+    "Pastikan keluhan hanya saat di kendaraan.",
+    "Periksa neurologis & vestibular untuk menyingkirkan vertigo patologis."
+  ]
+}

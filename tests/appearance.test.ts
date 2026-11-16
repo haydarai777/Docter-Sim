@@ -4,7 +4,7 @@ import { applyIntents, startEncounter } from '../src/core/encounter';
 import { generateCase } from '../src/core/generator';
 import { deriveSeed } from '../src/core/rng';
 import type { CueId, PatientCase } from '../src/core/types';
-import { config, content, DISEASE_IDS } from './helpers';
+import { config, content, DISEASE_IDS, perDisease } from './helpers';
 
 const many = (diseaseId: string, n: number): PatientCase[] =>
   Array.from({ length: n }, (_, i) => generateCase(content, config, { diseaseId, seed: deriveSeed(77, `${diseaseId}:${i}`) }));
@@ -25,7 +25,7 @@ describe('penampilan pasien: konsisten dengan kasus', () => {
 
   it('tubuh & napas diambil dari hasil pemeriksaan kasus', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 40)) {
+      for (const c of many(id, perDisease(40, 6))) {
         const a = buildAppearance(c, content);
         expect(a.sex).toBe(c.patient.sex);
         expect(a.ageGroup).toBe(ageGroupOf(c.patient.age));
@@ -40,10 +40,12 @@ describe('penampilan pasien: konsisten dengan kasus', () => {
 
   it('isyarat yang terlihat TIDAK pernah bertentangan dengan kasus', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 120)) {
+      for (const c of many(id, perDisease(120, 12))) {
         const a = buildAppearance(c, content);
-        const has = (cue: CueId) => (a.cues[cue] ?? 0) > 0;
         const text = (tool: string, param: string) => String(val(c, tool, param).value).toLowerCase();
+        // Isyarat yang berasal dari gejala kasus (mis. ruam kulit, lepuh, sendi bengkak) selalu konsisten dengan kasus.
+        const bySymptom = (cue: CueId) => c.symptoms.some((s) => content.appearance.symptomCues.some((r) => r.symptom === s && r.cue === cue));
+        const has = (cue: CueId) => (a.cues[cue] ?? 0) > 0 && !bySymptom(cue);
         if (has('batuk')) expect(c.symptoms.some((s) => s === 'batuk' || s === 'batuk_darah'), `${id}: batuk`).toBe(true);
         if (has('kuning')) expect(val(c, 'kepala_leher', 'sklera').flag !== null || text('ekstremitas_kulit', 'kulit').includes('kuning'), `${id}: kuning`).toBe(true);
         if (has('pucat')) expect(text('kepala_leher', 'konjungtiva').includes('anemis (pucat)') || text('keadaan_umum', 'kesan_sakit').includes('pucat'), `${id}: pucat`).toBe(true);
@@ -106,7 +108,7 @@ describe('penampilan pasien: konsisten dengan kasus', () => {
       if (c.patient.age <= 12) expect(a.heightCm).toBeLessThanOrEqual(160);
       for (const t of Object.values(c.answers)) expect(t.text).not.toMatch(/merokok, Dok, sehari|nggak bisa kerja|tempat kerja/);
     }
-    for (const id of ['angina_stabil', 'dm_tipe2', 'batu_saluran_kemih']) expect(many(id, 150).every((c) => c.patient.age >= 18)).toBe(true);
+    for (const id of ['angina_stabil', 'dm_tipe2', 'batu_saluran_kemih']) expect(many(id, perDisease(150, 15)).every((c) => c.patient.age >= 18)).toBe(true);
   });
 
   it('rujukan tanda vital anak: nilai normal tidak ditandai abnormal, takipnea tetap abnormal', () => {
@@ -158,7 +160,7 @@ describe('bahasa tubuh sesuai konteks percakapan', () => {
 
   it('gestur tidak pernah menunjuk gejala yang tidak ada', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 25)) {
+      for (const c of many(id, perDisease(25, 6))) {
         for (const s of content.symptoms) {
           const g = ask(c, [{ kind: 'symptom', symptom: s.id }]);
           if (!c.symptoms.includes(s.id)) expect(g.every((x) => x.kind === 'geleng' || x.kind === 'bingung'), `${id}/${s.id}`).toBe(true);

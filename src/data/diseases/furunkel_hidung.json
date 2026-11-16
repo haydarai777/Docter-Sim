@@ -1,0 +1,212 @@
+{
+  "id": "furunkel_hidung",
+  "name": "Furunkel pada hidung",
+  "aliases": ["Bisul hidung", "Vestibulitis nasi", "Furunkel vestibulum nasi"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.6,
+  "summary": "Infeksi Staphylococcus aureus pada folikel rambut vestibulum nasi, sering akibat mencabut bulu hidung atau mengorek hidung. Benjolan merah nyeri di lubang hidung/ujung hidung. Berada di 'segitiga bahaya' wajah: jangan dipencet — dapat menyebar ke sinus kavernosus (trombosis) melalui vena tanpa katup.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 55, "weight": 3 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.6
+  },
+  "traits": [
+    { "id": "cabut_bulu_hidung", "probability": 0.5 },
+    { "id": "dipencet", "probability": 0.3 },
+    { "id": "dm_curiga", "probability": 0.08, "when": { "ageMin": 40 } },
+    { "id": "trombosis_kavernosus", "probability": 0.02, "when": { "traits": ["dipencet"] } }
+  ],
+  "traitLabels": {
+    "cabut_bulu_hidung": "Kebiasaan mencabut bulu hidung/mengorek hidung.",
+    "dipencet": "Sudah dipencet sendiri.",
+    "dm_curiga": "Faktor risiko diabetes.",
+    "trombosis_kavernosus": "Tanda penyebaran ke sinus kavernosus."
+  },
+  "symptoms": [
+    { "id": "hidung_bengkak_nyeri", "probability": 1 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "demam", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } },
+    { "id": "nyeri_kepala", "probability": 0.2 },
+    { "id": "benjolan_kelopak", "probability": 1, "when": { "traits": ["trombosis_kavernosus"] } }
+  ],
+  "chiefComplaint": { "primary": ["hidung_bengkak_nyeri"] },
+  "clueSymptoms": ["demam", "nyeri_kepala", "benjolan_kelopak"],
+  "misattributions": ["jerawat", "panas dalam"],
+  "fears": ["bisulnya pecah ke otak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru {hariTeks} hari, Dok, awalnya kayak jerawat di lubang hidung, sekarang bengkak.",
+        "clue": "Akut, berawal dari lubang hidung"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya suka nyabut bulu hidung, Dok.",
+        "when": { "traits": ["cabut_bulu_hidung"] },
+        "clue": "Mencabut bulu hidung"
+      },
+      {
+        "text": "Hidung saya sering saya korek, Dok.",
+        "when": { "notTraits": ["cabut_bulu_hidung"] },
+        "clue": "Mengorek hidung"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah saya pencet biar nanahnya keluar, Dok.",
+        "when": { "traits": ["dipencet"] },
+        "clue": "Dipencet sendiri (risiko penyebaran)"
+      },
+      { "text": "Cuma saya kompres air hangat, Dok.", "when": { "notTraits": ["dipencet"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang kepala saya sakit sekali, mata juga bengkak, badan panas tinggi, Dok.",
+        "reveals": ["demam", "benjolan_kelopak"],
+        "when": { "traits": ["trombosis_kavernosus"], "symptoms": ["demam", "benjolan_kelopak"] },
+        "clue": "Nyeri kepala hebat + kelopak bengkak + demam tinggi (curiga trombosis kavernosus)"
+      },
+      {
+        "text": "Sakitnya cenut-cenut di hidung saja, Dok.",
+        "when": { "notTraits": ["trombosis_kavernosus"] },
+        "clue": "Nyeri terlokalisir"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering bisulan juga di badan, Dok.",
+        "when": { "traits": ["dm_curiga"] },
+        "clue": "Bisul berulang (cari DM)"
+      },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["dm_curiga"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "hidung_luar",
+      "diagnostic": true,
+      "values": ["Vestibulum nasi kanan: benjolan hiperemis, edema, nyeri tekan dengan titik pus di pangkal rambut hidung"]
+    },
+    {
+      "tool": "tanda_vital",
+      "param": "suhu",
+      "when": { "symptoms": ["demam"], "notTraits": ["trombosis_kavernosus"] },
+      "range": [37.6, 38.3]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["trombosis_kavernosus"] }, "range": [39.2, 40.2] },
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "when": { "traits": ["trombosis_kavernosus"] },
+      "values": ["Kelopak mata kanan edema & hiperemis, kemosis, gerak bola mata terbatas"]
+    },
+    {
+      "tool": "saraf_kranial",
+      "param": "n_okulomotor",
+      "when": { "traits": ["trombosis_kavernosus"] },
+      "values": ["Gerak bola mata kanan terbatas ke segala arah (oftalmoplegia)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "trombosis_sinus_kavernosus",
+      "howToDistinguish": "Trombosis sinus kavernosus: demam tinggi, nyeri kepala hebat, kelopak bengkak, proptosis, oftalmoplegia — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "segmen_anterior", "saraf_kranial"] }
+    },
+    {
+      "id": "folikulitis",
+      "howToDistinguish": "Folikulitis superfisial: pustul kecil tanpa benjolan dalam yang nyeri.",
+      "excludeBy": { "tools": ["pemeriksaan_hidung"] }
+    },
+    {
+      "id": "rinitis_akut",
+      "howToDistinguish": "Rinitis: pilek & hidung tersumbat difus, tanpa benjolan nyeri lokal.",
+      "excludeBy": { "topics": ["keluhan_lain"], "tools": ["pemeriksaan_hidung"] }
+    }
+  ],
+  "keyFindings": [
+    "Benjolan nyeri hiperemis di vestibulum nasi dengan titik pus",
+    "Riwayat mencabut bulu/mengorek hidung",
+    "Segitiga bahaya: nilai tanda penyebaran intrakranial"
+  ],
+  "teachingPoints": ["Jangan memencet furunkel di segitiga bahaya wajah — vena wajah tanpa katup bermuara ke sinus kavernosus."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "complications": [
+    {
+      "id": "trombosis_kavernosus",
+      "name": "Trombosis sinus kavernosus",
+      "trait": "trombosis_kavernosus",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "segmen_anterior", "saraf_kranial"] },
+      "explanation": "Demam tinggi, nyeri kepala, kelopak bengkak, oftalmoplegia — kedaruratan, rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_obat", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_hidung", "role": "kunci", "reason": "Lokasi & luas furunkel." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Tanda penyebaran ke orbita/sinus kavernosus." },
+      { "tool": "saraf_kranial", "role": "pendukung", "reason": "Gerak bola mata (oftalmoplegia)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "gula_darah", "reason": "Bisul berulang: skrining diabetes." }]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Tanda trombosis sinus kavernosus: rujuk segera.",
+      "when": { "traits": ["trombosis_kavernosus"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Kompres hangat, antibiotik topikal ± oral, analgesik; jangan dipencet; kontrol 2–3 hari."
+    }
+  ],
+  "management": [
+    "Kompres hangat 3–4 kali sehari; JANGAN dipencet.",
+    "Salep antibiotik (mupirosin/asam fusidat); antibiotik oral antistafilokokus bila meluas/demam.",
+    "Analgesik; insisi drainase hanya bila abses matang (sebaiknya oleh dokter berpengalaman).",
+    "Hentikan kebiasaan mencabut bulu/mengorek hidung; cek gula darah bila berulang."
+  ],
+  "approach": [
+    "Inspeksi vestibulum & hidung luar.",
+    "Selalu nilai tanda penyebaran: demam tinggi, kelopak bengkak, gerak bola mata."
+  ]
+}

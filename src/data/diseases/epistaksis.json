@@ -1,0 +1,241 @@
+{
+  "id": "epistaksis",
+  "name": "Epistaksis",
+  "aliases": ["Mimisan", "Perdarahan hidung", "Epistaksis anterior", "Epistaksis posterior"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Perdarahan dari hidung. Anterior (90%): pleksus Kiesselbach di septum anterior, sering pada anak/dewasa muda akibat mengorek hidung, udara kering, rinitis; mudah dihentikan dengan penekanan. Posterior: dari a. sfenopalatina, pada usia lanjut/hipertensi, perdarahan banyak mengalir ke tenggorok — rujuk. Cari penyebab sistemik (hipertensi, gangguan pembekuan, dengue) dan lokal (trauma, tumor).",
+  "presentationDay": [1, 2],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 2 },
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 50, "weight": 2 },
+      { "min": 51, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.55
+  },
+  "traits": [
+    { "id": "posterior", "probability": 0.15, "when": { "ageMin": 40 } },
+    { "id": "hipertensi_terkait", "probability": 0.5, "when": { "ageMin": 45 } },
+    { "id": "korek_hidung", "probability": 0.5, "when": { "ageMax": 40 } },
+    { "id": "berulang", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "posterior": "Epistaksis posterior.",
+    "hipertensi_terkait": "Hipertensi menyertai.",
+    "korek_hidung": "Kebiasaan mengorek hidung.",
+    "berulang": "Epistaksis berulang."
+  },
+  "symptoms": [
+    { "id": "perdarahan_mukosa", "probability": 1 },
+    { "id": "nyeri_kepala", "probability": 0.4, "when": { "traits": ["hipertensi_terkait"] } },
+    { "id": "mual_muntah", "probability": 0.4, "when": { "traits": ["posterior"] } },
+    { "id": "lemas", "probability": 0.5, "when": { "traits": ["posterior"] } }
+  ],
+  "chiefComplaint": { "primary": ["perdarahan_mukosa"] },
+  "clueSymptoms": ["nyeri_kepala", "mual_muntah", "lemas"],
+  "misattributions": ["kecapekan", "panas dalam", "darah tinggi naik"],
+  "fears": ["kanker", "darah tinggi", "stroke"],
+  "anamnesis": {
+    "onset": [{ "text": "Tadi pagi, Dok, tiba-tiba mimisan.", "clue": "Akut" }],
+    "lokasi": [
+      {
+        "text": "Dari lubang hidung kanan, Dok, netes ke depan.",
+        "when": { "notTraits": ["posterior"] },
+        "clue": "Perdarahan ke depan dari satu sisi (anterior)"
+      },
+      {
+        "text": "Darahnya banyak, Dok, malah masuk ke tenggorokan sampai saya muntah darah.",
+        "reveals": ["mual_muntah"],
+        "when": { "traits": ["posterior"], "symptoms": ["mual_muntah"] },
+        "clue": "Darah mengalir ke tenggorok (curiga posterior)"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Habis saya korek-korek hidung, Dok, udaranya kering.",
+        "when": { "traits": ["korek_hidung"] },
+        "clue": "Dipicu mengorek hidung"
+      },
+      { "text": "Nggak ada apa-apa, Dok, tahu-tahu keluar.", "when": { "notTraits": ["korek_hidung"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya darah tinggi, Dok, jarang kontrol.",
+        "when": { "traits": ["hipertensi_terkait"] },
+        "clue": "Hipertensi tidak terkontrol"
+      },
+      { "text": "Saya nggak punya penyakit darah tinggi, Dok.", "when": { "notTraits": ["hipertensi_terkait"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering mimisan begini, Dok, sebulan bisa dua kali.",
+        "when": { "traits": ["berulang"] },
+        "clue": "Epistaksis berulang (cari penyebab lokal/sistemik)"
+      },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["berulang"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Nggak minum obat pengencer darah, Dok. Gusi juga nggak pernah berdarah.",
+        "clue": "Tanpa antikoagulan & perdarahan lain"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "septum",
+      "when": { "notTraits": ["posterior"] },
+      "diagnostic": true,
+      "values": ["Sumber perdarahan di pleksus Kiesselbach septum anterior kanan, perdarahan aktif minimal"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "septum",
+      "when": { "traits": ["posterior"] },
+      "values": ["Septum anterior tidak tampak sumber perdarahan"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["posterior"] },
+      "values": ["Darah segar mengalir di dinding posterior orofaring"]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [165, 195] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["hipertensi_terkait"] }, "range": [95, 112] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["posterior"] }, "range": [100, 118] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["posterior"] },
+      "values": ["Tampak sakit sedang, pucat, tampak cemas"]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["posterior"] },
+      "probability": 0.6,
+      "range": [9.5, 11.5]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "tumor_nasofaring",
+      "howToDistinguish": "Karsinoma nasofaring: epistaksis unilateral berulang pada dewasa, hidung tersumbat, telinga penuh unilateral, benjolan leher — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["episode_sebelumnya"], "tools": ["kepala_leher", "pemeriksaan_hidung"] }
+    },
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam tinggi akut dengan perdarahan spontan & trombositopenia.",
+      "excludeBy": { "topics": ["keluhan_lain"], "tools": ["tanda_vital"] }
+    },
+    {
+      "id": "gangguan_pembekuan",
+      "howToDistinguish": "Gangguan pembekuan: perdarahan di banyak tempat, riwayat keluarga, antikoagulan; trombosit/fungsi pembekuan abnormal.",
+      "excludeBy": { "topics": ["riwayat_obat"] }
+    }
+  ],
+  "keyFindings": [
+    "Perdarahan dari hidung; sumber di septum anterior (Kiesselbach) pada epistaksis anterior",
+    "Darah mengalir ke tenggorok & sumber tak tampak → posterior",
+    "Ukur tekanan darah; cari penyebab sistemik"
+  ],
+  "teachingPoints": [
+    "Pertolongan pertama: duduk condong ke DEPAN dan tekan cuping hidung 10–15 menit — bukan menengadah.",
+    "Epistaksis posterior & berulang pada dewasa harus dirujuk (singkirkan tumor nasofaring)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "complications": [
+    {
+      "id": "posterior",
+      "name": "Epistaksis posterior",
+      "trait": "posterior",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_hidung", "pemeriksaan_tenggorok", "tanda_vital"] },
+      "explanation": "Perdarahan banyak ke tenggorok — pasang tampon & rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "pemberat_peringan", "riwayat_penyakit", "episode_sebelumnya", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_hidung", "role": "kunci", "reason": "Mencari sumber perdarahan (anterior/posterior)." },
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Darah mengalir di orofaring (posterior)." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Benjolan leher (tumor nasofaring)." }
+    ],
+    "tests": [
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "when": { "traits": ["posterior"] },
+        "reason": "Hb & trombosit pada perdarahan banyak/berulang."
+      },
+      {
+        "tool": "darah_lengkap",
+        "role": "pendukung",
+        "when": { "traits": ["berulang"] },
+        "reason": "Trombosit bila epistaksis berulang."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "hipertensi_terkait": "hipertensi" },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Epistaksis posterior: tampon anterior/posterior sementara, stabilkan, rujuk segera.",
+      "when": { "traits": ["posterior"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Epistaksis berulang pada dewasa: hentikan perdarahan lalu rujuk THT (singkirkan tumor).",
+      "when": { "traits": ["berulang"], "ageMin": 18 },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Epistaksis anterior: penekanan, vasokonstriktor/tampon anterior, kontrol tekanan darah; edukasi."
+    }
+  ],
+  "management": [
+    "Duduk tegak condong ke depan, tekan cuping hidung 10–15 menit, kompres dingin.",
+    "Tampon kapas + vasokonstriktor (pantokain-efedrin); kauterisasi AgNO3 sumber anterior.",
+    "Tampon anterior bila masih berdarah; ukur & tatalaksana tekanan darah.",
+    "Posterior/berat/berulang: rujuk."
+  ],
+  "approach": [
+    "Stabilkan ABC & hentikan perdarahan lebih dulu.",
+    "Tentukan anterior vs posterior; ukur TD; cari penyebab sistemik."
+  ]
+}
