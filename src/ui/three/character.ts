@@ -103,6 +103,9 @@ export class Character {
   private readonly ribs: Bone;
   private readonly skeleton: Skeleton;
   private readonly disposables: { dispose(): void }[] = [];
+  private readonly skinMats: MeshStandardMaterial[] = [];
+  private skinBase = new Color();
+  private tintKey = '';
 
   constructor(readonly look: PatientAppearance, seed: number) {
     const a = look;
@@ -314,6 +317,25 @@ export class Character {
       child,
     });
     this.headBall.add(this.face.mesh);
+
+    // Material kulit (badan & kepala) untuk perubahan warna klinis (pucat/sianosis).
+    const hex = skinColor.getHex();
+    root.traverse((o) => {
+      const m = (o as Mesh).material as MeshStandardMaterial | undefined;
+      if (m && (m as MeshStandardMaterial).isMeshStandardMaterial && m.color.getHex() === hex && !this.skinMats.includes(m)) this.skinMats.push(m);
+    });
+    this.skinBase = skinColor.clone();
+  }
+
+  /** Warna kulit klinis: campur warna dasar dengan `tint` sebesar `amount` (0 = normal). */
+  setSkinTint(tint: Color | null, amount: number): void {
+    const key = tint ? `${tint.getHexString()}:${amount.toFixed(2)}` : '';
+    if (key === this.tintKey) return;
+    this.tintKey = key;
+    for (const m of this.skinMats) {
+      m.color.copy(this.skinBase);
+      if (tint && amount > 0) m.color.lerp(tint, Math.min(1, amount));
+    }
   }
 
   /** Gerak napas: dinding dada depan mengembang (b ≈ 0..0,1). */

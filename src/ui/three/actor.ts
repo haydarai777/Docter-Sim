@@ -14,7 +14,7 @@ import { EMOTION_FACE, type FaceState, NEUTRAL_FACE } from './face';
 import { LAYOUT } from './room';
 import type { StageUpdatable } from './stage';
 
-export type ActorMode = 'walk' | 'turn' | 'stand' | 'sit_down' | 'seated' | 'stand_up';
+export type ActorMode = 'walk' | 'turn' | 'stand' | 'sit_down' | 'seated' | 'stand_up' | 'lying';
 /** Reaksi terhadap pemeriksaan fisik. */
 export type ExamReaction = 'ulur_lengan' | 'buka_mulut' | 'napas_dalam' | 'tegak';
 type Side = 'L' | 'R';
@@ -64,6 +64,7 @@ const envelope = (t: number, dur: number, attack = 0.28, release = 0.35) => Math
 const sign = (side: Side) => (side === 'L' ? 1 : -1);
 const DOWN = new Vector3(0, -1, 0);
 const UP = new Vector3(0, 1, 0);
+const XAXIS = new Vector3(1, 0, 0);
 
 /** Pengacak kecil deterministik per pasien. */
 function prng(seed: number): () => number {
@@ -74,6 +75,59 @@ function prng(seed: number): () => number {
     return ((s ^= s >>> 16) >>> 0) / 4294967296;
   };
 }
+
+/**
+ * IGD — posisi berbaring: titik pinggul di permukaan kasur (dunia), arah kepala (`yaw` 0 = kepala
+ * ke −Z), sudut sandaran punggung, miring (roll, + = sisi kiri di bawah), dan elevasi tungkai.
+ */
+export interface BedPose {
+  x: number;
+  y: number;
+  z: number;
+  yaw: number;
+  incline: number;
+  roll: number;
+  legsUp: number;
+}
+
+/** IGD — keadaan klinis yang tampak (diperbarui adegan dari fisiologi pasien). */
+export interface ClinicalLook {
+  /** 1 sadar penuh · ~0.6 somnolen · ~0.3 sopor · 0 koma. */
+  alert: number;
+  seizure: boolean;
+  /** Henti jantung / meninggal: tanpa napas, lemas, mata setengah terbuka. */
+  lifeless: boolean;
+  /** Kompresi dada sedang dilakukan pada pasien ini. */
+  compressions: boolean;
+  /** Gelisah/agitasi (0..1): kepala & lengan bergerak. */
+  agitation: number;
+}
+
+/** IGD — target tangan untuk staf (meraih bagian tubuh pasien, RJP, BVM, mendorong brankar). */
+export interface HandsPose {
+  L?: ((out: Vector3) => Vector3 | null) | null;
+  R?: ((out: Vector3) => Vector3 | null) | null;
+  /** Condong badan ke depan (rad). */
+  lean?: number;
+  /** Kompresi dada berirama 110×/menit (target tangan ikut turun). */
+  cpr?: boolean;
+  /** Memompa bag (BVM) tiap ±6 detik. */
+  squeeze?: boolean;
+  /** Telapak menghadap ke bawah. */
+  palmDown?: boolean;
+}
+
+/** IGD — posisi yang didikte dari luar (staf yang mendorong brankar/kursi roda, memapah). */
+export interface PuppetPose {
+  x: number;
+  z: number;
+  yaw: number;
+  /** Kecepatan (m/dtk) untuk animasi langkah. */
+  speed: number;
+}
+
+/** Bagian tubuh yang bisa diraih staf. */
+export type BodyPoint = 'dada' | 'mulut' | 'kepala' | 'lengan_bawah' | 'lengan_atas' | 'paha' | 'pinggul' | 'punggung' | 'bahu';
 
 /** Posisi akar (dunia) & arah hadap untuk pasien yang digendong/dipangku. */
 export interface CarryAnchor {
@@ -88,6 +142,12 @@ export class Actor implements StageUpdatable {
   mode: ActorMode = 'stand';
   /** Mata dokter (kamera) di ruang dunia — arah pandang & kontak mata. */
   readonly eyeTarget = new Vector3().copy(LAYOUT.eye);
+  /** Tinggi dudukan kursi saat ini (m). */
+  seatY: number = LAYOUT.seat.y;
+  /** Pose kaki saat dibawa: dipangku (menjulur) atau di kursi roda (di pijakan kaki). */
+  carryLegs: 'lap' | 'chair' = 'lap';
+  /** IGD: keadaan klinis yang tampak (null = perilaku pasien poliklinik biasa). */
+  clinic: ClinicalLook | null = null;
 
   private readonly look: PatientAppearance;
   private readonly rnd: () => number;
@@ -161,6 +221,19 @@ export class Actor implements StageUpdatable {
   private readonly e1 = new Euler();
   private readonly m1 = new Matrix4();
   private readonly dominant: Side;
+  // --- IGD ---------------------------------------------------------------
+  private bed: (() => BedPose) | null = null;
+  private lieFrom: { pos: Vector3; quat: Quaternion; t: number; dur: number } | null = null;
+  private hands: HandsPose | null = null;
+  private puppet: (() => PuppetPose) | null = null;
+  private puppetWalking = false;
+  /** Bobot kontak mata frame ini (diturunkan oleh kesadaran). */
+  private lookScale = 1;
+  private compress = 0;
+  private joltT = 0;
+  private squeezeT = 0;
+  private readonly qLie = new Quaternion();
+  private readonly v7 = new Vector3();
 
   constructor(look: PatientAppearance, seed: number) {
     this.look = look;
@@ -189,6 +262,8 @@ export class Actor implements StageUpdatable {
   carry(anchor: (() => CarryAnchor) | null): void {
     this.carrier = anchor;
     if (anchor) {
+      this.bed = null;
+      this.lieFrom = null;
       this.mode = 'seated';
       this.sitU = 1;
       const a = anchor();
@@ -227,6 +302,8 @@ export class Actor implements StageUpdatable {
 
   /** Letakkan pasien langsung duduk di kursi (mis. melanjutkan sesi tersimpan). */
   placeSeated(): void {
+    this.bed = null;
+    this.lieFrom = null;
     this.mode = 'seated';
     this.sitU = 1;
     this.yaw = this.seatYaw;
@@ -236,6 +313,8 @@ export class Actor implements StageUpdatable {
   }
 
   placeAt(pos: Vector3, yaw: number): void {
+    this.bed = null;
+    this.lieFrom = null;
     this.mode = 'stand';
     this.sitU = 0;
     this.yaw = yaw;
@@ -245,6 +324,10 @@ export class Actor implements StageUpdatable {
 
   /** Berjalan menyusuri titik-titik; di akhir menghadap `finalYaw` lalu memanggil `onArrive`. */
   walkPath(points: readonly Vector3[], finalYaw: number | null, onArrive: () => void): void {
+    this.bed = null;
+    this.lieFrom = null;
+    this.puppet = null;
+    this.puppetWalking = false;
     this.path = points.map((p) => p.clone());
     this.pathIndex = 0;
     this.finalYaw = finalYaw;
@@ -321,6 +404,111 @@ export class Actor implements StageUpdatable {
     return this.character.headBall.getWorldPosition(out);
   }
 
+  // --- IGD -----------------------------------------------------------------
+
+  /**
+   * Berbaring di bed/brankar yang posisinya diberikan `pose` setiap frame. Dari posisi apa pun
+   * (berdiri, duduk di kursi roda, brankar lain) tubuh berpindah halus dalam `seconds` detik.
+   */
+  lie(pose: () => BedPose, seconds = 1.4): void {
+    const root = this.character.root;
+    this.carrier = null;
+    this.puppet = null;
+    this.puppetWalking = false;
+    this.path = [];
+    this.onArrive = null;
+    this.sitDone = null;
+    this.bed = pose;
+    this.lieFrom = seconds > 0 ? { pos: root.position.clone(), quat: root.quaternion.clone(), t: 0, dur: seconds } : null;
+    const wasLying = this.mode === 'lying';
+    this.mode = 'lying';
+    this.sitU = 0;
+    if (seconds <= 0 && !wasLying) this.snap();
+  }
+
+  /** Bangun dari bed & berdiri di `pos` menghadap `yaw` (mis. pulang berjalan). */
+  rise(pos: Vector3, yaw: number): void {
+    this.bed = null;
+    this.lieFrom = null;
+    this.character.root.quaternion.identity();
+    this.placeAt(pos, yaw);
+  }
+
+  /** Sentakan badan sesaat (kejut listrik defibrilator/kardioversi). */
+  jolt(): void {
+    this.joltT = 0.45;
+  }
+
+  get lying(): boolean {
+    return this.mode === 'lying';
+  }
+
+  /** Target tangan staf (null = lepas). */
+  setHands(pose: HandsPose | null): void {
+    this.hands = pose;
+  }
+
+  /** Posisi & arah dari luar setiap frame (null = kembali mandiri, berdiri di tempat). */
+  follow(fn: (() => PuppetPose) | null): void {
+    this.puppet = fn;
+    if (fn) {
+      this.path = [];
+      this.onArrive = null;
+      this.mode = 'stand';
+    } else if (this.puppetWalking) {
+      this.puppetWalking = false;
+      this.mode = 'stand';
+    }
+  }
+
+  get following(): boolean {
+    return this.puppet !== null;
+  }
+
+  /** Kecepatan berjalan saat ini (m/dtk). */
+  get moving(): boolean {
+    return this.mode === 'walk' || this.mode === 'turn' || this.puppetWalking;
+  }
+
+  /** Arah hadap (radian, 0 = +Z). */
+  get facing(): number {
+    return this.yaw;
+  }
+
+  /** Titik permukaan bagian tubuh (dunia) untuk diraih orang lain. */
+  bodyPoint(site: BodyPoint, out: Vector3, side: 'L' | 'R' = 'R'): Vector3 {
+    const c = this.character;
+    const d = c.dims;
+    const s = d.s;
+    const x = sign(side);
+    switch (site) {
+      case 'dada':
+        return c.chest.localToWorld(out.set(0, (0.31 - 0.25) * s, c.body.surface(0.31).front + 0.012 * s));
+      case 'mulut':
+        return c.headBall.localToWorld(c.headSite('mulut', 0, out));
+      case 'kepala':
+        return c.headBall.getWorldPosition(out);
+      case 'bahu':
+        return (side === 'L' ? c.shoulderL : c.shoulderR).getWorldPosition(out);
+      case 'punggung':
+        return c.chest.localToWorld(out.set(x * 0.06 * s, 0.02 * s, c.body.surface(0.28).back - 0.03 * s));
+      case 'pinggul':
+        return c.hips.localToWorld(out.set(x * d.hipHalf * 0.9, 0.04 * s, 0));
+      case 'lengan_atas':
+      case 'lengan_bawah': {
+        const arm = side === 'L' ? c.armL : c.armR;
+        const a = (site === 'lengan_atas' ? arm.upper : arm.lower).getWorldPosition(out);
+        const b = (site === 'lengan_atas' ? arm.lower : arm.end).getWorldPosition(this.v7);
+        return a.lerp(b, 0.55);
+      }
+      case 'paha': {
+        const leg = side === 'L' ? c.legL : c.legR;
+        const a = leg.upper.getWorldPosition(out);
+        return a.lerp(leg.lower.getWorldPosition(this.v7), 0.55);
+      }
+    }
+  }
+
   dispose(): void {
     this.character.dispose();
   }
@@ -335,18 +523,212 @@ export class Actor implements StageUpdatable {
     for (const k of FRAME_KEYS) F[k] = 0;
     F.fEyes = 1;
     F.hipsY = this.character.dims.hipsY;
+    this.lookScale = 1;
     this.resetArm('L');
     this.resetArm('R');
 
+    if (this.mode === 'lying' && this.bed) {
+      this.lyingPose(dt);
+      this.breathing(dt);
+      this.idle(dt);
+      this.runClips(dt);
+      this.clinical(dt);
+      this.joltPose(dt);
+      this.handsPose(dt);
+      this.talking_(dt);
+      this.faceUpdate(dt);
+      this.write(dt, false);
+      return;
+    }
     this.locomotion(dt);
     this.breathing(dt);
     this.cuePosture(dt);
     this.idle(dt);
     this.holdChild();
     this.runClips(dt);
+    if (this.clinic) this.clinical(dt);
+    this.joltPose(dt);
+    this.handsPose(dt);
     this.talking_(dt);
     this.faceUpdate(dt);
     this.write(dt, false);
+  }
+
+  // --- IGD: berbaring, keadaan klinis, tangan staf ------------------------------
+
+  private lyingPose(dt: number): void {
+    const c = this.character;
+    const d = c.dims;
+    const F = this.F;
+    const b = this.bed!();
+    const root = c.root;
+    // Rotasi berbaring: arah kepala (yaw) · telentang (−90° di X) · miring di sumbu panjang badan.
+    const q = this.qLie.setFromAxisAngle(UP, b.yaw);
+    q.multiply(this.q1.setFromAxisAngle(XAXIS, -Math.PI / 2));
+    if (b.roll) q.multiply(this.q1.setFromAxisAngle(UP, b.roll));
+    const surf = c.body.surface(0.12);
+    const lift = lerp(Math.abs(surf.back), surf.half * 0.92, Math.min(1, Math.abs(Math.sin(b.roll)))) + 0.01;
+    const hipOff = this.v1.set(0, d.hipsY, 0).applyQuaternion(q);
+    const goal = this.v2.set(b.x - hipOff.x, b.y + lift - hipOff.y - 0.012 * this.compress, b.z - hipOff.z);
+    const from = this.lieFrom;
+    if (from) {
+      from.t += dt;
+      const u = ease(from.t / from.dur);
+      root.position.lerpVectors(from.pos, goal, u);
+      root.position.y += Math.sin(Math.PI * u) * 0.06;
+      root.quaternion.slerpQuaternions(from.quat, q, u);
+      if (from.t >= from.dur) this.lieFrom = null;
+    } else {
+      root.position.copy(goal);
+      root.quaternion.copy(q);
+    }
+    this.yaw = b.yaw;
+    F.hipsY = d.hipsY;
+    // Sandaran punggung: tubuh menekuk di pinggang mengikuti kasur.
+    F.spineX += b.incline * 0.78;
+    F.chestX += b.incline * 0.16;
+    // Kepala di atas bantal (dagu sedikit ke dada).
+    F.headX += 0.12 - b.incline * 0.12;
+    // Lengan di sisi badan di atas kasur, sedikit terbuka; siku hampir lurus.
+    for (const side of ['L', 'R'] as const) {
+      const g = this.armGoal[side];
+      g.fkZ = sign(side) * (0.13 + 0.06 * Math.max(0, this.look.build));
+      g.fkElbow = 0.14;
+      g.fkX = -0.04;
+    }
+    // Tungkai: lurus (lutut sedikit menekuk) atau diangkat (posisi syok).
+    const L = (d.thigh + d.shin) * 0.994;
+    const hipJoint = d.hipsY - d.hipDrop;
+    for (const side of ['L', 'R'] as const) {
+      const a = this.ankle[side];
+      const up = b.legsUp;
+      a.set(sign(side) * d.hipHalf * 0.95, hipJoint - L * Math.cos(up), L * Math.sin(up) + 0.03 * d.s);
+    }
+    this.legFk = 0;
+  }
+
+  /** Kesadaran, kejang, henti jantung, kompresi dada, agitasi. */
+  private clinical(dt: number): void {
+    const F = this.F;
+    const cl = this.clinic;
+    const t = this.time;
+    if (!cl) {
+      if (this.mode === 'lying') this.lookScale = 0.75;
+      return;
+    }
+    const lying = this.mode === 'lying';
+    const alert = cl.lifeless ? 0 : cl.alert;
+    // Mata & kontak mata menurut kesadaran.
+    if (alert < 0.85) {
+      const eyes = alert >= 0.5 ? 0.5 + 0.15 * Math.sin(t * 0.4) : alert >= 0.25 ? (Math.sin(t * 0.23) > 0.85 ? 0.35 : 0.06) : 0;
+      F.fEyes = Math.min(F.fEyes, eyes);
+      this.lookScale = alert >= 0.5 ? 0.35 : 0;
+      F.headX += 0.08 * (1 - alert);
+      if (lying) F.headY += 0.28 * (1 - alert);
+      F.fMouth = Math.max(F.fMouth, 0.1 * (1 - alert));
+      for (const side of ['L', 'R'] as const) this.armGoal[side].fkZ += sign(side) * 0.06 * (1 - alert);
+    } else if (lying) this.lookScale = 0.8;
+    if (cl.lifeless) {
+      F.fEyes = 0.22;
+      this.blink = 0;
+      this.gaze.x = this.gaze.y = 0;
+      F.fMouth = Math.max(F.fMouth, 0.22);
+      F.breath = 0;
+      F.headY += 0.12;
+    }
+    // Kompresi dada: dada tertekan berirama (dinding dada & seluruh badan sedikit turun).
+    if (cl.compressions) {
+      const ph = (t * 1.85) % 1;
+      this.compress = Math.max(0, Math.sin(ph * Math.PI * 2)) ** 1.5;
+      F.breath = -0.03 * this.compress;
+      F.headX -= 0.04 * this.compress;
+    } else this.compress = 0;
+    // Kejang tonik-klonik: sentakan berirama tungkai & lengan, mata terbuka melirik ke atas.
+    if (cl.seizure && !cl.lifeless) {
+      const j = Math.sin(t * 26) * 0.6 + Math.sin(t * 17.3) * 0.4;
+      F.fEyes = 0.7;
+      F.fGazeY = 0.85;
+      F.fGazeX = 0.5;
+      F.fMouth = Math.max(F.fMouth, 0.08 + 0.06 * j);
+      F.headX -= 0.18 + 0.06 * j;
+      F.headY += 0.1 * Math.sin(t * 21);
+      F.spineX -= 0.05 + 0.03 * j;
+      for (const side of ['L', 'R'] as const) {
+        const g = this.armGoal[side];
+        g.fkElbow = 1.95 + 0.22 * j;
+        g.fkX = 0.12 + 0.1 * Math.sin(t * 24 + sign(side));
+        g.fkZ = sign(side) * (0.16 + 0.06 * j);
+        this.ankle[side].y += 0.025 * Math.sin(t * 23 + sign(side) * 1.3);
+      }
+      this.lookScale = 0;
+      this.blink = 0;
+    }
+    // Gelisah: kepala menoleh-noleh, tangan bergerak.
+    if (cl.agitation > 0.2 && !cl.seizure && !cl.lifeless) {
+      const a = cl.agitation;
+      F.headY += Math.sin(t * 1.7) * 0.25 * a;
+      F.headZ += Math.sin(t * 1.1 + 1) * 0.08 * a;
+      const k = lying ? 0.35 : 1;
+      this.armGoal.L.fkX += Math.max(0, Math.sin(t * 0.9)) * 0.5 * a * k;
+      this.armGoal.R.fkX += Math.max(0, Math.sin(t * 0.7 + 2)) * 0.45 * a * k;
+      this.armGoal.L.fkElbow += Math.max(0, Math.sin(t * 0.9)) * 0.8 * a * k;
+    }
+    // Meringis berkala saat nyeri hebat (juga saat berbaring).
+    if (lying && this.look.emotion === 'kesakitan' && alert >= 0.6) {
+      this.winceIn -= dt;
+      if (this.winceIn <= 0) {
+        this.wince = 0.9 + this.rnd() * 0.8;
+        this.winceIn = 3 + this.rnd() * 5;
+      }
+      if (this.wince > 0) this.wince -= dt;
+    }
+  }
+
+  private joltPose(dt: number): void {
+    if (this.joltT <= 0) return;
+    this.joltT -= dt;
+    const e = Math.sin(Math.PI * clamp(1 - this.joltT / 0.45, 0, 1));
+    const F = this.F;
+    F.spineX -= 0.22 * e;
+    F.chestX -= 0.1 * e;
+    F.headX -= 0.25 * e;
+    for (const side of ['L', 'R'] as const) {
+      this.armGoal[side].fkX += 0.35 * e;
+      this.armGoal[side].fkZ += sign(side) * 0.2 * e;
+    }
+    if (this.mode === 'lying') this.character.root.position.y += 0.035 * e;
+  }
+
+  private handsPose(dt: number): void {
+    const h = this.hands;
+    if (!h) return;
+    const F = this.F;
+    const d = this.character.dims;
+    F.spineX += h.lean ?? 0;
+    let push = 0;
+    if (h.cpr) {
+      // 110×/menit; lengan lurus, tenaga dari pinggul.
+      const ph = (this.time * 1.85) % 1;
+      push = Math.max(0, Math.sin(ph * Math.PI * 2)) ** 1.5;
+      F.spineX += 0.1 * push;
+      F.hipsY -= 0.025 * push * d.s;
+      F.headX += 0.05 * push;
+    }
+    let sq = 0;
+    if (h.squeeze) {
+      this.squeezeT = (this.squeezeT + dt) % 6;
+      sq = this.squeezeT < 1 ? Math.sin(this.squeezeT * Math.PI) : 0;
+    }
+    for (const side of ['L', 'R'] as const) {
+      const fn = h[side];
+      if (!fn) continue;
+      const p = fn(this.v7);
+      if (!p) continue;
+      if (h.cpr) p.y -= 0.045 * push;
+      if (h.squeeze && side === this.dominant) p.y -= 0.03 * sq;
+      if (h.cpr) this.armGoal[side].pole.set(sign(side) * 0.15, -0.9, -0.2);
+      this.aimArm(side, p, 1, false, h.palmDown ? DOWN : undefined);
+    }
   }
 
   // --- Lokomosi ------------------------------------------------------------
@@ -364,7 +746,7 @@ export class Actor implements StageUpdatable {
   }
 
   seatHipsY(): number {
-    return LAYOUT.seat.y + 0.088 * this.character.dims.s;
+    return this.seatY + 0.088 * this.character.dims.s;
   }
 
   /** Tetapkan posisi telapak (dunia) untuk transisi duduk/berdiri: kaki tetap menapak. */
@@ -385,7 +767,14 @@ export class Actor implements StageUpdatable {
     const cues = this.look.cues;
     const root = c.root;
 
-    if (this.mode === 'walk') {
+    if (this.puppet) {
+      const pp = this.puppet();
+      root.position.set(pp.x, 0, pp.z);
+      this.yaw = pp.yaw;
+      this.speed += (pp.speed - this.speed) * (1 - Math.exp(-8 * dt));
+      this.puppetWalking = this.speed > 0.05;
+      if (this.mode === 'walk' || this.mode === 'turn') this.mode = 'stand';
+    } else if (this.mode === 'walk') {
       const target = this.path[this.pathIndex];
       if (!target) {
         this.mode = this.finalYaw === null ? 'stand' : 'turn';
@@ -471,12 +860,13 @@ export class Actor implements StageUpdatable {
       F.chestX += mid * 0.12;
       F.headX -= mid * 0.2;
     }
-    root.rotation.y = this.yaw;
+    root.rotation.set(0, this.yaw, 0);
 
     // --- Kaki ------------------------------------------------------------
-    const walkAmp = this.mode === 'walk' ? clamp(this.speed / Math.max(0.2, this.look.walkSpeed), 0, 1) : 0;
+    const walking = this.mode === 'walk' || (this.puppetWalking && this.mode === 'stand');
+    const walkAmp = walking ? clamp(this.speed / Math.max(0.2, this.look.walkSpeed), 0, 1) : 0;
     this.legFk += (walkAmp - this.legFk) * (1 - Math.exp(-9 * dt));
-    if (this.mode === 'walk' || this.legFk > 0.02) {
+    if (walking || this.legFk > 0.02) {
       const limp = cues.pincang_kanan ? 1 : 0;
       const stiff = cues.kaku ? 1 : 0;
       const weak = cues.lemas ?? 0;
@@ -509,7 +899,10 @@ export class Actor implements StageUpdatable {
     // Target pergelangan kaki (ruang akar) untuk berdiri/duduk.
     for (const side of ['L', 'R'] as const) {
       const a = this.ankle[side];
-      if (seatedLike && this.carrier) {
+      if (seatedLike && this.carrier && this.carryLegs === 'chair') {
+        // Kursi roda: telapak di pijakan kaki, lutut menekuk.
+        a.set(sign(side) * d.hipHalf * 0.95, d.footH + 0.11, d.thigh * 0.92 + 0.07);
+      } else if (seatedLike && this.carrier) {
         // Dipangku/digendong: kaki menjulur ke depan, sedikit di bawah pinggul.
         a.set(sign(side) * d.hipHalf * 0.9, this.seatHipsY() - 0.1 * d.s, (d.thigh + d.shin) * 0.75);
       } else if (seatedLike) {
@@ -1218,6 +1611,11 @@ export class Actor implements StageUpdatable {
     for (const side of ['L', 'R'] as const) {
       const leg = side === 'L' ? c.legL : c.legR;
       this.solveLeg(leg, side, this.ankle[side], c.hips.position);
+      // Berbaring: telapak jatuh (plantarfleksi) & sedikit rotasi keluar.
+      if (this.mode === 'lying') {
+        leg.end.rotation.x -= 0.75;
+        leg.upper.rotation.y += sign(side) * 0.12;
+      }
       if (fk > 0.01) {
         const th = side === 'L' ? F.thighL : F.thighR;
         const kn = side === 'L' ? F.kneeL : F.kneeR;
@@ -1230,7 +1628,7 @@ export class Actor implements StageUpdatable {
 
     // Kepala: menatap dokter (kontak mata) + gerak dari gestur.
     const neckBase = F.neckX;
-    const lookW = clamp((this.mode === 'walk' || this.mode === 'turn' ? 0.55 : 0.92) - F.fLookOff, 0, 1);
+    const lookW = clamp((this.mode === 'walk' || this.mode === 'turn' ? 0.55 : 0.92) - F.fLookOff, 0, 1) * this.lookScale;
     const headWorld = c.headBall.getWorldPosition(this.v1);
     const dir = this.v2.copy(this.eyeTarget).sub(headWorld);
     c.chest.getWorldQuaternion(this.q1).invert();

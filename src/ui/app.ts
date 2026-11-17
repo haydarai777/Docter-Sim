@@ -44,6 +44,7 @@ import {
 } from './storage';
 import { Director, type Subtitle } from './three/director';
 import { IgdController } from './igd/controller';
+import { IgdScene } from './three/igdScene';
 import { renderIgd, renderIgdDebrief, renderIgdMenu } from './igd/views';
 import type { ShiftOptions } from '../core/igd/shift';
 import type { ShiftMode } from '../core/igd/types';
@@ -200,6 +201,7 @@ export class App {
         onSubtitle: (sub) => this.showSubtitle(sub),
         onLeft: () => this.afterPatientLeft(),
       });
+      this.igdScene = new IgdScene(stage, this.igd, content);
       window.addEventListener('resize', () => this.syncStage());
       stage.start();
     } else {

@@ -16,7 +16,9 @@ import type { App } from '../app';
 import { disclaimer } from '../components/disclaimer';
 import { cx, h } from '../dom';
 import { type IgdController, type IgdTab, SPEEDS } from './controller';
-import { drawMonitor, type MonitorState } from './monitorDraw';
+import { drawMonitor, monitorStateOf } from './monitorDraw';
+
+export { monitorStateOf };
 
 export const CATEGORY_LABEL: Record<EdCategory, string> = {
   pernapasan: 'Gangguan napas',
@@ -915,27 +917,6 @@ function liveUpdate(app: App): void {
 
 let monitorLoop = 0;
 let loopController: IgdController | null = null;
-
-export function monitorStateOf(p: EdPatient, now: number): MonitorState | null {
-  const vis = visibleVitals(p, now);
-  if (!vis) return null;
-  const v = vis.vitals;
-  return {
-    live: vis.live && (p.devices.monitor || p.devices.pads) && (p.status === 'dirawat' || p.status === 'pindah'),
-    hr: v.hr,
-    rhythm: v.rhythm,
-    pulse: v.pulse,
-    spo2: p.devices.monitor ? v.spo2 : null,
-    sbp: p.devices.monitor ? v.sbp : null,
-    dbp: p.devices.monitor ? v.dbp : null,
-    map: v.map,
-    rr: v.rr,
-    temp: v.temp,
-    etco2: v.etco2,
-    cpr: p.devices.cpr,
-    alarm: !!p.physio.arrest || (v.spo2 ?? 100) < 90 || v.hr > 140 || v.hr < 45 || (v.sbp ?? 120) < 90,
-  };
-}
 
 function ensureMonitorLoop(c: IgdController): void {
   loopController = c;

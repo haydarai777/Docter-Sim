@@ -2,7 +2,8 @@
  * Penggambar monitor pasien (EKG berjalan, pletismografi, angka tanda vital) di kanvas 2D.
  * Dipakai panel UI dan tekstur layar monitor di ruang IGD 3D.
  */
-import type { Rhythm } from '../../core/igd/types';
+import { visibleVitals } from '../../core/igd/engine';
+import type { EdPatient, Rhythm } from '../../core/igd/types';
 
 export interface MonitorState {
   live: boolean;
@@ -155,4 +156,26 @@ export function drawMonitor(g: CanvasRenderingContext2D, w: number, h: number, s
     g.strokeRect(2, 2, w - 4, h - 4);
   }
   g.restore();
+}
+
+/** Keadaan monitor pasien saat ini (null = belum ada tanda vital). */
+export function monitorStateOf(p: EdPatient, now: number): MonitorState | null {
+  const vis = visibleVitals(p, now);
+  if (!vis) return null;
+  const v = vis.vitals;
+  return {
+    live: vis.live && (p.devices.monitor || p.devices.pads) && (p.status === 'dirawat' || p.status === 'pindah'),
+    hr: v.hr,
+    rhythm: v.rhythm,
+    pulse: v.pulse,
+    spo2: p.devices.monitor ? v.spo2 : null,
+    sbp: p.devices.monitor ? v.sbp : null,
+    dbp: p.devices.monitor ? v.dbp : null,
+    map: v.map,
+    rr: v.rr,
+    temp: v.temp,
+    etco2: v.etco2,
+    cpr: p.devices.cpr,
+    alarm: !!p.physio.arrest || (v.spo2 ?? 100) < 90 || v.hr > 140 || v.hr < 45 || (v.sbp ?? 120) < 90,
+  };
 }

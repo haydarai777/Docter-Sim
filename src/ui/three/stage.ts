@@ -18,6 +18,14 @@ export interface StageUpdatable {
   update(dt: number, time: number): void;
 }
 
+/** Kamera bebas (mode IGD): posisi mata & titik pandang yang dituju, pengali sudut pandang. */
+export interface CameraRig {
+  eye: Vector3;
+  focus: Vector3;
+  /** Pengali FOV vertikal area bebas (1 = bawaan). */
+  fov: number;
+}
+
 const DEG = Math.PI / 180;
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
@@ -56,6 +64,15 @@ export class Stage {
   private fastFrames = 0;
   private shadows: boolean;
   private readonly tmp = new Vector3();
+  /** Ruang pengganti (mis. IGD) — ruang praktik disembunyikan selama aktif. */
+  private alt: Room | null = null;
+  private rig: CameraRig | null = null;
+  private readonly rigEye = new Vector3();
+  private fovMul = 1;
+  private fovGoal = 1;
+  private tapHandler: ((x: number, y: number) => void) | null = null;
+  private dragDist = 0;
+  private downAt = 0;
 
   /** Buat panggung; mengembalikan null bila WebGL tidak tersedia (UI tetap bisa dipakai tanpa 3D). */
   static create(container: HTMLElement): Stage | null {
@@ -108,6 +125,48 @@ export class Stage {
 
   remove(u: StageUpdatable): void {
     this.updatables.delete(u);
+  }
+
+  /** Tampilkan ruang lain menggantikan ruang praktik (null = kembali ke ruang praktik). */
+  setAltRoom(room: Room | null): void {
+    if (this.alt === room) return;
+    if (this.alt) this.alt.group.visible = false;
+    this.alt = room;
+    this.room.group.visible = !room;
+    if (room) {
+      if (!room.group.parent) this.scene.add(room.group);
+      room.group.visible = true;
+      room.setShadows(this.shadows);
+    }
+  }
+
+  /** Kamera bebas (null = kamera dokter di meja praktik). */
+  setRig(rig: CameraRig | null): void {
+    if (rig && !this.rig) {
+      this.rigEye.copy(rig.eye);
+      this.focus.copy(rig.focus);
+    }
+    this.rig = rig;
+    this.fovGoal = rig?.fov ?? 1;
+    if (!rig) {
+      this.fovMul = 1;
+      this.applyProjection();
+    }
+  }
+
+  /** Lompatkan kamera bebas langsung ke tujuannya (uji visual). */
+  snapRig(): void {
+    if (!this.rig) return;
+    this.rigEye.copy(this.rig.eye);
+    this.focus.copy(this.rig.focus);
+    this.fovMul = this.fovGoal;
+    this.applyProjection();
+    this.updateRig(0);
+  }
+
+  /** Ketukan (bukan seret) pada kanvas: koordinat NDC (−1..1). */
+  setTapHandler(fn: ((x: number, y: number) => void) | null): void {
+    this.tapHandler = fn;
   }
 
   setFocusProvider(fn: (() => Vector3 | null) | null): void {
@@ -181,7 +240,7 @@ export class Stage {
     const dt = Math.min(0.1, Math.max(0, rawDt));
     this.time += dt;
     this.frame++;
-    this.room.update(dt, this.time);
+    (this.alt ?? this.room).update(dt, this.time);
     for (const u of this.updatables) u.update(dt, this.time);
     this.updateCamera(dt);
     if (this.frame % this.throttle !== 0) return;
@@ -205,6 +264,7 @@ export class Stage {
       } else if (this.shadows) {
         this.shadows = false;
         this.room.setShadows(false);
+        this.alt?.setShadows(false);
       } else if (this.pixelRatio > 0.7) {
         this.pixelRatio = 0.7;
         this.renderer.setPixelRatio(this.pixelRatio);
@@ -218,6 +278,7 @@ export class Stage {
   }
 
   private updateCamera(dt: number): void {
+    if (this.rig) return this.updateRig(dt);
     const target = this.focusProvider?.() ?? null;
     if (target) this.focusTarget.copy(target);
     else this.focusTarget.set(0, 0.95, LAYOUT.seat.z);
@@ -247,6 +308,30 @@ export class Stage {
     this.camera.rotation.set(pitch, yaw, 0, 'YXZ');
   }
 
+  /** Kamera bebas: mata berpindah halus ke posisi tujuan, pandangan mengikuti titik fokus. */
+  private updateRig(dt: number): void {
+    const rig = this.rig!;
+    this.rigEye.lerp(rig.eye, 1 - Math.exp(-2.4 * dt));
+    this.focus.lerp(rig.focus, 1 - Math.exp(-3.4 * dt));
+    if (Math.abs(this.fovMul - this.fovGoal) > 0.002) {
+      this.fovMul += (this.fovGoal - this.fovMul) * (1 - Math.exp(-3 * dt));
+      this.applyProjection();
+    }
+    if (!this.dragging && this.time - this.idleSince > 2.4) {
+      const k = 1 - Math.exp(-1.6 * dt);
+      this.lookYaw += (0 - this.lookYaw) * k;
+      this.lookPitch += (0 - this.lookPitch) * k;
+    }
+    const eye = this.camera.position;
+    eye.set(this.rigEye.x + Math.sin(this.time * 0.31) * 0.006, this.rigEye.y + Math.sin(this.time * 1.1) * 0.004, this.rigEye.z);
+    const dx = this.focus.x - eye.x;
+    const dy = this.focus.y - eye.y;
+    const dz = this.focus.z - eye.z;
+    const yaw = Math.atan2(-dx, -dz) + this.lookYaw;
+    const pitch = clamp(Math.atan2(dy, Math.hypot(dx, dz)) + this.lookPitch, -1.1, 0.7);
+    this.camera.rotation.set(pitch, yaw, 0, 'YXZ');
+  }
+
   // --- Ukuran & proyeksi ------------------------------------------------------------
 
   private readonly resize = (): void => {
@@ -272,7 +357,7 @@ export class Stage {
     // FOV vertikal untuk AREA BEBAS: area kecil (ponsel) dibingkai lebih rapat agar wajah &
     // bahasa tubuh pasien tetap terbaca; area sempit-tinggi dilebarkan agar pasien tidak terpotong.
     const base = clamp(31 + (fh - 260) * 0.03, 33, 41) * DEG;
-    const vFree = clamp(Math.max(base, 2 * Math.atan(Math.tan(19 * DEG) / (fw / fh))), 28 * DEG, 78 * DEG);
+    const vFree = clamp(Math.max(base, 2 * Math.atan(Math.tan(19 * DEG) / (fw / fh))) * this.fovMul, 28 * DEG, 84 * DEG);
     const vFull = 2 * Math.atan(Math.tan(vFree / 2) * (H / fh));
     this.camera.fov = clamp(vFull / DEG, 20, 140);
     this.camera.aspect = W / H;
@@ -286,6 +371,8 @@ export class Stage {
 
   private readonly onPointerDown = (e: PointerEvent): void => {
     this.dragging = true;
+    this.dragDist = 0;
+    this.downAt = performance.now();
     this.lastPointer = { x: e.clientX, y: e.clientY };
     this.canvas.classList.add('is-dragging');
   };
@@ -295,17 +382,23 @@ export class Stage {
     const dx = e.clientX - this.lastPointer.x;
     const dy = e.clientY - this.lastPointer.y;
     this.lastPointer = { x: e.clientX, y: e.clientY };
+    this.dragDist += Math.abs(dx) + Math.abs(dy);
     const k = (this.camera.fov * DEG) / this.height;
-    this.lookYaw = clamp(this.lookYaw + dx * k * 0.9, -1.25, 1.25);
+    const range = this.rig ? 1.9 : 1.25;
+    this.lookYaw = clamp(this.lookYaw + dx * k * 0.9, -range, range);
     this.lookPitch = clamp(this.lookPitch + dy * k * 0.9, -0.55, 0.5);
     this.idleSince = this.time;
   };
 
-  private readonly onPointerUp = (): void => {
+  private readonly onPointerUp = (e: PointerEvent): void => {
     if (!this.dragging) return;
     this.dragging = false;
     this.idleSince = this.time;
     this.canvas.classList.remove('is-dragging');
+    if (this.tapHandler && this.dragDist < 7 && performance.now() - this.downAt < 600 && e.type === 'pointerup') {
+      const r = this.canvas.getBoundingClientRect();
+      this.tapHandler(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    }
   };
 
   private readonly onVisibility = (): void => {
