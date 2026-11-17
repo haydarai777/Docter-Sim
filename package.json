@@ -18,7 +18,9 @@
     "review-sheet": "tsx scripts/review-sheet.ts",
     "balance-report": "tsx scripts/balance-report.ts",
     "nlu-benchmark": "tsx scripts/nlu-benchmark.ts",
-    "dialog-audit": "tsx scripts/dialog-audit.ts"
+    "dialog-audit": "tsx scripts/dialog-audit.ts",
+    "igd-audit": "tsx scripts/igd-audit.ts",
+    "igd-score": "tsx scripts/igd-score.ts"
   },
   "devDependencies": {
     "@types/node": "^22.19.1",
