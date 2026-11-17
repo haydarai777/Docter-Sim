@@ -2,6 +2,7 @@
  * Titik masuk aplikasi browser.
  */
 import './styles.css';
+import './igd.css';
 import { validateContent } from './core/validate';
 import { GAME_CONFIG, loadDefaultContent } from './data';
 import { App } from './ui/app';

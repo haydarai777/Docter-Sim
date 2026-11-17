@@ -52,6 +52,12 @@ export function renderTitle(app: App): HTMLElement {
         : h('button', { class: 'btn btn--primary btn--lg', type: 'button', onclick: () => app.startGame() }, 'Mulai Praktek'),
       h(
         'button',
+        { class: 'btn btn--lg title-osce title-igd', type: 'button', onclick: () => app.openIgdMenu() },
+        '🚑 Dokter Jaga IGD',
+        h('span', { class: 'title-osce__sub' }, ' — triase, resusitasi & stabilisasi pasien gawat darurat'),
+      ),
+      h(
+        'button',
         { class: 'btn btn--lg title-osce', type: 'button', onclick: () => app.openOsceMenu() },
         '🎓 Latihan OSCE',
         h('span', { class: 'title-osce__sub' }, ' — stasiun bertimer, resep, KIE & prosedur'),

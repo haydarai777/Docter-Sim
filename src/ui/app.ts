@@ -43,9 +43,13 @@ import {
   loadOsceHistory,
 } from './storage';
 import { Director, type Subtitle } from './three/director';
+import { IgdController } from './igd/controller';
+import { renderIgd, renderIgdDebrief, renderIgdMenu } from './igd/views';
+import type { ShiftOptions } from '../core/igd/shift';
+import type { ShiftMode } from '../core/igd/types';
 import type { Stage } from './three/stage';
 
-export type Screen = 'title' | 'consult' | 'summary' | 'final' | 'osce_menu' | 'osce_result' | 'osce_final' | 'procedure';
+export type Screen = 'title' | 'consult' | 'summary' | 'final' | 'osce_menu' | 'osce_result' | 'osce_final' | 'procedure' | 'igd_menu' | 'igd' | 'igd_debrief';
 export type ActionTab = 'anamnesis' | 'fisik' | 'penunjang' | 'penalaran' | 'tatalaksana' | 'keputusan';
 export type Dialog = 'tutorial' | 'settings' | 'record' | 'briefing' | null;
 /** Tahap adegan pasien di ruang praktik. */
@@ -147,6 +151,8 @@ export class App {
   private subtitleText = '';
   /** Sidik jari konten untuk validasi sesi tersimpan. */
   readonly contentKey: string;
+  /** Mode Dokter Jaga IGD. */
+  readonly igd: IgdController;
 
   constructor(
     private readonly root: HTMLElement,
@@ -163,6 +169,25 @@ export class App {
     );
     applyTheme(this.settings.theme);
     document.documentElement.classList.toggle('no-3d', !stage);
+    const app = this;
+    this.igd = new IgdController(
+      {
+        render: () => this.render(),
+        get dialogOpen() {
+          return app.ui.dialog !== null;
+        },
+        onIgdTick: () => this.igdScene?.sync(),
+        onIgdEvent: (kind, detail) => this.igdScene?.event(kind, detail),
+      },
+      content,
+    );
+    window.addEventListener('keydown', (e) => {
+      if (this.ui.screen !== 'igd' || e.key !== ' ' || this.ui.dialog) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.tagName === 'BUTTON')) return;
+      e.preventDefault();
+      this.igd.togglePause();
+    });
     if (stage && stageUi) {
       this.subtitleEl = h('div', { class: 'subtitle', 'aria-live': 'off', hidden: true });
       stageUi.append(this.subtitleEl);
@@ -236,9 +261,48 @@ export class App {
     this.pendingQuestion = null;
   }
 
+  // -------------------------------------------------------------------------
+  // Mode Dokter Jaga IGD
+  // -------------------------------------------------------------------------
+
+  /** Adegan 3D IGD (dipasang bila WebGL tersedia). */
+  igdScene: { sync(): void; event(kind: string, detail?: { patientId?: string }): void; enter(): void; exit(): void } | null = null;
+
+  openIgdMenu(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
+    this.director?.clear();
+    this.ui = { ...INITIAL_UI, screen: 'igd_menu' };
+    this.render();
+  }
+
+  startIgd(mode: ShiftMode, opts: ShiftOptions): void {
+    this.director?.clear();
+    this.igdScene?.enter();
+    this.igd.start(mode, opts);
+    this.ui = { ...INITIAL_UI, screen: 'igd' };
+    this.render();
+  }
+
+  resumeIgd(): void {
+    this.director?.clear();
+    this.igdScene?.enter();
+    if (!this.igd.resume()) return;
+    this.ui = { ...INITIAL_UI, screen: 'igd' };
+    this.render();
+  }
+
+  confirmEndIgd(): void {
+    if (window.confirm('Akhiri jaga sekarang? Pasien yang masih di IGD dinilai apa adanya.')) this.igd.endNow();
+  }
+
   startGame(): void {
     this.cancelAi();
     this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
     const run = createRun(randomSeed(), this.config, this.focusSystem);
     this.run = startNextPatient(run, this.content, this.config);
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
@@ -555,6 +619,8 @@ export class App {
   backToTitle(): void {
     this.cancelAi();
     this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
     this.director?.clear();
     this.ui = { ...INITIAL_UI };
     this.render();
@@ -613,6 +679,8 @@ export class App {
   openOsceMenu(): void {
     this.cancelAi();
     this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
     this.director?.clear();
     this.ui = { ...INITIAL_UI, screen: 'osce_menu' };
     this.render();
@@ -878,6 +946,7 @@ export class App {
     const logLength = this.visibleLog().length + (this.pendingQuestion ? 1 : 0);
     this.newLogFrom = this.ui.screen === 'consult' && logLength > this.renderedLogLength ? this.renderedLogLength : logLength;
 
+    if (this.ui.screen === 'igd' && this.igd.summary) this.ui = { ...this.ui, screen: 'igd_debrief' };
     let view: HTMLElement;
     switch (this.ui.screen) {
       case 'title':
@@ -904,9 +973,18 @@ export class App {
       case 'procedure':
         view = renderProcedure(this);
         break;
+      case 'igd_menu':
+        view = renderIgdMenu(this);
+        break;
+      case 'igd':
+        view = this.igd.shift ? renderIgd(this) : renderIgdMenu(this);
+        break;
+      case 'igd_debrief':
+        view = this.igd.summary ? renderIgdDebrief(this) : renderIgdMenu(this);
+        break;
     }
     // Layar selain konsultasi tampil sebagai lembar di atas ruang praktik.
-    if (this.ui.screen !== 'consult') view = h('div', { class: `overlay-page overlay-page--${this.ui.screen}`, 'data-keep-scroll': this.ui.screen }, view);
+    if (this.ui.screen !== 'consult' && this.ui.screen !== 'igd') view = h('div', { class: `overlay-page overlay-page--${this.ui.screen}`, 'data-keep-scroll': this.ui.screen }, view);
     const dialog = this.renderDialog();
     this.root.replaceChildren(...(dialog ? [view, dialog] : [view]));
 
@@ -936,16 +1014,22 @@ export class App {
     if (!stage) return;
     const W = window.innerWidth;
     const H = window.innerHeight;
-    const consult = this.ui.screen === 'consult';
+    const consult = this.ui.screen === 'consult' || this.ui.screen === 'igd';
     let free = { left: 0, top: 0, right: W, bottom: H };
     if (consult) {
       const hud = this.root.querySelector<HTMLElement>('.hud')?.getBoundingClientRect();
       const mon = this.root.querySelector<HTMLElement>('.monitor')?.getBoundingClientRect();
+      const brd = this.root.querySelector<HTMLElement>('.igd-board')?.getBoundingClientRect();
       const top = hud ? hud.bottom : 0;
       if (mon && mon.width > 0) {
         // Monitor di samping (layar lebar) atau di bawah (ponsel).
         free = mon.left > W * 0.3 ? { left: 0, top, right: mon.left, bottom: H } : { left: 0, top, right: W, bottom: mon.top };
       } else free = { left: 0, top, right: W, bottom: H };
+      // Papan pasien IGD di kiri (layar lebar) atau pita di atas (ponsel).
+      if (brd && brd.width > 0) {
+        if (brd.height > H * 0.5) free.left = Math.max(free.left, brd.right);
+        else free.top = Math.max(free.top, brd.bottom);
+      }
     }
     stage.setFreeRect(free);
     stage.setTitleMode(this.ui.screen === 'title');

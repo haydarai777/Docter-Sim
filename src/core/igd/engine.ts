@@ -686,7 +686,8 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
       return ok(text);
     }
     case 'tanya': {
-      if (doctorBusy(shift).busy) return fail(`Anda sedang ${doctorBusy(shift).label ?? 'sibuk'}.`);
+      // Bertanya bisa sambil memeriksa; tidak bisa saat mengerjakan tindakan (intubasi, WSD, dsb.).
+      if (doctorBusy(shift).busy && shift.doctor.task) return fail(`Anda sedang ${doctorBusy(shift).label ?? 'sibuk'}.`);
       const s = supportOf(p, now);
       const v = computeVitals(p.physio, s, now);
       const who = informants(p, sc, v, s, now).find((i) => i.id === action.who);
@@ -698,7 +699,6 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
       p.chat.push({ t: now, who: action.who, text: ans.text });
       for (const tp of ans.topics) if (!p.askedTopics.includes(tp)) p.askedTopics.push(tp);
       record(p, { type: 'ask', id: ans.topics[0] ?? 'lain', label: `Tanya: ${action.text}` }, now);
-      shift.doctor.busyUntil = Math.max(shift.doctor.busyUntil, now + 15);
       return ok(ans.text);
     }
     case 'penunjang':
