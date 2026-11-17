@@ -375,6 +375,11 @@
 .igd-arrest .btn {
   min-height: 34px;
 }
+.igd-arrest .btn:not(.btn--primary) {
+  background: #fff;
+  color: #8e1f15;
+  border-color: rgba(255, 255, 255, 0.7);
+}
 .igd-tabs {
   flex-wrap: nowrap;
   overflow-x: auto;

@@ -75,6 +75,18 @@ klinis**, bukan sekadar tebakan diagnosis.
   disembunyikan), perilaku profesional, 11 **stasiun prosedur** (kateter, tampon hidung, IUD, Pap smear,
   ACLS, resusitasi cairan, bidai, dll.), serta simulasi beberapa stasiun berurutan. Lihat
   [`docs/osce.md`](docs/osce.md).
+- **Mode Dokter Jaga IGD** (kegawatdaruratan): pasien datang bertahap lewat pintu IGD — berjalan,
+  dipapah, kursi roda, brankar paramedis, atau digendong — ke ruang IGD 3D dengan bed resusitasi/akut,
+  monitor hidup, troli emergensi, defibrilator, ventilator, dan meja perawat. Triase ATS, survei ABCDE,
+  anamnesis dari pasien/keluarga/saksi/paramedis, penunjang yang butuh waktu, instruksi tindakan & dosis
+  ke perawat (yang berjalan dan memeragakannya: infus, obat, RJP, BVM), konsul spesialis, disposisi.
+  **Fisiologi dinamis**: pasien memburuk bila terlambat/salah, membaik bila tepat, bisa henti jantung
+  atau meninggal — terlihat pada monitor, napas, ekspresi, kesadaran, warna kulit, dan tubuh pasien.
+  32 skenario berbasis pedoman (asma, anafilaksis, STEMI, VF, SVT, AV blok, stroke, ICH, status
+  epileptikus, KAD, trauma multipel, tension pneumotoraks, cedera kepala, luka bakar, keracunan,
+  syok septik, perdarahan, DSS, eklampsia, HPP, kasus ringan, dll.), 3 mode (latihan, jaga, jaga
+  sibuk), penilaian proses (triase, penilaian awal, diagnosis, penunjang, tindakan kritis & kecepatan,
+  terapi & dosis, hasil) dengan debrief dan grafik perjalanan pasien. Lihat [`docs/igd.md`](docs/igd.md).
 - **Reputasi & game over** dari skor klinis, penalti bila penyakit berbahaya terlewat atau pasien
   gawat dipulangkan. Layar akhir dengan grafik, statistik, rekor.
 - Rekam medis & transkrip, panduan bermain, tema terang/gelap, simpan & lanjutkan sesi, PWA offline.
@@ -140,6 +152,9 @@ diagnosis banding, 5 kepribadian pasien.
 **Mode latihan per sistem organ:** di layar judul pilih *Pasien yang datang* untuk hanya menerima pasien
 dari satu sistem organ (mis. hanya penyakit mata). Papan diagnosis banding dapat disaring per sistem.
 
+**Mode Dokter Jaga IGD:** 32 skenario kegawatdaruratan, 75 diagnosis kerja, 60 obat (dosis per rute &
+infus), 39 tindakan, 24 pemeriksaan penunjang, 13 pemeriksaan fisik ABCDE/sekunder — lihat `docs/igd.md`.
+
 **Mode OSCE:** setiap penyakit punya kunci stasiun (formularium 164 obat — oral, topikal, tetes
 mata/telinga, semprot hidung, injeksi, vaksin & serum, MDT kusta, OAT anak), ditambah 11 stasiun prosedur.
 Lihat `docs/osce.md`.
@@ -197,6 +212,7 @@ src/
     personalities.json  gaya bicara pasien (kooperatif, cemas, meremehkan, pelupa, sok tahu)
     population.json     nama, pekerjaan, konteks teks
     diseases/*.json     satu file per penyakit
+    igd/scenarios/*.ts  skenario IGD (fisiologi awal, narasumber, tindakan kritis, rencana pakar, debrief)
   core/                 LOGIKA PERMAINAN (TypeScript murni, tanpa DOM, teruji)
     types.ts            semua tipe data
     rng.ts              pengacak ber-seed (kasus bisa direproduksi)
@@ -211,13 +227,17 @@ src/
     run.ts              sesi permainan: antrean pasien, game over, statistik
     simulate.ts         bot pemain berbasis kemampuan (untuk balancing)
     validate.ts         validator integritas konten
+    igd/                mode Dokter Jaga IGD: fisiologi dinamis, katalog obat/tindakan/penunjang,
+                        temuan & anamnesis, mesin shift (waktu, perawat, bed, henti jantung), penilaian
   ui/                   TAMPILAN (DOM tanpa framework)
     ai/patientAi.ts     pasien AI lewat kapabilitas `sample` claude.ai (dengan fallback lokal)
     three/              tampilan 3D: stage (kamera/loop), room (ruang praktik), actor (animasi
                         prosedural), director (adegan datang/pamit), dan karakter modular:
                         geo (pembangun permukaan "loft" + bobot tulang), body (torso, leher, lengan,
                         kaki, pakaian), head (tengkorak, hidung, telinga, rambut, hijab, kacamata),
-                        face (ekspresi), extremities (tangan, sepatu/sandal), character (perakit)
+                        face (ekspresi), extremities (tangan, sepatu/sandal), character (perakit);
+                        igdRoom/igdProps/igdScene: ruang IGD, brankar/kursi roda/alat, sutradara adegan IGD
+    igd/                panel IGD: controller (jam, aksi), views, monitorDraw (EKG berjalan), looks
 tests/                  unit test
 scripts/                alat bantu pengembang (validasi, contoh kasus, format data)
 ```

@@ -5,6 +5,8 @@
  * Jalankan: npm run review-sheet
  */
 import { writeFileSync } from 'node:fs';
+import { ED_DIAGNOSES_BY_ID } from '../src/core/igd/catalog';
+import { ED_SCENARIOS } from '../src/data/igd';
 import { DISPOSITION_LABEL } from '../src/core/evaluation';
 import { planTestCost } from '../src/core/scoring';
 import type { Condition, DiseaseTemplate, EvidenceRef, FindingRule, GameContent, ParamDef } from '../src/core/types';
@@ -274,6 +276,36 @@ line();
 line(Object.entries(content.appearance.sites).map(([sym, site]) => `${content.symptomsById.get(sym)?.label ?? sym} → ${site.replace('_', ' ')}`).join(' · '));
 line();
 for (const d of content.diseases) diseaseSection(d);
+
+// --- Mode Dokter Jaga IGD -------------------------------------------------------------------
+line();
+line('## Mode Dokter Jaga IGD — skenario kegawatdaruratan');
+line();
+line('Semua skenario berstatus **BELUM DITINJAU DOKTER**. Kunci penilaian (tindakan kritis + tenggat, tindakan');
+line('berbahaya, disposisi) dan rujukan pedoman di bawah perlu diverifikasi dokter/konsultan kegawatdaruratan.');
+line('Rincian mekanisme: [`docs/igd.md`](docs/igd.md). Sumber: `src/data/igd/scenarios/*.ts`.');
+line();
+for (const sc of ED_SCENARIOS) {
+  line(`### ${esc(sc.title)} — ATS ${sc.ats} · \`BELUM_DITINJAU_DOKTER\``);
+  line();
+  if (sc.variants?.length) line(`Varian: ${sc.variants.map((v) => esc(v.label)).join(' · ')}`);
+  const dx = (ids: readonly string[]) => ids.map((id) => esc(ED_DIAGNOSES_BY_ID.get(id)?.name ?? id)).join(' / ');
+  line(`Diagnosis kerja: ${dx(sc.diagnosis.primary)}${sc.diagnosis.acceptable?.length ? ` · dapat diterima: ${dx(sc.diagnosis.acceptable)}` : ''}`);
+  line();
+  line('| Tindakan kritis | Tenggat | Bobot | Alasan |');
+  line('|---|---|---|---|');
+  for (const c of sc.critical) line(`| ${esc(c.label)} | ≤ ${c.byMin} mnt | ${c.weight} | ${esc(c.why)} |`);
+  line();
+  if (sc.harmful?.length) {
+    line('Tindakan berbahaya: ' + sc.harmful.map((h) => `${esc(h.label)} (${h.severity})`).join(' · '));
+    line();
+  }
+  const d = sc.disposition;
+  line(`Disposisi terbaik: ${d.best.join(', ')}${d.acceptable?.length ? ` · dapat diterima: ${d.acceptable.join(', ')}` : ''}${d.consult?.length ? ` · konsul: ${d.consult.join(', ')}` : ''}`);
+  line();
+  line(`Rujukan: ${sc.debrief.referensi.map(esc).join('; ')}`);
+  line();
+}
 
 writeFileSync('REVIEW.md', out.join('\n'));
 console.log(`✓ REVIEW.md ditulis (${content.diseases.length} penyakit, ${out.length} baris).`);

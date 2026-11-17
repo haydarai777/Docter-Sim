@@ -1613,7 +1613,7 @@ export class Actor implements StageUpdatable {
       this.solveLeg(leg, side, this.ankle[side], c.hips.position);
       // Berbaring: telapak jatuh (plantarfleksi) & sedikit rotasi keluar.
       if (this.mode === 'lying') {
-        leg.end.rotation.x -= 0.75;
+        leg.end.rotation.x -= 0.95;
         leg.upper.rotation.y += sign(side) * 0.12;
       }
       if (fk > 0.01) {

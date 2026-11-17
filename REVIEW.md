@@ -21005,3 +21005,576 @@ Topik anamnesis kunci: Onset, Kebiasaan & gaya hidup, Keparahan, Riwayat penyaki
 - [ ] Prinsip tata laksana & jebakan penalaran akurat
 
 ---
+
+
+## Mode Dokter Jaga IGD — skenario kegawatdaruratan
+
+Semua skenario berstatus **BELUM DITINJAU DOKTER**. Kunci penilaian (tindakan kritis + tenggat, tindakan
+berbahaya, disposisi) dan rujukan pedoman di bawah perlu diverifikasi dokter/konsultan kegawatdaruratan.
+Rincian mekanisme: [`docs/igd.md`](docs/igd.md). Sumber: `src/data/igd/scenarios/*.ts`.
+
+### Asma eksaserbasi berat — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Varian: Eksaserbasi berat · Mengancam nyawa
+Diagnosis kerja: Asma eksaserbasi berat · dapat diterima: Asma eksaserbasi ringan–sedang
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Oksigen terkontrol (target SpO₂ 93–95%) | ≤ 5 mnt | 2 | Hipoksemia pada asma berat; oksigen dititrasi, bukan dibiarkan. |
+| Salbutamol nebulisasi 2,5–5 mg segera | ≤ 8 mnt | 4 | SABA inhalasi adalah bronkodilator lini pertama, dapat diulang tiap 20 menit pada jam pertama. |
+| Salbutamol diulang dalam jam pertama | ≤ 30 mnt | 1 | Respons dinilai tiap 20 menit; eksaserbasi berat butuh dosis berulang. |
+| Ipratropium bromida nebulisasi | ≤ 20 mnt | 1 | Kombinasi SABA + ipratropium menurunkan rawat inap pada eksaserbasi berat. |
+| Kortikosteroid sistemik dalam 1 jam | ≤ 60 mnt | 3 | Steroid sistemik mempercepat resolusi & mencegah kekambuhan. |
+| MgSO₄ 2 g IV (eksaserbasi berat/tidak respons) | ≤ 45 mnt | 2 | Dipertimbangkan bila tidak respons terapi awal atau mengancam nyawa. |
+| Posisi duduk/setengah duduk | ≤ 10 mnt | 1 | Memudahkan kerja otot napas. |
+
+Tindakan berbahaya: Sedatif pada asma berat (berat) · Opioid pada asma berat (berat)
+
+Disposisi terbaik: bangsal · dapat diterima: hcu_icu · konsul: paru, penyakit_dalam
+
+Rujukan: GINA 2024 — Global Strategy for Asthma Management and Prevention (Box 9-4, 9-5: penanganan eksaserbasi di IGD); PDPI — Asma: Pedoman Diagnosis & Penatalaksanaan di Indonesia
+
+### Anafilaksis (syok anafilaktik) setelah makan makanan laut — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Varian: Anafilaksis · Syok anafilaktik
+Diagnosis kerja: Anafilaksis / syok anafilaktik
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Adrenalin 0,01 mg/kg IM (maks 0,5 mg) di paha anterolateral | ≤ 5 mnt | 6 | Satu-satunya obat lini pertama anafilaksis; keterlambatan meningkatkan kematian. |
+| Oksigen aliran tinggi | ≤ 5 mnt | 1 | Bronkospasme & syok. |
+| Baringkan, tungkai diangkat (jangan didudukkan/berdiri) | ≤ 8 mnt | 2 | Mencegah "empty ventricle syndrome" — kematian mendadak saat pasien syok didudukkan/berdiri. |
+| Akses IV (kanul besar) | ≤ 10 mnt | 1 | Untuk cairan & obat. |
+| Bolus kristaloid 20 ml/kg (hipotensi) | ≤ 20 mnt | 2 | Pergeseran cairan masif pada anafilaksis. |
+
+Tindakan berbahaya: Pasien syok anafilaktik didudukkan (berat) · Antihistamin/steroid diberikan sebelum adrenalin (sedang)
+
+Disposisi terbaik: bangsal · dapat diterima: hcu_icu · konsul: penyakit_dalam
+
+Rujukan: World Allergy Organization Anaphylaxis Guidance 2020 (Cardona et al., WAO Journal 2020); Resuscitation Council UK — Emergency treatment of anaphylaxis (2021); EAACI Anaphylaxis Guidelines 2021
+
+### Edema paru akut kardiogenik (hipertensif) — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Edema paru akut kardiogenik · dapat diterima: Krisis hipertensi (emergensi)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Posisi duduk tegak, tungkai menggantung | ≤ 5 mnt | 2 | Mengurangi aliran balik vena & kerja napas. |
+| Oksigen aliran tinggi / CPAP-NIV | ≤ 8 mnt | 2 | Hipoksemia akibat edema alveolar; NIV mengurangi intubasi. |
+| Nitrat (ISDN SL berulang atau nitrogliserin infus) | ≤ 15 mnt | 4 | Edema paru hipertensif: vasodilator menurunkan preload & afterload — terapi utama. |
+| Furosemid IV 40–80 mg | ≤ 30 mnt | 2 | Kongesti/kelebihan cairan. |
+| CPAP/NIV bila tetap hipoksemia/sesak | ≤ 30 mnt | 2 | Menurunkan kerja napas & kebutuhan intubasi. |
+| EKG 12 sadapan (singkirkan SKA) | ≤ 15 mnt | 2 | SKA adalah pencetus tersering gagal jantung akut. |
+
+Tindakan berbahaya: Morfin rutin pada edema paru (ringan) · Bolus cairan pada edema paru (berat)
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: jantung
+
+Rujukan: ESC 2021 Guidelines for the diagnosis and treatment of acute and chronic heart failure (+ update 2023); PERKI — Pedoman Tatalaksana Gagal Jantung 2023
+
+### Sumbatan jalan napas benda asing pada anak — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Sumbatan jalan napas oleh benda asing
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Abdominal thrust (Heimlich) / back blows segera | ≤ 2 mnt | 7 | Sumbatan total pada anak sadar: hentakan perut (anak > 1 tahun) berulang sampai benda keluar. |
+| Bila tidak sadar: mulai RJP | ≤ 6 mnt | 3 | Kompresi dada juga membantu mengeluarkan benda asing. |
+| Oksigen & nilai ulang setelah benda keluar | ≤ 15 mnt | 1 | Hipoksemia pasca-sumbatan. |
+
+Disposisi terbaik: bangsal · dapat diterima: pulang · konsul: anak
+
+Rujukan: ERC Guidelines 2021 — Paediatric Life Support (foreign body airway obstruction); AHA 2020 Guidelines — Pediatric Basic and Advanced Life Support
+
+### STEMI anterior — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Varian: STEMI tanpa komplikasi · STEMI dengan VF
+Diagnosis kerja: STEMI (infark miokard akut dengan elevasi ST) · dapat diterima: Henti jantung (VF/VT tanpa nadi)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| EKG 12 sadapan ≤ 10 menit | ≤ 10 mnt | 5 | Setiap nyeri dada iskemik: EKG dalam 10 menit kedatangan untuk menemukan STEMI. |
+| Monitor & pad defibrilator | ≤ 10 mnt | 2 | Risiko VF tertinggi pada jam-jam pertama STEMI. |
+| Aspirin 160–320 mg dikunyah | ≤ 20 mnt | 3 | Antiplatelet segera menurunkan mortalitas. |
+| Penghambat P2Y12 (klopidogrel 600 mg / tikagrelor 180 mg) | ≤ 30 mnt | 2 | Terapi antiplatelet ganda sebelum IKP primer. |
+| Antikoagulan (heparin/enoksaparin) | ≤ 45 mnt | 1 | Antikoagulan parenteral saat reperfusi. |
+| Aktivasi reperfusi: konsul Sp.JP/cath lab | ≤ 20 mnt | 4 | Target diagnosis-ke-wire ≤ 90 menit (IKP primer); bila tidak tersedia ≤ 120 menit → fibrinolitik ≤ 10 menit setelah diagnosis. |
+| VF: RJP segera | ≤ 22 mnt | 3 | Kompresi dada berkualitas tanpa jeda. |
+| VF: defibrilasi segera | ≤ 23 mnt | 4 | Peluang ROSC turun ± 10% per menit keterlambatan kejut. |
+
+Tindakan berbahaya: NSAID pada sindrom koroner akut (sedang)
+
+Disposisi terbaik: kateterisasi · dapat diterima: hcu_icu · konsul: jantung
+
+Rujukan: ESC 2023 Guidelines for the management of acute coronary syndromes; PERKI — Pedoman Tatalaksana Sindrom Koroner Akut 2024; AHA 2020 Guidelines for CPR and ECC — Adult Advanced Life Support
+
+### Henti jantung VF di ruang IGD (disaksikan) — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Henti jantung (VF/VT tanpa nadi) · dapat diterima: STEMI (infark miokard akut dengan elevasi ST)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Kenali henti jantung & mulai RJP ≤ 1 menit | ≤ 4 mnt | 5 | Kompresi dada 100–120/menit, kedalaman 5–6 cm, rekoil penuh, minim jeda. |
+| Pasang pad defibrilator / analisis irama | ≤ 4 mnt | 2 | Analisis irama secepatnya. |
+| Defibrilasi VF ≤ 3 menit setelah kolaps | ≤ 5 mnt | 6 | Henti jantung VF yang disaksikan: kejut dini adalah penentu utama kelangsungan hidup. |
+| Ventilasi BVM + O₂ | ≤ 6 mnt | 1 | Oksigenasi selama RJP (30:2 tanpa jalan napas definitif). |
+| Adrenalin 1 mg IV/IO setelah kejut ke-2, ulang tiap 3–5 menit | ≤ 10 mnt | 2 | Algoritme VF/pVT refrakter. |
+| Amiodaron 300 mg setelah kejut ke-3 | ≤ 12 mnt | 2 | VF refrakter. |
+| EKG 12 sadapan pasca-ROSC | ≤ 25 mnt | 2 | Cari STEMI → reperfusi segera. |
+| Konsul Sp.JP (IKP pasca-ROSC) | ≤ 35 mnt | 2 | Henti jantung akibat SKA → angiografi koroner. |
+
+Disposisi terbaik: kateterisasi, hcu_icu · konsul: jantung, anestesi
+
+Rujukan: AHA 2020 Guidelines for CPR and ECC — Adult Basic & Advanced Life Support (+ 2023 focused update); ERC Guidelines 2021 — Adult Advanced Life Support
+
+### Takikardia supraventrikular (SVT) stabil — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Takikardia supraventrikular (SVT)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| EKG 12 sadapan | ≤ 10 mnt | 4 | Bedakan QRS sempit reguler (SVT) dari takiaritmia lain. |
+| Monitor & pad defibrilator | ≤ 10 mnt | 1 | Takiaritmia berisiko menjadi tidak stabil. |
+| Manuver vagal (Valsalva termodifikasi) | ≤ 15 mnt | 2 | Lini pertama SVT stabil. |
+| Adenosin 6 mg IV cepat (ulang 12 mg) | ≤ 25 mnt | 4 | SVT stabil yang tidak respons manuver vagal. |
+
+Tindakan berbahaya: Kardioversi listrik pada SVT stabil sebelum manuver vagal/adenosin (sedang)
+
+Disposisi terbaik: pulang · dapat diterima: bangsal · konsul: jantung
+
+Rujukan: ESC 2019 Guidelines for the management of supraventricular tachycardia; AHA 2020 Guidelines — Adult Tachycardia With a Pulse Algorithm; REVERT trial (Appelboam et al., Lancet 2015) — modified Valsalva
+
+### AV blok total simtomatik — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: AV blok total (blok jantung derajat III)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| EKG 12 sadapan | ≤ 10 mnt | 3 | Diagnosis jenis bradiaritmia. |
+| Monitor & pad (siap pacu transkutan) | ≤ 15 mnt | 2 | Bradikardia tidak stabil. |
+| Atropin 1 mg IV (boleh dicoba) | ≤ 15 mnt | 1 | Lini pertama algoritme bradikardia; sering tidak efektif pada blok infranodal. |
+| Pacu transkutan atau dopamin/adrenalin infus | ≤ 25 mnt | 5 | AV blok total dengan hipotensi/sinkop tidak respons atropin. |
+| Konsul Sp.JP (pacu jantung sementara/permanen) | ≤ 30 mnt | 3 | Butuh pacu transvena & evaluasi pacu permanen. |
+
+Tindakan berbahaya: Penyekat beta/amiodaron pada bradikardia (berat)
+
+Disposisi terbaik: hcu_icu · konsul: jantung
+
+Rujukan: AHA 2020 Guidelines — Adult Bradycardia Algorithm; ESC 2021 Guidelines on cardiac pacing and cardiac resynchronization therapy
+
+### Stroke iskemik akut dalam jendela trombolisis — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Varian: TD < 185/110 · TD > 185/110 (harus diturunkan sebelum trombolisis)
+Diagnosis kerja: Stroke iskemik akut
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Gula darah (singkirkan hipoglikemia) | ≤ 10 mnt | 3 | Hipoglikemia dapat menyerupai stroke dan harus disingkirkan sebelum trombolisis. |
+| CT kepala non-kontras ≤ 25 menit | ≤ 25 mnt | 4 | Membedakan stroke iskemik dari perdarahan sebelum trombolisis (door-to-CT ≤ 25 menit). |
+| Pemeriksaan neurologis (NIHSS) | ≤ 20 mnt | 1 | Menilai beratnya stroke & indikasi trombolisis. |
+| Turunkan TD < 185/110 sebelum trombolisis | ≤ 45 mnt | 2 | Syarat aman alteplase. |
+| Alteplase 0,9 mg/kg (maks 90 mg) — door-to-needle ≤ 60 menit | ≤ 60 mnt | 5 | Stroke iskemik ≤ 4,5 jam tanpa kontraindikasi: trombolisis memperbaiki luaran fungsional. |
+| Konsul Sp.N (tim stroke) | ≤ 30 mnt | 2 | Aktivasi kode stroke. |
+
+Tindakan berbahaya: Trombolitik sebelum CT (berat) · Antiplatelet/antikoagulan dalam 24 jam pascatrombolisis atau sebelum CT (sedang)
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: saraf
+
+Rujukan: AHA/ASA 2019 Guidelines for the Early Management of Acute Ischemic Stroke (Powers et al.); ESO 2021 Guidelines on intravenous thrombolysis for acute ischaemic stroke; PERDOSSI — Pedoman Tatalaksana Stroke
+
+### Stroke perdarahan intraserebral hipertensif — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Stroke perdarahan intraserebral · dapat diterima: Krisis hipertensi (emergensi)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Gula darah | ≤ 10 mnt | 2 | Singkirkan hipoglikemia pada setiap penurunan kesadaran. |
+| CT kepala non-kontras segera | ≤ 25 mnt | 4 | Diagnosis pasti perdarahan & volumenya. |
+| Turunkan TDS ke ± 140 mmHg (nikardipin/labetalol IV) | ≤ 45 mnt | 5 | Penurunan TDS dini mengurangi perluasan hematoma (target 140, hindari < 110). |
+| Elevasi kepala 30° | ≤ 20 mnt | 1 | Membantu menurunkan TIK. |
+| Konsul Sp.BS/Sp.N | ≤ 40 mnt | 2 | Penilaian evakuasi hematoma & perawatan intensif. |
+
+Tindakan berbahaya: Trombolitik pada stroke perdarahan (berat) · Antiplatelet/antikoagulan pada perdarahan intraserebral (berat)
+
+Disposisi terbaik: hcu_icu · dapat diterima: kamar_operasi · konsul: bedah_saraf, saraf
+
+Rujukan: AHA/ASA 2022 Guideline for the Management of Patients With Spontaneous Intracerebral Hemorrhage (Greenberg et al.); INTERACT2 & INTERACT3 trials
+
+### Status epileptikus konvulsif — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Status epileptikus
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Benzodiazepin segera (midazolam 10 mg IM / diazepam 0,15–0,2 mg/kg IV) | ≤ 5 mnt | 6 | Lini pertama — makin lama kejang, makin resisten terhadap obat. |
+| Gula darah | ≤ 10 mnt | 3 | Hipoglikemia penyebab kejang yang reversibel. |
+| Amankan jalan napas: posisi miring, suction, O₂ | ≤ 5 mnt | 2 | Sekret/muntahan & hipoksia saat kejang. |
+| Oksigen | ≤ 5 mnt | 1 | Hipoksemia saat kejang. |
+| Obat lini kedua (fenitoin 20 mg/kg / levetirasetam 60 mg/kg) | ≤ 30 mnt | 4 | Kejang menetap setelah 2 dosis benzodiazepin. |
+| Konsul Sp.N | ≤ 45 mnt | 1 | Evaluasi penyebab & perawatan. |
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: saraf
+
+Rujukan: American Epilepsy Society 2016 — Evidence-Based Guideline: Treatment of Convulsive Status Epilepticus (Glauser et al.); ESETT trial (Kapur et al., NEJM 2019); PERDOSSI — Pedoman Tatalaksana Epilepsi
+
+### Hipoglikemia berat akibat sulfonilurea — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Hipoglikemia
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Cek gula darah segera | ≤ 5 mnt | 5 | Setiap penurunan kesadaran: periksa gula darah dalam menit pertama. |
+| Dekstrosa 40% 25–50 ml IV (anak: D10% 2–5 ml/kg) | ≤ 10 mnt | 6 | Koreksi hipoglikemia segera mencegah kerusakan otak. |
+| Amankan jalan napas (manuver/posisi miring) | ≤ 5 mnt | 1 | Lidah jatuh pada penurunan kesadaran. |
+| Infus dekstrosa 10% rumatan + pantau GDS | ≤ 40 mnt | 3 | Sulfonilurea bekerja lama → hipoglikemia berulang. |
+
+Tindakan berbahaya: CT kepala sebelum cek gula darah (sedang) · Insulin pada hipoglikemia (berat)
+
+Disposisi terbaik: bangsal · konsul: penyakit_dalam
+
+Rujukan: ADA Standards of Care in Diabetes 2025 — Section 6: Glycemic Goals and Hypoglycemia; PERKENI — Pedoman Pengelolaan DM Tipe 2 di Indonesia 2021
+
+### Ketoasidosis diabetik dengan hipokalemia — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Ketoasidosis diabetik (KAD)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| GDS & keton | ≤ 15 mnt | 2 | Konfirmasi hiperglikemia & ketosis. |
+| NaCl 0,9% 15–20 ml/kg pada jam pertama | ≤ 60 mnt | 4 | Defisit cairan rata-rata 6 L; cairan menurunkan glukosa & memperbaiki perfusi. |
+| Periksa kalium SEBELUM insulin | ≤ 30 mnt | 3 | Insulin memasukkan kalium ke sel → hipokalemia fatal bila K awal rendah. |
+| Koreksi kalium (KCl infus) bila K < 3,5 | ≤ 60 mnt | 3 | ADA: K < 3,5 → tunda insulin, berikan KCl 10–20 mEq/jam. |
+| Insulin infus 0,1 U/kg/jam setelah K ≥ 3,5 | ≤ 120 mnt | 3 | Menghentikan ketogenesis. |
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: penyakit_dalam
+
+Rujukan: ADA/EASD/JBDS/AACE/DTS 2024 Consensus Report — Hyperglycemic Crises in Adults With Diabetes (Umpierrez et al., Diabetes Care 2024); PERKENI — Pedoman Pengelolaan DM Tipe 1
+
+### Tension pneumotoraks pascatrauma dada — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Tension pneumotoraks · dapat diterima: Pneumotoraks sederhana
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Dekompresi jarum dada KANAN segera (diagnosis klinis) | ≤ 5 mnt | 7 | Tension pneumotoraks: syok obstruktif — dekompresi tanpa menunggu rontgen. |
+| Chest tube (WSD) kanan | ≤ 30 mnt | 3 | Tatalaksana definitif setelah dekompresi. |
+| Oksigen aliran tinggi | ≤ 5 mnt | 1 | Hipoksemia. |
+| Akses IV & sampel darah | ≤ 15 mnt | 1 | Trauma mayor. |
+
+Tindakan berbahaya: Menunggu rontgen sebelum dekompresi (berat)
+
+Disposisi terbaik: bangsal, hcu_icu · konsul: bedah
+
+Rujukan: ATLS® 10th Edition (American College of Surgeons, 2018) — Chapter 4: Thoracic Trauma; ERC Guidelines 2021 — Cardiac arrest in special circumstances (traumatic cardiac arrest)
+
+### Multitrauma dengan syok hemoragik (fraktur pelvis & femur) — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Syok hemoragik / Fraktur pelvis tidak stabil
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Dua akses IV kanul besar | ≤ 10 mnt | 1 | Resusitasi cairan & darah. |
+| Pelvic binder (curiga fraktur pelvis tidak stabil) | ≤ 15 mnt | 5 | Menutup volume pelvis & menekan perdarahan vena. |
+| Transfusi PRC (syok kelas III) | ≤ 30 mnt | 4 | ATLS: kristaloid dibatasi (± 1 L), segera darah pada syok kelas III–IV. |
+| Asam traneksamat 1 g ≤ 3 jam | ≤ 30 mnt | 3 | CRASH-2: menurunkan kematian akibat perdarahan bila diberikan ≤ 3 jam. |
+| eFAST | ≤ 20 mnt | 1 | Cari sumber perdarahan torakoabdominal. |
+| Cegah hipotermia (selimut & cairan hangat) | ≤ 30 mnt | 1 | Triad mematikan: hipotermia, asidosis, koagulopati. |
+| Bidai/traksi femur | ≤ 30 mnt | 1 | Mengurangi perdarahan & nyeri fraktur femur. |
+| Konsul Sp.B/Sp.OT — kontrol perdarahan definitif | ≤ 30 mnt | 3 | Butuh fiksasi pelvis/angioembolisasi/operasi. |
+
+Tindakan berbahaya: Kateter urin pada curiga cedera uretra (sedang)
+
+Disposisi terbaik: kamar_operasi · dapat diterima: hcu_icu · konsul: bedah, ortopedi
+
+Rujukan: ATLS® 10th Edition (2018) — Chapter 3: Shock; Chapter 5: Abdominal & Pelvic Trauma; CRASH-2 trial (Lancet 2010); European guideline on management of major bleeding and coagulopathy following trauma, 6th ed. (Rossaint et al., Crit Care 2023)
+
+### Cedera kepala berat dengan perdarahan epidural — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Cedera kepala berat (perdarahan intrakranial)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Jaw thrust/suction (proteksi servikal) | ≤ 3 mnt | 2 | GCS rendah dengan muntahan — cegah aspirasi & hipoksia. |
+| Intubasi (GCS ≤ 8) | ≤ 15 mnt | 4 | Proteksi jalan napas; hindari hipoksia (SpO₂ > 94%) & hiperkapnia. |
+| Terapi osmotik (manitol 0,5–1 g/kg / NaCl 3%) — tanda herniasi | ≤ 25 mnt | 3 | Anisokor + penurunan kesadaran = herniasi transtentorial. |
+| CT kepala segera setelah stabil | ≤ 30 mnt | 3 | Lesi massa yang butuh evakuasi. |
+| Konsul Sp.BS (evakuasi hematoma) | ≤ 30 mnt | 4 | EDH dengan pergeseran garis tengah = operasi segera. |
+| Elevasi kepala 30° | ≤ 20 mnt | 1 | Menurunkan TIK. |
+
+Tindakan berbahaya: Kortikosteroid pada cedera kepala (sedang) · NPA/NGT pada curiga fraktur basis kranii (sedang) · Cairan hipotonik/dekstrosa pada cedera otak (ringan)
+
+Disposisi terbaik: kamar_operasi · dapat diterima: hcu_icu · konsul: bedah_saraf
+
+Rujukan: Brain Trauma Foundation — Guidelines for the Management of Severe TBI, 4th ed. (2016); ATLS® 10th Edition (2018) — Chapter 6: Head Trauma; CRASH trial (Lancet 2004/2005)
+
+### Perdarahan arteri femoralis superfisial akibat luka bacok — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Perdarahan arteri ekstremitas / Syok hemoragik
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Tekan langsung/bebat tekan segera | ≤ 2 mnt | 3 | Kontrol perdarahan eksternal adalah prioritas "C" pertama (bahkan sebelum A pada perdarahan masif — <C>ABC). |
+| Torniket bila tekan langsung tidak mengontrol | ≤ 6 mnt | 6 | Perdarahan arteri ekstremitas yang mengancam nyawa. |
+| Dua akses IV | ≤ 10 mnt | 1 | Resusitasi. |
+| Transfusi PRC | ≤ 30 mnt | 2 | Kehilangan darah > 30%. |
+| Asam traneksamat 1 g | ≤ 30 mnt | 2 | Perdarahan traumatik bermakna ≤ 3 jam. |
+| Konsul Sp.B (repair vaskular) | ≤ 30 mnt | 3 | Torniket hanya sementara (≤ 2 jam). |
+| Profilaksis tetanus | ≤ 120 mnt | 1 | Luka terkontaminasi. |
+
+Disposisi terbaik: kamar_operasi · konsul: bedah
+
+Rujukan: ATLS® 10th Edition (2018) — Chapter 8: Musculoskeletal Trauma (life-threatening extremity hemorrhage); Stop the Bleed / Hartford Consensus; European guideline on management of major bleeding and coagulopathy following trauma, 6th ed. (2023)
+
+### Luka bakar luas dengan trauma inhalasi — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Luka bakar luas (derajat II–III) / Trauma inhalasi
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Intubasi dini (tanda trauma inhalasi: serak, stridor, jelaga, luka bakar wajah) | ≤ 30 mnt | 6 | Edema jalan napas progresif — makin lama makin sulit/mustahil diintubasi. |
+| O₂ 100% (curiga keracunan CO) | ≤ 5 mnt | 2 | Mempercepat eliminasi CO; SpO₂ normal palsu. |
+| Dua akses IV kanul besar | ≤ 15 mnt | 1 | Resusitasi cairan luka bakar > 20%. |
+| Ringer laktat sesuai formula (2 ml × kg × %LPTB/24 jam; separuh dalam 8 jam) | ≤ 60 mnt | 3 | Luka bakar > 20% LPTB dewasa butuh resusitasi cairan terhitung, dititrasi produksi urin 0,5 ml/kg/jam. |
+| Analgesia opioid IV | ≤ 30 mnt | 1 | Nyeri luka bakar berat. |
+| Kateter urin (pantau produksi urin) | ≤ 60 mnt | 1 | Panduan titrasi cairan. |
+| Konsul luka bakar/ICU | ≤ 60 mnt | 2 | Kriteria rujukan unit luka bakar. |
+
+Tindakan berbahaya: Antibiotik profilaksis rutin pada luka bakar akut (ringan)
+
+Disposisi terbaik: hcu_icu · dapat diterima: rujuk · konsul: bedah_plastik, anestesi
+
+Rujukan: ATLS® 10th Edition (2018) — Chapter 9: Thermal Injuries; ISBI Practice Guidelines for Burn Care (Burns 2016, 2018); American Burn Association — Advanced Burn Life Support Course 2018
+
+### Intoksikasi opioid (heroin) dengan depresi napas — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Intoksikasi opioid
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Buka jalan napas & ventilasi BVM + O₂ | ≤ 3 mnt | 3 | Masalah utama adalah hipoventilasi — oksigenasi & ventilasi dulu. |
+| Nalokson titrasi (0,04–0,4 mg IV, atau 2 mg intranasal) | ≤ 10 mnt | 6 | Antidot opioid untuk mengembalikan napas spontan. |
+| Gula darah | ≤ 15 mnt | 1 | Selalu periksa GDS pada penurunan kesadaran. |
+| Oksigen | ≤ 5 mnt | 1 | Hipoksemia. |
+
+Disposisi terbaik: bangsal · dapat diterima: hcu_icu · konsul: penyakit_dalam
+
+Rujukan: AHA 2023 Focused Update on Adult Advanced Cardiovascular Life Support (toxicology: opioid poisoning); WHO — Community management of opioid overdose (2014)
+
+### Keracunan pestisida organofosfat — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Keracunan organofosfat
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Atropin 1–2 mg IV, gandakan tiap 5 menit sampai atropinisasi | ≤ 10 mnt | 6 | Mengatasi efek muskarinik (bronkorea, bronkospasme, bradikardia) — penyebab kematian utama. |
+| Dekontaminasi (lepas pakaian, cuci kulit) dengan APD | ≤ 20 mnt | 2 | Menghentikan absorpsi lanjutan & melindungi petugas. |
+| Suction & oksigen | ≤ 10 mnt | 2 | Bronkorea & hipersalivasi menyumbat jalan napas. |
+| Atropin infus rumatan setelah atropinisasi | ≤ 45 mnt | 2 | Efek atropin bolus singkat; tanpa rumatan krisis kolinergik kambuh. |
+| Pralidoksim (bila tersedia) | ≤ 60 mnt | 1 | Reaktivasi asetilkolinesterase (manfaat diperdebatkan). |
+| Konsul ICU/penyakit dalam | ≤ 60 mnt | 1 | Risiko gagal napas & sindrom intermediat. |
+
+Disposisi terbaik: hcu_icu · konsul: penyakit_dalam, anestesi
+
+Rujukan: Eddleston M, et al. Management of acute organophosphorus pesticide poisoning. Lancet 2008;371:597–607; WHO — Clinical management of acute pesticide intoxication (2008)
+
+### Syok septik akibat pneumonia — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Syok septik · dapat diterima: Sepsis tanpa syok
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Laktat (AGD/laktat) | ≤ 30 mnt | 2 | Hipoperfusi jaringan; laktat > 2 & MAP < 65 setelah cairan = syok septik. |
+| Kultur darah sebelum antibiotik (tidak menunda > 45 menit) | ≤ 45 mnt | 1 | Identifikasi kuman. |
+| Antibiotik spektrum luas IV ≤ 1 jam | ≤ 60 mnt | 5 | Setiap jam penundaan antibiotik pada syok septik meningkatkan kematian. |
+| Kristaloid 30 ml/kg dalam 3 jam (≥ 20 ml/kg pada jam pertama) | ≤ 60 mnt | 4 | Hipotensi/laktat ≥ 4 akibat sepsis. |
+| Norepinefrin bila MAP < 65 setelah cairan | ≤ 90 mnt | 3 | Target MAP ≥ 65 mmHg. |
+| Oksigen (SpO₂ < 92%) | ≤ 15 mnt | 1 | Pneumonia dengan hipoksemia. |
+| Konsul ICU/penyakit dalam | ≤ 60 mnt | 1 | Butuh perawatan intensif & vasopresor. |
+
+Tindakan berbahaya: Koloid (starch/gelatin) pada sepsis (sedang)
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: penyakit_dalam, anestesi
+
+Rujukan: Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021 (Evans et al.); Sepsis-3 definitions (Singer et al., JAMA 2016)
+
+### Perdarahan saluran cerna atas — pecah varises esofagus (sirosis) — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Pecah varises esofagus (sirosis) / Perdarahan saluran cerna atas
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Dua akses IV kanul besar | ≤ 10 mnt | 1 | Perdarahan dengan instabilitas hemodinamik. |
+| Resusitasi cairan/darah | ≤ 30 mnt | 2 | Syok kelas III; transfusi restriktif (target Hb 7–8 g/dL). |
+| Vasoaktif splanknik (oktreotid/terlipresin) segera | ≤ 30 mnt | 4 | Curiga perdarahan varises: menurunkan tekanan portal sebelum endoskopi. |
+| Antibiotik profilaksis (seftriakson 1 g/hari) | ≤ 60 mnt | 3 | Sirosis + perdarahan SCBA: menurunkan infeksi, perdarahan ulang & kematian. |
+| Golongan darah & crossmatch, darah lengkap | ≤ 30 mnt | 1 | Persiapan transfusi. |
+| Konsul Sp.PD (endoskopi ≤ 12 jam) | ≤ 30 mnt | 3 | Ligasi varises endoskopik. |
+
+Tindakan berbahaya: Asam traneksamat pada perdarahan saluran cerna (ringan) · Transfusi berlebihan (≥ 1.000 ml PRC dengan Hb ≥ 9) (ringan)
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: penyakit_dalam
+
+Rujukan: Baveno VII — Renewing consensus in portal hypertension (J Hepatol 2022); AASLD 2023 Practice Guidance on risk stratification and management of portal hypertension and varices in cirrhosis; HALT-IT trial (Lancet 2020)
+
+### Dengue shock syndrome pada anak — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Dengue shock syndrome · dapat diterima: Demam berdarah dengue tanpa syok
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Bolus kristaloid 10–20 ml/kg dalam 15–30 menit | ≤ 15 mnt | 6 | Syok terkompensasi/hipotensif pada dengue: resusitasi cairan segera. |
+| Akses IV/IO | ≤ 10 mnt | 1 | Anak syok. |
+| Darah lengkap (hematokrit sebelum & sesudah bolus) | ≤ 30 mnt | 2 | Hematokrit memandu cairan dan mendeteksi perdarahan tersembunyi. |
+| Monitor tanda vital ketat | ≤ 10 mnt | 1 | Nilai respons tiap bolus. |
+| Konsul Sp.A | ≤ 45 mnt | 2 | Perawatan intensif anak. |
+
+Tindakan berbahaya: NSAID/aspirin pada dengue (berat) · Suntikan IM pada dengue (ringan)
+
+Disposisi terbaik: hcu_icu · dapat diterima: bangsal · konsul: anak
+
+Rujukan: WHO — Handbook for Clinical Management of Dengue (2012); Kemenkes RI — Pedoman Nasional Pelayanan Kedokteran Tata Laksana Infeksi Dengue Anak & Remaja (2021)
+
+### Diare akut dengan dehidrasi berat pada anak — ATS 2 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Diare akut dengan dehidrasi berat · dapat diterima: Syok hipovolemik (non-perdarahan)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Akses IV (IO bila gagal) | ≤ 15 mnt | 2 | Dehidrasi berat butuh rehidrasi intravena segera. |
+| Rencana C: RL 30 ml/kg (≥ 1 th: dalam 30 menit), lalu 70 ml/kg | ≤ 45 mnt | 6 | WHO/Kemenkes: total 100 ml/kg (anak ≥ 12 bulan: 30 ml/kg dalam 30 menit, 70 ml/kg dalam 2½ jam). |
+| Gula darah | ≤ 30 mnt | 1 | Hipoglikemia sering pada anak dehidrasi yang tidak makan. |
+| Zinc 20 mg/hari (10 hari) + oralit bila bisa minum | ≤ 120 mnt | 1 | Mengurangi lama & beratnya diare. |
+| Konsul Sp.A/rawat inap | ≤ 60 mnt | 1 | Rehidrasi & pemantauan lanjutan. |
+
+Tindakan berbahaya: Antibiotik pada diare cair tanpa indikasi (ringan) · Dekstrosa sebagai cairan rehidrasi (sedang)
+
+Disposisi terbaik: bangsal · konsul: anak
+
+Rujukan: WHO — The treatment of diarrhoea: a manual for physicians (2005) & Pocket Book of Hospital Care for Children (2013); Kemenkes RI — Lintas Diare / MTBS
+
+### Eklampsia pada kehamilan 35 minggu — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Eklampsia · dapat diterima: Preeklampsia berat
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| MgSO₄ 4 g IV pelan (15–20 menit) + rumatan 1 g/jam | ≤ 15 mnt | 6 | Obat pilihan mencegah & menghentikan kejang eklampsia (lebih unggul dari diazepam/fenitoin). |
+| Rumatan MgSO₄ 1 g/jam | ≤ 40 mnt | 2 | Pertahankan kadar terapeutik 24 jam pascapersalinan/kejang terakhir. |
+| Antihipertensi bila TD ≥ 160/110 (nifedipin oral/labetalol IV) | ≤ 30 mnt | 3 | Mencegah perdarahan otak; target 140–150/90–100. |
+| Posisi miring kiri, jalan napas & O₂ | ≤ 10 mnt | 1 | Proteksi jalan napas & mencegah kompresi aortokaval. |
+| Konsul Sp.OG (terminasi setelah ibu stabil) | ≤ 30 mnt | 3 | Persalinan adalah terapi definitif. |
+| Kateter urin (pantau produksi urin & toksisitas Mg) | ≤ 60 mnt | 1 | Mg diekskresi ginjal; oliguria → risiko intoksikasi. |
+
+Tindakan berbahaya: Diazepam sebagai obat utama eklampsia (sedang)
+
+Disposisi terbaik: kamar_operasi, hcu_icu · konsul: obgin
+
+Rujukan: POGI — PNPK Diagnosis dan Tata Laksana Pre-eklamsia (2016); WHO recommendations for prevention and treatment of pre-eclampsia and eclampsia (2011, update 2018); ACOG Practice Bulletin No. 222 (2020) — Gestational Hypertension and Preeclampsia
+
+### Perdarahan pascapersalinan akibat atonia uteri — ATS 1 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Perdarahan pascapersalinan (atonia uteri) · dapat diterima: Syok hemoragik
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Masase fundus uteri | ≤ 5 mnt | 3 | Tindakan pertama atonia uteri. |
+| Oksitosin 10 IU IM/IV pelan + infus 20–40 IU/L | ≤ 10 mnt | 5 | Uterotonika lini pertama. |
+| Akses IV kedua kanul besar | ≤ 10 mnt | 1 | Syok hemoragik. |
+| Resusitasi kristaloid hangat | ≤ 20 mnt | 2 | Syok kelas III. |
+| Asam traneksamat 1 g IV ≤ 3 jam pascapersalinan | ≤ 30 mnt | 3 | WOMAN trial: menurunkan kematian akibat perdarahan. |
+| Transfusi PRC | ≤ 45 mnt | 2 | Kehilangan > 1.500 ml dengan syok. |
+| Konsul Sp.OG | ≤ 20 mnt | 3 | Bila uterotonika & kompresi gagal: tindakan bedah (B-Lynch, ligasi, histerektomi). |
+
+Disposisi terbaik: hcu_icu, bangsal · dapat diterima: kamar_operasi · konsul: obgin
+
+Rujukan: WHO recommendations on the assessment of postpartum blood loss and use of a treatment bundle for PPH (2023); WOMAN trial (Lancet 2017); POGI — PNPK Perdarahan Pascasalin (2016)
+
+### Kolik renal (batu ureter) — ATS 3 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Kolik renal (batu saluran kemih)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Analgesia segera (NSAID IV/IM lini pertama) | ≤ 30 mnt | 5 | NSAID mengurangi nyeri kolik lebih baik dengan efek samping lebih sedikit dari opioid. |
+| Urinalisis (hematuria, tanda infeksi) | ≤ 60 mnt | 2 | Mendukung diagnosis & menyingkirkan infeksi (batu + infeksi = darurat urologi). |
+
+Disposisi terbaik: pulang · dapat diterima: bangsal
+
+Rujukan: EAU Guidelines on Urolithiasis 2024; IAUI — Panduan Penatalaksanaan Klinis Batu Saluran Kemih
+
+### Luka robek telapak tangan (vulnus laceratum) — ATS 4 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Vulnus laceratum (luka robek)
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Inspeksi luka & status neurovaskular/tendon | ≤ 60 mnt | 2 | Menyingkirkan cedera tendon/saraf/pembuluh darah. |
+| Irigasi & pembersihan luka | ≤ 90 mnt | 2 | Mengurangi infeksi. |
+| Hecting dengan anestesi lokal | ≤ 120 mnt | 3 | Luka bersih < 6–8 jam: penutupan primer. |
+| Profilaksis tetanus (TT/Td) | ≤ 120 mnt | 2 | Imunisasi terakhir > 10 tahun. |
+
+Tindakan berbahaya: Antibiotik IV pada luka bersih sederhana (ringan)
+
+Disposisi terbaik: pulang
+
+Rujukan: ATLS® 10th Edition (2018) — Chapter 8: Musculoskeletal Trauma; Kemenkes RI — Pedoman Penatalaksanaan Tetanus & Profilaksis Luka
+
+### Sprain pergelangan kaki (Ottawa ankle rule negatif) — ATS 4 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Sprain/strain pergelangan kaki
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Pemeriksaan ekstremitas (Ottawa ankle rule) | ≤ 60 mnt | 3 | Menentukan perlu tidaknya rontgen. |
+| Analgesia | ≤ 90 mnt | 2 | Nyeri sedang. |
+| Imobilisasi/elastic bandage | ≤ 120 mnt | 1 | Kenyamanan & proteksi. |
+
+Disposisi terbaik: pulang
+
+Rujukan: Stiell IG, et al. Ottawa ankle rules. JAMA 1993/1994; NICE CKS — Sprains and strains (2022)
+
+### Faringitis akut viral — ATS 5 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Faringitis akut
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Pemeriksaan kepala-leher (tanda bahaya: abses, epiglotitis) | ≤ 90 mnt | 3 | Menyingkirkan kegawatan jalan napas. |
+| Terapi simptomatik (parasetamol) | ≤ 120 mnt | 2 | Faringitis viral (Centor rendah) — tidak perlu antibiotik. |
+
+Tindakan berbahaya: Antibiotik pada faringitis viral (ringan)
+
+Disposisi terbaik: pulang
+
+Rujukan: NICE NG84 — Sore throat (acute): antimicrobial prescribing (2018); IDSA Clinical Practice Guideline for Group A Streptococcal Pharyngitis (2012)
+
+### Serangan panik dengan hiperventilasi — ATS 3 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Sindrom hiperventilasi / serangan panik
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| EKG 12 sadapan (singkirkan SKA/aritmia) | ≤ 15 mnt | 4 | Nyeri dada & berdebar harus disingkirkan dari penyebab kardiak sebelum disimpulkan panik. |
+| Gula darah | ≤ 30 mnt | 1 | Hipoglikemia dapat menyerupai serangan panik. |
+| Survei primer untuk menyingkirkan kegawatan | ≤ 15 mnt | 2 | Diagnosis eksklusi. |
+
+Tindakan berbahaya: Oksigen aliran tinggi pada hiperventilasi dengan SpO₂ normal (ringan) · CT tanpa indikasi (ringan)
+
+Disposisi terbaik: pulang
+
+Rujukan: ESC 2023 ACS Guidelines (evaluasi nyeri dada); NICE CG113 — Generalised anxiety disorder and panic disorder in adults (2011, update 2020)
+
+### Gastroenteritis akut tanpa dehidrasi berat — ATS 4 · `BELUM_DITINJAU_DOKTER`
+
+Diagnosis kerja: Gastroenteritis akut tanpa dehidrasi berat
+
+| Tindakan kritis | Tenggat | Bobot | Alasan |
+|---|---|---|---|
+| Rehidrasi oral (oralit) | ≤ 60 mnt | 4 | Dehidrasi ringan–sedang: rehidrasi oral cukup. |
+| Pemeriksaan abdomen (singkirkan akut abdomen) | ≤ 60 mnt | 2 | Tanda bahaya: nyeri terlokalisasi, defans. |
+
+Tindakan berbahaya: Antibiotik pada diare cair akut tanpa tanda disentri (ringan)
+
+Disposisi terbaik: pulang
+
+Rujukan: WHO — The treatment of diarrhoea (2005); IDSA 2017 Guidelines for the Diagnosis and Management of Infectious Diarrhea

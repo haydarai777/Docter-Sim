@@ -243,7 +243,7 @@ function emptyPanel(shift: EdShift): HTMLElement {
     'aside',
     { class: 'monitor igd-monitor', 'aria-label': 'Monitor pasien' },
     h('div', { class: 'monitor__bar' }, h('span', { class: 'monitor__led', 'aria-hidden': 'true' }), h('span', { class: 'monitor__name' }, 'RME IGD')),
-    h('div', { class: 'monitor__body' }, h('p', { class: 'empty' }, shift.patients.some((p) => p.status !== 'akan_datang') ? 'Pilih pasien di papan IGD.' : 'Belum ada pasien. Jam berjalan — pasien akan datang.')),
+    h('div', { class: 'monitor__body' }, h('p', { class: 'empty' }, shift.patients.some((p) => p.status !== 'akan_datang') ? document.documentElement.classList.contains('no-3d') ? 'Pilih pasien di papan IGD.' : 'Pilih pasien di papan IGD — atau ketuk bed/pasiennya di ruangan. Seret ruangan untuk melihat sekeliling.' : 'Belum ada pasien. Jam berjalan — pasien akan datang.')),
   );
 }
 

@@ -578,7 +578,7 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
       // Ujung kaki: selimut "berdiri" menutupi telapak.
       const tent = new Mesh(track(new CylinderGeometry(0.4, 0.4, 0.5, 18, 1, false, -Math.PI / 2, Math.PI)), blanketMat);
       tent.rotation.x = -Math.PI / 2;
-      tent.scale.set(1, 1, 0.78);
+      tent.scale.set(1.04, 1, 1.0);
       tent.position.set(bx, top + 0.005, footZ - 0.3);
       blanket.add(tent);
       blanket.visible = false;

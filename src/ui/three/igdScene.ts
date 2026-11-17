@@ -156,7 +156,8 @@ export class IgdScene implements StageUpdatable {
   private readonly nurses = new Map<string, NV>();
   private clerk: Actor | null = null;
   /** Kendaraan yang sedang pergi (setelah transfer) — dibuang saat tiba di luar. */
-  private readonly leaving: Vehicle[] = [];
+  /** Semua kendaraan aktif (brankar/kursi roda) — digerakkan tiap frame. */
+  private readonly vehicles = new Set<Vehicle>();
   /** Orang yang sedang berjalan keluar lalu dihapus. */
   private readonly walkers: Actor[] = [];
   private readonly rig: CameraRig = { eye: L.overviewEye.clone(), focus: L.overviewFocus.clone(), fov: 1.3 };
@@ -308,18 +309,25 @@ export class IgdScene implements StageUpdatable {
     this.pvs.clear();
     for (const n of this.nurses.values()) this.removeActor(n.actor);
     this.nurses.clear();
-    for (const v of this.leaving) this.disposeVehicle(v);
-    this.leaving.length = 0;
+    for (const v of [...this.vehicles]) this.disposeVehicle(v);
+    this.vehicles.clear();
     for (const w of this.walkers) this.removeActor(w);
     this.walkers.length = 0;
     this.removeActor(this.clerk);
     this.clerk = null;
     this.shiftRef = null;
     this.peek = null;
+    this.timers = [];
     if (this.room) for (const bay of this.room.bays.values()) this.resetBay(bay);
   }
 
+  private track(v: Vehicle): Vehicle {
+    this.vehicles.add(v);
+    return v;
+  }
+
   private disposeVehicle(v: Vehicle): void {
+    this.vehicles.delete(v);
     v.stretcher?.dispose();
     v.chair?.dispose();
     if (v.ownCrew) for (const c of v.crew) this.removeActor(c);
@@ -433,7 +441,7 @@ export class IgdScene implements StageUpdatable {
       const st = new Stretcher();
       st.place(s.x, s.z, Math.PI / 2);
       this.stage.scene.add(st.group);
-      pv.veh = { stretcher: st, chair: null, mover: new Mover(), crew: [], ownCrew: true };
+      pv.veh = this.track({ stretcher: st, chair: null, mover: new Mover(), crew: [], ownCrew: true });
       pv.veh.mover.pos.set(s.x, 0, s.z);
       pv.veh.mover.yaw = pv.veh.mover.shown = -Math.PI / 2;
       a.lie(() => st.pose(), 0);
@@ -472,6 +480,12 @@ export class IgdScene implements StageUpdatable {
     }
     const gate = to.x > 6.3 ? V(GATE_ENTR.x, clamp(to.z, 0.4, 2.3)) : to.x < -6.3 ? GATE_EXIT.clone() : null;
     const end = gate ?? to;
+    // Di dalam area bed yang sama/bersebelahan: memutar lewat ujung kaki bed, tidak ke lorong.
+    if (!gate && pts.length === 0 && start.z < -1.9 && end.z < -1.9 && Math.abs(start.x - end.x) < 2.2) {
+      if (Math.abs(start.x - end.x) > 0.25) pts.push(V(start.x, -1.95), V(end.x, -1.95));
+      pts.push(to.clone());
+      return pts;
+    }
     const open = (q: Vector3) => q.x > 1.6 && q.z > lane + 0.6;
     if (!(open(start) && open(end))) {
       if (Math.abs(start.z - lane) > 0.3) pts.push(V(start.x, lane));
@@ -542,7 +556,7 @@ export class IgdScene implements StageUpdatable {
       const st = new Stretcher();
       this.stage.scene.add(st.group);
       const crew = [0, 1].map((i) => this.newActor(staffLook('paramedis', `Paramedis ${p.id}-${i}`, this.content, this.seed), (this.seed + i * 104729 + p.id.length) >>> 0));
-      const veh: Vehicle = { stretcher: st, chair: null, mover: new Mover(0.95), crew, ownCrew: true };
+      const veh = this.track({ stretcher: st, chair: null, mover: new Mover(0.95), crew, ownCrew: true });
       veh.mover.pos.copy(start);
       veh.mover.yaw = veh.mover.shown = -Math.PI / 2;
       pv.veh = veh;
@@ -558,7 +572,7 @@ export class IgdScene implements StageUpdatable {
     if (p.arrivalMode === 'kursi_roda' && pv.fam) {
       const ch = new Wheelchair();
       this.stage.scene.add(ch.group);
-      const veh: Vehicle = { stretcher: null, chair: ch, mover: new Mover(0.9), crew: [pv.fam], ownCrew: false };
+      const veh = this.track({ stretcher: null, chair: ch, mover: new Mover(0.9), crew: [pv.fam], ownCrew: false });
       veh.mover.pos.copy(start);
       veh.mover.yaw = veh.mover.shown = -Math.PI / 2;
       pv.veh = veh;
@@ -759,7 +773,6 @@ export class IgdScene implements StageUpdatable {
             pv.veh = null;
             this.attachStretcherCrew(veh, null);
             veh.mover.go([V(bay.x + 0.95, L.laneZ), V(5.0, L.laneZ), V(GATE_ENTR.x, 1.1), OUT_ENTR.clone().add(V(1, 0))], () => this.dropVehicle(veh));
-            this.leaving.push(veh);
             settle();
           });
         });
@@ -771,7 +784,6 @@ export class IgdScene implements StageUpdatable {
       pv.veh = null;
       this.attachStretcherCrew(veh, null);
       veh.mover.go([V(5.6, veh.mover.pos.z), OUT_ENTR.clone().add(V(1, 0))], () => this.dropVehicle(veh));
-      this.leaving.push(veh);
       this.sitAt(a, bay.seat!.x, bay.seat!.z, bay.seat!.yaw, bay.seat!.y, false, settle);
       return;
     }
@@ -791,7 +803,6 @@ export class IgdScene implements StageUpdatable {
             pv.famFree = true;
             this.placeFamily(pv, false);
           });
-          this.leaving.push(veh);
           settle();
         };
         if (bay.pose) {
@@ -921,7 +932,6 @@ export class IgdScene implements StageUpdatable {
       this.later(2.2, () => {
         this.attachStretcherCrew(veh, null);
         veh.mover.go(this.route(veh.mover.pos, OUT_EXIT), () => this.disposeVehicle(veh));
-        this.leaving.push(veh);
         settle();
       });
     });
@@ -932,7 +942,7 @@ export class IgdScene implements StageUpdatable {
     st.incline = covered ? 0 : 0.3;
     this.stage.scene.add(st.group);
     const porter = this.newActor(staffLook('petugas', `Porter ${Math.round(this.time * 10)}`, this.content, this.seed), (this.seed + Math.round(this.time * 1000)) >>> 0);
-    const veh: Vehicle = { stretcher: st, chair: null, mover: new Mover(0.85), crew: [porter], ownCrew: true };
+    const veh = this.track({ stretcher: st, chair: null, mover: new Mover(0.85), crew: [porter], ownCrew: true });
     veh.mover.pos.copy(at);
     veh.mover.yaw = veh.mover.shown = at.x < 0 ? Math.PI / 2 : -Math.PI / 2;
     this.attachStretcherCrew(veh, null);
@@ -940,8 +950,6 @@ export class IgdScene implements StageUpdatable {
   }
 
   private dropVehicle(veh: Vehicle): void {
-    const i = this.leaving.indexOf(veh);
-    if (i >= 0) this.leaving.splice(i, 1);
     this.disposeVehicle(veh);
   }
 
@@ -1288,6 +1296,13 @@ export class IgdScene implements StageUpdatable {
       this.peek = { until: this.time + 3.2, point: pv.actor.bodyPoint(site, new Vector3()) };
       return;
     }
+    // Perawat yang menerima instruksi menjawab singkat.
+    const task = shift.tasks.filter((t) => t.patientId === patientId && t.createdAt >= shift.time - 1).at(-1);
+    if (task && task.performer !== 'dokter') {
+      const nurse = task.nurseId ? this.nurses.get(task.nurseId) : undefined;
+      const replies = ['Baik, Dok.', 'Siap, Dok.', 'Baik, saya kerjakan.', 'Siap.'];
+      nurse?.actor.say(speechTimeline(replies[(shift.counter + task.id.length) % replies.length]!, 14));
+    }
     if (action.type === 'tindakan' && (action.proc === 'defibrilasi' || action.proc === 'kardioversi')) {
       this.later(1.2, () => {
         const bay = this.bayOf(pv.at);
@@ -1341,15 +1356,22 @@ export class IgdScene implements StageUpdatable {
   /** Majukan animasi adegan sebanyak `seconds` detik (uji visual/otomatis). */
   simulate(seconds: number): void {
     const step = 1 / 30;
-    for (let t = 0; t < seconds; t += step) this.update(step, this.time + step);
+    for (let t = 0; t < seconds; t += step) this.update(step);
     this.stage.snapRig();
   }
 
   /** Ringkasan keadaan adegan (uji). */
-  debugState(): { patients: { id: string; at: string | null; busy: boolean; lying: boolean; hidden: boolean; veh: boolean }[]; nurses: { id: string; key: string }[] } {
+  debugState(): {
+    patients: { id: string; at: string | null; busy: boolean; lying: boolean; hidden: boolean; veh: boolean }[];
+    nurses: { id: string; key: string }[];
+    vehicles: { x: number; z: number; busy: boolean; speed: number }[];
+    timers: number;
+  } {
     return {
       patients: [...this.pvs.values()].map((pv) => ({ id: pv.id, at: pv.at, busy: pv.busy, lying: pv.actor.lying, hidden: pv.hidden, veh: !!pv.veh })),
       nurses: [...this.nurses.values()].map((n) => ({ id: n.id, key: n.key })),
+      vehicles: [...this.vehicles].map((v) => ({ x: +v.mover.pos.x.toFixed(2), z: +v.mover.pos.z.toFixed(2), busy: v.mover.busy, speed: +v.mover.speed.toFixed(2) })),
+      timers: this.timers.length,
     };
   }
 
@@ -1357,8 +1379,10 @@ export class IgdScene implements StageUpdatable {
     this.timers.push({ at: this.time + seconds, fn });
   }
 
-  update(dt: number, time: number): void {
-    this.time = time;
+  update(dt: number): void {
+    // Jam adegan sendiri (monoton) — tidak bergantung jam panggung.
+    this.time += dt;
+    const time = this.time;
     const room = this.room;
     if (!room || !this.active) return;
     // Pengatur waktu.
@@ -1369,8 +1393,7 @@ export class IgdScene implements StageUpdatable {
     }
     const cam = this.stage.camera.position;
     // Kendaraan.
-    const vehicles: Vehicle[] = [...this.leaving];
-    for (const pv of this.pvs.values()) if (pv.veh) vehicles.push(pv.veh);
+    const vehicles = [...this.vehicles];
     for (const v of vehicles) {
       v.mover.update(dt);
       v.stretcher?.place(v.mover.pos.x, v.mover.pos.z, v.mover.shown + Math.PI);
