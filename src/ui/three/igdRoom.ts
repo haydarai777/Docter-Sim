@@ -928,10 +928,10 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
     for (let j = 0; j < 5; j++) box(group, 0.2, 0.14, 0.2, mat(['#aed6f1', '#f9e79f', '#d2b4de', '#a9dfbf', '#f5cba7'][(i + j) % 5]!), R.x0 + 0.3, 0.49 + i * 0.42, 1.9 + j * 0.25, false);
   }
   // Tempat sampah medis (kuning) & umum (hitam) di dekat meja perawat.
-  cyl(group, 0.17, 0.15, 0.55, yellow, 1.45, 0.275, 3.0, 14);
-  cyl(group, 0.17, 0.15, 0.55, black, 1.85, 0.275, 3.0, 14);
+  cyl(group, 0.17, 0.15, 0.55, yellow, -3.1, 0.275, 3.08, 14);
+  cyl(group, 0.17, 0.15, 0.55, black, -2.7, 0.275, 3.08, 14);
   // Tabung oksigen portabel.
-  cyl(group, 0.09, 0.09, 1.1, green, 2.35, 0.55, 3.05, 14);
+  cyl(group, 0.09, 0.09, 1.1, green, -2.3, 0.55, 3.12, 14);
 
   // --- Pencahayaan ------------------------------------------------------------
   const hemi = new HemisphereLight('#f6fbff', '#7c8488', 1.05);
