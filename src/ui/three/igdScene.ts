@@ -15,7 +15,7 @@
  * - Monitor dinding tiap bed & monitor sentral di meja perawat menampilkan tanda vital langsung.
  * - Kamera (mata dokter) berpindah halus ke bed pasien yang dipilih; ketuk bed untuk memilih.
  */
-import { Color, type Object3D, Raycaster, type SkinnedMesh, Vector2, Vector3 } from 'three';
+import { Color, CylinderGeometry, Group, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, type Object3D, PlaneGeometry, Raycaster, type SkinnedMesh, Vector2, Vector3 } from 'three';
 import { type PatientAppearance, speechTimeline } from '../../core/appearance';
 import { DEFAULT_BEDS } from '../../core/igd/catalog';
 import { patientById, vitalsOf } from '../../core/igd/engine';
@@ -27,6 +27,9 @@ import { drawMonitor, monitorStateOf } from '../igd/monitorDraw';
 import { Actor, type BedPose, type BodyPoint, type HandsPose } from './actor';
 import { buildIgdRoom, IGD_LAYOUT, type IgdBay, type IgdRoom } from './igdRoom';
 import { Gear, Stretcher, Tube, Wheelchair } from './igdProps';
+import { BloodFx, StainSurface } from './bloodFx';
+import { type Wound, WoundSet } from './wounds';
+import { bleedingRate, bloodVolumeMl, type InjuryRegion } from '../../core/injury';
 import type { CameraRig, Stage, StageUpdatable } from './stage';
 
 const L = IGD_LAYOUT;
@@ -35,6 +38,7 @@ const GATE_ENTR = new Vector3(5.7, 0, 1.35);
 const OUT_EXIT = new Vector3(-8.4, 0, 0.9);
 const GATE_EXIT = new Vector3(-5.85, 0, 0.9);
 const CLERK_SEAT = { x: -2.25, z: 2.1 };
+const LIMBS: ReadonlySet<InjuryRegion> = new Set(['paha', 'tungkai_bawah', 'pergelangan_kaki', 'lengan_atas', 'lengan_bawah']);
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 const V = (x: number, z: number) => new Vector3(x, 0, z);
@@ -137,6 +141,23 @@ interface PV {
   floor: BedPose | null;
   /** Jenis tempat tunggu yang sedang dipesan (kursi tunggu/parkir brankar). */
   slotKind: 'tunggu' | 'parkir' | null;
+  /** Luka yang terlihat & keadaan perdarahannya. */
+  wounds: WoundSet | null;
+  bleed: Map<string, { lost: number; since: number; rate: number }>;
+  bleedT: number;
+  /** Nadi & sistolik terakhir (untuk denyut pancaran darah). */
+  hr: number;
+  sbp: number;
+  /** ml darah per genangan (permukaan:luka). */
+  pools: Map<string, number>;
+  /** Perlak di bawah bokong (perdarahan pervaginam) & bengkok (muntah darah). */
+  pad: { mesh: Mesh; stain: StainSurface; bay: string } | null;
+  basin: { group: Group; fill: Mesh; bay: string } | null;
+  vagMl: number;
+  hemaMl: number;
+  /** Darah yang keluar sebelum tiba (meresap ke pakaian/kain pengantar). */
+  vagPre: number;
+  hemaPre: number;
 }
 
 interface NV {
@@ -167,10 +188,11 @@ export class IgdScene implements StageUpdatable {
   private sirenUntil = 0;
   private door = 0;
   private exitDoor = 0;
-  private peek: { until: number; point: Vector3 } | null = null;
+  private peek: { until: number; point: Vector3; eye?: Vector3 } | null = null;
   private seed = 1;
   private shiftRef: EdShift | null = null;
   private readonly ray = new Raycaster();
+  private blood: BloodFx | null = null;
   private readonly v1 = new Vector3();
   private readonly v2 = new Vector3();
   private readonly v3 = new Vector3();
@@ -189,6 +211,10 @@ export class IgdScene implements StageUpdatable {
     if (!this.room) {
       this.room = buildIgdRoom({ shadows: true, beds: DEFAULT_BEDS.map((b) => ({ ...b })) });
       this.room.group.visible = false;
+    }
+    if (!this.blood) {
+      this.blood = new BloodFx(this.stage.scene);
+      for (const bay of this.room.bays.values()) for (const st of bay.stains) this.blood.addSurface(st);
     }
     if (this.active) return;
     this.active = true;
@@ -253,6 +279,7 @@ export class IgdScene implements StageUpdatable {
       }
       this.clinicalLook(pv, p, now);
       if (!pv.busy) this.collapseIfNeeded(pv);
+      this.bleedSync(pv, p, now);
       if (!pv.busy) this.reconcile(pv, p, now, instant);
     }
     this.syncNurses(shift);
@@ -318,16 +345,19 @@ export class IgdScene implements StageUpdatable {
     this.shiftRef = null;
     this.peek = null;
     this.timers = [];
+    this.blood?.clearAll();
     if (this.room) for (const bay of this.room.bays.values()) this.resetBay(bay);
   }
 
   private track(v: Vehicle): Vehicle {
     this.vehicles.add(v);
+    if (v.stretcher) this.blood?.addSurface(v.stretcher.stain);
     return v;
   }
 
   private disposeVehicle(v: Vehicle): void {
     this.vehicles.delete(v);
+    if (v.stretcher) this.blood?.removeSurface(v.stretcher.stain);
     v.stretcher?.dispose();
     v.chair?.dispose();
     if (v.ownCrew) for (const c of v.crew) this.removeActor(c);
@@ -339,6 +369,9 @@ export class IgdScene implements StageUpdatable {
   }
 
   private disposePV(pv: PV): void {
+    pv.wounds?.dispose();
+    this.removeBloodProps(pv);
+    this.blood?.cleanFloor(pv.id);
     pv.gear.dispose();
     pv.iv.dispose();
     pv.o2.dispose();
@@ -358,7 +391,8 @@ export class IgdScene implements StageUpdatable {
     const iv = new Tube('#dfe9ee');
     const o2 = new Tube('#bfe3d4');
     this.stage.scene.add(iv.line, o2.line);
-    const pv: PV = { id: p.id, actor, look, gear: new Gear(actor), fam, famFree: true, carried, veh: null, at: null, slot: 0, busy: false, hidden: false, iv, o2, since: this.time, floor: null, slotKind: null };
+    const pv: PV = { id: p.id, actor, look, gear: new Gear(actor), fam, famFree: true, carried, veh: null, at: null, slot: 0, busy: false, hidden: false, iv, o2, since: this.time, floor: null, slotKind: null, wounds: null, bleed: new Map(), bleedT: this.igd.shift?.time ?? 0, hr: 80, sbp: 120, pools: new Map(), pad: null, basin: null, vagMl: 0, hemaMl: 0, vagPre: 0, hemaPre: 0 };
+    this.initWounds(pv, p);
     this.pvs.set(p.id, pv);
     if (!instant) this.arrive(pv, p);
     return pv;
@@ -1070,7 +1104,8 @@ export class IgdScene implements StageUpdatable {
       pads: d.pads,
       monitor: d.monitor,
       iv: d.ivCount > 0 || d.io,
-      tourniquet: d.tourniquet,
+      // Torniket pada luka tungkai digambar oleh sistem luka (proksimal dari luka yang berdarah).
+      tourniquet: d.tourniquet && !pv.wounds?.wounds.some((w) => w.bleeds && LIMBS.has(w.spec.region)),
       splint: d.splint,
       binder: d.binder,
     });
@@ -1078,6 +1113,7 @@ export class IgdScene implements StageUpdatable {
   }
 
   private resetBay(bay: IgdBay): void {
+    for (const st of bay.stains) st.clear();
     bay.setMonitorOn(false);
     bay.setBags(0, false);
     bay.setBlanket(false);
@@ -1110,9 +1146,286 @@ export class IgdScene implements StageUpdatable {
       pv.actor.character.root.visible = !(declared && bay.pose) && !pv.hidden;
       // Selimut hanya saat telentang/setengah duduk (posisi miring, tungkai diangkat, RJP, kejang: dibuka).
       const flat = p.devices.position !== 'kaki_diangkat' && p.devices.position !== 'miring_kiri';
-      bay.setBlanket(!!bay.pose && pv.actor.lying && !declared && flat && !p.devices.cpr && !p.physio.seizure);
+      // Selimut tidak menutupi luka tungkai, petekie tungkai, atau perdarahan jalan lahir (perlu dinilai).
+      const legInjury = !!pv.look.injuries?.vaginal || !!pv.wounds?.wounds.some((w) => w.spec.region === 'paha' || w.spec.region === 'tungkai_bawah' || w.spec.region === 'pergelangan_kaki');
+      bay.setBlanket(!!bay.pose && pv.actor.lying && !declared && flat && !p.devices.cpr && !p.physio.seizure && !legInjury);
       bay.setIncline(this.inclineOf(p));
     }
+  }
+
+  // -------------------------------------------------------------------------
+  // Luka & perdarahan
+  // -------------------------------------------------------------------------
+
+  private initWounds(pv: PV, p: EdPatient): void {
+    const prof = pv.look.injuries;
+    if (!prof) return;
+    if (prof.wounds.length || prof.hematemesis || prof.vaginal) {
+      try {
+        pv.wounds = new WoundSet(pv.actor.character, prof, (this.seed ^ (Number.parseInt(p.id.replace(/\D/g, '') || '1', 10) * 97531)) >>> 0);
+      } catch (e) {
+        console.warn('[IGD] luka gagal dibuat', e);
+        pv.wounds = null;
+      }
+    }
+    const ebv = bloodVolumeMl(p.weightKg, p.age);
+    for (const w of prof.wounds) {
+      const b = w.bleeding;
+      if (!b) continue;
+      // Darah yang sudah keluar sebelum tiba (membasahi pakaian/kain darurat).
+      const pre = b.share ? Math.max(0, 1 - p.physio.v.volume) * ebv * b.share * 0.8 : (b.mlPerMin ?? 0) * 10;
+      pv.bleed.set(w.id, { lost: pre, since: 0, rate: 0 });
+    }
+    const lostBefore = Math.max(0, 1 - p.physio.v.volume) * ebv * 0.8;
+    if (prof.vaginal) pv.vagPre = lostBefore * (prof.vaginal.share ?? 0);
+    if (prof.hematemesis) pv.hemaPre = lostBefore * (prof.hematemesis.share ?? 0);
+  }
+
+  /** Hitung ulang laju & volume darah tiap luka dari fisiologi, lalu perbarui tampilan luka & genangan. */
+  private bleedSync(pv: PV, p: EdPatient, now: number): void {
+    const prof = pv.look.injuries;
+    if (!prof) return;
+    const dtMin = Math.max(0, Math.min(15, (now - pv.bleedT) / 60));
+    pv.bleedT = now;
+    const v = vitalsOf(p, now);
+    pv.hr = v.pulse ? v.hr : 0;
+    pv.sbp = v.sbp ?? 0;
+    const ebv = bloodVolumeMl(p.weightKg, p.age);
+    const minutes = (now - p.arriveAt) / 60;
+    const d = p.devices;
+    const ph = p.physio;
+    // Perdarahan kecil (vena/kapiler) ikut turun saat hipotensi & hampir berhenti saat henti jantung.
+    const flow = ph.dead ? 0 : ph.arrest ? (d.cpr ? 0.25 : 0.03) : Math.min(1.2, Math.max(0.15, (v.sbp ?? 90) / 110));
+    const bleed = ph.v.bleed;
+    const done = (id: string) => p.actions.some((a) => a.type === 'proc' && a.id === id && a.doneAt !== undefined && a.doneAt <= now);
+    const sutured = done('jahit_luka');
+    const cleaned = done('rawat_luka') || sutured;
+    const cooled = p.actions.some((a) => a.type === 'proc' && a.id === 'dinginkan_luka_bakar' && a.doneAt !== undefined && now - a.doneAt < 25 * 60);
+    const ws = pv.wounds;
+    // Luka berdarah utama: sasaran balut tekan & torniket.
+    let primary: Wound | null = null;
+    let best = -1;
+    for (const w of ws?.wounds ?? []) {
+      const b = w.spec.bleeding;
+      if (!b) continue;
+      const r = bleedingRate(b, bleed, ebv, minutes) + (b.share ? 1000 : 0);
+      if (r > best) {
+        best = r;
+        primary = w;
+      }
+    }
+    for (const w of ws?.wounds ?? []) {
+      const b = w.spec.bleeding;
+      const st = pv.bleed.get(w.spec.id) ?? { lost: 0, since: 0, rate: 0 };
+      pv.bleed.set(w.spec.id, st);
+      const isPrimary = w === primary;
+      const pressure = d.pressure && isPrimary;
+      const tq = d.tourniquet && isPrimary && LIMBS.has(w.spec.region);
+      const open = w.spec.kind === 'laserasi' || w.spec.kind === 'bacok' || w.spec.kind === 'iris' || w.spec.kind === 'tusuk';
+      let rate = 0;
+      if (b) {
+        // Luka yang terkait fisiologi: laju sudah memperhitungkan balut tekan/torniket (skenario).
+        rate = bleedingRate(b, bleed, ebv, minutes) * (b.share ? 1 : flow);
+        if (!b.share) {
+          if (pressure) rate *= 0.25;
+          if (tq) rate *= 0.03;
+        } else if (ph.dead || (ph.arrest && !d.cpr)) rate *= 0.05;
+        if (sutured && open) rate = 0;
+      }
+      st.rate = rate;
+      st.lost += rate * dtMin;
+      if (pressure) st.since += rate * dtMin;
+      else st.since = 0;
+      ws!.apply(w, {
+        rate,
+        lostMl: st.lost,
+        sinceDressingMl: st.since,
+        pressure,
+        tourniquet: tq,
+        sutured: sutured && open,
+        cleaned: cleaned && open,
+        wrap: prof.improvisedWrap === w.spec.id && !d.pressure && !d.tourniquet,
+        lying: pv.actor.lying,
+        cooled,
+      });
+      if (rate > 0.01 && dtMin > 0 && !pv.hidden && !pv.actor.moving) this.depositBlood(pv, w, rate * dtMin * (pressure ? 0.6 : 1));
+    }
+    if (prof.vaginal) {
+      pv.vagMl += bleedingRate(prof.vaginal, bleed, ebv, minutes) * dtMin;
+      this.vaginalVisual(pv);
+    }
+    if (prof.hematemesis) {
+      pv.hemaMl += bleedingRate(prof.hematemesis, bleed, ebv, minutes) * dtMin;
+      this.hematemesisVisual(pv);
+    }
+  }
+
+  /** Permukaan di bawah titik (sprei, bantal, brankar, atau lantai). */
+  private surfaceUnder(pv: PV, at: Vector3): StainSurface | null {
+    const blood = this.blood;
+    if (!blood) return null;
+    const bay = this.bayOf(pv.at);
+    if (pv.actor.lying && bay?.pose && !pv.busy) return at.z > L.hingeZ ? bay.stains[0]! : bay.stains[1]!;
+    if (pv.actor.lying && pv.veh?.stretcher) return pv.veh.stretcher.stain;
+    return blood.floorAt(at.x, at.z);
+  }
+
+  /** Tambahkan darah ke genangan di bawah luka; luapan dari kasur menetes ke lantai. */
+  private depositBlood(pv: PV, w: Wound, ml: number): void {
+    const blood = this.blood;
+    if (!blood) return;
+    const wp = w.worldPoint(new Vector3());
+    const wn = w.worldNormal(new Vector3());
+    // Darah mengalir ke sisi bawah tungkai lalu menetes ke kasur di sampingnya.
+    const drip = wp.clone();
+    const hz = new Vector3(wn.x, 0, wn.z);
+    if (hz.lengthSq() > 1e-4) drip.addScaledVector(hz.normalize(), 0.06);
+    const surf = this.surfaceUnder(pv, drip);
+    if (!surf) return;
+    const key = `${surf.id}:${w.spec.id}`;
+    const total = (pv.pools.get(key) ?? 0) + ml;
+    pv.pools.set(key, total);
+    const cloth = surf.kind !== 'lantai';
+    const r = cloth ? Math.min(0.42, Math.sqrt((total * 6e-4) / Math.PI)) : Math.min(0.95, Math.sqrt((total * 4e-4) / Math.PI));
+    const loc = surf.toLocal(drip);
+    surf.pool(pv.id, w.spec.id, loc.x, loc.z, r, total > 300 ? Math.min(7, Math.floor(total / 220)) : 0);
+    // Kasur jenuh → darah meluap & menggenang di lantai samping bed.
+    if (cloth && total > 650) {
+      const bay = this.bayOf(pv.at);
+      const side = bay ? Math.sign(drip.x - bay.x) || 1 : 1;
+      const fx = bay ? bay.x + side * 0.5 : drip.x + 0.4;
+      const floor = blood.floorAt(fx, drip.z);
+      const fkey = `luap:${w.spec.id}`;
+      const over = total - 650;
+      const fl = floor.toLocal(new Vector3(fx, 0, drip.z));
+      floor.pool(pv.id, fkey, fl.x, fl.z, Math.min(0.9, Math.sqrt((over * 4e-4) / Math.PI)), 0);
+    }
+  }
+
+  /** Perdarahan pervaginam: perlak di bawah bokong dengan genangan & bekuan yang tumbuh. */
+  private vaginalVisual(pv: PV): void {
+    const blood = this.blood;
+    const bay = this.bayOf(pv.at);
+    if (!blood) return;
+    // Celana/kain basah darah sejak sebelum tiba, makin luas seiring perdarahan berlanjut.
+    pv.wounds?.setVaginal(pv.vagPre + pv.vagMl);
+    if (!bay?.pose || !pv.actor.lying || pv.busy) {
+      // Di brankar: kain alas sudah tergenang darah dari perjalanan.
+      const ml = pv.vagMl + pv.vagPre * 0.3;
+      if (pv.veh?.stretcher && pv.actor.lying && ml > 1) {
+        const hips = pv.actor.character.hips.getWorldPosition(new Vector3());
+        const loc = pv.veh.stretcher.stain.toLocal(hips);
+        pv.veh.stretcher.stain.pool(pv.id, 'vagina', loc.x, loc.z + 0.12, Math.min(0.26, Math.sqrt((ml * 6e-4) / Math.PI)), Math.min(5, Math.floor(ml / 200)));
+      }
+      return;
+    }
+    if (pv.pad && pv.pad.bay !== bay.id) this.removeBloodProps(pv);
+    if (!pv.pad) {
+      const mesh = new Mesh(new PlaneGeometry(0.64, 0.52), new MeshStandardMaterial({ color: '#86b8db', roughness: 0.3, metalness: 0 }));
+      mesh.rotation.x = -Math.PI / 2;
+      mesh.position.set(bay.x, bay.top + 0.0045, L.hingeZ + 0.1);
+      mesh.receiveShadow = true;
+      bay.group.add(mesh);
+      const stain = new StainSurface(`perlak-${pv.id}`, bay.group, new Vector3(bay.x, bay.top + 0.005, L.hingeZ + 0.1), 0.64, 0.52, 'perlak');
+      blood.addSurface(stain);
+      pv.pad = { mesh, stain, bay: bay.id };
+    }
+    const ml = pv.vagMl;
+    // Genangan di antara paha (arah kaki dari bokong), bekuan bertambah seiring volume.
+    pv.pad.stain.pool(pv.id, 'vagina', 0, 0.06, Math.min(0.3, Math.sqrt((ml * 5e-4) / Math.PI)), Math.min(9, Math.floor(ml / 160)));
+    if (ml > 800) bay.stains[0]!.pool(pv.id, 'vagina-luap', 0, -0.05, Math.min(0.42, Math.sqrt(((ml - 800) * 6e-4) / Math.PI) + 0.12), 0);
+  }
+
+  /** Muntah darah: bengkok berisi darah di samping kepala yang terus terisi. */
+  private hematemesisVisual(pv: PV): void {
+    pv.wounds?.setHematemesis(pv.hemaPre * 0.5 + pv.hemaMl);
+    const bay = this.bayOf(pv.at);
+    if (!bay?.pose || pv.busy) return;
+    if (pv.basin && pv.basin.bay !== bay.id) {
+      pv.basin.group.removeFromParent();
+      pv.basin = null;
+    }
+    if (!pv.basin) {
+      const group = new Group();
+      const steel = new MeshStandardMaterial({ color: '#c8cdd2', roughness: 0.25, metalness: 0.85 });
+      const wall = new Mesh(new CylinderGeometry(0.1, 0.085, 0.04, 28, 1, true), steel);
+      wall.material.side = 2;
+      const bottom = new Mesh(new CylinderGeometry(0.085, 0.085, 0.003, 28), steel);
+      bottom.position.y = -0.019;
+      const fill = new Mesh(new CylinderGeometry(0.094, 0.086, 0.003, 28), new MeshPhysicalMaterial({ color: '#5e0409', roughness: 0.08, clearcoat: 1, clearcoatRoughness: 0.05 }));
+      fill.visible = false;
+      group.add(wall, bottom, fill);
+      group.scale.set(1.3, 1, 0.78);
+      // Di kasur sandaran, di samping bahu/kepala (ikut menegak bersama sandaran); bed tanpa
+      // sandaran (kursi): di samping pinggul.
+      if (bay.backrest) {
+        group.position.set(0.31, 0.073 + 0.024, -bay.backrest.len + 0.44);
+        group.rotation.y = 0.25;
+        bay.backrest.group.add(group);
+      } else {
+        group.position.set(bay.x + 0.27, bay.top + 0.024, L.hingeZ + 0.12);
+        group.rotation.y = 0.3;
+        bay.group.add(group);
+      }
+      pv.basin = { group, fill, bay: bay.id };
+    }
+    const level = Math.min(1, pv.hemaMl / 650);
+    pv.basin.fill.visible = pv.hemaMl > 5;
+    pv.basin.fill.position.y = -0.018 + 0.034 * level;
+  }
+
+  private removeBloodProps(pv: PV): void {
+    if (pv.pad) {
+      this.blood?.removeSurface(pv.pad.stain);
+      pv.pad.stain.dispose();
+      pv.pad.mesh.removeFromParent();
+      pv.pad.mesh.geometry.dispose();
+      pv.pad = null;
+    }
+    if (pv.basin) {
+      pv.basin.group.removeFromParent();
+      pv.basin = null;
+    }
+  }
+
+  /** Emiter darah per frame (pancaran sinkron nadi, tetesan) + fisika tetesan. */
+  private updateBlood(dt: number): void {
+    const blood = this.blood;
+    if (!blood) return;
+    for (const pv of this.pvs.values()) {
+      if (!pv.wounds || pv.hidden || !pv.actor.character.root.visible) continue;
+      for (const w of pv.wounds.wounds) {
+        const st = pv.bleed.get(w.spec.id);
+        const b = w.spec.bleeding;
+        if (!st || !b || st.rate < 0.05) continue;
+        blood.emit(
+          {
+            owner: pv.id,
+            key: `${pv.id}:${w.spec.id}`,
+            type: b.type,
+            rate: st.rate,
+            hr: pv.hr,
+            sbp: pv.sbp,
+            point: w.worldPoint(new Vector3()),
+            normal: w.worldNormal(new Vector3()),
+            covered: !!w.dressing?.visible || !!w.tourniquet?.visible,
+          },
+          dt,
+        );
+      }
+    }
+    blood.update(dt);
+  }
+
+  /** Mata dokter mendekat ke luka selama beberapa detik. */
+  private focusWound(_pv: PV, w: Wound, seconds: number): void {
+    const point = w.worldPoint(new Vector3());
+    const n = w.worldNormal(new Vector3());
+    const eye = point.clone().addScaledVector(n, 0.42).add(new Vector3(0, 0.2, 0));
+    // Dekati dari sisi kamera (kaki bed) agar tidak tertutup perawat.
+    eye.z = Math.max(eye.z, point.z + 0.18);
+    eye.y = Math.max(eye.y, point.y + 0.25);
+    this.peek = { until: this.time + seconds, point, eye };
   }
 
   // -------------------------------------------------------------------------
@@ -1292,6 +1605,14 @@ export class IgdScene implements StageUpdatable {
       speaker?.say(speechTimeline(last.text.replace(/\([^)]*\)/g, '').trim() || '…', pv.look.talkRate));
       return;
     }
+    if (action.type === 'periksa' && (action.exam === 'luka' || action.exam === 'E') && pv.wounds?.wounds.length) {
+      // Inspeksi luka: mata dokter mendekat ke luka terbesar/yang berdarah.
+      const w = [...pv.wounds.wounds].filter((x) => x.spec.kind !== 'emfisema').sort((a, b) => (b.bleeds ? 1 : 0) - (a.bleeds ? 1 : 0) || b.spec.size[0] * b.spec.size[1] - a.spec.size[0] * a.spec.size[1])[0];
+      if (w) {
+        this.focusWound(pv, w, 5);
+        return;
+      }
+    }
     if (action.type === 'periksa') {
       const ex = action.exam;
       const site: BodyPoint = ex === 'A' || ex === 'D' || ex === 'kepala_leher' || ex === 'neurologis' ? 'kepala' : ex === 'abdomen' || ex === 'obstetri' ? 'pinggul' : ex === 'pelvis_ekstremitas' || ex === 'luka' || ex === 'E' ? 'paha' : 'dada';
@@ -1417,6 +1738,8 @@ export class IgdScene implements StageUpdatable {
     for (const n of this.nurses.values()) if (n.patient && !n.patient.hidden) n.patient.actor.bodyPoint('kepala', n.actor.eyeTarget);
     // Selang infus & oksigen.
     this.updateTubes();
+    // Darah: pancaran/tetesan dari luka yang berdarah, tetesan jatuh, noda.
+    this.updateBlood(dt);
     // Pintu otomatis & lampu ambulans.
     let nearEntr = false;
     let nearExit = false;
@@ -1552,8 +1875,13 @@ export class IgdScene implements StageUpdatable {
       const doctorHere = shift && shift.doctor.task && shift.doctor.busyUntil > shift.time && shift.doctor.bedId === bay.id;
       if (this.peek && this.time < this.peek.until) {
         rig.focus.copy(this.peek.point);
-        rig.eye.lerp(this.peek.point, 0.42);
-        rig.eye.y = Math.max(1.4, rig.eye.y);
+        if (this.peek.eye) {
+          rig.eye.copy(this.peek.eye);
+          rig.fov = 0.9;
+        } else {
+          rig.eye.lerp(this.peek.point, 0.42);
+          rig.eye.y = Math.max(1.4, rig.eye.y);
+        }
       } else if (doctorHere) {
         rig.eye.lerp(bay.focus, 0.3);
       }

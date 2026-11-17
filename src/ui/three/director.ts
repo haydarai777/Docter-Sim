@@ -7,7 +7,9 @@
  */
 import { Vector3 } from 'three';
 import { type CompanionMode, type GestureCue, momentaryEmotion, type PatientAppearance, speechTimeline } from '../../core/appearance';
+import { bleedingRate } from '../../core/injury';
 import { Actor, type ExamReaction } from './actor';
+import { WoundSet } from './wounds';
 import { LAYOUT } from './room';
 import type { Stage, StageUpdatable } from './stage';
 
@@ -75,6 +77,12 @@ export class Director implements StageUpdatable {
   private subtitleClear = 0;
   /** Penyelesai janji ucapan yang sedang berjalan (dipanggil bila ucapan disela/dibatalkan). */
   private endSpeech: (() => void) | null = null;
+  /** Luka yang terlihat pada pasien (bila ada) & waktu mulai konsultasi. */
+  private wounds: WoundSet | null = null;
+  private woundT0 = 0;
+  private woundApplied = -1;
+  /** Dokter sedang memeriksa luka: pandangan diarahkan & diperbesar ke luka. */
+  private inspect: { until: number; point: () => Vector3 } | null = null;
 
   constructor(
     private readonly stage: Stage,
@@ -83,6 +91,7 @@ export class Director implements StageUpdatable {
     stage.add(this);
     stage.setFocusProvider(() => {
       if (!this.actor) return null;
+      if (this.inspect && this.time < this.inspect.until) return this.inspect.point();
       this.actor.headPosition(this.focus);
       // Pandang sedikit di bawah wajah agar badan ikut terlihat; makin dekat pasien berdiri,
       // makin ke wajah (dokter mendongak menatap pasien yang berdiri di depan meja).
@@ -108,6 +117,16 @@ export class Director implements StageUpdatable {
     this.removeActor();
     const actor = (this.actor = new Actor(look, seed));
     this.speaker = speaker;
+    if (look.injuries?.wounds.length) {
+      try {
+        this.wounds = new WoundSet(actor.character, look.injuries, seed ^ 0x2c1b3c6d);
+      } catch (e) {
+        console.warn('[Meja Praktek] luka gagal dibuat', e);
+        this.wounds = null;
+      }
+      this.woundT0 = this.time;
+      this.woundApplied = -1;
+    }
     this.stage.scene.add(actor.character.root);
     this.stage.add(actor);
     let guide: Actor | null = null;
@@ -190,8 +209,24 @@ export class Director implements StageUpdatable {
 
   /** Reaksi pasien saat diperiksa. */
   react(toolId: string): void {
+    if ((toolId === 'status_lokalis' || toolId === 'ekstremitas_kulit') && this.inspectWound()) return;
     const kind = EXAM_REACTION[toolId];
     if (kind && this.actor && this.phase === 'konsultasi') this.actor.react(kind);
+  }
+
+  /** Pasien memperlihatkan lukanya; pandangan dokter mendekat ke luka beberapa detik. */
+  private inspectWound(): boolean {
+    const actor = this.actor;
+    const w = this.wounds?.wounds[0];
+    if (!actor || !w || this.phase !== 'konsultasi') return false;
+    const region = w.spec.region;
+    const arm = region === 'lengan_bawah' || region === 'lengan_atas' || region === 'telapak_tangan' || region === 'punggung_tangan';
+    if (arm) actor.react('ulur_lengan', { side: w.spec.side === 'kanan' ? 'R' : 'L', palmDown: region === 'punggung_tangan' || Math.abs(w.spec.face) > 100, seconds: 6.5 });
+    const p = new Vector3();
+    this.inspect = { until: this.time + 6.2, point: () => w.worldPoint(p) };
+    this.stage.setZoom(0.42);
+    void this.delay(6.2, this.token).then(() => this.stage.setZoom(1));
+    return true;
   }
 
   /** Konsultasi selesai: pasien berpamitan lalu meninggalkan ruangan. */
@@ -268,6 +303,17 @@ export class Director implements StageUpdatable {
 
   update(dt: number, time: number): void {
     this.time = time;
+    // Keadaan luka (perdarahan kecil yang berangsur berhenti) diperbarui tiap detik.
+    if (this.wounds && Math.floor(time) !== this.woundApplied) {
+      this.woundApplied = Math.floor(time);
+      const minutes = 30 + (time - this.woundT0) / 60;
+      for (const w of this.wounds.wounds) {
+        const b = w.spec.bleeding;
+        const rate = b ? bleedingRate(b, 0, 0, minutes) : 0;
+        const lost = b?.mlPerMin ? (b.mlPerMin * (b.halfLifeMin ?? 30)) / Math.LN2 * (1 - Math.pow(0.5, minutes / (b.halfLifeMin ?? 30))) : 0;
+        this.wounds.apply(w, { rate, lostMl: lost, sinceDressingMl: 0, pressure: false, tourniquet: false, sutured: false, cleaned: false, wrap: false, lying: false, cooled: false });
+      }
+    }
     this.door += (this.doorTarget - this.door) * (1 - Math.exp(-3.4 * dt));
     this.stage.room.setDoor(this.door);
     if (this.subtitleClear > 0 && time >= this.subtitleClear) {
@@ -367,6 +413,10 @@ export class Director implements StageUpdatable {
 
   private removeActor(): void {
     this.finishSpeech();
+    this.wounds?.dispose();
+    this.wounds = null;
+    this.inspect = null;
+    this.stage.setZoom(1);
     if (this.companion) {
       this.stage.remove(this.companion);
       this.companion.dispose();

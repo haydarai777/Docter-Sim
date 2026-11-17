@@ -6,6 +6,7 @@
 import { EXAMS_BY_ID, TESTS_BY_ID } from './catalog';
 import { airwayPatency, eff, rhythmLabel } from './physiology';
 import type { EdPatient, EdScenario, ExamId, PhysioState, ResultContext, Support, TestId, Vitals } from './types';
+import type { InjuryKind } from '../injury';
 
 const fmt = (n: number, d = 0) => n.toLocaleString('id-ID', { minimumFractionDigits: d, maximumFractionDigits: d });
 const opposite = (s: 'kiri' | 'kanan') => (s === 'kiri' ? 'kanan' : 'kiri');
@@ -183,27 +184,40 @@ export function examFinding(id: ExamId, patient: EdPatient, sc: EdScenario, v: V
     case 'E': {
       return add(`Suhu ${fmt(v.temp, 1)} °C; kulit ${skin(p, v, t)}`);
     }
-    case 'kepala_leher':
-      return add(cap(`${jvp(p, t)}; trakea ${p.chestSide && eff(p, 'obstruction', t) > 0.4 ? `deviasi ke ${opposite(p.chestSide)}` : 'di tengah'}; ${eff(p, 'angioedema', t) > 0.15 ? 'angioedema bibir & lidah' : 'tidak ada jejas yang tampak'}`));
+    case 'kepala_leher': {
+      // Jejas kepala-leher dari daftar cedera yang tampak; "tidak ada jejas" hanya bila memang tidak ada.
+      const marks = (sc.injuries?.wounds ?? []).filter((w) => w.region === 'kepala' || w.region === 'leher').map((w) => w.label.toLowerCase());
+      const look = eff(p, 'angioedema', t) > 0.15 ? 'angioedema bibir & lidah' : marks.length ? marks.join('; ') : extra ? '' : 'tidak ada jejas yang tampak';
+      return add(cap([jvp(p, t), `trakea ${p.chestSide && eff(p, 'obstruction', t) > 0.4 ? `deviasi ke ${opposite(p.chestSide)}` : 'di tengah'}`, look].filter(Boolean).join('; ')));
+    }
     case 'dada': {
       const heart = eff(p, 'edema', t) > 0.3 ? 'S1-S2, S3 gallop' : v.rhythm === 'af_rvr' ? 'bunyi jantung ireguler' : p.arrest ? 'bunyi jantung tidak terdengar' : 'S1-S2 reguler, murmur (−), gallop (−)';
       return add(`Paru: ${breathSounds(p, s, t)}. Jantung: ${heart}`);
     }
     case 'abdomen':
-      return add(eff(p, 'keto', t) > 0.35 ? 'Nyeri tekan difus ringan, tanpa defans; bising usus menurun' : 'Supel, nyeri tekan (−), defans (−), bising usus normal');
-    case 'pelvis_ekstremitas':
-      return add(cap(`${eff(p, 'edema', t) > 0.3 && eff(p, 'pump', t) < 0.85 ? 'edema pitting kedua tungkai' : 'tidak ada edema'}; nadi distal ${v.pulse ? ((v.map ?? 0) < 60 ? 'lemah' : 'teraba') : 'tidak teraba'}`));
+      // Temuan skenario menggantikan teks normal (hindari "supel, nyeri tekan (−)" + "nyeri tekan …").
+      return eff(p, 'keto', t) > 0.35 ? add('Nyeri tekan difus ringan, tanpa defans; bising usus menurun') : extra || 'Supel, nyeri tekan (−), defans (−), bising usus normal';
+    case 'pelvis_ekstremitas': {
+      const pulse = `nadi distal ${v.pulse ? ((v.map ?? 0) < 60 ? 'lemah' : 'teraba') : 'tidak teraba'}`;
+      if (extra) return /nadi distal/i.test(extra) ? extra : `${extra.replace(/\.\s*$/, '')}; ${pulse}`;
+      return cap(`${eff(p, 'edema', t) > 0.3 && eff(p, 'pump', t) < 0.85 ? 'edema pitting kedua tungkai' : 'tidak ada edema'}; ${pulse}`);
+    }
     case 'punggung':
-      return add('Log roll: tidak ada jejas atau nyeri tekan tulang belakang');
+      return extra || 'Log roll: tidak ada jejas atau nyeri tekan tulang belakang';
     case 'neurologis': {
       if (p.arrest) return add('Tidak dapat dinilai (henti jantung)');
       const mening = eff(p, 'infection', t) > 0.5 && sc.category === 'syok' ? 'kaku kuduk (−)' : 'kaku kuduk (−)';
       return add(cap(`GCS ${gcsText(v)}; pupil ${pupils(p, t)}; ${lateral(p, t)}; ${mening}`));
     }
     case 'obstetri':
-      return add(patient.sex === 'female' ? 'Tidak ada temuan obstetri khusus' : 'Tidak relevan (pasien laki-laki)');
-    case 'luka':
-      return add('Tidak ada luka terbuka');
+      return patient.sex === 'female' ? extra || 'Tidak ada temuan obstetri khusus' : 'Tidak relevan (pasien laki-laki)';
+    case 'luka': {
+      // Skenario dengan luka menuliskan temuannya sendiri; bila tidak, temuan diambil dari daftar
+      // cedera yang tampak (luka bakar, lecet, memar …); selain itu tidak ada luka terbuka.
+      if (extra) return extra;
+      const seen = (sc.injuries?.wounds ?? []).filter((w) => WOUND_EXAM_KINDS.has(w.kind)).map((w) => w.label);
+      return seen.length ? cap(seen.join('; ')) : 'Tidak ada luka terbuka';
+    }
   }
 }
 
@@ -212,6 +226,9 @@ export function examLabel(id: ExamId): string {
 }
 
 const cap = (s: string) => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
+
+/** Jenis cedera yang dilaporkan pada pemeriksaan "Luka" (bukan ruam/bengkak/emfisema). */
+const WOUND_EXAM_KINDS = new Set<InjuryKind>(['laserasi', 'bacok', 'iris', 'tusuk', 'bekas_suntik', 'ekskoriasi', 'memar', 'hematoma', 'jejas', 'luka_bakar', 'ulkus']);
 
 // ---------------------------------------------------------------------------
 // Penunjang

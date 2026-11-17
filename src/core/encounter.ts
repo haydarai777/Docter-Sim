@@ -97,9 +97,16 @@ function lastPatientAnswer(state: EncounterState, content: GameContent): string 
     const e = state.log[i]!;
     if (e.kind !== 'patient') continue;
     let text = e.text;
-    for (const t of content.conversation.repeatAsked) {
-      const prefix = fillTemplate(t, state.case.context);
-      if (text.startsWith(prefix)) text = text.slice(prefix.length).trim();
+    // Lepas semua awalan pengulangan ("tadi saya bilang", "tadi sudah saya ceritakan"), berulang.
+    const prefixes = [...content.conversation.repeatAsked, ...content.conversation.repeat].map((t) => fillTemplate(t, state.case.context));
+    for (let changed = true; changed; ) {
+      changed = false;
+      for (const prefix of prefixes) {
+        if (prefix && text.startsWith(prefix)) {
+          text = text.slice(prefix.length).trim();
+          changed = true;
+        }
+      }
     }
     return text;
   }

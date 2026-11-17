@@ -150,6 +150,7 @@ export const PERDARAHAN_POSTPARTUM: EdScenario = {
     },
     pasien: { topics: { keluhan_utama: 'Lemas… pusing… dingin, Dok.', alergi: 'Tidak ada.' }, symptoms: { perdarahan_pervaginam: 'Darah terus keluar…', mau_pingsan: 'Rasanya mau pingsan.' } },
   },
+  injuries: { wounds: [], vaginal: { type: 'vena', share: 1 } },
   findings: {
     obstetri: (c) => (c.physio.v.atony > 0.35 ? 'Uterus lembek, TFU 2 jari di atas pusat (kontraksi lemah); darah segar mengalir dari jalan lahir dengan bekuan; plasenta lengkap (menurut bidan); laserasi perineum derajat I tidak berdarah aktif.' : 'Uterus keras, kontraksi baik, TFU setinggi pusat; perdarahan pervaginam minimal.'),
   },
@@ -306,6 +307,9 @@ export const VULNUS: EdScenario = {
       symptoms: { luka_robek: 'Iya, lukanya agak dalam.', kesemutan: 'Jari tidak kesemutan, bisa digerakkan semua.' },
     },
   },
+  injuries: {
+    wounds: [{ id: 'vl_telapak', kind: 'iris', region: 'telapak_tangan', side: 'kiri', at: 0.55, face: 0, size: [3, 0.45], angle: 70, depth: 'subkutis', label: 'Luka robek telapak tangan kiri 3 cm, tepi rata, dasar subkutis' }],
+  },
   findings: { luka: 'Luka robek telapak tangan kiri 3 cm, tepi rata, dasar subkutis, tidak ada perdarahan aktif, tidak ada benda asing; fleksi-ekstensi semua jari normal, sensibilitas & CRT distal baik.' },
   diagnosis: { primary: ['vulnus'] },
   critical: [
@@ -354,6 +358,13 @@ export const SPRAIN: EdScenario = {
       topics: { keluhan_utama: 'Kaki kanan terkilir, Dok.', kejadian: 'Main futsal, kaki kanan terpelintir ke dalam waktu mendarat.', onset: 'Dua jam lalu.', riwayat_penyakit: 'Sehat.', alergi: 'Tidak ada.', riwayat_obat: 'Tidak ada.' },
       symptoms: { sendi_bengkak: 'Bengkak di mata kaki luar.', nyeri_otot_sendi: 'Sakit kalau ditapakkan, tapi masih bisa jalan.' },
     },
+  },
+  injuries: {
+    wounds: [
+      { id: 'bengkak_ankle', kind: 'bengkak', region: 'pergelangan_kaki', side: 'kanan', at: 0.5, face: 85, size: [7, 6], label: 'Bengkak pergelangan kaki kanan sisi lateral' },
+      { id: 'memar_ankle', kind: 'memar', region: 'pergelangan_kaki', side: 'kanan', at: 0.62, face: 95, size: [5, 4], ageHours: 3, label: 'Memar di bawah maleolus lateral kanan' },
+    ],
+    expose: { legs: { kanan: 0.72 } },
   },
   findings: { pelvis_ekstremitas: 'Pergelangan kaki kanan bengkak & nyeri di ligamen talofibular anterior; TIDAK ada nyeri tekan tulang di tepi posterior/ujung maleolus lateral & medial, basis metatarsal V, maupun navikular; mampu menumpu 4 langkah. Nadi distal baik.' },
   diagnosis: { primary: ['sprain'] },

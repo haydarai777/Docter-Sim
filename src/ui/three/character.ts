@@ -101,7 +101,15 @@ export class Character {
   readonly headShape: HeadShape;
   /** Tulang rusuk: diskalakan saat bernapas (dinding dada depan ikut tulang ini). */
   private readonly ribs: Bone;
-  private readonly skeleton: Skeleton;
+  readonly skeleton: Skeleton;
+  /** Permukaan tubuh untuk decal luka: lapisan kulit/pakaian (pose ikat, ruang akar). */
+  /** Permukaan sasaran decal luka/noda darah; `part` membedakan atasan & bawahan (celana/rok). */
+  readonly surfaces: { mesh: SkinnedMesh; layer: 'kulit' | 'pakaian'; part?: 'atas' | 'bawah' }[] = [];
+  /** Kelompok mesh kepala (ruang `headBall`) & mesh tangan (ruang tulang telapak). */
+  headGroup!: Group;
+  readonly handMeshes: { L: Mesh | null; R: Mesh | null } = { L: null, R: null };
+  /** Badan sedang tanpa baju (paparan luka). */
+  readonly bareTorso: boolean;
   private readonly disposables: { dispose(): void }[] = [];
   private readonly skinMats: MeshStandardMaterial[] = [];
   private skinBase = new Color();
@@ -195,15 +203,19 @@ export class Character {
     const std = (color: string | Color, extra: Partial<{ roughness: number; map: Texture }> = {}) =>
       this.track(new MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...extra }));
     const skin = std(skinColor, { roughness: 0.66 });
-    const jacket = a.outfit.jacket ?? null;
+    // Paparan untuk luka (IGD/poliklinik): baju dibuka, lengan baju pendek, celana digunting.
+    const expose = a.injuries?.expose;
+    const bareTorso = (this.bareTorso = !!expose?.torso);
+    const jacket = bareTorso ? null : (a.outfit.jacket ?? null);
     const topColor = new Color(jacket ?? a.outfit.top);
-    const longSleeves = !!jacket || a.outfit.sleeves === 'panjang';
+    const longSleeves = !bareTorso && !expose?.shortSleeves && (!!jacket || a.outfit.sleeves === 'panjang');
     const shorts = !!a.outfit.shorts;
     const sandal = a.outfit.footwear === 'sandal';
     const edema = (a.cues.bengkak ?? 0) > 0;
     // Model baju: seragam menentukan sendiri; selebihnya dipilih stabil dari benih pasien.
-    const collar = !!jacket || (a.outfit.collar ?? (a.hijab ? false : longSleeves ? h % 10 < 7 : h % 10 < 3));
-    const tucked = !jacket && !a.hijab && (a.outfit.tucked ?? (collar && male && !child && fat < 0.45 && (h >>> 4) % 10 < 5));
+    const collar = !bareTorso && (!!jacket || (a.outfit.collar ?? (a.hijab ? false : longSleeves ? h % 10 < 7 : h % 10 < 3)));
+    const tucked = !bareTorso && !jacket && !a.hijab && (a.outfit.tucked ?? (collar && male && !child && fat < 0.45 && (h >>> 4) % 10 < 5));
+    const legCut = (v: number | undefined) => (v === undefined ? undefined : Math.max(0, Math.min(1, v)) * 0.78);
     let rash: MeshStandardMaterial | null = null;
     if ((a.cues.ruam ?? 0) > 0) {
       const tex = this.track(rashTexture(skinHex, seed));
@@ -237,26 +249,31 @@ export class Character {
       jacket: !!jacket,
       collar,
       tucked,
-      hijab: !!a.hijab,
+      hijab: !!a.hijab && !bareTorso,
       edema,
+      bareTorso,
+      chestBand: bareTorso && !male && a.age >= 10,
+      pantsEnd: expose?.legs ? { L: legCut(expose.legs.kiri), R: legCut(expose.legs.kanan) } : undefined,
     }));
-    const skinned = (geo: BufferGeometry | null, m: Material): void => {
+    const skinned = (geo: BufferGeometry | null, m: Material, layer: 'kulit' | 'pakaian' = 'pakaian', part?: 'atas' | 'bawah'): void => {
       if (!geo) return;
       const mesh = new SkinnedMesh(this.track(geo), m);
+      this.surfaces.push(part ? { mesh, layer, part } : { mesh, layer });
       mesh.castShadow = true;
       // Kotak batas pose ikat tidak berlaku setelah dianimasikan.
       mesh.frustumCulled = false;
       root.add(mesh);
       mesh.bind(skeleton, IDENTITY);
     };
-    skinned(body.skinNeck, skin);
-    skinned(body.skinArms, rash ?? skin);
-    skinned(body.skinLegs, rash ?? skin);
-    skinned(body.top, std(topColor, { roughness: jacket ? 0.74 : 0.92 }));
-    skinned(body.trim, std(jacket ? new Color('#c9ccd0') : topColor.clone().multiplyScalar(collar ? 0.88 : 0.8), { roughness: jacket ? 0.45 : 0.9 }));
-    skinned(body.bottom, std(a.outfit.bottom, { roughness: 0.9 }));
+    skinned(body.skinNeck, skin, 'kulit');
+    skinned(body.skinArms, rash ?? skin, 'kulit');
+    skinned(body.skinLegs, rash ?? skin, 'kulit');
+    if (bareTorso) skinned(body.top, skin, 'kulit');
+    else skinned(body.top, std(topColor, { roughness: jacket ? 0.74 : 0.92 }));
+    skinned(body.trim, std(bareTorso ? topColor.clone().multiplyScalar(0.7) : jacket ? new Color('#c9ccd0') : topColor.clone().multiplyScalar(collar ? 0.88 : 0.8), { roughness: jacket ? 0.45 : 0.9 }));
+    skinned(body.bottom, std(a.outfit.bottom, { roughness: 0.9 }), 'pakaian', 'bawah');
     skinned(body.belt, std('#2b2019', { roughness: 0.55 }));
-    if (a.hijab) skinned(body.drape, std(a.hijab, { roughness: 0.92 }));
+    if (a.hijab && !bareTorso) skinned(body.drape, std(a.hijab, { roughness: 0.92 }));
 
     // --- Tangan ------------------------------------------------------------
     const frame = child ? 0.9 : young ? 0.955 : male ? 1 : 0.935;
@@ -268,6 +285,7 @@ export class Character {
     ] as const) {
       const hand = new Mesh(handGeo, handMat);
       hand.scale.x = side;
+      this.handMeshes[side === 1 ? 'L' : 'R'] = hand;
       hand.castShadow = true;
       arm.end.add(hand);
     }
@@ -302,6 +320,7 @@ export class Character {
     const parts = buildHead(shape, { skin: skinColor, hairColor: a.hairColor, hairStyle: a.hairStyle, hijab: a.hijab, glasses: a.glasses, hairTexture: hairStreakTexture() });
     for (const d of parts.disposables) this.track(d);
     this.headBall.add(parts.group);
+    this.headGroup = parts.group;
     this.face = new Face(parts.faceGeometry, shape.layout(), {
       skin: skinHex,
       hair: a.hairColor,
@@ -315,6 +334,7 @@ export class Character {
       sweat: Math.max(a.cues.berkeringat ?? 0, (a.cues.demam ?? 0) * 0.5),
       tired: Math.max(a.cues.lemas ?? 0, a.cues.mengantuk ?? 0),
       child,
+      marks: a.injuries?.face ?? null,
     });
     this.headBall.add(this.face.mesh);
 

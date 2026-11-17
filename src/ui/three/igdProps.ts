@@ -23,6 +23,7 @@ import {
 } from 'three';
 import type { AirwayAdjunct, OxygenDevice } from '../../core/igd/types';
 import type { Actor, BedPose, CarryAnchor } from './actor';
+import { StainSurface } from './bloodFx';
 
 type Disposable = { dispose(): void };
 
@@ -108,6 +109,9 @@ export class Stretcher {
     });
   }
 
+  /** Noda darah di kasur brankar (bagian kaki & pinggul). */
+  readonly stain: StainSurface = new StainSurface(`brankar-${Math.random().toString(36).slice(2, 8)}`, this.group, new Vector3(0, this.top - 0.004, 0.42), 0.56, 1.05, 'kain');
+
   place(x: number, z: number, yaw: number): void {
     this.group.position.set(x, 0, z);
     this.group.rotation.y = yaw;
@@ -133,6 +137,7 @@ export class Stretcher {
   }
 
   dispose(): void {
+    this.stain.dispose();
     this.group.removeFromParent();
     this.kit.dispose();
   }

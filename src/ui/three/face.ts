@@ -6,6 +6,7 @@
  * serta tanda klinis (sklera kuning, mata merah, pucat, kemerahan demam, berkeringat).
  */
 import { type BufferGeometry, CanvasTexture, LinearFilter, Mesh, MeshStandardMaterial, SRGBColorSpace } from 'three';
+import type { FaceMarks } from '../../core/injury';
 import type { Emotion } from '../../core/types';
 import type { FaceLayout } from './head';
 
@@ -25,6 +26,8 @@ export interface FaceLook {
   /** Kantung mata / wajah lelah. */
   tired: number;
   child: boolean;
+  /** Tanda cedera di wajah (racoon eyes, lecet, luka bakar, jelaga, darah). */
+  marks?: FaceMarks | null;
 }
 
 /** Parameter ekspresi yang dianimasikan tiap frame. */
@@ -167,14 +170,17 @@ export class Face {
     soft(cx, A.mouthY + 9.5 * u, A.mouthHalfW * 0.8, 3.4 * u, skinDark(0.16));
 
     // --- Rona pipi: sedikit pada semua orang, kuat saat demam ---------------------
-    const blush = 0.06 + 0.26 * L.flush - 0.05 * L.pale;
+    const M = L.marks ?? null;
+    const flush = Math.max(L.flush, M?.flush ?? 0);
+    const blush = 0.06 + 0.26 * flush - 0.05 * L.pale;
     if (blush > 0.01) {
       for (const sx of [-1, 1]) soft(cx + sx * A.eyeDX * 1.3, (A.noseY + eyeY) / 2 + 7 * u, 24 * u, 17 * u, `rgba(200,84,66,${Math.min(0.4, blush)})`);
-      if (L.flush > 0.2) {
-        soft(cx, A.noseY - 6 * u, 13 * u, 15 * u, `rgba(200,84,66,${0.16 * L.flush})`);
-        soft(cx, A.browY - 18 * u, 38 * u, 14 * u, `rgba(200,84,66,${0.1 * L.flush})`);
+      if (flush > 0.2) {
+        soft(cx, A.noseY - 6 * u, 13 * u, 15 * u, `rgba(200,84,66,${0.16 * flush})`);
+        soft(cx, A.browY - 18 * u, 38 * u, 14 * u, `rgba(200,84,66,${0.1 * flush})`);
       }
     }
+    if (M) this.paintMarksUnder(M, soft);
 
     // --- Kerut usia ------------------------------------------------------------
     if (L.wrinkles > 0.12) {
@@ -307,7 +313,7 @@ export class Face {
     }
 
     // --- Alis: bentuk terisi, tebal di pangkal dan meruncing ke ekor ----------------
-    const browColor = shade(L.hair, L.wrinkles > 0.65 ? 0.18 : -0.1, 0.93);
+    const browColor = M?.singedBrows ? shade(L.hair, 0.35, 0.45) : shade(L.hair, L.wrinkles > 0.65 ? 0.18 : -0.1, 0.93);
     const thick = (L.child ? 3 : L.female ? 2.9 : 4.3) * u * A.browK;
     for (const sx of [-1, 1]) {
       const ex = cx + sx * A.eyeDX;
@@ -352,10 +358,11 @@ export class Face {
     // --- Mulut: bibir atas & bawah ------------------------------------------------
     const my = A.mouthY;
     const mo = Math.max(0, Math.min(1, s.mouthOpen));
-    const halfW = A.mouthHalfW * (0.84 + 0.3 * s.mouthWide) * (1 + Math.max(0, s.smile) * 0.14) * (1 - mo * 0.08);
+    const halfW = A.mouthHalfW * (0.84 + 0.3 * s.mouthWide) * (1 + Math.max(0, s.smile) * 0.14) * (1 - mo * 0.08) * (1 + 0.14 * (M?.lipSwelling ?? 0));
     const corner = -s.smile * 4.2 * u; // negatif = sudut bibir naik
-    const upT = (L.child ? 3.1 : L.female ? 4.1 : 3.4) * u * A.lipK;
-    const lowT = (L.child ? 4.3 : L.female ? 5.4 : 4.7) * u * A.lipK;
+    const swell = 1 + 0.9 * (M?.lipSwelling ?? 0);
+    const upT = (L.child ? 3.1 : L.female ? 4.1 : 3.4) * u * A.lipK * swell;
+    const lowT = (L.child ? 4.3 : L.female ? 5.4 : 4.7) * u * A.lipK * swell;
     const gap = mo * 9.5 * u;
     const lipBase = mix(mix(L.skin, '#a8484a', L.female ? 0.62 : 0.4), '#cdb8ae', Math.min(1, L.pale * 0.8));
     const lipUpper = mix(mix(L.skin, '#8f3a3e', L.female ? 0.68 : 0.46), '#c2aca2', Math.min(1, L.pale * 0.8));
@@ -461,6 +468,135 @@ export class Face {
         g.arc(x - r * 0.3, y - r * 0.45, r * 0.32, 0, TAU);
         g.fill();
       }
+    }
+    if (M) this.paintMarksOver(M, soft);
+  }
+
+  /**
+   * Tanda cedera di bawah fitur wajah: hematoma periorbita (racoon eyes), lecet, luka bakar.
+   * Sisi: `sx` −1 = kanan pasien, +1 = kiri pasien (kanvas menghadap pengamat).
+   */
+  private paintMarksUnder(M: FaceMarks, soft: (x: number, y: number, rx: number, ry: number, c: string) => void): void {
+    const g = this.g;
+    const A = this.layout;
+    const u = A.pxPerMm;
+    const cx = A.cx;
+    const eyeY = A.eyeY;
+    if (M.racoonEyes) {
+      const k = M.racoonEyes;
+      for (const sx of [-1, 1]) {
+        const ex = cx + sx * A.eyeDX;
+        // Ekimosis periorbita: ungu-kebiruan, terbatas tepi orbita (tidak melewati alis).
+        soft(ex, eyeY + 1 * u, A.eyeRX * 2.15, A.eyeRY * 3.3, `rgba(74,28,74,${0.55 * k})`);
+        soft(ex + sx * 1 * u, eyeY + 3 * u, A.eyeRX * 1.55, A.eyeRY * 2.2, `rgba(52,18,58,${0.5 * k})`);
+        soft(ex, eyeY - 3.5 * u, A.eyeRX * 1.5, A.eyeRY * 1.3, `rgba(96,40,90,${0.32 * k})`);
+      }
+    }
+    if (M.burn) {
+      const k = M.burn;
+      // Eritema & bula luka bakar wajah (dahi, pipi, hidung), tepi tidak rata.
+      soft(cx, A.browY - 14 * u, 40 * u, 16 * u, `rgba(196,70,56,${0.5 * k})`);
+      for (const sx of [-1, 1]) {
+        soft(cx + sx * A.eyeDX * 1.25, (A.noseY + eyeY) / 2 + 6 * u, 22 * u, 20 * u, `rgba(200,74,60,${0.55 * k})`);
+        soft(cx + sx * A.eyeDX * 1.45, (A.noseY + eyeY) / 2 + 2 * u, 9 * u, 7 * u, `rgba(150,40,36,${0.35 * k})`);
+      }
+      soft(cx, A.noseY - 4 * u, 9 * u, 13 * u, `rgba(190,64,52,${0.4 * k})`);
+      const blisters: [number, number, number][] = [
+        [-1.35, 10, 2.6],
+        [1.2, 13, 2.2],
+        [-0.5, -20, 2],
+        [0.75, -17, 1.6],
+        [1.6, 3, 1.8],
+      ];
+      for (const [kx, dy, r] of blisters) {
+        const x = cx + kx * A.eyeDX;
+        const y = (dy > 0 ? (A.noseY + eyeY) / 2 : A.browY) + dy * u;
+        soft(x, y, r * 1.6 * u, r * 1.4 * u, `rgba(244,222,190,${0.75 * k})`);
+        g.fillStyle = `rgba(255,255,255,${0.55 * k})`;
+        g.beginPath();
+        g.arc(x - r * 0.4 * u, y - r * 0.45 * u, r * 0.35 * u, 0, TAU);
+        g.fill();
+      }
+      // Kulit terkelupas putih di dahi.
+      soft(cx - A.eyeDX * 0.3, A.browY - 22 * u, 8 * u, 4 * u, `rgba(240,232,222,${0.6 * k})`);
+    }
+    if (M.abrasion) {
+      const a = M.abrasion;
+      const sx = a.side === 'kanan' ? -1 : 1;
+      const x = a.spot === 'dahi' ? cx + sx * A.eyeDX * 0.6 : a.spot === 'dagu' ? cx + sx * 4 * u : cx + sx * A.eyeDX * 1.35;
+      const y = a.spot === 'dahi' ? A.browY - 16 * u : a.spot === 'dagu' ? A.chinY - 2 * u : (A.noseY + eyeY) / 2 + 9 * u;
+      const r = (8 + 8 * a.size) * u;
+      soft(x, y, r * 1.3, r, 'rgba(176,70,58,0.5)');
+      // Goresan sejajar + bintik perdarahan + krusta.
+      g.strokeStyle = 'rgba(140,38,34,0.75)';
+      g.lineWidth = 0.7 * u;
+      for (let i = -4; i <= 4; i++) {
+        g.beginPath();
+        g.moveTo(x - r * 0.8, y + i * r * 0.16);
+        g.lineTo(x + r * 0.8, y + i * r * 0.16 - r * 0.25);
+        g.stroke();
+      }
+      g.fillStyle = 'rgba(110,16,16,0.85)';
+      for (let i = 0; i < 14; i++) {
+        const t = (Math.sin(i * 12.9898) * 43758.5453) % 1;
+        const t2 = (Math.sin(i * 78.233) * 12543.123) % 1;
+        g.beginPath();
+        g.arc(x + t * r * 0.8, y + t2 * r * 0.6, 0.45 * u, 0, TAU);
+        g.fill();
+      }
+      soft(x + r * 0.3, y - r * 0.2, r * 0.4, r * 0.3, 'rgba(192,138,69,0.5)');
+    }
+  }
+
+  /** Tanda di atas fitur wajah: jelaga, darah dari hidung & sudut mulut. */
+  private paintMarksOver(M: FaceMarks, soft: (x: number, y: number, rx: number, ry: number, c: string) => void): void {
+    const g = this.g;
+    const A = this.layout;
+    const u = A.pxPerMm;
+    const cx = A.cx;
+    if (M.soot) {
+      const k = M.soot;
+      // Jelaga di lubang hidung, sekitar hidung & mulut (tanda trauma inhalasi).
+      for (const sx of [-1, 1]) soft(cx + sx * A.noseHalfW * 0.6, A.noseY + 0.5 * u, 3.2 * u, 2.4 * u, `rgba(28,24,22,${0.85 * k})`);
+      soft(cx, A.noseY - 2 * u, 9 * u, 8 * u, `rgba(40,34,30,${0.35 * k})`);
+      soft(cx, A.mouthY + 1 * u, A.mouthHalfW * 1.25, 6 * u, `rgba(36,30,28,${0.4 * k})`);
+      // Coreng jelaga tipis di pipi & dahi (bukan bintik).
+      for (let i = 0; i < 9; i++) {
+        const t = ((Math.sin(i * 3.7) * 9137.13) % 1) - 0.5;
+        const t2 = ((Math.sin(i * 7.1) * 4127.77) % 1) - 0.5;
+        soft(cx + t * 50 * u, A.noseY + t2 * 40 * u, (3 + Math.abs(t) * 6) * u, (1.6 + Math.abs(t2) * 3) * u, `rgba(34,30,28,${0.28 * k})`);
+      }
+    }
+    const trickle = (x0: number, y0: number, len: number, w: number, a: number) => {
+      // Alur darah menurun, menebal di ujung, mengilap.
+      const grad = g.createLinearGradient(x0, y0, x0, y0 + len);
+      grad.addColorStop(0, `rgba(118,8,14,${a})`);
+      grad.addColorStop(1, `rgba(84,4,8,${a})`);
+      g.fillStyle = grad;
+      g.beginPath();
+      g.moveTo(x0 - w * 0.5, y0);
+      g.quadraticCurveTo(x0 - w * 0.8, y0 + len * 0.5, x0 - w * 0.4, y0 + len);
+      g.arc(x0, y0 + len, w * 0.65, Math.PI, 0, true);
+      g.quadraticCurveTo(x0 + w * 0.7, y0 + len * 0.5, x0 + w * 0.5, y0);
+      g.closePath();
+      g.fill();
+      g.fillStyle = `rgba(255,255,255,${0.35 * a})`;
+      g.beginPath();
+      g.ellipse(x0 - w * 0.15, y0 + len * 0.45, w * 0.12, len * 0.18, 0, 0, TAU);
+      g.fill();
+    };
+    if (M.bloodNose) {
+      const k = M.bloodNose;
+      trickle(cx + A.noseHalfW * 0.55, A.noseY + 0.5 * u, (A.mouthY - A.noseY) * 0.85 * k + 2 * u, 2.4 * u, 0.9);
+      if (k > 0.5) trickle(cx - A.noseHalfW * 0.55, A.noseY + 0.5 * u, (A.mouthY - A.noseY) * 0.6 * k, 2 * u, 0.85);
+      soft(cx, A.mouthY - 2.5 * u, A.mouthHalfW * 0.7, 2.5 * u, `rgba(110,8,12,${0.5 * k})`);
+    }
+    if (M.bloodMouth) {
+      const k = M.bloodMouth;
+      // Darah di bibir & mengalir dari sudut mulut ke dagu (hematemesis).
+      soft(A.cx, A.mouthY + 1 * u, A.mouthHalfW * 1.05, 4.5 * u, `rgba(120,10,16,${0.55 * k})`);
+      trickle(cx - A.mouthHalfW * 0.95, A.mouthY + 0.5 * u, (A.chinY - A.mouthY) * 0.9 * k + 3 * u, 2.6 * u, 0.9);
+      trickle(cx + A.mouthHalfW * 0.85, A.mouthY + 1 * u, (A.chinY - A.mouthY) * 0.55 * k, 2.1 * u, 0.82);
     }
   }
 }

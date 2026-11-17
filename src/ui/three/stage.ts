@@ -140,6 +140,11 @@ export class Stage {
     }
   }
 
+  /** Perbesaran pandangan (FOV dikali `z`; < 1 = mendekat) — mis. saat memeriksa luka. */
+  setZoom(z: number): void {
+    this.fovGoal = z;
+  }
+
   /** Kamera bebas (null = kamera dokter di meja praktik). */
   setRig(rig: CameraRig | null): void {
     if (rig && !this.rig) {
@@ -279,6 +284,10 @@ export class Stage {
 
   private updateCamera(dt: number): void {
     if (this.rig) return this.updateRig(dt);
+    if (Math.abs(this.fovMul - this.fovGoal) > 0.002) {
+      this.fovMul += (this.fovGoal - this.fovMul) * (1 - Math.exp(-3 * dt));
+      this.applyProjection();
+    }
     const target = this.focusProvider?.() ?? null;
     if (target) this.focusTarget.copy(target);
     else this.focusTarget.set(0, 0.95, LAYOUT.seat.z);

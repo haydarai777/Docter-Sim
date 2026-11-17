@@ -34,6 +34,7 @@ import {
 } from 'three';
 import type { BedKind } from '../../core/igd/types';
 import type { BedPose } from './actor';
+import { StainSurface } from './bloodFx';
 import type { Room } from './room';
 import { canvasTexture, floorTexture, signTexture } from './textures';
 
@@ -118,6 +119,14 @@ export interface IgdBay {
   defib: Vector3 | null;
   /** Ventilator (bay resusitasi) — titik sambungan selang. */
   ventPort: Vector3 | null;
+  /** Kelompok objek bay (untuk menempatkan perlak, bengkok, dll.). */
+  group: Group;
+  /** Permukaan noda darah: sprei bagian kaki & sandaran/bantal. */
+  stains: StainSurface[];
+  /** Sandaran kepala bed (ikut menegak); `len` = panjang sandaran dari engsel ke kepala. */
+  backrest: { group: Group; len: number } | null;
+  /** Tinggi permukaan kasur. */
+  top: number;
 }
 
 export interface IgdRoom extends Room {
@@ -526,6 +535,8 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
     const sheet = new Group();
     let defib: Vector3 | null = null;
     let ventPort: Vector3 | null = null;
+    const stains: StainSurface[] = [];
+    let backrestRef: IgdBay['backrest'] = null;
     let hitMesh: Mesh;
 
     if (!isChair) {
@@ -589,6 +600,9 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
       g.add(sheet);
 
       const backrest = back;
+      backrestRef = { group: back, len: backLen };
+      stains.push(new StainSurface(`sprei-${def.id}`, g, new Vector3(bx, top + 0.001, L.hingeZ + legLen / 2), 0.86, legLen, 'kain'));
+      stains.push(new StainSurface(`bantal-${def.id}`, back, new Vector3(0, 0.073, -backLen / 2), 0.86, backLen, 'kain'));
       bayUpdaters.push((dt) => {
         incline += (inclineGoal - incline) * (1 - Math.exp(-2.2 * dt));
         backrest.rotation.x = incline;
@@ -726,6 +740,10 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
       hit: hitMesh,
       defib,
       ventPort,
+      group: g,
+      stains,
+      backrest: backrestRef,
+      top: isChair ? 0.48 : L.mattressTop,
     });
   }
   // Rel gorden ujung kanan (setelah bay A3).

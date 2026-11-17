@@ -63,6 +63,12 @@ export interface BodySpec {
   /** Kain hijab yang menjuntai menutup bahu & dada. */
   hijab: boolean;
   edema: boolean;
+  /** Badan tanpa baju (paparan pemeriksaan/luka): torso berupa kulit. */
+  bareTorso?: boolean;
+  /** Penutup dada sempit (perempuan bertelanjang badan). */
+  chestBand?: boolean;
+  /** Ujung celana per tungkai (jarak dari sendi panggul, × s) — celana digunting/dilipat. */
+  pantsEnd?: { L?: number; R?: number };
 }
 
 export interface BodyGeometry {
@@ -255,13 +261,21 @@ export function buildBody(spec: BodySpec): BodyGeometry {
   const hemY = spec.tucked ? 0.082 : -0.078;
   // Baju yang tidak dimasukkan jatuh di luar celana.
   const over = (yr: number) => (spec.tucked ? 0 : (0.006 * s + (spec.jacket ? 0 : 0.003 * s * smooth(0.02, hemY, yr))) * smooth(0.17, 0.09, yr));
-  const topRings: Ring[] = [];
-  for (let yr = hemY; yr < 0.512; yr += 0.022) topRings.push(torsoRing(yr, cloth + over(yr)));
+  const bare = !!spec.bareTorso;
   // Garis leher: depan lebih rendah (kaos) atau lebih tinggi (kemeja/jaket berkerah).
   const neckDip = spec.collar || spec.jacket ? -0.2 : -0.62;
-  topRings.push(torsoRing(0.514, cloth, { dip: neckDip * 0.5 }));
-  topRings.push(torsoRing(TOP_Y, cloth * 0.8, { dip: neckDip }));
-  top.addLoft(topRings, { segments: SEG });
+  const topRings: Ring[] = [];
+  if (bare) {
+    // Badan tanpa baju: permukaan kulit dari pinggang (di bawah tepi celana) sampai leher.
+    for (let yr = 0.07; yr < 0.512; yr += 0.018) topRings.push(torsoRing(yr, 0));
+    topRings.push(torsoRing(0.514, 0));
+    topRings.push(torsoRing(TOP_Y, -0.001 * s));
+  } else {
+    for (let yr = hemY; yr < 0.512; yr += 0.022) topRings.push(torsoRing(yr, cloth + over(yr)));
+    topRings.push(torsoRing(0.514, cloth, { dip: neckDip * 0.5 }));
+    topRings.push(torsoRing(TOP_Y, cloth * 0.8, { dip: neckDip }));
+  }
+  top.addLoft(topRings, { segments: bare ? 28 : SEG });
 
   // --- Lengan ------------------------------------------------------------
   const skinArms = new GeoBuilder();
@@ -283,20 +297,29 @@ export function buildBody(spec: BodySpec): BodyGeometry {
       return { c: [sx + side * xo * s, sy - d * s, zo * s], rx: rx * s * k + extra, rf: rf * s * k + extra, rb: rb * s * k + extra, w: armWeights(d) };
     };
     // Lengan baju: dari puncak bahu sampai kelim (lengan pendek sedikit melebar di ujung).
-    const sleeve: Ring[] = [];
-    for (const d of [-0.03, -0.022, -0.012]) sleeve.push(armRing(d, sleeveCloth));
-    for (let d = 0; d < sleeveEnd - 0.004; d += d < 0.1 ? 0.0178 : 0.0245) sleeve.push(armRing(d, sleeveCloth + (spec.longSleeves ? 0 : 0.003 * s * smooth(0.05, sleeveEnd, d))));
-    sleeve.push(armRing(sleeveEnd, sleeveCloth + (spec.longSleeves ? 0.0015 : 0.0035) * s));
-    top.addLoft(sleeve, { segments: 14, capStart: true });
+    if (!bare) {
+      const sleeve: Ring[] = [];
+      for (const d of [-0.03, -0.022, -0.012]) sleeve.push(armRing(d, sleeveCloth));
+      for (let d = 0; d < sleeveEnd - 0.004; d += d < 0.1 ? 0.0178 : 0.0245) sleeve.push(armRing(d, sleeveCloth + (spec.longSleeves ? 0 : 0.003 * s * smooth(0.05, sleeveEnd, d))));
+      sleeve.push(armRing(sleeveEnd, sleeveCloth + (spec.longSleeves ? 0.0015 : 0.0035) * s));
+      top.addLoft(sleeve, { segments: 14, capStart: true });
+    }
     // Kulit lengan yang terlihat (di bawah lengan baju) sampai pergelangan.
     const skin: Ring[] = [];
-    for (let d = spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += 0.018) skin.push(armRing(d, 0));
+    for (let d = bare ? -0.03 : spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += 0.018) skin.push(armRing(d, 0));
     skin.push(armRing(0.505, 0));
     skinArms.addLoft(skin, { segments: 14, capEnd: true });
   }
 
   // --- Detail baju: kerah, plaket, ritsleting, pita leher ----------------------
-  if (spec.collar || spec.jacket) {
+  if (bare) {
+    // Penutup dada sempit (bila diminta) — dipasang sebagai "trim".
+    if (spec.chestBand) {
+      const band: Ring[] = [];
+      for (let yr = 0.262; yr <= 0.42; yr += 0.0175) band.push(torsoRing(yr, 0.0045 * s));
+      trim.addLoft(band, { segments: SEG });
+    }
+  } else if (spec.collar || spec.jacket) {
     // Kerah tegak yang terbuka di depan.
     const open = spec.jacket ? 0.22 : 0.5;
     // Kerah tegak rendah yang memeluk leher, terbuka di depan.
@@ -404,9 +427,11 @@ export function buildBody(spec: BodySpec): BodyGeometry {
 
   const legK = (child ? 0.8 : young ? 0.92 : 1) * (ageGroup === 'lansia' ? 0.94 : 1) * (1 + 0.25 * fat - 0.16 * thin);
   const skinLegs = new GeoBuilder();
-  const pantsEnd = spec.shorts ? 0.335 : 0.762;
   const hipDrop = spec.hipDrop / s;
   for (const side of [1, -1] as const) {
+    const cut = side === 1 ? spec.pantsEnd?.L : spec.pantsEnd?.R;
+    const pantsEnd = Math.max(0.035, cut ?? (spec.shorts ? 0.335 : 0.762));
+    const shortLeg = spec.shorts || pantsEnd < 0.6;
     const [bTh, bSn] = side === 1 ? [B.thL, B.snL] : [B.thR, B.snR];
     const lx = side * spec.hipHalf;
     const ly = hy - spec.hipDrop;
@@ -444,15 +469,15 @@ export function buildBody(spec: BodySpec): BodyGeometry {
       };
     };
     // Celana: longgar di paha & lutut, jatuh lurus di bawah lutut; celana pendek sedikit melebar.
-    const straight = spec.shorts ? 0 : 0.058 * s * Math.sqrt(legK);
-    const ease = (d: number) => pants + (spec.shorts ? 0.004 * s + 0.007 * s * smooth(0.1, pantsEnd, d) : 0.004 * s * smooth(0, 0.12, d) + 0.007 * s * smooth(0.15, 0.4, d));
+    const straight = shortLeg ? 0 : 0.058 * s * Math.sqrt(legK);
+    const ease = (d: number) => pants + (shortLeg ? 0.004 * s + 0.007 * s * smooth(0.1, Math.max(0.12, pantsEnd), d) : 0.004 * s * smooth(0, 0.12, d) + 0.007 * s * smooth(0.15, 0.4, d));
     const cloth: Ring[] = [];
     for (let d = -0.115; d < pantsEnd - 0.01; d += 0.0292) cloth.push(legRing(d, ease(d), straight * smooth(0.3, 0.46, d)));
-    cloth.push(legRing(pantsEnd, ease(pantsEnd) + (spec.shorts ? 0.002 * s : 0), straight));
+    cloth.push(legRing(pantsEnd, ease(pantsEnd) + (shortLeg ? 0.002 * s : 0), straight));
     bottom.addLoft(cloth, { segments: 16, capStart: true });
-    // Kulit: tungkai bawah (celana pendek) atau hanya pergelangan kaki.
+    // Kulit: tungkai yang tidak tertutup celana (celana pendek/digunting) atau hanya pergelangan kaki.
     const skin: Ring[] = [];
-    for (let d = spec.shorts ? 0.3 : 0.715; d < 0.785; d += 0.022) skin.push(legRing(d, 0));
+    for (let d = Math.max(-0.02, pantsEnd - 0.04); d < 0.785; d += 0.022) skin.push(legRing(d, 0));
     skin.push(legRing(0.79, 0));
     skinLegs.addLoft(skin, { segments: 14 });
   }

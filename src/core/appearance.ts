@@ -8,6 +8,7 @@
  *  - Gejala yang tidak punya isyarat tetap tersembunyi: hanya terungkap lewat anamnesis/pemeriksaan.
  *  - Semua pilihan acak (warna kulit, rambut, pakaian) deterministik dari seed kasus.
  */
+import { caseInjuries, type InjuryProfile } from './injury';
 import { referenceRange } from './findings';
 import type { Intent } from './nlu';
 import { createRng, deriveSeed } from './rng';
@@ -57,6 +58,8 @@ export interface PatientAppearance {
   walkSpeed: number;
   /** Deskripsi teks dari yang terlihat (aksesibilitas, mode tanpa 3D, dan tes). */
   observations: string[];
+  /** Cedera yang terlihat (luka, memar, luka bakar, perdarahan) — lihat core/injury.ts. */
+  injuries?: InjuryProfile | null;
 }
 
 export function ageGroupOf(age: number): AgeGroup {
@@ -203,7 +206,9 @@ export function buildAppearance(c: PatientCase, content: GameContent): PatientAp
   if (!outfit.jacket && feverish && (cues.menggigil || jacketRoll)) outfit.jacket = jacketColor;
   if (cues.pincang_kanan) outfit.footwear = 'sandal';
 
-  const observations = describeObservations(cues, hold, content);
+  const injuries = caseInjuries(c);
+  const observations = [...describeObservations(cues, hold, content), ...(injuries?.wounds.map((w) => w.label.split(',')[0]!.toLowerCase()) ?? [])];
+  if (injuries?.expose?.shortSleeves && !uniform) outfit.sleeves = 'pendek';
   return {
     sex,
     age,
@@ -227,6 +232,7 @@ export function buildAppearance(c: PatientCase, content: GameContent): PatientAp
     talkRate,
     walkSpeed,
     observations,
+    injuries,
   };
 }
 

@@ -14,6 +14,8 @@ import type { Sex } from '../types';
 // ---------------------------------------------------------------------------
 
 /** Kategori triase Australasian Triage Scale (ATS) 1–5. */
+import type { InjuryProfile } from '../injury';
+
 export type Ats = 1 | 2 | 3 | 4 | 5;
 
 export type EdCategory =
@@ -577,6 +579,8 @@ export interface EdScenario {
   /** Target stabil saat disposisi. */
   stable: (v: Vitals, p: PhysioState, now: number) => boolean;
   disposition: { best: Disposition[]; acceptable?: Disposition[]; consult?: Specialty[] };
+  /** Cedera yang terlihat (luka, memar, luka bakar, perdarahan) untuk tampilan 3D. */
+  injuries?: InjuryProfile;
   debrief: {
     ringkasan: string;
     tatalaksana: string[];

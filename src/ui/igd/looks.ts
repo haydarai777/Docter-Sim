@@ -6,6 +6,7 @@
 import { ageGroupOf, type PatientAppearance } from '../../core/appearance';
 import type { EdPatient } from '../../core/igd/types';
 import { createRng, deriveSeed } from '../../core/rng';
+import { ED_SCENARIOS_BY_ID } from '../../data/igd';
 import type { GameContent, Sex } from '../../core/types';
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
@@ -72,6 +73,11 @@ function baseLook(content: GameContent, seed: number, sex: Sex, age: number, wei
 export function patientLook(p: EdPatient, content: GameContent, seed: number): PatientAppearance {
   const look = baseLook(content, deriveSeed(seed, `pasien-${p.id}`), p.sex, p.age, p.weightKg);
   look.emotion = 'cemas';
+  // Cedera yang terlihat dari skenario (luka, memar, luka bakar, perdarahan) + isyarat terkait.
+  const inj = ED_SCENARIOS_BY_ID.get(p.scenarioId)?.injuries ?? null;
+  look.injuries = inj;
+  if (inj?.cues?.kuning) look.cues.kuning = inj.cues.kuning;
+  if (inj?.cues?.pucat) look.cues.pucat = inj.cues.pucat;
   look.walkSpeed *= p.arrivalMode === 'dipapah' ? 0.62 : 0.85;
   if (p.arrivalMode === 'jalan' && p.age >= 65) look.walkSpeed *= 0.9;
   return look;
@@ -118,4 +124,9 @@ export function staffLook(role: StaffRole, name: string, content: GameContent, s
     look.outfit = { top: '#7c8a96', bottom: '#2c3440', sleeves: 'pendek', footwear: 'sepatu', collar: true };
   }
   return look;
+}
+
+/** Penampilan sederhana untuk pratinjau (halaman pengembang & tes visual luka). */
+export function previewLook(content: GameContent, seed: number, sex: Sex, age: number, weightKg: number): PatientAppearance {
+  return baseLook(content, seed, sex, age, weightKg);
 }

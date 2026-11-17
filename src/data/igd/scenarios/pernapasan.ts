@@ -146,6 +146,16 @@ export const ANAFILAKSIS: EdScenario = {
       topics: { kejadian: 'Makan udang di kondangan, lima belas menit kemudian bentol-bentol, terus sesak dan lemas.', alergi: 'Dulu pernah gatal setelah makan kepiting.' },
     },
   },
+  injuries: {
+    wounds: [
+      { id: 'urtika_lb_ki', kind: 'urtikaria', region: 'lengan_bawah', side: 'kiri', at: 0.45, face: 0, size: [20, 10], circumferential: true, label: 'Urtika lengan bawah kiri' },
+      { id: 'urtika_lb_ka', kind: 'urtikaria', region: 'lengan_bawah', side: 'kanan', at: 0.45, face: 0, size: [20, 10], circumferential: true, label: 'Urtika lengan bawah kanan' },
+      { id: 'urtika_la_ki', kind: 'urtikaria', region: 'lengan_atas', side: 'kiri', at: 0.65, face: 60, size: [12, 8], label: 'Urtika lengan atas kiri' },
+      { id: 'urtika_leher', kind: 'urtikaria', region: 'leher', side: 'tengah', at: 0.6, face: 0, size: [9, 6], label: 'Urtika leher' },
+    ],
+    face: { lipSwelling: 0.8, flush: 0.6 },
+    expose: { shortSleeves: true },
+  },
   diagnosis: { primary: ['anafilaksis'] },
   critical: [
     { id: 'adrenalin_im', label: 'Adrenalin 0,01 mg/kg IM (maks 0,5 mg) di paha anterolateral', match: drug('adrenalin', { routes: ['im'], perKg: [0.005, 0.0125] }), byMin: 5, weight: 6, why: 'Satu-satunya obat lini pertama anafilaksis; keterlambatan meningkatkan kematian.' },

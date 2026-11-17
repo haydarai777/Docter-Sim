@@ -29,6 +29,10 @@ export const OPIOID: EdScenario = {
       },
     },
   },
+  injuries: {
+    wounds: [{ id: 'needle', kind: 'bekas_suntik', region: 'lengan_bawah', side: 'kiri', at: 0.05, face: 0, size: [5, 3], label: 'Bekas suntikan multipel di lipat siku kiri (needle tracks)' }],
+    expose: { shortSleeves: true },
+  },
   findings: { E: 'Bekas suntikan multipel di lipat siku kiri (needle tracks).' },
   diagnosis: { primary: ['intoksikasi_opioid'] },
   critical: [
@@ -287,6 +291,7 @@ export const PERDARAHAN_SCBA: EdScenario = {
     },
     keluarga: { label: 'Istri pasien', opening: 'Dok, suami saya muntah darah banyak sekali, dia sakit hati (sirosis).', topics: { riwayat_obat: 'Propranolol, spironolakton.' } },
   },
+  injuries: { wounds: [], hematemesis: { type: 'vena', share: 0.45 }, face: { bloodMouth: 0.75 }, cues: { kuning: 0.55 } },
   findings: {
     abdomen: 'Asites (shifting dullness +), splenomegali S2, caput medusae.',
     E: 'Sklera ikterik, spider nevi di dada, eritema palmaris.',
@@ -382,6 +387,15 @@ export const DSS_ANAK: EdScenario = {
       },
       symptoms: { demam: 'Empat hari, sekarang sudah turun.', mual_muntah: 'Muntah tiga kali.', nyeri_perut: 'Mengeluh sakit perut kanan atas.', perdarahan_mukosa: 'Tadi mimisan sedikit.', bintik_merah: 'Ada bintik merah di kaki.', lemas: 'Lemas sekali.' },
     },
+  },
+  injuries: {
+    wounds: [
+      { id: 'petekie_ki', kind: 'petekie', region: 'tungkai_bawah', side: 'kiri', at: 0.5, face: 0, size: [18, 9], circumferential: true, label: 'Petekie tungkai bawah kiri' },
+      { id: 'petekie_ka', kind: 'petekie', region: 'tungkai_bawah', side: 'kanan', at: 0.5, face: 0, size: [18, 9], circumferential: true, label: 'Petekie tungkai bawah kanan' },
+      { id: 'petekie_paha_ki', kind: 'petekie', region: 'paha', side: 'kiri', at: 0.65, face: 0, size: [10, 8], label: 'Petekie paha kiri' },
+      { id: 'petekie_paha_ka', kind: 'petekie', region: 'paha', side: 'kanan', at: 0.65, face: 0, size: [10, 8], label: 'Petekie paha kanan' },
+    ],
+    expose: { legs: { kiri: 0.2, kanan: 0.2 }, shortSleeves: true },
   },
   findings: {
     E: 'Petekie di kedua tungkai; uji tourniquet (+); akral dingin.',

@@ -389,9 +389,10 @@ export class Actor implements StageUpdatable {
     }
   }
 
-  react(kind: ExamReaction): void {
-    const dur = kind === 'napas_dalam' ? 4.2 : kind === 'ulur_lengan' ? 3.4 : 2.4;
-    this.clips.push({ kind, t: 0, dur, delay: 0.15, arm: kind === 'ulur_lengan' ? 'L' : undefined });
+  react(kind: ExamReaction, opts: { side?: Side; palmDown?: boolean; seconds?: number } = {}): void {
+    const dur = opts.seconds ?? (kind === 'napas_dalam' ? 4.2 : kind === 'ulur_lengan' ? 3.4 : 2.4);
+    const side = opts.side ?? 'L';
+    this.clips.push({ kind, t: 0, dur, delay: 0.15, arm: kind === 'ulur_lengan' ? side : undefined, side, act: opts.palmDown ? 'telungkup' : undefined });
     if (kind === 'napas_dalam') this.deepBreath = dur;
   }
 
@@ -599,10 +600,14 @@ export class Actor implements StageUpdatable {
     // Tungkai: lurus (lutut sedikit menekuk) atau diangkat (posisi syok).
     const L = (d.thigh + d.shin) * 0.994;
     const hipJoint = d.hipsY - d.hipDrop;
+    const fx = this.look.injuries?.fracture;
     for (const side of ['L', 'R'] as const) {
       const a = this.ankle[side];
       const up = b.legsUp;
-      a.set(sign(side) * d.hipHalf * 0.95, hipJoint - L * Math.cos(up), L * Math.sin(up) + 0.03 * d.s);
+      // Fraktur femur: tungkai yang patah memendek.
+      const broken = fx && (fx.side === 'kiri') === (side === 'L');
+      const len = broken ? L - fx!.shortenCm / 100 : L;
+      a.set(sign(side) * d.hipHalf * 0.95, hipJoint - len * Math.cos(up), len * Math.sin(up) + 0.03 * d.s);
     }
     this.legFk = 0;
   }
@@ -1354,9 +1359,11 @@ export class Actor implements StageUpdatable {
           }
           break;
         case 'ulur_lengan': {
-          // Tanda vital: ulurkan lengan kiri ke atas meja.
-          const p = this.v1.set(LAYOUT.seat.x + 0.2, LAYOUT.desk.top + 0.05, LAYOUT.desk.z0 + 0.02);
-          this.aimArm('L', p, e, false, UP);
+          // Tanda vital / memperlihatkan luka: ulurkan lengan ke atas meja (telapak ke atas, atau
+          // telungkup bila luka di sisi punggung lengan).
+          const side = clip.side ?? 'L';
+          const p = this.v1.set(LAYOUT.seat.x + sign(side) * 0.2, LAYOUT.desk.top + 0.05, LAYOUT.desk.z0 + 0.02);
+          this.aimArm(side, p, e, false, clip.act === 'telungkup' ? DOWN : UP);
           F.spineX += 0.1 * e;
           break;
         }
@@ -1614,7 +1621,10 @@ export class Actor implements StageUpdatable {
       // Berbaring: telapak jatuh (plantarfleksi) & sedikit rotasi keluar.
       if (this.mode === 'lying') {
         leg.end.rotation.x -= 0.95;
-        leg.upper.rotation.y += sign(side) * 0.12;
+        const fx = this.look.injuries?.fracture;
+        const broken = fx && (fx.side === 'kiri') === (side === 'L');
+        // Rotasi eksternal ringan (normal saat berbaring) — jauh lebih besar pada fraktur femur.
+        leg.upper.rotation.y += sign(side) * (0.12 + (broken ? (fx!.externalRotationDeg * Math.PI) / 180 : 0));
       }
       if (fk > 0.01) {
         const th = side === 'L' ? F.thighL : F.thighR;

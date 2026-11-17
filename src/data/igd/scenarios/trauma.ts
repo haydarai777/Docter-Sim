@@ -34,6 +34,15 @@ export const TENSION_PNEUMOTORAKS: EdScenario = {
       symptoms: { sesak_napas: 'Sesak sekali…', nyeri_dada: 'Dada kanan sakit… kalau napas.' },
     },
   },
+  injuries: {
+    wounds: [
+      { id: 'jejas_dada', kind: 'jejas', region: 'dada', side: 'kanan', at: 0.55, face: 55, size: [13, 9], angle: 25, ageHours: 1, label: 'Jejas (memar + lecet) dinding dada kanan' },
+      { id: 'emfisema_dada', kind: 'emfisema', region: 'dada', side: 'kanan', at: 0.42, face: 75, size: [18, 14], label: 'Emfisema subkutis dinding dada kanan' },
+      { id: 'emfisema_leher', kind: 'emfisema', region: 'leher', side: 'kanan', at: 0.6, face: 60, size: [8, 6], label: 'Emfisema subkutis leher kanan' },
+      { id: 'lecet_lengan', kind: 'ekskoriasi', region: 'lengan_bawah', side: 'kanan', at: 0.35, face: 120, size: [9, 4], angle: 10, bleeding: { type: 'kapiler', mlPerMin: 0.25, halfLifeMin: 25 }, label: 'Ekskoriasi lengan bawah kanan' },
+    ],
+    expose: { torso: true },
+  },
   findings: { E: 'Jejas & krepitasi kulit (emfisema subkutis) di dinding dada kanan; ekskoriasi lengan kanan.', kepala_leher: 'Emfisema subkutis di leher kanan.' },
   tests: { darah_lengkap: { extra: '' } },
   diagnosis: { primary: ['tension_pneumotoraks'], acceptable: ['pneumotoraks'] },
@@ -121,6 +130,18 @@ export const MULTITRAUMA: EdScenario = {
       topics: { keluhan_utama: 'Panggul dan paha kanan sakit sekali, Dok… dingin…', alergi: 'Tidak ada alergi.', riwayat_obat: 'Tidak minum obat apa-apa.', makan_terakhir: 'Siang tadi.', riwayat_penyakit: 'Sehat, Dok.' },
       symptoms: { nyeri_otot_sendi: 'Panggul sakit sekali.', sesak_napas: 'Tidak terlalu.', nyeri_perut: 'Perut bawah sakit.' },
     },
+  },
+  injuries: {
+    wounds: [
+      { id: 'lecet_lengan_ka', kind: 'ekskoriasi', region: 'lengan_bawah', side: 'kanan', at: 0.4, face: 140, size: [10, 5], angle: 8, bleeding: { type: 'kapiler', mlPerMin: 0.4, halfLifeMin: 25 }, label: 'Ekskoriasi lengan bawah kanan' },
+      { id: 'lecet_siku_ki', kind: 'ekskoriasi', region: 'lengan_atas', side: 'kiri', at: 0.9, face: 160, size: [6, 4], bleeding: { type: 'kapiler', mlPerMin: 0.2, halfLifeMin: 25 }, label: 'Ekskoriasi siku kiri' },
+      { id: 'bengkak_paha', kind: 'bengkak', region: 'paha', side: 'kanan', at: 0.5, face: 20, size: [22, 14], label: 'Paha kanan bengkak & deformitas (fraktur femur tertutup)' },
+      { id: 'memar_paha', kind: 'memar', region: 'paha', side: 'kanan', at: 0.55, face: 60, size: [12, 8], ageHours: 1, label: 'Memar paha kanan sisi lateral' },
+      { id: 'lecet_lutut', kind: 'ekskoriasi', region: 'tungkai_bawah', side: 'kanan', at: 0.06, face: 0, size: [6, 5], bleeding: { type: 'kapiler', mlPerMin: 0.2, halfLifeMin: 25 }, label: 'Ekskoriasi lutut kanan' },
+    ],
+    face: { abrasion: { side: 'kanan', spot: 'pipi', size: 0.8 } },
+    fracture: { side: 'kanan', bone: 'femur', shortenCm: 4, externalRotationDeg: 40 },
+    expose: { torso: true, legs: { kiri: 0.12, kanan: 0.12 } },
   },
   findings: {
     pelvis_ekstremitas: 'Pelvis tidak stabil & nyeri pada kompresi (cukup sekali); paha kanan bengkak, deformitas, memendek & rotasi eksternal (curiga fraktur femur tertutup); nadi distal kanan teraba.',
@@ -228,6 +249,16 @@ export const CEDERA_KEPALA_BERAT: EdScenario = {
     },
     saksi: { label: 'Saksi (warga)', topics: { kejadian: 'Motornya oleng lalu jatuh, kepalanya kena aspal. Sempat bangun, bilang pusing, terus muntah dan tidur lagi.' } },
   },
+  injuries: {
+    wounds: [
+      { id: 'laserasi_kepala', kind: 'laserasi', region: 'kepala', side: 'kanan', at: 0.45, face: 80, size: [4, 0.8], angle: 30, depth: 'subkutis', bleeding: { type: 'vena', mlPerMin: 6, halfLifeMin: 25 }, label: 'Laserasi temporoparietal kanan 4 cm' },
+      { id: 'hematoma_kepala', kind: 'hematoma', region: 'kepala', side: 'kanan', at: 0.42, face: 88, size: [7, 6], ageHours: 1, label: 'Hematoma temporoparietal kanan' },
+      { id: 'lecet_bahu', kind: 'ekskoriasi', region: 'bahu', side: 'kanan', at: 0.5, face: 70, size: [9, 6], bleeding: { type: 'kapiler', mlPerMin: 0.3, halfLifeMin: 25 }, label: 'Ekskoriasi bahu kanan' },
+      { id: 'lecet_lengan', kind: 'ekskoriasi', region: 'lengan_atas', side: 'kanan', at: 0.55, face: 90, size: [10, 5], bleeding: { type: 'kapiler', mlPerMin: 0.3, halfLifeMin: 25 }, label: 'Ekskoriasi lengan atas kanan' },
+    ],
+    face: { racoonEyes: 0.9 },
+    expose: { torso: true },
+  },
   findings: {
     kepala_leher: 'Hematoma & laserasi temporoparietal kanan 4 cm; hematoma periorbita bilateral (racoon eyes); otorea (−).',
     E: 'Ekskoriasi bahu & lengan kanan.',
@@ -316,6 +347,13 @@ export const PERDARAHAN_EKSTERNAL: EdScenario = {
     },
     saksi: { label: 'Warga yang mengantar', opening: 'Dok, dia dibacok di pasar, darahnya muncrat terus, sudah kami ikat kain tapi tembus.', topics: { kejadian: 'Perkelahian di pasar, dibacok parang di paha kiri sekitar lima belas menit lalu.' } },
   },
+  injuries: {
+    wounds: [
+      { id: 'bacok_paha', kind: 'bacok', region: 'paha', side: 'kiri', at: 0.45, face: -35, size: [8, 2.6], angle: 65, depth: 'otot', bleeding: { type: 'arteri', share: 1 }, label: 'Luka bacok paha kiri anteromedial 8 cm, dalam hingga otot' },
+    ],
+    expose: { legs: { kiri: 0.08 } },
+    improvisedWrap: 'bacok_paha',
+  },
   findings: {
     luka: (c) => (c.patient.devices.tourniquet ? 'Luka bacok paha kiri anteromedial 8 cm, dalam hingga otot; perdarahan terkontrol dengan torniket.' : c.patient.devices.pressure ? 'Luka bacok paha kiri 8 cm; perdarahan berkurang dengan bebat tekan tetapi masih merembes deras.' : 'Luka bacok paha kiri anteromedial 8 cm, dalam hingga otot, darah merah terang MEMANCAR (perdarahan arteri).'),
     C: (c) => (c.patient.devices.tourniquet ? '' : 'Perdarahan aktif memancar dari paha kiri.'),
@@ -399,6 +437,19 @@ export const LUKA_BAKAR: EdScenario = {
       topics: { keluhan_utama: 'Perih… panas… suara saya serak, Dok…', kejadian: 'Rumah terbakar… saya terjebak di kamar.', alergi: 'Tidak ada.', riwayat_obat: 'Tidak ada.', makan_terakhir: 'Tadi siang.', riwayat_penyakit: 'Sehat.' },
       symptoms: { suara_serak: 'Iya, serak.', batuk: 'Batuk dahaknya hitam.', sesak_napas: 'Agak sesak.', nyeri_terbakar_kulit: 'Perih sekali.' },
     },
+  },
+  injuries: {
+    wounds: [
+      { id: 'lb_dada', kind: 'luka_bakar', region: 'dada', side: 'tengah', at: 0.5, face: 0, size: [32, 26], burn: 'II_dalam', label: 'Luka bakar derajat II dalam dada anterior' },
+      { id: 'lb_dada_iii', kind: 'luka_bakar', region: 'dada', side: 'kanan', at: 0.42, face: 30, size: [11, 8], burn: 'III', label: 'Area derajat III dada kanan' },
+      { id: 'lb_leher', kind: 'luka_bakar', region: 'leher', side: 'tengah', at: 0.55, face: 0, size: [10, 8], burn: 'II_dalam', label: 'Luka bakar leher anterior' },
+      { id: 'lb_lb_ki', kind: 'luka_bakar', region: 'lengan_bawah', side: 'kiri', at: 0.45, face: 0, size: [22, 12], circumferential: true, burn: 'II_dalam', label: 'Luka bakar sirkumferensial lengan bawah kiri' },
+      { id: 'lb_lb_ka', kind: 'luka_bakar', region: 'lengan_bawah', side: 'kanan', at: 0.45, face: 0, size: [22, 12], circumferential: true, burn: 'III', label: 'Luka bakar sirkumferensial lengan bawah kanan (derajat III)' },
+      { id: 'lb_la_ki', kind: 'luka_bakar', region: 'lengan_atas', side: 'kiri', at: 0.5, face: 0, size: [24, 12], circumferential: true, burn: 'II_dalam', label: 'Luka bakar lengan atas kiri' },
+      { id: 'lb_la_ka', kind: 'luka_bakar', region: 'lengan_atas', side: 'kanan', at: 0.5, face: 0, size: [24, 12], circumferential: true, burn: 'II_dalam', label: 'Luka bakar lengan atas kanan' },
+    ],
+    face: { burn: 0.75, soot: 0.85, singedBrows: true },
+    expose: { torso: true },
   },
   findings: {
     E: 'Luka bakar derajat II dalam–III di wajah, leher, dada anterior & kedua lengan sirkumferensial ± 36% luas permukaan tubuh (rule of nines); alis & bulu hidung terbakar.',

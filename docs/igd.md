@@ -63,6 +63,49 @@ Memakai mesin 3D & karakter yang sama dengan ruang praktik (prosedural, tanpa be
   sekeliling. Pasien yang ditanya menggerakkan mulut sesuai jawabannya.
 - Tanpa WebGL, mode IGD tetap dapat dimainkan sepenuhnya lewat panel.
 
+## Luka & perdarahan 3D
+
+Cedera yang tampak ditulis per skenario (`injuries` di `src/data/igd/scenarios/*.ts`, tipe di
+`src/core/injury.ts`) dan per kasus poliklinik (`caseInjuries`), lalu digambar langsung **di kulit**
+karakter: decal diproyeksikan ke geometri tubuh dalam pose ikat, dipotong per segitiga, dan memakai
+bobot tulang yang sama dengan kulit, sehingga luka, darah, dan rembesan ikut menekuk persis bersama
+anggota gerak (berbaring, berjalan, mengulurkan lengan).
+
+- **Jenis luka** (tekstur prosedural per piksel + peta normal & kekasaran): laserasi/vulnus dengan tepi
+  tidak rata dan jembatan jaringan, luka bacok menganga yang memperlihatkan lapisan dermis–lemak
+  kuning–otot, luka iris bertepi rata, luka tusuk, ekskoriasi (lecet bergaris, titik perdarahan,
+  krusta), memar yang **warnanya mengikuti umur** (merah-ungu → biru → hijau-kuning), hematoma,
+  jejas, **luka bakar derajat I / II superfisial (bula utuh & pecah) / II dalam (merah-putih berbercak,
+  slough) / III (keras seperti kulit, jelaga, retakan, vena trombosis)** termasuk sirkumferensial,
+  petekie, urtikaria, ulkus tungkai dengan granulasi & fibrin, bekas suntikan (needle tracks), bengkak,
+  hematoma, dan emfisema subkutis (permukaan kulit benar-benar terangkat).
+- **Wajah**: racoon eyes, lecet pipi, luka bakar wajah dengan jelaga di lubang hidung, alis terbakar,
+  bibir bengkak (angioedema), kemerahan, dan darah yang menetes dari hidung (epistaksis) atau mulut
+  (hematemesis).
+- **Deformitas**: fraktur femur — tungkai memendek dan berotasi eksternal; pakaian dibuka/digunting
+  sesuai survei E (badan tanpa baju, lengan baju pendek, celana digunting setinggi luka).
+- **Volume darah nyata**: laju perdarahan tiap sumber dihitung dari fisiologi (`v.bleed` × volume
+  darah taksiran 70 ml/kg dewasa, 80 ml/kg anak) atau laju ml/menit dengan waktu paruh untuk luka
+  vena/kapiler. Darah yang keluar dicatat per luka dan menentukan luas **lapisan darah basah** di
+  sekitar luka, **aliran darah mengikuti gravitasi** (ke bawah saat berdiri, ke samping-belakang saat
+  berbaring), **rembesan di pakaian**, serta **genangan** di sprei, bantal, brankar, kursi, dan lantai
+  (± 6 cm²/ml di kain, 4 cm²/ml di lantai; kelebihan > 650 ml menetes ke lantai).
+- **Pola perdarahan**: arteri **memancar berdenyut sinkron dengan nadi pasien** (tinggi pancaran
+  mengikuti tekanan sistolik, melemah saat syok, berhenti saat henti jantung), vena mengalir/menetes
+  stabil, kapiler merembes. Tetesan adalah partikel berfisika (gravitasi, hambatan udara, memanjang
+  searah gerak) yang meninggalkan **cipratan & jejak darah** di lantai saat pasien berjalan.
+- **Tindakan terlihat**: kain darurat batik basah darah dari warga, **bebat tekan** (kasa + perban elastis
+  yang perlahan merembes merah), **torniket** dengan windlass & label jam (tungkai distal memucat),
+  irigasi & luka bersih, **jahitan** benang nilon biru dengan simpul, pendinginan luka bakar.
+- **Perdarahan lain**: HPP — perlak (underpad) di bawah bokong dengan genangan & bekuan yang terus
+  bertambah, celana basah darah di selangkangan; SCBA — bengkok berisi darah di samping kepala, darah
+  di sudut mulut, dan noda muntahan di baju.
+- **Kamera inspeksi**: memeriksa **Luka**/**Exposure** mendekatkan mata dokter ke luka utama (yang
+  berdarah didahulukan); di poliklinik, pemeriksaan **status lokalis**/kulit membuat pasien mengulurkan
+  lengan sambil kamera memperbesar ke luka.
+- Teks pemeriksaan selaras dengan yang tampak (mis. "Luka" pada luka bakar menyebut lokasi & derajat,
+  kepala-leher pada cedera kepala tidak menulis "tidak ada jejas").
+
 ## Mekanisme klinis
 
 - **Fisiologi dinamis** (`src/core/igd/physiology.ts`): variabel tersembunyi (volume darah, perdarahan,
@@ -148,5 +191,13 @@ for CPR & ECC (+ 2023 focused update); Kemenkes RI — PMK No. 47/2018 tentang P
   evaluation, shift, sim, validate). Skenario: `src/data/igd/scenarios/*.ts`.
 - UI: `src/ui/igd/` (controller, views, monitorDraw, looks). 3D: `src/ui/three/igdRoom.ts`,
   `igdProps.ts`, `igdScene.ts`, dan perluasan `actor.ts` (berbaring, keadaan klinis, tangan staf).
+- Luka & darah: `src/core/injury.ts` (model cedera, laju perdarahan), `src/ui/three/decal.ts`
+  (proyeksi decal ke kulit skinned, bahan "muncul bertahap"), `woundTextures.ts` (tekstur prosedural),
+  `wounds.ts` (penempatan anatomis, balutan, torniket, kain darurat), `bloodFx.ts` (pancaran,
+  tetesan, noda & genangan). Pratinjau: `npm run dev` lalu
+  `/devwound.html?igd=perdarahan_eksternal&mode=lie&focus=bacok_paha&dist=0.45` (parameter lain:
+  `mode=lie|stand|seated`, `focus=<idLuka>|head|hips`, `rate`, `lost`, `pressure=1`, `tq=1`,
+  `sutured=1`, `cleaned=1`, `wrap=1`, `cooled=1`, `hema`, `vag`, `disease=&traits=` untuk kasus
+  poliklinik). Uji: `npx vitest run tests/injury.test.ts`.
 - Audit: `npm run -s igd-audit` (validasi + simulasi pakar/lalai semua skenario & varian),
   `npm run -s igd-score` (sebaran skor), uji `npx vitest run tests/igd.test.ts`.

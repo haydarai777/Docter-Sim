@@ -86,6 +86,16 @@ describe('minta diulang', () => {
     expect(count).toBe(1);
     expect(third.reply).toContain(first.reply);
   });
+
+  it('pertanyaan yang sama diulang lalu minta diulang: awalan "sudah saya ceritakan" tidak ikut dikutip', () => {
+    const c = generateCase(content, config, { diseaseId: 'dengue', seed: 3 });
+    const first = ask(startEncounter(c), 'Sejak kapan sakitnya?');
+    const twice = ask(first.state, 'Sejak kapan sakitnya?');
+    const all = [...content.conversation.repeatAsked, ...content.conversation.repeat].map((t) => fillTemplate(t, c.context));
+    const again = ask(twice.state, 'Maaf, bisa diulang?');
+    const count = all.reduce((n, p) => n + again.reply.split(p).length - 1, 0);
+    expect(count, again.reply).toBe(1);
+  });
 });
 
 describe('lama sakit yang disebut dokter dikonfirmasi pasien', () => {
