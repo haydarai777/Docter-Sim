@@ -1108,7 +1108,9 @@ export class IgdScene implements StageUpdatable {
       const declared = p.disposition?.to === 'meninggal' || p.status === 'meninggal';
       bay.setSheet(declared && !!bay.pose);
       pv.actor.character.root.visible = !(declared && bay.pose) && !pv.hidden;
-      bay.setBlanket(!!bay.pose && pv.actor.lying && !declared && p.devices.position !== 'kaki_diangkat' && !p.devices.cpr);
+      // Selimut hanya saat telentang/setengah duduk (posisi miring, tungkai diangkat, RJP, kejang: dibuka).
+      const flat = p.devices.position !== 'kaki_diangkat' && p.devices.position !== 'miring_kiri';
+      bay.setBlanket(!!bay.pose && pv.actor.lying && !declared && flat && !p.devices.cpr && !p.physio.seizure);
       bay.setIncline(this.inclineOf(p));
     }
   }
