@@ -73,6 +73,17 @@ export interface Room {
   update(dt: number, time: number): void;
   setShadows(enabled: boolean): void;
   dispose(): void;
+  /**
+   * Titik pengambilan peta lingkungan (pencahayaan berbasis citra): ruangan dipotret ke segala
+   * arah dari titik ini lalu dipakai sebagai cahaya ambien & pantulan (kulit, mata, logam).
+   */
+  envProbe?: Vector3;
+  /** Kekuatan peta lingkungan pada permukaan (default 1). */
+  envIntensity?: number;
+  /** Saat dipotret: lampu panel dibuat seterang aslinya relatif terhadap dinding. */
+  setEnvCapture?(on: boolean): void;
+  /** Peta lingkungan aktif: cahaya ambien hemisfer dikurangi agar tidak dobel. */
+  useEnvironment?(on: boolean): void;
 }
 
 export function buildRoom(options: { shadows: boolean }): Room {
@@ -502,6 +513,14 @@ export function buildRoom(options: { shadows: boolean }): Room {
   let doorOpen = 0;
   return {
     group,
+    envProbe: new Vector3(0, 1.25, -0.6),
+    envIntensity: 0.9,
+    setEnvCapture(on: boolean) {
+      ceilLight.intensity = on ? 9 : 5;
+    },
+    useEnvironment(on: boolean) {
+      hemi.intensity = on ? 0.32 : 0.82;
+    },
     setDoor(open: number) {
       doorOpen = Math.max(0, Math.min(1, open));
       doorPivot.rotation.y = doorOpen * 1.72;

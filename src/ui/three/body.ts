@@ -7,6 +7,7 @@
  * Semua koordinat dalam ruang akar karakter pada pose ikat (berdiri tegak, lengan di samping).
  */
 import { type BufferGeometry, Vector3 } from 'three';
+import { type AnatomySpec, anatomyFactors, armSculpt, landmark, legSculpt, NAVEL_Y, neckSculpt, nippleSpot, scaled, torsoSculpt } from './anatomy';
 import { blend, GeoBuilder, type Ring, sampleStations, smooth, type Weights } from './geo';
 
 /** Indeks tulang (urutan harus sama dengan kerangka di character.ts). */
@@ -89,6 +90,15 @@ export interface BodyGeometry {
    * setengah lebar, z depan, z belakang — dipakai untuk titik sentuh tangan.
    */
   surface(yr: number): { half: number; front: number; back: number };
+  /** Penanda anatomis di permukaan kulit (ruang akar, pose ikat) untuk warna kulit regional. */
+  landmarks: {
+    nipples: [Vector3, Vector3];
+    /** Jari-jari areola (m). */
+    areola: number;
+    navel: Vector3;
+    elbows: [Vector3, Vector3];
+    knees: [Vector3, Vector3];
+  };
 }
 
 type Table = number[][];
@@ -180,7 +190,8 @@ function torsoTable(spec: BodySpec, armK: number): Table {
     if (!male) {
       w *= 1 - 0.1 * bell(y!, 0.14, 0.07) + 0.03 * bell(y!, -0.02, 0.06);
       b += 0.006 * bell(y!, -0.03, 0.05);
-      if (!child) f += (ageGroup === 'remaja' ? 0.013 : 0.022) * bell(y!, 0.335, 0.045);
+      // Tonjolan dada sebagai satu permukaan kain; tanpa baju, bentuk payudara dipahat terpisah.
+      if (!child) f += (ageGroup === 'remaja' ? 0.013 : 0.022) * bell(y!, 0.335, 0.045) * (spec.bareTorso ? 0.2 : 1);
       f *= 0.96;
     }
     if (child) {
@@ -212,6 +223,10 @@ export function buildBody(spec: BodySpec): BodyGeometry {
   const cloth = (spec.jacket ? 0.016 : 0.007) * s;
   const pants = 0.006 * s;
   const SEG = 22;
+  // Anatomi permukaan (otot, tulang, pusar, puting …) — lihat anatomy.ts.
+  const ana: AnatomySpec = { s, male, ageGroup, fat, thin, hy: spec.hipsY, bare: !!spec.bareTorso };
+  const sculptTorso = torsoSculpt(ana);
+  const sculptCloth = torsoSculpt(ana, true);
 
   // --- Bobot tulang untuk torso (berdasarkan tinggi relatif & posisi samping) ---------
   const torsoWeights = (x: number, y: number, z: number): Weights => {
@@ -266,8 +281,9 @@ export function buildBody(spec: BodySpec): BodyGeometry {
   const neckDip = spec.collar || spec.jacket ? -0.2 : -0.62;
   const topRings: Ring[] = [];
   if (bare) {
-    // Badan tanpa baju: permukaan kulit dari pinggang (di bawah tepi celana) sampai leher.
-    for (let yr = 0.07; yr < 0.512; yr += 0.018) topRings.push(torsoRing(yr, 0));
+    // Badan tanpa baju: permukaan kulit dari pinggang (di bawah tepi celana) sampai leher —
+    // resolusi tinggi agar otot, tulang selangka, pusar, dan puting terbentuk halus.
+    for (let yr = 0.07; yr < 0.512; yr += 0.009) topRings.push(torsoRing(yr, 0));
     topRings.push(torsoRing(0.514, 0));
     topRings.push(torsoRing(TOP_Y, -0.001 * s));
   } else {
@@ -275,10 +291,12 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     topRings.push(torsoRing(0.514, cloth, { dip: neckDip * 0.5 }));
     topRings.push(torsoRing(TOP_Y, cloth * 0.8, { dip: neckDip }));
   }
-  top.addLoft(topRings, { segments: bare ? 28 : SEG });
+  top.addLoft(topRings, { segments: bare ? 52 : SEG + 6, sculpt: bare ? sculptTorso : sculptCloth });
 
   // --- Lengan ------------------------------------------------------------
   const skinArms = new GeoBuilder();
+  const elbowL = new Vector3();
+  const elbowR = new Vector3();
   const sleeveEnd = spec.longSleeves ? 0.492 : 0.138;
   const sleeveCloth = (spec.jacket ? 0.013 : 0.0065) * s;
   for (const side of [1, -1] as const) {
@@ -296,19 +314,23 @@ export function buildBody(spec: BodySpec): BodyGeometry {
       const k = (1 + (armK - 1) * smooth(-0.03, 0.03, d)) * (0.84 + 0.16 * smooth(0.012, 0.05, d));
       return { c: [sx + side * xo * s, sy - d * s, zo * s], rx: rx * s * k + extra, rf: rf * s * k + extra, rb: rb * s * k + extra, w: armWeights(d) };
     };
+    const sculptArm = armSculpt(ana, side, sy);
     // Lengan baju: dari puncak bahu sampai kelim (lengan pendek sedikit melebar di ujung).
     if (!bare) {
       const sleeve: Ring[] = [];
       for (const d of [-0.03, -0.022, -0.012]) sleeve.push(armRing(d, sleeveCloth));
       for (let d = 0; d < sleeveEnd - 0.004; d += d < 0.1 ? 0.0178 : 0.0245) sleeve.push(armRing(d, sleeveCloth + (spec.longSleeves ? 0 : 0.003 * s * smooth(0.05, sleeveEnd, d))));
       sleeve.push(armRing(sleeveEnd, sleeveCloth + (spec.longSleeves ? 0.0015 : 0.0035) * s));
-      top.addLoft(sleeve, { segments: 14, capStart: true });
+      top.addLoft(sleeve, { segments: 16, capStart: true, sculpt: scaled(sculptArm, 0.75) });
     }
     // Kulit lengan yang terlihat (di bawah lengan baju) sampai pergelangan.
     const skin: Ring[] = [];
-    for (let d = bare ? -0.03 : spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += 0.018) skin.push(armRing(d, 0));
+    for (let d = bare ? -0.03 : spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += 0.011) skin.push(armRing(d, 0));
     skin.push(armRing(0.505, 0));
-    skinArms.addLoft(skin, { segments: 14, capEnd: true });
+    skinArms.addLoft(skin, { segments: 22, capEnd: true, sculpt: sculptArm });
+    const elbow = landmark(armRing(0.272, 0), Math.PI, sculptArm);
+    if (side === 1) elbowL.copy(elbow);
+    else elbowR.copy(elbow);
   }
 
   // --- Detail baju: kerah, plaket, ritsleting, pita leher ----------------------
@@ -316,8 +338,10 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     // Penutup dada sempit (bila diminta) — dipasang sebagai "trim".
     if (spec.chestBand) {
       const band: Ring[] = [];
-      for (let yr = 0.262; yr <= 0.42; yr += 0.0175) band.push(torsoRing(yr, 0.0045 * s));
-      trim.addLoft(band, { segments: SEG });
+      for (let yr = 0.262; yr <= 0.42; yr += 0.0105) band.push(torsoRing(yr, 0.0045 * s));
+      // Kain penutup mengikuti bentuk dada (tanpa puting).
+      const nip = nippleSpot(ana);
+      trim.addLoft(band, { segments: 52, sculpt: (a, ring) => sculptTorso(a, ring) - 0.003 * s * Math.exp(-((Math.hypot(Math.abs((Math.sin(a) * ring.rx) / s) - nip.x, (ring.c[1] - hy) / s - nip.y) / 0.008) ** 2)) });
     }
   } else if (spec.collar || spec.jacket) {
     // Kerah tegak yang terbuka di depan.
@@ -400,14 +424,14 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     return blend(B.neck, B.head, smooth(jHead - 0.025, jHead + 0.04, yr));
   };
   const neckRings: Ring[] = [];
-  for (let yr = 0.44; yr <= 0.6401; yr += 0.02) {
+  for (let yr = 0.44; yr <= 0.6401; yr += 0.01) {
     const [rx, rf, rb, zc] = sampleStations(NECK, yr) as [number, number, number, number];
     // Bagian bawah (lereng bahu) mengikuti lebar bahu; batang leher mengikuti neckK.
     const k = 1 + (neckK - 1) * smooth(0.49, 0.525, yr);
     const kSh = 1 + (spec.shoulderHalf / (0.178 * s) - 1) * (1 - smooth(0.46, 0.52, yr));
     neckRings.push({ c: [0, hy + yr * s, zc * s], rx: rx * s * k * kSh, rf: rf * s * k, rb: rb * s * k, w: neckWeights(yr) });
   }
-  skinNeck.addLoft(neckRings, { segments: 16 });
+  skinNeck.addLoft(neckRings, { segments: 28, sculpt: neckSculpt(ana) });
 
   // =====================================================================
   // Celana (panggul + kaki) & kulit kaki
@@ -427,6 +451,8 @@ export function buildBody(spec: BodySpec): BodyGeometry {
 
   const legK = (child ? 0.8 : young ? 0.92 : 1) * (ageGroup === 'lansia' ? 0.94 : 1) * (1 + 0.25 * fat - 0.16 * thin);
   const skinLegs = new GeoBuilder();
+  const kneeL = new Vector3();
+  const kneeR = new Vector3();
   const hipDrop = spec.hipDrop / s;
   for (const side of [1, -1] as const) {
     const cut = side === 1 ? spec.pantsEnd?.L : spec.pantsEnd?.R;
@@ -471,15 +497,20 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     // Celana: longgar di paha & lutut, jatuh lurus di bawah lutut; celana pendek sedikit melebar.
     const straight = shortLeg ? 0 : 0.058 * s * Math.sqrt(legK);
     const ease = (d: number) => pants + (shortLeg ? 0.004 * s + 0.007 * s * smooth(0.1, Math.max(0.12, pantsEnd), d) : 0.004 * s * smooth(0, 0.12, d) + 0.007 * s * smooth(0.15, 0.4, d));
+    const sculptLeg = legSculpt(ana, side, ly);
     const cloth: Ring[] = [];
     for (let d = -0.115; d < pantsEnd - 0.01; d += 0.0292) cloth.push(legRing(d, ease(d), straight * smooth(0.3, 0.46, d)));
     cloth.push(legRing(pantsEnd, ease(pantsEnd) + (shortLeg ? 0.002 * s : 0), straight));
-    bottom.addLoft(cloth, { segments: 16, capStart: true });
+    // Celana longgar: hanya lutut & betis samar terlihat.
+    bottom.addLoft(cloth, { segments: 18, capStart: true, sculpt: scaled(sculptLeg, shortLeg ? 0.45 : 0.25) });
     // Kulit: tungkai yang tidak tertutup celana (celana pendek/digunting) atau hanya pergelangan kaki.
     const skin: Ring[] = [];
-    for (let d = Math.max(-0.02, pantsEnd - 0.04); d < 0.785; d += 0.022) skin.push(legRing(d, 0));
+    for (let d = Math.max(-0.02, pantsEnd - 0.04); d < 0.785; d += 0.012) skin.push(legRing(d, 0));
     skin.push(legRing(0.79, 0));
-    skinLegs.addLoft(skin, { segments: 14 });
+    skinLegs.addLoft(skin, { segments: 22, sculpt: sculptLeg });
+    const knee = landmark(legRing(0.405, 0), 0, sculptLeg);
+    if (side === 1) kneeL.copy(knee);
+    else kneeR.copy(knee);
   }
 
   // Ikat pinggang untuk baju yang dimasukkan.
@@ -529,6 +560,14 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     const [rx, rf, rb, zc] = sampleStations(torso, yr) as [number, number, number, number];
     return { half: rx * s + cloth, front: (zc + rf) * s + cloth, back: (zc - rb) * s - cloth };
   };
+  // Penanda kulit: puting/areola & pusar di permukaan torso berpahat.
+  const nip = nippleSpot(ana);
+  const nipRing = torsoRing(nip.y, 0);
+  const nipA = Math.asin(Math.min(1, Math.pow((nip.x * s) / nipRing.rx, 2.35 / 2)));
+  const nipples: [Vector3, Vector3] = [landmark(nipRing, nipA, sculptTorso), landmark(nipRing, -nipA, sculptTorso)];
+  const navel = landmark(torsoRing(NAVEL_Y, 0), 0, sculptTorso);
+  const f = anatomyFactors(ana);
+  const areola = (f.breast > 0 ? 0.019 + 0.004 * f.breast : child ? 0.009 : 0.0135) * s;
   return {
     skinNeck: skinNeck.build(),
     skinArms: skinArms.vertexCount ? skinArms.build() : null,
@@ -540,5 +579,6 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     drape: drape ? drape.build() : null,
     wrist: { x: 0.0215 * s * armK, z: 0.0245 * s * armK },
     surface,
+    landmarks: { nipples, areola, navel, elbows: [elbowL, elbowR], knees: [kneeL, kneeR] },
   };
 }

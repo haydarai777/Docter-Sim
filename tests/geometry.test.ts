@@ -253,7 +253,8 @@ describe('kepala', () => {
       });
       return n;
     };
-    // Tanpa hijab: 2 daun telinga + 2 lekuk dalam; hijab: kain + ciput menggantikan rambut.
-    expect(count(null) - count('#7a4a9c')).toBe(3);
+    // Tanpa hijab: 2 daun telinga berpahat + rambut 2 lapis (selubung & helai luar);
+    // hijab: kain + ciput menggantikan rambut & menutup telinga.
+    expect(count(null) - count('#7a4a9c')).toBe(2);
   });
 });

@@ -87,6 +87,14 @@ klinis**, bukan sekadar tebakan diagnosis.
   syok septik, perdarahan, DSS, eklampsia, HPP, kasus ringan, dll.), 3 mode (latihan, jaga, jaga
   sibuk), penilaian proses (triase, penilaian awal, diagnosis, penunjang, tindakan kritis & kecepatan,
   terapi & dosis, hasil) dengan debrief dan grafik perjalanan pasien. Lihat [`docs/igd.md`](docs/igd.md).
+- **Grafis manusia realistis** (IGD dan poliklinik), seluruhnya prosedural tanpa berkas aset:
+  kulit dengan hamburan cahaya bawah kulit, pori & variasi warna, keringat dingin saat syok;
+  anatomi permukaan (tulang selangka, otot dada/payudara, otot perut, pusar, puting, belikat,
+  biseps, siku, tempurung lutut, betis, mata kaki) yang mengikuti jenis kelamin, usia, dan IMT;
+  wajah ber-relief 3D dengan **bola mata 3D** (iris berserat, kornea berkilau, kelopak berkedip)
+  dan **pupil yang mengikuti kondisi** (pin-point pada opioid, midriasis, anisokor); telinga
+  berpahat; rambut berhelai dengan kilau anisotropik; kain berserat & berlipat; pencahayaan
+  berbasis citra dari ruangan dan oklusi ambien (desktop). Lihat [`docs/igd.md`](docs/igd.md).
 - **Luka & perdarahan realistis** (IGD dan poliklinik): luka digambar langsung di kulit 3D dan ikut
   menekuk bersama tubuh — laserasi, luka bacok menganga sampai otot, lecet, memar sesuai umurnya, luka
   bakar derajat I–III (bula, eskar, jelaga), petekie, urtikaria, ulkus, racoon eyes, epistaksis,
@@ -179,7 +187,7 @@ Hasilnya di `dist-single/`:
 
 | File | Kegunaan |
 |---|---|
-| `meja-praktek.html` | Seluruh game dalam **satu file** (± 3,2 MB, termasuk mesin 3D, luka & perdarahan 3D, dan 146 penyakit). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
+| `meja-praktek.html` | Seluruh game dalam **satu file** (± 3,3 MB, termasuk mesin 3D, grafis manusia realistis, luka & perdarahan 3D, dan 146 penyakit). Buka langsung di browser — tanpa server, tanpa internet. Bisa dikirim lewat WhatsApp/Drive/flashdisk, atau diunggah ke hosting statis mana pun tanpa akun GitHub (mis. Netlify Drop, Cloudflare Pages *direct upload*, itch.io sebagai game HTML). |
 | `meja-praktek-artifact.html` | Versi yang sama tanpa kerangka `<html>/<head>/<body>`, untuk dipublikasikan sebagai Artifact di claude.ai (deklarasikan kapabilitas `sample` agar pasien AI bisa diaktifkan di Pengaturan; bawaannya tetap mode lokal tanpa kuota). |
 
 Simpan permainan, rekor, dan pengaturan tetap tersimpan di browser (localStorage) masing-masing perangkat.
@@ -246,7 +254,8 @@ src/
                         kaki, pakaian), head (tengkorak, hidung, telinga, rambut, hijab, kacamata),
                         face (ekspresi), extremities (tangan, sepatu/sandal), character (perakit);
                         igdRoom/igdProps/igdScene: ruang IGD, brankar/kursi roda/alat, sutradara adegan IGD;
-                        decal/woundTextures/wounds/bloodFx: luka di kulit, darah, balutan, genangan
+                        decal/woundTextures/wounds/bloodFx: luka di kulit, darah, balutan, genangan;
+                        skin/anatomy/eyes/hair/cloth: kulit, anatomi, mata 3D, rambut, kain realistis
     igd/                panel IGD: controller (jam, aksi), views, monitorDraw (EKG berjalan), looks
 tests/                  unit test
 scripts/                alat bantu pengembang (validasi, contoh kasus, format data)

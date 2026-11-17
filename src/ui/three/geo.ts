@@ -46,6 +46,11 @@ export interface LoftOptions {
   arc?: readonly [number, number];
   /** Ulangi tekstur n kali mengelilingi penampang. */
   uRepeat?: number;
+  /**
+   * Pahat anatomi: geseran (m) sepanjang arah radial penampang untuk sudut `a` pada cincin
+   * `ring` (positif = menonjol keluar). Dipakai untuk otot, tulang, pusar, dll.
+   */
+  sculpt?: (a: number, ring: Ring) => number;
 }
 
 const AXIS_X = new Vector3(1, 0, 0);
@@ -172,6 +177,15 @@ export class GeoBuilder {
       for (let j = 0; j <= seg; j++) {
         const a = a0 + ((a1 - a0) * j) / seg;
         ringPoint(ring, a, u, v, p);
+        if (options.sculpt) {
+          const off = options.sculpt(a, ring);
+          if (off !== 0) {
+            const du = (p.x - ring.c[0]) * u.x + (p.y - ring.c[1]) * u.y + (p.z - ring.c[2]) * u.z;
+            const dv = (p.x - ring.c[0]) * v.x + (p.y - ring.c[1]) * v.y + (p.z - ring.c[2]) * v.z;
+            const len = Math.hypot(du, dv) || 1;
+            p.addScaledVector(u, (du / len) * off).addScaledVector(v, (dv / len) * off);
+          }
+        }
         const w = typeof ring.w === 'function' ? ring.w(p.x, p.y, p.z) : ring.w;
         this.pushVertex(p.x, p.y, p.z, (j / seg) * uRep, vv, w);
       }

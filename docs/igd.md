@@ -63,6 +63,52 @@ Memakai mesin 3D & karakter yang sama dengan ruang praktik (prosedural, tanpa be
   sekeliling. Pasien yang ditanya menggerakkan mulut sesuai jawabannya.
 - Tanpa WebGL, mode IGD tetap dapat dimainkan sepenuhnya lewat panel.
 
+## Grafis realistis (tubuh, kulit, wajah, cahaya)
+
+Seluruhnya prosedural (tanpa berkas model/tekstur), sehingga tetap satu berkas HTML offline:
+
+- **Pencahayaan berbasis citra**: ruang IGD dipotret ke enam arah (tanpa orang) lalu diburamkan
+  menurut kekasaran (PMREM) dan dipakai sebagai cahaya ambien & pantulan; lampu panel langit-langit
+  menjadi sorotan di mata, kulit berkeringat, dan logam. Cahaya kunci datang dari arah kepala bed
+  sehingga bayangan lembut di bawah tulang selangka, otot dada, dan lutut membentuk tubuh.
+- **Oklusi ambien layar (GTAO)** di perangkat desktop: bayangan halus di lekuk & titik kontak
+  (ketiak, bawah dagu, antara tubuh dan kasur). Dimatikan otomatis bila frame melambat; ponsel
+  tidak memakainya. Bisa dimatikan dengan `?ao=0`.
+- **Kulit** (`skin.ts`): hamburan bawah permukaan per kanal warna (merah menembus paling jauh →
+  batas terang–gelap hangat seperti kulit sungguhan), dua lobus kilap (kulit + lapisan minyak tipis),
+  pori & garis kulit halus serta tonjolan lembut (triplanar di ruang ikat, memudar sesuai jarak),
+  bercak warna alami, bintik/tahi lalat, bulu halus di tepi siluet, warna regional (areola & puting,
+  pusar, siku, lutut), dan **keringat dingin** (lapisan basah mengilap) saat syok, hipoglikemia,
+  keracunan organofosfat, demam, atau nyeri hebat.
+- **Anatomi permukaan** (`anatomy.ts`): tulang selangka & lekuk di atasnya, otot dada (atau
+  payudara), alur tulang dada, lengkung iga & iga samping (orang kurus), otot perut & garis
+  tengahnya, pusar, puting, belikat & alur tulang belakang; deltoid, biseps, triseps, siku, otot
+  lengan bawah, tonjolan ulna; paha depan & "tetesan" vastus medialis, tempurung lutut, lekuk lutut,
+  tulang kering, dua kepala betis, tendon Achilles, mata kaki; otot leher & jakun. Besarnya mengikuti
+  jenis kelamin, usia, dan IMT (berotot, kurus bertulang, atau gemuk membulat). Pakaian mengikuti
+  bentuk besar tubuh secara samar.
+- **Wajah** (`head.ts`): relief 3D — rongga mata, tulang alis & pangkal hidung, tulang pipi, lekuk
+  bawah mata, lipatan nasolabial, filtrum, bibir atas & bawah, garis mulut, lekuk di atas dagu,
+  pelipis; cuping & lubang hidung; telinga berpahat (heliks, antiheliks, konka, tragus, lobus).
+  Pasien memakai kisi wajah rapat (± 2–3 mm), staf/keluarga kisi standar.
+- **Mata 3D** (`eyes.ts`): bola mata bertekstur (sklera dengan pembuluh halus, limbus, iris berserat,
+  kornea basah yang memantulkan lampu), kelopak atas & bawah yang berkedip/menyipit/terbelalak dan
+  bertemu membentuk celah almond, garis bulu mata, karunkel. **Pupil mengikuti fisiologi**:
+  pin-point pada intoksikasi opioid, miosis pada organofosfat, midriasis pada atropin/cedera otak
+  berat/henti jantung lama, **anisokor** pada herniasi — sama dengan teks pemeriksaan pupil.
+  Sklera ikterik & mata merah mengikuti isyarat klinis.
+- **Rambut** (`hair.ts`): tekstur helai halus dengan gumpalan, sorotan anisotropik Kajiya–Kay dua
+  lobus (kilau "pita" rambut), tepi garis rambut menipis menjadi helai, lapisan helai luar yang
+  melembutkan siluet.
+- **Kain** (`cloth.ts`): kilau serat (sheen), tenunan/rajutan/kepar halus, lipatan & kerut lembut,
+  warna yang tidak rata — untuk baju, celana, hijab, sprei, selimut, dan bantal.
+- **Tangan** lebih halus (buku jari, ibu jari dengan otot tenar) dan menyambung landai ke pergelangan.
+
+Pratinjau pengembang: `npm run dev` lalu `/devbody.html?view=face&skin=c48a5e&hc=15110f`
+(parameter: `mode=lie|stand`, `view=face|face3|eyes|torso|chest|abdomen|arm|hand|knee|calf|full`,
+`bare=1`, `sex`, `age`, `kg`, `hair`, `hc` warna rambut, `skin` warna kulit, `igd=<skenario>`,
+`light=side` untuk menguji bentuk dengan cahaya samping keras, `fov`).
+
 ## Luka & perdarahan 3D
 
 Cedera yang tampak ditulis per skenario (`injuries` di `src/data/igd/scenarios/*.ts`, tipe di
@@ -191,6 +237,8 @@ for CPR & ECC (+ 2023 focused update); Kemenkes RI — PMK No. 47/2018 tentang P
   evaluation, shift, sim, validate). Skenario: `src/data/igd/scenarios/*.ts`.
 - UI: `src/ui/igd/` (controller, views, monitorDraw, looks). 3D: `src/ui/three/igdRoom.ts`,
   `igdProps.ts`, `igdScene.ts`, dan perluasan `actor.ts` (berbaring, keadaan klinis, tangan staf).
+- Realisme tubuh: `skin.ts` (bahan kulit), `anatomy.ts` (pahat otot/tulang), `eyes.ts`, `hair.ts`,
+  `cloth.ts`, relief wajah di `head.ts`, IBL & GTAO di `stage.ts`. Uji: `npx vitest run tests/realism.test.ts`.
 - Luka & darah: `src/core/injury.ts` (model cedera, laju perdarahan), `src/ui/three/decal.ts`
   (proyeksi decal ke kulit skinned, bahan "muncul bertahap"), `woundTextures.ts` (tekstur prosedural),
   `wounds.ts` (penempatan anatomis, balutan, torniket, kain darurat), `bloodFx.ts` (pancaran,

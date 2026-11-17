@@ -17,6 +17,7 @@
  */
 import { Color, CylinderGeometry, Group, Mesh, MeshPhysicalMaterial, MeshStandardMaterial, type Object3D, PlaneGeometry, Raycaster, type SkinnedMesh, Vector2, Vector3 } from 'three';
 import { type PatientAppearance, speechTimeline } from '../../core/appearance';
+import { pupilSizes } from '../../core/igd/assessment';
 import { DEFAULT_BEDS } from '../../core/igd/catalog';
 import { patientById, vitalsOf } from '../../core/igd/engine';
 import type { EdAction, EdPatient, EdShift, EdTask, InformantId } from '../../core/igd/types';
@@ -290,8 +291,8 @@ export class IgdScene implements StageUpdatable {
   // Orang
   // -------------------------------------------------------------------------
 
-  private newActor(look: PatientAppearance, seed: number): Actor {
-    const a = new Actor(look, seed);
+  private newActor(look: PatientAppearance, seed: number, detail: 'tinggi' | 'standar' = 'standar'): Actor {
+    const a = new Actor(look, seed, detail);
     // Di ruang besar banyak orang: hanya badan (kulit menyatu) yang membentuk bayangan.
     a.character.root.traverse((o) => {
       if ((o as SkinnedMesh).isMesh) o.castShadow = !!(o as SkinnedMesh).isSkinnedMesh;
@@ -382,7 +383,8 @@ export class IgdScene implements StageUpdatable {
 
   private createPatient(p: EdPatient, instant: boolean): PV {
     const look = patientLook(p, this.content, this.seed);
-    const actor = this.newActor(look, (this.seed ^ Number.parseInt(p.id.replace(/\D/g, '') || '1', 10) * 2654435761) >>> 0);
+    // Pasien: detail tinggi (wajah, mata, kulit diperiksa dari dekat).
+    const actor = this.newActor(look, (this.seed ^ Number.parseInt(p.id.replace(/\D/g, '') || '1', 10) * 2654435761) >>> 0, 'tinggi');
     actor.clinic = { alert: 1, seizure: false, lifeless: false, compressions: false, agitation: 0 };
     const carried = p.arrivalMode === 'digendong';
     const famChance = p.age < 15 || p.arrivalMode === 'dipapah' || p.arrivalMode === 'kursi_roda' || carried ? 1 : p.arrivalMode === 'brankar' ? 0.45 : 0.6;
@@ -1094,6 +1096,12 @@ export class IgdScene implements StageUpdatable {
     else if ((ph.v.reaction ?? 0) > 0.3) c.setSkinTint(TINT.flush, Math.min(0.3, ph.v.reaction * 0.35));
     else if (v.temp > 38.6) c.setSkinTint(TINT.flush, 0.12);
     else c.setSkinTint(null, 0);
+    // Pupil (opioid: pin-point; organofosfat: miosis; herniasi: anisokor; henti jantung: midriasis)
+    // & keringat dingin (syok, hipoglikemia, kolinergik, demam, nyeri hebat).
+    const [pl, pr] = pupilSizes(ph, now);
+    c.eyes.setPupils(pl, pr);
+    const sweat = arrest ? 0.3 : Math.max((0.8 - v.perfusion) * 2.4, (ph.v.glucose ?? 100) < 60 ? 0.85 : 0, (ph.v.cholinergic ?? 0) * 1.3, (v.temp - 38.2) * 0.35, ((ph.v.pain ?? 0) - 0.5) * 0.8);
+    c.setSweat(clamp(sweat, 0, 1));
     // Perlengkapan di tubuh.
     const d = p.devices;
     pv.gear.update({
@@ -1904,7 +1912,7 @@ export class IgdScene implements StageUpdatable {
 
 const TINT = {
   grey: new Color('#8e989c'),
-  cyan: new Color('#5f78b5'),
+  cyan: new Color('#73829e'),
   pale: new Color('#ece6dc'),
   flush: new Color('#d9705f'),
 };

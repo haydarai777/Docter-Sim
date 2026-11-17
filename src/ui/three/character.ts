@@ -24,13 +24,16 @@ import {
   Skeleton,
   SkinnedMesh,
   type Texture,
-  type Vector3,
+  Vector3,
 } from 'three';
 import type { PatientAppearance } from '../../core/appearance';
 import { BONE, type BodyGeometry, buildBody } from './body';
 import { buildFoot, buildHand } from './extremities';
+import { Eyes } from './eyes';
 import { Face } from './face';
 import { buildHead, HeadShape } from './head';
+import { type ClothKind, createClothMaterial } from './cloth';
+import { createSkinMaterial, type SkinMaterial, type SkinSpot } from './skin';
 import { hairStreakTexture, rashTexture } from './textures';
 
 export interface Limb {
@@ -112,10 +115,17 @@ export class Character {
   readonly bareTorso: boolean;
   private readonly disposables: { dispose(): void }[] = [];
   private readonly skinMats: MeshStandardMaterial[] = [];
+  /** Bahan kulit realistis (badan, kepala, tangan, kaki) — untuk keringat. */
+  private readonly skinParts: SkinMaterial[] = [];
+  private sweatLevel = -1;
   private skinBase = new Color();
   private tintKey = '';
 
-  constructor(readonly look: PatientAppearance, seed: number) {
+  /** Bola mata & kelopak 3D. */
+  readonly eyes: Eyes;
+
+  /** `detail` = 'tinggi' untuk pasien yang diperiksa dari dekat; 'standar' untuk orang lain. */
+  constructor(readonly look: PatientAppearance, seed: number, detail: 'tinggi' | 'standar' = 'tinggi') {
     const a = look;
     const male = a.sex === 'male';
     const child = a.ageGroup === 'anak';
@@ -130,7 +140,7 @@ export class Character {
     // --- Proporsi ------------------------------------------------------------
     // Kepala tidak mengecil sebanding tinggi badan (anak berkepala relatif besar).
     const hs = (0.52 + 0.48 * (a.heightCm / 165)) * (child ? 1.03 : 1);
-    const shape = (this.headShape = new HeadShape({ hs, male, ageGroup: a.ageGroup, fat, thin, seed }));
+    const shape = (this.headShape = new HeadShape({ hs, male, ageGroup: a.ageGroup, fat, thin, seed, detail }));
     // Dagu sedikit di bawah sendi kepala; skala badan dipilih agar tinggi total = tinggi pasien.
     const chinDrop = 0.015 * hs;
     // Panjang total (dalam satuan s): tungkai 0,87·legK + badan-leher-kepala 0,585.
@@ -202,7 +212,23 @@ export class Character {
     const skinHex = `#${skinColor.getHexString()}`;
     const std = (color: string | Color, extra: Partial<{ roughness: number; map: Texture }> = {}) =>
       this.track(new MeshStandardMaterial({ color, roughness: 0.85, metalness: 0, ...extra }));
-    const skin = std(skinColor, { roughness: 0.66 });
+    // Kulit realistis: hamburan bawah permukaan, pori & garis halus, variasi warna (skin.ts).
+    const ageK = Math.max(0, Math.min(1, (a.age - 22) / 50));
+    const mkSkin = (spots?: SkinSpot[]): SkinMaterial => {
+      const m = this.track(
+        createSkinMaterial({
+          color: skinColor,
+          detail: child ? 0.55 : young ? 0.8 : 1,
+          age: ageK,
+          freckles: 0.15 + 0.35 * ((h >>> 9) % 10) / 10 + 0.25 * ageK,
+          sss: 1,
+          spots,
+        }),
+      );
+      this.skinParts.push(m);
+      return m;
+    };
+    const skin = mkSkin();
     // Paparan untuk luka (IGD/poliklinik): baju dibuka, lengan baju pendek, celana digunting.
     const expose = a.injuries?.expose;
     const bareTorso = (this.bareTorso = !!expose?.torso);
@@ -265,15 +291,43 @@ export class Character {
       root.add(mesh);
       mesh.bind(skeleton, IDENTITY);
     };
+    // Warna kulit regional: areola & puting, pusar, siku, lutut (lebih gelap/kemerahan).
+    const lm = body.landmarks;
+    const tone = (r: number, g: number, b: number) => skinColor.clone().multiply(new Color(r, g, b));
+    const areola = tone(0.64, 0.47, 0.44);
+    const torsoSkin = bareTorso
+      ? mkSkin([
+          { center: lm.nipples[0], radius: lm.areola, color: areola, strength: 0.82, edge: 0.6 },
+          { center: lm.nipples[1], radius: lm.areola, color: areola, strength: 0.82, edge: 0.6 },
+          { center: lm.nipples[0], radius: lm.areola * 0.32, color: tone(0.56, 0.4, 0.38), strength: 0.7, edge: 0.4 },
+          { center: lm.nipples[1], radius: lm.areola * 0.32, color: tone(0.56, 0.4, 0.38), strength: 0.7, edge: 0.4 },
+          { center: lm.navel, radius: 0.0085 * s, color: tone(0.5, 0.38, 0.36), strength: 0.75, edge: 0.2 },
+        ])
+      : skin;
+    const elbowTone = tone(0.84, 0.76, 0.74);
+    const armSkin = mkSkin([
+      { center: lm.elbows[0], radius: 0.034 * s, color: elbowTone, strength: 0.55, edge: 0 },
+      { center: lm.elbows[1], radius: 0.034 * s, color: elbowTone, strength: 0.55, edge: 0 },
+    ]);
+    const kneeTone = tone(0.88, 0.8, 0.78);
+    const legSkin = mkSkin([
+      { center: lm.knees[0], radius: 0.045 * s, color: kneeTone, strength: 0.45, edge: 0 },
+      { center: lm.knees[1], radius: 0.045 * s, color: kneeTone, strength: 0.45, edge: 0 },
+    ]);
     skinned(body.skinNeck, skin, 'kulit');
-    skinned(body.skinArms, rash ?? skin, 'kulit');
-    skinned(body.skinLegs, rash ?? skin, 'kulit');
-    if (bareTorso) skinned(body.top, skin, 'kulit');
-    else skinned(body.top, std(topColor, { roughness: jacket ? 0.74 : 0.92 }));
-    skinned(body.trim, std(bareTorso ? topColor.clone().multiplyScalar(0.7) : jacket ? new Color('#c9ccd0') : topColor.clone().multiplyScalar(collar ? 0.88 : 0.8), { roughness: jacket ? 0.45 : 0.9 }));
-    skinned(body.bottom, std(a.outfit.bottom, { roughness: 0.9 }), 'pakaian', 'bawah');
+    skinned(body.skinArms, rash ?? armSkin, 'kulit');
+    skinned(body.skinLegs, rash ?? legSkin, 'kulit');
+    // Kain realistis: kilau serat, tenunan, lipatan (cloth.ts). Seragam (atas = bawah) = kain seragam.
+    const uniform = a.outfit.top === a.outfit.bottom;
+    const cloth = (color: string | Color, kind: ClothKind) => this.track(createClothMaterial({ color, kind }));
+    const topKind: ClothKind = uniform ? 'seragam' : jacket ? 'seragam' : collar ? 'kemeja' : 'kaos';
+    const bottomKind: ClothKind = uniform ? 'seragam' : male && (h >>> 3) % 2 === 0 ? 'jins' : 'kain';
+    if (bareTorso) skinned(body.top, torsoSkin, 'kulit');
+    else skinned(body.top, cloth(topColor, topKind));
+    skinned(body.trim, bareTorso ? cloth(topColor.clone().multiplyScalar(0.7), 'kaos') : jacket ? std('#c9ccd0', { roughness: 0.45 }) : cloth(topColor.clone().multiplyScalar(collar ? 0.88 : 0.8), topKind));
+    skinned(body.bottom, cloth(a.outfit.bottom, bottomKind), 'pakaian', 'bawah');
     skinned(body.belt, std('#2b2019', { roughness: 0.55 }));
-    if (a.hijab && !bareTorso) skinned(body.drape, std(a.hijab, { roughness: 0.92 }));
+    if (a.hijab && !bareTorso) skinned(body.drape, cloth(a.hijab, 'kain'));
 
     // --- Tangan ------------------------------------------------------------
     const frame = child ? 0.9 : young ? 0.955 : male ? 1 : 0.935;
@@ -317,7 +371,7 @@ export class Character {
     }
 
     // --- Kepala & wajah ------------------------------------------------------------
-    const parts = buildHead(shape, { skin: skinColor, hairColor: a.hairColor, hairStyle: a.hairStyle, hijab: a.hijab, glasses: a.glasses, hairTexture: hairStreakTexture() });
+    const parts = buildHead(shape, { skin: skinColor, skinMaterial: skin, hairColor: a.hairColor, hairStyle: a.hairStyle, hijab: a.hijab, glasses: a.glasses, hairTexture: hairStreakTexture() });
     for (const d of parts.disposables) this.track(d);
     this.headBall.add(parts.group);
     this.headGroup = parts.group;
@@ -335,8 +389,31 @@ export class Character {
       tired: Math.max(a.cues.lemas ?? 0, a.cues.mengantuk ?? 0),
       child,
       marks: a.injuries?.face ?? null,
+      eyes3d: true,
     });
     this.headBall.add(this.face.mesh);
+    // Mata 3D di rongga mata: bola mata ± 24 mm, apeks kornea ± 3,5 mm di belakang permukaan wajah
+    // tanpa relief (tulang alis & pipi lebih menonjol daripada mata, seperti wajah sungguhan).
+    const eyeR = 0.0122 * hs * (child ? 1.08 : 1);
+    const raw = shape.pointRaw(shape.eyeYn, shape.angleFor(shape.eyeYn, shape.eyeX), new Vector3());
+    // Iris cokelat (mayoritas orang Indonesia) — nada sedang agar serat iris terbaca di bawah lampu.
+    const irisTones = ['#9a6a3e', '#8a5d35', '#a87444', '#93683f', '#b07a48'];
+    this.eyes = new Eyes(
+      {
+        center: new Vector3(shape.eyeX, shape.hh * shape.eyeYn, raw.z - 0.0022 * hs - eyeR),
+        radius: eyeR,
+        iris: irisTones[(h >>> 5) % irisTones.length]!,
+        lash: '#140d0a',
+        female: !male,
+        child,
+        tilt: (0.05 + 0.07 * shape.vary.eyeTilt) * 0.55,
+        skin,
+      },
+      seed,
+    );
+    this.eyes.setSclera(jaundice, a.cues.mata_merah ?? 0);
+    this.headBall.add(this.eyes.group);
+    this.face.eyes = this.eyes;
 
     // Material kulit (badan & kepala) untuk perubahan warna klinis (pucat/sianosis).
     const hex = skinColor.getHex();
@@ -345,6 +422,7 @@ export class Character {
       if (m && (m as MeshStandardMaterial).isMeshStandardMaterial && m.color.getHex() === hex && !this.skinMats.includes(m)) this.skinMats.push(m);
     });
     this.skinBase = skinColor.clone();
+    this.setSweat(Math.max(a.cues.berkeringat ?? 0, (a.cues.demam ?? 0) * 0.4));
   }
 
   /** Warna kulit klinis: campur warna dasar dengan `tint` sebesar `amount` (0 = normal). */
@@ -356,6 +434,14 @@ export class Character {
       m.color.copy(this.skinBase);
       if (tint && amount > 0) m.color.lerp(tint, Math.min(1, amount));
     }
+  }
+
+  /** Keringat (diaforesis) 0..1: kulit tampak basah mengilap. */
+  setSweat(v: number): void {
+    const q = Math.round(Math.max(0, Math.min(1, v)) * 20) / 20;
+    if (q === this.sweatLevel) return;
+    this.sweatLevel = q;
+    for (const m of this.skinParts) m.setSweat(q);
   }
 
   /** Gerak napas: dinding dada depan mengembang (b ≈ 0..0,1). */

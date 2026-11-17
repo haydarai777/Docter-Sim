@@ -235,10 +235,10 @@ export class Actor implements StageUpdatable {
   private readonly qLie = new Quaternion();
   private readonly v7 = new Vector3();
 
-  constructor(look: PatientAppearance, seed: number) {
+  constructor(look: PatientAppearance, seed: number, detail: 'tinggi' | 'standar' = 'tinggi') {
     this.look = look;
     this.rnd = prng(seed);
-    this.character = new Character(look, seed);
+    this.character = new Character(look, seed, detail);
     this.dominant = this.rnd() < 0.9 ? 'R' : 'L';
     this.breath = this.rnd() * Math.PI * 2;
     this.coughIn = 3 + this.rnd() * 6;

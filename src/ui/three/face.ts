@@ -8,6 +8,7 @@
 import { type BufferGeometry, CanvasTexture, LinearFilter, Mesh, MeshStandardMaterial, SRGBColorSpace } from 'three';
 import type { FaceMarks } from '../../core/injury';
 import type { Emotion } from '../../core/types';
+import type { Eyes } from './eyes';
 import type { FaceLayout } from './head';
 
 export interface FaceLook {
@@ -28,6 +29,8 @@ export interface FaceLook {
   child: boolean;
   /** Tanda cedera di wajah (racoon eyes, lecet, luka bakar, jelaga, darah). */
   marks?: FaceMarks | null;
+  /** Mata berupa bola mata & kelopak 3D (eyes.ts): mata tidak dilukis di kanvas. */
+  eyes3d?: boolean;
 }
 
 /** Parameter ekspresi yang dianimasikan tiap frame. */
@@ -94,6 +97,8 @@ export class Face {
   private readonly texture: CanvasTexture;
   private readonly material: MeshStandardMaterial;
   private lastKey = '';
+  /** Mata 3D yang ikut digerakkan oleh status wajah (kedip, arah pandang). */
+  eyes: Eyes | null = null;
 
   constructor(
     geometry: BufferGeometry,
@@ -116,6 +121,7 @@ export class Face {
   /** Gambar ulang bila ekspresi berubah cukup berarti. */
   draw(force = false): void {
     const s = this.state;
+    this.eyes?.update(s.eyeOpen, s.gazeX, s.gazeY);
     const q = (v: number, step = 0.04) => Math.round(v / step);
     const key = `${q(s.eyeOpen)}|${q(s.browInner)}|${q(s.browRaise)}|${q(s.browAsym, 0.1)}|${q(s.smile)}|${q(s.mouthOpen, 0.05)}|${q(s.mouthWide, 0.15)}|${q(s.gazeX, 0.08)}|${q(s.gazeY, 0.08)}`;
     if (!force && key === this.lastKey) return;
@@ -127,6 +133,7 @@ export class Face {
   dispose(): void {
     this.texture.dispose();
     this.material.dispose();
+    this.eyes?.dispose();
   }
 
   private paint(): void {
@@ -162,12 +169,14 @@ export class Face {
     const open = Math.max(0, Math.min(1.25, s.eyeOpen));
 
     // --- Bayangan bentuk wajah: rongga mata, sisi hidung, bawah hidung, bawah bibir ------
+    // Dengan relief wajah 3D, bayangan lukisan hanya membantu sedikit (cahaya & AO yang membentuknya).
+    const shadeK = L.eyes3d ? 0.4 : 1;
     for (const sx of [-1, 1]) {
-      soft(cx + sx * A.eyeDX, eyeY - ry * 0.3, rx * 1.55, ry * 2.3, skinDark(0.2));
-      soft(cx + sx * A.noseHalfW * 1.25, (eyeY + A.noseY) / 2, A.noseHalfW * 0.75, (A.noseY - eyeY) * 0.5, skinDark(0.1));
+      soft(cx + sx * A.eyeDX, eyeY - ry * 0.3, rx * 1.55, ry * 2.3, skinDark(0.2 * shadeK));
+      soft(cx + sx * A.noseHalfW * 1.25, (eyeY + A.noseY) / 2, A.noseHalfW * 0.75, (A.noseY - eyeY) * 0.5, skinDark(0.1 * shadeK));
     }
-    soft(cx, A.noseY + 3.5 * u, A.noseHalfW * 1.5, 3.2 * u, skinDark(0.2));
-    soft(cx, A.mouthY + 9.5 * u, A.mouthHalfW * 0.8, 3.4 * u, skinDark(0.16));
+    soft(cx, A.noseY + 3.5 * u, A.noseHalfW * 1.5, 3.2 * u, skinDark(0.2 * shadeK));
+    soft(cx, A.mouthY + 9.5 * u, A.mouthHalfW * 0.8, 3.4 * u, skinDark(0.16 * shadeK));
 
     // --- Rona pipi: sedikit pada semua orang, kuat saat demam ---------------------
     const M = L.marks ?? null;
@@ -219,6 +228,7 @@ export class Face {
     const sclera = mix(mix('#f7f5f0', '#e3c84e', Math.min(1, L.jaundice * 0.9)), '#e39a92', Math.min(1, L.redEye * 0.62));
     const irisR = rx * 0.4;
     for (const sx of [-1, 1]) {
+      if (L.eyes3d) break;
       const ex = cx + sx * A.eyeDX;
       // Sudut dalam (dekat hidung) sedikit lebih rendah daripada sudut luar.
       const inX = ex - sx * rx;
@@ -308,6 +318,19 @@ export class Face {
         g.beginPath();
         g.moveTo(inX, inY);
         g.bezierCurveTo(ex - sx * rx * 0.45, eyeY + ry * 0.62, ex + sx * rx * 0.45, eyeY + ry * 0.6, outX, outY + ry * 0.18);
+        g.stroke();
+      }
+    }
+
+    if (L.eyes3d && L.tired > 0.1) {
+      // Kantung mata (lelah/lesu) di bawah mata 3D.
+      for (const sx of [-1, 1]) {
+        const ex = cx + sx * A.eyeDX;
+        g.strokeStyle = skinDark(0.42 * L.tired);
+        g.lineWidth = 1.5 * u;
+        g.beginPath();
+        g.moveTo(ex - sx * rx * 0.75, eyeY + ry * 1.25);
+        g.quadraticCurveTo(ex, eyeY + ry * 2.05, ex + sx * rx * 0.8, eyeY + ry * 1.15);
         g.stroke();
       }
     }

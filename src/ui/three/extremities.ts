@@ -28,21 +28,23 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
     [-0.086, 0.0112, 0.0392, 0.0372, 0],
     [-0.066, 0.0122, 0.0405, 0.0375, 0.001],
     [-0.042, 0.0138, 0.0405, 0.036, 0.002],
-    [-0.018, 0.0165, 0.033, 0.031, 0.002],
-    [-0.004, wx * 0.98, wz * 0.98, wz * 0.98, 0],
+    // Pergelangan → telapak melebar landai (tanpa "manset" di sambungan).
+    [-0.026, 0.0156, 0.0345, 0.0322, 0.002],
+    [-0.014, wx * 0.98, wz * 1.1, wz * 1.06, 0.001],
+    [-0.006, wx * 0.94, wz * 0.97, wz * 0.96, 0],
     // Pangkal tangan masuk ke dalam ujung lengan bawah (jelas lebih kecil → sambungan bersih).
-    [0.004, wx * 0.86, wz * 0.86, wz * 0.86, 0],
-    [0.016, wx * 0.82, wz * 0.82, wz * 0.82, 0],
+    [0.004, wx * 0.84, wz * 0.84, wz * 0.84, 0],
+    [0.016, wx * 0.8, wz * 0.8, wz * 0.8, 0],
   ];
   const rings: Ring[] = [];
-  for (const y of [0.016, 0.004, -0.004, -0.018, -0.032, -0.046, -0.06, -0.074, -0.086, -0.094, -0.099]) {
+  for (const y of [0.016, 0.004, -0.004, -0.011, -0.018, -0.025, -0.032, -0.039, -0.046, -0.053, -0.06, -0.067, -0.074, -0.08, -0.086, -0.091, -0.094, -0.097, -0.099]) {
     const [rx, rf, rb, zc] = sampleStations(palm, y) as [number, number, number, number];
     // Tebal telapak ikut `plump`, kecuali di pergelangan (harus pas dengan lengan).
     const tt = 1 + (t - 1) * Math.min(1, Math.max(0, -y / 0.02));
     rings.push({ c: [0.001 * k, y * k, zc * k], rx: rx * k * tt, rf: rf * k, rb: rb * k, n: 2.3 });
   }
   // Jumlah segmen sama dengan lengan bawah agar tepi keduanya tidak saling silang.
-  geo.addLoft(rings, { segments: 14, capStart: true, capEnd: true });
+  geo.addLoft(rings, { segments: 26, capStart: true, capEnd: true });
 
   // Jari: [z pangkal, y pangkal, panjang, jari-jari, tekukan total (rad), sebaran z]
   const fingers = [
@@ -53,13 +55,19 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
   ];
   for (const [zb, yb, len, r, curl, spread] of fingers as [number, number, number, number, number, number][]) {
     const f: Ring[] = [];
+    // Ruas jari dengan buku jari (sendi sedikit lebih tebal) & ujung jari membulat.
     for (const [u, rk] of [
       [0, 1],
-      [0.22, 1],
-      [0.45, 0.97],
-      [0.68, 0.9],
-      [0.88, 0.8],
-      [1, 0.5],
+      [0.12, 1.02],
+      [0.24, 0.96],
+      [0.38, 1.0],
+      [0.5, 0.93],
+      [0.62, 0.9],
+      [0.72, 0.93],
+      [0.84, 0.86],
+      [0.93, 0.76],
+      [0.98, 0.56],
+      [1, 0.3],
     ] as [number, number][]) {
       const phi = curl * u;
       // Lengkung berkelok tetap ke arah telapak (−X).
@@ -67,7 +75,7 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
       const y = yb - (len / curl) * Math.sin(phi);
       f.push({ c: [(0.001 + x) * k, y * k, (zb + spread * u) * k], rx: r * rk * k * t, rf: r * rk * k * t });
     }
-    geo.addLoft(f, { segments: 6, capStart: true, capEnd: true });
+    geo.addLoft(f, { segments: 12, capStart: true, capEnd: true });
   }
 
   // Ibu jari: keluar dari pangkal telapak sisi +Z, mengarah ke depan-bawah, agak ke telapak.
@@ -77,18 +85,23 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
   const base = new Vector3(-0.002, -0.02, 0.022);
   const thumb: Ring[] = [];
   for (const [d, r] of [
-    [-0.006, 0.0115],
-    [0.012, 0.0126],
-    [0.03, 0.0108],
-    [0.046, 0.0097],
-    [0.058, 0.0088],
-    [0.066, 0.0056],
+    [-0.006, 0.0118],
+    [0.004, 0.0132],
+    [0.014, 0.0128],
+    [0.024, 0.0114],
+    [0.032, 0.0104],
+    [0.04, 0.0101],
+    [0.048, 0.0096],
+    [0.055, 0.009],
+    [0.061, 0.0078],
+    [0.066, 0.0052],
+    [0.068, 0.003],
   ] as [number, number][]) {
     // Ruas ujung ibu jari sedikit menekuk kembali sejajar jari.
     const bend = Math.max(0, d - 0.03) * 0.35;
     thumb.push({ c: [(base.x + dir.x * d) * k, (base.y + dir.y * d - bend * 0.4) * k, (base.z + dir.z * d - bend) * k], rx: r * k * t, rf: r * k * t });
   }
-  geo.addLoft(thumb, { segments: 6, capStart: true, capEnd: true, u, v });
+  geo.addLoft(thumb, { segments: 12, capStart: true, capEnd: true, u, v });
   return geo.build(false);
 }
 

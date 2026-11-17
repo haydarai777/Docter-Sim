@@ -22,10 +22,14 @@ import {
   Vector3,
 } from 'three';
 import { GeoBuilder, type Ring, sampleStations, smooth, spow } from './geo';
+import { createClothMaterial } from './cloth';
+import { createHairMaterial } from './hair';
 
 export interface HeadSpec {
   /** Skala kepala terhadap dewasa. */
   hs: number;
+  /** Tingkat detail geometri wajah (pasien yang diperiksa dari dekat = tinggi). */
+  detail?: 'tinggi' | 'standar';
   male: boolean;
   ageGroup: 'anak' | 'remaja' | 'dewasa' | 'lansia';
   fat: number;
@@ -98,6 +102,8 @@ const FACE_BOTTOM = -0.985;
 export const FACE_SIZE = 384;
 
 const bell = (x: number, c: number, w: number) => Math.exp(-(((x - c) / w) ** 2));
+const gs = (t: number) => Math.exp(-t * t);
+const g4 = (t: number) => Math.exp(-(t * t) * (t * t));
 
 export class HeadShape {
   /** Setengah lebar, setengah tinggi, kedalaman (meter). */
@@ -106,7 +112,13 @@ export class HeadShape {
   readonly hd: number;
   readonly eyeYn: number;
   readonly vary: FaceVariation;
+  /** Jarak pusat mata dari garis tengah (m). */
+  readonly eyeX: number;
+  /** Tinggi garis mulut (yn) & setengah lebar mulut (m). */
+  readonly mouthYn: number;
+  readonly mouthHalf: number;
   private readonly table: number[][];
+  private readonly age: number;
 
   constructor(readonly spec: HeadSpec) {
     const { hs, male, ageGroup, fat, thin } = spec;
@@ -127,6 +139,10 @@ export class HeadShape {
     this.hd = 0.098 * hs;
     // Anak: wajah lebih pendek (mata lebih rendah), dahi lebih besar.
     this.eyeYn = child ? -0.05 : ageGroup === 'remaja' ? 0.015 : 0.045;
+    this.eyeX = 0.0315 * hs * (child ? 1.02 : 1) * (1 + 0.045 * vary.eyeGap);
+    this.mouthYn = this.eyeYn - (child ? 0.58 : 0.64);
+    this.mouthHalf = (child ? 0.0225 : male ? 0.0275 : 0.026) * hs * (1 + 0.07 * vary.mouth);
+    this.age = ageGroup === 'lansia' ? 1 : ageGroup === 'dewasa' ? 0.35 : 0;
     this.table = SKULL.map(([yn, w, f, b, zc]) => {
       let ww = w!;
       let ff = f!;
@@ -144,6 +160,20 @@ export class HeadShape {
 
   /** Titik di permukaan kepala (ditambah `thick` meter ke luar) untuk tinggi yn & sudut a (0 = depan). */
   point(yn: number, a: number, out: Vector3, thick = 0): Vector3 {
+    this.pointRaw(yn, a, out, thick);
+    // Relief wajah (rongga mata, tulang alis & pipi, bibir, dagu …) ke arah keluar permukaan.
+    const r = Math.cos(a) > 0.05 ? this.relief(out.x, yn) : 0;
+    if (r !== 0) {
+      const dz = out.z - this.hd * (sampleStations(this.table, yn)[3] as number);
+      const len = Math.hypot(out.x, dz) || 1;
+      out.x += (out.x / len) * r;
+      out.z += (dz / len) * r;
+    }
+    return out;
+  }
+
+  /** Titik permukaan kepala tanpa relief wajah. */
+  pointRaw(yn: number, a: number, out: Vector3, thick = 0): Vector3 {
     const [w, f, b, zc] = sampleStations(this.table, yn) as [number, number, number, number];
     const n = 2 + 0.38 * bell(yn, -0.15, 0.55);
     const sx = spow(Math.sin(a), n);
@@ -151,6 +181,52 @@ export class HeadShape {
     const rx = this.hw * Math.max(0, w) + thick;
     const rz = this.hd * Math.max(0, cz >= 0 ? f : b) + thick;
     return out.set(rx * sx, this.hh * yn + thick * Math.max(0, Math.min(1, yn * 1.4)), this.hd * zc + rz * cz);
+  }
+
+  /**
+   * Relief wajah (m, positif = menonjol) pada posisi lateral x (m) & tinggi yn: rongga mata,
+   * tulang alis, pangkal hidung, tulang pipi, lekuk bawah mata, lipatan nasolabial, filtrum,
+   * bibir atas & bawah, garis mulut, lekuk di atas dagu, dagu, dan pelipis.
+   */
+  relief(x: number, yn: number): number {
+    const { hs, male, ageGroup, thin, fat } = this.spec;
+    const child = ageGroup === 'anak';
+    const X = Math.abs(x) / hs;
+    const Y = (yn - this.eyeYn) * 0.1185 * (this.hh / (0.1185 * hs));
+    const ex = this.eyeX / hs;
+    const age = this.age;
+    let r = 0;
+    // Rongga mata (diisi bola mata & kelopak).
+    r -= 0.0102 * gs((X - ex) / 0.0205) * gs(Y / 0.0135);
+    // Tulang alis & pangkal hidung (glabela).
+    r += (male ? 0.0042 : 0.0028) * (child ? 0.45 : 1) * gs((Y - 0.0172) / 0.0066) * gs((X - 0.027) / 0.028);
+    r += 0.0014 * gs(X / 0.009) * gs((Y - 0.004) / 0.012);
+    // Tulang pipi (zigomatikum) & cekung di bawahnya pada orang kurus/lansia.
+    r += (0.0028 + (male ? 0 : 0.0008) + 0.001 * fat) * gs((X - 0.046) / 0.016) * gs((Y + 0.024) / 0.013);
+    r -= 0.0016 * (thin + 0.6 * age) * gs((X - 0.046) / 0.014) * gs((Y + 0.05) / 0.012);
+    // Lekuk bawah mata (tear trough).
+    r -= 0.0011 * (0.4 + age) * gs((X - 0.025) / 0.012) * gs((Y + 0.0145) / 0.0045);
+    // Lipatan nasolabial: dari cuping hidung ke sudut mulut; pipi sedikit menggembung di luarnya.
+    const mY = (this.mouthYn - this.eyeYn) * 0.1185;
+    const ny = -0.044;
+    const t = Math.max(0, Math.min(1, (Y - ny) / (mY + 0.004 - ny)));
+    const inRange = gs(Math.max(0, Math.abs(Y - (ny + mY) / 2) - Math.abs(mY - ny) / 2) / 0.003);
+    const dist = X - (0.02 + 0.012 * t);
+    r -= (0.0009 + 0.0013 * age + (child ? -0.0005 : 0)) * gs(dist / 0.0026) * inRange;
+    r += (0.0011 + 0.0012 * fat) * gs((dist - 0.0065) / 0.0045) * inRange;
+    // Filtrum & bibir (atas tipis, bawah lebih penuh), garis mulut.
+    const mh = this.mouthHalf / hs;
+    const lipK = 1 + 0.2 * this.vary.lips;
+    r -= 0.0007 * gs(X / 0.0035) * gs((Y - mY - 0.0115) / 0.0055);
+    r += 0.0035 * lipK * gs((Y - mY - 0.0042) / 0.0034) * g4(X / (mh * 0.95));
+    r += 0.0043 * lipK * gs((Y - mY + 0.0058) / 0.0045) * g4(X / (mh * 0.86));
+    r -= 0.0016 * gs((Y - mY) / 0.0013) * g4(X / (mh * 1.02));
+    // Lekuk di atas dagu (sulkus mentolabial) & tonjolan dagu.
+    r -= 0.0016 * gs((Y - mY + 0.0158) / 0.0045) * gs(X / 0.02);
+    r += 0.0024 * (male ? 1.15 : 0.9) * gs((yn + 0.9) / 0.05) * gs(X / 0.017);
+    // Pelipis.
+    r -= 0.0016 * (0.5 + thin + age) * gs((X - 0.064) / 0.012) * gs((Y - 0.012) / 0.014);
+    return r * hs;
   }
 
   /** z permukaan depan (a = 0) pada tinggi yn. */
@@ -184,15 +260,15 @@ export class HeadShape {
     const { hs, male, ageGroup } = this.spec;
     const child = ageGroup === 'anak';
     const vary = this.vary;
-    const eyeX = 0.0315 * hs * (child ? 1.02 : 1) * (1 + 0.045 * vary.eyeGap);
+    const eyeX = this.eyeX;
     // Sedikit lebih besar dari ukuran anatomis agar ekspresi terbaca dari kursi dokter.
     const eyeHalf = 0.0166 * hs * (child ? 1.16 : male ? 1 : 1.05) * (1 + 0.06 * vary.eyeSize);
     const cx = FACE_SIZE / 2;
     const eyeDX = this.canvasX(this.eyeYn, eyeX) - cx;
     const eyeRX = (this.canvasX(this.eyeYn, eyeX + eyeHalf) - this.canvasX(this.eyeYn, eyeX - eyeHalf)) / 2;
     const pxPerMm = FACE_SIZE / ((FACE_TOP - FACE_BOTTOM) * this.hh * 1000);
-    const mouthYn = this.eyeYn - (child ? 0.58 : 0.64);
-    const mouthHalf = (child ? 0.0225 : male ? 0.0275 : 0.026) * hs * (1 + 0.07 * vary.mouth);
+    const mouthYn = this.mouthYn;
+    const mouthHalf = this.mouthHalf;
     return {
       size: FACE_SIZE,
       cx,
@@ -216,6 +292,8 @@ export class HeadShape {
 
 export interface HeadLook {
   skin: Color;
+  /** Bahan kulit bersama dengan badan (kulit realistis); bila tidak ada dibuat bahan sederhana. */
+  skinMaterial?: Material;
   hairColor: string;
   hairStyle: string;
   hijab: string | null;
@@ -250,27 +328,36 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
     group.add(mesh);
     return mesh;
   };
-  const skin = std(look.skin, { roughness: 0.66 });
+  const skin = look.skinMaterial ?? std(look.skin, { roughness: 0.66 });
 
   // --- Tengkorak ------------------------------------------------------------
+  // Detail tinggi: kisi rapat di wajah (± 2–3 mm) agar relief mata, bibir, dan lipatan terbentuk
+  // halus; bagian ubun-ubun & belakang kepala lebih jarang.
+  const hi = shape.spec.detail !== 'standar';
   const skull = new GeoBuilder();
-  const ROWS = 28;
-  const COLS = 32;
-  const rows: Vector3[][] = [];
-  for (let i = 0; i <= ROWS; i++) {
-    const yn = Math.cos((i / ROWS) * Math.PI);
-    const row: Vector3[] = [];
-    for (let j = 0; j < COLS; j++) row.push(shape.point(yn, (j / COLS) * Math.PI * 2, new Vector3()));
-    rows.push(row);
-  }
+  const ynList: number[] = [];
+  // Ubun-ubun: baris rapat dekat kutub (sebaran kosinus); wajah: baris seragam rapat.
+  const top = Math.acos(0.32);
+  for (let i = 0; i < 10; i++) ynList.push(Math.cos((i / 10) * top));
+  const step = hi ? 0.0165 : 0.03;
+  for (let yn = 0.32; yn > -0.97; yn -= step) ynList.push(yn);
+  ynList.push(-0.985, -1);
+  // Sudut kolom: rapat di depan (wajah), jarang di belakang.
+  const angles: number[] = [];
+  const FRONT = 1.32;
+  const NF = hi ? 60 : 34;
+  const NB = hi ? 26 : 16;
+  for (let j = 0; j < NF; j++) angles.push(-FRONT + (2 * FRONT * j) / NF);
+  for (let j = 0; j < NB; j++) angles.push(FRONT + ((2 * Math.PI - 2 * FRONT) * j) / NB);
+  const rows: Vector3[][] = ynList.map((yn) => angles.map((a) => shape.point(yn, a, new Vector3())));
   skull.addGrid(rows, center, true);
   add(skull.build(false), skin);
 
   // --- Bidang wajah (sedikit di luar kulit) ----------------------------------------
   const facePatch = new GeoBuilder();
   const fRows: Vector3[][] = [];
-  const F_ROWS = 20;
-  const F_COLS = 22;
+  const F_ROWS = hi ? 70 : 40;
+  const F_COLS = hi ? 56 : 32;
   for (let i = 0; i <= F_ROWS; i++) {
     const yn = FACE_TOP + ((FACE_BOTTOM - FACE_TOP) * i) / F_ROWS;
     const row: Vector3[] = [];
@@ -301,34 +388,38 @@ export function buildHead(shape: HeadShape, look: HeadLook): HeadParts {
   }
   nose.addLoft(noseRings, { segments: 12, capEnd: true });
   add(nose.build(false), skin, false);
-  // Lubang hidung (bayangan kecil di bawah ujung hidung).
-  const nostrilGeo = track(new SphereGeometry(1, 8, 6));
-  const dark = std(look.skin.clone().multiplyScalar(0.42), { roughness: 0.9 });
+  // Cuping hidung (ala) di kedua sisi ujung hidung & lubang hidung yang tersembunyi di bawahnya.
+  const alaGeo = track(new SphereGeometry(1, 20, 14));
+  const nostrilGeo = track(new SphereGeometry(1, 12, 8));
+  const dark = std(look.skin.clone().multiplyScalar(0.3), { roughness: 0.95 });
+  const wide = 1 + 0.12 * shape.vary.nose;
   for (const sx of [-1, 1]) {
+    // Cuping: menyatu dengan ujung hidung (sebagian besar terbenam), lekuk di atasnya dari AO.
+    const ala = new Mesh(alaGeo, skin);
+    ala.scale.set(0.0046 * noseK * wide, 0.0042 * noseK, 0.0074 * noseK);
+    ala.position.set(sx * 0.0092 * noseK * wide, shape.hh * (eye - 0.376), shape.front(eye - 0.376) + 0.0004 * noseK);
+    ala.rotation.y = sx * 0.6;
+    group.add(ala);
+    // Lubang hidung: celah lonjong yang menghadap ke bawah, tersembunyi di bawah ujung hidung.
     const m = new Mesh(nostrilGeo, dark);
-    m.scale.set(0.0038 * noseK, 0.0022 * noseK, 0.0042 * noseK);
-    m.position.set(sx * 0.0078 * noseK * (1 + 0.12 * shape.vary.nose), shape.hh * (eye - 0.392), shape.front(eye - 0.392) + 0.0048 * noseK);
+    m.scale.set(0.0032 * noseK, 0.0011 * noseK, 0.0055 * noseK);
+    m.position.set(sx * 0.0062 * noseK * wide, shape.hh * (eye - 0.401), shape.front(eye - 0.401) + 0.0062 * noseK);
+    m.rotation.set(0.15, sx * -0.35, 0);
     group.add(m);
   }
 
   // --- Telinga ------------------------------------------------------------
   const covered = !!look.hijab;
   if (!covered) {
-    const earGeo = track(new SphereGeometry(1, 12, 10));
+    const earGeo = track(buildEar(hs, shape.spec.ageGroup === 'lansia'));
     const earYn = eye - 0.15;
     for (const sx of [-1, 1]) {
       const ear = new Mesh(earGeo, skin);
-      ear.scale.set(0.0058 * hs, 0.0285 * hs, 0.0165 * hs);
-      ear.position.set(sx * (shape.halfWidth(earYn) + 0.0015 * hs), shape.hh * earYn, -0.014 * hs);
-      ear.rotation.set(-0.14, sx * -0.3, sx * -0.07);
+      ear.scale.x = sx;
+      ear.position.set(sx * (shape.halfWidth(earYn) - 0.0022 * hs), shape.hh * earYn, -0.012 * hs);
+      ear.rotation.set(-0.12, sx * -0.16, sx * -0.04);
       ear.castShadow = true;
       group.add(ear);
-      // Lekuk dalam daun telinga.
-      const inner = new Mesh(earGeo, dark);
-      inner.scale.set(0.0026 * hs, 0.0145 * hs, 0.0078 * hs);
-      inner.position.set(sx * (shape.halfWidth(earYn) + 0.0058 * hs), shape.hh * (earYn - 0.01), -0.009 * hs);
-      inner.rotation.copy(ear.rotation);
-      group.add(inner);
     }
   }
 
@@ -437,17 +528,37 @@ function hairline(line: HairStyle['line'], a: number): number {
 function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T extends { dispose(): void }>(x: T) => T): void {
   const style = HAIR[look.hairStyle] ?? HAIR.pendek!;
   const { hs } = shape.spec;
+  const mat = track(createHairMaterial({ color: look.hairColor }));
+  // Lapisan helai luar yang jarang (rambut pendek sekali tidak perlu).
+  if (style.thick >= 0.008) {
+    const fuzz = new Mesh(track(hairShell(shape, style, 0.0018 * hs)), track(createHairMaterial({ color: look.hairColor, fuzz: true })));
+    group.add(fuzz);
+  }
+  if (style.tail === 'sanggul') {
+    const bun = new Mesh(track(new SphereGeometry(0.036 * hs, 24, 18)), mat);
+    bun.scale.set(1.15, 0.95, 0.9);
+    bun.position.set(0, shape.hh * -0.12, shape.hd * -1.12);
+    bun.castShadow = true;
+    group.add(bun);
+  }
+  const mesh = new Mesh(track(hairShell(shape, style, 0)), mat);
+  mesh.castShadow = true;
+  group.add(mesh);
+}
+
+/** Selubung rambut (+ tirai & ekor) dengan ketebalan tambahan `extra` (m) untuk lapisan luar. */
+function hairShell(shape: HeadShape, style: HairStyle, extra: number): BufferGeometry {
+  const { hs } = shape.spec;
   const center = new Vector3(0, 0, -0.01);
-  const mat = track(new MeshStandardMaterial({ color: look.hairColor, roughness: 0.58, metalness: 0, map: look.hairTexture, side: DoubleSide }));
   const geo = new GeoBuilder();
   const T = style.thick * hs;
-  const COLS = 36;
+  const COLS = 84;
   const a0 = style.band ? style.band.from : 0;
   const a1 = style.band ? Math.PI * 2 - style.band.from : Math.PI * 2;
   const closed = !style.band;
 
   // Selubung utama: dari garis rambut naik ke ubun-ubun.
-  const ROWS = style.curl ? 14 : 9;
+  const ROWS = style.curl ? 30 : 20;
   const rows: Vector3[][] = [];
   for (let i = 0; i <= ROWS; i++) {
     const t = i / ROWS;
@@ -468,7 +579,7 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
       if (style.fringe) thick *= 1 + style.fringe * front * front * bell(t, 0.3, 0.3) * crown;
       if (style.part) thick *= 1 + style.part * bell(a > Math.PI ? a - Math.PI * 2 : a, -0.55, 0.5) * bell(t, 0.45, 0.4) * crown;
       if (style.curl) thick += style.curl * hs * (Math.sin(a * 11 + t * 7) * Math.cos(t * 15 + a * 4) * 0.5 + 0.5) * smooth(0, 0.15, t) * (0.35 + 0.65 * crown);
-      row.push(shape.point(yn, a, new Vector3(), thick));
+      row.push(shape.point(yn, a, new Vector3(), thick + extra * smooth(0, 0.2, t)));
     }
     rows.push(row);
   }
@@ -478,8 +589,8 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
   if (style.curtain) {
     const { to, from } = style.curtain;
     const cRows: Vector3[][] = [];
-    const C_ROWS = Math.max(6, Math.round((0.05 - to) * 9));
-    const C_COLS = 26;
+    const C_ROWS = Math.max(12, Math.round((0.05 - to) * 20));
+    const C_COLS = 60;
     for (let i = 0; i <= C_ROWS; i++) {
       const t = i / C_ROWS;
       const yn = 0.05 + (to - 0.05) * t;
@@ -490,7 +601,7 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
         const ynHead = Math.max(yn, -0.5);
         const below = Math.max(0, -0.5 - yn);
         const tip = smooth(0.75, 1, t);
-        const thick = T * (1 + 0.3 * smooth(0, 0.35, t)) * (1 - 0.6 * tip) + (style.curl ?? 0) * hs * Math.sin(a * 8 + t * 9);
+        const thick = T * (1 + 0.3 * smooth(0, 0.35, t)) * (1 - 0.6 * tip) + (style.curl ?? 0) * hs * Math.sin(a * 8 + t * 9) + extra;
         const p = shape.point(ynHead, a, new Vector3(), thick);
         p.y = shape.hh * yn;
         // Di bawah rahang rambut jatuh lurus, sedikit di luar kerah/bahu.
@@ -500,13 +611,14 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
       }
       cRows.push(row);
     }
-    geo.addGrid(cRows, new Vector3(0, shape.hh * -0.6, -0.01), false, { uRepeat: 6 });
+    // Baris dibalik: ujung rambut (v = 1) menipis menjadi helai.
+    geo.addGrid(cRows.reverse(), new Vector3(0, shape.hh * -0.6, -0.01), false, { uRepeat: 6 });
   }
 
   // Ekor / sanggul.
   const tube = (points: [number, number, number, number][]) => {
-    const rings: Ring[] = points.map(([x, y, z, r]) => ({ c: [x * hs, y * hs, z * hs] as const, rx: r * hs, rf: r * hs }));
-    geo.addLoft(rings, { segments: 10, capStart: true, capEnd: true, uRepeat: 3 });
+    const rings: Ring[] = points.map(([x, y, z, r]) => ({ c: [x * hs, y * hs, z * hs] as const, rx: r * hs + extra, rf: r * hs + extra }));
+    geo.addLoft(rings, { segments: 18, capStart: true, capEnd: true, uRepeat: 3 });
   };
   const back = -shape.hd / hs;
   if (style.tail === 'kuncir') {
@@ -529,17 +641,74 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
         [sx * w * 1.1, -0.18, -0.02, 0.006],
       ]);
     }
-  } else if (style.tail === 'sanggul') {
-    const bun = new Mesh(track(new SphereGeometry(0.036 * hs, 16, 12)), mat);
-    bun.scale.set(1.15, 0.95, 0.9);
-    bun.position.set(0, shape.hh * -0.12, shape.hd * -1.12);
-    bun.castShadow = true;
-    group.add(bun);
   }
+  return geo.build(false);
+}
 
-  const mesh = new Mesh(track(geo.build(false)), mat);
-  mesh.castShadow = true;
-  group.add(mesh);
+// ---------------------------------------------------------------------------
+// Telinga
+// ---------------------------------------------------------------------------
+
+/**
+ * Daun telinga berpahat (ruang lokal: +X = keluar dari kepala, +Y = atas, +Z = depan):
+ * heliks yang menggulung di tepi atas–belakang, skafa (alur), antiheliks (punggung bukit),
+ * konka (mangkuk dalam dekat liang telinga), tragus di depan, lobus lunak di bawah. Bagian
+ * belakang menjauh dari kepala (sudut ± 25°) seperti telinga sungguhan.
+ */
+function buildEar(hs: number, old: boolean): BufferGeometry {
+  const wz = 0.0168 * hs;
+  const wy = 0.0298 * hs * (old ? 1.08 : 1);
+  const ROWS = 18;
+  const COLS = 40;
+  const front: Vector3[][] = [];
+  const back: Vector3[][] = [];
+  const outline = (th: number): [number, number] => {
+    // th: 0 = atas, naik searah jarum jam ke belakang. Bagian atas lebih lebar, lobus menyempit.
+    const z = Math.sin(th);
+    const y = Math.cos(th);
+    const top = Math.max(0, y);
+    const lobe = Math.max(0, -y);
+    const k = 1 + 0.12 * top - 0.24 * lobe * lobe;
+    return [z * wz * k * (z < 0 ? 1.08 : 0.92), y * wy];
+  };
+  for (let i = 0; i <= ROWS; i++) {
+    const rho = i / ROWS;
+    const fr: Vector3[] = [];
+    const bk: Vector3[] = [];
+    for (let j = 0; j < COLS; j++) {
+      const th = (j / COLS) * Math.PI * 2;
+      const [oz, oy] = outline(th);
+      const z = oz * rho;
+      const y = oy * rho;
+      const yn = y / wy;
+      const zn = z / wz;
+      const lobeK = 1 - smooth(-0.35, -0.6, yn);
+      // Bidang dasar: tepi belakang menjauh dari kepala.
+      const base = Math.max(0, -z) * 0.45 + 0.0012 * hs;
+      let h = 0;
+      // Heliks: tepi menggulung (naik lalu melengkung kembali di ujung).
+      h += 0.0034 * hs * bell(rho, 0.9, 0.07) * lobeK;
+      h -= 0.0016 * hs * smooth(0.95, 1, rho) * lobeK;
+      // Skafa & antiheliks.
+      h -= 0.0016 * hs * bell(rho, 0.76, 0.05) * lobeK * smooth(-0.2, 0.3, -zn + 0.4);
+      h += 0.0022 * hs * bell(rho, 0.58, 0.08) * lobeK * (1 - bell(zn, 0.75, 0.35));
+      // Konka: mangkuk dalam di depan-tengah.
+      const cr = Math.hypot((zn - 0.22) / 0.55, (yn + 0.08) / 0.42);
+      h -= 0.0052 * hs * Math.max(0, 1 - cr * cr) ** 1.4;
+      // Tragus.
+      h += 0.0026 * hs * Math.exp(-(((zn - 0.82) / 0.16) ** 2) - (((yn + 0.12) / 0.16) ** 2));
+      // Lobus: lunak & sedikit lebih tebal.
+      h += 0.001 * hs * (1 - lobeK);
+      fr.push(new Vector3(base + h, y, z));
+      bk.push(new Vector3(base - 0.0024 * hs * (1 - rho * rho), y, z));
+    }
+    front.push(fr);
+    back.push(bk);
+  }
+  const geo = new GeoBuilder();
+  geo.addGrid(front, new Vector3(-0.05, 0, 0), true);
+  geo.addGrid(back, new Vector3(0.05, 0, 0), true);
+  return geo.build(false);
 }
 
 // ---------------------------------------------------------------------------
@@ -548,7 +717,8 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
 
 function buildHijab(shape: HeadShape, color: string, group: Group, track: <T extends { dispose(): void }>(x: T) => T): void {
   const { hs } = shape.spec;
-  const mat = track(new MeshStandardMaterial({ color, roughness: 0.92, metalness: 0, side: DoubleSide }));
+  const mat = track(createClothMaterial({ color, kind: 'kain' }));
+  mat.side = DoubleSide;
   const inner = track(new MeshStandardMaterial({ color: new Color(color).multiplyScalar(0.78), roughness: 0.95, side: DoubleSide }));
   const center = new Vector3(0, 0, -0.01);
   const eye = shape.eyeYn;

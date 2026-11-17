@@ -4,7 +4,11 @@
  * panggung diberi tahu "area bebas" (yang tidak tertutup panel) agar pasien selalu
  * berada di tengah area yang terlihat.
  */
-import { ACESFilmicToneMapping, Color, PCFSoftShadowMap, PerspectiveCamera, Scene, SRGBColorSpace, Vector3, WebGLRenderer } from 'three';
+import { ACESFilmicToneMapping, Color, HalfFloatType, PCFSoftShadowMap, PerspectiveCamera, PMREMGenerator, Scene, SRGBColorSpace, type Texture, Vector3, WebGLRenderer, WebGLRenderTarget } from 'three';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { GTAOPass } from 'three/examples/jsm/postprocessing/GTAOPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { buildRoom, LAYOUT, type Room } from './room';
 
 export interface FreeRect {
@@ -73,6 +77,17 @@ export class Stage {
   private tapHandler: ((x: number, y: number) => void) | null = null;
   private dragDist = 0;
   private downAt = 0;
+  /** Peta lingkungan per ruang (dibuat sekali, saat ruang pertama kali tampil). */
+  private readonly envs = new Map<Room, WebGLRenderTarget>();
+  private pmrem: PMREMGenerator | null = null;
+  /**
+   * Oklusi ambien layar (GTAO): bayangan lembut di lekuk & titik kontak (ketiak, bawah dagu,
+   * antara tubuh dan kasur, lipatan otot) sehingga bentuk tubuh terbaca nyata. Hanya di perangkat
+   * yang mampu; dimatikan otomatis bila frame melambat.
+   */
+  private composer: EffectComposer | null = null;
+  private aoPass: GTAOPass | null = null;
+  private ao: boolean;
 
   /** Buat panggung; mengembalikan null bila WebGL tidak tersedia (UI tetap bisa dipakai tanpa 3D). */
   static create(container: HTMLElement): Stage | null {
@@ -89,10 +104,12 @@ export class Stage {
     const coarse = window.matchMedia?.('(pointer: coarse)').matches ?? false;
     this.pixelRatio = Math.min(window.devicePixelRatio || 1, coarse ? 1.6 : 2);
     this.shadows = true;
+    this.ao = !coarse && new URLSearchParams(location.search).get('ao') !== '0';
     this.renderer = new WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.02;
+    this.renderer.info.autoReset = false;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = PCFSoftShadowMap;
     this.renderer.setPixelRatio(this.pixelRatio);
@@ -115,6 +132,44 @@ export class Stage {
     document.addEventListener('visibilitychange', this.onVisibility);
     this.canvas.addEventListener('webglcontextlost', (e) => e.preventDefault());
     this.resize();
+    this.applyEnvironment(this.room);
+    if (this.ao) this.setupComposer();
+  }
+
+  /** Rantai pascaproses: render → oklusi ambien → tone mapping & sRGB. */
+  private setupComposer(): void {
+    try {
+      const gl = this.renderer.getContext();
+      if (!(typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext)) throw new Error('webgl1');
+      const target = new WebGLRenderTarget(1, 1, { type: HalfFloatType, samples: 4 });
+      const composer = new EffectComposer(this.renderer, target);
+      composer.addPass(new RenderPass(this.scene, this.camera));
+      const ao = new GTAOPass(this.scene, this.camera, 1, 1);
+      ao.output = GTAOPass.OUTPUT.Default;
+      ao.blendIntensity = 0.85;
+      ao.updateGtaoMaterial({ radius: 0.2, distanceExponent: 1.4, thickness: 0.6, scale: 1.05, samples: 12, distanceFallOff: 1, screenSpaceRadius: false });
+      ao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, radiusExponent: 1.8, rings: 2, samples: 12 });
+      composer.addPass(ao);
+      composer.addPass(new OutputPass());
+      composer.setPixelRatio(this.pixelRatio);
+      composer.setSize(this.width, this.height);
+      this.composer = composer;
+      this.aoPass = ao;
+    } catch {
+      this.composer = null;
+      this.aoPass = null;
+      this.ao = false;
+    }
+  }
+
+  /** Nyalakan/matikan oklusi ambien (pengaturan grafis). */
+  setAmbientOcclusion(on: boolean): void {
+    if (on && !this.composer) this.setupComposer();
+    this.ao = on && !!this.composer;
+  }
+
+  get ambientOcclusion(): boolean {
+    return this.ao;
   }
 
   // --- API ------------------------------------------------------------
@@ -138,6 +193,55 @@ export class Stage {
       room.group.visible = true;
       room.setShadows(this.shadows);
     }
+    this.applyEnvironment(room ?? this.room);
+  }
+
+  /** Peta lingkungan aktif (dipakai mis. untuk bahan yang butuh pantulan khusus). */
+  get environment(): Texture | null {
+    return this.scene.environment;
+  }
+
+  /**
+   * Pencahayaan berbasis citra: ruangan dipotret ke enam arah dari `envProbe` (tanpa orang),
+   * diburamkan menurut kekasaran (PMREM), lalu menjadi cahaya ambien & pantulan semua bahan.
+   * Hasilnya: kulit, mata, kain, dan logam diterangi lampu & dinding ruangan yang sebenarnya.
+   */
+  private applyEnvironment(room: Room): void {
+    if (!room.envProbe) {
+      this.scene.environment = null;
+      return;
+    }
+    let rt = this.envs.get(room);
+    if (!rt) {
+      try {
+        this.pmrem ??= new PMREMGenerator(this.renderer);
+        const tmp = new Scene();
+        tmp.background = this.scene.background;
+        const g = room.group;
+        const parent = g.parent;
+        const visible = g.visible;
+        const pos = g.position.clone();
+        tmp.add(g);
+        g.visible = true;
+        g.position.sub(room.envProbe);
+        room.setEnvCapture?.(true);
+        g.updateMatrixWorld(true);
+        rt = this.pmrem.fromScene(tmp, 0.015, 0.05, 40);
+        room.setEnvCapture?.(false);
+        g.position.copy(pos);
+        g.visible = visible;
+        parent?.add(g);
+        g.updateMatrixWorld(true);
+        this.envs.set(room, rt);
+      } catch {
+        this.scene.environment = null;
+        return;
+      }
+    }
+    for (const [r] of this.envs) r.useEnvironment?.(r === room);
+    room.useEnvironment?.(true);
+    this.scene.environment = rt.texture;
+    this.scene.environmentIntensity = room.envIntensity ?? 1;
   }
 
   /** Perbesaran pandangan (FOV dikali `z`; < 1 = mendekat) — mis. saat memeriksa luka. */
@@ -225,6 +329,11 @@ export class Stage {
     window.removeEventListener('resize', this.resize);
     document.removeEventListener('visibilitychange', this.onVisibility);
     this.room.dispose();
+    for (const rt of this.envs.values()) rt.dispose();
+    this.envs.clear();
+    this.pmrem?.dispose();
+    this.aoPass?.dispose();
+    this.composer?.dispose();
     this.renderer.dispose();
     this.canvas.remove();
   }
@@ -249,7 +358,10 @@ export class Stage {
     for (const u of this.updatables) u.update(dt, this.time);
     this.updateCamera(dt);
     if (this.frame % this.throttle !== 0) return;
-    this.renderer.render(this.scene, this.camera);
+    // Statistik dihitung per frame (bukan per pass pascaproses).
+    this.renderer.info.reset();
+    if (this.ao && this.composer) this.composer.render(dt);
+    else this.renderer.render(this.scene, this.camera);
     this.adapt(rawDt);
   };
 
@@ -262,10 +374,14 @@ export class Stage {
       this.slowFrames = 0;
       this.fastFrames = 0;
       const floor = Math.min(1, window.devicePixelRatio || 1);
-      if (this.pixelRatio > floor) {
+      if (this.ao) {
+        // Pertama korbankan oklusi ambien (paling mahal), baru resolusi & bayangan.
+        this.ao = false;
+      } else if (this.pixelRatio > floor) {
         this.pixelRatio = Math.max(floor, this.pixelRatio - 0.35);
         this.renderer.setPixelRatio(this.pixelRatio);
         this.renderer.setSize(this.width, this.height, false);
+        this.composer?.setPixelRatio(this.pixelRatio);
       } else if (this.shadows) {
         this.shadows = false;
         this.room.setShadows(false);
@@ -274,6 +390,7 @@ export class Stage {
         this.pixelRatio = 0.7;
         this.renderer.setPixelRatio(this.pixelRatio);
         this.renderer.setSize(this.width, this.height, false);
+        this.composer?.setPixelRatio(this.pixelRatio);
       }
     }
     if (this.fastFrames > 600) {
@@ -350,6 +467,7 @@ export class Stage {
     this.width = w;
     this.height = h;
     this.renderer.setSize(w, h, false);
+    this.composer?.setSize(w, h);
     this.applyProjection();
   };
 

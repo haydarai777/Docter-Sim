@@ -52,6 +52,25 @@ function pupils(p: PhysioState, t: number): string {
   return 'isokor 3/3 mm, refleks cahaya +/+';
 }
 
+/**
+ * Ukuran pupil (mm) [kiri, kanan] untuk tampilan 3D — selaras dengan teks pemeriksaan pupil:
+ * pin-point (opioid/sedasi), miosis (organofosfat), midriasis (atropin, cedera otak berat,
+ * henti jantung lama), anisokor (herniasi sisi lesi).
+ */
+export function pupilSizes(p: PhysioState, t: number): [number, number] {
+  const sed = eff(p, 'sedation', t);
+  const chol = eff(p, 'cholinergic', t);
+  const icp = eff(p, 'icp', t);
+  if (p.arrest && t - p.arrest.since > 300) return [6.5, 6.5];
+  if (eff(p, 'brainInjury', t) > 0.65) return [6, 6];
+  if (icp > 0.92) return [6.5, 6.5];
+  if (icp > 0.55 && p.brainSide) return p.brainSide === 'kiri' ? [5, 3] : [3, 5];
+  if (chol > 0.3) return [1.5, 1.5];
+  if (sed > 0.35 && p.v.sedation > 0.3) return [1, 1];
+  if (p.doses.atropin && chol < 0.2) return [5, 5];
+  return [3, 3];
+}
+
 function skin(p: PhysioState, v: Vitals, t: number): string {
   const parts: string[] = [];
   const perf = v.perfusion;

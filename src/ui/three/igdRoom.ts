@@ -34,6 +34,7 @@ import {
 } from 'three';
 import type { BedKind } from '../../core/igd/types';
 import type { BedPose } from './actor';
+import { createClothMaterial } from './cloth';
 import { StainSurface } from './bloodFx';
 import type { Room } from './room';
 import { canvasTexture, floorTexture, signTexture } from './textures';
@@ -362,9 +363,10 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
   const black = mat('#1e2328', { roughness: 0.55 });
   const blueGrey = mat('#9fb3bf', { roughness: 0.7 });
   const mattressMat = mat('#2f4f63', { roughness: 0.8 });
-  const sheetMat = mat('#f1f4f6', { roughness: 0.95 });
-  const blanketMat = mat('#8fb3d1', { roughness: 0.97 });
-  const pillowMat = mat('#fafbfc', { roughness: 0.95 });
+  // Sprei, selimut, bantal: kain dengan kilau serat & lipatan lembut.
+  const sheetMat = track(createClothMaterial({ color: '#f1f4f6', kind: 'kain', foldScale: 1.4 }));
+  const blanketMat = track(createClothMaterial({ color: '#8fb3d1', kind: 'selimut', foldScale: 1.6 }));
+  const pillowMat = track(createClothMaterial({ color: '#fafbfc', kind: 'kain', foldScale: 1.2 }));
   const red = mat('#c0392b', { roughness: 0.5 });
   const green = mat('#2e8b57', { roughness: 0.6 });
   const yellow = mat('#e2b93b', { roughness: 0.6 });
@@ -954,9 +956,11 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
   // --- Pencahayaan ------------------------------------------------------------
   const hemi = new HemisphereLight('#f6fbff', '#7c8488', 1.05);
   group.add(hemi);
-  const key = new DirectionalLight('#ffffff', 1.6);
-  key.position.set(2.5, 6.5, 3.5);
-  key.target.position.set(-1.2, 0, -2.6);
+  // Cahaya kunci dari arah kepala bed (lampu di atas kepala pasien), ± 50° dari lantai: bayangan
+  // lembut di bawah tulang selangka, otot dada, iga, dan lutut membuat bentuk tubuh terbaca.
+  const key = new DirectionalLight('#fffaf2', 2.0);
+  key.position.set(1.2, 6.4, -7.6);
+  key.target.position.set(-0.6, 0, -2.4);
   group.add(key, key.target);
   key.castShadow = options.shadows;
   key.shadow.mapSize.set(2048, 2048);
@@ -974,7 +978,7 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
     [4.2, -2.4],
     [-1.0, 1.4],
   ] as const) {
-    const l = new PointLight('#fff9f0', 3.2, 7.5, 1.6);
+    const l = new PointLight('#fff9f0', 2.7, 7.5, 1.6);
     l.position.set(x, R.h - 0.25, z);
     group.add(l);
   }
@@ -989,6 +993,17 @@ export function buildIgdRoom(options: { shadows: boolean; beds: { id: string; la
     bays,
     central,
     hitTargets,
+    // Dipotret dari tengah deretan bed resusitasi–akut setinggi pasien berbaring.
+    envProbe: new Vector3(-1.6, 1.35, -2.3),
+    envIntensity: 0.72,
+    setEnvCapture(on: boolean) {
+      // Panel lampu langit-langit adalah sumber cahaya utama: di peta lingkungan harus jauh lebih
+      // terang daripada dinding agar kilap kulit/mata & bayangan lembut terarah dari atas.
+      panelMat.emissiveIntensity = on ? 7 : 1.3;
+    },
+    useEnvironment(on: boolean) {
+      hemi.intensity = on ? 0.3 : 1.05;
+    },
     setDoor(open: number) {
       this.setEntrance(open);
     },
