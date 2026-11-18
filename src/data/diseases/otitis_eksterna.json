@@ -1,0 +1,228 @@
+{
+  "id": "otitis_eksterna",
+  "name": "Otitis eksterna",
+  "aliases": ["Radang liang telinga", "Swimmer's ear", "Otitis eksterna difus", "Otitis eksterna sirkumskripta", "Otomikosis"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Radang liang telinga luar: difus (bakteri, sering setelah berenang/mengorek telinga), sirkumskripta (furunkel di sepertiga luar), atau jamur (otomikosis: gatal hebat, debris putih/hitam). Ciri khas: nyeri tarik daun telinga dan nyeri tekan tragus, liang telinga edema & hiperemis, membran timpani normal.",
+  "presentationDay": [1, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 7, "max": 9, "weight": 1 },
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 55, "weight": 3 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "nelayan", "weight": 2 }, { "id": "pelajar", "weight": 1 }, { "id": "ojek_online", "weight": 1 }],
+    "occupationBias": 0.25
+  },
+  "traits": [
+    { "id": "sirkumskripta", "probability": 0.3 },
+    { "id": "jamur", "probability": 0.18, "when": { "notTraits": ["sirkumskripta"] } },
+    { "id": "berenang", "probability": 0.45 },
+    { "id": "korek_telinga", "probability": 0.6 },
+    { "id": "dm_curiga", "probability": 0.05, "when": { "ageMin": 45 } }
+  ],
+  "traitLabels": {
+    "sirkumskripta": "Otitis eksterna sirkumskripta (furunkel liang telinga).",
+    "jamur": "Otomikosis (jamur).",
+    "berenang": "Riwayat berenang/telinga kemasukan air.",
+    "korek_telinga": "Kebiasaan mengorek telinga.",
+    "dm_curiga": "Faktor risiko diabetes (waspadai otitis eksterna maligna)."
+  },
+  "symptoms": [
+    { "id": "telinga_gatal", "probability": 1, "when": { "traits": ["jamur"] } },
+    { "id": "demam", "probability": 0.15, "when": { "traits": ["sirkumskripta"] } },
+    { "id": "nyeri_telinga", "probability": 1 },
+    { "id": "telinga_gatal", "probability": 0.5 },
+    { "id": "telinga_penuh", "probability": 0.5 },
+    { "id": "telinga_berair", "probability": 0.35 },
+    { "id": "pendengaran_turun", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_telinga"], "extraPool": ["telinga_gatal", "telinga_penuh"] },
+  "clueSymptoms": ["telinga_gatal", "telinga_penuh", "telinga_berair", "pendengaran_turun", "demam"],
+  "misattributions": ["kemasukan air", "kotoran telinga", "masuk angin"],
+  "fears": ["telinga budek", "gendang telinga pecah"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mulai {hariTeks} hari lalu, Dok, habis berenang di kolam.",
+        "when": { "traits": ["berenang"] },
+        "clue": "Didahului berenang (lembap)"
+      },
+      {
+        "text": "Sudah {hariTeks} hari, Dok, setelah saya korek-korek pakai cotton bud.",
+        "when": { "notTraits": ["berenang"] },
+        "clue": "Didahului mengorek telinga"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Sakitnya kalau daun telinga ketarik atau pas ngunyah, Dok, nyut-nyutan.",
+        "clue": "Nyeri bertambah saat daun telinga ditarik/mengunyah"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Kalau tidur miring ke kanan sakit sekali, Dok." }],
+    "kebiasaan": [
+      {
+        "text": "Saya suka bersihkan telinga pakai cotton bud tiap hari, Dok.",
+        "when": { "traits": ["korek_telinga"] },
+        "clue": "Kebiasaan mengorek telinga"
+      },
+      { "text": "Seminggu dua kali saya berenang, Dok.", "when": { "traits": ["berenang"] }, "clue": "Sering berenang" }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sebelumnya nggak pernah keluar cairan dari telinga, Dok.",
+        "clue": "Tanpa riwayat telinga berair kronik"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Gatalnya lebih mengganggu daripada sakitnya, Dok.",
+        "when": { "traits": ["jamur"] },
+        "clue": "Gatal dominan (curiga jamur)"
+      }
+    ],
+    "lokasi": [{ "text": "Di telinga kanan, Dok, liangnya." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "notTraits": ["sirkumskripta", "jamur"] },
+      "values": ["MAE kanan edema, hiperemis, menyempit, sekret serosa sedikit"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "traits": ["sirkumskripta"] },
+      "values": ["Furunkel hiperemis di sepertiga luar MAE kanan, nyeri tekan, sebagian berfluktuasi"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "traits": ["jamur"] },
+      "values": ["MAE kanan hiperemis dengan debris putih keabuan seperti kapas berbintik hitam"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "when": { "notTraits": ["jamur"] },
+      "probability": 0.5,
+      "values": ["Intak, sulit dinilai seluruhnya karena liang telinga sempit"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.2] },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "aurikula",
+      "diagnostic": true,
+      "values": ["Nyeri tarik aurikula & nyeri tekan tragus (+) telinga kanan"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "tes_penala",
+      "probability": 0.3,
+      "values": ["Rinne (−) kanan, Weber lateralisasi ke kanan (konduktif ringan)"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "probability": 0.3,
+      "values": ["KGB preaurikular kanan teraba, nyeri tekan"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "otitis_media_akut",
+      "howToDistinguish": "OMA: membran timpani hiperemis/bulging, tanpa nyeri tarik aurikula; sering didahului ISPA, demam.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    },
+    {
+      "id": "mastoiditis",
+      "howToDistinguish": "Mastoiditis: nyeri & bengkak retroaurikula, daun telinga terdorong ke depan, demam tinggi — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_telinga", "tanda_vital"] }
+    },
+    {
+      "id": "serumen_prop",
+      "howToDistinguish": "Serumen prop: telinga penuh & tuli tanpa nyeri hebat; liang tertutup serumen.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "otherDifferentials": ["Otitis eksterna maligna (pada diabetes/lansia)", "Herpes zoster otikus"],
+  "keyFindings": [
+    "Nyeri telinga dengan nyeri tarik aurikula & nyeri tekan tragus",
+    "Liang telinga edema hiperemis (difus) / furunkel (sirkumskripta) / debris jamur",
+    "Membran timpani intak"
+  ],
+  "teachingPoints": [
+    "Nyeri tarik daun telinga = otitis eksterna; membran timpani bulging = otitis media.",
+    "Otitis eksterna yang tak membaik pada pasien diabetes/lansia: curigai otitis eksterna maligna, rujuk."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_telinga",
+        "role": "kunci",
+        "reason": "Nyeri tarik aurikula/tekan tragus, liang telinga, membran timpani."
+      },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB preaurikular/retroaurikular." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "kerokan_koh", "reason": "Bila curiga otomikosis yang tidak membaik." },
+      { "tool": "gula_darah", "reason": "Otitis eksterna berulang/berat: skrining diabetes." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Aural toilet, tetes telinga antibiotik(-steroid) atau antijamur, analgesik; jaga telinga tetap kering."
+    }
+  ],
+  "management": [
+    "Bersihkan liang telinga (aural toilet) dengan hati-hati.",
+    "Difus: tetes telinga antibiotik (mis. ofloksasin) ± steroid 7 hari; tampon bila liang sangat sempit.",
+    "Sirkumskripta: kompres hangat, antibiotik oral antistafilokokus, insisi bila abses.",
+    "Jamur: bersihkan debris, antijamur topikal; jaga telinga kering.",
+    "Analgesik (parasetamol/ibuprofen); jangan mengorek telinga, lindungi dari air 1–2 minggu."
+  ],
+  "approach": [
+    "Tarik daun telinga & tekan tragus sebelum memasukkan otoskop.",
+    "Nilai liang telinga lalu membran timpani; bedakan dari OMA."
+  ]
+}

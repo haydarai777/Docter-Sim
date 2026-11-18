@@ -1,0 +1,151 @@
+{
+  "id": "tinea_kruris",
+  "name": "Tinea kruris",
+  "aliases": ["Kurap selangkangan", "Jock itch", "Gatal lipat paha"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.4,
+  "summary": "Dermatofitosis lipat paha, perineum, & bokong, tersering laki-laki dewasa, obesitas, banyak berkeringat, celana ketat. Plak eritematosa-kecoklatan berbatas tegas dengan tepi aktif polisiklik (papul, vesikel, skuama), central healing, sangat gatal; skrotum biasanya TIDAK terkena (berbeda dari kandidosis). KOH positif. Terapi topikal 2–4 minggu, jaga kering, obati tinea pedis sebagai sumber.",
+  "presentationDay": [14, 90],
+  "demographics": {
+    "ageBands": [
+      { "min": 16, "max": 30, "weight": 3 },
+      { "min": 31, "max": 55, "weight": 4 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.75,
+    "occupations": [{ "id": "ojek_online", "weight": 2 }, { "id": "sopir_truk", "weight": 2 }, { "id": "pekerja_proyek", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "tinea_pedis_menyertai", "probability": 0.4 }, { "id": "obesitas_menyertai", "probability": 0.35 }],
+  "traitLabels": { "tinea_pedis_menyertai": "Tinea pedis menyertai.", "obesitas_menyertai": "Obesitas." },
+  "symptoms": [{ "id": "gatal_kulit", "probability": 1 }, { "id": "ruam_kulit", "probability": 1 }],
+  "chiefComplaint": { "primary": ["gatal_kulit"], "extraPool": ["ruam_kulit"] },
+  "clueSymptoms": ["ruam_kulit"],
+  "misattributions": ["biang keringat", "penyakit kelamin", "alergi celana"],
+  "fears": ["penyakit kelamin", "menular ke istri"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, selangkangan gatal sekali, merah kecoklatan, makin melebar ke bokong.",
+        "clue": "Subakut, meluas"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di lipat paha kanan-kiri sampai bokong, Dok. Buah zakarnya sih nggak kena.",
+        "clue": "Lipat paha & bokong, skrotum tidak terkena"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau keringatan atau duduk lama di motor makin gatal, Dok.",
+        "clue": "Memberat dengan keringat/oklusi"
+      }
+    ],
+    "kebiasaan": [
+      { "text": "Seharian pakai celana jins ketat, jarang ganti celana dalam, Dok.", "clue": "Celana ketat & lembap" },
+      {
+        "text": "Sela jari kaki saya juga sering gatal mengelupas, Dok.",
+        "when": { "traits": ["tinea_pedis_menyertai"] },
+        "clue": "Tinea pedis (sumber)"
+      }
+    ],
+    "riwayat_penyakit": [{ "text": "Belum pernah dibilang kencing manis, Dok." }]
+  },
+  "findings": [
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas_menyertai"] }, "range": [27, 32] },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "values": ["Lipat paha kanan & kiri meluas ke bokong; skrotum tidak terkena"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": [
+        "Plak eritematosa-kecoklatan berbatas tegas dengan tepi aktif polisiklik (papul, vesikel, skuama) & central healing"
+      ]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Hifa panjang bersepta bercabang & artrospora (+)"]
+    },
+    { "tool": "lampu_wood", "param": "fluoresensi", "values": ["Tidak ada fluoresensi khas"] }
+  ],
+  "differentials": [
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "Infeksi jamur lipatan luas/berulang: pertimbangkan DM — tanyakan & periksa gula darah.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["gula_darah"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Kandidosis: eritema merah terang basah dengan lesi satelit, skrotum ikut terkena, KOH pseudohifa.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "eritrasma",
+      "howToDistinguish": "Eritrasma: patch coklat-merah tanpa tepi aktif, Wood merah bata.",
+      "excludeBy": { "tools": ["lampu_wood", "status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Plak lipat paha bertepi aktif polisiklik dengan central healing, sangat gatal",
+    "Skrotum tidak terkena",
+    "KOH positif"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "pemberat_peringan", "kebiasaan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Tepi aktif, keterlibatan skrotum." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Obesitas." }
+    ],
+    "tests": [
+      { "tool": "kerokan_koh", "role": "kunci", "reason": "Hifa dermatofita." },
+      { "tool": "lampu_wood", "role": "pendukung", "reason": "Menyingkirkan eritrasma." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "obesitas_menyertai": "obesitas" },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Antijamur topikal 2–4 minggu, jaga kering; kontrol 2 minggu." }],
+  "management": [
+    "Krim antijamur (mikonazol/ketokonazol/terbinafin) 2 × sehari 2–4 minggu.",
+    "Bedak antijamur, celana dalam katun longgar, ganti bila lembap; keringkan setelah mandi.",
+    "Obati tinea pedis (pakai kaus kaki dulu sebelum celana dalam)."
+  ],
+  "approach": ["Lesi lipat paha gatal → periksa skrotum, KOH, Wood."]
+}

@@ -1,0 +1,64 @@
+{
+  "disease": "intoleransi_makanan",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — diare & muntah",
+  "therapy": {
+    "items": [],
+    "avoid": [{ "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }],
+    "note": "Tidak memerlukan obat — modifikasi diet laktosa."
+  },
+  "nonPharm": [
+    {
+      "id": "laktosa",
+      "text": "Kurangi/hindari laktosa; pilih susu rendah laktosa, yoghurt, atau keju",
+      "kind": "benar"
+    },
+    { "id": "sedikit", "text": "Minum susu sedikit-sedikit bersama makanan", "kind": "benar" },
+    { "id": "kalsium", "text": "Penuhi kalsium dari ikan teri, tahu, & sayur hijau", "kind": "benar" },
+    {
+      "id": "sementara",
+      "text": "Susu rendah laktosa sementara 2–4 minggu setelah diare",
+      "kind": "benar",
+      "when": { "traits": ["sekunder_pasca_diare"] }
+    },
+    {
+      "id": "ab",
+      "text": "Beri antibiotik agar usus tahan susu",
+      "kind": "berbahaya",
+      "why": "Tidak ada infeksi; mengganggu flora usus."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini intoleransi laktosa: usus kurang mampu mencerna gula susu (bukan alergi)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak perlu obat; atur jenis & jumlah susu yang dikonsumsi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Periksa segera bila BAB berdarah, berat badan turun, atau diare malam hari",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu untuk menilai toleransi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "susu_selamanya",
+      "text": "Seumur hidup sama sekali tidak boleh makan produk susu",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Sebagian besar masih toleran jumlah kecil/yoghurt/keju."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "disease": "presbiopia",
+  "setting": "Puskesmas",
+  "station": "Mata — gangguan penglihatan",
+  "therapy": { "items": [], "note": "Tatalaksana dengan kacamata koreksi — tidak memerlukan obat." },
+  "nonPharm": [
+    {
+      "id": "kacamata",
+      "text": "Resepkan kacamata baca dengan addisi sesuai usia (± +1,00 D usia 40; +2,00 D usia 50; +3,00 D usia ≥ 60) dicoba pada jarak 33 cm",
+      "kind": "benar"
+    },
+    { "id": "istirahat", "text": "Istirahatkan mata saat kerja dekat lama dengan pencahayaan cukup", "kind": "benar" },
+    { "id": "skrining", "text": "Skrining tekanan bola mata (glaukoma) dan gula darah", "kind": "benar" },
+    {
+      "id": "tetes_herbal",
+      "text": "Tetes mata herbal/vitamin untuk 'menyembuhkan' kelainan refraksi",
+      "kind": "berbahaya",
+      "why": "Tidak memperbaiki refraksi; risiko iritasi/infeksi."
+    },
+    {
+      "id": "salah",
+      "text": "Resepkan kacamata baca berkekuatan setinggi mungkin",
+      "kind": "pengecoh",
+      "why": "Koreksi tidak tepat memicu astenopia/sakit kepala."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Penglihatan kabur karena kelainan pembiasan cahaya pada mata (bukan penyakit berbahaya)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kacamata dipakai sesuai anjuran; ukuran dapat berubah sehingga perlu diperiksa ulang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila penglihatan turun mendadak, nyeri mata, kilatan cahaya, atau bayangan hitam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Periksa mata ulang 6–12 bulan sekali", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "lepas",
+      "text": "Sering melepas kacamata agar mata 'terlatih' dan minusnya berkurang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Mitos; tidak menurunkan ukuran."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

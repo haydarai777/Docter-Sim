@@ -1,0 +1,141 @@
+{
+  "disease": "erisipelas",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Streptokokus grup A.",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 3 × 500 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [10, 14]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 4 × 500 mg selama 10–14 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [10, 14]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [10, 14]
+          },
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [10, 14]
+          }
+        ]
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Demam & nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      },
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal",
+        "role": "pendukung",
+        "reason": "Obati pintu masuk (tinea pedis).",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim sela jari 2 × sehari 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 28]
+          },
+          {
+            "drug": "terbinafin_krim",
+            "label": "Terbinafin 1% krim 1–2 × sehari 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["tinea_pedis_portal"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "elevasi", "text": "Elevasi tungkai & istirahat; cukup minum", "kind": "benar" },
+    { "id": "tandai", "text": "Tandai batas kemerahan untuk memantau perluasan", "kind": "benar" },
+    {
+      "id": "limfedema",
+      "text": "Perawatan limfedema & kulit kaki jangka panjang",
+      "kind": "benar",
+      "when": { "traits": ["limfedema"] }
+    },
+    {
+      "id": "urut",
+      "text": "Urut/pijat bagian yang merah agar bengkak berkurang",
+      "kind": "berbahaya",
+      "why": "Penyebaran infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini erisipelas: infeksi bakteri lapisan atas kulit",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Antibiotik diminum teratur sampai habis", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila demam tinggi menggigil, kemerahan meluas cepat, kulit kehitaman/melepuh, atau pusing/lemas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 48–72 jam", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

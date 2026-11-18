@@ -1,0 +1,97 @@
+{
+  "disease": "serumen_prop",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan telinga",
+  "therapy": {
+    "items": [
+      {
+        "id": "pelunak",
+        "label": "Pelunak serumen",
+        "role": "utama",
+        "reason": "Melunakkan serumen keras sebelum ekstraksi/irigasi.",
+        "options": [
+          {
+            "drug": "karbogliserin",
+            "label": "Karbogliserin 10% tetes telinga 3–5 tetes 3 × sehari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "dose": [3, 5],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["ofloksasin_tt"],
+        "classes": ["antibiotik"],
+        "reason": "Tidak ada infeksi — antibiotik tidak diperlukan.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "ekstraksi", "text": "Ekstraksi serumen dengan pengait/kuret di bawah penerangan", "kind": "benar" },
+    {
+      "id": "irigasi",
+      "text": "Irigasi liang telinga dengan air hangat suhu tubuh",
+      "kind": "benar",
+      "when": { "notTraits": ["riwayat_perforasi"] }
+    },
+    {
+      "id": "tanpa_irigasi",
+      "text": "Jangan irigasi; ekstraksi kering (curiga perforasi)",
+      "kind": "benar",
+      "when": { "traits": ["riwayat_perforasi"] }
+    },
+    {
+      "id": "lilin",
+      "text": "Membersihkan telinga dengan lilin telinga (ear candling)",
+      "kind": "berbahaya",
+      "why": "Luka bakar & sumbatan lilin."
+    },
+    {
+      "id": "korek",
+      "text": "Bersihkan telinga dengan cotton bud/lidi lebih dalam setiap hari",
+      "kind": "berbahaya",
+      "why": "Mendorong serumen & melukai liang/membran timpani."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Telinga tersumbat kotoran telinga yang mengeras", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Teteskan obat pelunak sesuai aturan, lalu kembali untuk dibersihkan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila keluar cairan/darah, nyeri hebat, atau pusing berputar",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kembali 3–5 hari untuk ekstraksi/irigasi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Hentikan cotton bud — telinga membersihkan dirinya sendiri",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "tiap_hari",
+      "text": "Bersihkan telinga dengan cotton bud setiap hari agar tidak tersumbat lagi",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Justru mendorong serumen ke dalam."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

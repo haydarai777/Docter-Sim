@@ -1,0 +1,152 @@
+{
+  "id": "rinitis_vasomotor",
+  "name": "Rinitis vasomotor",
+  "aliases": ["Rinitis nonalergi", "Rinitis idiopatik"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Rinitis nonalergi akibat gangguan keseimbangan saraf otonom mukosa hidung: hidung tersumbat bergantian kanan-kiri (terutama saat berbaring), rinore encer, bersin jarang, tanpa gatal. Dipicu perubahan suhu/kelembapan (AC), asap rokok, bau menyengat, alkohol, stres. Mukosa merah gelap/edema; tanpa riwayat atopi, tes alergi negatif.",
+  "presentationDay": [30, 180],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 35, "weight": 3 },
+      { "min": 36, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.45,
+    "occupations": [{ "id": "pegawai_kantor", "weight": 2 }, { "id": "karyawan_bank", "weight": 1 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "pencetus_ac", "probability": 0.6 }, { "id": "pakai_semprot_dekongestan", "probability": 0.2 }],
+  "traitLabels": {
+    "pencetus_ac": "Dipicu udara dingin/AC.",
+    "pakai_semprot_dekongestan": "Memakai semprot dekongestan berkepanjangan (rinitis medikamentosa)."
+  },
+  "symptoms": [
+    { "id": "hidung_tersumbat", "probability": 1 },
+    { "id": "pilek", "probability": 0.85 },
+    { "id": "bersin", "probability": 0.3 },
+    { "id": "nyeri_kepala", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["hidung_tersumbat"], "extraPool": ["pilek"] },
+  "clueSymptoms": ["pilek", "bersin", "nyeri_kepala"],
+  "misattributions": ["sinusitis", "alergi", "polip"],
+  "fears": ["polip hidung", "sinusitis kronis"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, hilang-timbul.", "clue": "Kronik kambuhan" }],
+    "pola": [
+      {
+        "text": "Kalau masuk ruangan AC atau pagi-pagi dingin langsung mampet dan meler, Dok.",
+        "when": { "traits": ["pencetus_ac"] },
+        "clue": "Dipicu suhu dingin/AC"
+      },
+      {
+        "text": "Kalau kena asap rokok atau bau parfum langsung mampet, Dok.",
+        "when": { "notTraits": ["pencetus_ac"] },
+        "clue": "Dipicu iritan/bau menyengat"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Mampetnya gantian kanan-kiri, Dok, apalagi kalau tiduran miring. Nggak gatal.",
+        "clue": "Tersumbat bergantian, tanpa gatal"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Di keluarga nggak ada yang alergi atau asma, Dok.", "clue": "Tanpa riwayat atopi" }],
+    "riwayat_obat": [
+      {
+        "text": "Saya pakai semprot hidung pelega tiap hari sudah sebulan, Dok.",
+        "when": { "traits": ["pakai_semprot_dekongestan"] },
+        "clue": "Semprot dekongestan berkepanjangan"
+      },
+      { "text": "Kadang minum obat flu warung, Dok.", "when": { "notTraits": ["pakai_semprot_dekongestan"] } }
+    ],
+    "lokasi": [{ "text": "Di hidung, Dok, gantian kiri-kanan mampetnya." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "mukosa_konka",
+      "diagnostic": true,
+      "values": ["Konka inferior edema, mukosa merah gelap, permukaan licin"]
+    },
+    { "tool": "pemeriksaan_hidung", "param": "sekret_hidung", "values": ["Serosa/mukoid banyak"] }
+  ],
+  "differentials": [
+    {
+      "id": "rinitis_alergi",
+      "howToDistinguish": "Rinitis alergi: bersin beruntun & gatal, riwayat atopi, mukosa pucat livid, eosinofilia.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["pemeriksaan_hidung"] }
+    },
+    {
+      "id": "rinitis_medikamentosa",
+      "howToDistinguish": "Rinitis medikamentosa: tersumbat rebound akibat semprot dekongestan > 5–7 hari.",
+      "excludeBy": { "topics": ["riwayat_obat"] }
+    },
+    {
+      "id": "tumor_nasofaring",
+      "howToDistinguish": "Tumor nasofaring/polip: sumbatan menetap unilateral, mimisan, telinga penuh unilateral, benjolan leher — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_hidung", "kepala_leher"] }
+    }
+  ],
+  "keyFindings": [
+    "Hidung tersumbat bergantian & rinore encer, dipicu suhu/iritan",
+    "Tanpa gatal & tanpa riwayat atopi",
+    "Konka edema, mukosa merah gelap"
+  ],
+  "teachingPoints": ["Rinitis vasomotor adalah diagnosis eksklusi — singkirkan rinitis alergi, medikamentosa, dan kelainan struktural."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "karakter", "riwayat_keluarga", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_hidung", "role": "kunci", "reason": "Mukosa, konka, sekret, massa." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Benjolan leher (singkirkan tumor nasofaring)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "darah_lengkap", "reason": "Eosinofil normal mendukung nonalergi." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Hindari pencetus, cuci hidung, steroid intranasal; rujuk bila tidak membaik (kauterisasi/konkotomi).",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Hindari pencetus (AC langsung, asap, bau menyengat).",
+    "Cuci hidung NaCl 0,9%; kortikosteroid intranasal; dekongestan oral jangka pendek.",
+    "Hentikan semprot dekongestan bila dipakai > 5 hari.",
+    "Rujuk bila tidak membaik untuk tindakan konka."
+  ],
+  "approach": ["Gali pencetus, riwayat atopi, dan obat semprot hidung.", "Rinoskopi anterior; singkirkan massa."]
+}

@@ -1,0 +1,101 @@
+{
+  "disease": "defisiensi_mineral",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — gizi & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "iodium",
+        "label": "Iodium",
+        "role": "utama",
+        "reason": "Gondok endemik (daerah defisiensi iodium).",
+        "options": [
+          {
+            "drug": "kalium_iodida",
+            "label": "Kapsul minyak beriodium 200 mg dosis tunggal (sesuai program)",
+            "schedules": ["tunggal"],
+            "dose": [200, 200]
+          }
+        ],
+        "when": { "traits": ["iodium"] }
+      },
+      {
+        "id": "kalsium",
+        "label": "Kalsium",
+        "role": "utama",
+        "reason": "Defisiensi kalsium.",
+        "options": [
+          {
+            "drug": "kalsium",
+            "label": "Kalsium karbonat 500–1000 mg/hari",
+            "schedules": ["rutin"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 2],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "notTraits": ["iodium"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "garam",
+      "text": "Gunakan garam beryodium di rumah tangga",
+      "kind": "benar",
+      "when": { "traits": ["iodium"] }
+    },
+    {
+      "id": "kalsium_makan",
+      "text": "Susu, ikan teri, tahu, sayur hijau & paparan matahari pagi",
+      "kind": "benar",
+      "when": { "notTraits": ["iodium"] }
+    },
+    { "id": "gizi", "text": "Pola makan seimbang", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk bila gondok besar/nodular, sesak, atau tanda hipertiroid",
+      "kind": "benar",
+      "when": { "traits": ["iodium"] }
+    },
+    {
+      "id": "pijat",
+      "text": "Pijat/urut benjolan gondok agar mengecil",
+      "kind": "berbahaya",
+      "why": "Tidak bermanfaat; risiko perdarahan/cedera."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Keluhan disebabkan kekurangan mineral (iodium/kalsium) dari makanan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Suplemen diminum sesuai dosis & perbaiki pola makan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak/sulit menelan, berdebar, gemetar, atau kram/kejang otot",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–3 bulan", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "garam_kasar",
+      "text": "Garam krosok tanpa yodium lebih sehat",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Tidak mengandung iodium."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

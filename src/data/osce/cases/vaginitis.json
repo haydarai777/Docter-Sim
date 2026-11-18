@@ -1,0 +1,145 @@
+{
+  "disease": "vaginitis",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "kandida",
+        "label": "Antijamur",
+        "role": "utama",
+        "reason": "Kandidiasis vulvovaginal.",
+        "options": [
+          {
+            "drug": "flukonazol",
+            "label": "Flukonazol 150 mg oral dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["flukonazol-kap150"],
+            "dose": [150, 150]
+          },
+          {
+            "drug": "klotrimazol_vagina",
+            "label": "Klotrimazol 500 mg tablet vagina dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["klotrimazol-vag500"],
+            "dose": [500, 500]
+          }
+        ],
+        "when": { "notTraits": ["trikomonas", "hamil"] }
+      },
+      {
+        "id": "kandida_hamil",
+        "label": "Antijamur vaginal (hamil)",
+        "role": "utama",
+        "reason": "Kandidiasis pada kehamilan: azol topikal 7 hari.",
+        "options": [
+          {
+            "drug": "klotrimazol_vagina",
+            "label": "Klotrimazol 100 mg tablet vagina malam hari selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["klotrimazol-vag100"],
+            "dose": [100, 100],
+            "timesPerDay": [1, 1],
+            "days": [7, 7]
+          },
+          {
+            "drug": "klotrimazol_vagina",
+            "label": "Klotrimazol 500 mg tablet vagina dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["klotrimazol-vag500"],
+            "dose": [500, 500]
+          }
+        ],
+        "when": { "traits": ["hamil"] }
+      },
+      {
+        "id": "trikomonas",
+        "label": "Metronidazol",
+        "role": "utama",
+        "reason": "Trikomoniasis (obati pasangan).",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 2 g oral dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [2000, 2000]
+          },
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 2 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          }
+        ],
+        "when": { "traits": ["trikomonas"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["flukonazol"],
+        "reason": "Flukonazol oral dihindari pada kehamilan.",
+        "severity": "salah",
+        "when": { "traits": ["hamil"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "douching", "text": "Hindari douching & sabun wangi; celana katun longgar", "kind": "benar" },
+    {
+      "id": "pasangan_tv",
+      "text": "Obati pasangan & skrining IMS lain",
+      "kind": "benar",
+      "when": { "traits": ["trikomonas"] }
+    },
+    { "id": "gula", "text": "Periksa gula darah", "kind": "benar", "when": { "traits": ["dm_curiga"] } },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang vagina; penyebab ditentukan dari pemeriksaan cairan vagina",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Gunakan obat sesuai aturan sampai tuntas", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila nyeri perut bawah, demam, perdarahan, atau (bila hamil) keluar air ketuban",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila keluhan menetap 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "alkohol",
+      "text": "Hindari alkohol selama & 24 jam setelah metronidazol",
+      "kind": "benar",
+      "category": "efek_samping",
+      "when": { "traits": ["trikomonas"] }
+    },
+    {
+      "id": "pasangan_kandida",
+      "text": "Pasangan selalu harus diobati pada keputihan jamur",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Kandidiasis bukan IMS; pasangan hanya bila bergejala.",
+      "when": { "notTraits": ["trikomonas"] }
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

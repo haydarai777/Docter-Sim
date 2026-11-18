@@ -1,0 +1,88 @@
+{
+  "disease": "blefaritis",
+  "setting": "Puskesmas",
+  "station": "Mata — kelopak mata",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_salep",
+        "label": "Salep antibiotik tepi kelopak",
+        "role": "utama",
+        "reason": "Mengurangi kolonisasi stafilokokus di tepi kelopak.",
+        "options": [
+          {
+            "drug": "kloramfenikol_sm",
+            "label": "Kloramfenikol 1% salep mata dioles di tepi kelopak 2–3 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 14]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "kompres",
+      "text": "Kompres hangat 5–10 menit lalu bersihkan tepi kelopak dengan sampo bayi encer 2 × sehari",
+      "kind": "benar"
+    },
+    {
+      "id": "ketombe",
+      "text": "Atasi ketombe dengan sampo antiketombe",
+      "kind": "benar",
+      "when": { "traits": ["seboroik"] }
+    },
+    { "id": "kosmetik", "text": "Hindari maskara/eyeliner selama peradangan", "kind": "benar" },
+    {
+      "id": "cabut",
+      "text": "Cabuti bulu mata agar kelopak bersih",
+      "kind": "berbahaya",
+      "why": "Trauma folikel & trikiasis."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Radang menahun pada tepi kelopak mata", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Kebersihan kelopak adalah pengobatan utama; salep dioles tipis di tepi kelopak",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur atau mata sangat merah dan nyeri",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2 minggu; kebersihan kelopak dilanjutkan jangka panjang",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "sekali_sembuh",
+      "text": "Setelah salep habis tidak perlu membersihkan kelopak lagi",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Kronik kambuhan; higiene kelopak berkelanjutan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

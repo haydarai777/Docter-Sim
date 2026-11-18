@@ -1,0 +1,135 @@
+{
+  "disease": "hiperurisemia",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — nyeri sendi & otot",
+  "therapy": {
+    "items": [
+      {
+        "id": "antiinflamasi",
+        "label": "Antiinflamasi serangan akut",
+        "role": "utama",
+        "reason": "Artritis gout akut.",
+        "options": [
+          {
+            "drug": "kolkisin",
+            "label": "Kolkisin 0,5 mg 2–3 × sehari selama 3–7 hari",
+            "schedules": ["rutin"],
+            "dose": [0.5, 0.5],
+            "timesPerDay": [2, 3],
+            "days": [3, 7]
+          },
+          {
+            "drug": "natrium_diklofenak",
+            "label": "Natrium diklofenak 2–3 × 50 mg sesudah makan selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [50, 50],
+            "timesPerDay": [2, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "prednison",
+            "label": "Prednison 30 mg/hari selama 5 hari (bila OAINS/kolkisin kontraindikasi)",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 1],
+            "days": [5, 5]
+          }
+        ]
+      },
+      {
+        "id": "alopurinol",
+        "label": "Penurun asam urat",
+        "role": "opsional",
+        "reason": "≥ 2 serangan/tahun atau tofus — dimulai/dilanjutkan dengan proteksi antiinflamasi.",
+        "options": [
+          {
+            "drug": "alopurinol",
+            "label": "Alopurinol mulai 100 mg/hari, titrasi hingga asam urat < 6 mg/dL",
+            "schedules": ["rutin"],
+            "forms": ["alopurinol-tab100"],
+            "dose": [100, 300],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "groups": ["salisilat"], "reason": "Aspirin/salisilat meningkatkan kadar asam urat.", "severity": "salah" },
+      { "drugs": ["hidroklorotiazid"], "reason": "Tiazid meningkatkan asam urat.", "severity": "salah" }
+    ]
+  },
+  "nonPharm": [
+    { "id": "istirahat", "text": "Istirahatkan & elevasi sendi, kompres dingin", "kind": "benar" },
+    {
+      "id": "diet",
+      "text": "Diet rendah purin (kurangi jeroan, daging merah, seafood), hindari alkohol & minuman manis, cukup minum",
+      "kind": "benar"
+    },
+    {
+      "id": "ult",
+      "text": "Rencanakan terapi penurun asam urat jangka panjang (alopurinol)",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["berulang"] }, { "traits": ["tofus"] }]
+    },
+    {
+      "id": "tiazid",
+      "text": "Ganti diuretik tiazid dengan antihipertensi lain",
+      "kind": "benar",
+      "when": { "traits": ["diuretik"] }
+    },
+    { "id": "pijat", "text": "Pijat keras sendi yang bengkak", "kind": "berbahaya", "why": "Memperberat inflamasi." }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini asam urat tinggi dengan serangan radang sendi (gout)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat antiradang diminum sampai serangan reda; obat penurun asam urat diminum rutin jangka panjang bila diresepkan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Kolkisin dapat menyebabkan diare; OAINS diminum sesudah makan",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam tinggi dengan sendi sangat merah (curiga infeksi), nyeri pinggang/kencing berdarah, atau ruam kulit setelah alopurinol",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu & cek asam urat berkala", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "sayur",
+      "text": "Sayur bayam & kacang-kacangan penyebab utama asam urat",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Purin nabati jauh kurang berpengaruh dibanding jeroan/seafood/alkohol."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PRI. Rekomendasi Diagnosis & Pengelolaan Gout (2018)"
+    ]
+  }
+}

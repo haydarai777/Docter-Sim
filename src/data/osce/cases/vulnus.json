@@ -1,0 +1,304 @@
+{
+  "disease": "vulnus",
+  "setting": "Puskesmas",
+  "station": "Bedah — luka & luka bakar",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri luka.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Nyeri luka.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "ab_tusuk",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Luka tusuk (risiko infeksi tinggi).",
+        "options": [
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["punctum"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_tusuk_anak",
+        "label": "Antibiotik (anak)",
+        "role": "utama",
+        "reason": "Luka tusuk (risiko infeksi tinggi).",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["punctum"], "ageMax": 11 }
+      },
+      {
+        "id": "ab_kotor",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Luka kotor/terkontaminasi.",
+        "options": [
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["kotor"], "notTraits": ["punctum"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_kotor_anak",
+        "label": "Antibiotik (anak)",
+        "role": "utama",
+        "reason": "Luka kotor/terkontaminasi.",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["kotor"], "notTraits": ["punctum"], "ageMax": 11 }
+      },
+      {
+        "id": "td",
+        "label": "Imunisasi tetanus",
+        "role": "utama",
+        "reason": "Status imunisasi tetanus tidak lengkap/> 5 tahun.",
+        "options": [{ "drug": "toksoid_tetanus", "label": "Vaksin Td 0,5 mL IM", "schedules": ["tunggal"], "dose": [0.5, 0.5] }],
+        "when": { "traits": ["tt_tidak_lengkap"] }
+      },
+      {
+        "id": "htig",
+        "label": "Imunoglobulin tetanus",
+        "role": "pendukung",
+        "reason": "Luka rawan tetanus + imunisasi tidak lengkap.",
+        "options": [
+          {
+            "drug": "htig",
+            "label": "HTIG 250 IU IM (sisi berbeda dari vaksin)",
+            "schedules": ["tunggal"],
+            "dose": [250, 500]
+          }
+        ],
+        "when": { "traits": ["tt_tidak_lengkap", "kotor"] }
+      },
+      {
+        "id": "htig_tusuk",
+        "label": "Imunoglobulin tetanus",
+        "role": "pendukung",
+        "reason": "Luka tusuk + imunisasi tidak lengkap.",
+        "options": [
+          {
+            "drug": "htig",
+            "label": "HTIG 250 IU IM (sisi berbeda dari vaksin)",
+            "schedules": ["tunggal"],
+            "dose": [250, 500]
+          }
+        ],
+        "when": { "traits": ["tt_tidak_lengkap", "punctum"], "notTraits": ["kotor"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "irigasi",
+      "text": "Hentikan perdarahan, anestesi lokal, irigasi NaCl 0,9% berlimpah & debridemen",
+      "kind": "benar"
+    },
+    {
+      "id": "jahit",
+      "text": "Jahit primer (laserasi bersih < 6–8 jam)",
+      "kind": "benar",
+      "when": { "notTraits": ["punctum", "kotor", "terlambat", "cedera_tendon", "benda_asing"] }
+    },
+    {
+      "id": "tidak_jahit",
+      "text": "Jangan jahit primer — biarkan terbuka/jahit tertunda",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["punctum"] }, { "traits": ["kotor"] }, { "traits": ["terlambat"] }]
+    },
+    {
+      "id": "tendon",
+      "text": "Tutup luka steril & rujuk untuk repair tendon",
+      "kind": "benar",
+      "when": { "traits": ["cedera_tendon"] }
+    },
+    {
+      "id": "eksplorasi",
+      "text": "Eksplorasi & keluarkan benda asing sebelum menutup luka",
+      "kind": "benar",
+      "when": { "traits": ["benda_asing"] }
+    },
+    {
+      "id": "kopi",
+      "text": "Tutup luka dengan bubuk kopi/abu agar darah berhenti",
+      "kind": "berbahaya",
+      "why": "Kontaminasi & infeksi (termasuk tetanus)."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Luka robek/tusuk sudah dibersihkan & ditangani", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat diminum sesuai aturan; jaga luka tetap bersih & kering",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila luka merah-bengkak-bernanah, demam, kaku rahang/otot, atau jari/tangan kesemutan/tidak bisa digerakkan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–3 hari; angkat jahitan 7–14 hari sesuai lokasi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Lengkapi imunisasi tetanus & gunakan alat pelindung saat bekerja",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "basah",
+      "text": "Luka jahitan boleh direndam air sejak hari pertama",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Jaga kering 24–48 jam pertama."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "ATLS 10th ed. — prinsip penanganan luka",
+      "Kemenkes RI. PNPK Tata Laksana Luka Bakar (2019)"
+    ]
+  }
+}

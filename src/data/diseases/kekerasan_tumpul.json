@@ -1,0 +1,264 @@
+{
+  "id": "kekerasan_tumpul",
+  "name": "Luka akibat kekerasan tumpul",
+  "aliases": ["Kekerasan tumpul", "Memar", "Luka lecet", "Penganiayaan", "KDRT"],
+  "system": "Trauma & forensik",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Cedera akibat benda tumpul (pukulan, tendangan, benturan, jatuh): memar (kontusio), luka lecet (ekskoriasi, lecet tekan/geser), luka robek tepi tidak rata dengan jembatan jaringan. Dokter wajib menangani cedera, menyingkirkan cedera kepala/fraktur/organ dalam, dan mendokumentasikan luka secara rinci (lokasi, jenis, ukuran, bentuk, warna) untuk Visum et Repertum bila ada permintaan resmi penyidik. Pada KDRT: jaga kerahasiaan, keselamatan, dan rujuk layanan perlindungan.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 3 },
+      { "min": 31, "max": 50, "weight": 3 },
+      { "min": 51, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "kdrt", "probability": 0.4, "when": { "sex": "female" } },
+    { "id": "permintaan_ver", "probability": 0.45 },
+    { "id": "cedera_kepala", "probability": 0.06 },
+    { "id": "fraktur_curiga", "probability": 0.1 }
+  ],
+  "traitLabels": {
+    "kdrt": "Kekerasan dalam rumah tangga.",
+    "permintaan_ver": "Datang bersama surat permintaan visum dari penyidik.",
+    "cedera_kepala": "Tanda cedera kepala.",
+    "fraktur_curiga": "Curiga fraktur."
+  },
+  "symptoms": [
+    { "id": "nyeri_kepala", "probability": 1, "when": { "traits": ["cedera_kepala"] } },
+    { "id": "mual_muntah", "probability": 0.8, "when": { "traits": ["cedera_kepala"] } },
+    { "id": "memar", "probability": 1 },
+    { "id": "nyeri_luka", "probability": 1 },
+    { "id": "cemas", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["memar"], "extraPool": ["nyeri_luka"] },
+  "clueSymptoms": ["nyeri_luka", "nyeri_kepala", "mual_muntah", "cemas"],
+  "misattributions": ["jatuh sendiri", "kepeleset"],
+  "fears": ["dilaporkan", "dibalas pelaku", "patah tulang"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Tadi malam, Dok, saya dipukul suami pakai tangan dan didorong ke tembok.",
+        "when": { "traits": ["kdrt"] },
+        "clue": "Kekerasan oleh pasangan (KDRT) beberapa jam lalu"
+      },
+      {
+        "text": "Tadi sore, Dok, saya dikeroyok orang di jalan, dipukul dan ditendang.",
+        "when": { "notTraits": ["kdrt"] },
+        "clue": "Dipukul & ditendang (penganiayaan)"
+      }
+    ],
+    "lokasi": [{ "text": "Lengan kiri biru, pipi lecet, perut sakit kena tendang, Dok.", "clue": "Multiple lokasi cedera" }],
+    "keparahan": [
+      {
+        "text": "Kepala saya pusing berat, sempat nggak ingat kejadiannya, sudah muntah dua kali, Dok.",
+        "reveals": ["nyeri_kepala", "mual_muntah"],
+        "when": { "traits": ["cedera_kepala"], "symptoms": ["nyeri_kepala", "mual_muntah"] },
+        "clue": "Amnesia & muntah berulang (cedera kepala)"
+      },
+      {
+        "text": "Lengan kiri saya sakit sekali kalau digerakkan, bengkak, Dok.",
+        "when": { "traits": ["fraktur_curiga"] },
+        "clue": "Nyeri hebat & bengkak (curiga fraktur)"
+      },
+      {
+        "text": "Nggak pingsan, Dok, nggak muntah, napas biasa.",
+        "when": { "notTraits": ["cedera_kepala", "fraktur_curiga"] },
+        "clue": "Tanpa tanda cedera kepala/dalam"
+      }
+    ],
+    "harapan": [
+      {
+        "text": "Saya datang bersama polisi, Dok, mau dibuatkan visum.",
+        "when": { "traits": ["permintaan_ver"] },
+        "clue": "Permintaan visum resmi dari penyidik"
+      },
+      {
+        "text": "Saya cuma mau diobati, Dok, belum berani lapor.",
+        "when": { "notTraits": ["permintaan_ver"] },
+        "clue": "Belum melapor (perlu dukungan & kerahasiaan)"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Nggak ada penyakit yang bikin gampang memar, Dok. Nggak minum pengencer darah.",
+        "clue": "Tanpa gangguan pembekuan"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "distal",
+      "when": { "traits": ["fraktur_curiga"] },
+      "values": ["Lengan kiri bengkak, nyeri tekan sepertiga tengah lengan bawah, gerak terbatas; pulsasi & sensorik distal baik"]
+    },
+    {
+      "tool": "rontgen_ekstremitas",
+      "param": "tulang",
+      "when": { "traits": ["fraktur_curiga"] },
+      "values": ["Fraktur transversal tanpa pergeseran di sepertiga tengah ulna kiri"]
+    },
+    {
+      "tool": "rontgen_ekstremitas",
+      "param": "kesan",
+      "when": { "traits": ["fraktur_curiga"] },
+      "values": ["Fraktur ulna kiri (nightstick fracture)"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesadaran",
+      "when": { "traits": ["cedera_kepala"] },
+      "values": ["Somnolen ringan (GCS 14: E3V5M6)"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "diagnostic": true,
+      "values": [
+        "Memar kebiruan 5 × 4 cm di lengan atas kiri sisi luar & luka lecet tekan 3 × 1 cm di pipi kiri; memar 6 × 5 cm di perut kiri"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "values": [
+        "Memar berbentuk lonjong sejajar (pola jari); lecet dengan dasar kemerahan, tidak ada jembatan jaringan yang terbuka"
+      ]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "values": ["Nyeri tekan ringan regio lumbal kiri tanpa defans"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "range": [90, 104] }
+  ],
+  "differentials": [
+    {
+      "id": "cedera_kepala",
+      "howToDistinguish": "Cedera kepala: penurunan kesadaran, amnesia, muntah berulang, nyeri kepala hebat, defisit neurologis — rujuk segera untuk CT.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["keadaan_umum", "neurologis"] }
+    },
+    {
+      "id": "fraktur_tertutup",
+      "howToDistinguish": "Fraktur: nyeri hebat, deformitas, krepitasi, gangguan fungsi — imobilisasi & rontgen.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_lokalis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "gangguan_pembekuan",
+      "howToDistinguish": "Memar mudah/tanpa trauma jelas: gangguan pembekuan — telusuri riwayat.",
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "kekerasan_tajam",
+      "howToDistinguish": "Kekerasan tajam: tepi luka rata, sudut lancip, tanpa jembatan jaringan.",
+      "excludeBy": { "tools": ["status_lokalis"] }
+    }
+  ],
+  "keyFindings": [
+    "Riwayat kekerasan benda tumpul (pukulan, tendangan, benturan)",
+    "Memar, lecet, luka robek tepi tidak rata dengan jembatan jaringan — didokumentasikan rinci",
+    "Singkirkan cedera kepala, fraktur, cedera organ dalam"
+  ],
+  "teachingPoints": [
+    "Deskripsi luka forensik: regio & koordinat, jenis luka, bentuk, ukuran, tepi, dasar, warna (umur memar), benda penyebab — tanpa menyimpulkan pelaku.",
+    "Visum et Repertum dibuat hanya atas permintaan tertulis penyidik; perawatan medis tidak boleh ditunda menunggu surat."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Budiyanto A, dkk. Ilmu Kedokteran Forensik — Visum et Repertum",
+      "UU No. 23/2004 tentang Penghapusan KDRT"
+    ]
+  },
+  "complications": [
+    {
+      "id": "cedera_kepala",
+      "name": "Cedera kepala",
+      "trait": "cedera_kepala",
+      "redFlag": true,
+      "assess": { "tools": ["keadaan_umum", "neurologis"] },
+      "explanation": "GCS turun, amnesia, muntah berulang — rujuk segera."
+    },
+    {
+      "id": "fraktur_curiga",
+      "name": "Fraktur tertutup",
+      "trait": "fraktur_curiga",
+      "redFlag": true,
+      "assess": { "tools": ["rontgen_ekstremitas", "status_lokalis"] },
+      "explanation": "Imobilisasi bidai & rujuk ortopedi."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_lokalis", "role": "kunci", "reason": "Dokumentasi rinci setiap luka." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Kesadaran & tanda syok." },
+      { "tool": "neurologis", "role": "kunci", "reason": "Defisit neurologis (cedera kepala)." },
+      { "tool": "pemeriksaan_abdomen", "role": "pendukung", "reason": "Cedera organ dalam." }
+    ],
+    "tests": [
+      {
+        "tool": "rontgen_ekstremitas",
+        "role": "komplikasi",
+        "when": { "traits": ["fraktur_curiga"] },
+        "reason": "Fraktur."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Cedera kepala: stabilisasi & rujuk segera.",
+      "when": { "traits": ["cedera_kepala"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Fraktur: imobilisasi, analgesik, rujuk ortopedi; dokumentasi luka.",
+      "when": { "traits": ["fraktur_curiga"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Rawat luka, kompres dingin, analgesik, dokumentasi/visum bila diminta penyidik; KDRT: rujuk layanan perlindungan; kontrol bila memburuk."
+    }
+  ],
+  "management": [
+    "Tangani cedera: kompres dingin memar 24–48 jam, rawat lecet (bersihkan, antiseptik), analgesik.",
+    "Singkirkan cedera kepala, fraktur, & organ dalam; observasi tanda bahaya.",
+    "Dokumentasi rinci (deskripsi & foto bila izin) di rekam medis; VeR atas permintaan tertulis penyidik.",
+    "KDRT: kerahasiaan, penilaian keselamatan, rujuk P2TP2A/UPTD PPA, konseling; anak: wajib lapor."
+  ],
+  "approach": [
+    "Prioritaskan kegawatan (ABCDE), lalu dokumentasi forensik.",
+    "Gali mekanisme dengan empati; nilai keselamatan pasien."
+  ]
+}

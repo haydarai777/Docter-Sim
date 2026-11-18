@@ -1,0 +1,215 @@
+{
+  "disease": "disentri",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — diare & muntah",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_basiler",
+        "label": "Antibiotik disentri basiler",
+        "role": "utama",
+        "reason": "Shigella.",
+        "options": [
+          {
+            "drug": "siprofloksasin",
+            "label": "Siprofloksasin 2 × 500 mg selama 3 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [3, 3]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 × 500 mg selama 3 hari",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          },
+          {
+            "drug": "sefiksim",
+            "label": "Sefiksim 2 × 200 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefiksim-kap200"],
+            "dose": [200, 200],
+            "timesPerDay": [2, 2],
+            "days": [5, 5]
+          }
+        ],
+        "when": { "notTraits": ["amuba"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_basiler_anak",
+        "label": "Antibiotik disentri basiler (anak)",
+        "role": "utama",
+        "reason": "Shigella.",
+        "options": [
+          {
+            "drug": "sefiksim",
+            "label": "Sefiksim 4 mg/kgBB/kali 2 × sehari (8 mg/kgBB/hari) selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefiksim-syr"],
+            "dosePerKg": [3.5, 8.5],
+            "timesPerDay": [1, 2],
+            "days": [5, 5]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 10 mg/kgBB 1 × sehari selama 3 hari",
+            "schedules": ["rutin"],
+            "forms": ["azitromisin-syr200"],
+            "dosePerKg": [9, 12],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          }
+        ],
+        "when": { "notTraits": ["amuba"], "ageMax": 11 }
+      },
+      {
+        "id": "amuba",
+        "label": "Amebisida",
+        "role": "utama",
+        "reason": "Disentri amuba.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 3 × 500–750 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [500, 750],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["amuba"], "ageMin": 12 }
+      },
+      {
+        "id": "amuba_anak",
+        "label": "Amebisida (anak)",
+        "role": "utama",
+        "reason": "Disentri amuba.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 10 mg/kgBB/kali 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-syr125"],
+            "dosePerKg": [8, 12],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["amuba"], "ageMax": 11 }
+      },
+      {
+        "id": "zinc",
+        "label": "Zinc",
+        "role": "pendukung",
+        "reason": "Diare anak.",
+        "options": [
+          {
+            "drug": "zinc",
+            "label": "Zinc 1 × 10 mg (< 6 bulan) / 20 mg (≥ 6 bulan) selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "oralit",
+        "label": "Rehidrasi oral",
+        "role": "pendukung",
+        "reason": "Dehidrasi ringan–sedang.",
+        "options": [
+          {
+            "drug": "oralit",
+            "label": "Oralit 200 mL setiap BAB cair/muntah",
+            "schedules": ["prn", "rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          },
+          {
+            "drug": "oralit",
+            "label": "Oralit 50–200 mL (¼–1 sachet) setiap BAB cair (< 2 th 50–100 mL; 2–10 th 100–200 mL)",
+            "schedules": ["prn", "rutin"],
+            "dose": [0.25, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          }
+        ],
+        "when": { "traits": ["dehidrasi"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["loperamid"],
+        "reason": "Antimotilitas dikontraindikasikan pada diare berdarah.",
+        "severity": "kritis"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "makan", "text": "Lanjutkan makan & ASI, porsi kecil sering", "kind": "benar" },
+    { "id": "cuci", "text": "Cuci tangan pakai sabun & jamban sehat", "kind": "benar" },
+    { "id": "air", "text": "Air minum dimasak; pisahkan alat makan", "kind": "benar" },
+    {
+      "id": "puasa",
+      "text": "Puasakan/hentikan makan dan ASI sampai diare berhenti",
+      "kind": "berbahaya",
+      "why": "Memperberat malnutrisi & dehidrasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini disentri: diare berdarah/berlendir karena infeksi usus besar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antibiotik diminum sampai habis; cairan & makan tetap dilanjutkan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam tinggi, sangat lemas, tidak mau minum, kencing sedikit, atau perut kembung hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2 hari; bila belum membaik antibiotik dievaluasi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Cuci tangan pakai sabun sebelum makan & sesudah BAB",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "loperamid",
+      "text": "Minum obat penghenti diare agar darah berhenti",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Antimotilitas memperberat disentri (megakolon toksik)."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (2022)"
+    ]
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "disease": "dispepsia",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — nyeri dada/ulu hati",
+  "therapy": {
+    "items": [
+      {
+        "id": "eps",
+        "label": "Penekan asam (pola nyeri/perih)",
+        "role": "utama",
+        "reason": "Epigastric pain syndrome: PPI.",
+        "options": [
+          {
+            "drug": "omeprazol",
+            "label": "Omeprazol 20 mg 1–2 × sehari 30 menit sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 2],
+            "days": [14, 56]
+          },
+          {
+            "drug": "lansoprazol",
+            "label": "Lansoprazol 30 mg 1 × sehari sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [30, 30],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          }
+        ],
+        "when": { "traits": ["nyeri_epigastrium"] }
+      },
+      {
+        "id": "pds",
+        "label": "Prokinetik/penekan asam (pola begah/cepat kenyang)",
+        "role": "utama",
+        "reason": "Postprandial distress syndrome: prokinetik atau PPI.",
+        "options": [
+          {
+            "drug": "domperidon",
+            "label": "Domperidon 10 mg 3 × sehari 15–30 menit sebelum makan, 1–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [10, 10],
+            "timesPerDay": [3, 3],
+            "days": [7, 28]
+          },
+          {
+            "drug": "metoklopramid",
+            "label": "Metoklopramid 10 mg 3 × sehari sebelum makan, maks. 5 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 10],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "omeprazol",
+            "label": "Omeprazol 20 mg 1–2 × sehari 30 menit sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 2],
+            "days": [14, 56]
+          },
+          {
+            "drug": "lansoprazol",
+            "label": "Lansoprazol 30 mg 1 × sehari sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [30, 30],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          }
+        ],
+        "when": { "notTraits": ["nyeri_epigastrium"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains"],
+        "reason": "OAINS dapat memicu kerusakan mukosa; dispepsia fungsional tidak memerlukannya.",
+        "severity": "salah"
+      },
+      {
+        "classes": ["antibiotik"],
+        "reason": "Antibiotik hanya untuk eradikasi H. pylori yang terbukti.",
+        "severity": "salah",
+        "when": { "notTraits": ["h_pylori"] }
+      }
+    ],
+    "note": "Bila tes H. pylori positif: eradikasi (PPI + amoksisilin + klaritromisin 14 hari). Usia > 55 tahun/tanda alarm → rujuk endoskopi."
+  },
+  "nonPharm": [
+    { "id": "makan", "text": "Makan teratur porsi kecil tapi sering", "kind": "benar" },
+    { "id": "hindari", "text": "Kurangi kopi, makanan berlemak, pedas, dan berkuah santan", "kind": "benar" },
+    { "id": "stres", "text": "Kelola stres dan cukup tidur", "kind": "benar" },
+    { "id": "oains", "text": "Hindari obat antinyeri golongan OAINS/jamu pegal linu", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk untuk endoskopi",
+      "kind": "benar",
+      "why": "Usia > 55 tahun dengan keluhan dispepsia.",
+      "when": { "ageMin": 56 }
+    },
+    { "id": "puasa", "text": "Puasa beberapa hari agar lambung beristirahat", "kind": "pengecoh" },
+    {
+      "id": "jamu",
+      "text": "Minum jamu pegal linu agar perut lebih enak",
+      "kind": "berbahaya",
+      "why": "Jamu pegal linu sering mengandung OAINS/steroid."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Keluhan lambung fungsional: tidak ada luka atau kanker, lambung lebih sensitif terhadap makanan & stres",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum obat sesuai jadwal sebelum makan; keluhan bisa kambuh sehingga pola hidup sangat penting",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila berat badan turun, muntah darah, BAB hitam, sulit menelan, atau tampak pucat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu untuk menilai respons", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Jaga pola makan teratur dan kelola stres", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "kanker",
+      "text": "Keluhan ini pasti kanker lambung sehingga harus dioperasi",
+      "kind": "pengecoh",
+      "category": "diagnosis"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)",
+      "Rome IV — Functional Gastroduodenal Disorders"
+    ]
+  }
+}

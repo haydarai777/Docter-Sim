@@ -1,0 +1,171 @@
+{
+  "id": "urtikaria_akut",
+  "name": "Urtikaria akut",
+  "aliases": ["Biduran", "Kaligata", "Hives", "Urtikaria"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.4,
+  "summary": "Urtika (bentol eritematosa edematosa, sangat gatal) yang masing-masing hilang < 24 jam tanpa bekas namun muncul berulang, total durasi < 6 minggu, ± angioedema. Pencetus tersering: infeksi (terutama pada anak), makanan, obat (OAINS, antibiotik), gigitan serangga; sering tidak teridentifikasi. Bedakan dari anafilaksis (gangguan napas/sirkulasi). Terapi: hindari pencetus, antihistamin H1 non-sedatif.",
+  "presentationDay": [1, 14],
+  "demographics": {
+    "ageBands": [{ "min": 3, "max": 9, "weight": 2 }, { "min": 10, "max": 30, "weight": 4 }, { "min": 31, "max": 60, "weight": 3 }],
+    "maleRatio": 0.45
+  },
+  "traits": [
+    { "id": "pencetus_infeksi", "probability": 0.3 },
+    { "id": "pencetus_obat", "probability": 0.2, "when": { "notTraits": ["pencetus_infeksi"] } },
+    { "id": "angioedema", "probability": 0.25 }
+  ],
+  "traitLabels": {
+    "pencetus_infeksi": "Dipicu infeksi (ISPA).",
+    "pencetus_obat": "Dipicu obat (OAINS/antibiotik).",
+    "angioedema": "Disertai angioedema."
+  },
+  "symptoms": [
+    { "id": "bengkak_bibir_mata", "probability": 1, "when": { "traits": ["angioedema"] } },
+    { "id": "pilek", "probability": 0.7, "when": { "traits": ["pencetus_infeksi"] } },
+    { "id": "nyeri_tenggorokan", "probability": 0.5, "when": { "traits": ["pencetus_infeksi"] } },
+    { "id": "biduran", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["biduran"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "bengkak_bibir_mata", "pilek", "nyeri_tenggorokan"],
+  "misattributions": ["alergi makanan", "kena ulat", "masuk angin"],
+  "fears": ["alergi seumur hidup", "sesak napas"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sejak {lamaSakit} lalu, Dok, bentol-bentol merah gatal muncul di mana-mana, pindah-pindah.",
+        "clue": "Akut, urtika berpindah"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Tiap bentol hilang sendiri dalam beberapa jam tanpa bekas, Dok, tapi muncul yang baru.",
+        "clue": "Lesi < 24 jam tanpa bekas"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Seminggu ini saya batuk pilek dan sakit tenggorokan, Dok.",
+        "reveals": ["pilek"],
+        "when": { "traits": ["pencetus_infeksi"], "symptoms": ["pilek"] },
+        "clue": "Didahului ISPA"
+      },
+      {
+        "text": "Tiga hari lalu minum obat sakit gigi asam mefenamat, Dok.",
+        "when": { "traits": ["pencetus_obat"] },
+        "clue": "Didahului OAINS"
+      },
+      {
+        "text": "Nggak makan atau minum obat yang aneh, Dok.",
+        "when": { "notTraits": ["pencetus_infeksi", "pencetus_obat"] }
+      }
+    ],
+    "keparahan": [{ "text": "Napas lega, Dok, nggak pusing atau mual.", "clue": "Tanpa gangguan napas/sirkulasi" }],
+    "episode_sebelumnya": [{ "text": "Baru kali ini, Dok, belum sampai berminggu-minggu.", "clue": "Durasi < 6 minggu (akut)" }],
+    "lokasi": [{ "text": "Di badan, lengan, sama kaki, Dok, pindah-pindah." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "when": { "traits": ["angioedema"] },
+      "values": ["Edema kelopak mata bilateral (angioedema)"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["pencetus_infeksi"] },
+      "values": ["Faring hiperemis"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Generalisata (badan, lengan, tungkai)"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": [
+        "Urtika eritematosa berbagai ukuran & bentuk geografis, sebagian konfluens; lesi lama hilang < 24 jam tanpa bekas"
+      ]
+    },
+    { "tool": "status_dermatologis", "param": "tanda_khusus", "values": ["Dermografisme (+)"] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "range": [112, 130] },
+    { "tool": "tanda_vital", "param": "spo2", "range": [97, 99] }
+  ],
+  "differentials": [
+    {
+      "id": "reaksi_anafilaktik",
+      "howToDistinguish": "Anafilaksis: urtikaria DISERTAI sesak, mengi, stridor, hipotensi, atau muntah hebat — adrenalin IM.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "erupsi_obat",
+      "howToDistinguish": "Erupsi obat makulopapular: lesi menetap berhari-hari, simetris, tidak berpindah.",
+      "excludeBy": { "topics": ["karakter"] }
+    },
+    {
+      "id": "urtikaria_vaskulitis",
+      "howToDistinguish": "Urtikaria vaskulitis: lesi > 24 jam, nyeri, meninggalkan purpura.",
+      "excludeBy": { "topics": ["karakter"] }
+    }
+  ],
+  "keyFindings": [
+    "Urtika gatal berpindah, tiap lesi hilang < 24 jam tanpa bekas",
+    "Durasi < 6 minggu; pencetus infeksi/obat/makanan",
+    "Tanpa gangguan napas/sirkulasi"
+  ],
+  "teachingPoints": ["Antihistamin H1 non-sedatif dapat dinaikkan hingga 4 kali dosis standar bila belum terkontrol."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "keparahan", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Urtika & dermografisme." },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Mengi (singkirkan anafilaksis)." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Edema faring & fokus infeksi." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Antihistamin H1, hindari pencetus, edukasi tanda anafilaksis; kontrol 1–2 minggu."
+    }
+  ],
+  "management": [
+    "Antihistamin H1 non-sedatif (setirizin/loratadin) 1–2 minggu, dapat dinaikkan; CTM malam bila perlu.",
+    "Kortikosteroid oral singkat (3–5 hari) bila berat/angioedema.",
+    "Hindari pencetus (obat tersangka, OAINS); obati infeksi.",
+    "Kembali segera bila sesak, bengkak lidah, atau pusing."
+  ],
+  "approach": ["Pastikan urtika (hilang < 24 jam) & singkirkan anafilaksis.", "Cari pencetus."]
+}

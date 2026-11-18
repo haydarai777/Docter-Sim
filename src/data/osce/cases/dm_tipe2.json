@@ -1,0 +1,118 @@
+{
+  "disease": "dm_tipe2",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "metformin",
+        "label": "Antidiabetes oral lini pertama",
+        "role": "utama",
+        "reason": "Metformin menurunkan produksi glukosa hati; aman terhadap hipoglikemia.",
+        "options": [
+          {
+            "drug": "metformin",
+            "label": "Metformin 500 mg 2–3 × sehari sesudah makan (mulai dosis rendah)",
+            "schedules": ["rutin"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 3],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "notTraits": ["hiperglikemia_berat"] }
+      },
+      {
+        "id": "metformin_berat",
+        "label": "Antidiabetes oral sambil rujuk",
+        "role": "pendukung",
+        "reason": "Hiperglikemia berat memerlukan insulin di RS; metformin boleh sambil merujuk.",
+        "options": [
+          {
+            "drug": "metformin",
+            "label": "Metformin 500 mg 2–3 × sehari sesudah makan",
+            "schedules": ["rutin"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 3],
+            "days": [3, 30]
+          }
+        ],
+        "when": { "traits": ["hiperglikemia_berat"] }
+      }
+    ],
+    "avoid": [{ "groups": ["steroid"], "reason": "Kortikosteroid menaikkan gula darah.", "severity": "salah" }],
+    "note": "Target HbA1c < 7%. Hiperglikemia berat/ketosis → rujuk segera (insulin). Sesuaikan metformin bila eGFR < 45."
+  },
+  "nonPharm": [
+    { "id": "tnm", "text": "Terapi nutrisi medis: jadwal, jumlah, dan jenis makanan teratur (3J)", "kind": "benar" },
+    {
+      "id": "aktivitas",
+      "text": "Aktivitas fisik 150 menit/minggu (mis. jalan cepat 30 menit, 5 hari)",
+      "kind": "benar"
+    },
+    { "id": "bb", "text": "Turunkan berat badan 5–10%", "kind": "benar", "when": { "traits": ["obesitas"] } },
+    { "id": "kaki", "text": "Periksa dan rawat kaki setiap hari; pakai alas kaki", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Pasang infus dan rujuk segera (hiperglikemia berat)",
+      "kind": "benar",
+      "when": { "traits": ["hiperglikemia_berat"] }
+    },
+    { "id": "tanpa_nasi", "text": "Hindari semua nasi dan karbohidrat sama sekali", "kind": "pengecoh" },
+    {
+      "id": "air_panas",
+      "text": "Rendam kaki dengan air panas bila kesemutan",
+      "kind": "berbahaya",
+      "why": "Neuropati menurunkan rasa panas → luka bakar."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Kencing manis: gula darah tinggi menahun yang perlu dikendalikan seumur hidup",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Metformin diminum sesudah makan secara teratur",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Awal minum metformin bisa mual/diare ringan; biasanya membaik bertahap",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke dokter bila luka kaki tidak sembuh, sangat haus & lemas, bingung, atau gemetar-berkeringat dingin",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol gula darah tiap bulan, HbA1c tiap 3 bulan, serta periksa mata, ginjal, dan kaki tiap tahun",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Jaga pola makan, aktivitas fisik, dan berat badan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Bila gula sudah normal, obat boleh dihentikan sendiri",
+      "kind": "berbahaya",
+      "category": "pengobatan"
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["PERKENI. Pedoman Pengelolaan dan Pencegahan DM Tipe 2 di Indonesia (2021)"]
+  }
+}

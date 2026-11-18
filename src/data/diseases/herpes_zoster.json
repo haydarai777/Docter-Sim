@@ -1,0 +1,211 @@
+{
+  "id": "herpes_zoster",
+  "name": "Herpes zoster tanpa komplikasi",
+  "aliases": ["Cacar ular", "Dompo", "Shingles", "Herpes zoster"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.2,
+  "summary": "Reaktivasi virus varisela-zoster di ganglion sensoris, umumnya usia > 50 tahun atau imunokompromais. Nyeri/terbakar/gatal prodromal di satu dermatom 1–3 hari, lalu vesikel berkelompok di atas dasar eritema UNILATERAL mengikuti dermatom, tidak melewati garis tengah. Komplikasi: neuralgia pascaherpetika, herpes zoster oftalmikus (tanda Hutchinson — rujuk). Asiklovir dalam 72 jam.",
+  "presentationDay": [2, 6],
+  "demographics": {
+    "ageBands": [
+      { "min": 20, "max": 49, "weight": 2 },
+      { "min": 50, "max": 64, "weight": 3 },
+      { "min": 65, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "oftalmikus", "probability": 0.08 },
+    { "id": "imunokompromais", "probability": 0.06, "when": { "ageMax": 49 } }
+  ],
+  "traitLabels": {
+    "oftalmikus": "Herpes zoster oftalmikus (dermatom V1).",
+    "imunokompromais": "Usia muda — pertimbangkan imunokompromais (HIV)."
+  },
+  "symptoms": [
+    { "id": "mata_merah", "probability": 1, "when": { "traits": ["oftalmikus"] } },
+    { "id": "nyeri_terbakar_kulit", "probability": 1 },
+    { "id": "lepuh_kulit", "probability": 1 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.3 },
+    { "id": "gatal_kulit", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["lepuh_kulit", "nyeri_terbakar_kulit"], "extraPool": ["nyeri_terbakar_kulit"] },
+  "clueSymptoms": ["demam", "lemas", "gatal_kulit", "mata_merah"],
+  "misattributions": ["digigit serangga", "kena racun tomcat", "dompo kena guna-guna"],
+  "fears": ["kalau melingkar pinggang bisa meninggal", "menular"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu dada kiri sampai punggung perih kayak terbakar, Dok, kemarin muncul bintil berair berkelompok.",
+        "clue": "Nyeri prodromal 1–3 hari lalu vesikel berkelompok"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Cuma di sebelah kiri, Dok, dari punggung melingkar ke dada, nggak sampai ke kanan.",
+        "when": { "notTraits": ["oftalmikus"] },
+        "clue": "Unilateral mengikuti dermatom"
+      },
+      {
+        "text": "Di dahi kanan sampai ke kelopak mata dan ujung hidung, Dok, matanya merah.",
+        "reveals": ["mata_merah"],
+        "when": { "traits": ["oftalmikus"], "symptoms": ["mata_merah"] },
+        "clue": "Dermatom V1 dengan mata merah (oftalmikus)"
+      }
+    ],
+    "riwayat_penyakit": [
+      { "text": "Waktu kecil pernah cacar air, Dok.", "clue": "Riwayat varisela" },
+      {
+        "text": "Akhir-akhir ini sering sakit dan berat badan turun, Dok.",
+        "when": { "traits": ["imunokompromais"] },
+        "clue": "Curiga imunokompromais"
+      }
+    ],
+    "keparahan": [{ "text": "Perihnya sampai nggak bisa tidur, Dok, kena baju saja sakit.", "clue": "Nyeri neuropatik berat" }],
+    "riwayat_obat": [{ "text": "Belum minum obat khusus, Dok, cuma dikasih bedak." }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["oftalmikus"] },
+      "values": ["Dermatom T5 kiri, unilateral, tidak melewati garis tengah"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["oftalmikus"] },
+      "diagnostic": true,
+      "values": ["Vesikel berkelompok di atas dasar eritema, sebagian pustul & krusta"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["oftalmikus"] },
+      "values": ["Dermatom V1 kanan: dahi, kelopak atas, ujung hidung (tanda Hutchinson +)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["oftalmikus"] },
+      "diagnostic": true,
+      "values": ["Vesikel berkelompok di atas dasar eritema dengan edema kelopak"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "traits": ["oftalmikus"] },
+      "values": ["Injeksi konjungtiva & siliar kanan"]
+    },
+    {
+      "tool": "tzanck",
+      "param": "hasil",
+      "probability": 0.8,
+      "diagnostic": true,
+      "values": ["Sel datia berinti banyak (+)"]
+    },
+    { "tool": "kepala_leher", "param": "kgb", "probability": 0.4, "values": ["KGB regional membesar nyeri tekan"] }
+  ],
+  "differentials": [
+    {
+      "id": "sindrom_koroner_akut",
+      "howToDistinguish": "Nyeri prodromal dada sebelum ruam dapat menyerupai SKA — nilai karakter nyeri & EKG bila ruam belum muncul.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["keluhan_lain"] }
+    },
+    {
+      "id": "herpes_simpleks",
+      "howToDistinguish": "Herpes simpleks: kelompok kecil, berulang di tempat sama (bibir/genital), tidak dermatomal luas.",
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["episode_sebelumnya"] }
+    },
+    {
+      "id": "dermatitis_kontak_iritan",
+      "howToDistinguish": "Dermatitis kontak (mis. paederus/tomcat): lesi linear di area kontak, rasa terbakar, tidak mengikuti dermatom.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri prodromal lalu vesikel berkelompok di atas dasar eritema",
+    "Unilateral mengikuti satu dermatom, tidak melewati garis tengah",
+    "Usia > 50 tahun/imunokompromais"
+  ],
+  "teachingPoints": [
+    "Asiklovir paling efektif bila dimulai < 72 jam sejak lesi muncul.",
+    "Lesi di ujung hidung (tanda Hutchinson) = risiko keterlibatan mata — rujuk dokter mata."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "oftalmikus",
+      "name": "Herpes zoster oftalmikus",
+      "trait": "oftalmikus",
+      "redFlag": true,
+      "assess": { "tools": ["status_dermatologis", "segmen_anterior"] },
+      "explanation": "Keterlibatan N. V1 dengan risiko keratitis/uveitis — asiklovir & rujuk dokter mata."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "riwayat_penyakit", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Distribusi dermatomal & morfologi." },
+      {
+        "tool": "segmen_anterior",
+        "role": "pendukung",
+        "when": { "traits": ["oftalmikus"] },
+        "reason": "Keterlibatan mata."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "tzanck", "reason": "Bila diagnosis klinis ragu." },
+      { "tool": "tes_hiv", "reason": "Zoster pada usia muda/berulang (dengan konseling)." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Zoster oftalmikus: asiklovir lalu rujuk dokter mata.",
+      "when": { "traits": ["oftalmikus"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    { "value": "rawat_jalan", "reason": "Asiklovir 7 hari, analgesik, perawatan lesi; kontrol 1 minggu." }
+  ],
+  "management": [
+    "Asiklovir 5 × 800 mg selama 7 hari (atau valasiklovir 3 × 1 g) dalam 72 jam.",
+    "Analgesik (parasetamol/ibuprofen); nyeri neuropatik: amitriptilin/gabapentin dosis rendah.",
+    "Kompres/bedak kalamin, vesikel jangan dipecah, pakaian longgar.",
+    "Hindari kontak dengan ibu hamil/bayi/orang yang belum pernah cacar air sampai lesi berkrusta."
+  ],
+  "approach": ["Kenali nyeri prodromal + ruam dermatomal.", "Nilai keterlibatan mata & imunokompromais."]
+}

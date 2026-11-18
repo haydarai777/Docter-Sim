@@ -1,0 +1,150 @@
+{
+  "disease": "furunkel_hidung",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan hidung",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Infeksi stafilokokus folikel rambut hidung.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral antistafilokokus",
+        "role": "pendukung",
+        "reason": "Sudah dipencet/meluas — cegah penyebaran.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [5, 7]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 5–7 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["dipencet"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres hangat 3–4 × sehari", "kind": "benar" },
+    { "id": "jangan_pencet", "text": "Jangan memencet bisul di hidung (segitiga bahaya wajah)", "kind": "benar" },
+    { "id": "gula", "text": "Periksa gula darah", "kind": "benar", "when": { "traits": ["dm_curiga"] } },
+    {
+      "id": "pencet",
+      "text": "Pencet bisul agar nanah cepat keluar",
+      "kind": "berbahaya",
+      "why": "Infeksi dapat menjalar ke sinus kavernosus."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini bisul (infeksi folikel rambut) di lubang hidung",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Oleskan salep/obat sesuai aturan sampai habis", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila bengkak meluas ke mata, mata menonjol/sulit digerakkan, demam tinggi, atau sakit kepala hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Hentikan kebiasaan mencabut bulu hidung atau mengorek hidung",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "id": "malnutrisi_energi_protein",
+  "name": "Malnutrisi energi-protein",
+  "aliases": ["Gizi buruk", "Gizi kurang", "Marasmus", "Kwashiorkor", "MEP", "Wasting"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.8,
+  "summary": "Kekurangan energi & protein pada balita. Gizi kurang: BB/TB −3 s.d. < −2 SD. Gizi buruk: BB/TB < −3 SD, LiLA < 11,5 cm, atau edema bilateral; marasmus (sangat kurus, iga gambang, baggy pants), kwashiorkor (edema, rambut kemerahan mudah dicabut, crazy pavement dermatosis). Gizi buruk dengan komplikasi (tidak nafsu makan, infeksi berat, dehidrasi, hipoglikemia, hipotermia) dirawat inap; tanpa komplikasi rawat jalan (RUTF, PMT). Cari penyakit penyerta (diare, TB, HIV, cacing).",
+  "presentationDay": [30, 180],
+  "demographics": {
+    "ageBands": [{ "min": 0, "max": 0, "weight": 1 }, { "min": 1, "max": 4, "weight": 5 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "balita", "weight": 4 }, { "id": "bayi", "weight": 1 }],
+    "occupationBias": 0.5,
+    "infantAge": { "unit": "bulan", "range": [6, 11] }
+  },
+  "traits": [
+    { "id": "gizi_buruk", "probability": 0.45 },
+    { "id": "kwashiorkor", "probability": 0.3, "when": { "traits": ["gizi_buruk"] } },
+    { "id": "komplikasi", "probability": 0.25, "when": { "traits": ["gizi_buruk"] } },
+    { "id": "diare_berulang", "probability": 0.45 },
+    { "id": "tb_curiga", "probability": 0.1 }
+  ],
+  "traitLabels": {
+    "gizi_buruk": "Gizi buruk (BB/TB < −3 SD).",
+    "kwashiorkor": "Tipe kwashiorkor (edema).",
+    "komplikasi": "Gizi buruk dengan komplikasi medis.",
+    "diare_berulang": "Diare berulang.",
+    "tb_curiga": "Curiga TB anak (kontak TB, batuk lama)."
+  },
+  "symptoms": [
+    { "id": "nafsu_makan_turun", "probability": 1, "when": { "traits": ["komplikasi"] } },
+    { "id": "diare", "probability": 0.9, "when": { "traits": ["diare_berulang"] } },
+    { "id": "bengkak_kaki", "probability": 1, "when": { "traits": ["kwashiorkor"] } },
+    { "id": "rambut_rontok", "probability": 0.8, "when": { "traits": ["kwashiorkor"] } },
+    { "id": "demam", "probability": 0.8, "when": { "traits": ["komplikasi"] } },
+    { "id": "batuk", "probability": 0.9, "when": { "traits": ["tb_curiga"] } },
+    { "id": "bb_tidak_naik", "probability": 1 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 },
+    { "id": "rewel", "probability": 0.6 },
+    { "id": "lemas", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["bb_tidak_naik"], "extraPool": ["nafsu_makan_turun"] },
+  "clueSymptoms": ["nafsu_makan_turun", "rewel", "lemas", "diare", "bengkak_kaki", "rambut_rontok"],
+  "misattributions": ["memang keturunan kurus", "susah makan biasa", "cacingan"],
+  "fears": ["anaknya tidak tumbuh", "anaknya meninggal"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, berat badannya nggak naik-naik, di KMS di bawah garis merah.",
+        "clue": "BB tidak naik berbulan-bulan, di bawah garis merah"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "ASI berhenti umur enam bulan, Dok. Makannya bubur nasi sama kecap, jarang lauk. Uangnya pas-pasan.",
+        "clue": "Asupan energi-protein kurang, MPASI tidak adekuat"
+      },
+      { "text": "Makannya susah sekali, Dok, cuma mau ngemil chiki.", "weight": 0.3, "clue": "Pola makan buruk" }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Sering mencret, Dok, hampir tiap bulan.",
+        "reveals": ["diare"],
+        "when": { "traits": ["diare_berulang"], "symptoms": ["diare"] },
+        "clue": "Diare berulang"
+      },
+      {
+        "text": "Sering batuk lama, Dok. Kakeknya di rumah sedang minum obat TBC.",
+        "reveals": ["batuk"],
+        "when": { "traits": ["tb_curiga"], "symptoms": ["batuk"] },
+        "clue": "Batuk lama + kontak TB"
+      },
+      { "text": "Belum pernah dirawat, Dok.", "when": { "notTraits": ["diare_berulang", "tb_curiga"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang demam dan sama sekali nggak mau makan atau minum, Dok, lemas sekali.",
+        "reveals": ["demam", "nafsu_makan_turun"],
+        "when": { "traits": ["komplikasi"], "symptoms": ["demam", "nafsu_makan_turun"] },
+        "clue": "Tidak nafsu makan + demam (gizi buruk dengan komplikasi)"
+      },
+      {
+        "text": "Masih mau makan kalau disuapi, Dok.",
+        "when": { "notTraits": ["komplikasi"] },
+        "clue": "Nafsu makan masih ada (uji nafsu makan lulus)"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Kakinya bengkak dan rambutnya jadi merah jarang, Dok.",
+        "reveals": ["bengkak_kaki", "rambut_rontok"],
+        "when": { "traits": ["kwashiorkor"], "symptoms": ["bengkak_kaki", "rambut_rontok"] },
+        "clue": "Edema & perubahan rambut (kwashiorkor)"
+      },
+      {
+        "text": "Badannya makin kurus, tulang iganya kelihatan, Dok.",
+        "when": { "notTraits": ["kwashiorkor"] },
+        "clue": "Sangat kurus (marasmus)"
+      }
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok. Badannya kurus, beratnya nggak naik-naik." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "status_gizi",
+      "when": { "traits": ["gizi_buruk"] },
+      "diagnostic": true,
+      "values": ["Gizi buruk: BB/TB < −3 SD, LiLA 11 cm"]
+    },
+    {
+      "tool": "timbangan",
+      "param": "imt",
+      "absolute": true,
+      "when": { "traits": ["gizi_buruk"], "notTraits": ["kwashiorkor"] },
+      "range": [10.5, 12]
+    },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "when": { "traits": ["kwashiorkor"] }, "range": [12, 13] },
+    {
+      "tool": "keadaan_umum",
+      "param": "gizi",
+      "when": { "traits": ["gizi_buruk"], "notTraits": ["kwashiorkor"] },
+      "values": ["Sangat kurus, iga gambang, wajah tua, baggy pants"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "gizi",
+      "when": { "traits": ["kwashiorkor"] },
+      "values": ["Edema, wajah sembap (moon face), otot lisut"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "edema",
+      "when": { "traits": ["kwashiorkor"] },
+      "values": ["Edema pitting kedua punggung kaki & tungkai"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "when": { "traits": ["kwashiorkor"] },
+      "values": ["Rambut tipis, kemerahan, mudah dicabut tanpa sakit"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["kwashiorkor"] },
+      "probability": 0.5,
+      "values": ["Hiperpigmentasi & deskuamasi seperti cat terkelupas (crazy pavement)"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["komplikasi"] }, "range": [38.3, 39.2] },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "dehidrasi_anak",
+      "when": { "traits": ["diare_berulang"] },
+      "probability": 0.4,
+      "values": ["Dehidrasi ringan-sedang: rewel, mata cekung, haus"]
+    },
+    {
+      "tool": "gula_darah",
+      "param": "gds",
+      "when": { "traits": ["komplikasi"] },
+      "probability": 0.5,
+      "range": [45, 60]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["tb_curiga"] },
+      "probability": 0.5,
+      "values": ["Ronkhi basah halus di kedua lapang paru"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "status_gizi",
+      "diagnostic": true,
+      "values": ["Gizi kurang: BB/TB antara −3 dan −2 SD, LiLA 12 cm"]
+    },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "range": [12.3, 13.3] },
+    { "tool": "keadaan_umum", "param": "gizi", "values": ["Tampak kurus"] },
+    { "tool": "darah_lengkap", "param": "hb", "range": [7.5, 10] },
+    { "tool": "feses_rutin", "param": "telur_cacing", "probability": 0.3, "values": ["Telur Ascaris lumbricoides (+)"] }
+  ],
+  "differentials": [
+    {
+      "id": "sepsis",
+      "howToDistinguish": "Gizi buruk dengan komplikasi/sepsis: demam/hipotermia, tidak mau makan, letargi, takikardia — rawat inap/rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "keadaan_umum"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "tb_paru",
+      "howToDistinguish": "TB anak sebagai penyebab gagal tumbuh: batuk lama, kontak TB, demam lama.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["pemeriksaan_paru"] }
+    },
+    {
+      "id": "hiv",
+      "howToDistinguish": "HIV pada anak dengan gizi buruk yang tidak respons/ibu berisiko.",
+      "excludeBy": { "topics": ["riwayat_keluarga"] }
+    }
+  ],
+  "keyFindings": [
+    "Balita dengan BB tidak naik, BB/TB < −2 SD (kurang) atau < −3 SD/edema (buruk)",
+    "Marasmus: sangat kurus; kwashiorkor: edema, rambut kemerahan",
+    "Cari komplikasi & penyakit penyerta"
+  ],
+  "teachingPoints": [
+    "Uji nafsu makan (RUTF) menentukan rawat jalan vs rawat inap pada gizi buruk.",
+    "10 langkah tata laksana gizi buruk: atasi hipoglikemia, hipotermia, dehidrasi, elektrolit, infeksi, mikronutrien, makanan awal (F-75), tumbuh kejar (F-100/RUTF), stimulasi, persiapan pulang."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Pencegahan dan Tata Laksana Gizi Buruk pada Balita (2019)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "komplikasi",
+      "name": "Gizi buruk dengan komplikasi",
+      "trait": "komplikasi",
+      "redFlag": true,
+      "assess": { "tools": ["keadaan_umum", "tanda_vital", "gula_darah"] },
+      "explanation": "Tidak nafsu makan, demam, hipoglikemia — rawat inap/rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "keparahan", "progresi", "keluhan_lain"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "BB & PB/TB untuk z-skor." },
+      { "tool": "pemeriksaan_anak", "role": "kunci", "reason": "Status gizi z-skor & LiLA, dehidrasi." },
+      { "tool": "ekstremitas_kulit", "role": "kunci", "reason": "Edema bilateral." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Tanda bahaya & komplikasi." },
+      { "tool": "pemeriksaan_paru", "role": "pendukung", "reason": "Infeksi/TB." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Anemia & infeksi." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Hipoglikemia." },
+      { "tool": "feses_rutin", "role": "pendukung", "reason": "Cacingan." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Gizi buruk dengan komplikasi: stabilisasi (cegah hipoglikemia & hipotermia) lalu rujuk/rawat inap.",
+      "when": { "traits": ["komplikasi"] }
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Gizi buruk tanpa komplikasi: rawat jalan di Puskesmas/TFC dengan RUTF, atau rujuk sesuai fasilitas.",
+      "when": { "traits": ["gizi_buruk"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Gizi kurang: PMT, konseling gizi & MPASI, atasi penyakit penyerta; pantau BB tiap 2 minggu."
+    }
+  ],
+  "management": [
+    "Gizi buruk: 10 langkah tata laksana, F-75 → F-100/RUTF, vitamin A, asam folat, antibiotik sesuai pedoman.",
+    "Gizi kurang: PMT pemulihan, konseling MPASI padat gizi (protein hewani).",
+    "Obati penyerta: diare (oralit ReSoMal pada gizi buruk), cacing, TB; imunisasi.",
+    "Pantau BB & z-skor berkala; stimulasi tumbuh kembang."
+  ],
+  "approach": [
+    "Ukur BB, PB/TB, LiLA, edema → klasifikasi status gizi.",
+    "Nilai komplikasi (uji nafsu makan, demam, dehidrasi, hipoglikemia) & penyakit penyerta."
+  ]
+}

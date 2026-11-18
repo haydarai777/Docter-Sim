@@ -1,0 +1,186 @@
+{
+  "id": "hiperurisemia",
+  "name": "Hiperurisemia & artritis gout",
+  "aliases": ["Asam urat", "Gout", "Pirai", "Artritis gout akut", "Encok asam urat"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Kadar asam urat serum tinggi (> 7 mg/dL laki-laki, > 6 mg/dL perempuan); manifestasi tersering artritis gout akut: monoartritis mendadak (sering malam hari) dengan sendi sangat nyeri, merah, bengkak, panas — klasik di pangkal ibu jari kaki (podagra) — dipicu jeroan, daging merah, seafood, alkohol, minuman manis, diuretik. Kadar asam urat bisa normal saat serangan. Terapi serangan: kolkisin/OAINS/steroid; penurun asam urat (alopurinol) setelah serangan reda bila indikasi.",
+  "presentationDay": [1, 3],
+  "demographics": {
+    "ageBands": [
+      { "min": 30, "max": 44, "weight": 3 },
+      { "min": 45, "max": 59, "weight": 4 },
+      { "min": 60, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.85
+  },
+  "traits": [
+    { "id": "tofus", "probability": 0.15 },
+    { "id": "berulang", "probability": 0.45 },
+    { "id": "diuretik", "probability": 0.1, "when": { "ageMin": 50 } },
+    { "id": "hipertensi_menyertai", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "tofus": "Gout kronik bertofus.",
+    "berulang": "Serangan berulang.",
+    "diuretik": "Memakai diuretik tiazid.",
+    "hipertensi_menyertai": "Hipertensi menyertai."
+  },
+  "symptoms": [{ "id": "sendi_bengkak", "probability": 1 }, { "id": "demam", "probability": 0.2 }],
+  "chiefComplaint": { "primary": ["sendi_bengkak"] },
+  "clueSymptoms": ["demam"],
+  "misattributions": ["keseleo", "rematik", "salah urat"],
+  "fears": ["lumpuh", "ginjal rusak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu subuh tiba-tiba jempol kaki kanan sakit sekali sampai terbangun, Dok, sekarang bengkak merah panas.",
+        "clue": "Monoartritis akut malam hari di MTP-1"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kemarin malam habis pesta makan jeroan, sate kambing, dan minum bir, Dok.",
+        "clue": "Pencetus purin tinggi & alkohol"
+      }
+    ],
+    "karakter": [{ "text": "Sakitnya luar biasa, Dok, kena selimut saja nggak tahan.", "clue": "Nyeri sangat hebat, alodinia" }],
+    "episode_sebelumnya": [
+      {
+        "text": "Tahun ini sudah tiga kali kambuh begini, Dok, di jempol dan pergelangan kaki.",
+        "when": { "traits": ["berulang"] },
+        "clue": "Serangan berulang"
+      },
+      { "text": "Baru pertama kali, Dok.", "when": { "notTraits": ["berulang"] }, "clue": "Serangan pertama" }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Saya minum obat darah tinggi HCT, Dok.",
+        "when": { "traits": ["diuretik"] },
+        "clue": "Diuretik tiazid (pencetus)"
+      },
+      { "text": "Nggak minum obat rutin, Dok.", "when": { "notTraits": ["diuretik"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Badan nggak menggigil, Dok, cuma sendinya yang sakit.",
+        "clue": "Tanpa demam tinggi/menggigil (artritis septik kurang mungkin)"
+      }
+    ],
+    "lokasi": [{ "text": "Di pangkal jempol kaki kanan, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "muskuloskeletal",
+      "param": "tofus",
+      "when": { "traits": ["tofus"] },
+      "values": ["Tofus di heliks telinga & sekitar MTP-1"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38] },
+    {
+      "tool": "tanda_vital",
+      "param": "td_sistolik",
+      "when": { "traits": ["hipertensi_menyertai"] },
+      "range": [145, 165]
+    },
+    {
+      "tool": "tanda_vital",
+      "param": "td_diastolik",
+      "when": { "traits": ["hipertensi_menyertai"] },
+      "range": [90, 100]
+    },
+    {
+      "tool": "muskuloskeletal",
+      "param": "sendi",
+      "diagnostic": true,
+      "values": ["MTP-1 kanan bengkak, eritema, hangat, sangat nyeri tekan"]
+    },
+    { "tool": "muskuloskeletal", "param": "lingkup_gerak", "values": ["Terbatas karena nyeri pada MTP-1 kanan"] },
+    { "tool": "asam_urat", "param": "asam_urat", "probability": 0.75, "diagnostic": true, "range": [8, 11.5] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.5, "range": [9500, 12500] },
+    { "tool": "darah_lengkap", "param": "led", "probability": 0.6, "range": [25, 50] },
+    { "tool": "fungsi_ginjal", "param": "kreatinin", "range": [1, 1.4] },
+    { "tool": "urinalisis", "param": "kristal", "probability": 0.3, "values": ["Asam urat (+)"] }
+  ],
+  "differentials": [
+    {
+      "id": "artritis_septik",
+      "howToDistinguish": "Artritis septik: demam tinggi, menggigil, sendi besar sangat nyeri, cairan sendi purulen — rujuk segera untuk aspirasi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "erisipelas",
+      "howToDistinguish": "Selulitis/erisipelas: kemerahan kulit meluas tanpa nyeri sendi pada gerakan pasif.",
+      "excludeBy": { "tools": ["muskuloskeletal"] }
+    },
+    {
+      "id": "osteoartritis",
+      "howToDistinguish": "Osteoartritis: nyeri sendi kronik saat aktivitas, tanpa radang akut hebat.",
+      "excludeBy": { "topics": ["onset"] }
+    }
+  ],
+  "keyFindings": [
+    "Monoartritis akut sangat nyeri, merah, bengkak, hangat (sering MTP-1, malam hari)",
+    "Pencetus: purin tinggi, alkohol, diuretik",
+    "Asam urat tinggi (dapat normal saat serangan)"
+  ],
+  "teachingPoints": [
+    "Jangan memulai alopurinol saat serangan akut; bila sudah rutin, jangan dihentikan.",
+    "Kadar asam urat normal tidak menyingkirkan serangan gout akut."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "IRA. Rekomendasi Pedoman Diagnosis dan Pengelolaan Gout (2018)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pemberat_peringan", "karakter", "episode_sebelumnya", "riwayat_obat", "keparahan", "keluhan_lain"],
+    "exams": [{ "tool": "muskuloskeletal", "role": "kunci", "reason": "Sendi yang terkena & tofus." }],
+    "tests": [
+      { "tool": "asam_urat", "role": "kunci", "reason": "Kadar asam urat." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Leukositosis/LED (singkirkan septik)." },
+      { "tool": "fungsi_ginjal", "role": "pendukung", "reason": "Fungsi ginjal sebelum OAINS/alopurinol." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "hipertensi_menyertai": "hipertensi" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Terapi serangan akut + edukasi diet; kontrol 1–2 minggu; pertimbangkan alopurinol setelah reda."
+    }
+  ],
+  "management": [
+    "Serangan akut: kolkisin 0,5 mg 2–3 × sehari ATAU OAINS (mis. natrium diklofenak/ibuprofen) ATAU prednison bila kontraindikasi.",
+    "Istirahatkan & elevasi sendi, kompres dingin.",
+    "Diet rendah purin (kurangi jeroan, daging merah, seafood), hindari alkohol & minuman manis, cukup minum, turunkan BB.",
+    "Alopurinol (mulai 100 mg/hari, titrasi) bila ≥ 2 serangan/tahun, tofus, atau batu — target asam urat < 6 mg/dL."
+  ],
+  "approach": ["Monoartritis akut: singkirkan artritis septik.", "Gali pencetus & obat; periksa asam urat & fungsi ginjal."]
+}

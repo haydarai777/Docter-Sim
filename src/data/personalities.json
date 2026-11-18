@@ -17,7 +17,14 @@
       "complaintFrames": ["Begini, Dok, {keluhan}.", "Dok, {keluhan}."],
       "symptomYes": ["Iya, Dok, {gejala}.", "Ada, Dok. {Gejala}."],
       "symptomNo": ["Nggak ada, Dok.", "Tidak, Dok."],
-      "affixRate": 0
+      "affixRate": 0,
+      "pengantar": {
+        "greetings": [
+          "Selamat {waktu}, Dok. Saya {namaPengantar}, {hubungan} {panggilan}. Anak saya umur {usiaTeks}.",
+          "Permisi, Dok. Saya {hubungan} {panggilan}, nama saya {namaPengantar}. {Panggilan} umurnya {usiaTeks}, Dok."
+        ],
+        "complaintFrames": ["Begini, Dok, {keluhan}.", "Dok, anak saya ini... {keluhan}."]
+      }
     },
     {
       "id": "cemas",
@@ -45,7 +52,18 @@
       ],
       "answerSuffixes": ["Saya takut kenapa-kenapa, Dok.", "Ini parah nggak, Dok?"],
       "affixRate": 0.4,
-      "affixCategories": ["onset", "lokasi", "karakter", "pola", "pemberat_peringan"]
+      "affixCategories": ["onset", "lokasi", "karakter", "pola", "pemberat_peringan"],
+      "pengantar": {
+        "greetings": [
+          "Dok, selamat {waktu}... Saya {namaPengantar}, {hubungan} {panggilan}. Tolong anak saya, Dok.",
+          "Selamat {waktu}, Dok. Saya {hubungan} {panggilan}, umurnya {usiaTeks}. Saya khawatir sekali, Dok."
+        ],
+        "complaintFrames": [
+          "Dok, tolong... {keluhan}. Saya takut dia kena {ketakutan}.",
+          "Aduh, Dok, {keluhan}. Saya sampai nggak bisa tidur, takut anak saya kena {ketakutan}."
+        ],
+        "answerSuffixes": ["Saya takut dia kenapa-kenapa, Dok.", "Anak saya parah nggak, Dok?"]
+      }
     },
     {
       "id": "meremehkan",
@@ -69,7 +87,18 @@
       "symptomNo": ["Nggak ada, Dok."],
       "answerPrefixes": ["Biasa aja sih, Dok.", "Nggak parah kok, Dok."],
       "affixRate": 0.35,
-      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"]
+      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"],
+      "pengantar": {
+        "greetings": [
+          "{Waktu}, Dok. Saya {hubungan} {panggilan}, {usiaTeks}. Sebentar saja ya, Dok.",
+          "Selamat {waktu}, Dok. Saya {namaPengantar}, mau periksain {panggilan}."
+        ],
+        "complaintFrames": [
+          "Sebenarnya nggak apa-apa sih, Dok. Cuma {keluhan}. Ini disuruh keluarga periksa.",
+          "Ah, cuma {keluhan}, Dok. Paling {salahKira}."
+        ],
+        "answerPrefixes": ["Biasa aja sih, Dok.", "Anak-anak kan memang begitu, Dok."]
+      }
     },
     {
       "id": "pelupa",
@@ -90,7 +119,14 @@
       "symptomNo": ["Kayaknya nggak ada, Dok."],
       "answerPrefixes": ["Sebentar, saya ingat-ingat dulu, Dok...", "Aduh, apa ya... oh iya."],
       "affixRate": 0.5,
-      "affixCategories": ["onset", "riwayat_penyakit", "riwayat_obat", "riwayat_keluarga", "bepergian_lingkungan"]
+      "affixCategories": ["onset", "riwayat_penyakit", "riwayat_obat", "riwayat_keluarga", "bepergian_lingkungan"],
+      "pengantar": {
+        "greetings": [
+          "Selamat {waktu}, Dok. Saya {namaPengantar}... {hubungan} {panggilan}. Umurnya {usiaTeks}.",
+          "Eh, selamat {waktu}, Dok. Saya {hubungan} {panggilan}, Dok."
+        ],
+        "complaintFrames": ["Dok, {keluhan}... terus apa lagi ya. Aduh, lupa, Dok.", "Anu, Dok... {keluhan}. Yang lain saya lupa."]
+      }
     },
     {
       "id": "sok_tahu",
@@ -114,7 +150,18 @@
       "symptomNo": ["Nggak ada, Dok. Tapi di internet katanya harusnya ada?"],
       "answerSuffixes": ["Itu gejala {salahKira} kan, Dok?", "Kalau di internet, itu katanya ciri-ciri {salahKira}."],
       "affixRate": 0.35,
-      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"]
+      "affixCategories": ["lokasi", "karakter", "pola", "pemberat_peringan"],
+      "pengantar": {
+        "greetings": [
+          "Selamat {waktu}, Dok! Saya {namaPengantar}, {hubungan} {panggilan}, umurnya {usiaTeks}.",
+          "Halo, Dok, selamat {waktu}. Saya {hubungan} {panggilan}."
+        ],
+        "complaintFrames": [
+          "Dok, kayaknya anak saya kena {salahKira}. {Keluhan}.",
+          "Saya sudah cek di internet, Dok, ini pasti {salahKira}. {Keluhan}."
+        ],
+        "answerSuffixes": ["Itu gejala {salahKira} kan, Dok?", "Kalau di grup ibu-ibu, katanya itu ciri-ciri {salahKira}."]
+      }
     }
   ]
 }

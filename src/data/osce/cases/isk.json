@@ -1,0 +1,134 @@
+{
+  "disease": "isk",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_sistitis",
+        "label": "Antibiotik sistitis tanpa komplikasi",
+        "role": "utama",
+        "reason": "Eradikasi bakteri (terutama E. coli).",
+        "options": [
+          {
+            "drug": "fosfomisin",
+            "label": "Fosfomisin 3 g dosis tunggal",
+            "schedules": ["tunggal"],
+            "dose": [3000, 3000]
+          },
+          {
+            "drug": "nitrofurantoin",
+            "label": "Nitrofurantoin 100 mg 2 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          },
+          {
+            "drug": "kotrimoksazol",
+            "label": "Kotrimoksazol 2 × 960 mg selama 3 hari",
+            "schedules": ["rutin"],
+            "dose": [960, 960],
+            "timesPerDay": [2, 2],
+            "days": [3, 3]
+          },
+          {
+            "drug": "siprofloksasin",
+            "label": "Siprofloksasin 2 × 250–500 mg selama 3 hari",
+            "schedules": ["rutin"],
+            "dose": [250, 500],
+            "timesPerDay": [2, 2],
+            "days": [3, 3]
+          }
+        ],
+        "when": { "notTraits": ["pielonefritis"] }
+      },
+      {
+        "id": "ab_pielo",
+        "label": "Antibiotik pielonefritis",
+        "role": "utama",
+        "reason": "Infeksi saluran kemih atas: kuinolon 7 hari (sambil observasi/rujuk).",
+        "options": [
+          {
+            "drug": "siprofloksasin",
+            "label": "Siprofloksasin 2 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "levofloksasin",
+            "label": "Levofloksasin 1 × 750 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "dose": [750, 750],
+            "timesPerDay": [1, 1],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["pielonefritis"] }
+      }
+    ],
+    "avoid": [{ "groups": ["steroid"], "reason": "Tidak ada indikasi kortikosteroid.", "severity": "salah" }],
+    "note": "Pilih satu antibiotik; perhatikan alergi pasien. Nitrofurantoin/fosfomisin tidak untuk pielonefritis."
+  },
+  "nonPharm": [
+    { "id": "minum", "text": "Minum air 2–3 L/hari", "kind": "benar" },
+    { "id": "tahan", "text": "Jangan menahan kencing; kencing setelah berhubungan seksual", "kind": "benar" },
+    { "id": "cebok", "text": "Membasuh kemaluan dari depan ke belakang", "kind": "benar", "when": { "sex": "female" } },
+    {
+      "id": "observasi",
+      "text": "Observasi/rujuk karena curiga infeksi ginjal (pielonefritis)",
+      "kind": "benar",
+      "when": { "traits": ["pielonefritis"] }
+    },
+    {
+      "id": "antiseptik",
+      "text": "Membersihkan vagina dengan sabun antiseptik setiap hari",
+      "kind": "pengecoh",
+      "why": "Mengganggu flora normal."
+    },
+    {
+      "id": "kurang_minum",
+      "text": "Kurangi minum agar tidak sering kencing",
+      "kind": "berbahaya",
+      "why": "Memperberat infeksi."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini infeksi kandung kemih oleh bakteri", "kind": "benar", "category": "diagnosis" },
+    { "id": "obat", "text": "Antibiotik diminum sesuai aturan sampai habis", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam tinggi, menggigil, nyeri pinggang, atau mual-muntah (tanda infeksi ginjal)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila keluhan tidak membaik dalam 48–72 jam",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Cukup minum dan jangan menahan kencing untuk mencegah kekambuhan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Hentikan antibiotik begitu kencing tidak perih lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "IAUI. Panduan Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)",
+      "Kemenkes RI. PPK Fasyankes Primer — Infeksi Saluran Kemih"
+    ]
+  }
+}

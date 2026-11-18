@@ -1,0 +1,170 @@
+{
+  "id": "vulvitis",
+  "name": "Vulvitis",
+  "aliases": ["Radang vulva", "Gatal kemaluan perempuan", "Vulvovaginitis anak"],
+  "system": "Kelamin & reproduksi",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Radang vulva: gatal, perih/panas, kemerahan, kadang perih saat kencing (disuria eksternal). Penyebab tersering: iritan/alergi (sabun wangi, pantyliner, deterjen, celana ketat), higiene buruk, infeksi kandida, dan pada anak cacing kremi atau higiene. Pada anak dengan keluhan genital, pertimbangkan kemungkinan kekerasan seksual secara hati-hati.",
+  "presentationDay": [3, 30],
+  "demographics": {
+    "ageBands": [{ "min": 3, "max": 9, "weight": 3 }, { "min": 15, "max": 30, "weight": 3 }, { "min": 31, "max": 55, "weight": 3 }],
+    "maleRatio": 0
+  },
+  "traits": [
+    { "id": "iritan", "probability": 0.5 },
+    { "id": "kandida", "probability": 0.4, "when": { "notTraits": ["iritan"] } },
+    { "id": "cacing_kremi", "probability": 0.4, "when": { "ageMax": 9 } }
+  ],
+  "traitLabels": {
+    "iritan": "Pencetus iritan (sabun wangi, pantyliner, celana ketat).",
+    "kandida": "Infeksi kandida.",
+    "cacing_kremi": "Cacing kremi (anak)."
+  },
+  "symptoms": [
+    { "id": "keputihan", "probability": 0.7, "when": { "traits": ["kandida"] } },
+    { "id": "gatal_anus", "probability": 1, "when": { "traits": ["cacing_kremi"] } },
+    { "id": "rewel", "probability": 0.4, "when": { "ageMax": 5 } },
+    { "id": "gatal_kemaluan", "probability": 1 },
+    { "id": "disuria", "probability": 0.5 },
+    { "id": "keputihan", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["gatal_kemaluan"], "extraPool": ["disuria"] },
+  "clueSymptoms": ["disuria", "keputihan", "gatal_anus", "rewel"],
+  "misattributions": ["kurang bersih", "kena air kotor", "alergi celana"],
+  "fears": ["penyakit kelamin", "infeksi menular"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {hariTeks} hari, Dok, kemaluan gatal dan perih, merah.", "clue": "Gatal & perih vulva" }],
+    "kebiasaan": [
+      {
+        "text": "Saya pakai sabun pembersih kewanitaan wangi tiap hari, Dok, sama pantyliner terus.",
+        "when": { "traits": ["iritan"], "ageMin": 10 },
+        "clue": "Pencetus iritan (sabun wangi, pantyliner)"
+      },
+      {
+        "text": "Celananya ketat dan jarang ganti, Dok. Cebok pakai sabun mandi.",
+        "when": { "traits": ["iritan"], "ageMax": 9 },
+        "clue": "Celana ketat, sabun"
+      },
+      { "text": "Mandi biasa, Dok, celana katun.", "when": { "notTraits": ["iritan"] } }
+    ],
+    "pola": [
+      {
+        "text": "Gatalnya paling parah malam hari, Dok, sampai dubur juga gatal.",
+        "reveals": ["gatal_anus"],
+        "when": { "traits": ["cacing_kremi"], "symptoms": ["gatal_anus"] },
+        "clue": "Gatal malam hari termasuk perianal (cacing kremi)"
+      },
+      { "text": "Gatalnya kapan saja, Dok.", "when": { "notTraits": ["cacing_kremi"] } }
+    ],
+    "riwayat_penyakit": [
+      { "text": "Nggak ada kencing manis, Dok.", "when": { "ageMin": 18 }, "clue": "Tanpa diabetes" },
+      {
+        "text": "Anaknya cuma di rumah sama saya dan neneknya, Dok, nggak pernah dititipkan ke orang lain. Dia juga tidak pernah bercerita hal yang aneh.",
+        "when": { "ageMax": 9 },
+        "clue": "Tidak ada indikasi kekerasan seksual"
+      }
+    ],
+    "lokasi": [{ "text": "Di kemaluan bagian luar, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "when": { "traits": ["kandida"] },
+      "diagnostic": true,
+      "values": ["Vulva eritema & edema dengan lesi satelit papul-pustul, duh putih sedikit"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "when": { "traits": ["kandida"] },
+      "diagnostic": true,
+      "values": ["Pseudohifa dan blastospora (+)"]
+    },
+    {
+      "tool": "pemeriksaan_anus",
+      "param": "perianal",
+      "when": { "traits": ["cacing_kremi"] },
+      "values": ["Ekskoriasi perianal bekas garukan"]
+    },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "diagnostic": true,
+      "values": ["Vulva eritema, edema ringan, ekskoriasi bekas garukan"]
+    },
+    { "tool": "pemeriksaan_genital", "param": "lesi_genital", "values": ["Tidak ada ulkus, vesikel, maupun kutil"] }
+  ],
+  "differentials": [
+    {
+      "id": "kekerasan_seksual",
+      "howToDistinguish": "Pada anak: tanda trauma, IMS, perubahan perilaku — lindungi anak, dokumentasi, rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["pemeriksaan_genital"] }
+    },
+    {
+      "id": "vaginitis",
+      "howToDistinguish": "Vaginitis: keputihan banyak dari vagina (kandida/trikomonas) dominan.",
+      "excludeBy": { "tools": ["inspekulo_bimanual", "pemeriksaan_genital"] }
+    },
+    {
+      "id": "herpes_simpleks",
+      "howToDistinguish": "Herpes genital: vesikel berkelompok/ulkus nyeri.",
+      "excludeBy": { "tools": ["pemeriksaan_genital"] }
+    }
+  ],
+  "keyFindings": ["Gatal, perih, eritema vulva", "Pencetus iritan, kandida, atau cacing kremi (anak)", "Tanpa ulkus/vesikel"],
+  "teachingPoints": ["Hindari sabun pembersih kewanitaan & pantyliner terus-menerus; cebok dari depan ke belakang dengan air bersih."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "POGI. Panduan Nasional Pelayanan Kedokteran Obstetri & Ginekologi"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "pola", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_genital", "role": "kunci", "reason": "Inspeksi vulva & lesi." },
+      {
+        "tool": "pemeriksaan_anus",
+        "role": "pendukung",
+        "when": { "ageMax": 9 },
+        "reason": "Ekskoriasi perianal (cacing kremi)."
+      }
+    ],
+    "tests": [{ "tool": "kerokan_koh", "role": "pendukung", "when": { "traits": ["kandida"] }, "reason": "Konfirmasi kandida." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Hindari iritan, higiene, terapi sesuai penyebab; kontrol 1–2 minggu." }],
+  "management": [
+    "Hentikan iritan; celana katun longgar; cebok depan ke belakang dengan air bersih.",
+    "Kompres dingin, emolien; hidrokortison 1% jangka pendek untuk dermatitis iritan.",
+    "Kandida: krim antijamur (mikonazol/klotrimazol) 1–2 minggu.",
+    "Cacing kremi: albendazol/pirantel untuk anak & seluruh keluarga, ulang 2 minggu."
+  ],
+  "approach": ["Cari pencetus iritan, kandida, cacing kremi.", "Pada anak, nilai hati-hati kemungkinan kekerasan seksual."]
+}

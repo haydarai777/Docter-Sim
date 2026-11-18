@@ -1,0 +1,197 @@
+{
+  "id": "tinea_kapitis",
+  "name": "Tinea kapitis",
+  "aliases": ["Kurap kepala", "Ringworm kepala", "Kerion"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Infeksi dermatofita (Microsporum, Trichophyton) pada kulit kepala & rambut, hampir selalu pada anak prapubertas, sering tertular dari kucing/anjing atau teman. Bercak bersisik dengan rambut patah-patah (gray patch), black dot, atau kerion (massa radang lunak bernanah — sering salah dikira abses). Lampu Wood hijau (Microsporum), KOH spora pada rambut. Terapi HARUS oral (griseofulvin 6–8 minggu) + sampo antijamur.",
+  "presentationDay": [14, 90],
+  "demographics": {
+    "ageBands": [{ "min": 3, "max": 9, "weight": 5 }, { "min": 10, "max": 13, "weight": 2 }],
+    "maleRatio": 0.6,
+    "occupations": [{ "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 3 }, { "id": "pelajar_sd", "weight": 2 }],
+    "occupationBias": 0.5
+  },
+  "traits": [{ "id": "kerion", "probability": 0.15 }, { "id": "kontak_kucing", "probability": 0.5 }],
+  "traitLabels": { "kerion": "Kerion (tipe inflamasi).", "kontak_kucing": "Kontak kucing/hewan peliharaan." },
+  "symptoms": [
+    { "id": "bisul", "probability": 1, "when": { "traits": ["kerion"] } },
+    { "id": "benjolan_kgb", "probability": 0.6, "when": { "traits": ["kerion"] } },
+    { "id": "rambut_rontok", "probability": 1 },
+    { "id": "gatal_kepala", "probability": 0.8 },
+    { "id": "kulit_bersisik", "probability": 0.7 }
+  ],
+  "chiefComplaint": { "primary": ["rambut_rontok"], "extraPool": ["gatal_kepala"] },
+  "clueSymptoms": ["gatal_kepala", "kulit_bersisik", "bisul", "benjolan_kgb"],
+  "misattributions": ["ketombe", "kutu", "bisul kepala"],
+  "fears": ["botak permanen", "menular ke teman"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, ada bagian rambut yang botak bulat bersisik, makin lebar.",
+        "clue": "Kronik, bercak alopesia bersisik meluas"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Rambutnya patah-patah pendek di bagian itu, gatal, ada sisik abu-abu, Dok.",
+        "when": { "notTraits": ["kerion"] },
+        "clue": "Rambut patah dengan skuama keabuan"
+      },
+      {
+        "text": "Sekarang bagian itu bengkak lunak, bernanah, sakit, Dok.",
+        "reveals": ["bisul"],
+        "when": { "traits": ["kerion"], "symptoms": ["bisul"] },
+        "clue": "Massa radang bernanah (kerion)"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Di rumah pelihara kucing, Dok, sering dipeluk.",
+        "when": { "traits": ["kontak_kucing"] },
+        "clue": "Kontak kucing"
+      },
+      {
+        "text": "Teman sekelasnya ada yang begitu juga, Dok.",
+        "when": { "notTraits": ["kontak_kucing"] },
+        "clue": "Kontak teman"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Sudah dikasih salep jamur dari warung, Dok, nggak sembuh.", "clue": "Gagal dengan topikal saja" }],
+    "lokasi": [
+      { "text": "Di kepala bagian belakang, Dok.", "when": { "notTraits": ["kerion"] } },
+      { "text": "Di kepala bagian atas, Dok, bengkak bernanah.", "when": { "traits": ["kerion"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["kerion"] },
+      "values": ["Kulit kepala oksipital"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["kerion"] },
+      "diagnostic": true,
+      "values": ["Plak alopesia bulat berskuama keabuan dengan rambut patah-patah pendek (gray patch)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["kerion"] },
+      "values": ["Kulit kepala parietal"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["kerion"] },
+      "diagnostic": true,
+      "values": ["Massa eritematosa lunak (boggy) dengan pustul & pus, rambut mudah dicabut (kerion)"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["kerion"] },
+      "values": ["KGB oksipital & servikal posterior membesar"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "values": ["Rambut di area lesi patah, kusam, mudah dicabut"]
+    },
+    {
+      "tool": "lampu_wood",
+      "param": "fluoresensi",
+      "probability": 0.6,
+      "values": ["Fluoresensi hijau terang pada batang rambut (Microsporum)"]
+    },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "diagnostic": true,
+      "values": ["Spora ektotriks di sekeliling batang rambut & hifa (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "furunkel_karbunkel",
+      "howToDistinguish": "Kerion sering dikira abses/furunkel — JANGAN diinsisi; KOH & lampu Wood membedakan.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["kerokan_koh", "status_dermatologis"] }
+    },
+    {
+      "id": "alopesia_areata",
+      "howToDistinguish": "Alopesia areata: bercak botak licin tanpa skuama/radang, rambut tanda seru, KOH negatif.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "dermatitis_seboroik",
+      "howToDistinguish": "Dermatitis seboroik: skuama kekuningan berminyak difus tanpa rambut patah/alopesia.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Anak dengan bercak alopesia bersisik & rambut patah, gatal",
+    "Kerion: massa radang bernanah",
+    "KOH spora pada rambut; Wood hijau (Microsporum)"
+  ],
+  "teachingPoints": [
+    "Tinea kapitis tidak sembuh dengan obat topikal saja — perlu antijamur oral.",
+    "Cari & obati sumber (hewan peliharaan, saudara)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "bepergian_lingkungan", "riwayat_obat", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Alopesia, skuama, kerion." }],
+    "tests": [
+      { "tool": "kerokan_koh", "role": "kunci", "reason": "Spora/hifa pada rambut." },
+      { "tool": "lampu_wood", "role": "pendukung", "reason": "Fluoresensi hijau Microsporum." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Griseofulvin oral 6–8 minggu + sampo antijamur; kontrol 2–4 minggu.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Griseofulvin 20–25 mg/kg/hari (microsize) dengan makanan berlemak selama 6–8 minggu.",
+    "Sampo ketokonazol 2%/selenium sulfida 2–3 × seminggu (mengurangi penularan).",
+    "Kerion: tambahkan kortikosteroid oral singkat (pertimbangkan rujuk); jangan diinsisi.",
+    "Obati hewan/anggota keluarga; sisir & topi tidak dipakai bersama; boleh sekolah setelah terapi dimulai."
+  ],
+  "approach": ["Kenali alopesia bersisik pada anak; KOH rambut & lampu Wood.", "Bedakan kerion dari abses."]
+}

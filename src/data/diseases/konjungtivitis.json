@@ -1,0 +1,275 @@
+{
+  "id": "konjungtivitis",
+  "name": "Konjungtivitis",
+  "aliases": [
+    "Mata merah menular",
+    "Sakit mata belekan",
+    "Pink eye",
+    "Konjungtivitis bakteri",
+    "Konjungtivitis viral",
+    "Konjungtivitis alergi"
+  ],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Radang konjungtiva: mata merah (injeksi konjungtiva), sekret, rasa mengganjal, visus normal. Bakteri: sekret mukopurulen, kelopak lengket pagi hari. Virus (adenovirus): berair, folikel, sering didahului ISPA, sangat menular. Alergi: gatal dominan, bilateral, berair, ada riwayat atopi. Tanda bahaya (rujuk): visus turun, nyeri hebat, silau, injeksi siliar, kornea keruh.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [
+      { "min": 2, "max": 9, "weight": 2 },
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 50, "weight": 3 },
+      { "min": 51, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "pelajar", "weight": 2 }, { "id": "pelajar_sd", "weight": 1 }, { "id": "anak_tk", "weight": 1 }],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "bakteri", "probability": 0.4 },
+    { "id": "alergi", "probability": 0.35, "when": { "notTraits": ["bakteri"] } },
+    { "id": "virus", "probability": 1, "when": { "notTraits": ["bakteri", "alergi"] } },
+    { "id": "kontak_serumah", "probability": 0.5, "when": { "notTraits": ["alergi"] } }
+  ],
+  "traitLabels": {
+    "bakteri": "Konjungtivitis bakteri (sekret mukopurulen).",
+    "virus": "Konjungtivitis viral (berair, folikel, menular).",
+    "alergi": "Konjungtivitis alergi (gatal, riwayat atopi).",
+    "kontak_serumah": "Ada kontak dengan penderita serupa."
+  },
+  "symptoms": [
+    { "id": "belekan", "probability": 1, "when": { "traits": ["bakteri"] } },
+    { "id": "belekan", "probability": 0.3, "when": { "traits": ["virus"] } },
+    { "id": "mata_berair", "probability": 0.9, "when": { "traits": ["virus"] } },
+    { "id": "mata_berair", "probability": 0.8, "when": { "traits": ["alergi"] } },
+    { "id": "mata_gatal", "probability": 1, "when": { "traits": ["alergi"] } },
+    { "id": "bersin", "probability": 0.6, "when": { "traits": ["alergi"] } },
+    { "id": "nyeri_tenggorokan", "probability": 0.4, "when": { "traits": ["virus"] } },
+    { "id": "demam", "probability": 0.25, "when": { "traits": ["virus"] } },
+    { "id": "mata_merah", "probability": 1 },
+    { "id": "mata_berair", "probability": 0.3 },
+    { "id": "mata_gatal", "probability": 0.3 },
+    { "id": "mata_mengganjal", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["mata_merah"], "extraPool": ["belekan", "mata_gatal", "mata_berair"] },
+  "clueSymptoms": ["belekan", "mata_berair", "mata_gatal", "mata_mengganjal", "bersin", "nyeri_tenggorokan"],
+  "misattributions": ["kelilipan", "kurang tidur", "iritasi asap", "panas dalam"],
+  "fears": ["mata buta", "sakit mata menular ke keluarga"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mulainya {hariTeks} hari lalu, Dok. Awalnya satu mata, sekarang dua-duanya.",
+        "when": { "notTraits": ["alergi"] },
+        "clue": "Mulai satu mata lalu menular ke mata sebelahnya"
+      },
+      {
+        "text": "Sudah {hariTeks} hari, Dok. Kalau musim debu begini memang sering kambuh.",
+        "when": { "traits": ["alergi"] },
+        "clue": "Kambuh musiman/terpapar alergen"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Pagi-pagi bangun tidur mata lengket karena belek kuning, Dok.",
+        "reveals": ["belekan"],
+        "when": { "traits": ["bakteri"], "symptoms": ["belekan"] },
+        "clue": "Sekret mukopurulen, kelopak lengket pagi hari (bakteri)"
+      },
+      {
+        "text": "Matanya berair terus, Dok, rasanya ngganjal kayak berpasir.",
+        "reveals": ["mata_berair"],
+        "when": { "traits": ["virus"], "symptoms": ["mata_berair"] },
+        "clue": "Berair & sensasi berpasir (viral)"
+      },
+      {
+        "text": "Gatal sekali, Dok, pengin dikucek terus, berair juga.",
+        "reveals": ["mata_gatal"],
+        "when": { "traits": ["alergi"], "symptoms": ["mata_gatal"] },
+        "clue": "Gatal dominan (alergi)"
+      }
+    ],
+    "keparahan": [{ "text": "Mengganggu, Dok, tapi penglihatan sih masih jelas.", "clue": "Visus tidak terganggu" }],
+    "riwayat_keluarga": [
+      {
+        "text": "Adik saya di rumah juga matanya merah, Dok, duluan dia.",
+        "when": { "traits": ["kontak_serumah"] },
+        "clue": "Kontak serumah dengan keluhan serupa"
+      },
+      {
+        "text": "Saya memang alergi, Dok, kalau kena debu bersin-bersin. Ibu saya juga asma.",
+        "when": { "traits": ["alergi"] },
+        "clue": "Riwayat atopi pribadi/keluarga"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering, Dok, tiap musim kemarau kambuh.",
+        "when": { "traits": ["alergi"] },
+        "clue": "Episode berulang"
+      },
+      { "text": "Baru kali ini, Dok.", "when": { "notTraits": ["alergi"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sempat saya tetesi obat mata dari warung, Dok, lupa mereknya.",
+        "clue": "Tetes mata bebas tanpa resep (cek kandungan steroid)"
+      }
+    ],
+    "lokasi": [
+      { "text": "Matanya, Dok, awalnya satu terus pindah ke yang satunya.", "when": { "traits": ["virus"] } },
+      { "text": "Dua-duanya, Dok.", "when": { "notTraits": ["virus"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "sekret_mata",
+      "when": { "traits": ["bakteri"] },
+      "values": ["Mukopurulen kekuningan"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "sekret_mata",
+      "when": { "traits": ["virus"] },
+      "values": ["Serosa (berair)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "sekret_mata",
+      "when": { "traits": ["alergi"] },
+      "values": ["Serosa/mukoid sedikit"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_tarsal",
+      "when": { "traits": ["virus"] },
+      "probability": 0.8,
+      "values": ["Folikel di konjungtiva tarsal inferior"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_tarsal",
+      "when": { "traits": ["alergi"] },
+      "probability": 0.8,
+      "values": ["Papil-papil halus di konjungtiva tarsal superior"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["virus"] },
+      "probability": 0.6,
+      "values": ["Teraba KGB preaurikular kecil, nyeri tekan"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["virus"] },
+      "probability": 0.4,
+      "values": ["Faring hiperemis"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.3] },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "values": ["Injeksi konjungtiva difus, lebih merah di forniks"]
+    },
+    { "tool": "segmen_anterior", "param": "palpebra", "probability": 0.4, "values": ["Kelopak sedikit edema"] }
+  ],
+  "differentials": [
+    {
+      "id": "glaukoma_akut",
+      "howToDistinguish": "Glaukoma akut: nyeri hebat, visus turun mendadak, halo, mual; kornea keruh, pupil mid-dilatasi, bola mata keras. Konjungtivitis: visus normal, tanpa nyeri hebat.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "keratitis",
+      "howToDistinguish": "Keratitis: nyeri, silau, visus turun, injeksi siliar, fluoresein (+). Konjungtivitis: kornea jernih.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "uveitis_anterior",
+      "howToDistinguish": "Uveitis: injeksi siliar perikorneal, nyeri, silau, miosis, BMD keruh. Konjungtivitis: injeksi konjungtiva, pupil normal.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "benda_asing_konjungtiva",
+      "howToDistinguish": "Benda asing: riwayat kelilipan, unilateral mendadak, benda tampak di konjungtiva.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    }
+  ],
+  "otherDifferentials": ["Episkleritis", "Perdarahan subkonjungtiva", "Konjungtivitis gonore (neonatus/dewasa)"],
+  "keyFindings": [
+    "Mata merah dengan injeksi konjungtiva, visus normal",
+    "Sekret: mukopurulen (bakteri), serosa + folikel (virus), gatal + papil (alergi)",
+    "Kornea jernih, pupil normal, tanpa nyeri hebat"
+  ],
+  "teachingPoints": [
+    "Mata merah dengan VISUS TURUN tidak pernah boleh dianggap konjungtivitis biasa — pikirkan glaukoma akut, keratitis, uveitis.",
+    "Jangan memberi tetes mata yang mengandung steroid tanpa pemeriksaan slit lamp (bisa memperburuk keratitis herpes)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_keluarga", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "visus",
+        "role": "kunci",
+        "reason": "Visus normal membedakan konjungtivitis dari mata merah visus turun."
+      },
+      {
+        "tool": "segmen_anterior",
+        "role": "kunci",
+        "reason": "Jenis injeksi, sekret, folikel/papil, kornea, dan pupil."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Rawat jalan: antibiotik topikal untuk bakteri, simtomatik untuk virus, antihistamin topikal/oral untuk alergi; higiene tangan."
+    }
+  ],
+  "management": [
+    "Bakteri: antibiotik topikal (kloramfenikol/gentamisin) 5–7 hari.",
+    "Virus: kompres dingin, air mata buatan; sangat menular — cuci tangan, handuk terpisah, tidak sekolah/kerja beberapa hari.",
+    "Alergi: hindari alergen, kompres dingin, antihistamin.",
+    "Rujuk bila visus turun, nyeri hebat, kornea keruh, atau tidak membaik."
+  ],
+  "approach": [
+    "Mata merah: tentukan visus dulu (normal vs turun).",
+    "Bedakan injeksi konjungtiva vs siliar; nilai sekret, folikel/papil, kornea, pupil.",
+    "Tentukan etiologi (bakteri/virus/alergi) dari sekret, gatal, dan riwayat."
+  ]
+}

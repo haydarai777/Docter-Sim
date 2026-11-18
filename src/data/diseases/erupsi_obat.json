@@ -1,0 +1,239 @@
+{
+  "id": "erupsi_obat",
+  "name": "Erupsi obat (eksantematosa & fixed drug eruption)",
+  "aliases": ["Alergi obat di kulit", "Exanthematous drug eruption", "Fixed drug eruption", "FDE", "Erupsi morbiliformis"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Reaksi kulit simpang akibat obat. Eksantematosa (morbiliformis): makula-papul eritematosa simetris di badan menyebar ke ekstremitas 7–14 hari setelah obat baru (amoksisilin, kotrimoksazol, antikonvulsan, alopurinol), gatal, tanpa mukosa. Fixed drug eruption: bercak bulat eritematosa-keunguan berbatas tegas, kadang bula, kambuh di TEMPAT YANG SAMA setiap minum obat yang sama (OAINS, sulfa, tetrasiklin), meninggalkan hiperpigmentasi. Hentikan obat; waspadai SJS/NET & DRESS.",
+  "presentationDay": [1, 7],
+  "presentationDayByTrait": [{ "trait": "fde", "range": [1, 2] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "fde", "probability": 0.4 }, { "id": "sjs_awal", "probability": 0.03, "when": { "notTraits": ["fde"] } }],
+  "traitLabels": { "fde": "Fixed drug eruption.", "sjs_awal": "Tanda awal SJS (erosi mukosa)." },
+  "symptoms": [
+    { "id": "ruam_kulit", "probability": 1, "when": { "notTraits": ["fde"] } },
+    { "id": "bercak_kehitaman", "probability": 1, "when": { "traits": ["fde"] } },
+    { "id": "demam", "probability": 0.3, "when": { "notTraits": ["fde"] } },
+    { "id": "sariawan", "probability": 1, "when": { "traits": ["sjs_awal"] } },
+    { "id": "mata_merah", "probability": 0.8, "when": { "traits": ["sjs_awal"] } },
+    { "id": "gatal_kulit", "probability": 0.8 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit", "bercak_kehitaman"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "demam", "sariawan", "mata_merah"],
+  "misattributions": ["campak", "alergi makanan", "biduran"],
+  "fears": ["alergi obat seumur hidup", "kulit melepuh"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Seminggu setelah minum antibiotik dari puskesmas, Dok, muncul bintik merah di badan menyebar ke tangan kaki.",
+        "when": { "notTraits": ["fde"] },
+        "clue": "Ruam 7–14 hari setelah obat baru"
+      },
+      {
+        "text": "Sehari setelah minum obat sakit kepala, Dok, muncul lagi bercak bulat kehitaman di bibir, di tempat yang sama seperti dulu.",
+        "when": { "traits": ["fde"] },
+        "clue": "Bercak berulang di tempat sama setelah obat (FDE)"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Amoksisilin tiga kali sehari buat sakit gigi, Dok, minum dari minggu lalu.",
+        "when": { "notTraits": ["fde"] },
+        "clue": "Obat tersangka: amoksisilin"
+      },
+      {
+        "text": "Obat sakit kepala campuran yang ada antalgin-nya, Dok.",
+        "when": { "traits": ["fde"] },
+        "clue": "Obat tersangka: metamizol/OAINS"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Tahun lalu juga muncul di bibir yang sama waktu minum obat itu, Dok.",
+        "when": { "traits": ["fde"] },
+        "clue": "Rekurensi di lokasi sama"
+      },
+      { "text": "Belum pernah alergi obat sebelumnya, Dok.", "when": { "notTraits": ["fde"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Bibir dan mulut saya sekarang luka-luka, mata merah, kulit perih, Dok.",
+        "reveals": ["sariawan", "mata_merah"],
+        "when": { "traits": ["sjs_awal"], "symptoms": ["sariawan", "mata_merah"] },
+        "clue": "Erosi mukosa & nyeri kulit (curiga SJS)"
+      },
+      {
+        "text": "Mulut, mata, kemaluan nggak luka, Dok, kulitnya nggak melepuh.",
+        "when": { "notTraits": ["sjs_awal"] },
+        "clue": "Tanpa keterlibatan mukosa/bula luas"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di bibir bawah dan punggung tangan kanan, Dok, tempat yang sama seperti dulu.",
+        "when": { "traits": ["fde"] }
+      },
+      { "text": "Di badan sampai tangan dan kaki, Dok, rata kiri-kanan.", "when": { "notTraits": ["fde"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["fde", "sjs_awal"] },
+      "values": ["Badan & ekstremitas, simetris"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["fde", "sjs_awal"] },
+      "diagnostic": true,
+      "values": ["Makula-papul eritematosa morbiliformis sebagian konfluens, tanpa vesikel/bula"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["fde"] },
+      "values": ["Bibir bawah & punggung tangan kanan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["fde"] },
+      "diagnostic": true,
+      "values": [
+        "Patch/plak bulat berbatas tegas eritematosa-keunguan dengan bagian tengah gelap, sebagian berbula; hiperpigmentasi residual"
+      ]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "when": { "traits": ["sjs_awal"] }, "values": ["Badan, wajah"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["sjs_awal"] },
+      "diagnostic": true,
+      "values": ["Makula eritematosa-keunguan dengan lesi target atipikal, sebagian bula, Nikolsky (+)"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "when": { "traits": ["sjs_awal"] },
+      "values": ["Erosi & krusta hemoragik di bibir dan mukosa mulut"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "when": { "traits": ["sjs_awal"] },
+      "values": ["Injeksi konjungtiva bilateral"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.4] },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["sjs_awal"] }, "range": [38.5, 39.4] },
+    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.5, "range": [6, 12] }
+  ],
+  "differentials": [
+    {
+      "id": "sindrom_stevens_johnson",
+      "howToDistinguish": "SJS/NET: erosi ≥ 2 mukosa, lesi target atipikal, bula, epidermolisis, demam, nyeri kulit — hentikan obat & rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["pemeriksaan_tenggorok", "status_dermatologis"] }
+    },
+    {
+      "id": "morbili",
+      "howToDistinguish": "Campak: prodromal 3C & Koplik, ruam sefalokaudal, tanpa obat pencetus.",
+      "excludeBy": { "topics": ["onset"], "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "urtikaria_akut",
+      "howToDistinguish": "Urtikaria: lesi berpindah hilang < 24 jam.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "herpes_simpleks",
+      "howToDistinguish": "Herpes labialis: vesikel berkelompok kecil, bukan patch keunguan bulat.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Hubungan waktu dengan obat baru (eksantem 7–14 hari; FDE jam–hari, berulang di tempat sama)",
+    "Eksantem morbiliformis simetris / patch bulat keunguan berulang",
+    "Tanpa keterlibatan mukosa & bula luas (bukan SJS)"
+  ],
+  "teachingPoints": [
+    "Catat obat tersangka di rekam medis & beri kartu alergi obat; hindari obat segolongan.",
+    "Tanda bahaya: erosi mukosa, nyeri kulit, bula, demam tinggi → SJS/NET/DRESS."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "sjs_awal",
+      "name": "Sindrom Stevens-Johnson",
+      "trait": "sjs_awal",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_tenggorok", "status_dermatologis"] },
+      "explanation": "Erosi mukosa & epidermolisis — hentikan obat, rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "episode_sebelumnya", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & luas, bula, Nikolsky." },
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Erosi mukosa (SJS)." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Keterlibatan mata." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Curiga SJS/NET: hentikan obat, rujuk segera.",
+      "when": { "traits": ["sjs_awal"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Hentikan obat tersangka, antihistamin & kortikosteroid topikal/oral singkat; catat alergi; kontrol 3–7 hari."
+    }
+  ],
+  "management": [
+    "Hentikan semua obat tersangka; ganti dengan golongan berbeda bila perlu.",
+    "Antihistamin oral; kortikosteroid topikal (eksantem) atau potensi sedang (FDE); prednison singkat bila luas.",
+    "Catat di rekam medis & beri kartu alergi obat.",
+    "Rujuk segera bila erosi mukosa, bula luas, demam tinggi, atau organ terlibat."
+  ],
+  "approach": ["Telusuri semua obat beserta waktu mulai.", "Bedakan eksantem vs FDE; singkirkan SJS/DRESS."]
+}

@@ -1,0 +1,202 @@
+{
+  "disease": "luka_bakar",
+  "setting": "Puskesmas",
+  "station": "Bedah — luka & luka bakar",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "utama",
+        "reason": "Nyeri luka bakar.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik (anak)",
+        "role": "utama",
+        "reason": "Nyeri luka bakar.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 5–10 mg/kgBB/kali 3 × sehari",
+            "schedules": ["rutin", "prn"],
+            "forms": ["ibuprofen-syr"],
+            "dosePerKg": [5, 10],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "topikal",
+        "label": "Topikal luka bakar",
+        "role": "utama",
+        "reason": "Derajat 2: mencegah infeksi & menjaga kelembapan luka.",
+        "options": [
+          {
+            "drug": "perak_sulfadiazin",
+            "label": "Perak sulfadiazin 1% krim tipis 1–2 × sehari saat ganti balutan (tidak untuk wajah)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "emolien",
+            "label": "Kasa vaselin (tulle) saat ganti balutan (bila alergi sulfa/wajah)",
+            "schedules": ["rutin"],
+            "forms": ["vaselin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 1–2 × sehari saat ganti balutan (bila alergi sulfa)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["derajat2"] }
+      },
+      {
+        "id": "emolien",
+        "label": "Pelembap",
+        "role": "opsional",
+        "reason": "Derajat 1.",
+        "options": [
+          {
+            "drug": "emolien",
+            "label": "Emolien (krim urea 10%/vaselin) 2–3 × sehari & setelah mandi",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "notTraits": ["derajat2"] }
+      },
+      {
+        "id": "td",
+        "label": "Imunisasi tetanus",
+        "role": "opsional",
+        "reason": "Luka bakar derajat 2 rawan tetanus bila imunisasi tidak lengkap.",
+        "options": [{ "drug": "toksoid_tetanus", "label": "Vaksin Td 0,5 mL IM", "schedules": ["tunggal"], "dose": [0.5, 0.5] }],
+        "when": { "traits": ["derajat2"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["perak_sulfadiazin"],
+        "reason": "Perak sulfadiazin tidak diperlukan pada luka bakar derajat 1.",
+        "severity": "salah",
+        "when": { "notTraits": ["derajat2"] }
+      },
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Steroid topikal menghambat penyembuhan luka.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "dinginkan",
+      "text": "Alirkan air mengalir suhu ruang 20 menit; lepas perhiasan/pakaian yang tidak lengket",
+      "kind": "benar"
+    },
+    { "id": "balut", "text": "Bersihkan dengan NaCl, bula kecil dibiarkan, tutup dengan kasa steril", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Resusitasi cairan (Parkland) & rujuk segera",
+      "kind": "benar",
+      "when": { "traits": ["luas"] }
+    },
+    {
+      "id": "odol",
+      "text": "Oleskan pasta gigi/mentega/kecap pada luka bakar",
+      "kind": "berbahaya",
+      "why": "Kontaminasi, memperdalam luka, & menyulitkan penilaian."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini luka bakar; derajat & luasnya sudah dinilai", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Balutan diganti sesuai jadwal; obat nyeri bila perlu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam, luka berbau/bernanah, kemerahan meluas, atau anak tampak lemas/kurang minum",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol & ganti balutan 1–2 hari lagi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Jauhkan anak dari air panas/termos; hati-hati knalpot (pakai celana panjang)",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "es",
+      "text": "Kompres luka bakar dengan es batu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Vasokonstriksi memperdalam luka & hipotermia."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "ATLS 10th ed. — prinsip penanganan luka",
+      "Kemenkes RI. PNPK Tata Laksana Luka Bakar (2019)"
+    ]
+  }
+}

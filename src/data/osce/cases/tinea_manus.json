@@ -1,0 +1,179 @@
+{
+  "disease": "tinea_manus",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi jamur",
+  "therapy": {
+    "items": [
+      {
+        "id": "oral",
+        "label": "Antijamur oral",
+        "role": "utama",
+        "reason": "Tinea manus (kulit telapak tebal).",
+        "options": [
+          {
+            "drug": "terbinafin",
+            "label": "Terbinafin 1 × 250 mg selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [250, 250],
+            "timesPerDay": [1, 1],
+            "days": [14, 42]
+          },
+          {
+            "drug": "griseofulvin",
+            "label": "Griseofulvin 500–1000 mg/hari sesudah makan berlemak selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "forms": ["griseofulvin-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 2],
+            "days": [14, 42]
+          }
+        ]
+      },
+      {
+        "id": "topikal",
+        "label": "Antijamur topikal",
+        "role": "opsional",
+        "reason": "Terapi tambahan.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 2–4 minggu (lanjut 1–2 minggu setelah sembuh)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "terbinafin_krim",
+            "label": "Terbinafin 1% krim 1–2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 28]
+          }
+        ]
+      },
+      {
+        "id": "pedis",
+        "label": "Antijamur topikal kaki",
+        "role": "pendukung",
+        "reason": "Obati tinea pedis sekaligus.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 2–4 minggu (lanjut 1–2 minggu setelah sembuh)",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [14, 42]
+          },
+          {
+            "drug": "terbinafin_krim",
+            "label": "Terbinafin 1% krim 1–2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 28]
+          }
+        ],
+        "when": { "traits": ["tinea_pedis_menyertai"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["ketokonazol_tab"],
+        "reason": "Ketokonazol oral hepatotoksik — tidak untuk infeksi jamur kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "sarung_tangan", "text": "Sarung tangan untuk pekerjaan basah; keringkan tangan", "kind": "benar" },
+    { "id": "keratolitik", "text": "Keratolitik/urea untuk kulit tebal bersisik", "kind": "benar" },
+    {
+      "id": "krim_campur",
+      "text": "Pakai krim campuran steroid-antijamur-antibiotik yang dijual bebas",
+      "kind": "berbahaya",
+      "why": "Steroid memperberat infeksi jamur & atrofi kulit."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini infeksi jamur kulit telapak tangan (tinea manus)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai teratur 2–4 minggu, lanjutkan 1–2 minggu setelah kulit tampak sembuh",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, bernanah/bengkak merah nyeri, demam, atau tidak membaik setelah 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Keringkan badan setelah mandi & jangan berbagi handuk/pakaian",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Hentikan obat jamur begitu gatal hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Jamur belum tuntas → kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

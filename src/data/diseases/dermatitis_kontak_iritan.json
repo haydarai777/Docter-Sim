@@ -1,0 +1,183 @@
+{
+  "id": "dermatitis_kontak_iritan",
+  "name": "Dermatitis kontak iritan",
+  "aliases": ["DKI", "Eksim tangan", "Iritasi kulit karena sabun", "Housewife's eczema"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Peradangan kulit non-imunologis akibat kontak berulang dengan iritan (air & sabun, deterjen, pelarut, semen) atau iritan kuat sekali kontak. Kronik kumulatif: kulit kering, eritema, skuama, fisura, likenifikasi di punggung tangan & sela jari, terasa perih/terbakar lebih dari gatal, berbatas sesuai area kontak. Akut: eritema, edema, vesikel-bula. Terapi: hindari iritan, pelindung, emolien, kortikosteroid topikal.",
+  "presentationDay": [14, 180],
+  "presentationDayByTrait": [{ "trait": "akut", "range": [1, 3] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 39, "weight": 3 },
+      { "min": 40, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.35,
+    "occupations": [
+      { "id": "ibu_rumah_tangga", "weight": 4 },
+      { "id": "pekerja_proyek", "weight": 2 },
+      { "id": "penjahit", "weight": 1 }
+    ],
+    "occupationBias": 0.6
+  },
+  "traits": [{ "id": "akut", "probability": 0.25 }, { "id": "pekerja_semen", "probability": 0.3, "when": { "sex": "male" } }],
+  "traitLabels": { "akut": "DKI akut (iritan kuat).", "pekerja_semen": "Paparan semen/bahan bangunan." },
+  "symptoms": [
+    { "id": "lepuh_kulit", "probability": 0.8, "when": { "traits": ["akut"] } },
+    { "id": "ruam_kulit", "probability": 1 },
+    { "id": "kulit_kering", "probability": 0.8 },
+    { "id": "nyeri_terbakar_kulit", "probability": 0.6 },
+    { "id": "gatal_kulit", "probability": 0.5 },
+    { "id": "kulit_bersisik", "probability": 0.7 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit"], "extraPool": ["kulit_kering", "nyeri_terbakar_kulit"] },
+  "clueSymptoms": ["kulit_kering", "nyeri_terbakar_kulit", "gatal_kulit", "kulit_bersisik", "lepuh_kulit"],
+  "misattributions": ["alergi sabun", "kutu air", "kurang vitamin"],
+  "fears": ["eksim seumur hidup", "menular"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, kedua tangan kering, merah, pecah-pecah, perih.",
+        "when": { "notTraits": ["akut"] },
+        "clue": "Kronik kumulatif"
+      },
+      {
+        "text": "{LamaSakit} lalu habis bersihin kamar mandi pakai pembersih keras tanpa sarung tangan, Dok, tangan langsung merah, melepuh, perih.",
+        "reveals": ["lepuh_kulit"],
+        "when": { "traits": ["akut"], "symptoms": ["lepuh_kulit"] },
+        "clue": "Akut setelah iritan kuat"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Seharian cuci piring dan baju pakai deterjen, tangan basah terus, Dok.",
+        "when": { "notTraits": ["pekerja_semen"] },
+        "clue": "Pekerjaan basah & deterjen"
+      },
+      {
+        "text": "Kerja aduk semen nggak pakai sarung tangan, Dok.",
+        "when": { "traits": ["pekerja_semen"] },
+        "clue": "Paparan semen"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Lebih banyak perih dan panas daripada gatal, Dok. Merahnya cuma di bagian yang kena air sabun.",
+        "clue": "Perih > gatal, terbatas area kontak"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Kalau libur nggak nyuci, tangan agak membaik, Dok.", "clue": "Membaik bila menghindari iritan" }],
+    "riwayat_penyakit": [{ "text": "Waktu kecil nggak ada eksim atau asma, Dok.", "clue": "Tanpa riwayat atopi" }],
+    "lokasi": [{ "text": "Di punggung tangan dan sela-sela jari, Dok, dua-duanya. Pas di bagian yang kena air sabun." }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["akut"] },
+      "values": ["Punggung tangan & sela jari kedua tangan, berbatas sesuai area kontak"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["akut"] },
+      "diagnostic": true,
+      "values": ["Eritema, skuama, kulit kering, fisura, likenifikasi ringan"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["akut"] },
+      "values": ["Punggung tangan kanan & kiri"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["akut"] },
+      "diagnostic": true,
+      "values": ["Eritema, edema, vesikel-bula, erosi berbatas tegas sesuai area kontak"]
+    },
+    { "tool": "kerokan_koh", "param": "hasil", "values": ["Tidak ditemukan hifa, spora, maupun pseudohifa"] }
+  ],
+  "differentials": [
+    {
+      "id": "luka_bakar",
+      "howToDistinguish": "Luka bakar kimia: paparan zat korosif konsentrasi tinggi dengan nekrosis/bula luas — irigasi lama & rujuk bila dalam/luas.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_kontak_alergi",
+      "howToDistinguish": "Dermatitis kontak alergi: gatal dominan, vesikel, menyebar di luar area kontak, alergen spesifik (nikel, karet).",
+      "excludeBy": { "topics": ["karakter"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_manus",
+      "howToDistinguish": "Tinea manus: unilateral, KOH positif.",
+      "excludeBy": { "tools": ["kerokan_koh"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Kandidosis interdigital: maserasi merah terang dengan satelit, KOH pseudohifa.",
+      "excludeBy": { "tools": ["kerokan_koh"] }
+    }
+  ],
+  "keyFindings": [
+    "Pekerjaan basah/iritan, lesi terbatas area kontak",
+    "Kulit kering, eritema, skuama, fisura, perih > gatal",
+    "Membaik bila menghindari iritan; KOH negatif"
+  ],
+  "teachingPoints": [
+    "Sarung tangan karet dengan lapisan katun di dalam; emolien setelah setiap cuci tangan adalah kunci pencegahan kekambuhan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "karakter", "pemberat_peringan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Distribusi sesuai kontak & morfologi." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "pendukung", "reason": "Menyingkirkan jamur." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Hindari iritan, sarung tangan, emolien, kortikosteroid topikal 1–2 minggu; kontrol 2 minggu."
+    }
+  ],
+  "management": [
+    "Hindari/kurangi iritan; sarung tangan (katun di dalam karet) saat bekerja basah.",
+    "Emolien sering (vaselin/krim urea) terutama setelah cuci tangan.",
+    "Kortikosteroid topikal potensi sedang (betametason 0,1%) 1–2 minggu; akut basah: kompres NaCl.",
+    "Rujuk/uji tempel bila tidak membaik (curiga alergi)."
+  ],
+  "approach": ["Hubungkan lesi dengan pajanan pekerjaan; KOH untuk menyingkirkan jamur."]
+}

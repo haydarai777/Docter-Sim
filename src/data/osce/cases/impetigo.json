@@ -1,0 +1,172 @@
+{
+  "disease": "impetigo",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Impetigo terlokalisasi.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Lesi luas/multipel.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["luas"], "ageMin": 12 }
+      },
+      {
+        "id": "ab_oral_anak",
+        "label": "Antibiotik oral (anak)",
+        "role": "utama",
+        "reason": "Lesi luas/multipel.",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["luas"], "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Steroid topikal memperberat infeksi bakteri kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres NaCl 0,9% untuk melepas krusta", "kind": "benar" },
+    {
+      "id": "higiene",
+      "text": "Mandi teratur dengan sabun, potong kuku, handuk & pakaian tidak dipakai bersama",
+      "kind": "benar"
+    },
+    {
+      "id": "sekolah",
+      "text": "Libur sekolah 24–48 jam setelah terapi dimulai",
+      "kind": "benar",
+      "when": { "ageMax": 18 }
+    },
+    {
+      "id": "pencet",
+      "text": "Pencet/korek lesi agar nanahnya keluar",
+      "kind": "berbahaya",
+      "why": "Penyebaran infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini impetigo: infeksi bakteri kulit superfisial yang mudah menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Salep dioles setelah krusta dibersihkan, 3 × sehari selama 7 hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam, kemerahan meluas, bengkak wajah, atau kencing berwarna seperti teh",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Potong kuku & jangan menggaruk; handuk tidak dipakai bersama",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

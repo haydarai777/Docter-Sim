@@ -1,0 +1,154 @@
+{
+  "disease": "hiv",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam & infeksi",
+  "therapy": {
+    "items": [
+      {
+        "id": "arv",
+        "label": "ARV lini pertama",
+        "role": "utama",
+        "reason": "ART sesegera mungkin setelah skrining TB.",
+        "options": [
+          {
+            "drug": "tld",
+            "label": "TLD (tenofovir 300/lamivudin 300/dolutegravir 50 mg) 1 × 1 tablet setiap hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "tle",
+            "label": "TLE (tenofovir 300/lamivudin 300/efavirenz 600 mg) 1 × 1 tablet malam hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ]
+      },
+      {
+        "id": "ppk",
+        "label": "Profilaksis kotrimoksazol",
+        "role": "pendukung",
+        "reason": "Stadium klinis 3–4 atau CD4 < 200.",
+        "options": [
+          {
+            "drug": "kotrimoksazol",
+            "label": "Kotrimoksazol 1 × 960 mg setiap hari",
+            "schedules": ["rutin"],
+            "forms": ["kotrimoksazol-tab960"],
+            "dose": [960, 960],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "dapson",
+            "label": "Dapson 1 × 100 mg (bila alergi kotrimoksazol)",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ],
+        "when": { "traits": ["kandidiasis_oral"] }
+      },
+      {
+        "id": "antijamur",
+        "label": "Antijamur kandidiasis oral",
+        "role": "pendukung",
+        "reason": "Kandidiasis orofaring.",
+        "options": [
+          {
+            "drug": "flukonazol",
+            "label": "Flukonazol 1 × 150 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["flukonazol-kap150"],
+            "dose": [150, 150],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          },
+          {
+            "drug": "nistatin",
+            "label": "Nistatin suspensi 4–6 mL (400.000–600.000 IU) 4 × sehari selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [400000, 600000],
+            "timesPerDay": [4, 4],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["kandidiasis_oral"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "konseling",
+      "text": "Konseling pascates, jaga kerahasiaan, dukungan psikososial (kelompok dukungan sebaya)",
+      "kind": "benar"
+    },
+    { "id": "skrining", "text": "Skrining TB, sifilis, & hepatitis B", "kind": "benar" },
+    { "id": "pasangan", "text": "Notifikasi & tes pasangan/anak; gunakan kondom", "kind": "benar" },
+    {
+      "id": "herbal",
+      "text": "Ganti ARV dengan obat herbal penambah imun",
+      "kind": "berbahaya",
+      "why": "Virus tidak terkendali → AIDS & resistansi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Hasil tes menunjukkan infeksi HIV; dengan obat teratur Anda dapat hidup sehat dan produktif",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "ARV diminum setiap hari seumur hidup pada jam yang sama, jangan terlewat",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Efek samping awal (mual, pusing, mimpi aneh) biasanya membaik dalam beberapa minggu",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera datang bila batuk lama, demam, sesak, diare berat, atau ruam kulit luas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol tiap bulan untuk mengambil obat & evaluasi; viral load setelah 6 bulan",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Gunakan kondom & jangan berbagi jarum; ARV teratur mencegah penularan (U=U)",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "ARV boleh dihentikan bila badan sudah sehat",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Rebound viremia & resistansi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. PNPK Tata Laksana HIV (2019) & pembaruan regimen TLD"
+    ]
+  }
+}

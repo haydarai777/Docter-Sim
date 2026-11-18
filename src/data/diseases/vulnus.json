@@ -1,0 +1,269 @@
+{
+  "id": "vulnus",
+  "name": "Vulnus laseratum dan punctum",
+  "aliases": ["Luka robek", "Luka tusuk", "Vulnus laceratum", "Vulnus punctum", "Luka terbuka"],
+  "system": "Trauma & forensik",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.6,
+  "summary": "Luka robek (laseratum) akibat benda tumpul/tajam tak beraturan (seng, kaca, jatuh): tepi tidak rata, jembatan jaringan; luka tusuk (punctum) akibat benda runcing (paku, duri): sempit dan dalam, risiko infeksi & tetanus tinggi. Tata laksana: hentikan perdarahan, nilai neurovaskular-tendon distal, irigasi & debridemen, penjahitan primer bila < 6–8 jam dan bersih (luka tusuk tidak dijahit), profilaksis tetanus sesuai status imunisasi, antibiotik bila kotor.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 3, "max": 9, "weight": 2 },
+      { "min": 10, "max": 30, "weight": 4 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.65,
+    "occupations": [
+      { "id": "pekerja_proyek", "weight": 3 },
+      { "id": "petani", "weight": 2 },
+      { "id": "buruh_pabrik", "weight": 2 },
+      { "id": "ojek_online", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "punctum", "probability": 0.35 },
+    { "id": "kotor", "probability": 0.45 },
+    { "id": "tt_tidak_lengkap", "probability": 0.6 },
+    { "id": "cedera_tendon", "probability": 0.05, "when": { "notTraits": ["punctum"] } },
+    { "id": "benda_asing", "probability": 0.1, "when": { "notTraits": ["punctum"] } },
+    { "id": "terlambat", "probability": 0.15 }
+  ],
+  "traitLabels": {
+    "punctum": "Luka tusuk.",
+    "kotor": "Luka kotor (tanah/karat).",
+    "tt_tidak_lengkap": "Status imunisasi tetanus tidak lengkap/tidak diketahui.",
+    "cedera_tendon": "Cedera tendon.",
+    "benda_asing": "Curiga benda asing (kaca).",
+    "terlambat": "Datang > 8 jam (tidak dijahit primer)."
+  },
+  "symptoms": [
+    { "id": "luka_robek", "probability": 1, "when": { "notTraits": ["punctum"] } },
+    { "id": "luka_tusuk", "probability": 1, "when": { "traits": ["punctum"] } },
+    { "id": "nyeri_luka", "probability": 0.9 }
+  ],
+  "chiefComplaint": { "primary": ["luka_robek", "luka_tusuk"], "extraPool": ["nyeri_luka"] },
+  "clueSymptoms": ["nyeri_luka"],
+  "misattributions": ["luka kecil biasa", "cukup diplester"],
+  "fears": ["infeksi", "tetanus", "bekas luka"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Satu jam lalu, Dok, tangan kena seng waktu bongkar atap, langsung robek berdarah.",
+        "when": { "notTraits": ["punctum", "terlambat"] },
+        "clue": "Laserasi 1 jam (golden period)"
+      },
+      {
+        "text": "Tadi pagi waktu di sawah kaki ketusuk paku berkarat, Dok.",
+        "when": { "traits": ["punctum"] },
+        "clue": "Luka tusuk paku berkarat"
+      },
+      {
+        "text": "Kemarin sore, Dok, kena kaca jendela pecah, lukanya baru saya bawa sekarang.",
+        "when": { "notTraits": ["punctum"], "traits": ["terlambat"] },
+        "clue": "Datang > 8 jam"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Seingat saya terakhir disuntik tetanus waktu SD, Dok.",
+        "when": { "traits": ["tt_tidak_lengkap"] },
+        "clue": "Imunisasi tetanus tidak lengkap/lama"
+      },
+      {
+        "text": "Tahun lalu saya disuntik tetanus waktu luka juga, Dok.",
+        "when": { "notTraits": ["tt_tidak_lengkap"] },
+        "clue": "Booster tetanus < 5 tahun"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Jari tengah saya nggak bisa ditekuk, Dok.",
+        "when": { "traits": ["cedera_tendon"] },
+        "clue": "Gangguan fleksi jari (curiga cedera tendon)"
+      },
+      {
+        "text": "Jari-jari masih bisa gerak dan terasa semua, Dok.",
+        "when": { "notTraits": ["cedera_tendon"] },
+        "clue": "Fungsi motorik & sensorik distal baik"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Lukanya kena tanah dan kotor, Dok, perih sekali.",
+        "when": { "traits": ["kotor"] },
+        "clue": "Luka terkontaminasi"
+      },
+      { "text": "Lukanya kelihatan bersih, Dok, perih dan cenut-cenut.", "when": { "notTraits": ["kotor"] } }
+    ],
+    "riwayat_obat": [{ "text": "Belum diobati, cuma dibebat kain, Dok." }],
+    "lokasi": [
+      { "text": "Di telapak kaki kanan, Dok.", "when": { "traits": ["punctum"] } },
+      { "text": "Di lengan bawah kanan, Dok.", "when": { "notTraits": ["punctum"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "notTraits": ["punctum"] },
+      "diagnostic": true,
+      "values": [
+        "Vulnus laseratum 4 × 0,5 × 0,5 cm di regio antebrachii dekstra, tepi tidak rata, jembatan jaringan (+), dasar otot, perdarahan aktif minimal"
+      ]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "traits": ["punctum"] },
+      "diagnostic": true,
+      "values": ["Vulnus punctum diameter 0,5 cm di regio plantar pedis dekstra, kedalaman ± 1 cm, kotor"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "traits": ["kotor"] },
+      "values": ["Terkontaminasi tanah/karat, tanpa tanda infeksi"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "notTraits": ["kotor"] },
+      "values": ["Bersih, tanpa benda asing tampak, tanpa tanda infeksi"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "distal",
+      "when": { "traits": ["cedera_tendon"] },
+      "values": ["Fleksi jari III tidak dapat dilakukan (curiga cedera tendon fleksor); sensorik & pulsasi baik"]
+    },
+    {
+      "tool": "rontgen_ekstremitas",
+      "param": "jaringan_lunak",
+      "when": { "traits": ["benda_asing"] },
+      "values": ["Tampak fragmen radioopak 3 mm di jaringan lunak antebrachii (benda asing kaca)"]
+    },
+    {
+      "tool": "rontgen_ekstremitas",
+      "param": "kesan",
+      "when": { "traits": ["benda_asing"] },
+      "values": ["Benda asing radioopak di jaringan lunak, tanpa fraktur"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "fraktur_terbuka",
+      "howToDistinguish": "Fraktur terbuka: luka berhubungan dengan patah tulang (deformitas, krepitasi, tulang tampak) — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_lokalis"] }
+    },
+    {
+      "id": "cedera_tendon_saraf",
+      "howToDistinguish": "Cedera tendon/saraf/pembuluh: gangguan gerak, sensorik, atau perfusi distal — eksplorasi & rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_lokalis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "tetanus",
+      "howToDistinguish": "Risiko tetanus pada luka tusuk/kotor dengan imunisasi tidak lengkap — profilaksis TT ± HTIG.",
+      "excludeBy": { "topics": ["kebiasaan"] }
+    }
+  ],
+  "keyFindings": [
+    "Mekanisme & waktu kejadian (golden period 6–8 jam)",
+    "Deskripsi luka & status neurovaskular-tendon distal",
+    "Status imunisasi tetanus"
+  ],
+  "teachingPoints": [
+    "Luka tusuk tidak dijahit primer — irigasi, biarkan terbuka, antibiotik & profilaksis tetanus.",
+    "Profilaksis tetanus: luka kotor + imunisasi < 3 dosis/tidak jelas → TT + HTIG; ≥ 3 dosis dengan booster > 5 tahun → TT."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "ATLS (American College of Surgeons) — prinsip penanganan luka",
+      "Kemenkes RI. Pedoman Penatalaksanaan Luka Bakar (PNPK 2019)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "cedera_tendon",
+      "name": "Cedera tendon",
+      "trait": "cedera_tendon",
+      "redFlag": true,
+      "assess": { "tools": ["status_lokalis"], "topics": ["keparahan"] },
+      "explanation": "Gangguan fungsi tendon — rujuk untuk repair."
+    },
+    {
+      "id": "benda_asing",
+      "name": "Benda asing dalam luka",
+      "trait": "benda_asing",
+      "redFlag": false,
+      "assess": { "tools": ["rontgen_ekstremitas"] },
+      "explanation": "Fragmen kaca radioopak — eksplorasi/ekstraksi sebelum menjahit."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "keparahan", "riwayat_penyakit", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "status_lokalis",
+        "role": "kunci",
+        "reason": "Jenis, ukuran, dasar, kontaminasi, neurovaskular-tendon distal."
+      }
+    ],
+    "tests": [
+      {
+        "tool": "rontgen_ekstremitas",
+        "role": "komplikasi",
+        "when": { "traits": ["benda_asing"] },
+        "reason": "Benda asing radioopak."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Cedera tendon: hentikan perdarahan, tutup luka steril, rujuk untuk repair.",
+      "when": { "traits": ["cedera_tendon"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Irigasi, debridemen, penjahitan (laserasi bersih < 8 jam), profilaksis tetanus, antibiotik bila kotor; kontrol 2–3 hari, angkat jahitan 7–14 hari."
+    }
+  ],
+  "management": [
+    "Hentikan perdarahan (tekan langsung), anestesi lokal lidokain 1%, irigasi NaCl 0,9% berlimpah, debridemen.",
+    "Laserasi bersih < 6–8 jam: jahit primer; luka tusuk/kotor/terlambat: jangan dijahit primer (jahit tertunda).",
+    "Profilaksis tetanus (TT ± HTIG) sesuai status imunisasi & jenis luka.",
+    "Antibiotik (amoksisilin-klavulanat/sefadroksil) untuk luka tusuk/kotor; analgesik; edukasi tanda infeksi.",
+    "Angkat jahitan: wajah 5 hari, badan/lengan 7–10 hari, tungkai/sendi 10–14 hari."
+  ],
+  "approach": ["Mekanisme, waktu, kontaminasi, imunisasi tetanus.", "Nilai neurovaskular & tendon distal sebelum anestesi."]
+}

@@ -1,0 +1,92 @@
+{
+  "disease": "pedikulosis_kapitis",
+  "setting": "Puskesmas",
+  "station": "Kulit — gatal & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "pedikulisida",
+        "label": "Pedikulisida",
+        "role": "utama",
+        "reason": "Membunuh kutu kepala.",
+        "options": [
+          {
+            "drug": "permetrin_losion",
+            "label": "Permetrin 1% dioles di rambut kering 10 menit lalu dibilas; ulang hari ke-7–10",
+            "schedules": ["tunggal"],
+            "dose": [1, 1]
+          }
+        ]
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "pendukung",
+        "reason": "Impetiginisasi kulit kepala.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "serit", "text": "Sisir serit tiap hari setelah keramas", "kind": "benar" },
+    { "id": "keluarga", "text": "Periksa & obati seluruh anggota keluarga/teman sekamar serentak", "kind": "benar" },
+    { "id": "cuci", "text": "Cuci sarung bantal, topi, & sisir dengan air panas; jangan berbagi", "kind": "benar" },
+    {
+      "id": "minyak_tanah",
+      "text": "Siram rambut dengan minyak tanah/insektisida semprot",
+      "kind": "berbahaya",
+      "why": "Luka bakar kimia, keracunan, & risiko terbakar."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini kutu rambut (pedikulosis kapitis)", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat dioles sesuai petunjuk lalu dibilas; ulangi seminggu kemudian untuk membunuh kutu yang baru menetas",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila kulit kepala bernanah, bengkak kelenjar leher, atau demam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu (periksa telur hidup)", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Jangan berbagi sisir, topi, atau bantal", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "kotor",
+      "text": "Kutu rambut hanya menyerang anak yang jarang mandi",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Menular lewat kontak kepala, tidak terkait kebersihan semata."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

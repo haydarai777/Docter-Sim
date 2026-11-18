@@ -1,0 +1,89 @@
+{
+  "disease": "mata_kering",
+  "setting": "Puskesmas",
+  "station": "Mata — mata merah",
+  "therapy": {
+    "items": [
+      {
+        "id": "pelumas",
+        "label": "Air mata buatan",
+        "role": "utama",
+        "reason": "Menggantikan lapisan air mata.",
+        "options": [
+          {
+            "drug": "air_mata_buatan",
+            "label": "Air mata buatan 1 tetes 4–6 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [7, 30]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "2020",
+      "text": "Istirahatkan mata (aturan 20-20-20) & sering berkedip saat menatap layar",
+      "kind": "benar"
+    },
+    { "id": "ac", "text": "Hindari hembusan AC/kipas langsung ke mata; cukup minum", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres hangat kelopak bila disertai blefaritis", "kind": "benar" },
+    {
+      "id": "vasokon",
+      "text": "Pakai tetes mata 'penghilang merah' (vasokonstriktor) setiap hari",
+      "kind": "berbahaya",
+      "why": "Rebound hiperemia & memperparah mata kering."
+    },
+    {
+      "id": "herbal",
+      "text": "Teteskan air sirih/ASI/obat herbal ke mata",
+      "kind": "berbahaya",
+      "why": "Iritasi & infeksi kornea."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Mata kering karena produksi/kualitas air mata berkurang",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Air mata buatan dipakai rutin, boleh lebih sering bila perlu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur, nyeri hebat, atau silau",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu untuk menilai respons", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "sembuh_sekali",
+      "text": "Cukup ditetes beberapa hari lalu sembuh total",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Kondisi kronik; perlu kebiasaan & pelumas jangka panjang."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

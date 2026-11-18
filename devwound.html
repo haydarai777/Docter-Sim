@@ -1,0 +1,96 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#cfd6da}#stage{position:fixed;inset:0}canvas{width:100%;height:100%;display:block}#info{position:fixed;left:8px;top:8px;font:12px system-ui;background:#000a;color:#fff;padding:4px 8px;border-radius:6px;max-width:70%}</style></head>
+<body><div id="stage"></div><div id="info"></div>
+<script type="module">
+// Pratinjau luka & perdarahan (pengembang): ?igd=perdarahan_eksternal&mode=lie&focus=bacok_paha&dist=0.45 (focus: <idLuka>|head|hips)
+// Status: rate (ml/menit), lost (ml), pressure=1, tq=1, sutured=1, cleaned=1, wrap=1, cooled=1, sex, age, kg, seed
+import { Mesh, BoxGeometry, MeshStandardMaterial, PlaneGeometry, Vector3 } from 'three';
+import { Stage } from '/src/ui/three/stage.ts';
+import { Actor } from '/src/ui/three/actor.ts';
+import { WoundSet } from '/src/ui/three/wounds.ts';
+import { BloodFx, StainSurface } from '/src/ui/three/bloodFx.ts';
+import { loadDefaultContent } from '/src/data/index.ts';
+import { ED_SCENARIOS_BY_ID } from '/src/data/igd/index.ts';
+import { caseInjuries } from '/src/core/injury.ts';
+import { previewLook } from '/src/ui/igd/looks.ts';
+const q = new URLSearchParams(location.search);
+const stage = Stage.create(document.getElementById('stage'));
+window.stage = stage;
+stage.setFreeRect({ left: 0, top: 0, right: innerWidth, bottom: innerHeight });
+stage.room.group.traverse((o) => { if (o.isMesh || o.isPoints) o.visible = false; });
+const content = loadDefaultContent();
+const sc = q.get('igd') ? ED_SCENARIOS_BY_ID.get(q.get('igd')) : null;
+const injuries = sc ? sc.injuries : caseInjuries({ diseaseId: q.get('disease') ?? 'vulnus', traits: (q.get('traits') ?? '').split(',').filter(Boolean) });
+const look = previewLook(content, Number(q.get('seed') ?? 7), q.get('sex') ?? 'male', Number(q.get('age') ?? 30), Number(q.get('kg') ?? 65));
+look.injuries = injuries;
+if (injuries?.cues?.kuning) look.cues.kuning = injuries.cues.kuning;
+const actor = new Actor(look, Number(q.get('seed') ?? 7));
+window.actor = actor;
+stage.scene.add(actor.character.root);
+stage.add(actor);
+const floor = new Mesh(new PlaneGeometry(8, 8), new MeshStandardMaterial({ color: '#b9bec4', roughness: 0.95 }));
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+stage.scene.add(floor);
+const mode = q.get('mode') ?? 'lie';
+const blood = new BloodFx(stage.scene);
+let sheet = null;
+if (mode === 'lie') {
+  const bed = new Mesh(new BoxGeometry(0.86, 0.12, 2.0), new MeshStandardMaterial({ color: '#eef1f3', roughness: 0.9 }));
+  bed.position.set(0, 0.6, -0.2);
+  bed.receiveShadow = true;
+  stage.scene.add(bed);
+  sheet = new StainSurface('sprei', stage.scene, new Vector3(0, 0.661, 0.2), 0.86, 1.2, 'kain');
+  blood.addSurface(sheet);
+  actor.lie(() => ({ x: 0, y: 0.66, z: 0, yaw: 0, incline: Number(q.get('incline') ?? 0.15), roll: 0, legsUp: 0 }), 0);
+} else if (mode === 'stand') actor.placeAt(new Vector3(0, 0, 0), 0);
+else { actor.seatY = 0.45; actor.setSeat(0, 0, 0); actor.placeSeated(); }
+actor.clinic = { alert: 1, seizure: false, lifeless: false, compressions: false, agitation: 0 };
+const ws = injuries && (injuries.wounds.length || injuries.hematemesis || injuries.vaginal) ? new WoundSet(actor.character, injuries, 11) : null;
+window.ws = ws;
+const st = {
+  rate: Number(q.get('rate') ?? 0), lostMl: Number(q.get('lost') ?? 0), sinceDressingMl: Number(q.get('since') ?? 0),
+  pressure: q.get('pressure') === '1', tourniquet: q.get('tq') === '1', sutured: q.get('sutured') === '1', cleaned: q.get('cleaned') === '1',
+  wrap: q.get('wrap') === '1', lying: mode === 'lie', cooled: q.get('cooled') === '1',
+};
+const apply = () => { for (const w of ws?.wounds ?? []) ws.apply(w, { ...st, rate: w.spec.bleeding ? st.rate : 0 }); if (injuries?.hematemesis) ws.setHematemesis(Number(q.get('hema') ?? 200)); if (injuries?.vaginal) ws.setVaginal(Number(q.get('vag') ?? 700)); };
+apply();
+document.getElementById('info').textContent = `${sc?.title ?? q.get('disease')} · ${(injuries?.wounds ?? []).map((w) => w.label).join(' | ')}`;
+// Kamera: fokus luka tertentu atau cam=x,y,z,tx,ty,tz,fov
+const focusId = q.get('focus');
+const cam = q.get('cam');
+const dist = Number(q.get('dist') ?? 0.45);
+const sim = { t: 0 };
+stage.updateCamera = () => {
+  if (cam) {
+    const [x, y, z, tx, ty, tz, fov] = cam.split(',').map(Number);
+    stage.camera.position.set(x, y, z);
+    stage.camera.lookAt(tx, ty, tz);
+    stage.camera.fov = fov || 35;
+  } else {
+    const hips = focusId === 'hips';
+    const w = focusId === 'head' || hips ? null : (ws?.wounds.find((x) => x.spec.id === focusId) ?? ws?.wounds[0]);
+    const p = w ? w.worldPoint(new Vector3()) : hips ? actor.character.hips.getWorldPosition(new Vector3()) : actor.headPosition(new Vector3());
+    const n = w ? w.worldNormal(new Vector3()) : (mode === 'lie' ? new Vector3(0, 1, 0.25).normalize() : new Vector3(0, 0, 1));
+    const eye = p.clone().addScaledVector(n, dist).add(new Vector3(0, dist * 0.35, dist * 0.2));
+    stage.camera.position.copy(eye);
+    stage.camera.lookAt(p);
+    stage.camera.fov = Number(q.get('fov') ?? 40);
+  }
+  stage.camera.clearViewOffset();
+  stage.camera.updateProjectionMatrix();
+};
+// Efek darah: emiter dari luka berdarah.
+stage.add({ update(dt) {
+  apply();
+  for (const w of ws?.wounds ?? []) {
+    if (!w.spec.bleeding || st.rate < 0.05) continue;
+    blood.emit({ owner: 'p', key: w.spec.id, type: w.spec.bleeding.type, rate: st.rate, hr: Number(q.get('hr') ?? 120), sbp: Number(q.get('sbp') ?? 110), point: w.worldPoint(new Vector3()), normal: w.worldNormal(new Vector3()), covered: st.pressure || st.tourniquet }, dt);
+  }
+  blood.update(dt);
+} });
+window.simulate = (s) => { for (let t = 0; t < s; t += 1 / 30) { actor.update(1 / 30, (sim.t += 1 / 30)); blood.update(1 / 30); } };
+stage.start();
+window.ready = true;
+</script></body></html>

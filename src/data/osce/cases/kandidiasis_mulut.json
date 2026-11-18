@@ -1,0 +1,108 @@
+{
+  "disease": "kandidiasis_mulut",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — keluhan mulut",
+  "therapy": {
+    "items": [
+      {
+        "id": "antijamur",
+        "label": "Antijamur oral topikal",
+        "role": "utama",
+        "reason": "Kandidiasis orofaring.",
+        "options": [
+          {
+            "drug": "nistatin",
+            "label": "Nistatin suspensi 4–6 mL (400.000–600.000 IU) dikulum 4 × sehari selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [400000, 600000],
+            "timesPerDay": [4, 4],
+            "days": [7, 14]
+          },
+          {
+            "drug": "flukonazol",
+            "label": "Flukonazol 1 × 50–150 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["flukonazol-kap50"],
+            "dose": [50, 150],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antijamur_anak",
+        "label": "Antijamur oral topikal (bayi/anak)",
+        "role": "utama",
+        "reason": "Kandidiasis oral (oral thrush).",
+        "options": [
+          {
+            "drug": "nistatin",
+            "label": "Nistatin suspensi 1–2 mL (100.000–200.000 IU) dioleskan 4 × sehari selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [100000, 200000],
+            "timesPerDay": [4, 4],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "dot", "text": "Sterilkan dot/botol susu & bersihkan puting ibu", "kind": "benar", "when": { "ageMax": 2 } },
+    {
+      "id": "gigi_palsu",
+      "text": "Lepas & rendam gigi palsu setiap malam",
+      "kind": "benar",
+      "when": { "traits": ["gigi_palsu"] }
+    },
+    {
+      "id": "kumur",
+      "text": "Kumur air setelah memakai inhaler steroid",
+      "kind": "benar",
+      "when": { "traits": ["steroid_inhaler"] }
+    },
+    { "id": "gula", "text": "Periksa gula darah", "kind": "benar", "when": { "traits": ["dm_curiga"] } },
+    { "id": "higiene", "text": "Jaga kebersihan mulut", "kind": "benar" },
+    {
+      "id": "kerok",
+      "text": "Kerok selaput putih dengan kain kasar sampai bersih",
+      "kind": "berbahaya",
+      "why": "Luka & perdarahan mukosa."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini sariawan jamur (kandidiasis) di mulut", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat dioles/dikulum 4 × sehari sampai 2 hari setelah bercak hilang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sulit menelan/minum, demam, atau bayi malas menyusu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1 minggu; bila sering kambuh perlu dicari penyebab",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "susu_kental",
+      "text": "Oleskan susu kental manis ke lidah agar jamur hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Gula memperparah pertumbuhan jamur."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

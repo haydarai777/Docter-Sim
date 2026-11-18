@@ -1,0 +1,101 @@
+{
+  "disease": "buta_senja",
+  "setting": "Puskesmas",
+  "station": "Mata — gangguan penglihatan",
+  "therapy": {
+    "items": [
+      {
+        "id": "vit_a",
+        "label": "Vitamin A dosis terapi",
+        "role": "utama",
+        "reason": "Xeroftalmia: hari 1, hari 2, dan hari 15.",
+        "options": [
+          {
+            "drug": "vitamin_a",
+            "label": "Vitamin A 200.000 IU (kapsul merah) hari ke-1 dan ke-2, dosis ke-3 hari ke-15 (usia ≥ 1 tahun)",
+            "schedules": ["rutin"],
+            "forms": ["vita-200rb"],
+            "dose": [200000, 200000],
+            "timesPerDay": [1, 1],
+            "days": [2, 2]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["kloramfenikol_tm", "gentamisin_tm"],
+        "reason": "Bukan infeksi; antibiotik tetes tidak menggantikan vitamin A.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "gizi",
+      "text": "Perbaikan gizi: hati, telur, sayur hijau, buah berwarna oranye; lanjutkan ASI",
+      "kind": "benar"
+    },
+    {
+      "id": "penyerta",
+      "text": "Obati penyakit penyerta (diare, cacingan, campak) & pantau status gizi",
+      "kind": "benar"
+    },
+    {
+      "id": "rujuk",
+      "text": "Rujuk segera setelah dosis pertama vitamin A karena kornea terkena",
+      "kind": "benar",
+      "when": { "traits": ["xerosis_kornea"] }
+    },
+    {
+      "id": "lemak",
+      "text": "Hindari makanan berlemak agar mata cepat sembuh",
+      "kind": "berbahaya",
+      "why": "Vitamin A larut lemak — butuh lemak untuk diserap."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Rabun senja karena kekurangan vitamin A", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Kapsul vitamin A diberikan 3 kali: hari ini, besok, dan 2 minggu lagi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila mata merah, nyeri, silau, atau ada bercak keruh di bagian hitam mata",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol hari ke-15 untuk dosis ketiga & menilai gizi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Ikuti pemberian vitamin A rutin bulan Februari & Agustus di posyandu",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "wortel",
+      "text": "Cukup makan wortel, kapsul vitamin A tidak perlu",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Defisiensi klinis perlu dosis terapi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi",
+      "WHO. Xerophthalmia and night blindness — treatment schedule"
+    ]
+  }
+}

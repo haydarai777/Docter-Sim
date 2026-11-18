@@ -1,0 +1,197 @@
+{
+  "id": "mata_kering",
+  "name": "Mata kering (dry eye)",
+  "aliases": ["Dry eye syndrome", "Keratokonjungtivitis sika", "Sindrom mata kering"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.9,
+  "summary": "Gangguan lapisan air mata (produksi kurang atau penguapan berlebih): mata kering, berpasir/mengganjal, perih, cepat lelah, kadang paradoks berair. Faktor risiko: perempuan usia lanjut/menopause, kerja lama di depan layar, ruangan ber-AC, lensa kontak, obat (antihistamin), penyakit autoimun. Uji Schirmer < 10 mm/5 menit.",
+  "presentationDay": [14, 120],
+  "demographics": {
+    "ageBands": [
+      { "min": 20, "max": 39, "weight": 2 },
+      { "min": 40, "max": 59, "weight": 3 },
+      { "min": 60, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.3,
+    "occupations": [
+      { "id": "pegawai_kantor", "weight": 3 },
+      { "id": "karyawan_bank", "weight": 2 },
+      { "id": "ojek_online", "weight": 1 },
+      { "id": "manajer", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "kerja_layar", "probability": 0.6, "when": { "ageMax": 60 } },
+    { "id": "menopause", "probability": 0.6, "when": { "sex": "female", "ageMin": 48 } },
+    { "id": "keratitis_pungtata", "probability": 0.35 },
+    { "id": "sjogren_curiga", "probability": 0.06 }
+  ],
+  "traitLabels": {
+    "kerja_layar": "Bekerja lama di depan layar/ruangan AC (penguapan berlebih).",
+    "menopause": "Perempuan pascamenopause.",
+    "keratitis_pungtata": "Keratitis pungtata superfisial (fluoresein +).",
+    "sjogren_curiga": "Mata & mulut kering + nyeri sendi: curiga sindrom Sjögren."
+  },
+  "symptoms": [
+    { "id": "silau", "probability": 0.3, "when": { "traits": ["keratitis_pungtata"] } },
+    { "id": "nyeri_otot_sendi", "probability": 0.8, "when": { "traits": ["sjogren_curiga"] } },
+    { "id": "mata_kering", "probability": 1 },
+    { "id": "mata_mengganjal", "probability": 0.8 },
+    { "id": "mata_lelah", "probability": 0.7 },
+    { "id": "mata_merah", "probability": 0.4 },
+    { "id": "mata_berair", "probability": 0.25 },
+    { "id": "pandangan_kabur", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["mata_kering"], "extraPool": ["mata_mengganjal", "mata_lelah"] },
+  "clueSymptoms": ["mata_mengganjal", "mata_lelah", "mata_merah", "mata_berair", "silau", "pandangan_kabur"],
+  "misattributions": ["mata lelah biasa", "minus bertambah", "kurang vitamin"],
+  "fears": ["mata buta", "katarak"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, pelan-pelan makin sering.", "clue": "Kronik, bertahap" }],
+    "pola": [
+      {
+        "text": "Paling parah sore hari setelah seharian di depan komputer, Dok.",
+        "when": { "traits": ["kerja_layar"] },
+        "clue": "Memberat sore hari/setelah kerja layar"
+      },
+      {
+        "text": "Terasa terus, Dok, apalagi kalau di ruangan ber-AC atau kena kipas.",
+        "clue": "Memberat di ruangan AC/berangin"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Rasanya kering, perih, kayak berpasir, Dok. Kadang malah berair.",
+        "clue": "Kering berpasir dengan berair paradoks"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau saya merem sebentar atau ditetesi air mata buatan agak enakan, Dok.",
+        "clue": "Membaik dengan istirahat mata/air mata buatan"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Seharian kerja di depan laptop, Dok, delapan sampai sepuluh jam, jarang kedip katanya.",
+        "when": { "traits": ["kerja_layar"] },
+        "clue": "Kerja layar lama"
+      }
+    ],
+    "riwayat_obat": [
+      { "text": "Sering minum obat alergi CTM, Dok.", "weight": 0.5, "clue": "Obat antikolinergik/antihistamin" },
+      { "text": "Nggak ada obat rutin, Dok." }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Mulut saya juga sering kering, Dok, sendi-sendi pegal.",
+        "when": { "traits": ["sjogren_curiga"] },
+        "clue": "Mulut kering + nyeri sendi (curiga Sjögren)"
+      }
+    ],
+    "lokasi": [{ "text": "Dua-duanya, Dok, terasa kering, perih, kayak berpasir." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "when": { "traits": ["keratitis_pungtata"] },
+      "values": ["Uji fluoresein: pungtata halus di kornea inferior (keratitis pungtata superfisial)"]
+    },
+    { "tool": "tes_schirmer", "param": "schirmer", "probability": 0.9, "diagnostic": true, "range": [3, 8] },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.6,
+      "values": ["Injeksi konjungtiva ringan, meniskus air mata tipis"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "keratitis",
+      "howToDistinguish": "Keratitis infektif: nyeri dan silau hebat, visus turun, infiltrat. Mata kering: keluhan kronik ringan, pungtata halus tanpa infiltrat.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "konjungtivitis",
+      "howToDistinguish": "Konjungtivitis: akut, sekret, sering menular. Mata kering: kronik, tanpa sekret, Schirmer rendah.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "blefaritis",
+      "howToDistinguish": "Blefaritis: tepi kelopak merah bersisik/berkerak; sering menyertai dan memperberat mata kering.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "sindrom_sjogren",
+      "howToDistinguish": "Sindrom Sjögren: mata kering berat + mulut kering, nyeri sendi; perlu rujukan untuk serologi.",
+      "excludeBy": { "topics": ["riwayat_penyakit", "keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Mata kering berpasir kronik, memberat sore/di depan layar/AC",
+    "Uji Schirmer < 10 mm/5 menit",
+    "Kornea dapat menunjukkan pungtata halus; visus umumnya normal"
+  ],
+  "teachingPoints": [
+    "Aturan 20-20-20: tiap 20 menit melihat layar, lihat sejauh 20 kaki (6 m) selama 20 detik.",
+    "Mata kering bisa justru berair (refleks) — jangan langsung disimpulkan iritasi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "karakter", "kebiasaan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus dasar dan menyingkirkan gangguan visus lain." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Meniskus air mata, fluoresein kornea, tepi kelopak." }
+    ],
+    "tests": [{ "tool": "tes_schirmer", "role": "kunci", "reason": "Mengukur produksi air mata (< 10 mm/5 menit)." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Air mata buatan dan modifikasi lingkungan/kebiasaan; rujuk bila berat atau curiga autoimun."
+    }
+  ],
+  "management": [
+    "Air mata buatan 4–6 kali sehari (tanpa pengawet bila sering).",
+    "Istirahatkan mata (aturan 20-20-20), sering berkedip, hindari AC/kipas langsung, cukup minum.",
+    "Tinjau obat pemicu (antihistamin, antidepresan); kompres hangat bila disertai blefaritis.",
+    "Rujuk bila keratitis berat atau curiga sindrom Sjögren."
+  ],
+  "approach": [
+    "Tanyakan pola keluhan, pekerjaan/layar, obat, menopause, gejala sistemik.",
+    "Periksa visus, segmen anterior dengan fluoresein, lalu uji Schirmer."
+  ]
+}

@@ -3,38 +3,24 @@
     "status": "BELUM_DITINJAU_DOKTER",
     "notes": [
       "Nilai rujukan memakai angka umum laboratorium klinik di Indonesia (dewasa). Tiap laboratorium bisa berbeda.",
-      "Harga alat TIDAK di file ini, melainkan di src/data/config.ts (toolPrices)."
+      "Harga alat TIDAK di file ini, melainkan di src/data/config.ts (toolPrices).",
+      "refByAge: nilai rujukan anak/remaja disederhanakan (bukan persentil); perlu tinjauan pediatri.",
+      "Alat untuk 144 penyakit SKDI 4A (mata, THT, saraf, genital/obstetri, kulit, luka, anak, lab tambahan) disusun pengembang; nilai rujukan anak 0–9 tahun disederhanakan."
     ],
     "references": [
       "Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (Kemenkes RI)",
-      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)"
+      "WHO. Dengue: guidelines for diagnosis, treatment, prevention and control (2009)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus Tipe 2 Dewasa di Indonesia (2021)",
+      "Kemenkes RI. Petunjuk Teknis Penatalaksanaan Tuberkulosis / pemeriksaan TCM"
     ]
   },
   "tools": [
     {
-      "id": "termometer",
-      "name": "Termometer",
-      "category": "fisik",
-      "description": "Mengukur suhu tubuh (aksila).",
-      "action": "Anda mengukur suhu tubuh pasien dengan termometer.",
-      "params": [
-        {
-          "kind": "numeric",
-          "id": "suhu",
-          "label": "Suhu aksila",
-          "unit": "°C",
-          "decimals": 1,
-          "ref": [36.5, 37.5],
-          "normal": [36.5, 37.3]
-        }
-      ]
-    },
-    {
       "id": "tanda_vital",
-      "name": "Tensimeter & tanda vital",
+      "name": "Tanda vital lengkap",
       "category": "fisik",
-      "description": "Tekanan darah, nadi, dan frekuensi napas.",
-      "action": "Anda memasang manset tensimeter, lalu menghitung nadi dan napas pasien.",
+      "description": "Tekanan darah, nadi, frekuensi napas, suhu, dan saturasi oksigen (SpO₂) — standar setiap pasien.",
+      "action": "Anda mengukur tekanan darah, nadi, napas, suhu, dan saturasi oksigen pasien.",
       "params": [
         {
           "kind": "numeric",
@@ -43,7 +29,14 @@
           "unit": "mmHg",
           "decimals": 0,
           "ref": [90, 139],
-          "normal": [105, 128]
+          "normal": [105, 128],
+          "refByAge": [
+            { "maxAge": 0, "ref": [70, 100], "normal": [75, 95] },
+            { "maxAge": 2, "ref": [85, 105], "normal": [88, 102] },
+            { "maxAge": 5, "ref": [90, 110], "normal": [92, 106] },
+            { "maxAge": 9, "ref": [95, 115], "normal": [96, 112] },
+            { "maxAge": 12, "ref": [90, 120], "normal": [98, 114] }
+          ]
         },
         {
           "kind": "numeric",
@@ -52,7 +45,14 @@
           "unit": "mmHg",
           "decimals": 0,
           "ref": [60, 89],
-          "normal": [68, 84]
+          "normal": [68, 84],
+          "refByAge": [
+            { "maxAge": 0, "ref": [40, 65], "normal": [45, 60] },
+            { "maxAge": 2, "ref": [45, 70], "normal": [50, 65] },
+            { "maxAge": 5, "ref": [50, 72], "normal": [52, 68] },
+            { "maxAge": 9, "ref": [55, 75], "normal": [58, 72] },
+            { "maxAge": 12, "ref": [55, 80], "normal": [60, 74] }
+          ]
         },
         {
           "kind": "numeric",
@@ -61,7 +61,14 @@
           "unit": "×/menit",
           "decimals": 0,
           "ref": [60, 100],
-          "normal": [68, 92]
+          "normal": [68, 92],
+          "refByAge": [
+            { "maxAge": 0, "ref": [100, 160], "normal": [110, 150] },
+            { "maxAge": 2, "ref": [90, 150], "normal": [100, 140] },
+            { "maxAge": 5, "ref": [80, 130], "normal": [86, 120] },
+            { "maxAge": 9, "ref": [70, 120], "normal": [76, 110] },
+            { "maxAge": 12, "ref": [70, 110], "normal": [76, 102] }
+          ]
         },
         {
           "kind": "numeric",
@@ -70,33 +77,158 @@
           "unit": "×/menit",
           "decimals": 0,
           "ref": [12, 20],
-          "normal": [14, 20]
+          "normal": [14, 20],
+          "refByAge": [
+            { "maxAge": 0, "ref": [30, 50], "normal": [32, 44] },
+            { "maxAge": 2, "ref": [24, 40], "normal": [26, 34] },
+            { "maxAge": 5, "ref": [20, 30], "normal": [22, 28] },
+            { "maxAge": 9, "ref": [18, 26], "normal": [19, 24] },
+            { "maxAge": 12, "ref": [16, 24], "normal": [18, 22] }
+          ]
+        },
+        {
+          "kind": "numeric",
+          "id": "suhu",
+          "label": "Suhu aksila",
+          "unit": "°C",
+          "decimals": 1,
+          "ref": [36.5, 37.5],
+          "normal": [36.5, 37.3]
+        },
+        {
+          "kind": "numeric",
+          "id": "spo2",
+          "label": "Saturasi oksigen (SpO₂)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [95, 100],
+          "normal": [96, 99]
         }
-      ]
+      ],
+      "group": "umum"
     },
     {
-      "id": "stetoskop",
-      "name": "Stetoskop (auskultasi)",
+      "id": "keadaan_umum",
+      "name": "Keadaan umum",
       "category": "fisik",
-      "description": "Mendengarkan bunyi jantung, paru, dan bising usus.",
-      "action": "Anda mendengarkan dada dan perut pasien dengan stetoskop.",
+      "description": "Kesadaran, kesan sakit, status hidrasi, dan status gizi.",
+      "action": "Anda mengamati keadaan umum pasien sejak ia masuk ruang praktek.",
       "params": [
+        { "kind": "text", "id": "kesadaran", "label": "Kesadaran", "normal": ["Compos mentis (GCS 15)"] },
+        { "kind": "text", "id": "kesan_sakit", "label": "Kesan sakit", "normal": ["Tampak sakit ringan"] },
         {
           "kind": "text",
-          "id": "jantung",
-          "label": "Jantung",
-          "normal": ["Bunyi jantung I–II reguler, murmur (−), gallop (−)"]
+          "id": "hidrasi",
+          "label": "Status hidrasi",
+          "normal": ["Mukosa bibir lembap, turgor kulit baik"]
         },
-        { "kind": "text", "id": "paru", "label": "Paru", "normal": ["Suara napas vesikuler, ronkhi −/−, wheezing −/−"] },
-        { "kind": "text", "id": "bising_usus", "label": "Bising usus", "normal": ["Bising usus normal"] }
-      ]
+        { "kind": "text", "id": "gizi", "label": "Status gizi (kesan)", "normal": ["Kesan gizi cukup"] }
+      ],
+      "group": "umum"
     },
     {
-      "id": "senter",
-      "name": "Senter (mata, pupil, tenggorok, lidah)",
+      "id": "timbangan",
+      "name": "Antropometri (timbangan & pita ukur)",
       "category": "fisik",
-      "description": "Inspeksi konjungtiva, sklera, pupil, faring, dan lidah.",
-      "action": "Anda menyinari mata dan rongga mulut pasien dengan senter.",
+      "description": "Tinggi badan, berat badan, IMT, dan lingkar perut.",
+      "action": "Anda menimbang pasien, mengukur tinggi badan dan lingkar perutnya.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "tb",
+          "label": "Tinggi badan",
+          "unit": "cm",
+          "decimals": 0,
+          "ref": [140, 195],
+          "refFemale": [135, 185],
+          "normal": [158, 176],
+          "normalFemale": [147, 163],
+          "refText": "—",
+          "refByAge": [
+            { "maxAge": 0, "ref": [45, 80], "normal": [62, 75] },
+            { "maxAge": 2, "ref": [70, 98], "normal": [76, 92] },
+            { "maxAge": 5, "ref": [88, 120], "normal": [94, 114] },
+            { "maxAge": 9, "ref": [106, 142], "normal": [114, 136] },
+            { "maxAge": 12, "ref": [125, 160], "normal": [133, 150], "normalFemale": [134, 152] },
+            {
+              "maxAge": 15,
+              "ref": [140, 182],
+              "refFemale": [138, 172],
+              "normal": [152, 170],
+              "normalFemale": [148, 162]
+            },
+            {
+              "maxAge": 17,
+              "ref": [150, 192],
+              "refFemale": [142, 180],
+              "normal": [160, 175],
+              "normalFemale": [150, 164]
+            }
+          ]
+        },
+        {
+          "kind": "numeric",
+          "id": "imt",
+          "label": "Indeks massa tubuh (IMT)",
+          "unit": "kg/m²",
+          "decimals": 1,
+          "ref": [18.5, 22.9],
+          "normal": [19, 22.8],
+          "refText": "18,5–22,9 (kriteria Asia-Pasifik)",
+          "refByAge": [
+            { "maxAge": 0, "ref": [13, 19], "normal": [15, 18] },
+            { "maxAge": 2, "ref": [14, 18.5], "normal": [15, 17.5] },
+            { "maxAge": 5, "ref": [13.5, 17.5], "normal": [14.3, 16.5] },
+            { "maxAge": 9, "ref": [13.5, 19], "normal": [14.5, 17.5] },
+            { "maxAge": 12, "ref": [14, 20.5], "normal": [15, 19.5] },
+            { "maxAge": 17, "ref": [16, 23.5], "normal": [17.5, 22.5] }
+          ]
+        },
+        {
+          "kind": "numeric",
+          "id": "bb",
+          "label": "Berat badan",
+          "unit": "kg",
+          "decimals": 1,
+          "ref": [15, 250],
+          "refText": "—",
+          "compute": { "type": "weightFromBmi", "bmi": "imt", "heightCm": "tb" },
+          "refByAge": [
+            { "maxAge": 0, "ref": [2.5, 11.5] },
+            { "maxAge": 2, "ref": [7, 17] },
+            { "maxAge": 5, "ref": [11, 25] },
+            { "maxAge": 9, "ref": [15, 40] }
+          ]
+        },
+        {
+          "kind": "numeric",
+          "id": "lingkar_perut",
+          "label": "Lingkar perut",
+          "unit": "cm",
+          "decimals": 0,
+          "ref": [60, 89],
+          "refFemale": [55, 79],
+          "normal": [70, 88],
+          "normalFemale": [62, 79],
+          "refText": "< 90 (L) / < 80 (P)",
+          "refByAge": [
+            { "maxAge": 0, "ref": [32, 50], "normal": [38, 46] },
+            { "maxAge": 2, "ref": [40, 54], "normal": [43, 50] },
+            { "maxAge": 5, "ref": [44, 58], "normal": [47, 55] },
+            { "maxAge": 9, "ref": [48, 66], "normal": [51, 62] },
+            { "maxAge": 12, "ref": [50, 72], "normal": [54, 68] },
+            { "maxAge": 17, "ref": [58, 82], "refFemale": [55, 78], "normal": [62, 78], "normalFemale": [58, 74] }
+          ]
+        }
+      ],
+      "group": "umum"
+    },
+    {
+      "id": "kepala_leher",
+      "name": "Kepala & leher",
+      "category": "fisik",
+      "description": "Mata (konjungtiva, sklera, pupil), mulut, faring, lidah, kelenjar getah bening, dan JVP.",
+      "action": "Anda memeriksa mata, mulut, tenggorok, dan leher pasien dengan senter.",
       "params": [
         { "kind": "text", "id": "konjungtiva", "label": "Konjungtiva", "normal": ["Tidak anemis"] },
         { "kind": "text", "id": "sklera", "label": "Sklera", "normal": ["Tidak ikterik"] },
@@ -107,22 +239,141 @@
           "label": "Faring & tonsil",
           "normal": ["Faring tidak hiperemis, tonsil T1–T1"]
         },
-        { "kind": "text", "id": "lidah", "label": "Lidah", "normal": ["Bersih, tidak ada kelainan"] }
-      ]
+        { "kind": "text", "id": "lidah", "label": "Lidah", "normal": ["Bersih, tidak ada kelainan"] },
+        { "kind": "text", "id": "kgb", "label": "Kelenjar getah bening leher", "normal": ["Tidak teraba pembesaran"] },
+        {
+          "kind": "text",
+          "id": "jvp",
+          "label": "Tekanan vena jugularis (JVP)",
+          "normal": ["Tidak meningkat (5 − 2 cmH₂O)"]
+        }
+      ],
+      "group": "kepala_leher"
     },
     {
-      "id": "palpasi_abdomen",
-      "name": "Pemeriksaan abdomen (palpasi & perkusi)",
+      "id": "pemeriksaan_paru",
+      "name": "Thorax — paru",
       "category": "fisik",
-      "description": "Inspeksi, palpasi hati–limpa, nyeri tekan, dan nyeri ketok sudut kostovertebra (CVA).",
-      "action": "Anda meminta pasien berbaring, lalu meraba dan mengetuk perut serta pinggangnya.",
+      "description": "Inspeksi, palpasi (fremitus), perkusi, dan auskultasi paru.",
+      "action": "Anda memeriksa dada pasien: melihat gerak napas, meraba fremitus, mengetuk, lalu mendengarkan dengan stetoskop.",
       "params": [
-        { "kind": "text", "id": "inspeksi_perkusi", "label": "Inspeksi & perkusi", "normal": ["Datar, supel, timpani"] },
-        { "kind": "text", "id": "nyeri_tekan", "label": "Nyeri tekan", "normal": ["Tidak ada nyeri tekan"] },
+        { "kind": "text", "id": "inspeksi", "label": "Inspeksi", "normal": ["Gerak dada simetris, tidak ada retraksi"] },
+        { "kind": "text", "id": "palpasi", "label": "Palpasi", "normal": ["Fremitus taktil simetris kanan dan kiri"] },
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Sonor di kedua lapang paru"] },
+        {
+          "kind": "text",
+          "id": "auskultasi",
+          "label": "Auskultasi",
+          "normal": ["Suara napas vesikuler, ronkhi −/−, wheezing −/−"]
+        }
+      ],
+      "group": "thorax"
+    },
+    {
+      "id": "pemeriksaan_jantung",
+      "name": "Thorax — jantung",
+      "category": "fisik",
+      "description": "Iktus kordis, batas jantung, dan bunyi jantung.",
+      "action": "Anda meraba iktus kordis, mengetuk batas jantung, lalu mendengarkan bunyi jantung.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "iktus",
+          "label": "Inspeksi & palpasi",
+          "normal": ["Iktus kordis teraba di ICS V linea midklavikula kiri"]
+        },
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Batas jantung dalam batas normal"] },
+        {
+          "kind": "text",
+          "id": "auskultasi",
+          "label": "Auskultasi",
+          "normal": ["Bunyi jantung I–II reguler, murmur (−), gallop (−)"]
+        }
+      ],
+      "group": "thorax"
+    },
+    {
+      "id": "pemeriksaan_abdomen",
+      "name": "Abdomen",
+      "category": "fisik",
+      "description": "Inspeksi, auskultasi, palpasi (nyeri tekan, hepar, lien), perkusi, ketok sudut kostovertebra (CVA), dan tanda khusus.",
+      "action": "Anda meminta pasien berbaring, lalu melihat, mendengar, meraba, dan mengetuk perut serta pinggangnya.",
+      "params": [
+        { "kind": "text", "id": "inspeksi", "label": "Inspeksi", "normal": ["Datar, tidak tampak distensi"] },
+        { "kind": "text", "id": "auskultasi", "label": "Bising usus", "normal": ["Bising usus normal"] },
+        {
+          "kind": "text",
+          "id": "nyeri_tekan",
+          "label": "Palpasi — nyeri tekan",
+          "normal": ["Supel, tidak ada nyeri tekan"]
+        },
         { "kind": "text", "id": "hepar", "label": "Hepar", "normal": ["Tidak teraba"] },
         { "kind": "text", "id": "lien", "label": "Lien (limpa)", "normal": ["Tidak teraba"] },
-        { "kind": "text", "id": "ketok_cva", "label": "Nyeri ketok CVA", "normal": ["Negatif kanan dan kiri"] }
-      ]
+        { "kind": "text", "id": "perkusi", "label": "Perkusi", "normal": ["Timpani, shifting dullness (−)"] },
+        { "kind": "text", "id": "ketok_cva", "label": "Nyeri ketok CVA", "normal": ["Negatif kanan dan kiri"] },
+        {
+          "kind": "text",
+          "id": "tanda_khusus",
+          "label": "Tanda khusus",
+          "normal": ["Murphy (−), McBurney (−), defans muskular (−)"]
+        }
+      ],
+      "group": "abdomen"
+    },
+    {
+      "id": "ekstremitas_kulit",
+      "name": "Ekstremitas & kulit",
+      "category": "fisik",
+      "description": "Akral, waktu pengisian kapiler (CRT), edema, dan kelainan kulit.",
+      "action": "Anda memeriksa tangan, kaki, dan kulit pasien.",
+      "params": [
+        { "kind": "text", "id": "akral", "label": "Akral", "normal": ["Hangat, kering"] },
+        { "kind": "text", "id": "crt", "label": "Capillary refill time (CRT)", "normal": ["< 2 detik"] },
+        { "kind": "text", "id": "edema", "label": "Edema", "normal": ["Tidak ada edema"] },
+        { "kind": "text", "id": "kulit", "label": "Kulit", "normal": ["Tidak tampak petekie, ruam, atau luka"] }
+      ],
+      "group": "ekstremitas"
+    },
+    {
+      "id": "kaki_diabetik",
+      "name": "Pemeriksaan kaki diabetik",
+      "category": "fisik",
+      "description": "Inspeksi kaki, sensibilitas monofilamen 10 g, dan pulsasi arteri kaki — menilai komplikasi DM.",
+      "action": "Anda memeriksa kedua kaki pasien, menguji rasa raba dengan monofilamen, dan meraba nadi di kaki.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "inspeksi",
+          "label": "Inspeksi kaki",
+          "normal": ["Kulit utuh, tidak ada luka atau kalus"]
+        },
+        {
+          "kind": "text",
+          "id": "monofilamen",
+          "label": "Monofilamen 10 g",
+          "normal": ["Sensibilitas normal (10/10 titik)"]
+        },
+        {
+          "kind": "text",
+          "id": "pulsasi",
+          "label": "Pulsasi a. dorsalis pedis & tibialis posterior",
+          "normal": ["Teraba kuat, simetris"]
+        }
+      ],
+      "group": "khusus"
+    },
+    {
+      "id": "neurologis",
+      "name": "Neurologis singkat",
+      "category": "fisik",
+      "description": "Rangsang meningeal, kekuatan motorik, dan sensibilitas.",
+      "action": "Anda memeriksa kaku kuduk, kekuatan otot, dan rasa raba pasien.",
+      "params": [
+        { "kind": "text", "id": "meningeal", "label": "Rangsang meningeal", "normal": ["Kaku kuduk (−)"] },
+        { "kind": "text", "id": "motorik", "label": "Motorik", "normal": ["Kekuatan 5 di keempat ekstremitas"] },
+        { "kind": "text", "id": "sensorik", "label": "Sensorik", "normal": ["Sensibilitas raba normal"] }
+      ],
+      "group": "khusus"
     },
     {
       "id": "uji_tourniquet",
@@ -140,7 +391,8 @@
           "falsePositiveRate": 0.08,
           "falsePositiveValues": ["Positif (petekie ≥ 10 per 2,5 × 2,5 cm)"]
         }
-      ]
+      ],
+      "group": "khusus"
     },
     {
       "id": "darah_lengkap",
@@ -158,7 +410,21 @@
           "ref": [13, 17],
           "refFemale": [12, 15.5],
           "normal": [13.5, 16.5],
-          "normalFemale": [12.3, 15]
+          "normalFemale": [12.3, 15],
+          "refByAge": [
+            { "maxAge": 0, "ref": [10.5, 13.5], "normal": [11, 13] },
+            { "maxAge": 5, "ref": [11, 14], "normal": [11.5, 13.5] },
+            { "maxAge": 9, "ref": [11.5, 14.5], "normal": [12, 14] }
+          ]
+        },
+        {
+          "kind": "numeric",
+          "id": "mcv",
+          "label": "MCV",
+          "unit": "fL",
+          "decimals": 0,
+          "ref": [80, 100],
+          "normal": [82, 96]
         },
         {
           "kind": "numeric",
@@ -179,7 +445,12 @@
           "decimals": 0,
           "step": 100,
           "ref": [4000, 10000],
-          "normal": [5000, 9500]
+          "normal": [5000, 9500],
+          "refByAge": [
+            { "maxAge": 0, "ref": [6000, 17500], "normal": [7000, 15000] },
+            { "maxAge": 5, "ref": [5500, 15500], "normal": [6000, 13000] },
+            { "maxAge": 9, "ref": [4500, 13500], "normal": [5000, 12000] }
+          ]
         },
         {
           "kind": "numeric",
@@ -263,7 +534,10 @@
           "sumTo": 100,
           "remainder": "neutrofil_segmen"
         }
-      ]
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Infeksi/peradangan (leukosit, hitung jenis), anemia (Hb, MCV), trombositopenia, dan hemokonsentrasi (hematokrit).",
+      "group": "hematologi"
     },
     {
       "id": "ns1_dengue",
@@ -280,7 +554,24 @@
           "falsePositiveRate": 0.02,
           "falsePositiveValues": ["Positif"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antigen dengue untuk diagnosis dini (hari 1–5). Negatif setelah hari ke-5 TIDAK menyingkirkan dengue.",
+      "group": "serologi"
+    },
+    {
+      "id": "serologi_dengue",
+      "name": "Serologi dengue IgM/IgG",
+      "category": "lab",
+      "description": "Antibodi IgM (infeksi baru, positif mulai hari ke-4–5) dan IgG (infeksi sekunder/lampau).",
+      "action": "Serum pasien diperiksa dengan tes cepat IgM/IgG dengue.",
+      "params": [
+        { "kind": "text", "id": "igm", "label": "IgM anti-dengue", "normal": ["Negatif"] },
+        { "kind": "text", "id": "igg", "label": "IgG anti-dengue", "normal": ["Negatif"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antibodi dengue: IgM positif mulai hari ke-4–5; IgG menandakan infeksi sekunder/lampau.",
+      "group": "serologi"
     },
     {
       "id": "rdt_malaria",
@@ -305,7 +596,30 @@
           "falsePositiveRate": 0.01,
           "falsePositiveValues": ["Positif"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Antigen Plasmodium (tes cepat). Positif mendukung malaria; konfirmasi spesies dengan mikroskopis.",
+      "group": "serologi"
+    },
+    {
+      "id": "mikroskopis_malaria",
+      "name": "Apusan darah tebal–tipis (malaria)",
+      "category": "lab",
+      "description": "Baku emas diagnosis malaria: menemukan parasit dan menentukan spesiesnya.",
+      "action": "Darah ujung jari dibuat sediaan apus tebal dan tipis, diwarnai Giemsa, lalu diperiksa di mikroskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Tidak ditemukan parasit malaria"],
+          "falsePositiveRate": 0.005,
+          "falsePositiveValues": ["Ditemukan bentuk menyerupai parasit, meragukan — ulangi"]
+        }
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Baku emas malaria: spesies dan kepadatan parasit (hiperparasitemia = tanda malaria berat).",
+      "group": "mikrobiologi"
     },
     {
       "id": "widal",
@@ -332,7 +646,10 @@
           "falsePositiveRate": 0.1,
           "falsePositiveValues": ["1/160", "1/320"]
         }
-      ]
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Titer antibodi Salmonella. Murah tetapi spesifisitas rendah di daerah endemis; titer tunggal kurang dapat diandalkan.",
+      "group": "serologi"
     },
     {
       "id": "tubex",
@@ -350,7 +667,1614 @@
           "falsePositiveRate": 0.05,
           "falsePositiveValues": ["3 (meragukan)", "4 (positif lemah)"]
         }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "IgM anti-Salmonella O9 — lebih spesifik daripada Widal untuk demam tifoid.",
+      "group": "serologi"
+    },
+    {
+      "id": "gula_darah",
+      "name": "Gula darah sewaktu (GDS)",
+      "category": "lab",
+      "description": "Glukosa darah kapiler tanpa puasa.",
+      "action": "Anda menusuk ujung jari pasien dan memeriksa gula darah dengan glukometer.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "gds",
+          "label": "Glukosa darah sewaktu",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [70, 139],
+          "normal": [80, 135],
+          "refText": "< 140 · ≥ 200 + gejala klasik = DM"
+        }
+      ],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Hiperglikemia/DM; juga skrining komorbid pada pasien berisiko.",
+      "group": "kimia"
+    },
+    {
+      "id": "hba1c",
+      "name": "HbA1c",
+      "category": "lab",
+      "description": "Rerata kadar gula darah 2–3 bulan terakhir.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan HbA1c.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "hba1c",
+          "label": "HbA1c",
+          "unit": "%",
+          "decimals": 1,
+          "ref": [4, 5.6],
+          "normal": [4.6, 5.5],
+          "refText": "< 5,7 normal · ≥ 6,5 = DM"
+        }
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Rerata glukosa 2–3 bulan: diagnosis DM dan menilai kendali gula.",
+      "group": "kimia"
+    },
+    {
+      "id": "urinalisis",
+      "name": "Urinalisis (urin lengkap)",
+      "category": "lab",
+      "description": "Dipstik urin dan pemeriksaan sedimen mikroskopis.",
+      "action": "Pasien diminta menampung urin porsi tengah untuk diperiksa.",
+      "params": [
+        { "kind": "text", "id": "warna", "label": "Warna & kejernihan", "normal": ["Kuning jernih"] },
+        {
+          "kind": "numeric",
+          "id": "bj",
+          "label": "Berat jenis",
+          "unit": "",
+          "decimals": 3,
+          "ref": [1.005, 1.03],
+          "step": 0.005,
+          "normal": [1.01, 1.025]
+        },
+        {
+          "kind": "numeric",
+          "id": "ph",
+          "label": "pH",
+          "unit": "",
+          "decimals": 1,
+          "ref": [4.5, 8],
+          "step": 0.5,
+          "normal": [5, 7]
+        },
+        { "kind": "text", "id": "protein", "label": "Protein", "normal": ["Negatif"] },
+        { "kind": "text", "id": "glukosa", "label": "Glukosa", "normal": ["Negatif"] },
+        { "kind": "text", "id": "keton", "label": "Keton", "normal": ["Negatif"] },
+        {
+          "kind": "text",
+          "id": "darah",
+          "label": "Darah (dipstik)",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.04,
+          "falsePositiveValues": ["+1"]
+        },
+        {
+          "kind": "text",
+          "id": "leukosit_esterase",
+          "label": "Leukosit esterase",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.05,
+          "falsePositiveValues": ["+1"]
+        },
+        {
+          "kind": "text",
+          "id": "nitrit",
+          "label": "Nitrit",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.02,
+          "falsePositiveValues": ["Positif"]
+        },
+        {
+          "kind": "numeric",
+          "id": "sedimen_leukosit",
+          "label": "Sedimen leukosit",
+          "unit": "/LPB",
+          "decimals": 0,
+          "ref": [0, 5],
+          "normal": [0, 4],
+          "falsePositiveRate": 0.04,
+          "falsePositiveRange": [6, 10]
+        },
+        {
+          "kind": "numeric",
+          "id": "sedimen_eritrosit",
+          "label": "Sedimen eritrosit",
+          "unit": "/LPB",
+          "decimals": 0,
+          "ref": [0, 2],
+          "normal": [0, 2]
+        },
+        {
+          "kind": "text",
+          "id": "bakteri",
+          "label": "Bakteri",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.04,
+          "falsePositiveValues": ["Positif (+)"]
+        },
+        {
+          "kind": "text",
+          "id": "kristal",
+          "label": "Kristal",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.05,
+          "falsePositiveValues": ["Kalsium oksalat (+)"]
+        }
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Kelainan urin: infeksi (leukosit esterase, nitrit, bakteri), hematuria, glukosuria, dan proteinuria (tanda kerusakan ginjal).",
+      "group": "urin_feses"
+    },
+    {
+      "id": "fungsi_hati",
+      "name": "Fungsi hati",
+      "category": "lab",
+      "description": "SGOT, SGPT, dan bilirubin total.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan fungsi hati.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "sgot",
+          "label": "SGOT (AST)",
+          "unit": "U/L",
+          "decimals": 0,
+          "ref": [5, 40],
+          "normal": [12, 32]
+        },
+        {
+          "kind": "numeric",
+          "id": "sgpt",
+          "label": "SGPT (ALT)",
+          "unit": "U/L",
+          "decimals": 0,
+          "ref": [5, 41],
+          "normal": [10, 35]
+        },
+        {
+          "kind": "numeric",
+          "id": "bilirubin",
+          "label": "Bilirubin total",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [0.2, 1.2],
+          "normal": [0.3, 1]
+        }
+      ],
+      "objectives": ["fungsi_organ", "komplikasi"],
+      "purpose": "Fungsi & kerusakan hati (SGOT, SGPT, bilirubin).",
+      "group": "kimia"
+    },
+    {
+      "id": "fungsi_ginjal",
+      "name": "Fungsi ginjal",
+      "category": "lab",
+      "description": "Ureum dan kreatinin serum.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan fungsi ginjal.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "ureum",
+          "label": "Ureum",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [10, 50],
+          "normal": [15, 40]
+        },
+        {
+          "kind": "numeric",
+          "id": "kreatinin",
+          "label": "Kreatinin",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [0.7, 1.3],
+          "refFemale": [0.5, 1.1],
+          "normal": [0.8, 1.2],
+          "normalFemale": [0.6, 1]
+        },
+        {
+          "kind": "numeric",
+          "id": "egfr",
+          "label": "eGFR (CKD-EPI 2021)",
+          "unit": "mL/menit/1,73 m²",
+          "decimals": 0,
+          "ref": [60, 200],
+          "refText": "≥ 90 normal · 60–89 menurun ringan · < 60 penurunan fungsi ginjal",
+          "compute": { "type": "egfrCkdEpi2021", "creatinine": "kreatinin" }
+        }
+      ],
+      "objectives": ["fungsi_organ", "komplikasi"],
+      "purpose": "Fungsi ginjal (ureum, kreatinin, eGFR). Fungsi ginjal NORMAL tidak menyingkirkan batu atau infeksi saluran kemih.",
+      "group": "kimia"
+    },
+    {
+      "id": "profil_lipid",
+      "name": "Profil lipid",
+      "category": "lab",
+      "description": "Kolesterol total, LDL, HDL, dan trigliserida.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan profil lipid.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "kolesterol",
+          "label": "Kolesterol total",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 199],
+          "normal": [150, 195],
+          "refText": "< 200"
+        },
+        {
+          "kind": "numeric",
+          "id": "ldl",
+          "label": "Kolesterol LDL",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 129],
+          "normal": [80, 125],
+          "refText": "< 130"
+        },
+        {
+          "kind": "numeric",
+          "id": "hdl",
+          "label": "Kolesterol HDL",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [40, 100],
+          "refFemale": [50, 100],
+          "normal": [42, 65],
+          "normalFemale": [52, 75]
+        },
+        {
+          "kind": "numeric",
+          "id": "tg",
+          "label": "Trigliserida",
+          "unit": "mg/dL",
+          "decimals": 0,
+          "ref": [0, 149],
+          "normal": [70, 145],
+          "refText": "< 150"
+        }
+      ],
+      "objectives": ["skrining"],
+      "purpose": "Faktor risiko kardiovaskular (kolesterol, LDL, HDL, trigliserida).",
+      "group": "kimia"
+    },
+    {
+      "id": "bta_sputum",
+      "name": "BTA sputum (mikroskopis)",
+      "category": "lab",
+      "description": "Pewarnaan Ziehl–Neelsen dahak sewaktu–pagi. Murah, sensitivitas sedang.",
+      "action": "Pasien diminta mengeluarkan dahak ke pot untuk pemeriksaan BTA.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil BTA",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.01,
+          "falsePositiveValues": ["Scanty (1–9 BTA/100 lapang pandang)"]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Mikroskopis BTA dahak. Murah; sensitivitas sedang — negatif tidak menyingkirkan TB.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "tcm_tb",
+      "name": "Tes Cepat Molekuler (TCM) TB",
+      "category": "lab",
+      "description": "Xpert MTB/RIF dari dahak: deteksi M. tuberculosis dan resistansi rifampisin. Lebih sensitif dari BTA.",
+      "action": "Dahak pasien dikirim untuk pemeriksaan TCM.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil TCM", "normal": ["MTB not detected"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Tes cepat molekuler M. tuberculosis + resistansi rifampisin. Lebih sensitif dari BTA.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "tes_h_pylori",
+      "name": "Tes antigen H. pylori (feses)",
+      "category": "lab",
+      "description": "Mendeteksi antigen Helicobacter pylori pada tinja. Hasil bisa negatif palsu bila pasien baru minum penekan asam (PPI), antibiotik, atau bismut.",
+      "action": "Pasien diberi wadah sampel tinja; sampel diperiksa dengan tes cepat antigen H. pylori.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "antigen",
+          "label": "Antigen H. pylori",
+          "normal": ["Negatif"],
+          "falsePositiveRate": 0.03,
+          "falsePositiveValues": ["Positif"]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Mencari infeksi H. pylori pada dispepsia/gastritis (strategi \"test and treat\"). Positif → pertimbangkan eradikasi; tidak wajib bila tanpa tanda alarm.",
+      "group": "urin_feses"
+    },
+    {
+      "id": "rontgen_thorax",
+      "name": "Rontgen thorax (PA)",
+      "category": "pencitraan",
+      "description": "Foto dada posteroanterior.",
+      "action": "Pasien difoto rontgen dada posisi berdiri.",
+      "params": [
+        { "kind": "text", "id": "cor", "label": "Cor", "normal": ["Tidak membesar (CTR < 50%)"] },
+        {
+          "kind": "text",
+          "id": "pulmo",
+          "label": "Pulmo",
+          "normal": ["Corakan bronkovaskular normal, tidak tampak infiltrat"]
+        },
+        {
+          "kind": "text",
+          "id": "sinus_diafragma",
+          "label": "Sinus & diafragma",
+          "normal": ["Sinus kostofrenikus tajam, diafragma licin"]
+        },
+        { "kind": "text", "id": "tulang", "label": "Tulang", "normal": ["Tulang-tulang intak"] },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Cor dan pulmo dalam batas normal"] }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Infiltrat/konsolidasi, kavitas, efusi pleura, hiperinflasi, kardiomegali."
+    },
+    {
+      "id": "usg_abdomen",
+      "name": "USG abdomen (termasuk ginjal)",
+      "category": "pencitraan",
+      "description": "Ultrasonografi hati, kandung empedu, limpa, ginjal, kandung kemih, dan cairan bebas.",
+      "action": "Anda mengoleskan gel di perut pasien dan melakukan pemeriksaan USG.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hepar",
+          "label": "Hepar",
+          "normal": ["Ukuran dan ekogenisitas normal, tidak tampak lesi"]
+        },
+        {
+          "kind": "text",
+          "id": "kandung_empedu",
+          "label": "Kandung empedu",
+          "normal": ["Dinding tidak menebal, tidak tampak batu"]
+        },
+        { "kind": "text", "id": "lien", "label": "Lien", "normal": ["Ukuran normal"] },
+        {
+          "kind": "text",
+          "id": "ginjal",
+          "label": "Ginjal kanan & kiri",
+          "normal": ["Ukuran normal, tidak tampak batu maupun hidronefrosis"]
+        },
+        { "kind": "text", "id": "vesika", "label": "Vesika urinaria", "normal": ["Dinding licin, tidak tampak batu"] },
+        { "kind": "text", "id": "cairan_bebas", "label": "Cairan bebas", "normal": ["Tidak tampak"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["Tidak tampak kelainan pada organ intraabdomen yang terperiksa"],
+          "combine": true
+        }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Batu, sumbatan (hidronefrosis), massa, ukuran organ, dan cairan bebas. Batu ureter distal kadang sulit terlihat."
+    },
+    {
+      "id": "foto_bno",
+      "name": "Foto polos abdomen (BNO/KUB)",
+      "category": "pencitraan",
+      "description": "Rontgen polos ginjal–ureter–kandung kemih.",
+      "action": "Pasien difoto rontgen polos abdomen posisi berbaring.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "batu",
+          "label": "Bayangan batu",
+          "normal": ["Tidak tampak bayangan radioopak sepanjang traktus urinarius"]
+        },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Tidak tampak kelainan"] }
+      ],
+      "objectives": ["struktur"],
+      "purpose": "Batu radioopak (± 75–90% batu saluran kemih). Batu radiolusen (mis. asam urat) tidak tampak, jadi BNO normal tidak menyingkirkan batu."
+    },
+    {
+      "id": "ct_abdomen",
+      "name": "CT-scan abdomen non-kontras (rujukan)",
+      "category": "pencitraan",
+      "description": "CT tanpa kontras ginjal–ureter–kandung kemih. Biasanya melalui rujukan ke rumah sakit.",
+      "action": "Pasien dirujuk untuk CT-scan abdomen tanpa kontras.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "ginjal_ureter",
+          "label": "Ginjal & ureter",
+          "normal": ["Tidak tampak batu, sumbatan, maupun massa"]
+        },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Tidak tampak kelainan pada traktus urinarius"] }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Baku emas batu saluran kemih (sensitivitas > 95%): ukuran & letak batu, sumbatan, dan penyebab lain seperti massa."
+    },
+    {
+      "id": "ekg",
+      "name": "Elektrokardiografi (EKG) 12 sadapan",
+      "category": "lainnya",
+      "description": "Rekam listrik jantung saat istirahat.",
+      "action": "Anda memasang elektroda di dada dan anggota gerak pasien, lalu merekam EKG.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "irama",
+          "label": "Irama",
+          "normal": ["Sinus ritme"],
+          "bands": {
+            "from": "frekuensi",
+            "ranges": [
+              { "max": 59, "value": "Sinus bradikardia" },
+              { "max": 100, "value": "Sinus ritme" },
+              { "value": "Sinus takikardia" }
+            ]
+          }
+        },
+        {
+          "kind": "numeric",
+          "id": "frekuensi",
+          "label": "Frekuensi",
+          "unit": "×/menit",
+          "decimals": 0,
+          "ref": [60, 100],
+          "copyFrom": "tanda_vital.nadi",
+          "refByAge": [
+            { "maxAge": 0, "ref": [100, 160], "normal": [110, 150] },
+            { "maxAge": 2, "ref": [90, 150], "normal": [100, 140] },
+            { "maxAge": 5, "ref": [80, 130], "normal": [86, 120] },
+            { "maxAge": 9, "ref": [70, 120], "normal": [76, 110] },
+            { "maxAge": 12, "ref": [70, 110], "normal": [76, 102] }
+          ]
+        },
+        { "kind": "text", "id": "aksis", "label": "Aksis", "normal": ["Normal"] },
+        { "kind": "text", "id": "gelombang_p_pr", "label": "Gelombang P & interval PR", "normal": ["Normal"] },
+        { "kind": "text", "id": "qrs", "label": "Kompleks QRS", "normal": ["Normal"] },
+        { "kind": "text", "id": "segmen_st", "label": "Segmen ST", "normal": ["Isoelektrik"] },
+        { "kind": "text", "id": "gelombang_t", "label": "Gelombang T", "normal": ["Normal"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["EKG dalam batas normal"],
+          "bands": {
+            "from": "frekuensi",
+            "ranges": [
+              { "max": 59, "value": "Sinus bradikardia, tanpa kelainan lain" },
+              { "max": 100, "value": "EKG dalam batas normal" },
+              { "value": "Sinus takikardia, tanpa kelainan lain" }
+            ]
+          }
+        }
+      ],
+      "objectives": ["identifikasi", "komplikasi"],
+      "purpose": "Iskemia, aritmia, dan hipertrofi ventrikel kiri (kerusakan organ target hipertensi). EKG istirahat normal tidak menyingkirkan angina."
+    },
+    {
+      "id": "spirometri",
+      "name": "Spirometri sederhana (APE & reversibilitas)",
+      "category": "lainnya",
+      "description": "Pemeriksaan fungsi paru: arus puncak ekspirasi (APE) dibandingkan nilai prediksi, diulang setelah bronkodilator.",
+      "action": "Anda meminta pasien meniup alat sekuat-kuatnya, lalu mengulanginya setelah inhalasi bronkodilator.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "ape",
+          "label": "APE (% nilai prediksi)",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [80, 120],
+          "normal": [85, 105],
+          "refText": "≥ 80%"
+        },
+        {
+          "kind": "text",
+          "id": "reversibilitas",
+          "label": "Reversibilitas setelah bronkodilator",
+          "normal": ["Tidak bermakna (kenaikan < 12%)"]
+        }
+      ],
+      "objectives": ["fungsi_organ", "identifikasi"],
+      "purpose": "Obstruksi saluran napas dan reversibilitasnya (kenaikan ≥ 12–20% mendukung asma). Bukan tanda vital."
+    },
+    {
+      "id": "visus",
+      "name": "Tajam penglihatan & refraksi (Snellen)",
+      "category": "fisik",
+      "group": "mata",
+      "description": "Visus jauh tiap mata dengan kartu Snellen, uji pinhole, koreksi lensa coba, dan penglihatan dekat (Jaeger).",
+      "action": "Anda meminta pasien membaca kartu Snellen dari jarak 6 meter, tiap mata bergantian, lalu dengan pinhole dan lensa coba.",
+      "params": [
+        { "kind": "text", "id": "visus_od", "label": "Visus mata kanan (OD)", "normal": ["6/6"] },
+        { "kind": "text", "id": "visus_os", "label": "Visus mata kiri (OS)", "normal": ["6/6"] },
+        { "kind": "text", "id": "pinhole", "label": "Uji pinhole", "normal": ["Tidak diperlukan (visus sudah 6/6)"] },
+        { "kind": "text", "id": "koreksi", "label": "Koreksi lensa coba", "normal": ["Tidak memerlukan koreksi"] },
+        {
+          "kind": "text",
+          "id": "visus_dekat",
+          "label": "Penglihatan dekat (kartu Jaeger)",
+          "normal": ["Membaca J1 tanpa kacamata"]
+        }
       ]
+    },
+    {
+      "id": "segmen_anterior",
+      "name": "Mata luar & segmen anterior",
+      "category": "fisik",
+      "group": "mata",
+      "description": "Palpebra, bulu mata, konjungtiva (termasuk eversi kelopak), kornea dengan uji fluoresein, bilik mata depan, iris, pupil, lensa, dan tekanan bola mata per palpasi.",
+      "action": "Anda memeriksa mata pasien dengan senter dan loupe, membalik kelopak atas, meneteskan fluoresein, lalu meraba tekanan bola mata.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "palpebra",
+          "label": "Palpebra",
+          "normal": ["Tidak edema, tidak hiperemis, tidak ada benjolan"]
+        },
+        {
+          "kind": "text",
+          "id": "silia",
+          "label": "Silia & tepi kelopak",
+          "normal": ["Tumbuh teratur mengarah keluar, tepi kelopak bersih"]
+        },
+        {
+          "kind": "text",
+          "id": "konjungtiva_tarsal",
+          "label": "Konjungtiva tarsal (eversi)",
+          "normal": ["Tenang, tidak ada papil, folikel, maupun benda asing"]
+        },
+        {
+          "kind": "text",
+          "id": "konjungtiva_bulbi",
+          "label": "Konjungtiva bulbi",
+          "normal": ["Tenang, tidak ada injeksi maupun perdarahan"]
+        },
+        { "kind": "text", "id": "sekret_mata", "label": "Sekret", "normal": ["Tidak ada sekret"] },
+        { "kind": "text", "id": "kornea", "label": "Kornea & uji fluoresein", "normal": ["Jernih, uji fluoresein (−)"] },
+        {
+          "kind": "text",
+          "id": "bmd_iris_pupil",
+          "label": "Bilik mata depan, iris & pupil",
+          "normal": ["BMD dalam & jernih; iris tenang; pupil bulat, refleks cahaya +/+"]
+        },
+        { "kind": "text", "id": "lensa", "label": "Lensa", "normal": ["Jernih"] },
+        {
+          "kind": "text",
+          "id": "tio_palpasi",
+          "label": "Tekanan bola mata (palpasi)",
+          "normal": ["Normal per palpasi kedua mata"]
+        }
+      ]
+    },
+    {
+      "id": "funduskopi",
+      "name": "Funduskopi (oftalmoskopi direk)",
+      "category": "fisik",
+      "group": "mata",
+      "description": "Refleks fundus, papil saraf optik, pembuluh darah retina, dan makula.",
+      "action": "Ruangan diredupkan; Anda memeriksa fundus kedua mata pasien dengan oftalmoskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "refleks_fundus",
+          "label": "Refleks fundus",
+          "normal": ["Positif cemerlang kedua mata"]
+        },
+        { "kind": "text", "id": "papil", "label": "Papil N. II", "normal": ["Batas tegas, warna normal, C/D 0,3"] },
+        {
+          "kind": "text",
+          "id": "retina",
+          "label": "Pembuluh darah & retina",
+          "normal": ["A/V 2/3, tidak ada perdarahan maupun eksudat"]
+        },
+        { "kind": "text", "id": "makula", "label": "Makula", "normal": ["Refleks fovea positif"] }
+      ]
+    },
+    {
+      "id": "tes_schirmer",
+      "name": "Uji Schirmer I",
+      "category": "lainnya",
+      "description": "Produksi air mata: panjang kertas Schirmer yang basah dalam 5 menit tanpa anestesi.",
+      "action": "Kertas Schirmer diselipkan di kelopak bawah kedua mata pasien selama 5 menit.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "schirmer",
+          "label": "Panjang basah kertas Schirmer",
+          "unit": "mm/5 menit",
+          "decimals": 0,
+          "ref": [10, 35],
+          "normal": [12, 25],
+          "refText": "≥ 10 mm"
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Mata kering (< 10 mm, berat < 5 mm). Tidak menilai infeksi maupun refraksi."
+    },
+    {
+      "id": "pemeriksaan_telinga",
+      "name": "Telinga (otoskopi & tes penala)",
+      "category": "fisik",
+      "group": "tht",
+      "description": "Aurikula & tragus, liang telinga, membran timpani dengan otoskop, serta tes penala Rinne–Weber.",
+      "action": "Anda menarik daun telinga, memeriksa liang telinga dan gendang telinga dengan otoskop, lalu melakukan tes penala 512 Hz.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "aurikula",
+          "label": "Aurikula & tragus",
+          "normal": ["Bentuk normal, nyeri tarik aurikula & tekan tragus (−)"]
+        },
+        {
+          "kind": "text",
+          "id": "liang_telinga",
+          "label": "Liang telinga (MAE)",
+          "normal": ["Lapang, tidak hiperemis, tidak edema, tidak ada serumen padat maupun sekret"]
+        },
+        {
+          "kind": "text",
+          "id": "membran_timpani",
+          "label": "Membran timpani",
+          "normal": ["Intak, warna putih mutiara, refleks cahaya (+) kedua telinga"]
+        },
+        {
+          "kind": "text",
+          "id": "tes_penala",
+          "label": "Tes penala (Rinne/Weber)",
+          "normal": ["Rinne (+) kedua telinga, Weber tidak ada lateralisasi"]
+        }
+      ]
+    },
+    {
+      "id": "pemeriksaan_hidung",
+      "name": "Hidung & sinus (rinoskopi anterior)",
+      "category": "fisik",
+      "group": "tht",
+      "description": "Hidung luar, vestibulum, mukosa & konka, sekret, septum, kavum nasi, dan nyeri tekan sinus paranasal.",
+      "action": "Anda memeriksa hidung pasien dengan spekulum hidung dan lampu kepala, lalu menekan daerah sinus.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hidung_luar",
+          "label": "Hidung luar & vestibulum",
+          "normal": ["Bentuk normal, vestibulum tenang tanpa bisul"]
+        },
+        {
+          "kind": "text",
+          "id": "mukosa_konka",
+          "label": "Mukosa & konka",
+          "normal": ["Mukosa merah muda, konka eutrofi"]
+        },
+        { "kind": "text", "id": "sekret_hidung", "label": "Sekret hidung", "normal": ["Tidak ada sekret"] },
+        { "kind": "text", "id": "septum", "label": "Septum", "normal": ["Lurus, tidak ada sumber perdarahan"] },
+        {
+          "kind": "text",
+          "id": "kavum_nasi",
+          "label": "Kavum nasi",
+          "normal": ["Lapang, tidak ada massa maupun benda asing"]
+        },
+        { "kind": "text", "id": "sinus", "label": "Sinus paranasal", "normal": ["Nyeri tekan sinus (−)"] }
+      ]
+    },
+    {
+      "id": "pemeriksaan_tenggorok",
+      "name": "Mulut, faring, tonsil & laring",
+      "category": "fisik",
+      "group": "tht",
+      "description": "Bibir dan mukosa mulut, gusi, kelenjar ludah, dinding faring, tonsil, dan laring (laringoskopi indirek).",
+      "action": "Anda memeriksa rongga mulut dengan senter dan spatel lidah, lalu melihat laring dengan kaca laring.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "mukosa_mulut",
+          "label": "Bibir & mukosa mulut",
+          "normal": ["Mukosa basah merah muda, tidak ada ulkus maupun bercak putih"]
+        },
+        {
+          "kind": "text",
+          "id": "kelenjar_ludah",
+          "label": "Kelenjar parotis & submandibula",
+          "normal": ["Tidak membesar, muara duktus tenang"]
+        },
+        {
+          "kind": "text",
+          "id": "dinding_faring",
+          "label": "Dinding faring",
+          "normal": ["Tidak hiperemis, tidak granular, tidak ada pseudomembran"]
+        },
+        {
+          "kind": "text",
+          "id": "tonsil",
+          "label": "Tonsil",
+          "normal": ["T1–T1, tidak hiperemis, kripta tidak melebar, detritus (−)"]
+        },
+        {
+          "kind": "text",
+          "id": "laring",
+          "label": "Laring (laringoskopi indirek)",
+          "normal": ["Plika vokalis putih, tidak edema, gerak simetris"]
+        }
+      ]
+    },
+    {
+      "id": "saraf_kranial",
+      "name": "Saraf kranial",
+      "category": "fisik",
+      "group": "saraf",
+      "description": "Gerak bola mata (N. III, IV, VI), sensibilitas wajah (N. V), otot wajah (N. VII), pendengaran (N. VIII), serta uvula & lidah (N. IX, X, XII).",
+      "action": "Anda meminta pasien mengikuti jari dengan mata, mengerutkan dahi, menutup mata, tersenyum, menjulurkan lidah, lalu menguji rasa raba wajah.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "n_okulomotor",
+          "label": "Gerak bola mata (N. III, IV, VI)",
+          "normal": ["Bebas ke segala arah, tidak ada diplopia"]
+        },
+        {
+          "kind": "text",
+          "id": "n_trigeminus",
+          "label": "N. V (trigeminus)",
+          "normal": ["Sensibilitas wajah normal, refleks kornea (+)"]
+        },
+        {
+          "kind": "text",
+          "id": "n_fasialis",
+          "label": "N. VII (fasialis)",
+          "normal": ["Simetris saat istirahat, mengerutkan dahi, menutup mata, dan tersenyum"]
+        },
+        {
+          "kind": "text",
+          "id": "n_vestibulokoklearis",
+          "label": "N. VIII",
+          "normal": ["Tes gesek jari terdengar kedua telinga"]
+        },
+        {
+          "kind": "text",
+          "id": "n_bulbar",
+          "label": "N. IX, X, XII",
+          "normal": ["Uvula di tengah, refleks muntah (+), lidah tidak deviasi"]
+        }
+      ]
+    },
+    {
+      "id": "tes_vestibular",
+      "name": "Keseimbangan & uji vertigo",
+      "category": "fisik",
+      "group": "saraf",
+      "description": "Nistagmus spontan, uji Romberg, jalan tandem, dan manuver Dix–Hallpike.",
+      "action": "Anda mengamati gerak bola mata, meminta pasien berdiri dengan mata tertutup dan berjalan lurus, lalu melakukan manuver Dix–Hallpike.",
+      "params": [
+        { "kind": "text", "id": "nistagmus", "label": "Nistagmus spontan", "normal": ["Tidak ada"] },
+        { "kind": "text", "id": "romberg", "label": "Uji Romberg", "normal": ["Negatif"] },
+        { "kind": "text", "id": "tandem", "label": "Jalan tandem", "normal": ["Baik, tidak jatuh"] },
+        { "kind": "text", "id": "dix_hallpike", "label": "Manuver Dix–Hallpike", "normal": ["Negatif kanan dan kiri"] }
+      ]
+    },
+    {
+      "id": "refleks_tonus",
+      "name": "Refleks, tonus & koordinasi",
+      "category": "fisik",
+      "group": "saraf",
+      "description": "Refleks fisiologis dan patologis, tonus otot, kekakuan/spasme, serta koordinasi.",
+      "action": "Anda mengetuk tendon dengan palu refleks, menggores telapak kaki, menilai tonus, dan meminta pasien menunjuk hidung.",
+      "params": [
+        { "kind": "text", "id": "refleks_fisiologis", "label": "Refleks fisiologis", "normal": ["+2 dan simetris"] },
+        {
+          "kind": "text",
+          "id": "refleks_patologis",
+          "label": "Refleks patologis",
+          "normal": ["Babinski (−) kedua sisi"]
+        },
+        {
+          "kind": "text",
+          "id": "tonus",
+          "label": "Tonus & kekakuan otot",
+          "normal": ["Normal, tidak ada trismus maupun spasme"]
+        },
+        { "kind": "text", "id": "koordinasi", "label": "Koordinasi", "normal": ["Tes jari–hidung baik"] }
+      ]
+    },
+    {
+      "id": "status_mentalis",
+      "name": "Status mentalis",
+      "category": "fisik",
+      "group": "saraf",
+      "description": "Penampilan, mood & afek, proses pikir, persepsi, orientasi, dan tilikan.",
+      "action": "Anda mengamati pasien sambil bercakap, lalu menilai suasana perasaan, alur pikir, persepsi, dan pemahamannya tentang sakitnya.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "penampilan",
+          "label": "Penampilan & perilaku",
+          "normal": ["Rapi, sesuai usia, kontak mata baik, kooperatif"]
+        },
+        { "kind": "text", "id": "mood_afek", "label": "Mood & afek", "normal": ["Eutimik, afek luas dan serasi"] },
+        { "kind": "text", "id": "proses_pikir", "label": "Proses & isi pikir", "normal": ["Koheren, tidak ada waham"] },
+        { "kind": "text", "id": "persepsi", "label": "Persepsi", "normal": ["Tidak ada halusinasi"] },
+        { "kind": "text", "id": "tilikan", "label": "Tilikan", "normal": ["Baik"] }
+      ]
+    },
+    {
+      "id": "pemeriksaan_genital",
+      "name": "Genitalia eksterna & KGB inguinal",
+      "category": "fisik",
+      "group": "genital",
+      "description": "Inspeksi genitalia eksterna (preputium, orifisium uretra, vulva), duh tubuh, lesi kelamin, dan kelenjar inguinal.",
+      "action": "Dengan persetujuan pasien dan didampingi perawat, Anda memakai sarung tangan dan memeriksa genitalia eksterna serta lipat paha.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "genital_luar",
+          "label": "Genitalia eksterna",
+          "normal": ["Penis & skrotum normal, preputium dapat ditarik, OUE tenang"],
+          "normalFemale": ["Vulva & introitus tenang, tidak ada lesi"]
+        },
+        { "kind": "text", "id": "duh_genital", "label": "Duh tubuh", "normal": ["Tidak ada duh"] },
+        {
+          "kind": "text",
+          "id": "lesi_genital",
+          "label": "Lesi kelamin",
+          "normal": ["Tidak ada ulkus, vesikel, maupun kutil"]
+        },
+        { "kind": "text", "id": "kgb_inguinal", "label": "KGB inguinal", "normal": ["Tidak teraba pembesaran"] }
+      ]
+    },
+    {
+      "id": "inspekulo_bimanual",
+      "name": "Inspekulo & pemeriksaan dalam",
+      "category": "fisik",
+      "group": "genital",
+      "description": "Dinding vagina, serviks, duh vagina, perineum, dan pemeriksaan bimanual (nyeri goyang serviks, uterus, adneksa). Hanya untuk pasien perempuan.",
+      "action": "Dengan persetujuan pasien dan didampingi perawat, Anda memasang spekulum, memeriksa serviks, lalu melakukan pemeriksaan bimanual.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "perineum",
+          "label": "Perineum",
+          "normal": ["Tidak dilakukan (pasien laki-laki)"],
+          "normalFemale": ["Utuh, tidak ada robekan"]
+        },
+        {
+          "kind": "text",
+          "id": "dinding_vagina",
+          "label": "Dinding vagina",
+          "normal": ["Tidak dilakukan (pasien laki-laki)"],
+          "normalFemale": ["Rugae normal, tidak hiperemis"]
+        },
+        {
+          "kind": "text",
+          "id": "serviks",
+          "label": "Serviks & OUE",
+          "normal": ["Tidak dilakukan (pasien laki-laki)"],
+          "normalFemale": ["Tenang, OUE tertutup, tidak ada perdarahan"]
+        },
+        {
+          "kind": "text",
+          "id": "duh_vagina",
+          "label": "Duh vagina",
+          "normal": ["Tidak dilakukan (pasien laki-laki)"],
+          "normalFemale": ["Sedikit, jernih keputihan, tidak berbau"]
+        },
+        {
+          "kind": "text",
+          "id": "bimanual",
+          "label": "Bimanual",
+          "normal": ["Tidak dilakukan (pasien laki-laki)"],
+          "normalFemale": ["Nyeri goyang serviks (−), uterus normal, adneksa tidak nyeri & tidak teraba massa"]
+        }
+      ]
+    },
+    {
+      "id": "pemeriksaan_obstetri",
+      "name": "Pemeriksaan obstetri (TFU, Leopold, DJJ)",
+      "category": "fisik",
+      "group": "genital",
+      "description": "Tinggi fundus uteri, manuver Leopold, denyut jantung janin dengan Doppler, dan kontraksi.",
+      "action": "Anda meraba perut bawah pasien, mengukur tinggi fundus dengan pita ukur, lalu mendengarkan denyut jantung janin dengan Doppler.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "tfu",
+          "label": "Tinggi fundus uteri",
+          "normal": ["Uterus tidak teraba di atas simfisis"]
+        },
+        { "kind": "text", "id": "leopold", "label": "Leopold", "normal": ["Tidak dilakukan (tidak hamil)"] },
+        { "kind": "text", "id": "djj", "label": "Denyut jantung janin", "normal": ["Tidak terdengar (tidak hamil)"] },
+        { "kind": "text", "id": "kontraksi", "label": "Kontraksi uterus", "normal": ["Tidak ada"] }
+      ]
+    },
+    {
+      "id": "pemeriksaan_payudara",
+      "name": "Payudara & aksila",
+      "category": "fisik",
+      "group": "genital",
+      "description": "Inspeksi dan palpasi payudara, puting & areola, serta kelenjar aksila.",
+      "action": "Dengan persetujuan pasien dan didampingi perawat, Anda menginspeksi dan meraba kedua payudara serta ketiak.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "inspeksi_payudara",
+          "label": "Inspeksi payudara",
+          "normal": ["Simetris, kulit tidak kemerahan, tidak ada retraksi"]
+        },
+        {
+          "kind": "text",
+          "id": "puting",
+          "label": "Puting & areola",
+          "normal": ["Menonjol, tidak lecet, tidak ada retraksi maupun cairan"]
+        },
+        {
+          "kind": "text",
+          "id": "palpasi_payudara",
+          "label": "Palpasi payudara",
+          "normal": ["Tidak nyeri, tidak teraba massa maupun fluktuasi"]
+        },
+        { "kind": "text", "id": "kgb_aksila", "label": "KGB aksila", "normal": ["Tidak teraba pembesaran"] }
+      ]
+    },
+    {
+      "id": "pemeriksaan_anus",
+      "name": "Perianal & colok dubur",
+      "category": "fisik",
+      "group": "genital",
+      "description": "Inspeksi perianal (saat istirahat & mengedan), colok dubur, dan sarung tangan.",
+      "action": "Dengan persetujuan pasien, Anda memposisikan pasien miring, menginspeksi daerah anus, lalu melakukan colok dubur.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "perianal",
+          "label": "Inspeksi perianal",
+          "normal": ["Tenang, tidak ada benjolan, fisura, maupun ekskoriasi"]
+        },
+        {
+          "kind": "text",
+          "id": "colok_dubur",
+          "label": "Colok dubur",
+          "normal": ["Tonus sfingter baik, mukosa licin, tidak ada massa"]
+        },
+        {
+          "kind": "text",
+          "id": "sarung_tangan",
+          "label": "Sarung tangan",
+          "normal": ["Feses kuning kecoklatan, darah (−), lendir (−)"]
+        }
+      ]
+    },
+    {
+      "id": "status_dermatologis",
+      "name": "Status dermatologis",
+      "category": "fisik",
+      "group": "kulit",
+      "description": "Lokasi & distribusi lesi, efloresensi (primer & sekunder), tanda khusus, rambut & kuku, sensibilitas lesi, dan saraf tepi.",
+      "action": "Anda memeriksa seluruh kulit pasien di bawah cahaya terang dengan loupe, meraba lesi, menguji rasa raba di lesi, dan meraba saraf tepi.",
+      "params": [
+        { "kind": "text", "id": "lokasi", "label": "Lokasi & distribusi", "normal": ["Tidak ditemukan lesi kulit"] },
+        { "kind": "text", "id": "efloresensi", "label": "Efloresensi", "normal": ["Tidak ada"] },
+        { "kind": "text", "id": "tanda_khusus", "label": "Tanda khusus", "normal": ["Tidak ada"] },
+        { "kind": "text", "id": "rambut_kuku", "label": "Rambut & kuku", "normal": ["Rambut dan kuku normal"] },
+        {
+          "kind": "text",
+          "id": "sensibilitas_lesi",
+          "label": "Sensibilitas lesi",
+          "normal": ["Tidak ada bercak mati rasa"]
+        },
+        { "kind": "text", "id": "saraf_tepi", "label": "Saraf tepi", "normal": ["Tidak menebal, tidak nyeri"] }
+      ]
+    },
+    {
+      "id": "status_lokalis",
+      "name": "Status lokalis (luka & benjolan)",
+      "category": "fisik",
+      "group": "kulit",
+      "description": "Deskripsi luka (jenis, lokasi, ukuran, tepi, dasar, jembatan jaringan, benda asing), luka bakar (luas & kedalaman), benjolan, dan status neurovaskular distal.",
+      "action": "Anda memeriksa bagian yang dikeluhkan di bawah lampu periksa, mengukur luka dengan penggaris, lalu menilai sensorik, motorik, dan denyut di sebelah distal.",
+      "params": [
+        { "kind": "text", "id": "luka", "label": "Luka", "normal": ["Tidak ada luka"] },
+        { "kind": "text", "id": "tepi_dasar", "label": "Tepi, dasar & sekitar luka", "normal": ["—"] },
+        { "kind": "text", "id": "luka_bakar", "label": "Luka bakar", "normal": ["Tidak ada luka bakar"] },
+        { "kind": "text", "id": "benjolan", "label": "Benjolan", "normal": ["Tidak teraba benjolan"] },
+        {
+          "kind": "text",
+          "id": "distal",
+          "label": "Neurovaskular distal",
+          "normal": ["Sensorik, motorik, dan pulsasi distal baik"]
+        }
+      ]
+    },
+    {
+      "id": "pemeriksaan_anak",
+      "name": "Pemeriksaan khusus anak",
+      "category": "fisik",
+      "group": "anak",
+      "description": "Ubun-ubun, tanda dehidrasi (WHO), status gizi menurut z-skor WHO, umbilikus, dan perkembangan (KPSP).",
+      "action": "Anda meraba ubun-ubun, menilai mata, air mata, dan cubitan kulit perut, memplot berat dan panjang badan di grafik WHO, lalu memeriksa pusar.",
+      "params": [
+        { "kind": "text", "id": "ubun_ubun", "label": "Ubun-ubun", "normal": ["Datar"] },
+        {
+          "kind": "text",
+          "id": "dehidrasi_anak",
+          "label": "Tanda dehidrasi (WHO)",
+          "normal": ["Tanpa dehidrasi: sadar, mata tidak cekung, minum biasa, cubitan kulit perut kembali segera"]
+        },
+        {
+          "kind": "text",
+          "id": "status_gizi",
+          "label": "Status gizi (z-skor WHO)",
+          "normal": ["Gizi baik (BB/TB antara −2 dan +2 SD)"]
+        },
+        { "kind": "text", "id": "umbilikus", "label": "Umbilikus", "normal": ["Tenang, tidak kemerahan, tidak berbau"] },
+        { "kind": "text", "id": "perkembangan", "label": "Perkembangan (KPSP)", "normal": ["Sesuai usia"] }
+      ]
+    },
+    {
+      "id": "muskuloskeletal",
+      "name": "Sendi & otot",
+      "category": "fisik",
+      "group": "ekstremitas",
+      "description": "Inspeksi dan palpasi sendi (bengkak, merah, hangat, nyeri), lingkup gerak, tofus, dan nyeri tekan otot (mis. betis).",
+      "action": "Anda melihat dan meraba sendi-sendi yang dikeluhkan, menggerakkannya, lalu menekan otot betis pasien.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "sendi",
+          "label": "Inspeksi & palpasi sendi",
+          "normal": ["Tidak bengkak, tidak kemerahan, tidak hangat, tidak nyeri"]
+        },
+        { "kind": "text", "id": "lingkup_gerak", "label": "Lingkup gerak sendi", "normal": ["Bebas, tidak nyeri"] },
+        { "kind": "text", "id": "tofus", "label": "Tofus", "normal": ["Tidak ada"] },
+        { "kind": "text", "id": "otot", "label": "Nyeri tekan otot", "normal": ["Tidak ada (betis tidak nyeri)"] }
+      ]
+    },
+    {
+      "id": "feses_rutin",
+      "name": "Feses rutin (makroskopis & mikroskopis)",
+      "category": "lab",
+      "description": "Konsistensi, lendir, darah, leukosit, eritrosit, telur/larva cacing, dan protozoa (amuba, Giardia).",
+      "action": "Pasien diberi pot sampel tinja; sampel segar diperiksa langsung dengan mikroskop (sediaan lugol & eosin).",
+      "params": [
+        {
+          "kind": "text",
+          "id": "makroskopis",
+          "label": "Makroskopis",
+          "normal": ["Lembek, coklat, lendir (−), darah (−)"]
+        },
+        {
+          "kind": "text",
+          "id": "leukosit_feses",
+          "label": "Leukosit",
+          "normal": ["0–2 /LPB"],
+          "falsePositiveRate": 0.03,
+          "falsePositiveValues": ["5–10 /LPB"]
+        },
+        { "kind": "text", "id": "eritrosit_feses", "label": "Eritrosit", "normal": ["0–1 /LPB"] },
+        { "kind": "text", "id": "telur_cacing", "label": "Telur cacing", "normal": ["Tidak ditemukan"] },
+        { "kind": "text", "id": "larva", "label": "Larva / proglotid", "normal": ["Tidak ditemukan"] },
+        { "kind": "text", "id": "protozoa", "label": "Protozoa", "normal": ["Tidak ditemukan"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Diare inflamasi (leukosit/eritrosit), cacing (telur, larva, proglotid), dan protozoa (amuba, Giardia).",
+      "group": "urin_feses"
+    },
+    {
+      "id": "elektrolit",
+      "name": "Elektrolit serum (Na, K, Cl, Ca)",
+      "category": "lab",
+      "description": "Natrium, kalium, klorida, dan kalsium serum.",
+      "action": "Darah pasien dikirim ke laboratorium untuk pemeriksaan elektrolit.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "natrium",
+          "label": "Natrium",
+          "unit": "mmol/L",
+          "decimals": 0,
+          "ref": [135, 145],
+          "normal": [137, 143]
+        },
+        {
+          "kind": "numeric",
+          "id": "kalium",
+          "label": "Kalium",
+          "unit": "mmol/L",
+          "decimals": 1,
+          "ref": [3.5, 5],
+          "normal": [3.7, 4.8]
+        },
+        {
+          "kind": "numeric",
+          "id": "klorida",
+          "label": "Klorida",
+          "unit": "mmol/L",
+          "decimals": 0,
+          "ref": [98, 107],
+          "normal": [99, 105]
+        },
+        {
+          "kind": "numeric",
+          "id": "kalsium",
+          "label": "Kalsium total",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [8.5, 10.5],
+          "normal": [8.8, 10.1]
+        }
+      ],
+      "objectives": ["fungsi_organ", "komplikasi"],
+      "purpose": "Gangguan elektrolit akibat muntah/diare berat, kejang, atau kelemahan otot. Tidak menentukan penyebab penyakit.",
+      "group": "kimia"
+    },
+    {
+      "id": "asam_urat",
+      "name": "Asam urat serum",
+      "category": "lab",
+      "description": "Kadar asam urat darah.",
+      "action": "Anda memeriksa asam urat darah kapiler dengan alat strip.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "asam_urat",
+          "label": "Asam urat",
+          "unit": "mg/dL",
+          "decimals": 1,
+          "ref": [3.5, 7],
+          "normal": [4, 6.5],
+          "refFemale": [2.6, 6],
+          "normalFemale": [3, 5.6]
+        }
+      ],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Hiperurisemia (> 7 mg/dL laki-laki, > 6 mg/dL perempuan). Kadar bisa normal saat serangan gout akut.",
+      "group": "kimia"
+    },
+    {
+      "id": "tes_kehamilan",
+      "name": "Tes kehamilan urin (β-hCG)",
+      "category": "lab",
+      "description": "Deteksi hormon β-hCG di urin dengan strip.",
+      "action": "Urin pasien diteteskan pada strip tes kehamilan.",
+      "params": [{ "kind": "text", "id": "hcg", "label": "β-hCG urin", "normal": ["Negatif"] }],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Kehamilan (positif ± 10–14 hari setelah konsepsi). Wajib sebelum obat/rontgen tertentu dan pada nyeri perut/perdarahan perempuan usia subur.",
+      "group": "urin_feses"
+    },
+    {
+      "id": "tes_hiv",
+      "name": "Tes HIV (rapid 3 metode)",
+      "category": "lab",
+      "description": "Pemeriksaan antibodi HIV dengan tiga reagen berbeda sesuai strategi nasional, didahului konseling dan persetujuan.",
+      "action": "Setelah konseling pra-tes dan persetujuan pasien, darah diperiksa dengan reagen tes cepat HIV.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Non-reaktif"] }],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Infeksi HIV (reaktif pada ketiga reagen). Periode jendela 3 bulan dapat memberi hasil non-reaktif palsu.",
+      "group": "serologi"
+    },
+    {
+      "id": "cd4",
+      "name": "Hitung CD4 (rujukan)",
+      "category": "lab",
+      "description": "Jumlah sel T-CD4 untuk menilai derajat imunodefisiensi pada HIV.",
+      "action": "Darah pasien dikirim ke laboratorium rujukan untuk hitung CD4.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "cd4",
+          "label": "CD4",
+          "unit": "sel/µL",
+          "decimals": 0,
+          "ref": [500, 1500],
+          "normal": [600, 1200],
+          "step": 5
+        }
+      ],
+      "objectives": ["komplikasi", "fungsi_organ"],
+      "purpose": "Derajat imunosupresi pada HIV (< 200 sel/µL berisiko infeksi oportunistik). Bukan alat diagnosis HIV.",
+      "group": "serologi"
+    },
+    {
+      "id": "tes_sifilis",
+      "name": "Tes sifilis (RPR & TPHA)",
+      "category": "lab",
+      "description": "RPR/VDRL (nontreponemal, titer aktivitas) dan TPHA (treponemal, konfirmasi).",
+      "action": "Serum pasien diperiksa dengan tes RPR dan TPHA.",
+      "params": [
+        { "kind": "text", "id": "rpr", "label": "RPR/VDRL", "normal": ["Non-reaktif"] },
+        { "kind": "text", "id": "tpha", "label": "TPHA", "normal": ["Non-reaktif"] }
+      ],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Sifilis: TPHA reaktif + RPR reaktif = sifilis aktif. Pada chancre dini serologi bisa masih negatif.",
+      "group": "serologi"
+    },
+    {
+      "id": "hbsag",
+      "name": "HBsAg (tes cepat)",
+      "category": "lab",
+      "description": "Antigen permukaan virus hepatitis B.",
+      "action": "Darah pasien diperiksa dengan tes cepat HBsAg.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "HBsAg", "normal": ["Non-reaktif"] }],
+      "objectives": ["identifikasi", "skrining"],
+      "purpose": "Infeksi hepatitis B. Bagian skrining tripel eliminasi pada ibu hamil.",
+      "group": "serologi"
+    },
+    {
+      "id": "igm_anti_hav",
+      "name": "IgM anti-HAV",
+      "category": "lab",
+      "description": "Antibodi IgM terhadap virus hepatitis A (infeksi akut).",
+      "action": "Serum pasien dikirim untuk pemeriksaan IgM anti-HAV.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "IgM anti-HAV", "normal": ["Non-reaktif"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Konfirmasi hepatitis A akut. Tidak menilai beratnya kerusakan hati.",
+      "group": "serologi"
+    },
+    {
+      "id": "igm_leptospira",
+      "name": "Tes cepat IgM leptospira",
+      "category": "lab",
+      "description": "Antibodi IgM terhadap Leptospira (positif mulai hari ke-5–7).",
+      "action": "Serum pasien diperiksa dengan tes cepat IgM leptospira.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "IgM leptospira", "normal": ["Negatif"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Leptospirosis. Bisa negatif pada minggu pertama; diagnosis awal tetap klinis-epidemiologis.",
+      "group": "serologi"
+    },
+    {
+      "id": "apusan_darah_tepi",
+      "name": "Apusan darah tepi",
+      "category": "lab",
+      "description": "Morfologi eritrosit, leukosit, dan trombosit di bawah mikroskop.",
+      "action": "Sediaan apus darah tepi pasien diwarnai dan diperiksa di mikroskop.",
+      "params": [
+        { "kind": "text", "id": "eritrosit", "label": "Eritrosit", "normal": ["Normositik normokrom"] },
+        {
+          "kind": "text",
+          "id": "leukosit_morfologi",
+          "label": "Leukosit",
+          "normal": ["Jumlah kesan normal, morfologi normal"]
+        },
+        {
+          "kind": "text",
+          "id": "trombosit_morfologi",
+          "label": "Trombosit",
+          "normal": ["Jumlah kesan cukup, morfologi normal"]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Jenis anemia (mis. hipokrom mikrositer pada defisiensi besi), sel muda, atau kelainan morfologi lain.",
+      "group": "hematologi"
+    },
+    {
+      "id": "profil_besi",
+      "name": "Profil besi (rujukan)",
+      "category": "lab",
+      "description": "Serum iron, TIBC, saturasi transferin, dan feritin.",
+      "action": "Darah pasien dikirim ke laboratorium rujukan untuk profil besi.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "serum_iron",
+          "label": "Serum iron",
+          "unit": "µg/dL",
+          "decimals": 0,
+          "ref": [60, 170],
+          "normal": [70, 150]
+        },
+        {
+          "kind": "numeric",
+          "id": "tibc",
+          "label": "TIBC",
+          "unit": "µg/dL",
+          "decimals": 0,
+          "ref": [250, 450],
+          "normal": [270, 400]
+        },
+        {
+          "kind": "numeric",
+          "id": "saturasi_transferin",
+          "label": "Saturasi transferin",
+          "unit": "%",
+          "decimals": 0,
+          "ref": [20, 50],
+          "normal": [24, 42]
+        },
+        {
+          "kind": "numeric",
+          "id": "feritin",
+          "label": "Feritin",
+          "unit": "ng/mL",
+          "decimals": 0,
+          "ref": [30, 300],
+          "normal": [50, 220],
+          "refFemale": [15, 150],
+          "normalFemale": [25, 120]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Membuktikan defisiensi besi (feritin rendah). Mahal; di layanan primer biasanya cukup dengan klinis, darah lengkap, dan apusan.",
+      "group": "hematologi"
+    },
+    {
+      "id": "fungsi_tiroid",
+      "name": "Fungsi tiroid (TSH & FT4, rujukan)",
+      "category": "lab",
+      "description": "TSH dan tiroksin bebas.",
+      "action": "Darah pasien dikirim ke laboratorium rujukan untuk pemeriksaan TSH dan FT4.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "tsh",
+          "label": "TSH",
+          "unit": "mIU/L",
+          "decimals": 2,
+          "ref": [0.4, 4.5],
+          "normal": [0.8, 3.5]
+        },
+        {
+          "kind": "numeric",
+          "id": "ft4",
+          "label": "FT4",
+          "unit": "ng/dL",
+          "decimals": 2,
+          "ref": [0.8, 1.8],
+          "normal": [0.95, 1.6]
+        }
+      ],
+      "objectives": ["fungsi_organ"],
+      "purpose": "Hipotiroid/hipertiroid. Pada gondok endemik akibat kurang yodium biasanya eutiroid.",
+      "group": "kimia"
+    },
+    {
+      "id": "kerokan_koh",
+      "name": "Kerokan kulit/kuku/rambut + KOH",
+      "category": "lab",
+      "description": "Sediaan langsung kerokan dengan KOH 10–20% untuk mencari jamur.",
+      "action": "Anda mengerok tepi lesi (atau kuku/rambut) dengan skalpel tumpul, meneteskan KOH, lalu memeriksanya di mikroskop.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "hasil",
+          "label": "Hasil",
+          "normal": ["Tidak ditemukan hifa, spora, maupun pseudohifa"]
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Infeksi jamur: hifa bersepta (dermatofita), spaghetti & meatball (Malassezia), pseudohifa & blastospora (Candida).",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "lampu_wood",
+      "name": "Pemeriksaan lampu Wood",
+      "category": "lainnya",
+      "description": "Fluoresensi kulit/rambut di bawah sinar ultraviolet A di ruangan gelap.",
+      "action": "Ruangan digelapkan; Anda menyinari lesi pasien dengan lampu Wood.",
+      "params": [{ "kind": "text", "id": "fluoresensi", "label": "Fluoresensi", "normal": ["Tidak ada fluoresensi khas"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Kuning keemasan (pitiriasis versikolor), merah bata/koral (eritrasma), hijau terang (tinea kapitis Microsporum)."
+    },
+    {
+      "id": "kerokan_skabies",
+      "name": "Kerokan kulit (tungau Sarcoptes)",
+      "category": "lab",
+      "description": "Kerokan pada terowongan/papul untuk mencari tungau, telur, atau skibala.",
+      "action": "Anda meneteskan minyak mineral pada terowongan kulit, mengeroknya, lalu memeriksanya di mikroskop.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Tidak ditemukan tungau, telur, maupun skibala"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Konfirmasi skabies. Sensitivitas rendah — hasil negatif TIDAK menyingkirkan skabies.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "tzanck",
+      "name": "Tes Tzanck",
+      "category": "lab",
+      "description": "Kerokan dasar vesikel dengan pewarnaan Giemsa.",
+      "action": "Anda memecah vesikel, mengerok dasarnya, dan membuat sediaan Giemsa.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Hasil", "normal": ["Tidak ditemukan sel datia berinti banyak"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Infeksi virus herpes (HSV/VZV): sel datia berinti banyak. Tidak membedakan HSV dari VZV.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "gram_sekret",
+      "name": "Pewarnaan Gram (duh/pus)",
+      "category": "lab",
+      "description": "Sediaan langsung duh uretra/serviks, pus, atau krusta dengan pewarnaan Gram.",
+      "action": "Anda mengambil duh/pus dengan swab steril, membuat sediaan, lalu mewarnainya dengan Gram.",
+      "params": [
+        { "kind": "text", "id": "pmn", "label": "Leukosit PMN", "normal": ["< 5 /LPB"] },
+        { "kind": "text", "id": "bakteri", "label": "Bakteri", "normal": ["Tidak ditemukan bakteri patogen"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Diplokokus Gram negatif intrasel (gonore), PMN tanpa diplokokus (uretritis non-gonore), kokus Gram positif (pioderma).",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "sediaan_basah_vagina",
+      "name": "Sediaan basah duh vagina (pH, tes amin, NaCl & KOH)",
+      "category": "lab",
+      "description": "pH vagina, tes amin (whiff), clue cells, Trichomonas, dan pseudohifa Candida.",
+      "action": "Anda mengambil duh dari forniks dengan swab, mengukur pH, lalu membuat sediaan NaCl dan KOH.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "ph_vagina",
+          "label": "pH vagina",
+          "unit": "",
+          "decimals": 1,
+          "ref": [3.8, 4.5],
+          "normal": [4, 4.5],
+          "step": 0.5
+        },
+        { "kind": "text", "id": "whiff", "label": "Tes amin (whiff)", "normal": ["Negatif"] },
+        { "kind": "text", "id": "clue_cell", "label": "Clue cells", "normal": ["Tidak ditemukan"] },
+        { "kind": "text", "id": "trikomonas", "label": "Trichomonas vaginalis", "normal": ["Tidak ditemukan"] },
+        { "kind": "text", "id": "pseudohifa", "label": "Pseudohifa / blastospora", "normal": ["Tidak ditemukan"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Vaginosis bakterial (pH > 4,5, whiff +, clue cells), trikomoniasis, dan kandidiasis vulvovaginal.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "bta_kulit",
+      "name": "Slit skin smear (BTA kulit)",
+      "category": "lab",
+      "description": "Kerokan jaringan kulit dari lesi & cuping telinga dengan pewarnaan Ziehl–Neelsen.",
+      "action": "Anda menjepit dan menyayat kecil kulit lesi serta cuping telinga, lalu membuat sediaan BTA.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Indeks bakteri", "normal": ["BTA negatif (IB 0)"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Kusta: menentukan tipe PB/MB (BTA positif = MB). Hasil negatif tidak menyingkirkan kusta.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "mikroskopis_filaria",
+      "name": "Apusan darah malam (mikrofilaria)",
+      "category": "lab",
+      "description": "Sediaan darah tebal yang diambil pukul 20.00–24.00, diwarnai Giemsa.",
+      "action": "Darah ujung jari pasien diambil malam hari dan dibuat sediaan tebal untuk mencari mikrofilaria.",
+      "params": [{ "kind": "text", "id": "hasil", "label": "Mikrofilaria", "normal": ["Tidak ditemukan"] }],
+      "objectives": ["identifikasi"],
+      "purpose": "Filariasis limfatik aktif (mikrofilaremia). Sering negatif pada fase kronis/limfedema.",
+      "group": "mikrobiologi"
+    },
+    {
+      "id": "tes_mantoux",
+      "name": "Uji tuberkulin (Mantoux)",
+      "category": "lainnya",
+      "description": "Indurasi 48–72 jam setelah suntikan PPD intradermal.",
+      "action": "Anda menyuntikkan 0,1 mL PPD intradermal di lengan bawah; pasien kembali 72 jam kemudian untuk dibaca.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "indurasi",
+          "label": "Indurasi",
+          "unit": "mm",
+          "decimals": 0,
+          "ref": [0, 9],
+          "normal": [0, 4],
+          "refText": "< 10 mm"
+        }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Infeksi TB (≥ 10 mm, ≥ 5 mm pada imunokompromais). Tidak membedakan infeksi laten dari penyakit aktif."
+    },
+    {
+      "id": "abi_doppler",
+      "name": "Ankle–brachial index (Doppler)",
+      "category": "lainnya",
+      "description": "Rasio tekanan sistolik pergelangan kaki terhadap lengan.",
+      "action": "Anda mengukur tekanan darah di lengan dan pergelangan kaki pasien dengan Doppler genggam.",
+      "params": [
+        {
+          "kind": "numeric",
+          "id": "abi",
+          "label": "ABI",
+          "unit": "",
+          "decimals": 2,
+          "ref": [0.9, 1.3],
+          "normal": [0.98, 1.2]
+        }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Penyakit arteri perifer (ABI < 0,9). Sebelum terapi kompresi pada ulkus tungkai, ABI harus ≥ 0,8."
+    },
+    {
+      "id": "swab_antigen",
+      "name": "Swab antigen SARS-CoV-2 & influenza",
+      "category": "lab",
+      "description": "Tes cepat antigen dari swab nasofaring.",
+      "action": "Anda mengambil swab nasofaring pasien dan memeriksanya dengan kaset antigen.",
+      "params": [
+        { "kind": "text", "id": "sars_cov2", "label": "Antigen SARS-CoV-2", "normal": ["Negatif"] },
+        { "kind": "text", "id": "influenza", "label": "Antigen influenza A/B", "normal": ["Negatif"] }
+      ],
+      "objectives": ["identifikasi"],
+      "purpose": "Membedakan COVID-19 dan influenza pada ISPA. Sensitivitas antigen influenza sedang.",
+      "group": "serologi"
+    },
+    {
+      "id": "usg_obstetri",
+      "name": "USG obstetri & pelvis",
+      "category": "pencitraan",
+      "description": "Uterus, kantong gestasi, janin, plasenta, ketuban, dan adneksa.",
+      "action": "Anda mengoleskan gel di perut bawah pasien dan melakukan USG transabdominal.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "uterus",
+          "label": "Uterus",
+          "normal": ["Ukuran normal, kavum uteri kosong, endometrium tipis"]
+        },
+        {
+          "kind": "text",
+          "id": "janin",
+          "label": "Kantong gestasi & janin",
+          "normal": ["Tidak tampak kantong gestasi"]
+        },
+        {
+          "kind": "text",
+          "id": "adneksa",
+          "label": "Adneksa & cairan bebas",
+          "normal": ["Tidak tampak massa maupun cairan bebas"]
+        },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["Uterus dan adneksa dalam batas normal"],
+          "combine": true
+        }
+      ],
+      "objectives": ["struktur", "identifikasi", "komplikasi"],
+      "purpose": "Viabilitas & usia kehamilan, sisa konsepsi, kehamilan ektopik, massa pelvis."
+    },
+    {
+      "id": "rontgen_ekstremitas",
+      "name": "Rontgen bagian tubuh yang cedera",
+      "category": "pencitraan",
+      "description": "Foto polos dua posisi pada daerah cedera.",
+      "action": "Bagian tubuh pasien yang cedera difoto rontgen dua posisi.",
+      "params": [
+        {
+          "kind": "text",
+          "id": "tulang",
+          "label": "Tulang & sendi",
+          "normal": ["Tidak tampak fraktur maupun dislokasi"]
+        },
+        {
+          "kind": "text",
+          "id": "jaringan_lunak",
+          "label": "Jaringan lunak",
+          "normal": ["Tidak tampak benda asing radioopak maupun udara bebas"]
+        },
+        { "kind": "text", "id": "kesan", "label": "Kesan", "normal": ["Tidak tampak kelainan tulang"], "combine": true }
+      ],
+      "objectives": ["struktur", "komplikasi"],
+      "purpose": "Fraktur, dislokasi, dan benda asing radioopak pada luka. Tidak diperlukan bila tidak ada kecurigaan klinis."
+    },
+    {
+      "id": "usg_superfisial",
+      "name": "USG jaringan lunak",
+      "category": "pencitraan",
+      "description": "USG benjolan atau jaringan lunak superfisial.",
+      "action": "Anda mengoleskan gel pada benjolan dan memeriksanya dengan USG probe linear.",
+      "params": [
+        { "kind": "text", "id": "lesi", "label": "Lesi", "normal": ["Tidak tampak lesi abnormal"] },
+        {
+          "kind": "text",
+          "id": "kesan",
+          "label": "Kesan",
+          "normal": ["Jaringan lunak dalam batas normal"],
+          "combine": true
+        }
+      ],
+      "objectives": ["struktur"],
+      "purpose": "Membedakan massa padat, kista, lipoma, dan abses (kumpulan cairan). Tidak wajib bila diagnosis klinis jelas."
     }
   ]
 }

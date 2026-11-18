@@ -1,0 +1,225 @@
+{
+  "id": "filariasis",
+  "name": "Filariasis limfatik",
+  "aliases": ["Kaki gajah", "Elefantiasis", "Filariasis"],
+  "system": "Infeksi tropis",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.5,
+  "summary": "Infeksi cacing filaria (Wuchereria bancrofti, Brugia malayi/timori) yang ditularkan nyamuk di daerah endemis (NTT, Papua, Kalimantan, Sumatra). Fase akut: demam berulang dengan limfadenitis-limfangitis retrograd. Fase kronik: limfedema hingga elefantiasis tungkai/lengan, hidrokel. Diagnosis: mikrofilaria pada apusan darah malam (sering negatif pada fase kronik). Terapi: DEC + albendazol, perawatan limfedema, POPM.",
+  "presentationDay": [14, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 35, "weight": 2 },
+      { "min": 36, "max": 60, "weight": 4 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "petani", "weight": 4 }, { "id": "nelayan", "weight": 2 }, { "id": "pekerja_sawit", "weight": 2 }],
+    "occupationBias": 0.6
+  },
+  "traits": [
+    { "id": "akut_adl", "probability": 0.35 },
+    { "id": "stadium_lanjut", "probability": 0.4, "when": { "notTraits": ["akut_adl"] } },
+    { "id": "mf_positif", "probability": 0.45 }
+  ],
+  "traitLabels": {
+    "akut_adl": "Serangan akut adenolimfangitis.",
+    "stadium_lanjut": "Limfedema stadium lanjut (elefantiasis).",
+    "mf_positif": "Mikrofilaremia (+)."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1, "when": { "traits": ["akut_adl"] } },
+    { "id": "benjolan_kgb", "probability": 0.7, "when": { "traits": ["akut_adl"] } },
+    { "id": "kulit_merah_panas", "probability": 0.8, "when": { "traits": ["akut_adl"] } },
+    { "id": "bengkak_kaki", "probability": 1 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "benjolan_kgb", "probability": 0.3 },
+    { "id": "gatal_kulit", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["bengkak_kaki"], "extraPool": ["demam"] },
+  "clueSymptoms": ["demam", "benjolan_kgb", "kulit_merah_panas", "gatal_kulit"],
+  "misattributions": ["asam urat", "kena guna-guna", "keseleo"],
+  "fears": ["kaki gajah seumur hidup", "diamputasi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, pelan-pelan kaki kanan makin besar.",
+        "when": { "notTraits": ["akut_adl"] },
+        "clue": "Bengkak tungkai kronik progresif"
+      },
+      {
+        "text": "Sudah {lamaSakit} bengkak, Dok, tiga hari ini demam dan kaki merah panas.",
+        "reveals": ["demam"],
+        "when": { "traits": ["akut_adl"], "symptoms": ["demam"] },
+        "clue": "Serangan akut pada bengkak kronik"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Hampir tiap bulan saya demam-demam, Dok, lipat paha bengkak sakit, terus kaki makin besar.",
+        "clue": "Demam berulang dengan adenolimfangitis"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Saya dari kecil tinggal di desa dekat rawa di Sumba, Dok, banyak nyamuk. Tetangga ada yang kakinya besar juga.",
+        "clue": "Tinggal di daerah endemis filaria"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Waktu ada pembagian obat cacing massal dari puskesmas, saya nggak ikut minum, Dok.",
+        "clue": "Tidak ikut POPM filariasis"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bengkaknya nggak sakit, Dok, tapi berat. Kalau ditekan nggak cekung.",
+        "when": { "notTraits": ["akut_adl"] },
+        "clue": "Bengkak tidak nyeri, non-pitting (limfedema)"
+      },
+      {
+        "text": "Merah, panas, sakit, Dok, dari lipat paha ke bawah.",
+        "reveals": ["kulit_merah_panas"],
+        "when": { "traits": ["akut_adl"], "symptoms": ["kulit_merah_panas"] },
+        "clue": "Limfangitis retrograd"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya nggak punya sakit jantung atau ginjal, Dok, kaki kiri nggak bengkak.",
+        "clue": "Unilateral, tanpa penyakit jantung/ginjal"
+      }
+    ],
+    "lokasi": [{ "text": "Di kaki kanan, Dok, bengkaknya dari betis sampai punggung kaki." }]
+  },
+  "findings": [
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "edema",
+      "when": { "traits": ["stadium_lanjut"] },
+      "diagnostic": true,
+      "values": ["Edema non-pitting tungkai kanan, kulit menebal dengan lipatan dalam (limfedema stadium lanjut)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["stadium_lanjut"] },
+      "values": ["Kulit tungkai menebal, hiperkeratosis, papilomatosis"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["stadium_lanjut"] },
+      "values": ["Tungkai bawah kanan"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "benjolan",
+      "when": { "traits": ["akut_adl"] },
+      "values": ["KGB inguinal kanan membesar, nyeri tekan; garis kemerahan menjalar ke distal (limfangitis retrograd)"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [38.2, 39.3] },
+    {
+      "tool": "mikroskopis_filaria",
+      "param": "hasil",
+      "when": { "traits": ["mf_positif"] },
+      "diagnostic": true,
+      "values": ["Ditemukan mikrofilaria Brugia malayi"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "edema",
+      "diagnostic": true,
+      "values": ["Edema non-pitting tungkai kanan (limfedema)"]
+    },
+    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.6, "range": [8, 15] }
+  ],
+  "differentials": [
+    {
+      "id": "trombosis_vena_dalam",
+      "howToDistinguish": "DVT: bengkak tungkai unilateral AKUT, pitting, nyeri betis, faktor risiko imobilisasi — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset", "karakter"] }
+    },
+    {
+      "id": "erisipelas",
+      "howToDistinguish": "Erisipelas/selulitis: plak merah panas berbatas tegas akut tanpa riwayat bengkak kronik.",
+      "excludeBy": { "topics": ["onset", "pola"] }
+    },
+    {
+      "id": "gagal_jantung",
+      "howToDistinguish": "Gagal jantung/sindrom nefrotik: edema bilateral pitting, sesak, ortopnea.",
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["pemeriksaan_jantung"] }
+    }
+  ],
+  "keyFindings": [
+    "Tinggal di daerah endemis; demam berulang dengan adenolimfangitis",
+    "Limfedema non-pitting unilateral hingga elefantiasis",
+    "Mikrofilaria pada apusan darah malam (fase aktif); eosinofilia"
+  ],
+  "teachingPoints": [
+    "Pengambilan darah untuk mikrofilaria dilakukan malam hari (pukul 20.00–24.00, periodisitas nokturna).",
+    "Perawatan limfedema (cuci, keringkan, elevasi, latihan, alas kaki) mencegah serangan akut berulang."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Eliminasi Filariasis di Indonesia"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "bepergian_lingkungan", "riwayat_obat", "karakter", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "ekstremitas_kulit", "role": "kunci", "reason": "Derajat limfedema (pitting/non-pitting)." },
+      { "tool": "status_lokalis", "role": "pendukung", "reason": "KGB inguinal & limfangitis." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Perubahan kulit kronik." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Menyingkirkan edema kardiak." }
+    ],
+    "tests": [
+      { "tool": "mikroskopis_filaria", "role": "kunci", "reason": "Apusan darah malam." },
+      { "tool": "darah_lengkap", "role": "pendukung", "reason": "Eosinofilia." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "DEC + albendazol, perawatan limfedema, antibiotik bila serangan akut; lapor program eliminasi filariasis.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "DEC 6 mg/kg/hari 12 hari atau dosis tunggal DEC 6 mg/kg + albendazol 400 mg (sesuai program).",
+    "Serangan akut: istirahat, elevasi, antipiretik, antibiotik bila ada infeksi bakteri.",
+    "Perawatan limfedema: cuci & keringkan kaki tiap hari, elevasi, latihan, alas kaki, rawat luka.",
+    "Ikut POPM tahunan; pakai kelambu/obat nyamuk; hidrokel dirujuk."
+  ],
+  "approach": [
+    "Riwayat tinggal di daerah endemis & serangan akut berulang.",
+    "Nilai limfedema; apusan darah malam; singkirkan DVT."
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "id": "varisela",
+  "name": "Varisela tanpa komplikasi",
+  "aliases": ["Cacar air", "Chickenpox", "Varicella"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.1,
+  "summary": "Infeksi primer virus varisela-zoster, tersering anak 2–12 tahun. Demam ringan dan lesu, lalu vesikel dinding tipis di atas dasar eritema ('tetesan embun di kelopak mawar') yang muncul bergelombang sehingga tampak papul, vesikel, pustul, dan krusta bersamaan (polimorf), sentripetal (badan > ekstremitas), sangat gatal, juga di kulit kepala & mukosa. Menular hingga semua lesi berkrusta. Remaja/dewasa lebih berat — asiklovir.",
+  "presentationDay": [1, 4],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 4 },
+      { "min": 6, "max": 9, "weight": 4 },
+      { "min": 10, "max": 18, "weight": 2 },
+      { "min": 19, "max": 40, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 3 }, { "id": "pelajar_sd", "weight": 2 }],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "infeksi_sekunder", "probability": 0.15 },
+    { "id": "kontak_cacar", "probability": 0.75 },
+    { "id": "dewasa", "probability": 1, "when": { "ageMin": 13 } }
+  ],
+  "traitLabels": {
+    "infeksi_sekunder": "Infeksi bakteri sekunder.",
+    "kontak_cacar": "Kontak penderita cacar air.",
+    "dewasa": "Remaja/dewasa (cenderung lebih berat)."
+  },
+  "symptoms": [
+    { "id": "lepuh_kulit", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 0.9 },
+    { "id": "demam", "probability": 0.8 },
+    { "id": "lemas", "probability": 0.4 },
+    { "id": "nafsu_makan_turun", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["lepuh_kulit"], "extraPool": ["demam", "gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "demam", "lemas", "nafsu_makan_turun"],
+  "misattributions": ["biang keringat", "digigit serangga", "alergi"],
+  "fears": ["bopeng", "menular ke adik"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu agak demam, Dok, terus muncul bintil berair di badan, sekarang makin banyak sampai ke muka dan kepala.",
+        "clue": "Demam ringan lalu vesikel menyebar cepat"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Paling banyak di badan, Dok, tangan-kaki sedikit. Di dalam mulut juga ada.",
+        "clue": "Sentripetal, mukosa terlibat"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Ada yang baru bintil, ada yang berair, ada yang sudah kering jadi koreng, Dok. Gatal sekali.",
+        "clue": "Lesi berbagai stadium (polimorf), gatal"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Teman sekelasnya dua minggu lalu cacar air, Dok.",
+        "when": { "traits": ["kontak_cacar"] },
+        "clue": "Kontak 10–21 hari sebelumnya"
+      },
+      { "text": "Belum tahu ketularan dari mana, Dok.", "when": { "notTraits": ["kontak_cacar"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Belum pernah vaksin cacar air, Dok, belum pernah cacar sebelumnya.",
+        "clue": "Belum vaksin/belum pernah varisela"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Beberapa bintilnya jadi bernanah, merah, dan sakit, Dok.",
+        "when": { "traits": ["infeksi_sekunder"] },
+        "clue": "Infeksi sekunder"
+      },
+      { "text": "Yang lama mulai kering, Dok.", "when": { "notTraits": ["infeksi_sekunder"] } }
+    ]
+  },
+  "findings": [
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.8, 38.8] },
+    {
+      "tool": "status_dermatologis",
+      "param": "tanda_khusus",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Beberapa lesi menjadi pustul dengan eritema & nyeri (infeksi sekunder)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "values": ["Badan (sentripetal), wajah, kulit kepala; ekstremitas lebih sedikit"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": [
+        "Vesikel dinding tipis di atas dasar eritema (tetesan embun) bersama papul, pustul & krusta dalam berbagai stadium"
+      ]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "probability": 0.5,
+      "values": ["Beberapa vesikel/erosi kecil di palatum"]
+    },
+    { "tool": "tzanck", "param": "hasil", "probability": 0.8, "values": ["Sel datia berinti banyak (+)"] }
+  ],
+  "differentials": [
+    {
+      "id": "mpox",
+      "howToDistinguish": "Mpox: lesi dalam stadium SAMA, umbilikasi, limfadenopati menonjol, kontak/perilaku berisiko — lapor & isolasi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis", "kepala_leher"] }
+    },
+    {
+      "id": "herpes_zoster",
+      "howToDistinguish": "Herpes zoster: vesikel berkelompok unilateral dermatomal pada usia tua.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "impetigo",
+      "howToDistinguish": "Impetigo bulosa: bula kendur/krusta madu terlokalisasi tanpa demam.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "reaksi_gigitan_serangga",
+      "howToDistinguish": "Gigitan serangga: papul urtikaria di area terbuka tanpa demam & tanpa vesikel menyeluruh.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Demam ringan lalu vesikel 'tetesan embun' polimorf (berbagai stadium)",
+    "Distribusi sentripetal, mukosa & kulit kepala terlibat, gatal",
+    "Kontak penderita 10–21 hari sebelumnya"
+  ],
+  "teachingPoints": [
+    "Hindari aspirin pada anak dengan varisela (sindrom Reye) — gunakan parasetamol.",
+    "Isolasi sampai semua lesi berkrusta (± 5–7 hari)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "riwayat_keluarga", "kebiasaan", "progresi", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi polimorf & distribusi." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Lesi mukosa." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Limfadenopati (bedakan mpox)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "tzanck", "reason": "Bila diagnosis ragu." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Simptomatik, isolasi; asiklovir pada remaja/dewasa atau risiko; kontrol bila komplikasi."
+    }
+  ],
+  "management": [
+    "Parasetamol untuk demam (bukan aspirin); antihistamin oral & bedak salisil/kalamin untuk gatal.",
+    "Asiklovir 5 × 800 mg 7 hari (dewasa) / 20 mg/kg 4 × sehari (anak berisiko) dalam 24–72 jam.",
+    "Potong kuku, jangan digaruk/dipecah; mandi tetap boleh.",
+    "Isolasi sampai semua lesi berkrusta; jauhkan dari ibu hamil/bayi/imunokompromais."
+  ],
+  "approach": ["Kenali vesikel polimorf sentripetal.", "Nilai infeksi sekunder & kelompok risiko."]
+}

@@ -1,0 +1,119 @@
+{
+  "disease": "benda_asing_konjungtiva",
+  "setting": "Puskesmas",
+  "station": "Mata — mata merah",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal mata",
+        "role": "utama",
+        "reason": "Mencegah infeksi setelah pengangkatan benda asing/abrasi.",
+        "options": [
+          {
+            "drug": "kloramfenikol_sm",
+            "label": "Kloramfenikol 1% salep mata 3 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 4],
+            "days": [5, 14]
+          },
+          {
+            "drug": "kloramfenikol_tm",
+            "label": "Kloramfenikol 0,5% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          },
+          {
+            "drug": "gentamisin_tm",
+            "label": "Gentamisin 0,3% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          },
+          {
+            "drug": "levofloksasin_tm",
+            "label": "Levofloksasin 0,5% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "angkat",
+      "text": "Ekstraksi benda asing setelah anestesi topikal & irigasi NaCl 0,9% (eversi kelopak bila di tarsal)",
+      "kind": "benar"
+    },
+    { "id": "ucek", "text": "Jangan mengucek mata", "kind": "benar" },
+    { "id": "pelindung", "text": "Pakai kacamata pelindung saat menggerinda/memalu", "kind": "benar" },
+    {
+      "id": "bekal_anestesi",
+      "text": "Bekali tetes anestesi (pantokain) untuk dipakai di rumah bila perih",
+      "kind": "berbahaya",
+      "why": "Menghambat penyembuhan epitel & menutupi keluhan → ulkus kornea."
+    },
+    {
+      "id": "herbal",
+      "text": "Teteskan air sirih/ASI/obat herbal ke mata",
+      "kind": "berbahaya",
+      "why": "Iritasi & infeksi kornea."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ada benda asing kecil di selaput mata yang sudah diangkat",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Gunakan salep/tetes antibiotik sesuai aturan sampai habis",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur, nyeri makin hebat, atau mata makin merah bernanah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1–2 hari untuk menilai penyembuhan kornea",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    { "id": "cegah", "text": "Selalu pakai kacamata pelindung saat bekerja", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "tetes_sisa",
+      "text": "Boleh memakai tetes mata sisa milik keluarga",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Obat bisa terkontaminasi/tidak sesuai (mis. steroid)."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

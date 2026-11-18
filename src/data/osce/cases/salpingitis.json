@@ -1,0 +1,160 @@
+{
+  "disease": "salpingitis",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "seftriakson",
+        "label": "Seftriakson",
+        "role": "utama",
+        "reason": "PID: cakupan gonokokus.",
+        "options": [
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 250 mg IM dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["seftriakson-ml"],
+            "dose": [250, 250]
+          }
+        ]
+      },
+      {
+        "id": "doksisiklin",
+        "label": "Doksisiklin",
+        "role": "utama",
+        "reason": "PID: cakupan klamidia.",
+        "options": [
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 14 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 1 g/minggu selama 2 minggu",
+            "schedules": ["rutin", "tunggal"],
+            "forms": ["azitromisin-tab500"],
+            "dose": [1000, 1000],
+            "timesPerDay": [1, 1],
+            "days": [1, 2]
+          }
+        ]
+      },
+      {
+        "id": "metronidazol",
+        "label": "Metronidazol",
+        "role": "pendukung",
+        "reason": "PID: cakupan anaerob.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 2 × 500 mg selama 14 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [14, 14]
+          }
+        ]
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri perut bawah.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "istirahat", "text": "Istirahat & abstinensi hingga terapi tuntas", "kind": "benar" },
+    { "id": "pasangan", "text": "Pasangan diperiksa & diobati", "kind": "benar" },
+    { "id": "evaluasi", "text": "Evaluasi 72 jam; rujuk bila tidak membaik", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk segera (abses tubo-ovarium)",
+      "kind": "benar",
+      "when": { "traits": ["abses_tuboovarium"] }
+    },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang saluran telur (penyakit radang panggul), umumnya akibat IMS",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum sampai habis 14 hari agar tidak menyebabkan kemandulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila nyeri perut makin hebat, demam tinggi, muntah, atau pingsan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 72 jam", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Setia pada satu pasangan & gunakan kondom untuk mencegah IMS",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

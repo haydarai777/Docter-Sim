@@ -1,0 +1,128 @@
+{
+  "disease": "infeksi_umbilikus",
+  "setting": "Puskesmas (MTBM)",
+  "station": "Anak — neonatus",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Infeksi bakteri lokal tali pusat (MTBM).",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 15–25 mg/kgBB/kali 2–3 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-syr125"],
+            "dosePerKg": [13, 27],
+            "timesPerDay": [2, 3],
+            "days": [5, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 5 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [5, 5]
+          }
+        ],
+        "when": { "notTraits": ["meluas"] }
+      },
+      {
+        "id": "ab_rujuk",
+        "label": "Antibiotik pra-rujukan",
+        "role": "utama",
+        "reason": "Infeksi meluas/tanda bahaya: dosis pertama IM lalu rujuk.",
+        "options": [
+          {
+            "drug": "ampisilin",
+            "label": "Ampisilin 50 mg/kgBB IM",
+            "schedules": ["tunggal"],
+            "forms": ["ampisilin-larutan"],
+            "dosePerKg": [40, 60]
+          },
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 50–100 mg/kgBB IM (alergi penisilin)",
+            "schedules": ["tunggal"],
+            "forms": ["seftriakson-ml"],
+            "dosePerKg": [45, 100]
+          }
+        ],
+        "when": { "traits": ["meluas"] }
+      },
+      {
+        "id": "gentamisin",
+        "label": "Gentamisin pra-rujukan",
+        "role": "pendukung",
+        "reason": "Kombinasi dengan ampisilin (MTBM).",
+        "options": [
+          {
+            "drug": "gentamisin_inj",
+            "label": "Gentamisin 5 mg/kgBB IM",
+            "schedules": ["tunggal"],
+            "forms": ["gentamisin-ml"],
+            "dosePerKg": [4, 7.5]
+          }
+        ],
+        "when": { "traits": ["meluas"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kering", "text": "Bersihkan tali pusat dengan air matang, biarkan kering & terbuka", "kind": "benar" },
+    { "id": "asi", "text": "Lanjutkan ASI eksklusif; cuci tangan sebelum merawat bayi", "kind": "benar" },
+    {
+      "id": "hangat",
+      "text": "Jaga bayi tetap hangat selama rujukan",
+      "kind": "benar",
+      "when": { "traits": ["meluas"] }
+    },
+    {
+      "id": "ramuan",
+      "text": "Tutup tali pusat dengan ramuan/abu dapur agar cepat kering",
+      "kind": "berbahaya",
+      "why": "Sumber infeksi & tetanus neonatorum."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini infeksi pada pusar bayi", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat diberikan sesuai dosis berat badan sampai habis",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke fasilitas kesehatan bila kemerahan meluas, bayi malas menyusu, demam/dingin, kejang, atau kuning",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Rawat tali pusat bersih-kering tanpa ditutup apa pun",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "bedak",
+      "text": "Taburi pusar dengan bedak agar cepat kering",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Bedak menggumpal & menjadi media kuman."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (2022) — MTBM"
+    ]
+  }
+}

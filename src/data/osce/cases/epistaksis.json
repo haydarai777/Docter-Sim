@@ -1,0 +1,74 @@
+{
+  "disease": "epistaksis",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan umum",
+  "therapy": {
+    "items": [],
+    "avoid": [{ "groups": ["oains"], "reason": "Antiplatelet/OAINS memperberat perdarahan.", "severity": "salah" }],
+    "note": "Tatalaksana dengan tindakan (penekanan, tampon, kauterisasi) — tidak memerlukan resep obat; atasi hipertensi bila ada."
+  },
+  "nonPharm": [
+    { "id": "tekan", "text": "Duduk tegak condong ke depan dan tekan cuping hidung 10–15 menit", "kind": "benar" },
+    { "id": "kompres", "text": "Kompres dingin pada pangkal hidung", "kind": "benar" },
+    {
+      "id": "tampon",
+      "text": "Pasang tampon anterior (vasokonstriktor) bila masih berdarah; kauterisasi sumber anterior",
+      "kind": "benar"
+    },
+    {
+      "id": "tensi",
+      "text": "Ukur & tatalaksana tekanan darah",
+      "kind": "benar",
+      "when": { "traits": ["hipertensi_terkait"] }
+    },
+    {
+      "id": "rujuk",
+      "text": "Rujuk segera untuk tampon posterior",
+      "kind": "benar",
+      "when": { "traits": ["posterior"] }
+    },
+    {
+      "id": "tengadah",
+      "text": "Tengadahkan kepala ke belakang dan berbaring telentang",
+      "kind": "berbahaya",
+      "why": "Darah tertelan/teraspirasi, perdarahan tersamar."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Mimisan dari pembuluh darah di hidung", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Umumnya tidak perlu obat; lakukan penekanan bila berulang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila perdarahan > 20 menit walau ditekan, darah mengalir ke tenggorok, pucat/lemas, atau berulang",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila berulang untuk mencari penyebab", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Jangan mengorek hidung; jaga kelembapan hidung",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "aspirin",
+      "text": "Minum aspirin bila pusing setelah mimisan",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Memperberat perdarahan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

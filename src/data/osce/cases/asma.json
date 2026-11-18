@@ -1,0 +1,151 @@
+{
+  "disease": "asma",
+  "setting": "Puskesmas",
+  "station": "Pulmonologi — batuk/sesak",
+  "therapy": {
+    "items": [
+      {
+        "id": "pelega",
+        "label": "Pelega (reliever)",
+        "role": "utama",
+        "reason": "Bronkodilator inhalasi saat sesak.",
+        "options": [
+          {
+            "drug": "salbutamol_mdi",
+            "label": "Salbutamol MDI 100 mcg 1–2 puff bila sesak (No. I)",
+            "schedules": ["prn"],
+            "dose": [100, 200],
+            "timesPerDay": [1, 4]
+          },
+          {
+            "drug": "budesonid_formoterol",
+            "label": "Budesonid-formoterol 160/4,5 mcg 1 puff bila sesak (No. I)",
+            "schedules": ["prn"],
+            "dose": [160, 320],
+            "timesPerDay": [1, 6]
+          }
+        ]
+      },
+      {
+        "id": "steroid_oral",
+        "label": "Kortikosteroid sistemik singkat",
+        "role": "utama",
+        "reason": "Serangan sedang: steroid oral 5–7 hari.",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 40–50 mg 1 × sehari pagi selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [40, 50],
+            "timesPerDay": [1, 1],
+            "days": [5, 7]
+          },
+          {
+            "drug": "metilprednisolon",
+            "label": "Metilprednisolon 32–40 mg 1 × sehari pagi selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [32, 40],
+            "timesPerDay": [1, 1],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["serangan_sedang"] }
+      },
+      {
+        "id": "pengontrol",
+        "label": "Pengontrol (controller) ICS",
+        "role": "pendukung",
+        "reason": "Mengendalikan inflamasi kronik saluran napas (GINA).",
+        "options": [
+          {
+            "drug": "budesonid_inh",
+            "label": "Budesonid 200 mcg 1–2 puff 2 × sehari (No. I)",
+            "schedules": ["rutin"],
+            "dose": [200, 400],
+            "timesPerDay": [2, 2],
+            "days": [28, 90]
+          },
+          {
+            "drug": "budesonid_formoterol",
+            "label": "Budesonid-formoterol 160/4,5 mcg 1–2 puff 2 × sehari (No. I)",
+            "schedules": ["rutin"],
+            "dose": [160, 320],
+            "timesPerDay": [2, 2],
+            "days": [28, 90]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "groups": ["penyekat_beta"], "reason": "Penyekat beta dapat mencetuskan bronkospasme.", "severity": "salah" },
+      { "classes": ["antibiotik"], "reason": "Serangan asma bukan infeksi bakteri.", "severity": "salah" }
+    ],
+    "note": "Serangan berat → oksigen, nebulisasi salbutamol berulang, steroid sistemik, rujuk segera. Ajarkan teknik inhaler."
+  },
+  "nonPharm": [
+    { "id": "pemicu", "text": "Hindari pemicu: debu, asap rokok, udara dingin, bulu hewan", "kind": "benar" },
+    { "id": "lingkungan", "text": "Bersihkan kamar, jemur kasur/bantal, kurangi karpet & boneka", "kind": "benar" },
+    { "id": "rencana", "text": "Buat rencana aksi asma tertulis", "kind": "benar" },
+    {
+      "id": "teknik",
+      "text": "Latih teknik inhaler (kocok, buang napas, hirup dalam sambil menekan, tahan napas 10 detik)",
+      "kind": "benar"
+    },
+    {
+      "id": "rujuk",
+      "text": "Berikan oksigen & nebulisasi salbutamol, lalu rujuk segera",
+      "kind": "benar",
+      "why": "Serangan berat.",
+      "when": { "traits": ["serangan_berat"] }
+    },
+    { "id": "kucing", "text": "Tidur bersama hewan peliharaan berbulu tidak masalah", "kind": "pengecoh" },
+    { "id": "tunggu", "text": "Bila sesak berat malam hari, tunggu sampai pagi sebelum ke IGD", "kind": "berbahaya" }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Asma adalah peradangan kronik saluran napas yang tidak menular dan bisa dikendalikan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Pelega dipakai saat sesak; pengontrol dipakai rutin walau tidak sesak; kumur setelah inhaler steroid",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Salbutamol dapat membuat berdebar/gemetar sebentar",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak tidak membaik dengan pelega, sulit bicara, atau bibir kebiruan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1–3 bulan dan selalu bawa inhaler pelega",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    { "id": "cegah", "text": "Kenali dan hindari pemicu serangan", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "stop",
+      "text": "Hentikan semua inhaler bila sudah tidak sesak",
+      "kind": "berbahaya",
+      "category": "pengobatan"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "PDPI. Asma: Pedoman Diagnosis & Penatalaksanaan di Indonesia",
+      "GINA 2024 Global Strategy for Asthma Management and Prevention"
+    ]
+  }
+}

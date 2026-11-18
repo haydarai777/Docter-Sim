@@ -1,0 +1,96 @@
+{
+  "disease": "gangguan_somatoform",
+  "setting": "Puskesmas",
+  "station": "Jiwa — keluhan psikosomatik & tidur",
+  "therapy": {
+    "items": [
+      {
+        "id": "ssri",
+        "label": "Antidepresan SSRI",
+        "role": "utama",
+        "reason": "Depresi/cemas menyertai.",
+        "options": [
+          {
+            "drug": "fluoksetin",
+            "label": "Fluoksetin 1 × 10–20 mg pagi hari (evaluasi 4–6 minggu)",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "traits": ["depresi_menyertai"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["benzodiazepin"],
+        "reason": "Benzodiazepin jangka panjang tidak dianjurkan (ketergantungan).",
+        "severity": "salah"
+      }
+    ],
+    "note": "Tatalaksana utama nonfarmakologis (psikoedukasi, kontrol terjadwal, CBT); SSRI bila ada depresi/cemas."
+  },
+  "nonPharm": [
+    { "id": "validasi", "text": "Validasi keluhan pasien tanpa memperkuat keyakinan penyakit fisik", "kind": "benar" },
+    { "id": "terjadwal", "text": "Kontrol terjadwal & batasi pemeriksaan/rujukan berulang", "kind": "benar" },
+    {
+      "id": "relaksasi",
+      "text": "Psikoedukasi hubungan stres–gejala tubuh, teknik relaksasi, rujuk psikoterapi (CBT)",
+      "kind": "benar"
+    },
+    {
+      "id": "lab_lengkap",
+      "text": "Ulangi semua pemeriksaan laboratorium & radiologi setiap kunjungan",
+      "kind": "pengecoh",
+      "why": "Memperkuat perilaku sakit & biaya."
+    },
+    {
+      "id": "pura_pura",
+      "text": "Katakan bahwa pasien hanya berpura-pura sakit",
+      "kind": "berbahaya",
+      "why": "Merusak hubungan dokter-pasien."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Keluhan Anda nyata, dan berkaitan erat dengan stres/emosi; tidak ditemukan penyakit organ berbahaya",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Penanganan utama dengan mengelola stres & konseling; obat bila ada depresi/cemas",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera datang bila muncul pikiran menyakiti diri atau gejala baru yang berbeda (mis. demam, BB turun drastis)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol rutin terjadwal tiap 2–4 minggu dengan dokter yang sama",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "dokter_lain",
+      "text": "Coba berobat ke dokter lain sampai ditemukan penyakitnya",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Doctor shopping memperkuat masalah."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. PNPK Jiwa / PPDGJ-III"
+    ]
+  }
+}

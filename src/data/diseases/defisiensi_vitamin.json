@@ -1,0 +1,225 @@
+{
+  "id": "defisiensi_vitamin",
+  "name": "Defisiensi vitamin (B1, B kompleks, C)",
+  "aliases": ["Kekurangan vitamin", "Beri-beri", "Skorbut", "Keilitis angularis"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.6,
+  "summary": "Kekurangan vitamin akibat asupan buruk, alkohol, malabsorpsi, atau kebutuhan meningkat. Tiamin (B1)/beri-beri: lemas, kesemutan & baal simetris tungkai, refleks menurun, edema (beri-beri basah). Riboflavin/B kompleks: keilitis angularis, glositis, stomatitis. Vitamin C/skorbut: gusi bengkak berdarah, perdarahan perifolikular, nyeri sendi, luka sulit sembuh. Terapi suplementasi sesuai defisiensi dan perbaikan gizi.",
+  "presentationDay": [30, 120],
+  "demographics": {
+    "ageBands": [
+      { "min": 10, "max": 25, "weight": 2 },
+      { "min": 26, "max": 59, "weight": 3 },
+      { "min": 60, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.55
+  },
+  "traits": [
+    { "id": "beriberi", "probability": 0.35 },
+    { "id": "skorbut", "probability": 0.25, "when": { "notTraits": ["beriberi"] } },
+    { "id": "b_kompleks", "probability": 1, "when": { "notTraits": ["beriberi", "skorbut"] } },
+    { "id": "alkohol", "probability": 0.3, "when": { "sex": "male", "ageMin": 18 } },
+    { "id": "diet_kurang", "probability": 0.7 }
+  ],
+  "traitLabels": {
+    "beriberi": "Defisiensi tiamin (beri-beri).",
+    "skorbut": "Defisiensi vitamin C (skorbut).",
+    "b_kompleks": "Defisiensi riboflavin/B kompleks.",
+    "alkohol": "Konsumsi alkohol berat.",
+    "diet_kurang": "Pola makan miskin sayur/buah/lauk."
+  },
+  "symptoms": [
+    { "id": "kesemutan", "probability": 1, "when": { "traits": ["beriberi"] } },
+    { "id": "bengkak_kaki", "probability": 0.5, "when": { "traits": ["beriberi"] } },
+    { "id": "berdebar", "probability": 0.4, "when": { "traits": ["beriberi"] } },
+    { "id": "perdarahan_mukosa", "probability": 1, "when": { "traits": ["skorbut"] } },
+    { "id": "nyeri_otot_sendi", "probability": 0.6, "when": { "traits": ["skorbut"] } },
+    { "id": "bintik_merah", "probability": 0.5, "when": { "traits": ["skorbut"] } },
+    { "id": "sudut_bibir_pecah", "probability": 1, "when": { "traits": ["b_kompleks"] } },
+    { "id": "sariawan", "probability": 0.6, "when": { "traits": ["b_kompleks"] } },
+    { "id": "lemas", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["lemas"], "extraPool": ["kesemutan", "perdarahan_mukosa", "sudut_bibir_pecah"] },
+  "clueSymptoms": ["kesemutan", "bengkak_kaki", "berdebar", "perdarahan_mukosa", "nyeri_otot_sendi", "bintik_merah"],
+  "misattributions": ["kecapekan", "darah rendah", "panas dalam"],
+  "fears": ["lumpuh", "kanker darah"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, badan lemas.", "clue": "Subakut–kronik" }],
+    "kebiasaan": [
+      {
+        "text": "Makan nasi putih saja hampir tiap hari, Dok, jarang sayur atau buah, minum tuak tiap malam.",
+        "when": { "traits": ["alkohol"] },
+        "clue": "Diet nasi putih saja + alkohol"
+      },
+      {
+        "text": "Makan seadanya, Dok, jarang sayur, buah, atau lauk. Hidup sendiri.",
+        "when": { "notTraits": ["alkohol"], "traits": ["diet_kurang"] },
+        "clue": "Asupan vitamin kurang"
+      },
+      {
+        "text": "Makan biasa, Dok, tapi nggak suka sayur dan buah.",
+        "when": { "notTraits": ["alkohol", "diet_kurang"] },
+        "clue": "Kurang sayur & buah"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Kaki saya kesemutan dan baal dua-duanya, Dok, kayak pakai kaus kaki, betis lemah.",
+        "reveals": ["kesemutan"],
+        "when": { "traits": ["beriberi"], "symptoms": ["kesemutan"] },
+        "clue": "Parestesia & baal simetris tungkai (neuropati tiamin)"
+      },
+      {
+        "text": "Gusi saya bengkak dan gampang berdarah, Dok, sendi-sendi linu.",
+        "reveals": ["perdarahan_mukosa"],
+        "when": { "traits": ["skorbut"], "symptoms": ["perdarahan_mukosa"] },
+        "clue": "Gusi bengkak berdarah & artralgia (skorbut)"
+      },
+      {
+        "text": "Sudut bibir saya pecah-pecah dan lidah perih, Dok.",
+        "reveals": ["sudut_bibir_pecah"],
+        "when": { "traits": ["b_kompleks"], "symptoms": ["sudut_bibir_pecah"] },
+        "clue": "Keilitis angularis & glositis"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya nggak punya kencing manis, Dok. Belum pernah cek gula.",
+        "clue": "Belum diketahui DM (singkirkan neuropati diabetik)"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Nggak minum vitamin apa pun, Dok." }],
+    "lokasi": [
+      { "text": "Gusinya gampang berdarah, Dok, kaki juga ada bintik-bintik.", "when": { "traits": ["skorbut"] } },
+      { "text": "Di sudut bibir pecah-pecah, lidah perih, Dok.", "when": { "traits": ["b_kompleks"] } },
+      { "text": "Kaki terasa kesemutan dan lemah, Dok, betis pegal.", "when": { "traits": ["beriberi"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "neurologis",
+      "param": "sensorik",
+      "when": { "traits": ["beriberi"] },
+      "diagnostic": true,
+      "values": ["Hipestesia tipe kaus kaki kedua tungkai"]
+    },
+    {
+      "tool": "refleks_tonus",
+      "param": "refleks_fisiologis",
+      "when": { "traits": ["beriberi"] },
+      "values": ["Refleks Achilles & patela menurun bilateral"]
+    },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "edema",
+      "when": { "symptoms": ["bengkak_kaki"] },
+      "values": ["Edema pitting ringan kedua tungkai"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "when": { "traits": ["skorbut"] },
+      "diagnostic": true,
+      "values": ["Gusi bengkak keunguan, mudah berdarah"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["skorbut"] },
+      "values": ["Perdarahan perifolikular & rambut seperti pembuka botol (corkscrew)"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "when": { "traits": ["skorbut"] }, "values": ["Tungkai bawah"] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "when": { "traits": ["b_kompleks"] },
+      "diagnostic": true,
+      "values": ["Keilitis angularis, lidah merah licin (glositis)"]
+    },
+    { "tool": "darah_lengkap", "param": "hb", "probability": 0.4, "range": [10.5, 12] },
+    { "tool": "darah_lengkap", "param": "trombosit", "range": [180000, 320000] },
+    { "tool": "gula_darah", "param": "gds", "range": [85, 130] }
+  ],
+  "differentials": [
+    {
+      "id": "leukemia",
+      "howToDistinguish": "Leukemia: gusi berdarah/petekie dengan pucat, demam, hepatosplenomegali, hitung darah abnormal — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["darah_lengkap"] }
+    },
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "Neuropati diabetik: kesemutan simetris pada DM — periksa gula darah.",
+      "excludeBy": { "tools": ["gula_darah"] }
+    },
+    {
+      "id": "anemia_defisiensi_besi",
+      "howToDistinguish": "Anemia defisiensi besi: lemas, pucat, keilitis angularis, Hb & MCV rendah.",
+      "excludeBy": { "tools": ["darah_lengkap"] }
+    }
+  ],
+  "keyFindings": [
+    "Riwayat asupan buruk/alkohol",
+    "B1: neuropati simetris, refleks menurun, edema; C: gusi bengkak berdarah, perdarahan perifolikular; B2/B kompleks: keilitis angularis, glositis",
+    "Hitung darah tanpa tanda leukemia"
+  ],
+  "teachingPoints": ["Pada pecandu alkohol, beri tiamin SEBELUM glukosa untuk mencegah ensefalopati Wernicke."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Thiamine deficiency and its prevention and control"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "karakter", "riwayat_penyakit", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Gusi, lidah, sudut bibir." },
+      { "tool": "neurologis", "role": "kunci", "reason": "Sensibilitas tungkai." },
+      { "tool": "refleks_tonus", "role": "pendukung", "reason": "Refleks fisiologis." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Perdarahan perifolikular." },
+      { "tool": "ekstremitas_kulit", "role": "pendukung", "reason": "Edema." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "kunci", "reason": "Menyingkirkan leukemia/anemia." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Menyingkirkan neuropati diabetik." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Suplementasi vitamin sesuai defisiensi, perbaikan gizi, hentikan alkohol; kontrol 2–4 minggu."
+    }
+  ],
+  "management": [
+    "Tiamin 50–100 mg/hari (beri-beri); vitamin C 500–1000 mg/hari (skorbut); riboflavin/B kompleks (keilitis, glositis).",
+    "Gizi seimbang: beras tidak disosoh berlebihan, lauk, sayur, buah.",
+    "Hentikan alkohol.",
+    "Rujuk bila beri-beri basah dengan gagal jantung atau gejala neurologis berat."
+  ],
+  "approach": ["Gali pola makan, alkohol, gejala khas tiap vitamin.", "Singkirkan leukemia (perdarahan) & DM (neuropati)."]
+}

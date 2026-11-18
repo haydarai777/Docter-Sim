@@ -1,0 +1,174 @@
+{
+  "id": "parafimosis",
+  "name": "Parafimosis",
+  "aliases": ["Kulup terjepit", "Paraphimosis"],
+  "system": "Kelamin & reproduksi",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.5,
+  "summary": "Kedaruratan urologi: preputium yang diretraksi ke proksimal sulkus koronarius tidak dapat dikembalikan sehingga membentuk cincin konstriksi; aliran vena & limfe terhambat → glans dan preputium edema, nyeri, dan bila dibiarkan iskemia/nekrosis glans. Sering setelah membersihkan penis, pemasangan kateter, atau aktivitas seksual. Reposisi manual segera; dorsal slit bila gagal; sirkumsisi elektif kemudian.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 3, "max": 9, "weight": 2 },
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 60, "weight": 2 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 1
+  },
+  "traits": [{ "id": "pasca_kateter", "probability": 0.3, "when": { "ageMin": 50 } }, { "id": "nekrosis", "probability": 0.05 }],
+  "traitLabels": { "pasca_kateter": "Setelah pemasangan kateter urin.", "nekrosis": "Tanda iskemia/nekrosis glans." },
+  "symptoms": [
+    { "id": "kulup_terjepit", "probability": 1 },
+    { "id": "disuria", "probability": 0.3 },
+    { "id": "nyeri_luka", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["kulup_terjepit"] },
+  "clueSymptoms": ["disuria", "nyeri_luka"],
+  "misattributions": ["digigit serangga", "alergi", "infeksi"],
+  "fears": ["kemaluan harus dipotong", "tidak bisa kencing"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sejak tadi pagi, Dok, habis dibersihkan kulitnya ketarik ke belakang, terus nggak bisa balik dan kepala kemaluannya bengkak.",
+        "when": { "notTraits": ["pasca_kateter"] },
+        "clue": "Kulup diretraksi lalu tidak dapat dikembalikan"
+      },
+      {
+        "text": "Sejak {lamaSakit} lalu setelah dipasang selang kencing di rumah sakit, Dok, ujungnya bengkak.",
+        "when": { "traits": ["pasca_kateter"] },
+        "clue": "Setelah kateterisasi (kulup tidak dikembalikan)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bengkaknya makin besar dan sakit, Dok, ada lingkaran kencang di belakang kepala penisnya.",
+        "clue": "Cincin konstriksi dengan edema glans progresif"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Kepala penisnya jadi kehitaman, Dok, nggak terasa.",
+        "when": { "traits": ["nekrosis"] },
+        "clue": "Glans gelap & baal (iskemia)"
+      },
+      {
+        "text": "Warnanya merah, masih terasa, Dok.",
+        "when": { "notTraits": ["nekrosis"] },
+        "clue": "Glans masih viabel"
+      }
+    ],
+    "riwayat_penyakit": [{ "text": "Dari dulu kulupnya agak sempit, Dok.", "clue": "Riwayat fimosis" }],
+    "lokasi": [{ "text": "Di kepala kemaluan, Dok, kulupnya terjepit di belakang." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "when": { "notTraits": ["nekrosis"] },
+      "diagnostic": true,
+      "values": ["Preputium tertarik ke proksimal sulkus koronarius membentuk cincin konstriksi; glans edema, hiperemis"]
+    },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "genital_luar",
+      "when": { "traits": ["nekrosis"] },
+      "diagnostic": true,
+      "values": ["Cincin konstriksi preputium; glans edema berat kebiruan-kehitaman, sensasi menurun"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "fimosis",
+      "howToDistinguish": "Fimosis: kulup tidak dapat ditarik ke belakang (kebalikan parafimosis), tanpa cincin konstriksi di sulkus koronarius.",
+      "excludeBy": { "tools": ["pemeriksaan_genital"] }
+    },
+    {
+      "id": "reaksi_gigitan_serangga",
+      "howToDistinguish": "Gigitan serangga/angioedema penis: edema tanpa kulup tertarik di belakang glans.",
+      "excludeBy": { "topics": ["onset"], "tools": ["pemeriksaan_genital"] }
+    },
+    {
+      "id": "retensi_urin",
+      "howToDistinguish": "Retensi urin akibat edema: kandung kemih penuh — kateter/rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    }
+  ],
+  "keyFindings": [
+    "Preputium tertarik di belakang glans, tidak bisa dikembalikan",
+    "Cincin konstriksi dengan edema glans",
+    "Nilai viabilitas glans"
+  ],
+  "teachingPoints": [
+    "Setiap kali menarik kulup (membersihkan, memasang kateter), selalu kembalikan ke posisi semula.",
+    "Reposisi manual: kompres dingin/penekanan glans 5–10 menit, lalu dorong glans ke dalam sambil menarik preputium ke distal."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "IAUI. Guideline Penatalaksanaan Infeksi Saluran Kemih dan Genitalia Pria (2021)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "nekrosis",
+      "name": "Iskemia/nekrosis glans",
+      "trait": "nekrosis",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_genital"], "topics": ["keparahan"] },
+      "explanation": "Glans kehitaman & baal — rujuk segera untuk tindakan bedah."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_genital", "role": "kunci", "reason": "Cincin konstriksi, edema, viabilitas glans." },
+      { "tool": "pemeriksaan_abdomen", "role": "pendukung", "reason": "Retensi urin." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Nekrosis/gagal reposisi: rujuk segera ke bedah/urologi.",
+      "when": { "traits": ["nekrosis"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Reposisi manual di klinik (analgesia/blok penis), edukasi, rencana sirkumsisi elektif.",
+      "alsoAccept": ["rujuk_spesialis", "rujuk_segera"]
+    }
+  ],
+  "management": [
+    "Analgesia (blok penis/EMLA), kompres es/penekanan glans untuk mengurangi edema.",
+    "Reposisi manual: ibu jari mendorong glans, jari lain menarik preputium ke distal.",
+    "Bila gagal: dorsal slit atau rujuk segera.",
+    "Sirkumsisi elektif setelah edema hilang untuk mencegah kekambuhan."
+  ],
+  "approach": ["Kenali cepat sebagai kedaruratan; nilai viabilitas glans.", "Reposisi manual segera; rujuk bila gagal."]
+}

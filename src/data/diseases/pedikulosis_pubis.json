@@ -1,0 +1,141 @@
+{
+  "id": "pedikulosis_pubis",
+  "name": "Pedikulosis pubis",
+  "aliases": ["Kutu kemaluan", "Crab louse", "Phthiriasis"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.4,
+  "summary": "Infestasi Phthirus pubis pada rambut pubis (juga aksila, bulu mata), ditularkan terutama melalui kontak seksual. Gatal hebat di daerah pubis, kutu & telur melekat di rambut, makula serulea (bercak kebiruan) di perut bawah/paha, bercak darah kecil di celana dalam. Termasuk IMS — skrining IMS lain, obati pasangan.",
+  "presentationDay": [7, 30],
+  "demographics": { "ageBands": [{ "min": 18, "max": 30, "weight": 4 }, { "min": 31, "max": 50, "weight": 2 }], "maleRatio": 0.6 },
+  "traits": [{ "id": "bulu_mata", "probability": 0.1 }],
+  "traitLabels": { "bulu_mata": "Terkena bulu mata." },
+  "symptoms": [
+    { "id": "gatal_kemaluan", "probability": 1 },
+    { "id": "kutu_rambut", "probability": 0.8 },
+    { "id": "risiko_ims", "probability": 0.85 }
+  ],
+  "chiefComplaint": { "primary": ["gatal_kemaluan"], "extraPool": ["kutu_rambut"] },
+  "clueSymptoms": ["kutu_rambut", "risiko_ims"],
+  "misattributions": ["kurap", "biang keringat", "alergi sabun"],
+  "fears": ["penyakit kelamin", "ketahuan pasangan"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} ini, Dok, rambut kemaluan gatal sekali, ada kutu kecil kayak ketombe yang bergerak.",
+        "reveals": ["kutu_rambut"],
+        "when": { "symptoms": ["kutu_rambut"] },
+        "clue": "Gatal pubis dengan kutu terlihat"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Sebulan lalu saya berhubungan dengan pasangan baru, Dok.",
+        "reveals": ["risiko_ims"],
+        "when": { "symptoms": ["risiko_ims"] },
+        "clue": "Kontak seksual baru"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Di celana dalam ada bercak darah kecil-kecil, Dok, di perut bawah ada bercak kebiruan.",
+        "clue": "Bercak darah & makula serulea"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Pasangan saya juga mengeluh gatal di bawah, Dok.", "clue": "Pasangan bergejala" }],
+    "lokasi": [{ "text": "Di rambut kemaluan, Dok, sampai paha dalam." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "when": { "traits": ["bulu_mata"] },
+      "values": ["Kutu & telur melekat di bulu mata"]
+    },
+    {
+      "tool": "pemeriksaan_genital",
+      "param": "lesi_genital",
+      "diagnostic": true,
+      "values": ["Kutu & telur melekat di rambut pubis, ekskoriasi; tidak ada ulkus/kutil"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Rambut pubis & paha medial"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "values": ["Ekskoriasi & makula serulea (bercak kebiruan) di perut bawah"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "hiv",
+      "howToDistinguish": "Pedikulosis pubis adalah IMS — skrining HIV & IMS lain dengan konseling.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tes_hiv"] }
+    },
+    {
+      "id": "skabies",
+      "howToDistinguish": "Skabies: papul & terowongan di sela jari/genital, gatal malam, keluarga ikut.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_kruris",
+      "howToDistinguish": "Tinea kruris: plak bertepi aktif tanpa kutu/nits.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": ["Gatal pubis hebat dengan kutu & nits di rambut pubis", "Makula serulea, bercak darah di celana", "Kontak seksual"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "karakter", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_genital", "role": "kunci", "reason": "Kutu & nits, lesi IMS lain." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Makula serulea, lokasi lain." }
+    ],
+    "tests": [
+      { "tool": "tes_hiv", "role": "pendukung", "reason": "Skrining HIV." },
+      { "tool": "tes_sifilis", "role": "pendukung", "reason": "Skrining sifilis." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Permetrin topikal diulang 7–10 hari, obati pasangan, skrining IMS; kontrol 1–2 minggu."
+    }
+  ],
+  "management": [
+    "Permetrin 1% (atau 5%) di area pubis & berambut lain 10 menit lalu dibilas, ulang hari ke-7–10.",
+    "Bulu mata: oleskan vaselin tebal 2 × sehari 10 hari (jangan permetrin).",
+    "Obati pasangan seksual; cuci pakaian & sprei air panas.",
+    "Skrining IMS (HIV, sifilis, gonore)."
+  ],
+  "approach": ["Temukan kutu/nits; anamnesis seksual; skrining IMS."]
+}

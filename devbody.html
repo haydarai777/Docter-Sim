@@ -1,0 +1,99 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#cfd6da}#stage{position:fixed;inset:0}canvas{width:100%;height:100%;display:block}#info{position:fixed;left:8px;top:8px;font:12px system-ui;background:#000a;color:#fff;padding:4px 8px;border-radius:6px;max-width:70%}</style></head>
+<body><div id="stage"></div><div id="info"></div>
+<script type="module">
+// Pratinjau realisme tubuh di ruang IGD asli (pengembang).
+// ?igd=<skenario>|disease=… · sex=male|female · age · kg · seed · bare=1 (badan tanpa baju)
+// view=face|face3|eyes|torso|chest|abdomen|arm|hand|knee|calf|full|stand · fov · mode=lie|stand
+import { DirectionalLight, Vector3 } from 'three';
+import { Stage } from '/src/ui/three/stage.ts';
+import { Actor } from '/src/ui/three/actor.ts';
+import { buildIgdRoom } from '/src/ui/three/igdRoom.ts';
+import { WoundSet } from '/src/ui/three/wounds.ts';
+import { DEFAULT_BEDS } from '/src/core/igd/catalog.ts';
+import { loadDefaultContent } from '/src/data/index.ts';
+import { ED_SCENARIOS_BY_ID } from '/src/data/igd/index.ts';
+import { previewLook } from '/src/ui/igd/looks.ts';
+const q = new URLSearchParams(location.search);
+const stage = Stage.create(document.getElementById('stage'));
+window.stage = stage;
+stage.setFreeRect({ left: 0, top: 0, right: innerWidth, bottom: innerHeight });
+const room = buildIgdRoom({ shadows: true, beds: DEFAULT_BEDS.map((b) => ({ ...b })) });
+stage.setAltRoom(room);
+const content = loadDefaultContent();
+const sc = q.get('igd') ? ED_SCENARIOS_BY_ID.get(q.get('igd')) : null;
+const look = previewLook(content, Number(q.get('seed') ?? 7), q.get('sex') ?? 'male', Number(q.get('age') ?? 34), Number(q.get('kg') ?? 66));
+if (q.get('skin')) look.skinTone = '#' + q.get('skin');
+look.injuries = sc?.injuries ?? (q.get('bare') === '1' ? { wounds: [], expose: { torso: true, legs: { kiri: 0.12, kanan: 0.12 } } } : null);
+if (q.get('hair')) look.hairStyle = q.get('hair');
+if (q.get('hc')) look.hairColor = '#' + q.get('hc');
+if (q.get('hijab') === '0') look.hijab = null;
+const actor = new Actor(look, Number(q.get('seed') ?? 7));
+window.actor = actor;
+stage.scene.add(actor.character.root);
+stage.add(actor);
+const bay = room.bays.get('R1');
+const mode = q.get('mode') ?? 'lie';
+if (mode === 'lie') actor.lie(() => bay.pose(0, 0), 0);
+else actor.placeAt(new Vector3(-2.2, 0, -1.6), Number(q.get('yaw') ?? 0.4));
+actor.clinic = { alert: 1, seizure: false, lifeless: false, compressions: false, agitation: 0 };
+const ws = look.injuries?.wounds?.length ? new WoundSet(actor.character, look.injuries, 11) : null;
+if (ws) for (const w of ws.wounds) ws.apply(w, { rate: 0, lostMl: 0, sinceDressingMl: 0, pressure: false, tourniquet: false, sutured: false, cleaned: false, wrap: false, lying: mode === 'lie', cooled: false });
+if (q.get('pupil')) actor.character.eyes.setPupils(Number(q.get('pupil')), Number(q.get('pupilR') ?? q.get('pupil')));
+if (q.get('sweat')) actor.character.setSweat(Number(q.get('sweat')));
+if (q.get('noinfo')) document.getElementById('info').style.display = 'none';
+document.getElementById('info').textContent = `${look.sex} ${look.age} th · ${look.skinTone} · ${q.get('view') ?? 'face'}`;
+const V = (x, y, z) => new Vector3(x, y, z);
+const view = q.get('view') ?? 'face';
+const fov = Number(q.get('fov') ?? 30);
+const ch = actor.character;
+const wp = (o) => o.getWorldPosition(new Vector3());
+stage.updateCamera = () => {
+  let point, eye;
+  const head = actor.headPosition(new Vector3());
+  const chest = wp(ch.chest);
+  const hips = wp(ch.hips);
+  if (mode === 'lie') {
+    switch (view) {
+      case 'face': point = head; eye = head.clone().add(V(0.06, 0.42, 0.16)); break;
+      case 'face3': point = head; eye = head.clone().add(V(-0.3, 0.3, 0.1)); break;
+      case 'eyes': point = head.clone().add(V(0, 0.05, 0.03)); eye = head.clone().add(V(0.03, 0.3, 0.1)); break;
+      case 'torso': point = chest.clone().lerp(hips, 0.45); eye = point.clone().add(V(0.25, 0.75, 0.55)); break;
+      case 'chest': point = chest.clone().add(V(0, 0.08, 0.06)); eye = point.clone().add(V(0.15, 0.55, 0.3)); break;
+      case 'abdomen': point = chest.clone().lerp(hips, 0.75); eye = point.clone().add(V(0.3, 0.45, 0.25)); break;
+      case 'arm': point = wp(ch.armR.lower); eye = point.clone().add(V(-0.35, 0.45, 0.2)); break;
+      case 'hand': point = wp(ch.armR.end); eye = point.clone().add(V(-0.12, 0.3, 0.12)); break;
+      case 'knee': point = wp(ch.legL.lower); eye = point.clone().add(V(0.3, 0.4, 0.35)); break;
+      case 'calf': point = wp(ch.legR.lower).lerp(wp(ch.legR.end), 0.5); eye = point.clone().add(V(-0.45, 0.25, 0.25)); break;
+      default: point = chest.clone().lerp(hips, 0.5); eye = point.clone().add(V(0.9, 1.0, 1.4));
+    }
+  } else {
+    switch (view) {
+      case 'face': point = head; eye = head.clone().add(V(0.12, 0.02, 0.62)); break;
+      case 'eyes': point = head.clone().add(V(0, 0.012, 0.05)); eye = head.clone().add(V(0, 0.02, 0.42)); break;
+      case 'torso': point = chest.clone().lerp(hips, 0.4); eye = point.clone().add(V(0.25, 0.1, 1.1)); break;
+      case 'back': point = chest.clone().lerp(hips, 0.4); eye = point.clone().add(V(-0.35, 0.1, -1.1)); break;
+      case 'legs': point = wp(ch.legL.lower); eye = point.clone().add(V(0.3, 0.1, 1.0)); break;
+      default: point = hips.clone().add(V(0, 0.2, 0)); eye = point.clone().add(V(0.6, 0.3, 2.6));
+    }
+  }
+  stage.camera.position.copy(eye);
+  stage.camera.lookAt(point);
+  stage.camera.fov = fov;
+  stage.camera.clearViewOffset();
+  stage.camera.updateProjectionMatrix();
+};
+if (q.get('light') === 'side') {
+  // Uji bentuk: satu cahaya samping keras, ambien rendah.
+  room.group.traverse((o) => { if (o.isLight) o.intensity *= 0.15; });
+  stage.scene.environmentIntensity = 0.12;
+  const l = new DirectionalLight('#ffffff', 3.2);
+  l.position.set(-6, 2.2, -2.6);
+  l.target.position.set(-4.3, 0.6, -3.0);
+  stage.scene.add(l, l.target);
+}
+window.simulate = (s) => { for (let t = 0; t < s; t += 1 / 30) actor.update(1 / 30, t); };
+stage.start();
+window.ready = true;
+</script></body></html>

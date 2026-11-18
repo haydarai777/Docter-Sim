@@ -1,0 +1,220 @@
+{
+  "id": "disentri",
+  "name": "Disentri basiler dan disentri amuba",
+  "aliases": ["Disentri", "Shigellosis", "Amebiasis", "Mencret berdarah", "Berak darah lendir"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Diare dengan darah dan lendir disertai tenesmus. Basiler (Shigella): akut, demam tinggi, nyeri perut kram, sering anak, tinja sedikit-sedikit berlendir darah. Amuba (Entamoeba histolytica): lebih subakut, dewasa, demam ringan, tinja 'selai stroberi' berbau, dapat menimbulkan abses hati. Feses: leukosit & eritrosit banyak; trofozoit hematofagus pada amubiasis. Terapi antibiotik sesuai etiologi + rehidrasi + zinc.",
+  "presentationDay": [1, 4],
+  "presentationDayByTrait": [{ "trait": "amuba", "range": [5, 14] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 3 },
+      { "min": 6, "max": 9, "weight": 2 },
+      { "min": 10, "max": 40, "weight": 3 },
+      { "min": 41, "max": 70, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "amuba", "probability": 0.35, "when": { "ageMin": 10 } }, { "id": "dehidrasi", "probability": 0.25 }],
+  "traitLabels": { "amuba": "Disentri amuba.", "dehidrasi": "Dehidrasi ringan–sedang." },
+  "symptoms": [
+    { "id": "demam", "probability": 0.8, "when": { "notTraits": ["amuba"] } },
+    { "id": "haus", "probability": 0.8, "when": { "traits": ["dehidrasi"] } },
+    { "id": "rewel", "probability": 0.7, "when": { "ageMax": 4 } },
+    { "id": "bab_darah", "probability": 1 },
+    { "id": "diare", "probability": 1 },
+    { "id": "nyeri_perut", "probability": 0.9 },
+    { "id": "demam", "probability": 0.25 },
+    { "id": "mual_muntah", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["bab_darah"], "extraPool": ["nyeri_perut", "demam"] },
+  "clueSymptoms": ["diare", "nyeri_perut", "demam", "mual_muntah", "haus", "lemas"],
+  "misattributions": ["ambeien", "panas dalam", "salah makan"],
+  "fears": ["usus luka", "kanker usus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sejak {lamaSakit} lalu, Dok, mendadak panas tinggi, mencret sedikit-sedikit tapi sering, ada lendir dan darahnya.",
+        "when": { "notTraits": ["amuba"] },
+        "clue": "Akut dengan demam tinggi (basiler)"
+      },
+      {
+        "text": "Sudah {lamaSakit}, Dok, mencret berlendir darah, baunya busuk, hilang-timbul.",
+        "when": { "traits": ["amuba"] },
+        "clue": "Subakut, berbau (amuba)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Darahnya campur dengan lendir dan kotoran, Dok, bukan menetes di akhir.",
+        "clue": "Darah bercampur lendir & tinja (bukan hemoroid)"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Perut melilit, rasanya mau BAB terus padahal yang keluar cuma sedikit, Dok.", "clue": "Tenesmus" }],
+    "keparahan": [
+      {
+        "text": "Haus terus dan lemas, Dok, pipis jarang.",
+        "reveals": ["haus"],
+        "when": { "traits": ["dehidrasi"], "symptoms": ["haus"] },
+        "clue": "Tanda dehidrasi"
+      },
+      { "text": "Masih bisa makan minum, Dok.", "when": { "notTraits": ["dehidrasi"] }, "clue": "Tanpa dehidrasi" }
+    ],
+    "bepergian_lingkungan": [{ "text": "Minumnya air sumur yang kadang nggak dimasak, Dok.", "clue": "Air minum tidak dimasak" }],
+    "lokasi": [{ "text": "Perutnya melilit di bagian bawah, Dok, mau BAB terus." }]
+  },
+  "findings": [
+    {
+      "tool": "feses_rutin",
+      "param": "makroskopis",
+      "when": { "traits": ["amuba"] },
+      "values": ["Lembek, lendir (+), darah (+), berbau busuk"]
+    },
+    {
+      "tool": "feses_rutin",
+      "param": "leukosit_feses",
+      "when": { "notTraits": ["amuba"] },
+      "diagnostic": true,
+      "values": ["> 20 /LPB"]
+    },
+    { "tool": "feses_rutin", "param": "leukosit_feses", "when": { "traits": ["amuba"] }, "values": ["5–10 /LPB"] },
+    {
+      "tool": "feses_rutin",
+      "param": "protozoa",
+      "when": { "traits": ["amuba"] },
+      "diagnostic": true,
+      "values": ["Trofozoit Entamoeba histolytica hematofagus (+)"]
+    },
+    {
+      "tool": "tanda_vital",
+      "param": "suhu",
+      "when": { "symptoms": ["demam"], "notTraits": ["amuba"] },
+      "range": [38.4, 39.6]
+    },
+    {
+      "tool": "tanda_vital",
+      "param": "suhu",
+      "when": { "symptoms": ["demam"], "traits": ["amuba"] },
+      "range": [37.6, 38.2]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["dehidrasi"] },
+      "values": ["Mukosa bibir kering, turgor kembali lambat"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "dehidrasi_anak",
+      "when": { "traits": ["dehidrasi"], "ageMax": 9 },
+      "values": ["Dehidrasi ringan-sedang: rewel, mata cekung, haus, cubitan kulit perut kembali lambat"]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "leukosit",
+      "when": { "notTraits": ["amuba"] },
+      "probability": 0.7,
+      "range": [11500, 17000]
+    },
+    { "tool": "feses_rutin", "param": "makroskopis", "diagnostic": true, "values": ["Sedikit, berlendir, darah (+)"] },
+    { "tool": "feses_rutin", "param": "eritrosit_feses", "diagnostic": true, "values": ["Banyak (> 20 /LPB)"] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "probability": 0.8,
+      "values": ["Nyeri tekan perut kiri bawah"]
+    },
+    { "tool": "pemeriksaan_abdomen", "param": "auskultasi", "values": ["Bising usus meningkat"] }
+  ],
+  "differentials": [
+    {
+      "id": "intususepsi",
+      "howToDistinguish": "Intususepsi (bayi/balita): menangis kolik hilang-timbul, muntah, BAB lendir darah 'selai kismis', massa sosis — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "gastroenteritis_akut",
+      "howToDistinguish": "Gastroenteritis: diare cair tanpa darah/lendir.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["feses_rutin"] }
+    },
+    {
+      "id": "hemoroid",
+      "howToDistinguish": "Hemoroid: darah segar menetes di akhir BAB, tidak bercampur tinja, tanpa demam/tenesmus.",
+      "excludeBy": { "topics": ["karakter"] }
+    },
+    {
+      "id": "kanker_kolorektal",
+      "howToDistinguish": "Keganasan kolorektal: dewasa > 45 th, BAB berdarah kronik, perubahan pola BAB, BB turun.",
+      "excludeBy": { "topics": ["onset", "keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Diare berdarah & berlendir dengan tenesmus",
+    "Basiler: akut, demam tinggi, leukosit feses banyak; amuba: subakut, trofozoit hematofagus",
+    "Nilai dehidrasi"
+  ],
+  "teachingPoints": [
+    "Disentri basiler anak: antibiotik lini pertama sefiksim/azitromisin (resistansi kotrimoksazol tinggi); dewasa siprofloksasin.",
+    "Amubiasis: metronidazol 7–10 hari; waspadai abses hati (nyeri kanan atas, demam, hepatomegali)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (Manajemen Terpadu Balita Sakit)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "keparahan", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Nyeri tekan, massa, tanda bedah." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Derajat dehidrasi." },
+      { "tool": "pemeriksaan_anak", "role": "pendukung", "when": { "ageMax": 9 }, "reason": "Dehidrasi anak." }
+    ],
+    "tests": [{ "tool": "feses_rutin", "role": "kunci", "reason": "Leukosit, eritrosit, amuba." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Antibiotik sesuai etiologi, oralit, zinc (anak); kontrol 2 hari atau segera bila memburuk.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Basiler: siprofloksasin 2 × 500 mg 3 hari (dewasa); anak sefiksim 8 mg/kg/hari 5 hari atau azitromisin.",
+    "Amuba: metronidazol 3 × 500–750 mg (anak 10 mg/kg) 7–10 hari.",
+    "Oralit sesuai dehidrasi, zinc 10 hari pada anak, lanjutkan makan.",
+    "Rujuk bila dehidrasi berat, toksik, atau curiga intususepsi/abses hati."
+  ],
+  "approach": [
+    "Pastikan darah bercampur lendir & tinja; bedakan dari hemoroid.",
+    "Basiler vs amuba dari onset, demam, feses; nilai dehidrasi."
+  ]
+}

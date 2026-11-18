@@ -1,0 +1,108 @@
+{
+  "disease": "trikiasis",
+  "setting": "Puskesmas",
+  "station": "Mata — kelopak mata",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_salep",
+        "label": "Salep antibiotik mata",
+        "role": "utama",
+        "reason": "Erosi kornea akibat gesekan bulu mata.",
+        "options": [
+          {
+            "drug": "kloramfenikol_sm",
+            "label": "Kloramfenikol 1% salep mata 3 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 4],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "traits": ["erosi_kornea"] }
+      },
+      {
+        "id": "pelumas",
+        "label": "Air mata buatan",
+        "role": "pendukung",
+        "reason": "Melindungi permukaan kornea.",
+        "options": [
+          {
+            "drug": "air_mata_buatan",
+            "label": "Air mata buatan 1 tetes 4–6 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [7, 30]
+          }
+        ],
+        "when": { "traits": ["erosi_kornea"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Tatalaksana utama tindakan (epilasi); obat hanya bila ada erosi kornea."
+  },
+  "nonPharm": [
+    { "id": "epilasi", "text": "Epilasi bulu mata yang salah arah dengan pinset", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk untuk koreksi entropion",
+      "kind": "benar",
+      "when": { "traits": ["entropion_curiga"] }
+    },
+    {
+      "id": "ab_saja",
+      "text": "Cukup tetes antibiotik jangka panjang tanpa mencabut bulu mata",
+      "kind": "pengecoh",
+      "why": "Penyebab (bulu mata) tidak diatasi."
+    },
+    {
+      "id": "gunting",
+      "text": "Gunting sendiri bulu mata di rumah dengan gunting kuku",
+      "kind": "berbahaya",
+      "why": "Ujung tajam makin melukai kornea."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Bulu mata tumbuh mengarah ke bola mata dan menggesek kornea",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Bulu mata dicabut; bisa tumbuh lagi sehingga perlu diulang/tindakan permanen",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur, nyeri hebat, atau mata bernanah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 4–6 minggu (bulu mata tumbuh kembali)", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "biarkan",
+      "text": "Dibiarkan saja karena bulu mata akan berbalik arah sendiri",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak akan membaik sendiri."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

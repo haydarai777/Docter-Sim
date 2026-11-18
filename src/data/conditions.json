@@ -1,0 +1,1157 @@
+{
+  "review": { "status": "BELUM_DITINJAU_DOKTER", "notes": ["Kondisi diagnosis banding (tidak pernah menjadi pasien)."] },
+  "conditions": [
+    {
+      "id": "chikungunya",
+      "name": "Chikungunya",
+      "aliases": ["Flu tulang"],
+      "system": "Infeksi tropis",
+      "danger": "rendah",
+      "summary": "Demam akut dengan nyeri sendi hebat (poliartralgia) dan ruam; trombositopenia jarang berat."
+    },
+    {
+      "id": "ispa_virus",
+      "name": "ISPA / Common cold",
+      "aliases": ["Selesma", "Pilek", "Batuk pilek"],
+      "system": "Pernapasan",
+      "danger": "rendah",
+      "summary": "Infeksi saluran napas atas ringan: pilek, nyeri tenggorok, batuk; demam ringan."
+    },
+    {
+      "id": "covid19",
+      "name": "COVID-19",
+      "aliases": ["Corona"],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Infeksi SARS-CoV-2: demam, batuk, anosmia; dapat berat pada lansia/komorbid."
+    },
+    {
+      "id": "ppok",
+      "name": "PPOK",
+      "aliases": ["Penyakit paru obstruktif kronik", "Bronkitis kronik", "Emfisema"],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Sesak & batuk kronik progresif pada perokok lama; obstruksi tidak reversibel penuh."
+    },
+    {
+      "id": "kanker_paru",
+      "name": "Kanker Paru",
+      "aliases": ["Tumor paru"],
+      "system": "Pernapasan",
+      "danger": "kritis",
+      "summary": "Batuk lama, hemoptisis, BB turun pada perokok usia lanjut; massa pada foto toraks."
+    },
+    {
+      "id": "gagal_jantung",
+      "name": "Gagal Jantung",
+      "aliases": ["Payah jantung", "CHF"],
+      "system": "Jantung & pembuluh darah",
+      "danger": "tinggi",
+      "summary": "Sesak saat aktivitas/berbaring, edema tungkai, JVP meningkat, ronkhi basal, kardiomegali."
+    },
+    {
+      "id": "sindrom_koroner_akut",
+      "name": "Sindrom Koroner Akut",
+      "aliases": ["Serangan jantung", "Infark miokard", "Angina tidak stabil", "SKA"],
+      "system": "Jantung & pembuluh darah",
+      "danger": "kritis",
+      "summary": "Nyeri dada saat istirahat > 20 menit, makin berat/sering; perubahan EKG; gawat darurat."
+    },
+    {
+      "id": "nyeri_muskuloskeletal",
+      "name": "Nyeri Dada Muskuloskeletal",
+      "aliases": ["Nyeri otot dada", "Kostokondritis"],
+      "system": "Otot & sendi",
+      "danger": "rendah",
+      "summary": "Nyeri dada terlokalisasi, bertambah saat ditekan atau bergerak."
+    },
+    {
+      "id": "tukak_peptik",
+      "name": "Tukak Peptik",
+      "aliases": ["Ulkus lambung", "Ulkus duodenum"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Nyeri ulu hati terkait makan; komplikasi perdarahan (melena) atau perforasi."
+    },
+    {
+      "id": "keganasan_lambung",
+      "name": "Keganasan Lambung",
+      "aliases": ["Kanker lambung"],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Dispepsia baru pada usia > 55 tahun dengan BB turun, anemia, muntah, atau disfagia (tanda alarm)."
+    },
+    {
+      "id": "kolik_bilier",
+      "name": "Kolik Bilier / Kolesistitis",
+      "aliases": ["Batu empedu bergejala", "Radang kandung empedu"],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Nyeri kuadran kanan atas setelah makan berlemak, Murphy sign (+), kadang demam."
+    },
+    {
+      "id": "pankreatitis_akut",
+      "name": "Pankreatitis Akut",
+      "aliases": ["Radang pankreas"],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Nyeri epigastrium hebat menjalar ke punggung, muntah; amilase/lipase meningkat."
+    },
+    {
+      "id": "apendisitis_akut",
+      "name": "Apendisitis Akut",
+      "aliases": ["Usus buntu"],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Nyeri periumbilikal berpindah ke kanan bawah, demam, McBurney (+)."
+    },
+    {
+      "id": "massa_saluran_kemih",
+      "name": "Massa / Tumor Saluran Kemih",
+      "aliases": ["Tumor ginjal", "Tumor kandung kemih", "Massa ureter"],
+      "system": "Saluran kemih",
+      "danger": "kritis",
+      "summary": "Hematuria tanpa nyeri, sumbatan (hidronefrosis) tanpa batu yang jelas; pikirkan pada usia lanjut/perokok."
+    },
+    {
+      "id": "uretritis_ims",
+      "name": "Uretritis (Infeksi Menular Seksual)",
+      "aliases": ["Kencing nanah", "Gonore"],
+      "system": "Saluran kemih",
+      "danger": "sedang",
+      "summary": "Disuria dengan duh uretra; riwayat hubungan seksual berisiko."
+    },
+    {
+      "id": "glaukoma_akut",
+      "name": "Glaukoma akut sudut tertutup",
+      "aliases": ["Glaukoma akut", "Glaukoma sudut tertutup"],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Peningkatan tekanan bola mata mendadak: mata merah, nyeri hebat, visus turun mendadak, halo, mual-muntah, kornea keruh, pupil mid-dilatasi, bola mata keras. Rujuk segera."
+    },
+    {
+      "id": "glaukoma_kronik",
+      "name": "Glaukoma kronik (sudut terbuka)",
+      "aliases": ["Glaukoma primer sudut terbuka"],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Neuropati optik progresif tanpa gejala awal; lapang pandang menyempit, cupping papil (C/D membesar). Perlu skrining pada usia > 40 tahun."
+    },
+    {
+      "id": "keratitis",
+      "name": "Keratitis / ulkus kornea",
+      "aliases": ["Ulkus kornea"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang/infeksi kornea: nyeri, silau, visus turun, injeksi siliar, uji fluoresein positif atau infiltrat kornea. Rujuk ke dokter mata."
+    },
+    {
+      "id": "uveitis_anterior",
+      "name": "Uveitis anterior",
+      "aliases": ["Iritis"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang iris & badan siliar: mata merah dengan injeksi siliar, nyeri, silau, visus turun, pupil miosis, sel/flare di bilik mata depan. Rujuk."
+    },
+    {
+      "id": "trauma_tembus_mata",
+      "name": "Trauma tembus bola mata / benda asing intraokular",
+      "aliases": ["Benda asing intraokular", "Ruptur bola mata"],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Curigai pada cedera kecepatan tinggi (gerinda, palu-pahat): visus turun, pupil tidak bulat, BMD dangkal, Seidel positif. Jangan ditekan; tutup dengan pelindung & rujuk segera."
+    },
+    {
+      "id": "skleritis",
+      "name": "Skleritis",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Radang sklera dalam: nyeri hebat menembus hingga membangunkan tidur, warna merah keunguan, tidak memucat dengan fenilefrin; sering terkait penyakit autoimun. Rujuk."
+    },
+    {
+      "id": "kalazion",
+      "name": "Kalazion",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "rendah",
+      "summary": "Benjolan kelopak akibat sumbatan kelenjar Meibom yang meradang kronik: tidak nyeri, kenyal, tidak hiperemis."
+    },
+    {
+      "id": "selulitis_preseptal",
+      "name": "Selulitis preseptal/orbita",
+      "aliases": ["Selulitis orbita"],
+      "system": "Mata",
+      "danger": "tinggi",
+      "summary": "Infeksi jaringan kelopak/orbita: kelopak bengkak merah difus, demam; bila orbita: proptosis, nyeri gerak bola mata, visus turun. Rujuk."
+    },
+    {
+      "id": "katarak",
+      "name": "Katarak",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Kekeruhan lensa: pandangan kabur perlahan seperti berkabut, silau, tanpa mata merah; refleks fundus berkurang. Terapi operasi."
+    },
+    {
+      "id": "ablasio_retina",
+      "name": "Ablasio retina",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "kritis",
+      "summary": "Lepasnya retina: kilatan cahaya, floaters mendadak, bayangan tirai pada lapang pandang. Lebih sering pada miopia tinggi. Rujuk segera."
+    },
+    {
+      "id": "retinitis_pigmentosa",
+      "name": "Retinitis pigmentosa",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Distrofi retina herediter: rabun senja sejak kecil yang progresif, lapang pandang menyempit, funduskopi tampak pigmen bone-spicule."
+    },
+    {
+      "id": "entropion",
+      "name": "Entropion",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "rendah",
+      "summary": "Tepi kelopak melipat ke dalam sehingga bulu mata menggesek kornea. Terapi operasi."
+    },
+    {
+      "id": "sindrom_sjogren",
+      "name": "Sindrom Sjögren",
+      "aliases": [],
+      "system": "Mata",
+      "danger": "sedang",
+      "summary": "Penyakit autoimun dengan mata & mulut kering, kadang nyeri sendi."
+    },
+    {
+      "id": "mastoiditis",
+      "name": "Mastoiditis",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Komplikasi otitis media: nyeri & bengkak di belakang telinga, daun telinga terdorong, demam tinggi. Rujuk segera."
+    },
+    {
+      "id": "otitis_media_efusi",
+      "name": "Otitis media efusi",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "rendah",
+      "summary": "Cairan di telinga tengah tanpa tanda radang akut: telinga penuh, pendengaran turun, membran timpani suram dengan air-fluid level."
+    },
+    {
+      "id": "perforasi_membran_timpani",
+      "name": "Perforasi membran timpani",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "sedang",
+      "summary": "Robekan gendang telinga (pasca OMA/trauma): kontraindikasi irigasi telinga."
+    },
+    {
+      "id": "sinusitis",
+      "name": "Rinosinusitis akut",
+      "aliases": ["Sinusitis"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "sedang",
+      "summary": "Radang sinus: hidung tersumbat, sekret purulen, nyeri wajah, > 10 hari atau memburuk setelah membaik."
+    },
+    {
+      "id": "tumor_nasofaring",
+      "name": "Karsinoma nasofaring",
+      "aliases": ["KNF"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Keganasan kepala-leher tersering: hidung tersumbat & mimisan unilateral berulang, telinga penuh unilateral, benjolan leher. Rujuk."
+    },
+    {
+      "id": "rinitis_medikamentosa",
+      "name": "Rinitis medikamentosa",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "rendah",
+      "summary": "Hidung tersumbat rebound akibat semprot dekongestan > 5–7 hari."
+    },
+    {
+      "id": "trombosis_sinus_kavernosus",
+      "name": "Trombosis sinus kavernosus",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Komplikasi infeksi segitiga bahaya wajah: demam tinggi, nyeri kepala hebat, kelopak bengkak, proptosis, oftalmoplegia. Rujuk segera."
+    },
+    {
+      "id": "aspirasi_benda_asing",
+      "name": "Aspirasi benda asing saluran napas",
+      "aliases": [],
+      "system": "Pernapasan",
+      "danger": "kritis",
+      "summary": "Benda asing masuk saluran napas: tersedak, batuk mendadak, sesak, stridor/mengi unilateral. Rujuk segera."
+    },
+    {
+      "id": "gangguan_pembekuan",
+      "name": "Gangguan pembekuan darah",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "tinggi",
+      "summary": "Perdarahan di banyak tempat/berulang (hemofilia, trombositopenia, antikoagulan)."
+    },
+    {
+      "id": "difteri",
+      "name": "Difteri",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "kritis",
+      "summary": "Infeksi C. diphtheriae pada anak tanpa imunisasi lengkap: pseudomembran putih keabuan yang berdarah bila diangkat, bull neck, stridor. Rujuk segera & lapor KLB."
+    },
+    {
+      "id": "abses_peritonsil",
+      "name": "Abses peritonsil",
+      "aliases": ["Quinsy"],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Komplikasi tonsilitis: nyeri menelan hebat, trismus, suara hot-potato, uvula terdorong ke sisi sehat. Rujuk."
+    },
+    {
+      "id": "epiglotitis",
+      "name": "Epiglotitis akut",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "kritis",
+      "summary": "Radang epiglotis: demam tinggi, nyeri menelan hebat, ngiler, stridor, posisi tripod. Jangan periksa tenggorok paksa; rujuk segera."
+    },
+    {
+      "id": "tumor_laring",
+      "name": "Tumor laring",
+      "aliases": [],
+      "system": "Telinga, hidung & tenggorok",
+      "danger": "tinggi",
+      "summary": "Suara serak menetap > 3 minggu pada perokok usia > 40 tahun; dapat disertai sesak/benjolan leher. Rujuk."
+    },
+    {
+      "id": "stroke",
+      "name": "Stroke / vertigo sentral",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Defisit neurologis fokal mendadak (kelemahan, bicara pelo, wajah mencong, ataksia, diplopia). Rujuk segera."
+    },
+    {
+      "id": "meningitis",
+      "name": "Meningitis / ensefalitis",
+      "aliases": ["Ensefalitis", "Radang selaput otak"],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Infeksi selaput otak/otak: demam, nyeri kepala hebat, kaku kuduk, penurunan kesadaran, kejang; pada bayi ubun-ubun membonjol. Rujuk segera."
+    },
+    {
+      "id": "epilepsi",
+      "name": "Epilepsi",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Kejang berulang tanpa provokasi (tanpa demam), ≥ 2 kali berselang > 24 jam."
+    },
+    {
+      "id": "gangguan_elektrolit",
+      "name": "Gangguan elektrolit (hipokalsemia/hiponatremia)",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "Kejang/tetani akibat kadar natrium atau kalsium abnormal."
+    },
+    {
+      "id": "tumor_otak",
+      "name": "Lesi desak ruang intrakranial (tumor otak)",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "tinggi",
+      "summary": "Nyeri kepala progresif, memberat pagi/saat mengedan, muntah proyektil, defisit neurologis fokal, papil edema. Rujuk."
+    },
+    {
+      "id": "distonia_obat",
+      "name": "Reaksi distonia akut akibat obat",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Spasme otot wajah/leher/rahang setelah metoklopramid/antipsikotik; membaik dengan difenhidramin."
+    },
+    {
+      "id": "rabies",
+      "name": "Rabies",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "kritis",
+      "summary": "Riwayat gigitan hewan: hidrofobia, aerofobia, agitasi, hipersalivasi. Fatal; profilaksis pascapajanan."
+    },
+    {
+      "id": "ramsay_hunt",
+      "name": "Sindrom Ramsay Hunt (herpes zoster otikus)",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Paresis N. VII perifer disertai vesikel di telinga/liang telinga dan nyeri telinga hebat."
+    },
+    {
+      "id": "neuritis_vestibular",
+      "name": "Neuritis vestibular",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Vertigo berat terus-menerus berhari-hari tanpa gangguan dengar, sering pascainfeksi virus."
+    },
+    {
+      "id": "penyakit_meniere",
+      "name": "Penyakit Ménière",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "sedang",
+      "summary": "Serangan vertigo berjam-jam dengan tinitus, telinga penuh, dan tuli sensorineural fluktuatif."
+    },
+    {
+      "id": "depresi",
+      "name": "Gangguan depresi",
+      "aliases": ["Depresi"],
+      "system": "Jiwa",
+      "danger": "tinggi",
+      "summary": "Mood depresif, hilang minat, energi turun ≥ 2 minggu; nilai ide bunuh diri."
+    },
+    {
+      "id": "gangguan_cemas",
+      "name": "Gangguan cemas menyeluruh",
+      "aliases": [],
+      "system": "Jiwa",
+      "danger": "sedang",
+      "summary": "Kecemasan berlebihan sebagian besar hari ≥ 6 bulan dengan gejala otonom."
+    },
+    {
+      "id": "sleep_apnea",
+      "name": "Obstructive sleep apnea",
+      "aliases": [],
+      "system": "Pernapasan",
+      "danger": "sedang",
+      "summary": "Mendengkur keras, henti napas saat tidur, mengantuk berat siang hari; sering pada obesitas."
+    },
+    {
+      "id": "hipertensi_sekunder",
+      "name": "Hipertensi sekunder",
+      "aliases": [],
+      "system": "Jantung & pembuluh darah",
+      "danger": "sedang",
+      "summary": "Hipertensi akibat penyakit lain (ginjal, endokrin, obat): curigai pada usia < 30 th, onset mendadak/berat, resisten, hipokalemia."
+    },
+    {
+      "id": "krisis_hipertensi",
+      "name": "Krisis hipertensi (emergensi)",
+      "aliases": [],
+      "system": "Jantung & pembuluh darah",
+      "danger": "kritis",
+      "summary": "TD ≥ 180/120 dengan kerusakan organ akut (nyeri dada, sesak, defisit neurologis, penurunan kesadaran, papil edema). Rujuk segera."
+    },
+    {
+      "id": "limfoma",
+      "name": "Limfoma",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "tinggi",
+      "summary": "Pembesaran KGB tidak nyeri, progresif, > 2 cm, sering multipel, disertai demam, keringat malam, BB turun. Rujuk."
+    },
+    {
+      "id": "trombosis_vena_dalam",
+      "name": "Trombosis vena dalam",
+      "aliases": ["DVT"],
+      "system": "Jantung & pembuluh darah",
+      "danger": "tinggi",
+      "summary": "Bengkak tungkai unilateral akut, nyeri betis, pitting, hangat; risiko emboli paru. Rujuk."
+    },
+    {
+      "id": "talasemia_minor",
+      "name": "Talasemia minor (trait)",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "rendah",
+      "summary": "Anemia ringan hipokrom mikrositer dengan MCV sangat rendah, eritrosit normal/tinggi, feritin normal, riwayat keluarga."
+    },
+    {
+      "id": "anemia_penyakit_kronik",
+      "name": "Anemia penyakit kronik",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "sedang",
+      "summary": "Anemia normositik-mikrositer pada infeksi/inflamasi kronik; feritin normal/tinggi."
+    },
+    {
+      "id": "kanker_kolorektal",
+      "name": "Keganasan saluran cerna bawah",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Perdarahan samar/BAB berdarah, perubahan pola BAB, BB turun, anemia defisiensi besi pada usia > 45 tahun. Rujuk."
+    },
+    {
+      "id": "sinkop_vasovagal",
+      "name": "Sinkop vasovagal",
+      "aliases": [],
+      "system": "Jantung & pembuluh darah",
+      "danger": "rendah",
+      "summary": "Pingsan sesaat dipicu nyeri/takut/berdiri lama dengan prodromal pucat-mual, bradikardia, pulih cepat, tanpa urtikaria."
+    },
+    {
+      "id": "gagal_ginjal_akut",
+      "name": "Gangguan ginjal akut",
+      "aliases": [],
+      "system": "Saluran kemih",
+      "danger": "kritis",
+      "summary": "Oliguria, ureum-kreatinin meningkat mendadak."
+    },
+    {
+      "id": "leukoplakia",
+      "name": "Leukoplakia oral",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Plak putih yang TIDAK dapat dikerok, premaligna; sering pada perokok/penyirih. Rujuk biopsi."
+    },
+    {
+      "id": "kanker_rongga_mulut",
+      "name": "Keganasan rongga mulut",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Ulkus mulut > 3 minggu yang tidak sembuh, indurasi, mudah berdarah, pada perokok/penyirih. Rujuk."
+    },
+    {
+      "id": "hfmd",
+      "name": "Penyakit tangan-kaki-mulut (HFMD)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Infeksi enterovirus pada anak: ulkus mulut disertai vesikel di telapak tangan & kaki."
+    },
+    {
+      "id": "parotitis_supuratif",
+      "name": "Parotitis supuratif bakterial",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "sedang",
+      "summary": "Parotis bengkak sangat nyeri dengan pus keluar dari duktus Stensen, sering pada lansia dehidrasi."
+    },
+    {
+      "id": "sialolitiasis",
+      "name": "Sialolitiasis (batu kelenjar ludah)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Bengkak kelenjar ludah berulang yang muncul saat makan, sering submandibula."
+    },
+    {
+      "id": "granuloma_umbilikus",
+      "name": "Granuloma umbilikus",
+      "aliases": [],
+      "system": "Anak",
+      "danger": "rendah",
+      "summary": "Jaringan granulasi merah lembap di dasar pusar setelah tali pusat lepas, tanpa tanda radang."
+    },
+    {
+      "id": "sindrom_iritasi_usus",
+      "name": "Sindrom iritasi usus (IBS)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Nyeri perut berulang terkait BAB dengan perubahan frekuensi/konsistensi tinja, tanpa tanda alarm."
+    },
+    {
+      "id": "keracunan_organofosfat",
+      "name": "Keracunan organofosfat (pestisida)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Muntah, diare, hipersalivasi, berkeringat, miosis, bradikardia, fasikulasi, sesak setelah paparan pestisida. Atropin & rujuk segera."
+    },
+    {
+      "id": "strongiloidiasis_hiperinfeksi",
+      "name": "Hiperinfeksi Strongyloides",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Diseminasi larva pada pasien steroid/imunokompromais: sepsis Gram negatif, pneumonia. Rujuk segera."
+    },
+    {
+      "id": "enterobiasis",
+      "name": "Enterobiasis (cacing kremi)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Gatal anus malam hari pada anak; telur dengan tes pita perekat (scotch tape)."
+    },
+    {
+      "id": "ileus_obstruksi",
+      "name": "Ileus obstruktif",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Nyeri kolik, muntah, perut kembung, tidak bisa BAB & flatus; bising usus metalik. Rujuk segera."
+    },
+    {
+      "id": "sirosis_hati",
+      "name": "Sirosis hati",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Penyakit hati kronik dengan asites, splenomegali, varises, ikterus, stigmata hati kronik."
+    },
+    {
+      "id": "neurosistiserkosis",
+      "name": "Neurosistiserkosis",
+      "aliases": [],
+      "system": "Kepala & saraf",
+      "danger": "tinggi",
+      "summary": "Kista larva Taenia solium di otak: kejang, nyeri kepala, nodul subkutan. Rujuk."
+    },
+    {
+      "id": "hepatitis_b",
+      "name": "Hepatitis B",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "tinggi",
+      "summary": "Infeksi virus hepatitis B (HBsAg reaktif); akut atau kronik."
+    },
+    {
+      "id": "gagal_hati_fulminan",
+      "name": "Gagal hati akut (fulminan)",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Ikterus dengan ensefalopati (bingung, mengantuk) dan gangguan pembekuan. Rujuk segera."
+    },
+    {
+      "id": "intususepsi",
+      "name": "Intususepsi",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "kritis",
+      "summary": "Bayi/balita menangis kolik hilang-timbul, muntah, BAB lendir darah 'selai kismis', massa sosis di perut. Rujuk segera."
+    },
+    {
+      "id": "fisura_ani",
+      "name": "Fisura ani",
+      "aliases": [],
+      "system": "Pencernaan",
+      "danger": "rendah",
+      "summary": "Nyeri tajam hebat saat & setelah BAB dengan darah segar sedikit; robekan di garis tengah posterior anus."
+    },
+    {
+      "id": "retensi_urin",
+      "name": "Retensi urin akut",
+      "aliases": [],
+      "system": "Kelamin & reproduksi",
+      "danger": "kritis",
+      "summary": "Tidak bisa berkemih dengan kandung kemih penuh teraba & nyeri suprapubik. Kateterisasi segera."
+    },
+    {
+      "id": "kekerasan_seksual",
+      "name": "Kekerasan seksual",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Pertimbangkan pada anak dengan keluhan genital/IMS: lindungi anak, dokumentasi, rujuk/visum, laporkan."
+    },
+    {
+      "id": "torsio_ovarium",
+      "name": "Torsio adneksa/kista ovarium terpuntir",
+      "aliases": [],
+      "system": "Kelamin & reproduksi",
+      "danger": "kritis",
+      "summary": "Nyeri perut bawah unilateral mendadak hebat dengan mual-muntah; massa adneksa. Rujuk segera."
+    },
+    {
+      "id": "epididimitis",
+      "name": "Epididimitis",
+      "aliases": [],
+      "system": "Kelamin & reproduksi",
+      "danger": "sedang",
+      "summary": "Nyeri & bengkak skrotum bertahap dengan demam/disuria; komplikasi IMS/ISK."
+    },
+    {
+      "id": "mola_hidatidosa",
+      "name": "Mola hidatidosa",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Kehamilan abnormal: perdarahan, uterus lebih besar dari usia kehamilan, mual-muntah hebat, β-hCG sangat tinggi, USG gambaran badai salju."
+    },
+    {
+      "id": "hiperemesis_gravidarum",
+      "name": "Hiperemesis gravidarum",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "sedang",
+      "summary": "Mual-muntah berat pada kehamilan muda dengan dehidrasi, ketonuria, BB turun."
+    },
+    {
+      "id": "preeklampsia",
+      "name": "Preeklampsia",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Hipertensi ≥ 140/90 setelah 20 minggu + proteinuria/disfungsi organ; nyeri kepala, pandangan kabur, nyeri ulu hati. Rujuk."
+    },
+    {
+      "id": "kehamilan_ektopik",
+      "name": "Kehamilan ektopik terganggu",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Terlambat haid, nyeri perut bawah, perdarahan bercak, tes kehamilan positif, USG tanpa kantong gestasi intrauterin; dapat syok. Rujuk segera."
+    },
+    {
+      "id": "abortus_inkomplit",
+      "name": "Abortus inkomplit",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Perdarahan banyak, OUE terbuka, teraba/tampak sisa jaringan konsepsi — perlu evakuasi."
+    },
+    {
+      "id": "anemia_megaloblastik",
+      "name": "Anemia megaloblastik (defisiensi folat/B12)",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "sedang",
+      "summary": "Anemia makrositik (MCV tinggi), glositis; defisiensi folat sering pada kehamilan."
+    },
+    {
+      "id": "perdarahan_antepartum",
+      "name": "Perdarahan antepartum",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Perdarahan jalan lahir setelah 20 minggu (plasenta previa, solusio plasenta). Jangan periksa dalam; rujuk segera."
+    },
+    {
+      "id": "ruptur_perineum_berat",
+      "name": "Ruptur perineum derajat 3–4",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Robekan mengenai sfingter ani (derajat 3) hingga mukosa rektum (derajat 4) — perlu reparasi di RS."
+    },
+    {
+      "id": "atonia_uteri",
+      "name": "Atonia uteri / perdarahan pascasalin",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "kritis",
+      "summary": "Uterus lembek tidak berkontraksi dengan perdarahan banyak setelah persalinan — masase, uterotonika, rujuk."
+    },
+    {
+      "id": "bendungan_asi",
+      "name": "Bendungan ASI (engorgement)",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "rendah",
+      "summary": "Payudara penuh, keras, nyeri bilateral pada hari 2–5 pascasalin tanpa demam tinggi; atasi dengan menyusui sering."
+    },
+    {
+      "id": "kanker_payudara",
+      "name": "Kanker payudara",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Massa keras tidak nyeri, retraksi puting baru unilateral, kulit peau d'orange, KGB aksila. Rujuk."
+    },
+    {
+      "id": "abses_payudara",
+      "name": "Abses payudara",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "tinggi",
+      "summary": "Komplikasi mastitis: massa nyeri berfluktuasi — aspirasi/insisi."
+    },
+    {
+      "id": "ketoasidosis_diabetik",
+      "name": "Ketoasidosis diabetik",
+      "aliases": ["KAD"],
+      "system": "Endokrin & metabolik",
+      "danger": "kritis",
+      "summary": "Hiperglikemia + ketonuria + asidosis: muntah, nyeri perut, napas Kussmaul, dehidrasi, penurunan kesadaran. Rujuk segera."
+    },
+    {
+      "id": "diabetes_insipidus",
+      "name": "Diabetes insipidus",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Poliuria & polidipsia berat dengan urin encer tanpa hiperglikemia."
+    },
+    {
+      "id": "hipoglikemia_berat",
+      "name": "Hipoglikemia berat",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "kritis",
+      "summary": "Gula darah rendah dengan penurunan kesadaran/kejang, butuh bantuan orang lain — dekstrosa IV & rujuk."
+    },
+    {
+      "id": "leukemia",
+      "name": "Leukemia",
+      "aliases": [],
+      "system": "Darah & imunologi",
+      "danger": "kritis",
+      "summary": "Pucat, perdarahan gusi/petekie, demam, hepatosplenomegali, limfadenopati; hitung darah abnormal. Rujuk."
+    },
+    {
+      "id": "hipertiroid",
+      "name": "Hipertiroid (penyakit Graves)",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Berdebar, BB turun, tremor, tidak tahan panas, gondok difus, eksoftalmus; TSH rendah FT4 tinggi."
+    },
+    {
+      "id": "karsinoma_tiroid",
+      "name": "Karsinoma tiroid",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "Nodul tiroid soliter keras, cepat membesar, suara serak, KGB leher. Rujuk."
+    },
+    {
+      "id": "hipotiroid",
+      "name": "Hipotiroid",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Lelah, BB naik, tidak tahan dingin, kulit kering, konstipasi; TSH tinggi."
+    },
+    {
+      "id": "hiperkolesterolemia_familial",
+      "name": "Hiperkolesterolemia familial",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "tinggi",
+      "summary": "LDL sangat tinggi (> 190 mg/dL) sejak muda, xantoma tendon, riwayat PJK dini di keluarga."
+    },
+    {
+      "id": "artritis_septik",
+      "name": "Artritis septik",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "kritis",
+      "summary": "Monoartritis akut dengan demam tinggi, sendi sangat nyeri & tidak dapat digerakkan; cairan sendi purulen. Rujuk segera."
+    },
+    {
+      "id": "osteoartritis",
+      "name": "Osteoartritis",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "rendah",
+      "summary": "Nyeri sendi lutut/panggul kronik pada lansia, memberat saat aktivitas, krepitasi, kaku pagi < 30 menit."
+    },
+    {
+      "id": "artritis_reumatoid",
+      "name": "Artritis reumatoid",
+      "aliases": [],
+      "system": "Otot & sendi",
+      "danger": "sedang",
+      "summary": "Poliartritis simetris sendi kecil tangan dengan kaku pagi > 1 jam."
+    },
+    {
+      "id": "sindrom_cushing",
+      "name": "Sindrom Cushing",
+      "aliases": [],
+      "system": "Endokrin & metabolik",
+      "danger": "sedang",
+      "summary": "Obesitas sentral, moon face, striae ungu, hipertensi; sering akibat steroid jangka panjang."
+    },
+    {
+      "id": "sepsis",
+      "name": "Sepsis",
+      "aliases": [],
+      "system": "Infeksi & imunologi",
+      "danger": "kritis",
+      "summary": "Infeksi dengan disfungsi organ: demam/hipotermia, takikardia, takipnea, hipotensi, penurunan kesadaran. Rujuk segera."
+    },
+    {
+      "id": "penyakit_arteri_perifer",
+      "name": "Penyakit arteri perifer",
+      "aliases": [],
+      "system": "Jantung & pembuluh darah",
+      "danger": "tinggi",
+      "summary": "Klaudikasio, kaki dingin pucat, pulsasi lemah, ABI < 0,9; ulkus arterial nyeri di ujung jari. Rujuk."
+    },
+    {
+      "id": "kista_epidermoid",
+      "name": "Kista epidermoid (ateroma)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Benjolan kistik subkutan melekat ke kulit dengan punctum di tengah."
+    },
+    {
+      "id": "sarkoma_jaringan_lunak",
+      "name": "Sarkoma jaringan lunak",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Massa > 5 cm, dalam, keras, cepat membesar, nyeri. Rujuk."
+    },
+    {
+      "id": "klavus",
+      "name": "Klavus (mata ikan)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Penebalan kulit berinti di titik tekanan, nyeri saat ditekan langsung, garis kulit tetap."
+    },
+    {
+      "id": "karsinoma_sel_skuamosa_kulit",
+      "name": "Keganasan kulit (KSS/KSB)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Nodul/ulkus kulit yang tumbuh progresif, mudah berdarah, tidak sembuh, pada kulit terpapar matahari/luka kronik. Rujuk biopsi."
+    },
+    {
+      "id": "rubela",
+      "name": "Rubela",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Demam ringan, ruam makulopapular halus, KGB retroaurikular/oksipital; berbahaya bagi ibu hamil."
+    },
+    {
+      "id": "eksantema_subitum",
+      "name": "Eksantema subitum (roseola)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bayi demam tinggi 3 hari, ruam muncul setelah demam turun."
+    },
+    {
+      "id": "mpox",
+      "name": "Mpox (cacar monyet)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Lesi vesikopustul dalam stadium SAMA, umbilikasi, limfadenopati menonjol, riwayat kontak; lapor & isolasi."
+    },
+    {
+      "id": "ulkus_mole",
+      "name": "Ulkus mole (chancroid)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Ulkus genital multipel, NYERI, tepi bergaung, dasar kotor, bubo inguinal nyeri."
+    },
+    {
+      "id": "vitiligo",
+      "name": "Vitiligo",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Makula depigmentasi putih susu berbatas tegas, sensibilitas normal."
+    },
+    {
+      "id": "reaksi_kusta",
+      "name": "Reaksi kusta",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Lesi lama meradang/nodus eritema nyeri, neuritis (nyeri & fungsi saraf turun), demam — prednison & rujuk."
+    },
+    {
+      "id": "selulitis",
+      "name": "Selulitis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Infeksi dermis-subkutis: eritema batas tidak tegas, hangat, nyeri, edema, demam."
+    },
+    {
+      "id": "fasiitis_nekrotikans",
+      "name": "Fasiitis nekrotikans",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Nyeri hebat tidak sebanding temuan, bula hemoragik, krepitasi, syok. Rujuk segera untuk debridemen."
+    },
+    {
+      "id": "ssss",
+      "name": "Staphylococcal scalded skin syndrome",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Anak dengan eritema generalisata nyeri, bula kendur luas, Nikolsky (+). Rujuk segera."
+    },
+    {
+      "id": "antraks_kulit",
+      "name": "Antraks kulit",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Papul → vesikel → eskar hitam tidak nyeri dengan edema luas, kontak ternak/daging. Lapor & rujuk."
+    },
+    {
+      "id": "alopesia_areata",
+      "name": "Alopesia areata",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bercak botak bulat licin tanpa skuama/radang, rambut tanda seru di tepi."
+    },
+    {
+      "id": "lupus_kutan",
+      "name": "Lupus eritematosus kutan",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Ruam kupu-kupu/plak diskoid fotosensitif dengan atrofi & parut; dapat sistemik. Rujuk."
+    },
+    {
+      "id": "psoriasis",
+      "name": "Psoriasis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Plak eritematosa berbatas tegas dengan skuama tebal putih keperakan (Auspitz, Koebner), di siku/lutut/kulit kepala; kuku pitting."
+    },
+    {
+      "id": "melanoma_subungual",
+      "name": "Melanoma subungual",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Pita hitam-coklat di kuku yang melebar, pigmen meluas ke lipatan kuku (tanda Hutchinson). Rujuk biopsi."
+    },
+    {
+      "id": "pitiriasis_alba",
+      "name": "Pitiriasis alba",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Bercak hipopigmentasi batas tidak tegas dengan skuama halus di wajah anak atopik."
+    },
+    {
+      "id": "skabies_krustosa",
+      "name": "Skabies krustosa (Norwegia)",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "tinggi",
+      "summary": "Skabies dengan krusta tebal luas berisi ribuan tungau pada imunokompromais/lansia — sangat menular. Rujuk."
+    },
+    {
+      "id": "dermatitis_kontak_alergi",
+      "name": "Dermatitis kontak alergi",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Reaksi tipe IV terhadap alergen (nikel, karet, pewarna rambut): gatal dominan, vesikel, dapat menyebar di luar area kontak."
+    },
+    {
+      "id": "eksema_herpetikum",
+      "name": "Eksema herpetikum",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Infeksi HSV luas pada dermatitis atopik: vesikel & erosi punched-out monomorf, demam. Asiklovir & rujuk segera."
+    },
+    {
+      "id": "rosasea",
+      "name": "Rosasea",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "rendah",
+      "summary": "Dewasa dengan flushing, eritema sentral wajah, telangiektasis, papul-pustul tanpa komedo."
+    },
+    {
+      "id": "sindrom_ovarium_polikistik",
+      "name": "Sindrom ovarium polikistik",
+      "aliases": [],
+      "system": "Obstetri & ginekologi",
+      "danger": "sedang",
+      "summary": "Haid tidak teratur, hirsutisme, akne membandel, obesitas."
+    },
+    {
+      "id": "sindrom_stevens_johnson",
+      "name": "Sindrom Stevens-Johnson / NET",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "kritis",
+      "summary": "Reaksi obat berat: erosi ≥ 2 mukosa, lesi target atipikal, bula, epidermolisis (Nikolsky +), demam. Hentikan obat & rujuk segera."
+    },
+    {
+      "id": "urtikaria_vaskulitis",
+      "name": "Urtikaria vaskulitis",
+      "aliases": [],
+      "system": "Kulit & kelamin",
+      "danger": "sedang",
+      "summary": "Urtika menetap > 24 jam, nyeri/terbakar, meninggalkan purpura/hiperpigmentasi."
+    },
+    {
+      "id": "cedera_tendon_saraf",
+      "name": "Cedera tendon/saraf/pembuluh pada luka",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Gangguan gerak, sensorik, atau perfusi distal pada luka — eksplorasi & repair oleh spesialis."
+    },
+    {
+      "id": "fraktur_terbuka",
+      "name": "Fraktur terbuka",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Luka yang berhubungan dengan patah tulang (tulang tampak/krepitasi/deformitas). Antibiotik, imobilisasi, rujuk segera."
+    },
+    {
+      "id": "trauma_inhalasi",
+      "name": "Trauma inhalasi",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Kebakaran di ruang tertutup, suara serak, jelaga di hidung/mulut, bulu hidung terbakar, stridor — amankan jalan napas & rujuk segera."
+    },
+    {
+      "id": "luka_bakar_derajat3",
+      "name": "Luka bakar derajat III",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Kulit putih/kehitaman seperti kulit, kering, tidak nyeri, tidak berbula — butuh skin graft. Rujuk."
+    },
+    {
+      "id": "kekerasan_anak",
+      "name": "Kekerasan terhadap anak",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Pola luka tidak sesuai riwayat/perkembangan anak, keterlambatan berobat, luka berbagai usia, luka bakar celup — lindungi anak & laporkan."
+    },
+    {
+      "id": "cedera_kepala",
+      "name": "Cedera kepala",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Riwayat benturan kepala dengan penurunan kesadaran, amnesia, muntah berulang, nyeri kepala hebat, defisit neurologis. Rujuk segera."
+    },
+    {
+      "id": "fraktur_tertutup",
+      "name": "Fraktur tertutup",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "tinggi",
+      "summary": "Nyeri hebat, deformitas, krepitasi, gangguan fungsi setelah trauma. Imobilisasi & rontgen."
+    },
+    {
+      "id": "trauma_tembus_abdomen",
+      "name": "Trauma tembus rongga tubuh",
+      "aliases": [],
+      "system": "Trauma & forensik",
+      "danger": "kritis",
+      "summary": "Luka tusuk dada/perut yang menembus rongga: syok, defans, eviserasi, sesak. Jangan cabut benda tertancap; rujuk segera."
+    }
+  ]
+}

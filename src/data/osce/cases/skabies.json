@@ -1,0 +1,176 @@
+{
+  "disease": "skabies",
+  "setting": "Puskesmas",
+  "station": "Kulit — gatal & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "skabisida",
+        "label": "Skabisida",
+        "role": "utama",
+        "reason": "Membunuh tungau Sarcoptes; ulang 1 minggu.",
+        "options": [
+          {
+            "drug": "permetrin_krim",
+            "label": "Permetrin 5% krim dari leher ke bawah malam hari, bilas setelah 8–12 jam; ulang 1 minggu",
+            "schedules": ["tunggal"],
+            "dose": [1, 1]
+          }
+        ]
+      },
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "pendukung",
+        "reason": "Gatal (dapat bertahan 2–4 minggu setelah terapi).",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "pendukung",
+        "reason": "Gatal (dapat bertahan 2–4 minggu setelah terapi).",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Pioderma sekunder.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kontak", "text": "Obati semua anggota keluarga/teman sekamar serentak walau tidak gatal", "kind": "benar" },
+    {
+      "id": "cuci",
+      "text": "Cuci pakaian, sprei, & handuk air panas lalu jemur, atau simpan dalam plastik tertutup 3 hari",
+      "kind": "benar"
+    },
+    {
+      "id": "pesantren",
+      "text": "Koordinasi pengobatan massal di pesantren/asrama",
+      "kind": "benar",
+      "when": { "traits": ["pesantren"] }
+    },
+    { "id": "garuk", "text": "Potong kuku & hindari garukan", "kind": "benar" },
+    {
+      "id": "air_garam",
+      "text": "Mandi air garam/belerang panas sampai kulit melepuh",
+      "kind": "berbahaya",
+      "why": "Luka bakar & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kudis (skabies), disebabkan tungau yang menular lewat kontak erat",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Krim dioles malam hari ke seluruh tubuh dari leher ke bawah, dibilas pagi; ulangi seminggu kemudian",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila kulit bernanah luas, demam, atau bengkak/kencing seperti teh",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1–2 minggu; gatal bisa bertahan 2–4 minggu walau tungau sudah mati",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Semua kontak diobati bersamaan agar tidak saling menulari",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "sekali",
+      "text": "Cukup diobati penderita yang gatal saja",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Kontak tanpa gejala menjadi sumber reinfeksi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

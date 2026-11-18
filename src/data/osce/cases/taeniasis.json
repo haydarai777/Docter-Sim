@@ -1,0 +1,105 @@
+{
+  "disease": "taeniasis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — cacingan & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "taenisida",
+        "label": "Taenisida",
+        "role": "utama",
+        "reason": "Eradikasi cacing pita dewasa.",
+        "options": [
+          {
+            "drug": "prazikuantel",
+            "label": "Prazikuantel 5–10 mg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["prazikuantel-tab600"],
+            "dosePerKg": [5, 10]
+          },
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg 1 × sehari selama 3 hari",
+            "schedules": ["rutin"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          }
+        ]
+      },
+      {
+        "id": "pencahar",
+        "label": "Pencahar",
+        "role": "opsional",
+        "reason": "Membantu mengeluarkan proglotid/skoleks 2 jam setelah obat.",
+        "options": [
+          {
+            "drug": "bisakodil",
+            "label": "Bisakodil 10 mg dosis tunggal 2 jam setelah obat cacing",
+            "schedules": ["tunggal"],
+            "dose": [5, 10]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "matang", "text": "Masak daging sapi/babi hingga matang sempurna", "kind": "benar" },
+    { "id": "jamban", "text": "Jamban sehat & cuci tangan", "kind": "benar" },
+    { "id": "keluarga", "text": "Periksa anggota keluarga yang makan bersama", "kind": "benar" },
+    {
+      "id": "rujuk_kejang",
+      "text": "Rujuk bila ada kejang/nyeri kepala (curiga sistiserkosis)",
+      "kind": "benar",
+      "when": { "traits": ["solium"] }
+    },
+    {
+      "id": "daging_mentah",
+      "text": "Lanjutkan makan daging setengah matang asal dari pasar resmi",
+      "kind": "berbahaya",
+      "why": "Sumber infeksi ulang."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini cacing pita dari daging yang kurang matang", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat cacing diminum sesuai dosis; ulangi sesuai jadwal program",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perut kembung hebat, muntah terus/muntah cacing, tidak bisa BAB/kentut, atau sangat pucat & sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu (periksa ulang feses/Hb)", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Seluruh anggota keluarga ikut menjaga kebersihan & minum obat cacing berkala",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "feses_ulang",
+      "text": "Periksa ulang feses 1–3 bulan untuk memastikan cacing sudah keluar",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "sekali",
+      "text": "Sekali minum obat cacing akan kebal seumur hidup",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Reinfeksi sering terjadi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

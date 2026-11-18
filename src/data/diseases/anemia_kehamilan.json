@@ -1,0 +1,248 @@
+{
+  "id": "anemia_kehamilan",
+  "name": "Anemia defisiensi besi pada kehamilan",
+  "aliases": ["Anemia ibu hamil", "Kurang darah saat hamil", "Anemia gestasional"],
+  "system": "Obstetri & ginekologi",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.1,
+  "summary": "Hb < 11 g/dL (trimester 1 & 3) atau < 10,5 g/dL (trimester 2) akibat defisiensi besi, sering karena kepatuhan TTD rendah, asupan kurang, jarak kehamilan dekat, atau cacingan. Lemas, pucat, pusing, berdebar, sesak saat aktivitas, pika. Meningkatkan risiko perdarahan pascasalin, BBLR, dan prematuritas. Terapi besi oral dosis terapi, atasi penyebab, rujuk bila Hb < 7 g/dL atau tidak respons.",
+  "presentationDay": [14, 60],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 24, "weight": 3 },
+      { "min": 25, "max": 34, "weight": 4 },
+      { "min": 35, "max": 40, "weight": 2 }
+    ],
+    "maleRatio": 0,
+    "occupations": [{ "id": "ibu_rumah_tangga", "weight": 3 }],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "trimester2", "probability": 0.5 },
+    { "id": "tidak_minum_ttd", "probability": 0.65 },
+    { "id": "jarak_dekat", "probability": 0.3 },
+    { "id": "cacingan", "probability": 0.15 },
+    { "id": "berat", "probability": 0.12 }
+  ],
+  "traitLabels": {
+    "trimester2": "Trimester 2.",
+    "tidak_minum_ttd": "Tidak rutin minum TTD.",
+    "jarak_dekat": "Jarak kehamilan < 2 tahun.",
+    "cacingan": "Cacingan.",
+    "berat": "Anemia berat (Hb < 7)."
+  },
+  "symptoms": [
+    { "id": "sesak_napas", "probability": 0.8, "when": { "traits": ["berat"] } },
+    { "id": "lemas", "probability": 1 },
+    { "id": "pucat", "probability": 0.7 },
+    { "id": "nyeri_kepala", "probability": 0.4 },
+    { "id": "berdebar", "probability": 0.4 },
+    { "id": "sesak_napas", "probability": 0.3 },
+    { "id": "ngidam_es", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["lemas"], "extraPool": ["pucat"] },
+  "clueSymptoms": ["pucat", "nyeri_kepala", "berdebar", "sesak_napas", "ngidam_es"],
+  "misattributions": ["bawaan hamil", "kurang tidur", "darah rendah"],
+  "fears": ["bayinya kurang gizi", "perdarahan waktu melahirkan"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} ini, Dok, gampang capek dan pusing, padahal kerja sedikit.",
+        "clue": "Lemas & pusing progresif"
+      }
+    ],
+    "haid_kehamilan": [
+      {
+        "text": "Saya hamil lima bulan, Dok, anak ketiga. Anak kedua baru umur setahun.",
+        "when": { "traits": ["trimester2", "jarak_dekat"] },
+        "clue": "Hamil trimester 2, jarak kehamilan dekat"
+      },
+      {
+        "text": "Saya hamil lima bulan, Dok.",
+        "when": { "traits": ["trimester2"], "notTraits": ["jarak_dekat"] },
+        "clue": "Hamil trimester 2"
+      },
+      {
+        "text": "Saya hamil tujuh bulan, Dok, anak ketiga. Anak kedua baru umur setahun.",
+        "when": { "traits": ["jarak_dekat"], "notTraits": ["trimester2"] },
+        "clue": "Hamil trimester 3, jarak kehamilan dekat"
+      },
+      {
+        "text": "Saya hamil tujuh bulan, Dok.",
+        "when": { "notTraits": ["trimester2", "jarak_dekat"] },
+        "clue": "Hamil trimester 3"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Tablet tambah darah dari bidan jarang saya minum, Dok, bikin mual dan BAB hitam.",
+        "when": { "traits": ["tidak_minum_ttd"] },
+        "clue": "Kepatuhan TTD rendah (efek samping)"
+      },
+      {
+        "text": "Tablet tambah darah saya minum tiap hari, Dok.",
+        "when": { "notTraits": ["tidak_minum_ttd"] },
+        "clue": "Patuh TTD"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Makan seadanya, Dok, jarang daging. Habis makan biasa minum teh.",
+        "clue": "Asupan besi kurang, teh menghambat absorpsi"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang sedikit jalan saja sudah ngos-ngosan dan berdebar, Dok.",
+        "reveals": ["sesak_napas"],
+        "when": { "traits": ["berat"], "symptoms": ["sesak_napas"] },
+        "clue": "Sesak saat aktivitas ringan (anemia berat)"
+      },
+      { "text": "Masih bisa beraktivitas biasa, Dok.", "when": { "notTraits": ["berat"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Nggak ada perdarahan dari jalan lahir, Dok. Gerak bayi aktif.",
+        "clue": "Tanpa perdarahan antepartum, gerak janin baik"
+      }
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma badan lemas dan kepala kliyengan." }]
+  },
+  "findings": [
+    { "tool": "darah_lengkap", "param": "hb", "when": { "traits": ["berat"] }, "diagnostic": true, "range": [5.5, 6.9] },
+    { "tool": "darah_lengkap", "param": "eosinofil", "when": { "traits": ["cacingan"] }, "range": [6, 12] },
+    {
+      "tool": "feses_rutin",
+      "param": "telur_cacing",
+      "when": { "traits": ["cacingan"] },
+      "values": ["Telur cacing tambang (+)"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "tfu",
+      "when": { "traits": ["trimester2"] },
+      "values": ["20 cm, sesuai usia kehamilan 20 minggu"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "tfu",
+      "when": { "notTraits": ["trimester2"] },
+      "values": ["27 cm, sesuai usia kehamilan 28 minggu"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "leopold",
+      "when": { "traits": ["trimester2"] },
+      "values": ["Ballotement (+)"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "leopold",
+      "when": { "notTraits": ["trimester2"] },
+      "values": ["Letak kepala, punggung kiri, belum masuk PAP"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["berat"] }, "range": [100, 116] },
+    { "tool": "kepala_leher", "param": "konjungtiva", "diagnostic": true, "values": ["Anemis (pucat)"] },
+    { "tool": "darah_lengkap", "param": "hb", "diagnostic": true, "range": [8, 10.3] },
+    { "tool": "darah_lengkap", "param": "mcv", "range": [64, 77] },
+    { "tool": "darah_lengkap", "param": "hematokrit", "range": [24, 31] },
+    {
+      "tool": "apusan_darah_tepi",
+      "param": "eritrosit",
+      "diagnostic": true,
+      "values": ["Hipokrom mikrositer, anisopoikilositosis"]
+    },
+    { "tool": "profil_besi", "param": "feritin", "range": [4, 14] },
+    { "tool": "pemeriksaan_obstetri", "param": "djj", "values": ["146 ×/menit, reguler"] }
+  ],
+  "differentials": [
+    {
+      "id": "perdarahan_antepartum",
+      "howToDistinguish": "Perdarahan antepartum (plasenta previa/solusio): perdarahan jalan lahir setelah 20 minggu — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["pemeriksaan_obstetri"] }
+    },
+    {
+      "id": "talasemia_minor",
+      "howToDistinguish": "Talasemia minor: MCV sangat rendah dengan Hb ringan, feritin normal, riwayat keluarga.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["profil_besi"] }
+    },
+    {
+      "id": "anemia_megaloblastik",
+      "howToDistinguish": "Anemia defisiensi folat/B12: MCV tinggi (makrositik), glositis.",
+      "excludeBy": { "tools": ["darah_lengkap"] }
+    }
+  ],
+  "keyFindings": [
+    "Ibu hamil lemas, pucat, Hb < 11 (TM1/3) atau < 10,5 (TM2) g/dL",
+    "Mikrositik hipokrom; kepatuhan TTD rendah, asupan kurang, jarak kehamilan dekat",
+    "Janin baik (TFU sesuai, DJJ normal)"
+  ],
+  "teachingPoints": [
+    "Kiat kepatuhan TTD: diminum malam sebelum tidur untuk mengurangi mual, bersama vitamin C, tidak dengan teh/kopi/susu; feses hitam normal.",
+    "Hb < 7 g/dL atau gejala gagal jantung: rujuk (pertimbangkan transfusi)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Pelayanan Antenatal Terpadu Edisi 3 (2020)",
+      "Kemenkes RI. Buku Kesehatan Ibu dan Anak (KIA)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "kebiasaan", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "kunci", "reason": "Konjungtiva anemis." },
+      { "tool": "pemeriksaan_obstetri", "role": "kunci", "reason": "Kesejahteraan janin (TFU, DJJ)." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Takikardia/murmur pada anemia berat." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "kunci", "reason": "Kadar Hb & indeks eritrosit." },
+      { "tool": "apusan_darah_tepi", "role": "pendukung", "reason": "Morfologi hipokrom mikrositer." },
+      { "tool": "feses_rutin", "role": "pendukung", "when": { "traits": ["cacingan"] }, "reason": "Cacingan." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "profil_besi", "reason": "Konfirmasi defisiensi besi." }]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Anemia berat (Hb < 7) pada kehamilan: rujuk ke RS.",
+      "when": { "traits": ["berat"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Besi dosis terapi + asam folat, edukasi kepatuhan & gizi, atasi cacing; kontrol Hb 2–4 minggu."
+    }
+  ],
+  "management": [
+    "Besi elemental 120 mg/hari (2 tablet tambah darah) + asam folat hingga Hb normal, lanjut dosis pencegahan.",
+    "Minum bersama vitamin C, hindari teh/kopi/susu; tangani efek samping (mual, konstipasi).",
+    "Albendazol dosis tunggal setelah trimester 1 bila cacingan.",
+    "Gizi seimbang tinggi besi; kontrol Hb 2–4 minggu; persiapkan persalinan di fasilitas."
+  ],
+  "approach": ["Konfirmasi anemia & jenisnya (MCV).", "Cari penyebab & nilai kesejahteraan janin."]
+}

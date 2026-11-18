@@ -1,0 +1,289 @@
+{
+  "id": "kejang_demam",
+  "name": "Kejang demam",
+  "aliases": ["Step", "Kejang demam sederhana", "Kejang demam kompleks", "Febrile seizure"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 1.2,
+  "summary": "Kejang pada anak usia 6 bulan–5 tahun yang terjadi saat demam (suhu ≥ 38 °C) akibat proses ekstrakranial (ISPA, OMA, gastroenteritis). Sederhana: umum, < 15 menit, tidak berulang dalam 24 jam, sadar penuh setelahnya. Kompleks: fokal, > 15 menit, atau berulang dalam 24 jam. Singkirkan meningitis/ensefalitis (kaku kuduk, penurunan kesadaran, ubun-ubun membonjol).",
+  "presentationDay": [1, 2],
+  "demographics": {
+    "ageBands": [{ "min": 0, "max": 0, "weight": 2 }, { "min": 1, "max": 2, "weight": 5 }, { "min": 3, "max": 5, "weight": 3 }],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "balita", "weight": 3 }, { "id": "bayi", "weight": 1 }],
+    "occupationBias": 0.2,
+    "infantAge": { "unit": "bulan", "range": [6, 11] }
+  },
+  "traits": [
+    { "id": "kompleks", "probability": 0.25 },
+    { "id": "sumber_oma", "probability": 0.3 },
+    { "id": "sumber_diare", "probability": 0.2, "when": { "notTraits": ["sumber_oma"] } },
+    { "id": "sumber_ispa", "probability": 1, "when": { "notTraits": ["sumber_oma", "sumber_diare"] } },
+    { "id": "riwayat_keluarga_kd", "probability": 0.35 },
+    { "id": "pernah_kd", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "kompleks": "Kejang demam kompleks (fokal/lama/berulang dalam 24 jam).",
+    "sumber_oma": "Sumber demam: otitis media akut.",
+    "sumber_diare": "Sumber demam: gastroenteritis.",
+    "sumber_ispa": "Sumber demam: ISPA.",
+    "riwayat_keluarga_kd": "Riwayat kejang demam di keluarga.",
+    "pernah_kd": "Pernah kejang demam sebelumnya."
+  },
+  "symptoms": [
+    { "id": "pilek", "probability": 0.8, "when": { "traits": ["sumber_ispa"] } },
+    { "id": "batuk", "probability": 0.6, "when": { "traits": ["sumber_ispa"] } },
+    { "id": "rewel", "probability": 0.8, "when": { "traits": ["sumber_oma"] } },
+    { "id": "telinga_berair", "probability": 0.3, "when": { "traits": ["sumber_oma"] } },
+    { "id": "diare", "probability": 1, "when": { "traits": ["sumber_diare"] } },
+    { "id": "mual_muntah", "probability": 0.5, "when": { "traits": ["sumber_diare"] } },
+    { "id": "kejang", "probability": 1 },
+    { "id": "demam", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["kejang"], "extraPool": ["demam"] },
+  "clueSymptoms": ["demam", "pilek", "batuk", "rewel", "telinga_berair", "diare"],
+  "misattributions": ["step karena panas", "kesambet", "kemasukan"],
+  "fears": ["epilepsi", "otak rusak", "anaknya meninggal"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Panasnya sudah {lamaSakit}, Dok, terus barusan tiba-tiba kejang.",
+        "clue": "Kejang terjadi saat demam tinggi (hari pertama)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Seluruh badannya kaku lalu kelojotan, matanya mendelik ke atas, Dok.",
+        "when": { "notTraits": ["kompleks"] },
+        "clue": "Kejang umum tonik-klonik"
+      },
+      {
+        "text": "Kelojotannya cuma tangan dan kaki kanan, Dok, matanya melirik ke kanan.",
+        "when": { "traits": ["kompleks"] },
+        "clue": "Kejang fokal (kompleks)"
+      }
+    ],
+    "durasi": [
+      {
+        "text": "Sebentar, Dok, kurang dari lima menit.",
+        "when": { "notTraits": ["kompleks"] },
+        "clue": "Durasi < 15 menit"
+      },
+      {
+        "text": "Lama, Dok, hampir dua puluh menit baru berhenti.",
+        "when": { "traits": ["kompleks"] },
+        "clue": "Durasi > 15 menit (kompleks)"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Habis kejang dia nangis, terus sadar lagi, Dok, sekarang sudah bisa main.",
+        "when": { "notTraits": ["kompleks"] },
+        "clue": "Sadar penuh setelah kejang"
+      },
+      {
+        "text": "Habis kejang dia lemas dan tidur terus, Dok. Tadi subuh kejang lagi.",
+        "when": { "traits": ["kompleks"] },
+        "clue": "Berulang dalam 24 jam/pascaiktal memanjang"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Tahun lalu pernah kejang juga waktu panas, Dok.",
+        "when": { "traits": ["pernah_kd"] },
+        "clue": "Riwayat kejang demam sebelumnya"
+      },
+      {
+        "text": "Baru pertama kali ini, Dok. Kalau nggak panas dia nggak pernah kejang.",
+        "when": { "notTraits": ["pernah_kd"] },
+        "clue": "Tidak pernah kejang tanpa demam"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Kakaknya dulu juga pernah step waktu kecil, Dok.",
+        "when": { "traits": ["riwayat_keluarga_kd"] },
+        "clue": "Riwayat kejang demam di keluarga"
+      },
+      { "text": "Di keluarga belum ada yang step, Dok.", "when": { "notTraits": ["riwayat_keluarga_kd"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Tumbuh kembangnya normal, Dok, sudah bisa jalan dan ngomong sesuai umur.",
+        "clue": "Perkembangan normal sebelum kejang"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang sudah sadar, Dok, nggak muntah menyembur, ubun-ubunnya juga datar.",
+        "when": { "notTraits": ["kompleks"] },
+        "clue": "Sadar baik, tanpa tanda peningkatan TIK"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Seluruh badannya kaku lalu kelojotan, Dok, kedua tangan dan kaki.",
+        "when": { "notTraits": ["kompleks"] }
+      },
+      { "text": "Mulainya di tangan kanan, Dok, terus seluruh badan.", "when": { "traits": ["kompleks"] } }
+    ]
+  },
+  "findings": [
+    { "tool": "tanda_vital", "param": "nadi", "when": { "ageMax": 2 }, "range": [130, 160] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesadaran",
+      "when": { "traits": ["kompleks"] },
+      "probability": 0.6,
+      "values": ["Somnolen pascaiktal, membaik bertahap"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "when": { "traits": ["sumber_oma"] },
+      "values": ["Membran timpani kanan hiperemis dan bulging"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["sumber_ispa"] },
+      "values": ["Faring hiperemis"]
+    },
+    { "tool": "pemeriksaan_hidung", "param": "sekret_hidung", "when": { "symptoms": ["pilek"] }, "values": ["Mukoid"] },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "dehidrasi_anak",
+      "when": { "traits": ["sumber_diare"] },
+      "probability": 0.6,
+      "values": ["Dehidrasi ringan-sedang: rewel, mata cekung, haus, cubitan kulit kembali lambat"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "auskultasi",
+      "when": { "traits": ["sumber_diare"] },
+      "values": ["Bising usus meningkat"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "range": [38.6, 40] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak sakit sedang, sadar, rewel"] },
+    { "tool": "refleks_tonus", "param": "refleks_patologis", "values": ["Babinski (−) kedua sisi"] },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.5, "range": [11000, 16000] }
+  ],
+  "differentials": [
+    {
+      "id": "meningitis",
+      "howToDistinguish": "Meningitis/ensefalitis: kesadaran menurun menetap, kaku kuduk/Kernig/Brudzinski (+), ubun-ubun membonjol, kejang lama berulang — rujuk & pungsi lumbal.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["neurologis", "pemeriksaan_anak", "keadaan_umum"] }
+    },
+    {
+      "id": "epilepsi",
+      "howToDistinguish": "Epilepsi: kejang tanpa demam, berulang tanpa provokasi.",
+      "excludeBy": { "topics": ["episode_sebelumnya"] }
+    },
+    {
+      "id": "gangguan_elektrolit",
+      "howToDistinguish": "Gangguan elektrolit (mis. hiponatremia pada diare berat): kejang dengan dehidrasi berat, elektrolit abnormal.",
+      "excludeBy": { "tools": ["pemeriksaan_anak"], "topics": ["riwayat_penyakit"] }
+    }
+  ],
+  "otherDifferentials": ["Hipoglikemia", "Menggigil (rigor) pada demam tinggi", "Sinkop"],
+  "keyFindings": [
+    "Anak 6 bulan–5 tahun, kejang saat demam ≥ 38 °C",
+    "Sederhana: umum, < 15 menit, tidak berulang, sadar penuh setelahnya",
+    "Tanpa tanda rangsang meningeal/penurunan kesadaran; cari sumber demam (ISPA, OMA, GE)"
+  ],
+  "teachingPoints": [
+    "Kejang demam bukan epilepsi; risiko berulang ± 30%. Edukasi orang tua cara pertolongan & diazepam rektal.",
+    "Bayi < 12 bulan dengan kejang demam pertama: pertimbangkan pungsi lumbal (gejala meningitis bisa samar)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "IDAI. Rekomendasi Penatalaksanaan Kejang Demam (2016)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "kompleks",
+      "name": "Kejang demam kompleks",
+      "trait": "kompleks",
+      "redFlag": true,
+      "assess": { "topics": ["durasi", "karakter", "progresi"] },
+      "explanation": "Fokal, > 15 menit, atau berulang dalam 24 jam — perlu evaluasi lebih lanjut (rujuk)."
+    }
+  ],
+  "plan": {
+    "keyTopics": [
+      "onset",
+      "karakter",
+      "durasi",
+      "progresi",
+      "episode_sebelumnya",
+      "riwayat_keluarga",
+      "riwayat_penyakit",
+      "keluhan_lain"
+    ],
+    "exams": [
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Kesadaran pascakejang & tanda dehidrasi." },
+      { "tool": "neurologis", "role": "kunci", "reason": "Rangsang meningeal (singkirkan meningitis)." },
+      { "tool": "refleks_tonus", "role": "pendukung", "reason": "Defisit neurologis fokal." },
+      { "tool": "pemeriksaan_anak", "role": "kunci", "reason": "Ubun-ubun & status hidrasi." },
+      { "tool": "pemeriksaan_telinga", "role": "pendukung", "reason": "Mencari OMA sebagai sumber demam." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Mencari ISPA sebagai sumber demam." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "darah_lengkap", "reason": "Mencari sumber infeksi bila tidak jelas." },
+      { "tool": "gula_darah", "reason": "Bila kesadaran tidak segera pulih." },
+      { "tool": "elektrolit", "reason": "Pada diare/muntah berat." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Kejang demam kompleks atau usia < 12 bulan perlu evaluasi lanjut (rawat/neurologi anak).",
+      "when": { "traits": ["kompleks"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "observasi",
+      "reason": "Kejang demam sederhana: observasi beberapa jam, tatalaksana sumber demam, edukasi orang tua & diazepam rektal.",
+      "alsoAccept": ["rawat_jalan"]
+    }
+  ],
+  "management": [
+    "Saat kejang: posisi miring, longgarkan pakaian, jangan masukkan benda ke mulut; diazepam rektal 0,5 mg/kg (5 mg < 12 kg, 10 mg ≥ 12 kg), dapat diulang 5 menit.",
+    "Antipiretik (parasetamol 10–15 mg/kg) — tidak mencegah kejang tetapi membuat nyaman.",
+    "Obati sumber infeksi (OMA, ISPA, diare).",
+    "Edukasi: kejang demam umumnya jinak, cara pertolongan pertama, kapan ke IGD (kejang > 5 menit)."
+  ],
+  "approach": [
+    "Pastikan kejang terjadi saat demam dan usia sesuai.",
+    "Bedakan sederhana vs kompleks; singkirkan meningitis.",
+    "Cari sumber demam."
+  ]
+}

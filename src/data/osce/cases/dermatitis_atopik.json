@@ -1,0 +1,216 @@
+{
+  "disease": "dermatitis_atopik",
+  "setting": "Puskesmas",
+  "station": "Kulit — dermatitis & eksim",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid_wajah",
+        "label": "Kortikosteroid topikal lemah",
+        "role": "utama",
+        "reason": "Lesi wajah/bayi.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1% krim 2 × sehari selama ≤ 1–2 minggu",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim1"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "traits": ["bayi_wajah"] }
+      },
+      {
+        "id": "steroid_badan",
+        "label": "Kortikosteroid topikal",
+        "role": "utama",
+        "reason": "Lesi lipatan/badan saat kambuh.",
+        "options": [
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason valerat 0,1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [7, 21]
+          },
+          {
+            "drug": "mometason_krim",
+            "label": "Mometason furoat 0,1% krim 1 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [7, 21]
+          },
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 2,5% krim 2 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim25"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 21]
+          }
+        ],
+        "when": { "notTraits": ["bayi_wajah"] }
+      },
+      {
+        "id": "emolien",
+        "label": "Emolien",
+        "role": "pendukung",
+        "reason": "Terapi dasar dermatitis atopik.",
+        "options": [
+          {
+            "drug": "emolien",
+            "label": "Emolien (krim urea 10%/vaselin) 2–3 × sehari & setelah mandi",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [14, 30]
+          }
+        ]
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "pendukung",
+        "reason": "Infeksi sekunder.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      },
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "opsional",
+        "reason": "Gatal mengganggu tidur.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "opsional",
+        "reason": "Gatal mengganggu tidur.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik tidak diperlukan & berisiko rebound.",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["betametason_krim", "mometason_krim"],
+        "reason": "Steroid potensi kuat di wajah bayi berisiko atrofi.",
+        "severity": "salah",
+        "when": { "traits": ["bayi_wajah"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "mandi", "text": "Mandi air hangat singkat dengan sabun lembut, lalu emolien", "kind": "benar" },
+    { "id": "pencetus", "text": "Hindari pencetus: keringat berlebih, sabun wangi, pakaian wol", "kind": "benar" },
+    { "id": "kuku", "text": "Potong kuku pendek", "kind": "benar" },
+    {
+      "id": "susu_stop",
+      "text": "Hentikan ASI/susu & semua makanan protein tanpa bukti alergi",
+      "kind": "berbahaya",
+      "why": "Malnutrisi; diet eliminasi tanpa bukti tidak dianjurkan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dermatitis atopik (eksim): kulit kering & sangat gatal yang kambuh-kambuhan, tidak menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Pelembap rutin 2 × sehari bahkan saat tidak kambuh; krim steroid dioles tipis saat kambuh",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila muncul lepuh/luka berlubang yang cepat menyebar disertai demam, atau kulit bernanah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Kenali & hindari pencetus kekambuhan", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "steroid_terus",
+      "text": "Krim steroid boleh dipakai terus-menerus tanpa batas waktu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Atrofi kulit, striae, & rebound."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kelompok Studi Dermatologi Anak Indonesia. Panduan Dermatitis Atopik"
+    ]
+  }
+}

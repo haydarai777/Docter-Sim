@@ -1,0 +1,147 @@
+{
+  "disease": "gastritis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — nyeri dada/ulu hati",
+  "therapy": {
+    "items": [
+      {
+        "id": "ppi",
+        "label": "Penekan asam (PPI)",
+        "role": "utama",
+        "reason": "Penyembuhan mukosa lambung.",
+        "options": [
+          {
+            "drug": "omeprazol",
+            "label": "Omeprazol 20 mg 1–2 × sehari 30 menit sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 2],
+            "days": [14, 56]
+          },
+          {
+            "drug": "lansoprazol",
+            "label": "Lansoprazol 30 mg 1 × sehari sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [30, 30],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          }
+        ]
+      },
+      {
+        "id": "simtomatik",
+        "label": "Antasida/pelindung mukosa",
+        "role": "pendukung",
+        "reason": "Meredakan nyeri/perih dengan cepat.",
+        "options": [
+          {
+            "drug": "antasida",
+            "label": "Antasida 1–2 tablet kunyah 3–4 × sehari (1 jam sesudah makan/bila nyeri)",
+            "schedules": ["rutin", "prn"],
+            "dose": [1, 2],
+            "timesPerDay": [3, 4],
+            "days": [3, 14]
+          },
+          {
+            "drug": "sukralfat",
+            "label": "Sukralfat 1 g (2 sendok takar) 3–4 × sehari sebelum makan",
+            "schedules": ["rutin"],
+            "dose": [1000, 1000],
+            "timesPerDay": [3, 4],
+            "days": [7, 28]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["oains", "salisilat"],
+        "reason": "OAINS/aspirin adalah penyebab gastritis dan memicu perdarahan.",
+        "severity": "kritis"
+      },
+      { "groups": ["steroid"], "reason": "Kortikosteroid memperberat lesi mukosa.", "severity": "salah" },
+      {
+        "classes": ["antibiotik"],
+        "reason": "Antibiotik hanya untuk eradikasi H. pylori yang terbukti.",
+        "severity": "salah",
+        "when": { "notTraits": ["h_pylori"] }
+      }
+    ],
+    "note": "Hentikan pemicu (OAINS/jamu, alkohol). Perdarahan saluran cerna (muntah darah/BAB hitam) → infus, PPI intravena, rujuk segera."
+  },
+  "nonPharm": [
+    {
+      "id": "stop_oains",
+      "text": "Hentikan obat antinyeri OAINS/jamu pegal linu; bila perlu ganti dengan parasetamol",
+      "kind": "benar",
+      "when": { "traits": ["oains"] }
+    },
+    { "id": "stop_alkohol", "text": "Hentikan minuman beralkohol", "kind": "benar", "when": { "traits": ["alkohol"] } },
+    {
+      "id": "makan",
+      "text": "Makan porsi kecil tapi sering; hindari makanan sangat pedas/asam dan kopi",
+      "kind": "benar"
+    },
+    { "id": "cairan", "text": "Cukupi cairan", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Pasang infus, beri PPI intravena, puasakan sementara, lalu rujuk segera",
+      "kind": "benar",
+      "why": "Perdarahan saluran cerna atas.",
+      "when": { "traits": ["perdarahan_saluran_cerna"] }
+    },
+    { "id": "susu", "text": "Minum susu sebanyak-banyaknya untuk melapisi lambung", "kind": "pengecoh" },
+    {
+      "id": "lanjut_jamu",
+      "text": "Lanjutkan jamu pegal linu asalkan diminum setelah makan",
+      "kind": "berbahaya",
+      "why": "Pemicu tetap merusak mukosa & risiko perdarahan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Peradangan dinding lambung akibat pemicu (obat antinyeri/jamu, alkohol, makanan sangat pedas)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum omeprazol sebelum makan sesuai jadwal; antasida bila perih",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila muntah darah/seperti kopi, BAB hitam, pusing/pingsan, atau nyeri perut hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1–2 minggu atau lebih cepat bila tidak membaik",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Hindari pemicu; jangan membeli obat antinyeri/jamu sendiri tanpa resep",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "lambung",
+      "text": "Gastritis tidak bisa sembuh, harus minum obat maag seumur hidup",
+      "kind": "pengecoh",
+      "category": "diagnosis"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. PPK Fasyankes Primer — Gastritis",
+      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)"
+    ]
+  }
+}

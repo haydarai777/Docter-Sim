@@ -1,0 +1,173 @@
+{
+  "id": "abses_folikel",
+  "name": "Abses folikel rambut/kelenjar sebasea",
+  "aliases": ["Abses kulit", "Kista sebasea terinfeksi", "Ateroma meradang", "Bisul besar"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Kumpulan pus di dermis/subkutis yang berasal dari folikel rambut atau kista sebasea/epidermoid yang terinfeksi: benjolan merah, hangat, nyeri, berfluktuasi, kadang dengan punctum di tengah; pada kista yang meradang ada riwayat benjolan lama tidak nyeri. Tata laksana utama: insisi & drainase; antibiotik bila selulitis luas, demam, atau imunokompromais; eksisi kista setelah radang reda.",
+  "presentationDay": [2, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 55, "weight": 4 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.55
+  },
+  "traits": [{ "id": "kista_sebelumnya", "probability": 0.6 }, { "id": "selulitis_sekitar", "probability": 0.2 }],
+  "traitLabels": {
+    "kista_sebelumnya": "Berasal dari kista sebasea/epidermoid lama.",
+    "selulitis_sekitar": "Selulitis di sekitar abses."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 0.8, "when": { "traits": ["selulitis_sekitar"] } },
+    { "id": "benjolan_kulit", "probability": 1, "when": { "traits": ["kista_sebelumnya"] } },
+    { "id": "bisul", "probability": 1 },
+    { "id": "demam", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["bisul"], "extraPool": ["benjolan_kulit"] },
+  "clueSymptoms": ["demam", "benjolan_kulit"],
+  "misattributions": ["bisul biasa", "panas dalam", "salah urat"],
+  "fears": ["kanker", "harus operasi besar"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} ini benjolan di punggung jadi merah, panas, dan sakit sekali, Dok.",
+        "clue": "Akut, benjolan meradang"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Sebenarnya benjolannya sudah ada setahun, Dok, kecil nggak sakit, ada titik hitam di tengahnya.",
+        "reveals": ["benjolan_kulit"],
+        "when": { "traits": ["kista_sebelumnya"], "symptoms": ["benjolan_kulit"] },
+        "clue": "Kista lama dengan punctum yang kemudian meradang"
+      },
+      {
+        "text": "Sebelumnya nggak ada benjolan, Dok, mulai dari bintil kecil.",
+        "when": { "notTraits": ["kista_sebelumnya"] },
+        "clue": "Bermula dari folikel"
+      }
+    ],
+    "karakter": [{ "text": "Sekarang tengahnya terasa lunak dan berdenyut, Dok.", "clue": "Fluktuasi (abses matang)" }],
+    "keparahan": [
+      {
+        "text": "Merahnya melebar dan badan saya demam, Dok.",
+        "reveals": ["demam"],
+        "when": { "traits": ["selulitis_sekitar"], "symptoms": ["demam"] },
+        "clue": "Selulitis sekitar & demam"
+      },
+      { "text": "Nggak demam, Dok, cuma sakit di benjolannya.", "when": { "notTraits": ["selulitis_sekitar"] } }
+    ],
+    "riwayat_obat": [{ "text": "Sudah saya pencet tapi nggak keluar, Dok.", "clue": "Dipencet sendiri" }],
+    "lokasi": [
+      { "text": "Di punggung atas, Dok, dulu ada benjolan kecil di situ.", "when": { "traits": ["kista_sebelumnya"] } },
+      { "text": "Di ketiak kanan, Dok.", "when": { "notTraits": ["kista_sebelumnya"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "benjolan",
+      "when": { "traits": ["kista_sebelumnya"] },
+      "diagnostic": true,
+      "values": ["Benjolan 3 cm di punggung atas, eritema, hangat, nyeri tekan, berfluktuasi, dengan punctum di tengah"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "benjolan",
+      "when": { "notTraits": ["kista_sebelumnya"] },
+      "diagnostic": true,
+      "values": ["Benjolan 2,5 cm di aksila kanan, eritema, hangat, nyeri tekan, berfluktuasi"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "traits": ["selulitis_sekitar"] },
+      "values": ["Eritema & indurasi meluas 4 cm di sekitar abses"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.8, 38.8] },
+    {
+      "tool": "usg_superfisial",
+      "param": "lesi",
+      "values": ["Kumpulan cairan hipoekoik berdinding tebal dengan debris (abses)"]
+    },
+    { "tool": "usg_superfisial", "param": "kesan", "values": ["Abses subkutan"] }
+  ],
+  "differentials": [
+    {
+      "id": "fasiitis_nekrotikans",
+      "howToDistinguish": "Infeksi nekrotikans: nyeri hebat, bula hemoragik, krepitasi, syok — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["tanda_vital"] }
+    },
+    {
+      "id": "lipoma",
+      "howToDistinguish": "Lipoma: lunak, tidak nyeri, tidak merah.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["status_lokalis"] }
+    },
+    {
+      "id": "hidradenitis_supurativa",
+      "howToDistinguish": "Hidradenitis: nodus berulang di aksila/inguinal dengan sinus & parut.",
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    }
+  ],
+  "keyFindings": [
+    "Benjolan merah, hangat, nyeri, berfluktuasi",
+    "Riwayat kista lama dengan punctum (kista sebasea/epidermoid) atau folikulitis",
+    "Tanpa tanda infeksi dalam"
+  ],
+  "teachingPoints": [
+    "Abses berfluktuasi diobati dengan INSISI & DRAINASE — antibiotik saja tidak cukup.",
+    "Eksisi kista dilakukan setelah radang reda untuk mencegah kambuh."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_penyakit", "karakter", "keparahan", "riwayat_obat", "keluhan_lain"],
+    "exams": [{ "tool": "status_lokalis", "role": "kunci", "reason": "Ukuran, fluktuasi, punctum, selulitis sekitar." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "usg_superfisial", "reason": "Bila fluktuasi meragukan." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Insisi & drainase dengan anestesi lokal, antibiotik bila selulitis/demam; kontrol 2 hari; eksisi kista elektif.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Insisi & drainase dengan anestesi lokal (lidokain 1%), evakuasi pus, irigasi NaCl, pasang drain/tampon bila perlu.",
+    "Antibiotik oral (dikloksasilin/sefadroksil) bila selulitis, demam, wajah, atau imunokompromais.",
+    "Analgesik; ganti balutan; eksisi kista lengkap dengan kapsul setelah radang reda."
+  ],
+  "approach": ["Tentukan fluktuasi & asal (kista vs folikel).", "Nilai selulitis & tanda infeksi dalam."]
+}

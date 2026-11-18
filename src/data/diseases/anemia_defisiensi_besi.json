@@ -1,0 +1,256 @@
+{
+  "id": "anemia_defisiensi_besi",
+  "name": "Anemia defisiensi besi",
+  "aliases": ["Kurang darah", "Anemia", "ADB", "Anemia gizi besi"],
+  "system": "Darah & imunologi",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.4,
+  "summary": "Anemia akibat kekurangan besi: perdarahan kronik (haid banyak, cacing tambang, perdarahan saluran cerna), asupan kurang, atau kebutuhan meningkat. Lemas, mudah lelah, pucat, pusing, berdebar, sesak saat aktivitas; kadang pika (mengunyah es), koilonikia, keilitis angularis. Hb rendah, MCV rendah (hipokrom mikrositer), feritin rendah. Terapi besi oral dan atasi penyebab — pada laki-laki dewasa & lansia wajib cari perdarahan saluran cerna.",
+  "presentationDay": [14, 120],
+  "demographics": {
+    "ageBands": [
+      { "min": 2, "max": 9, "weight": 2 },
+      { "min": 10, "max": 19, "weight": 3 },
+      { "min": 20, "max": 45, "weight": 4 },
+      { "min": 46, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.3
+  },
+  "traits": [
+    { "id": "menorrhagia", "probability": 0.6, "when": { "sex": "female", "ageMin": 13, "ageMax": 50 } },
+    { "id": "cacingan", "probability": 0.35, "when": { "ageMax": 30 } },
+    { "id": "diet_kurang", "probability": 0.45 },
+    { "id": "perdarahan_gi", "probability": 0.25, "when": { "ageMin": 46 } },
+    { "id": "anemia_berat", "probability": 0.15 },
+    { "id": "pika", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "menorrhagia": "Haid banyak/lama.",
+    "cacingan": "Infeksi cacing tambang.",
+    "diet_kurang": "Asupan besi kurang.",
+    "perdarahan_gi": "Curiga perdarahan saluran cerna (usia > 45 th).",
+    "anemia_berat": "Anemia berat (Hb < 8).",
+    "pika": "Pika."
+  },
+  "symptoms": [
+    { "id": "sesak_napas", "probability": 0.8, "when": { "traits": ["anemia_berat"] } },
+    { "id": "ngidam_es", "probability": 1, "when": { "traits": ["pika"] } },
+    { "id": "bab_hitam", "probability": 0.6, "when": { "traits": ["perdarahan_gi"] } },
+    { "id": "nyeri_perut", "probability": 0.4, "when": { "traits": ["cacingan"] } },
+    { "id": "gatal_anus", "probability": 0.3, "when": { "traits": ["cacingan"] } },
+    { "id": "lemas", "probability": 1 },
+    { "id": "pucat", "probability": 0.8 },
+    { "id": "nyeri_kepala", "probability": 0.5 },
+    { "id": "berdebar", "probability": 0.5 },
+    { "id": "sesak_napas", "probability": 0.3 },
+    { "id": "rambut_rontok", "probability": 0.2 },
+    { "id": "sudut_bibir_pecah", "probability": 0.25 }
+  ],
+  "chiefComplaint": { "primary": ["lemas"], "extraPool": ["pucat"] },
+  "clueSymptoms": ["pucat", "nyeri_kepala", "berdebar", "sesak_napas", "ngidam_es", "rambut_rontok"],
+  "misattributions": ["darah rendah", "kecapekan", "kurang tidur", "kurang vitamin"],
+  "fears": ["kanker darah", "leukemia"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, makin lama makin gampang capek.", "clue": "Bertahap, kronik" }],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau naik tangga atau jalan agak jauh langsung ngos-ngosan dan berdebar, Dok.",
+        "clue": "Sesak & berdebar saat aktivitas"
+      }
+    ],
+    "haid_kehamilan": [
+      {
+        "text": "Haid saya banyak, Dok, sampai ganti pembalut tiap dua jam, lamanya seminggu lebih.",
+        "when": { "traits": ["menorrhagia"] },
+        "clue": "Menorrhagia (perdarahan kronik)"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya jarang makan daging atau sayur hijau, Dok, uangnya pas-pasan. Sering minum teh habis makan.",
+        "when": { "traits": ["diet_kurang"] },
+        "clue": "Asupan besi kurang, teh menghambat absorpsi"
+      },
+      {
+        "text": "Sehari-hari nyeker ke kebun, Dok, nggak pakai alas kaki.",
+        "when": { "traits": ["cacingan"] },
+        "clue": "Tanpa alas kaki di tanah (risiko cacing tambang)"
+      },
+      { "text": "Makan biasa, Dok, ada lauk sayurnya.", "when": { "notTraits": ["diet_kurang", "cacingan"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Belakangan BAB saya hitam, Dok, berat badan juga turun.",
+        "reveals": ["bab_hitam"],
+        "when": { "traits": ["perdarahan_gi"], "symptoms": ["bab_hitam"] },
+        "clue": "Melena & BB turun (curiga perdarahan saluran cerna)"
+      },
+      { "text": "Saya nggak punya sakit maag berdarah atau wasir, Dok.", "when": { "notTraits": ["perdarahan_gi"] } }
+    ],
+    "pola": [
+      {
+        "text": "Saya suka sekali ngunyah es batu, Dok, sehari bisa sekantong.",
+        "reveals": ["ngidam_es"],
+        "when": { "traits": ["pika"], "symptoms": ["ngidam_es"] },
+        "clue": "Pika (mengunyah es)"
+      },
+      { "text": "Lemasnya terus, Dok, sepanjang hari.", "when": { "notTraits": ["pika"] } }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Di keluarga nggak ada yang kurang darah turunan atau talasemia, Dok.",
+        "clue": "Tanpa riwayat talasemia keluarga"
+      }
+    ],
+    "lokasi": [{ "text": "Nggak sakit di satu tempat, Dok, badan lemas semua, gampang capek." }]
+  },
+  "findings": [
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["anemia_berat"] },
+      "diagnostic": true,
+      "range": [6, 7.9]
+    },
+    { "tool": "darah_lengkap", "param": "eosinofil", "when": { "traits": ["cacingan"] }, "range": [6, 12] },
+    {
+      "tool": "feses_rutin",
+      "param": "telur_cacing",
+      "when": { "traits": ["cacingan"] },
+      "values": ["Telur cacing tambang (+)"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["anemia_berat"] }, "range": [98, 112] },
+    {
+      "tool": "pemeriksaan_jantung",
+      "param": "auskultasi",
+      "when": { "traits": ["anemia_berat"] },
+      "probability": 0.6,
+      "values": ["Bunyi jantung I–II reguler, murmur sistolik fungsional 2/6"]
+    },
+    { "tool": "kepala_leher", "param": "konjungtiva", "diagnostic": true, "values": ["Anemis (pucat)"] },
+    { "tool": "ekstremitas_kulit", "param": "kulit", "probability": 0.7, "values": ["Telapak tangan pucat"] },
+    { "tool": "darah_lengkap", "param": "hb", "diagnostic": true, "range": [8, 10.8] },
+    { "tool": "darah_lengkap", "param": "mcv", "diagnostic": true, "range": [60, 74] },
+    { "tool": "darah_lengkap", "param": "hematokrit", "range": [24, 33] },
+    { "tool": "darah_lengkap", "param": "trombosit", "probability": 0.3, "range": [380000, 480000] },
+    {
+      "tool": "apusan_darah_tepi",
+      "param": "eritrosit",
+      "diagnostic": true,
+      "values": ["Hipokrom mikrositer, anisopoikilositosis, sel pensil (+)"]
+    },
+    { "tool": "profil_besi", "param": "feritin", "diagnostic": true, "range": [3, 12] },
+    { "tool": "profil_besi", "param": "serum_iron", "range": [15, 45] },
+    { "tool": "profil_besi", "param": "tibc", "range": [420, 520] },
+    { "tool": "profil_besi", "param": "saturasi_transferin", "range": [4, 14] },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "probability": 0.25,
+      "values": ["Kuku cekung seperti sendok (koilonikia)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "kanker_kolorektal",
+      "howToDistinguish": "Perdarahan/keganasan saluran cerna: usia > 45 th, BAB hitam/berdarah, perubahan pola BAB, BB turun — wajib dicari pada laki-laki & lansia.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit", "keluhan_lain"] }
+    },
+    {
+      "id": "talasemia_minor",
+      "howToDistinguish": "Talasemia minor: MCV sangat rendah dengan Hb ringan turun, eritrosit tinggi, feritin normal, riwayat keluarga.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["profil_besi"] }
+    },
+    {
+      "id": "anemia_penyakit_kronik",
+      "howToDistinguish": "Anemia penyakit kronik: ada infeksi/inflamasi kronik, feritin normal/tinggi.",
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    }
+  ],
+  "keyFindings": [
+    "Lemas, pucat, sesak/berdebar saat aktivitas, pika",
+    "Hb & MCV rendah, apusan hipokrom mikrositer, feritin rendah",
+    "Penyebab: haid banyak, cacing tambang, asupan kurang, perdarahan GI"
+  ],
+  "teachingPoints": [
+    "Anemia defisiensi besi adalah TANDA, bukan diagnosis akhir — selalu cari penyebabnya.",
+    "Respons terapi: Hb naik ≥ 1 g/dL dalam 2–4 minggu; lanjutkan besi 3 bulan setelah Hb normal."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Guideline on haemoglobin cutoffs to define anaemia (2024)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pemberat_peringan", "kebiasaan", "riwayat_penyakit", "pola", "keluhan_lain"],
+    "exams": [
+      { "tool": "kepala_leher", "role": "kunci", "reason": "Konjungtiva anemis." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Takikardia/murmur fungsional." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Koilonikia, keilitis angularis." }
+    ],
+    "tests": [
+      { "tool": "darah_lengkap", "role": "kunci", "reason": "Hb, MCV (mikrositik)." },
+      { "tool": "apusan_darah_tepi", "role": "pendukung", "reason": "Hipokrom mikrositer." },
+      {
+        "tool": "feses_rutin",
+        "role": "pendukung",
+        "when": { "traits": ["cacingan"] },
+        "reason": "Telur cacing tambang."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "profil_besi", "reason": "Konfirmasi defisiensi besi (feritin) bila tersedia." }]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Curiga perdarahan saluran cerna (usia > 45 th, melena): rujuk untuk endoskopi.",
+      "when": { "traits": ["perdarahan_gi"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Anemia berat simtomatik: rujuk (pertimbangkan transfusi) sambil cari penyebab.",
+      "when": { "traits": ["anemia_berat"] },
+      "alsoAccept": ["rujuk_segera"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Besi oral, atasi penyebab (cacing, haid banyak), edukasi gizi; kontrol Hb 4 minggu."
+    }
+  ],
+  "management": [
+    "Sulfas ferosus 3 × 200 mg (± 60 mg besi elemental/tablet) sampai 3 bulan setelah Hb normal; anak 3 mg/kg/hari besi elemental.",
+    "Minum bersama vitamin C/jus jeruk, jauhkan dari teh/kopi/susu; efek samping: feses hitam, mual.",
+    "Atasi penyebab: albendazol untuk cacing; rujuk obgin bila menoragia.",
+    "Gizi: daging, hati, ikan, sayur hijau; kontrol Hb 2–4 minggu."
+  ],
+  "approach": [
+    "Konfirmasi anemia mikrositer; cari sumber kehilangan darah & asupan.",
+    "Singkirkan talasemia & keganasan GI sesuai usia."
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "disease": "skrofuloderma",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi kronik (TB kulit, kusta, sifilis)",
+  "therapy": {
+    "items": [
+      {
+        "id": "oat",
+        "label": "OAT kategori 1 fase intensif",
+        "role": "utama",
+        "reason": "TB kutis (skrofuloderma): 2RHZE/4RH sesuai BB.",
+        "options": [
+          {
+            "drug": "oat_kdt_intensif",
+            "label": "OAT KDT RHZE 1 × sehari 2 bulan sesuai BB (30–37 kg: 2 · 38–54 kg: 3 · 55–70 kg: 4 · ≥ 71 kg: 5)",
+            "schedules": ["rutin"],
+            "unitsByWeight": [
+              { "minKg": 30, "maxKg": 37, "units": 2 },
+              { "minKg": 38, "maxKg": 54, "units": 3 },
+              { "minKg": 55, "maxKg": 70, "units": 4 },
+              { "minKg": 71, "maxKg": 200, "units": 5 }
+            ],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          },
+          {
+            "drug": "oat_kdt_anak",
+            "label": "OAT KDT anak RHZ 1 × sehari 2 bulan sesuai BB (5–7 kg: 1 · 8–11: 2 · 12–16: 3 · 17–22: 4 · 23–29: 5)",
+            "schedules": ["rutin"],
+            "unitsByWeight": [
+              { "minKg": 5, "maxKg": 7, "units": 1 },
+              { "minKg": 8, "maxKg": 11, "units": 2 },
+              { "minKg": 12, "maxKg": 16, "units": 3 },
+              { "minKg": 17, "maxKg": 22, "units": 4 },
+              { "minKg": 23, "maxKg": 29, "units": 5 }
+            ],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          }
+        ]
+      },
+      {
+        "id": "b6",
+        "label": "Piridoksin",
+        "role": "pendukung",
+        "reason": "Mencegah neuropati akibat isoniazid.",
+        "options": [
+          {
+            "drug": "piridoksin",
+            "label": "Vitamin B6 10 mg 1 × sehari",
+            "schedules": ["rutin"],
+            "dose": [10, 25],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      }
+    ],
+    "avoid": [{ "groups": ["kuinolon"], "reason": "Kuinolon tunggal menyamarkan TB & memicu resistansi.", "severity": "salah" }],
+    "note": "Dilanjutkan fase lanjutan 4RH. Dosis berbasis BB — timbang pasien."
+  },
+  "nonPharm": [
+    { "id": "luka", "text": "Perawatan luka & fistel; perbaikan nutrisi", "kind": "benar" },
+    { "id": "skrining", "text": "Skrining TB paru & HIV; investigasi kontak serumah", "kind": "benar" },
+    { "id": "pmo", "text": "Tunjuk Pengawas Menelan Obat (PMO)", "kind": "benar" },
+    {
+      "id": "insisi_paksa",
+      "text": "Kerok & bakar fistel dengan ramuan agar cepat menutup",
+      "kind": "berbahaya",
+      "why": "Luka & infeksi sekunder; tidak mengobati TB."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini TB kulit (skrofuloderma) dari kelenjar getah bening yang terinfeksi kuman TB",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "OAT diminum setiap hari pada perut kosong minimal 6 bulan tanpa putus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Air kencing berwarna merah karena rifampisin (normal); laporkan mata/kulit kuning, mual hebat, atau gatal-ruam",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila kuning, muntah terus, ruam kulit luas, atau penglihatan terganggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol & ambil obat tiap 2 minggu–1 bulan bersama PMO",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "stop",
+      "text": "Hentikan OAT begitu luka menutup",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Kambuh & resistansi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kemenkes RI. PNPK Tatalaksana Tuberkulosis (2020)"
+    ]
+  }
+}

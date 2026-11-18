@@ -1,0 +1,140 @@
+{
+  "disease": "napkin_eczema",
+  "setting": "Puskesmas",
+  "station": "Kulit — dermatitis & eksim",
+  "therapy": {
+    "items": [
+      {
+        "id": "pelindung",
+        "label": "Salep pelindung",
+        "role": "utama",
+        "reason": "Sawar terhadap urin & feses.",
+        "options": [
+          {
+            "drug": "zinc_oxide",
+            "label": "Salep/pasta zinc oxide dioles tebal setiap ganti popok",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 8],
+            "days": [7, 14]
+          }
+        ]
+      },
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal",
+        "role": "utama",
+        "reason": "Infeksi Candida sekunder.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["kandida"] }
+      },
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid lemah",
+        "role": "opsional",
+        "reason": "Inflamasi berat, singkat ≤ 1 minggu.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1% krim 2 × sehari selama ≤ 1–2 minggu",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim1"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [3, 7]
+          }
+        ]
+      },
+      {
+        "id": "zinc",
+        "label": "Zinc",
+        "role": "pendukung",
+        "reason": "Diare yang memperberat ruam.",
+        "options": [
+          {
+            "drug": "zinc",
+            "label": "Zinc 10–20 mg 1 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "traits": ["diare_baru"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["betametason_krim", "mometason_krim"],
+        "reason": "Steroid potensi kuat di area popok bayi (oklusi) berisiko atrofi & absorpsi sistemik.",
+        "severity": "kritis"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "ganti", "text": "Ganti popok sesering mungkin (segera setelah basah/BAB)", "kind": "benar" },
+    { "id": "bersihkan", "text": "Bersihkan dengan air hangat, keringkan, beri waktu tanpa popok", "kind": "benar" },
+    { "id": "tisu", "text": "Hindari tisu basah beralkohol/wangi & bedak", "kind": "benar" },
+    {
+      "id": "bedak_tebal",
+      "text": "Taburi bedak tebal di area popok",
+      "kind": "berbahaya",
+      "why": "Menggumpal, iritasi, & risiko terhirup."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini ruam popok: iritasi kulit karena lembap, urin, & tinja",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Salep pelindung dioles tebal setiap ganti popok",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila ada lepuh/luka bernanah, demam, bayi malas menyusu, atau ruam meluas ke luar area popok",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Ganti popok sering & biarkan kulit kering", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "popok_kain",
+      "text": "Ruam popok pasti karena alergi merek popok",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penyebab utama kelembapan & kontak urin/feses."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

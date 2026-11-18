@@ -1,0 +1,155 @@
+{
+  "disease": "ektima",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Ulkus berkrusta superfisial.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Ektima (infeksi lebih dalam) memerlukan antibiotik sistemik.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "ab_oral_anak",
+        "label": "Antibiotik oral (anak)",
+        "role": "utama",
+        "reason": "Ektima (infeksi lebih dalam) memerlukan antibiotik sistemik.",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres NaCl, angkat krusta, bersihkan ulkus", "kind": "benar" },
+    {
+      "id": "higiene",
+      "text": "Mandi teratur dengan sabun, potong kuku, handuk & pakaian tidak dipakai bersama",
+      "kind": "benar"
+    },
+    { "id": "serangga", "text": "Cegah gigitan serangga & jangan menggaruk", "kind": "benar" },
+    { "id": "gula", "text": "Periksa gula darah", "kind": "benar", "when": { "traits": ["dm_curiga"] } },
+    {
+      "id": "salep_steroid",
+      "text": "Oles salep steroid yang dibeli bebas agar cepat kering",
+      "kind": "berbahaya",
+      "why": "Steroid memperberat infeksi kulit."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini ektima: infeksi bakteri kulit lebih dalam yang membentuk koreng",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antibiotik diminum & dioles sampai habis; luka dapat meninggalkan bekas",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila kemerahan meluas, demam, atau luka makin dalam/berbau",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

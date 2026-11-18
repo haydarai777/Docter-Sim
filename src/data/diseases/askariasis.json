@@ -1,0 +1,201 @@
+{
+  "id": "askariasis",
+  "name": "Askariasis",
+  "aliases": ["Cacingan", "Cacing gelang", "Ascaris"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Infeksi cacing gelang Ascaris lumbricoides melalui telur di tanah/makanan/tangan kotor, tersering anak 2–10 tahun. Nyeri perut samar sekitar pusar, mual, nafsu makan turun, perut buncit, gizi kurang; cacing keluar bersama tinja atau muntah. Komplikasi: obstruksi usus, askariasis bilier. Telur Ascaris pada feses. Terapi albendazol dosis tunggal; obat cacing massal tiap 6 bulan.",
+  "presentationDay": [7, 90],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 4 },
+      { "min": 6, "max": 9, "weight": 4 },
+      { "min": 10, "max": 15, "weight": 2 },
+      { "min": 16, "max": 50, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [
+      { "id": "balita", "weight": 2 },
+      { "id": "anak_tk", "weight": 2 },
+      { "id": "anak_sd", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 2 }
+    ],
+    "occupationBias": 0.5
+  },
+  "traits": [{ "id": "gizi_kurang", "probability": 0.35, "when": { "ageMax": 15 } }, { "id": "obstruksi", "probability": 0.04 }],
+  "traitLabels": { "gizi_kurang": "Gizi kurang.", "obstruksi": "Obstruksi usus oleh gumpalan cacing." },
+  "symptoms": [
+    { "id": "mual_muntah", "probability": 1, "when": { "traits": ["obstruksi"] } },
+    { "id": "bb_tidak_naik", "probability": 0.8, "when": { "traits": ["gizi_kurang"] } },
+    { "id": "konstipasi", "probability": 1, "when": { "traits": ["obstruksi"] } },
+    { "id": "keluar_cacing", "probability": 1 },
+    { "id": "nyeri_perut", "probability": 0.8 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 },
+    { "id": "perut_membuncit", "probability": 0.4 },
+    { "id": "mual_muntah", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["keluar_cacing"], "extraPool": ["nyeri_perut"] },
+  "clueSymptoms": ["nyeri_perut", "nafsu_makan_turun", "perut_membuncit", "mual_muntah", "bb_tidak_naik", "konstipasi"],
+  "misattributions": ["kebanyakan makan permen", "masuk angin", "sawan"],
+  "fears": ["cacingnya naik ke otak", "usus tersumbat"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit} perutnya sering sakit dan susah makan, Dok. Tadi pagi waktu BAB keluar cacing panjang kayak mi, masih gerak.",
+        "clue": "Cacing gelang keluar bersama tinja"
+      }
+    ],
+    "lokasi": [{ "text": "Perutnya sering sakit di sekitar pusar, Dok, hilang-timbul.", "clue": "Nyeri periumbilikal samar" }],
+    "kebiasaan": [
+      {
+        "text": "Dia suka main tanah, jarang cuci tangan, suka jajan sembarangan, Dok. Belum pernah minum obat cacing.",
+        "clue": "Higiene tangan buruk, belum obat cacing"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang muntah terus, Dok, perutnya kembung keras, dua hari nggak BAB.",
+        "reveals": ["mual_muntah", "konstipasi"],
+        "when": { "traits": ["obstruksi"], "symptoms": ["mual_muntah", "konstipasi"] },
+        "clue": "Muntah, distensi, tidak BAB (curiga obstruksi)"
+      },
+      {
+        "text": "Masih mau main, Dok, cuma makannya susah.",
+        "when": { "notTraits": ["obstruksi"] },
+        "clue": "Tanpa tanda obstruksi"
+      }
+    ],
+    "bepergian_lingkungan": [{ "text": "Di rumah belum ada jamban, Dok, anak-anak BAB di kebun.", "clue": "Sanitasi buruk" }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "inspeksi",
+      "when": { "traits": ["obstruksi"] },
+      "values": ["Distensi, tampak darm contour"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "auskultasi",
+      "when": { "traits": ["obstruksi"] },
+      "values": ["Bising usus meningkat bernada tinggi (metalik)"]
+    },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "inspeksi",
+      "when": { "symptoms": ["perut_membuncit"] },
+      "values": ["Sedikit buncit"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "status_gizi",
+      "when": { "traits": ["gizi_kurang"] },
+      "values": ["Gizi kurang (BB/TB antara −3 dan −2 SD)"]
+    },
+    {
+      "tool": "timbangan",
+      "param": "imt",
+      "absolute": true,
+      "when": { "traits": ["gizi_kurang"] },
+      "range": [12, 13.5]
+    },
+    {
+      "tool": "feses_rutin",
+      "param": "telur_cacing",
+      "probability": 0.95,
+      "diagnostic": true,
+      "values": ["Telur Ascaris lumbricoides (+)"]
+    },
+    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.6, "range": [5, 10] }
+  ],
+  "differentials": [
+    {
+      "id": "ileus_obstruksi",
+      "howToDistinguish": "Obstruksi usus (bolus cacing): muntah, distensi, tidak BAB/flatus, bising usus metalik — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "taeniasis",
+      "howToDistinguish": "Taeniasis: keluar potongan pipih seperti pita/biji ketimun (proglotid), bukan cacing silindris.",
+      "excludeBy": { "topics": ["onset"], "tools": ["feses_rutin"] }
+    },
+    {
+      "id": "enterobiasis",
+      "howToDistinguish": "Enterobiasis: cacing kecil putih seperti benang, gatal anus malam hari.",
+      "excludeBy": { "topics": ["onset", "keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Anak dengan cacing gelang keluar bersama tinja/muntah",
+    "Nyeri perut periumbilikal, nafsu makan turun, gizi kurang",
+    "Telur Ascaris pada feses"
+  ],
+  "teachingPoints": [
+    "Albendazol dosis tunggal 400 mg (anak ≥ 2 tahun; 1–2 tahun 200 mg); obat cacing massal tiap 6 bulan di daerah endemis."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Permenkes 15/2017 tentang Penanggulangan Cacingan"
+    ]
+  },
+  "complications": [
+    {
+      "id": "obstruksi",
+      "name": "Obstruksi usus oleh cacing",
+      "trait": "obstruksi",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_abdomen"], "topics": ["keparahan"] },
+      "explanation": "Muntah, distensi, tidak BAB — jangan beri obat cacing, rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "kebiasaan", "keparahan", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Tanda obstruksi." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Status gizi." },
+      { "tool": "pemeriksaan_anak", "role": "pendukung", "when": { "ageMax": 9 }, "reason": "Z-skor gizi." }
+    ],
+    "tests": [{ "tool": "feses_rutin", "role": "kunci", "reason": "Telur Ascaris." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Obstruksi usus: puasakan, infus, rujuk segera (jangan beri obat cacing).",
+      "when": { "traits": ["obstruksi"] }
+    },
+    { "value": "rawat_jalan", "reason": "Albendazol dosis tunggal, perbaikan gizi & higiene; obati anggota keluarga." }
+  ],
+  "management": [
+    "Albendazol 400 mg dosis tunggal (1–2 tahun 200 mg) atau pirantel pamoat 10 mg/kg dosis tunggal.",
+    "Cuci tangan pakai sabun, potong kuku, jamban sehat, makanan bersih.",
+    "Obat cacing berkala tiap 6 bulan; perbaikan gizi."
+  ],
+  "approach": ["Identifikasi jenis cacing dari deskripsi & feses.", "Singkirkan obstruksi usus sebelum memberi obat cacing."]
+}

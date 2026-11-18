@@ -1,0 +1,149 @@
+{
+  "disease": "rinitis_alergi",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan hidung",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "utama",
+        "reason": "Antihistamin H1 generasi kedua.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "utama",
+        "reason": "Antihistamin H1 generasi kedua.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "steroid_nasal",
+        "label": "Kortikosteroid intranasal",
+        "role": "utama",
+        "reason": "Rinitis alergi persisten/sedang-berat.",
+        "options": [
+          {
+            "drug": "mometason_nasal",
+            "label": "Mometason furoat semprot hidung 1–2 semprot (50–100 mcg) tiap lubang 1 × sehari",
+            "schedules": ["rutin"],
+            "dose": [50, 100],
+            "timesPerDay": [1, 1],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "traits": ["persisten"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Infeksi virus/non-bakteri: antibiotik tidak diperlukan.",
+        "severity": "salah"
+      },
+      { "groups": ["steroid"], "reason": "Steroid oral tidak diperlukan pada rinitis alergi.", "severity": "salah" }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "alergen",
+      "text": "Hindari alergen: jemur kasur, sarung bantal anti tungau, kurangi karpet/boneka berbulu",
+      "kind": "benar"
+    },
+    { "id": "cuci", "text": "Cuci hidung dengan NaCl 0,9%", "kind": "benar" },
+    {
+      "id": "asma",
+      "text": "Kendalikan asma yang menyertai",
+      "kind": "benar",
+      "when": { "traits": ["asma_menyertai"] }
+    },
+    {
+      "id": "dekongestan_terus",
+      "text": "Pakai semprot dekongestan setiap hari jangka panjang",
+      "kind": "berbahaya",
+      "why": "Rinitis medikamentosa."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Pilek & bersin karena alergi (paling sering debu/tungau)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai teratur saat gejala; semprot steroid efektif setelah beberapa hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    { "id": "es", "text": "Antihistamin dapat menyebabkan kantuk ringan", "kind": "benar", "category": "efek_samping" },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila sesak/mengi, nyeri wajah dengan ingus kental, atau mimisan berulang",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–4 minggu untuk menilai kendali gejala",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "sembuh",
+      "text": "Alergi akan sembuh total setelah obat habis",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Penyakit kronik — fokus pengendalian."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL",
+      "ARIA Guidelines 2019/2020"
+    ]
+  }
+}

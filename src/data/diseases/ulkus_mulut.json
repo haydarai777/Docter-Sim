@@ -1,0 +1,205 @@
+{
+  "id": "ulkus_mulut",
+  "name": "Ulkus mulut (stomatitis aftosa/herpetik)",
+  "aliases": ["Sariawan", "Stomatitis aftosa rekuren", "Stomatitis herpetika", "Aftosa", "Sariawan berulang"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Stomatitis aftosa rekuren: ulkus bulat/oval dangkal, nyeri, dasar putih kekuningan dengan tepi eritematosa di mukosa tidak berkeratin (bibir, pipi, lidah), sembuh 7–14 hari, kambuh saat stres, haid, trauma, defisiensi (besi, B12, folat). Gingivostomatitis herpetika primer (anak): demam, vesikel berkelompok yang pecah menjadi ulkus di gusi & palatum, gusi bengkak merah. Ulkus > 3 minggu tidak sembuh harus dirujuk (keganasan).",
+  "presentationDay": [1, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 5, "weight": 2 },
+      { "min": 6, "max": 9, "weight": 1 },
+      { "min": 10, "max": 30, "weight": 4 },
+      { "min": 31, "max": 60, "weight": 3 }
+    ],
+    "maleRatio": 0.45
+  },
+  "traits": [
+    { "id": "herpetik", "probability": 0.25, "when": { "ageMax": 9 } },
+    { "id": "pencetus_haid_stres", "probability": 0.5, "when": { "notTraits": ["herpetik"] } },
+    { "id": "defisiensi_curiga", "probability": 0.15, "when": { "notTraits": ["herpetik"] } }
+  ],
+  "traitLabels": {
+    "herpetik": "Gingivostomatitis herpetika primer.",
+    "pencetus_haid_stres": "Kambuh saat stres/haid/tergigit.",
+    "defisiensi_curiga": "Curiga defisiensi besi/vitamin (sering kambuh)."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 1, "when": { "traits": ["herpetik"] } },
+    { "id": "rewel", "probability": 0.8, "when": { "traits": ["herpetik"] } },
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "traits": ["herpetik"] } },
+    { "id": "benjolan_kgb", "probability": 0.5, "when": { "traits": ["herpetik"] } },
+    { "id": "lemas", "probability": 0.4, "when": { "traits": ["defisiensi_curiga"] } },
+    { "id": "sariawan", "probability": 1 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["sariawan"], "extraPool": ["nafsu_makan_turun"] },
+  "clueSymptoms": ["demam", "rewel", "nafsu_makan_turun", "malas_menyusu", "benjolan_kgb", "lemas"],
+  "misattributions": ["panas dalam", "kurang vitamin C", "kurang minum"],
+  "fears": ["kanker mulut", "penyakit menular"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Baru {hariTeks} hari, Dok, mulainya panas tinggi, terus mulut penuh luka, nggak mau makan.",
+        "reveals": ["demam"],
+        "when": { "traits": ["herpetik"], "symptoms": ["demam"] },
+        "clue": "Demam diikuti ulkus multipel (herpetik)"
+      },
+      {
+        "text": "Baru {hariTeks} hari, Dok, muncul sariawan, perih kalau makan.",
+        "when": { "notTraits": ["herpetik"] },
+        "clue": "Akut"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sering, Dok, hampir tiap bulan, apalagi kalau mau haid atau lagi banyak pikiran.",
+        "when": { "traits": ["pencetus_haid_stres"], "sex": "female" },
+        "clue": "Rekuren dengan pencetus"
+      },
+      {
+        "text": "Sering, Dok, hampir tiap bulan, apalagi kalau lagi banyak pikiran atau tergigit.",
+        "when": { "traits": ["pencetus_haid_stres"], "sex": "male" },
+        "clue": "Rekuren dengan pencetus"
+      },
+      {
+        "text": "Sering sekali kambuh, Dok, badan juga gampang capek.",
+        "when": { "traits": ["defisiensi_curiga"] },
+        "clue": "Sering kambuh + lemas (curiga defisiensi)"
+      },
+      { "text": "Baru kali ini begini, Dok.", "when": { "traits": ["herpetik"] }, "clue": "Episode pertama" },
+      {
+        "text": "Kadang-kadang saja, Dok, kalau tergigit.",
+        "when": { "notTraits": ["herpetik", "pencetus_haid_stres", "defisiensi_curiga"] },
+        "clue": "Kadang, dipicu trauma"
+      }
+    ],
+    "durasi": [
+      {
+        "text": "Biasanya seminggu-dua minggu sembuh sendiri, Dok.",
+        "when": { "notTraits": ["herpetik"] },
+        "clue": "Sembuh sendiri 7–14 hari (bukan ulkus kronik)"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya nggak merokok atau nyirih, Dok.",
+        "when": { "ageMin": 18 },
+        "clue": "Tanpa faktor risiko keganasan rongga mulut"
+      },
+      { "text": "Dia makannya susah, Dok.", "when": { "ageMax": 17 } }
+    ],
+    "lokasi": [
+      { "text": "Di gusi, langit-langit, dan bibir, Dok.", "when": { "traits": ["herpetik"] } },
+      { "text": "Di bibir bagian dalam, Dok.", "when": { "notTraits": ["herpetik"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "when": { "traits": ["herpetik"] },
+      "diagnostic": true,
+      "values": ["Vesikel & ulkus kecil berkelompok di gingiva, palatum, & bibir; gingiva bengkak hiperemis"]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "kgb",
+      "when": { "traits": ["herpetik"] },
+      "values": ["KGB submandibula membesar, nyeri tekan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["herpetik"] }, "range": [38.3, 39.5] },
+    {
+      "tool": "kepala_leher",
+      "param": "konjungtiva",
+      "when": { "traits": ["defisiensi_curiga"] },
+      "probability": 0.6,
+      "values": ["Anemis (pucat)"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "diagnostic": true,
+      "values": ["Ulkus bulat 4 mm dangkal, dasar putih kekuningan, tepi eritematosa di mukosa labial bawah"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "kanker_rongga_mulut",
+      "howToDistinguish": "Keganasan: ulkus tunggal > 3 minggu tidak sembuh, indurasi, mudah berdarah, perokok/penyirih — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["durasi", "kebiasaan"], "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "kandidiasis_mulut",
+      "howToDistinguish": "Kandidiasis: plak putih yang dapat dikerok, bukan ulkus.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "hfmd",
+      "howToDistinguish": "HFMD: ulkus mulut disertai vesikel di telapak tangan & kaki.",
+      "excludeBy": { "tools": ["pemeriksaan_tenggorok"], "topics": ["keluhan_lain"] }
+    }
+  ],
+  "keyFindings": [
+    "Ulkus dangkal nyeri dasar putih-kuning tepi eritema, sembuh 7–14 hari, berulang (aftosa)",
+    "Anak demam + vesikel/ulkus multipel gingiva (herpetik primer)"
+  ],
+  "teachingPoints": ["Ulkus mulut yang tidak sembuh > 3 minggu wajib dirujuk untuk biopsi."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PGI/PPHI. Konsensus Nasional Penatalaksanaan Gangguan Saluran Cerna"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "episode_sebelumnya", "durasi", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Morfologi & lokasi ulkus, vesikel, gingiva." },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "KGB & anemia." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "darah_lengkap", "reason": "Aftosa sering kambuh: skrining anemia/defisiensi." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Topikal & simptomatik; herpetik: asiklovir bila awal, hidrasi; kontrol bila > 2 minggu."
+    }
+  ],
+  "management": [
+    "Aftosa: kumur antiseptik/benzidamin, triamsinolon asetonid 0,1% in orabase, hindari makanan pedas/asam & trauma.",
+    "Atasi pencetus; periksa anemia/defisiensi bila sering kambuh.",
+    "Herpetik primer: asiklovir oral bila < 72 jam, analgesik-antipiretik, hidrasi (waspada dehidrasi pada anak)."
+  ],
+  "approach": [
+    "Tentukan morfologi (ulkus vs vesikel vs plak), jumlah, durasi, & rekurensi.",
+    "Singkirkan keganasan pada ulkus kronik."
+  ]
+}

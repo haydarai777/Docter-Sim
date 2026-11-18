@@ -7,6 +7,25 @@ Setiap file punya blok `review` dengan `status`:
 - `SEDANG_DITINJAU`
 - `DISETUJUI` — isi juga `reviewer` dan `date`
 
+## Generator konten SKDI 4A
+
+133 penyakit SKDI 4A yang ditambahkan setelah 13 penyakit awal, beserta gejala, alat pemeriksaan,
+kondisi banding, kunci OSCE, dan perluasan formularium **dibuat oleh skrip Python** di
+`scripts/content-gen/` (bukan disunting langsung di JSON):
+
+| Skrip | Menghasilkan |
+|---|---|
+| `tools_new.py` | Alat pemeriksaan baru (mata, THT, saraf, kulit, genital, obstetri, anak, lab & pencitraan) & nilai rujukan per usia |
+| `lib.py`, `b_00_gejala.py` … `b_11_kulit_trauma.py`, `build.py` | Gejala & kelompok tinjauan, kondisi banding, file penyakit, `diseases/index.ts`, isyarat penampilan |
+| `osce_formulary.py` | Perluasan `osce/formulary.json` |
+| `osce_lib.py`, `o_01_mata.py` … `o_09_kulit_trauma.py`, `osce_build.py` | `osce/cases/<id>.json` & `osce/index.ts` |
+| `skdi_doc.py` | `docs/skdi-4a.md` (daftar cakupan SKDI 4A) |
+
+Cara memakai: jalankan skrip dengan `python3 -I` dari foldernya (`build.py` dan `osce_build.py` menerima
+nama batch tertentu), lalu `npm run format-data` dan `npm run validate-content`. Pustaka generator
+memuat pemeriksaan tambahan (mis. kalimat penyangkalan di riwayat, alternatif obat bila pasien alergi,
+kategori KIE wajib) agar kesalahan konten tertangkap sebelum validator TypeScript.
+
 ## Anatomi file penyakit (`diseases/*.json`)
 
 | Field | Isi |
@@ -17,24 +36,50 @@ Setiap file punya blok `review` dengan `status`:
 | `demographics` | Kelompok usia berbobot, rasio laki-laki, pekerjaan berisiko |
 | `traits` | Variabel laten. Aturan **pertama** yang kondisinya cocok untuk suatu id menentukan peluangnya |
 | `symptoms` | Gejala + probabilitas (+ kondisi opsional). Aturan pertama yang cocok per id dipakai |
-| `chiefComplaint` | Gejala yang disebut pertama (sisanya harus digali) |
-| `anamnesis` | Varian jawaban per kategori. `clue` = petunjuk diagnostik (dinilai di ringkasan). `reveals` = gejala yang ikut terungkap |
+| `chiefComplaint` | Gejala yang disebut pertama (sisanya harus digali). Minimal satu gejala `primary` harus pasti ada — atau sepasang gejala yang saling melengkapi lewat `traits`/`notTraits` yang sama (mis. dispepsia: nyeri ulu hati pada pola nyeri, cepat kenyang pada pola begah) |
+| `anamnesis` | Varian jawaban per topik anamnesis. `clue` = petunjuk diagnostik (topik ini jadi "kunci" saat penilaian). `reveals` = gejala yang ikut terungkap |
 | `findings` | Nilai abnormal per (alat, parameter). Aturan pertama yang cocok dipakai; `probability` = sensitivitas/prevalensi tanda; `diagnostic: true` = sensitivitas tes (selalu 100% jika akurasi realistis dimatikan) |
-| `differentials` | Diagnosis banding yang ada di game + cara membedakannya |
-| `keyFindings`, `teachingPoints`, `idealWorkup` | Bahan layar edukasi; `idealWorkup` juga dasar bonus hemat |
+| `differentials` | Diagnosis banding (id katalog: penyakit, komorbiditas, atau `conditions.json`) + `howToDistinguish`, `mustNotMiss` (berbahaya), `excludeBy` (bukti sah untuk menyingkirkan: topik/gejala/alat) |
+| `plan` | Rencana pemeriksaan sesuai indikasi: `keyTopics`, `exams` (fisik) & `tests` (penunjang) dengan peran `kunci`/`pendukung`/`komplikasi`, `group` (saling menggantikan), `when`; `unnecessary` = pemeriksaan yang tidak tepat + alasan; `optional` = pemeriksaan yang **boleh** dilakukan tanpa penalti tetapi tidak wajib (mis. tes H. pylori pada dispepsia) |
+| `complications` | Komplikasi/tanda bahaya: `trait` (ada bila trait ada), `redFlag`, `assess` (cara menilainya), `explanation` |
+| `disposition` | Aturan disposisi berurutan (`when` → `value`, `alsoAccept`, `reason`); aturan terakhir tanpa kondisi |
+| `management`, `approach` | Prinsip tata laksana (tanpa dosis) & langkah penalaran yang dianjurkan |
+| `pitfalls` | Umpan balik asumsi keliru (mis. menyingkirkan batu karena fungsi ginjal normal) |
+| `traitComorbidities` | Trait yang sebenarnya komorbiditas (mis. `hipertensi` pada angina) — diharapkan dicatat sebagai masalah lain |
+| `keyFindings`, `teachingPoints` | Bahan layar edukasi |
+
+## File lain
+
+| File | Isi |
+|---|---|
+| `comorbidities.json` | Komorbiditas (peluang, syarat usia, gejala, temuan, riwayat yang diketahui pasien, `detectBy`, tata laksana) & temuan insidental. Kalimat `history` digabung ke jawaban anamnesis tanpa kontradiksi: penyangkalan umum ("Nggak ada penyakit apa-apa") dibuang, pembuka kepribadian dipertahankan, dan kalimat tidak ditambahkan bila jawaban sudah menyebut nama/alias kondisi atau frasa `history.mentions` |
+| `conditions.json` | Kondisi yang hanya muncul sebagai diagnosis banding (tidak pernah menjadi pasien) |
+| `anamnesis.json` | Topik anamnesis (kata kunci untuk pertanyaan bebas, bobot, alasan), templat percakapan, tinjauan sistem. Topik tanpa `core` (identitas, pendapat/kekhawatiran/harapan pasien, haid & kehamilan) bisa ditanyakan tetapi tidak dinilai. Tinjauan `weak: true` (perut, kepala, dada, mata, kulit) hanya dipakai bila pertanyaan tidak menyebut gejala spesifik. Setelah mengubah kata kunci, jalankan `npm run nlu-benchmark` |
+| `tools.json` | Alat: kategori (`fisik`/`lab`/`pencitraan`/`lainnya`), `group` (sistem organ, fisik), `objectives` & `purpose` (penunjang). Parameter teks boleh punya `normalFemale`; parameter angka boleh punya `refByAge` (nilai rujukan anak) |
+| `population.json` | Nama, pekerjaan (termasuk bayi/balita/anak TK/SD), nama anak (`childNames`), alergi |
+| `personalities.json` | Gaya jawaban per kepribadian, termasuk `pengantar` (sapaan & bingkai keluhan saat orang tua menjawab untuk anaknya) |
+| `osce/` | Mode OSCE: `formulary.json` (obat, sediaan, golongan alergi, dosis harian maksimum), `cases/<penyakit>.json` (kunci terapi beserta alternatif & rentang dosis, obat yang dihindari, saran non-farmakologi & KIE benar/pengecoh/berbahaya), `procedures.json` (langkah prosedur, pengecoh, pertanyaan). Lihat `docs/osce.md` |
 
 Parameter yang **tidak** disebut di `findings` otomatis bernilai normal.
 
 ## Kondisi (`when`)
 
-`dayMin`, `dayMax`, `ageMin`, `ageMax`, `sex`, `occupations`, `traits`, `notTraits`,
-`symptoms`, `notSymptoms`. Semua yang diisi harus terpenuhi.
+`dayMin`, `dayMax`, `ageMin`, `ageMax`, `sex`, `occupations`, `personality` (id kepribadian),
+`traits`, `notTraits`, `symptoms`, `notSymptoms`. Semua yang diisi harus terpenuhi.
+`notTraits` = tidak satu pun trait itu ada. Fallback umum di `anamnesis.json` tidak boleh
+bersyarat trait/gejala (khusus penyakit).
+
+Varian jawaban yang cocok dipilih **acak berbobot**. Agar petunjuk selalu muncul bila trait-nya ada,
+buat varian yang saling eksklusif (mis. `traits: [a]`, `traits: [a], notTraits: [b]`, dst.) dan
+beri varian umum `notTraits` untuk semua trait pemicu.
 
 ## Placeholder teks
 
-`{hari}`, `{hariTeks}`, `{nama}`, `{sapaan}`, `{usia}`, `{pekerjaan}`, `{salahKira}`,
+`{hari}`, `{hariTeks}`, `{lamaSakit}`, `{nama}`, `{panggilan}`, `{sapaan}`, `{usia}`, `{pekerjaan}`,
+`{kegiatan}` (kerja/sekolah/kuliah/mengurus rumah/beraktivitas sesuai pekerjaan), `{salahKira}`,
 `{ketakutan}`, `{waktu}`, `{kotaWisata}`, dan kunci `context` milik penyakit
 (mis. `{daerahEndemis}`). Huruf pertama kapital (`{Keluhan}`) = nilai dikapitalkan.
+Templat detail gejala (`conversation.detail`) memakai `{gejala}`/`{Gejala}` dan `{lamaGejala}`.
 
 ## Rujukan utama
 

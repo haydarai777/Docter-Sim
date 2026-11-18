@@ -1,0 +1,253 @@
+{
+  "id": "otitis_media_akut",
+  "name": "Otitis media akut",
+  "aliases": ["OMA", "Radang telinga tengah", "Congek akut"],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.4,
+  "summary": "Infeksi akut telinga tengah, tersering pada anak setelah ISPA (tuba Eustachius pendek & horizontal). Stadium: oklusi → hiperemis → supurasi (membran timpani bulging, nyeri hebat, demam tinggi) → perforasi (otore, nyeri berkurang) → resolusi. Pada anak kecil: rewel, menarik-narik telinga, demam. Komplikasi: mastoiditis, OMSK.",
+  "presentationDay": [1, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 0, "max": 0, "weight": 1 },
+      { "min": 1, "max": 5, "weight": 5 },
+      { "min": 6, "max": 9, "weight": 3 },
+      { "min": 10, "max": 30, "weight": 2 },
+      { "min": 31, "max": 55, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "balita", "weight": 2 }, { "id": "anak_tk", "weight": 2 }],
+    "occupationBias": 0.2
+  },
+  "traits": [
+    { "id": "perforasi", "probability": 0.25 },
+    { "id": "supurasi", "probability": 0.45, "when": { "notTraits": ["perforasi"] } },
+    { "id": "didahului_ispa", "probability": 0.8 },
+    { "id": "mastoiditis", "probability": 0.03 }
+  ],
+  "traitLabels": {
+    "perforasi": "Stadium perforasi (otore).",
+    "supurasi": "Stadium supurasi (membran timpani bulging).",
+    "didahului_ispa": "Didahului batuk-pilek.",
+    "mastoiditis": "Komplikasi mastoiditis."
+  },
+  "symptoms": [
+    { "id": "nyeri_telinga", "probability": 1, "when": { "notTraits": ["perforasi"] } },
+    { "id": "telinga_berair", "probability": 1, "when": { "traits": ["perforasi"] } },
+    { "id": "demam", "probability": 1, "when": { "traits": ["supurasi"] } },
+    { "id": "pilek", "probability": 0.9, "when": { "traits": ["didahului_ispa"] } },
+    { "id": "batuk", "probability": 0.6, "when": { "traits": ["didahului_ispa"] } },
+    { "id": "rewel", "probability": 0.9, "when": { "ageMax": 4 } },
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "ageMax": 1 } },
+    { "id": "nyeri_telinga", "probability": 0.5 },
+    { "id": "demam", "probability": 0.6 },
+    { "id": "pendengaran_turun", "probability": 0.5 },
+    { "id": "telinga_penuh", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_telinga", "telinga_berair"], "extraPool": ["demam", "pilek"] },
+  "clueSymptoms": ["demam", "pilek", "batuk", "pendengaran_turun", "telinga_penuh", "rewel"],
+  "misattributions": ["masuk angin", "tumbuh gigi", "kemasukan air waktu mandi"],
+  "fears": ["telinga budek", "infeksi ke otak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mulai {hariTeks} hari lalu, Dok. Seminggu sebelumnya batuk pilek.",
+        "when": { "traits": ["didahului_ispa"] },
+        "clue": "Didahului ISPA"
+      },
+      { "text": "Mulai {hariTeks} hari lalu, Dok, mendadak.", "when": { "notTraits": ["didahului_ispa"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Sakitnya dalam di telinga, Dok, nyut-nyutan, malam paling parah.",
+        "when": { "notTraits": ["perforasi"] },
+        "clue": "Nyeri telinga dalam, memberat malam"
+      },
+      {
+        "text": "Tadi pagi keluar cairan kuning dari telinga, Dok, habis itu sakitnya malah berkurang.",
+        "reveals": ["telinga_berair"],
+        "when": { "traits": ["perforasi"], "symptoms": ["telinga_berair"] },
+        "clue": "Otore lalu nyeri berkurang (perforasi)"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Telinga kanan, Dok. Daun telinganya sih kalau dipegang nggak sakit.",
+        "clue": "Unilateral, tanpa nyeri tarik aurikula"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Rewel terus, Dok, nggak bisa tidur, telinganya ditarik-tarik.",
+        "when": { "ageMax": 4 },
+        "clue": "Rewel & menarik telinga (anak)"
+      },
+      {
+        "text": "Sakit sekali, Dok, sampai nggak bisa tidur. Badan panas.",
+        "reveals": ["demam"],
+        "when": { "ageMin": 5, "traits": ["supurasi"], "symptoms": ["demam"] },
+        "clue": "Nyeri hebat + demam"
+      }
+    ],
+    "episode_sebelumnya": [{ "text": "Baru kali ini telinganya sakit, Dok.", "clue": "Episode pertama (bukan OMSK)" }],
+    "riwayat_obat": [{ "text": "Baru minum obat penurun panas, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "when": { "traits": ["supurasi"] },
+      "diagnostic": true,
+      "values": ["Membran timpani kanan bulging, hiperemis kekuningan, refleks cahaya (−)"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "when": { "traits": ["perforasi"] },
+      "diagnostic": true,
+      "values": ["Perforasi sentral kecil membran timpani kanan dengan sekret mukopurulen berdenyut"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "traits": ["perforasi"] },
+      "values": ["Sekret mukopurulen di MAE kanan, liang tidak edema"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "tes_penala",
+      "when": { "ageMin": 7 },
+      "probability": 0.7,
+      "values": ["Rinne (−) kanan, Weber lateralisasi ke kanan (tuli konduktif)"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "aurikula",
+      "when": { "traits": ["mastoiditis"] },
+      "values": ["Bengkak & nyeri retroaurikula kanan, daun telinga terdorong ke depan"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["supurasi"] }, "range": [38.5, 39.5] },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.4] },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["mastoiditis"] }, "range": [39, 40] },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "mukosa_konka",
+      "when": { "traits": ["didahului_ispa"] },
+      "probability": 0.8,
+      "values": ["Mukosa hiperemis edema"]
+    },
+    { "tool": "pemeriksaan_hidung", "param": "sekret_hidung", "when": { "symptoms": ["pilek"] }, "values": ["Mukoid"] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "when": { "traits": ["didahului_ispa"] },
+      "probability": 0.6,
+      "values": ["Faring hiperemis"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "diagnostic": true,
+      "values": ["Membran timpani kanan hiperemis, refleks cahaya menghilang"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "otitis_eksterna",
+      "howToDistinguish": "Otitis eksterna: nyeri tarik aurikula/tekan tragus, liang telinga edema; membran timpani normal.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    },
+    {
+      "id": "mastoiditis",
+      "howToDistinguish": "Mastoiditis: bengkak & nyeri retroaurikula, daun telinga terdorong, demam tinggi — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_telinga", "tanda_vital"] }
+    },
+    {
+      "id": "otitis_media_efusi",
+      "howToDistinguish": "OME: telinga penuh & tuli tanpa nyeri/demam; membran timpani suram dengan air-fluid level.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri telinga akut ± demam setelah ISPA; anak rewel menarik telinga",
+    "Membran timpani hiperemis / bulging / perforasi dengan otore",
+    "Tanpa nyeri tarik aurikula"
+  ],
+  "teachingPoints": [
+    "Pada OMA perforasi, nyeri justru berkurang setelah otore — jangan disangka membaik.",
+    "Bayi demam rewel tanpa fokus: selalu lakukan otoskopi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "complications": [
+    {
+      "id": "mastoiditis",
+      "name": "Mastoiditis",
+      "trait": "mastoiditis",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_telinga", "tanda_vital"] },
+      "explanation": "Nyeri & bengkak di belakang telinga, demam tinggi — rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "lokasi", "keparahan", "episode_sebelumnya", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_telinga",
+        "role": "kunci",
+        "reason": "Membran timpani (stadium), liang telinga, retroaurikula, tes penala."
+      },
+      { "tool": "pemeriksaan_hidung", "role": "pendukung", "reason": "Fokus infeksi hidung (ISPA)." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Faring/tonsil sebagai sumber infeksi." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    { "value": "rujuk_segera", "reason": "Mastoiditis: rujuk segera ke RS.", "when": { "traits": ["mastoiditis"] } },
+    {
+      "value": "rawat_jalan",
+      "reason": "Antibiotik oral, analgesik-antipiretik, dekongestan; kontrol 3 hari; rujuk bila bulging tidak membaik (miringotomi).",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Analgesik-antipiretik (parasetamol/ibuprofen) sesuai BB.",
+    "Antibiotik amoksisilin 7–10 hari (lini pertama).",
+    "Stadium oklusi: tetes hidung dekongestan (NaCl/efedrin) untuk membuka tuba.",
+    "Perforasi: cuci telinga H2O2 3% lalu tetes ofloksasin; jaga telinga tetap kering.",
+    "Rujuk: mastoiditis, bulging menetap (miringotomi), otore > 2 minggu."
+  ],
+  "approach": [
+    "Tanyakan riwayat ISPA, nyeri, otore, demam.",
+    "Otoskopi: tentukan stadium; singkirkan otitis eksterna & mastoiditis."
+  ]
+}

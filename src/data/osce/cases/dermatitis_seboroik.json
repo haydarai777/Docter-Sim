@@ -1,0 +1,130 @@
+{
+  "disease": "dermatitis_seboroik",
+  "setting": "Puskesmas",
+  "station": "Kulit — dermatitis & eksim",
+  "therapy": {
+    "items": [
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal",
+        "role": "utama",
+        "reason": "Mengurangi Malassezia.",
+        "options": [
+          {
+            "drug": "ketokonazol_sampo",
+            "label": "Sampo ketokonazol 2% (diamkan 5 menit) 2–3 × seminggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 28]
+          },
+          {
+            "drug": "selenium_sulfida",
+            "label": "Sampo selenium sulfida 2–3 × seminggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 28]
+          },
+          {
+            "drug": "ketokonazol_krim",
+            "label": "Ketokonazol 2% krim (wajah) 1–2 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 28]
+          }
+        ],
+        "when": { "notTraits": ["bayi_cradle"] }
+      },
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid lemah",
+        "role": "opsional",
+        "reason": "Saat kambuh, jangka pendek.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1% krim 2 × sehari selama ≤ 1–2 minggu",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim1"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "notTraits": ["bayi_cradle"] }
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["betametason_krim", "mometason_krim"],
+        "reason": "Steroid potensi kuat di wajah/kulit kepala bayi tidak dianjurkan.",
+        "severity": "salah"
+      },
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik tidak diperlukan & berisiko rebound.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Cradle cap pada bayi: cukup minyak & sampo bayi (tanpa obat)."
+  },
+  "nonPharm": [
+    {
+      "id": "minyak",
+      "text": "Oles minyak zaitun/kelapa untuk melunakkan krusta, sisir lembut, keramas sampo bayi",
+      "kind": "benar",
+      "when": { "traits": ["bayi_cradle"] }
+    },
+    { "id": "stres", "text": "Kelola stres & tidur cukup", "kind": "benar", "when": { "notTraits": ["bayi_cradle"] } },
+    {
+      "id": "hiv",
+      "text": "Tawarkan tes HIV (dermatitis seboroik berat/luas mendadak)",
+      "kind": "benar",
+      "when": { "traits": ["berat_luas"] }
+    },
+    {
+      "id": "kerok",
+      "text": "Kerok kerak kepala bayi dengan kuku/sisir kasar",
+      "kind": "berbahaya",
+      "why": "Luka & infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dermatitis seboroik (ketombe/kerak kepala): radang kulit berminyak yang kambuh-kambuhan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Sampo/krim antijamur dipakai rutin; dapat diulang saat kambuh",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas cepat, bernanah, atau disertai berat badan turun/demam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "steroid_terus",
+      "text": "Krim steroid boleh dipakai terus-menerus tanpa batas waktu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Atrofi kulit, striae, & rebound."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "disease": "dermatitis_numularis",
+  "setting": "Puskesmas",
+  "station": "Kulit — dermatitis & eksim",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid topikal potensi sedang-kuat",
+        "role": "utama",
+        "reason": "Plak numular.",
+        "options": [
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason valerat 0,1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [14, 21]
+          },
+          {
+            "drug": "mometason_krim",
+            "label": "Mometason furoat 0,1% krim 1 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 21]
+          }
+        ]
+      },
+      {
+        "id": "emolien",
+        "label": "Emolien",
+        "role": "pendukung",
+        "reason": "Kulit kering.",
+        "options": [
+          {
+            "drug": "emolien",
+            "label": "Emolien (krim urea 10%/vaselin) 2–3 × sehari & setelah mandi",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [14, 30]
+          }
+        ]
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "pendukung",
+        "reason": "Infeksi sekunder.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      },
+      {
+        "id": "antihistamin",
+        "label": "Antihistamin",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antijamur", "antijamur_topikal"],
+        "reason": "Bukan infeksi jamur (KOH negatif).",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres NaCl untuk lesi basah", "kind": "benar" },
+    { "id": "mandi", "text": "Mandi air hangat singkat, sabun lembut", "kind": "benar" },
+    { "id": "emolien", "text": "Pelembap rutin setelah mandi", "kind": "benar" },
+    {
+      "id": "sabun_antiseptik",
+      "text": "Cuci kulit dengan sabun antiseptik/alkohol lebih sering agar bersih",
+      "kind": "berbahaya",
+      "why": "Merusak sawar kulit & memperberat dermatitis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dermatitis numularis: eksim berbentuk koin, bukan kurap & tidak menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Krim steroid dioles 2–3 minggu sesuai petunjuk; pelembap dipakai terus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila bernanah, meluas cepat, atau tidak membaik 3 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "steroid_terus",
+      "text": "Krim steroid boleh dipakai terus-menerus tanpa batas waktu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Atrofi kulit, striae, & rebound."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

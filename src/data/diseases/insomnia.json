@@ -1,0 +1,206 @@
+{
+  "id": "insomnia",
+  "name": "Insomnia",
+  "aliases": ["Susah tidur", "Gangguan tidur", "Sulit tidur"],
+  "system": "Jiwa",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1,
+  "summary": "Kesulitan memulai atau mempertahankan tidur, atau bangun terlalu dini, ≥ 3 malam/minggu, disertai gangguan fungsi siang hari (lelah, mengantuk, sulit konsentrasi, mudah marah). Akut (< 3 bulan, sering karena stresor) atau kronik. Cari penyebab: higiene tidur buruk (kafein, gawai), stres, depresi/cemas, nyeri, obat, sleep apnea. Terapi utama: higiene tidur & CBT-I; hipnotik hanya jangka pendek.",
+  "presentationDay": [14, 60],
+  "presentationDayByTrait": [{ "trait": "kronik", "range": [90, 180] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 35, "weight": 3 },
+      { "min": 36, "max": 55, "weight": 3 },
+      { "min": 56, "max": 75, "weight": 3 }
+    ],
+    "maleRatio": 0.4,
+    "occupations": [
+      { "id": "pegawai_kantor", "weight": 2 },
+      { "id": "mahasiswa", "weight": 2 },
+      { "id": "pensiunan", "weight": 1 },
+      { "id": "satpam", "weight": 1 }
+    ],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "kronik", "probability": 0.45 },
+    { "id": "stresor", "probability": 0.6 },
+    { "id": "kopi_gawai", "probability": 0.55 },
+    { "id": "depresi_curiga", "probability": 0.15 },
+    { "id": "osa_curiga", "probability": 0.1, "when": { "ageMin": 35 } }
+  ],
+  "traitLabels": {
+    "kronik": "Insomnia kronik (≥ 3 bulan).",
+    "stresor": "Dipicu stresor.",
+    "kopi_gawai": "Higiene tidur buruk (kopi, gawai).",
+    "depresi_curiga": "Gejala depresi menyertai.",
+    "osa_curiga": "Mendengkur keras/henti napas (curiga sleep apnea)."
+  },
+  "symptoms": [
+    { "id": "sulit_tidur", "probability": 1 },
+    { "id": "mengantuk_siang", "probability": 0.8 },
+    { "id": "cemas", "probability": 0.5 },
+    { "id": "nyeri_kepala", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["sulit_tidur"], "extraPool": ["mengantuk_siang"] },
+  "clueSymptoms": ["mengantuk_siang", "cemas", "nyeri_kepala", "lemas"],
+  "misattributions": ["kebanyakan pikiran", "kurang vitamin", "kopi"],
+  "fears": ["gila", "tidak bisa tidur selamanya", "sakit jantung"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit} ini, Dok, sejak ada masalah di kantor.",
+        "when": { "notTraits": ["kronik"], "traits": ["stresor"] },
+        "clue": "Akut, dipicu stresor"
+      },
+      {
+        "text": "Sudah lebih dari {lamaSakit}, Dok, hampir tiap malam.",
+        "when": { "traits": ["kronik"] },
+        "clue": "Kronik ≥ 3 bulan"
+      },
+      { "text": "Sudah {lamaSakit}, Dok.", "when": { "notTraits": ["kronik", "stresor"] } }
+    ],
+    "pola": [
+      {
+        "text": "Susah mulai tidur, Dok, baru bisa tidur jam dua pagi, terus subuh sudah bangun.",
+        "clue": "Sulit memulai & bangun dini, ≥ 3 malam/minggu"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Siangnya ngantuk dan susah konsentrasi, Dok, gampang marah.",
+        "reveals": ["mengantuk_siang"],
+        "when": { "symptoms": ["mengantuk_siang"] },
+        "clue": "Gangguan fungsi siang hari"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Saya minum kopi sore-sore, Dok, terus main HP di kasur sampai larut.",
+        "when": { "traits": ["kopi_gawai"] },
+        "clue": "Higiene tidur buruk (kafein, gawai)"
+      },
+      {
+        "text": "Kata istri saya ngorok keras sekali, kadang kayak berhenti napas, Dok.",
+        "when": { "traits": ["osa_curiga"], "sex": "male" },
+        "clue": "Mendengkur keras & henti napas (curiga OSA)"
+      },
+      {
+        "text": "Kata suami saya ngorok keras sekali, kadang kayak berhenti napas, Dok.",
+        "when": { "traits": ["osa_curiga"], "sex": "female" },
+        "clue": "Mendengkur keras & henti napas (curiga OSA)"
+      },
+      {
+        "text": "Nggak minum kopi, Dok, tidur juga di jam yang sama.",
+        "when": { "notTraits": ["kopi_gawai", "osa_curiga"] }
+      }
+    ],
+    "kekhawatiran": [
+      {
+        "text": "Akhir-akhir ini saya sedih terus, Dok, nggak semangat ngapa-ngapain. Tapi nggak pernah kepikiran menyakiti diri.",
+        "when": { "traits": ["depresi_curiga"] },
+        "clue": "Mood depresif (tanpa ide bunuh diri)"
+      },
+      { "text": "Saya takut besok nggak bisa kerja karena ngantuk, Dok.", "when": { "notTraits": ["depresi_curiga"] } }
+    ],
+    "riwayat_obat": [{ "text": "Pernah coba obat tidur punya teman, Dok, cuma sekali.", "clue": "Penggunaan obat tidur tanpa resep" }],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma susah tidur." }]
+  },
+  "findings": [
+    {
+      "tool": "status_mentalis",
+      "param": "mood_afek",
+      "when": { "traits": ["stresor"] },
+      "values": ["Mood cemas, afek serasi"]
+    },
+    {
+      "tool": "status_mentalis",
+      "param": "mood_afek",
+      "when": { "traits": ["depresi_curiga"] },
+      "values": ["Mood depresif, afek menyempit"]
+    },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["osa_curiga"] }, "range": [28, 33] },
+    { "tool": "status_mentalis", "param": "penampilan", "values": ["Tampak lelah, kantung mata gelap, kooperatif"] }
+  ],
+  "differentials": [
+    {
+      "id": "depresi",
+      "howToDistinguish": "Depresi: insomnia (bangun dini) dengan mood depresif & hilang minat ≥ 2 minggu — nilai risiko bunuh diri.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_mentalis"], "topics": ["kekhawatiran"] }
+    },
+    {
+      "id": "gangguan_cemas",
+      "howToDistinguish": "Gangguan cemas menyeluruh: kekhawatiran berlebih sepanjang hari ≥ 6 bulan.",
+      "excludeBy": { "tools": ["status_mentalis"], "topics": ["onset"] }
+    },
+    {
+      "id": "sleep_apnea",
+      "howToDistinguish": "OSA: mendengkur keras, henti napas saat tidur, obesitas, mengantuk berat siang.",
+      "excludeBy": { "topics": ["kebiasaan"], "tools": ["timbangan"] }
+    }
+  ],
+  "keyFindings": [
+    "Sulit memulai/mempertahankan tidur ≥ 3 malam/minggu",
+    "Gangguan fungsi siang hari",
+    "Cari penyebab: higiene tidur, stresor, depresi/cemas, OSA, obat"
+  ],
+  "teachingPoints": [
+    "Sleep hygiene & CBT-I adalah terapi lini pertama; benzodiazepin hanya jangka pendek (≤ 2–4 minggu) karena risiko ketergantungan.",
+    "Insomnia bangun dini + mood depresif: skrining depresi dan ide bunuh diri."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PDSKJI. Pedoman Nasional Pelayanan Kedokteran Jiwa; PPDGJ-III"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "keparahan", "kebiasaan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_mentalis", "role": "kunci", "reason": "Mood/afek, tanda depresi & cemas." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Obesitas (risiko OSA)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Edukasi higiene tidur & teknik relaksasi; atasi penyebab; hipnotik jangka pendek bila perlu; kontrol 2–4 minggu.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Higiene tidur: jadwal tidur-bangun tetap, kasur hanya untuk tidur, hindari kafein sore, alkohol, gawai 1 jam sebelum tidur.",
+    "Kontrol stimulus & restriksi tidur (CBT-I), teknik relaksasi.",
+    "Atasi penyebab (nyeri, cemas, depresi); hipnotik jangka pendek dosis rendah bila sangat perlu.",
+    "Rujuk bila depresi berat/ide bunuh diri, curiga OSA, atau gagal terapi."
+  ],
+  "approach": ["Karakterisasi pola tidur & dampak siang hari.", "Cari penyebab sekunder; skrining depresi/cemas & OSA."]
+}

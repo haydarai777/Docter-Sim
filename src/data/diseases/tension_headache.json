@@ -1,0 +1,190 @@
+{
+  "id": "tension_headache",
+  "name": "Tension-type headache",
+  "aliases": ["Nyeri kepala tegang otot", "Sakit kepala tegang", "TTH", "Sakit kepala karena stres"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.4,
+  "summary": "Nyeri kepala primer tersering: bilateral, seperti ditekan/diikat (non-pulsatil), intensitas ringan–sedang, tidak diperberat aktivitas, tanpa mual-muntah (boleh salah satu dari fotofobia/fonofobia). Sering dipicu stres, kurang tidur, postur kerja; nyeri tekan otot perikranial. Pemeriksaan neurologis normal. Episodik (< 15 hari/bulan) atau kronik.",
+  "presentationDay": [1, 30],
+  "presentationDayByTrait": [{ "trait": "kronik", "range": [30, 90] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 3 },
+      { "min": 31, "max": 50, "weight": 4 },
+      { "min": 51, "max": 65, "weight": 2 }
+    ],
+    "maleRatio": 0.4,
+    "occupations": [
+      { "id": "pegawai_kantor", "weight": 3 },
+      { "id": "guru", "weight": 2 },
+      { "id": "karyawan_bank", "weight": 2 },
+      { "id": "mahasiswa", "weight": 2 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "kronik", "probability": 0.3 },
+    { "id": "stres_kerja", "probability": 0.7 },
+    { "id": "analgesik_berlebih", "probability": 0.15, "when": { "traits": ["kronik"] } }
+  ],
+  "traitLabels": {
+    "kronik": "TTH kronik (≥ 15 hari/bulan).",
+    "stres_kerja": "Pencetus stres/postur kerja.",
+    "analgesik_berlebih": "Penggunaan analgesik berlebih (risiko medication-overuse headache)."
+  },
+  "symptoms": [
+    { "id": "nyeri_kepala", "probability": 1 },
+    { "id": "tengkuk_tegang", "probability": 0.8 },
+    { "id": "sulit_tidur", "probability": 0.4 },
+    { "id": "cemas", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_kepala"], "extraPool": ["tengkuk_tegang"] },
+  "clueSymptoms": ["tengkuk_tegang", "sulit_tidur", "cemas", "lemas"],
+  "misattributions": ["darah tinggi", "kecapekan", "masuk angin", "kolesterol"],
+  "fears": ["tumor otak", "stroke", "darah tinggi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {hariTeks} hari ini, Dok, hilang-timbul.",
+        "when": { "notTraits": ["kronik"] },
+        "clue": "Episodik"
+      },
+      {
+        "text": "Hampir tiap hari {lamaSakit} terakhir, Dok.",
+        "when": { "traits": ["kronik"] },
+        "clue": "Kronik (≥ 15 hari/bulan)"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Di dua sisi kepala, Dok, kayak diikat dari dahi sampai belakang.",
+        "clue": "Bilateral, seperti diikat"
+      }
+    ],
+    "karakter": [{ "text": "Rasanya kencang ditekan, Dok, bukan nyut-nyutan.", "clue": "Non-pulsatil, menekan" }],
+    "keparahan": [
+      {
+        "text": "Masih bisa kerja, Dok, cuma nggak nyaman. Nggak mual atau muntah.",
+        "clue": "Ringan–sedang, tanpa mual-muntah"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Makin berat kalau banyak kerjaan dan kurang tidur, Dok. Kalau dipijat tengkuk enakan.",
+        "when": { "traits": ["stres_kerja"] },
+        "clue": "Dipicu stres/kurang tidur, membaik dengan relaksasi"
+      },
+      { "text": "Kalau dipijat atau istirahat agak enakan, Dok.", "when": { "notTraits": ["stres_kerja"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Hampir tiap hari saya minum obat sakit kepala dari warung, Dok.",
+        "when": { "traits": ["analgesik_berlebih"] },
+        "clue": "Konsumsi analgesik hampir tiap hari (risiko MOH)"
+      },
+      { "text": "Kadang minum parasetamol, Dok, agak membantu.", "when": { "notTraits": ["analgesik_berlebih"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Polanya sama saja, Dok, nggak makin berat. Nggak pernah bangun malam karena sakit kepala.",
+        "clue": "Tidak progresif, tanpa red flag"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "muskuloskeletal",
+      "param": "otot",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Nyeri tekan otot perikranial, trapezius, dan sternokleidomastoideus"]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "range": [112, 132] }
+  ],
+  "differentials": [
+    {
+      "id": "tumor_otak",
+      "howToDistinguish": "Red flag lesi intrakranial: progresif, memberat pagi/mengedan, muntah proyektil, defisit neurologis, papil edema — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["progresi"], "tools": ["funduskopi", "saraf_kranial"] }
+    },
+    {
+      "id": "migren",
+      "howToDistinguish": "Migren: unilateral, berdenyut, sedang–berat, mual/muntah, fotofobia & fonofobia, memberat dengan aktivitas.",
+      "excludeBy": { "topics": ["lokasi", "karakter", "keparahan"] }
+    },
+    {
+      "id": "hipertensi",
+      "howToDistinguish": "Hipertensi: nyeri kepala/tengkuk berat pada TD sangat tinggi — ukur tekanan darah.",
+      "excludeBy": { "tools": ["tanda_vital"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri kepala bilateral seperti diikat, ringan–sedang, tanpa mual",
+    "Pencetus stres/kurang tidur; nyeri tekan perikranial",
+    "Pemeriksaan neurologis & funduskopi normal"
+  ],
+  "teachingPoints": [
+    "Analgesik > 10–15 hari/bulan dapat menimbulkan medication-overuse headache.",
+    "Selalu tanyakan red flag (SNOOP) pada keluhan nyeri kepala."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)",
+      "IHS. International Classification of Headache Disorders (ICHD-3)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "keparahan", "pemberat_peringan", "riwayat_obat", "progresi", "keluhan_lain"],
+    "exams": [
+      { "tool": "saraf_kranial", "role": "kunci", "reason": "Menyingkirkan defisit neurologis." },
+      { "tool": "funduskopi", "role": "kunci", "reason": "Menyingkirkan papil edema." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Motorik, sensorik, rangsang meningeal." },
+      { "tool": "muskuloskeletal", "role": "pendukung", "reason": "Nyeri tekan otot perikranial." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Analgesik sederhana, manajemen stres, perbaikan pola tidur & postur; batasi analgesik."
+    }
+  ],
+  "management": [
+    "Serangan akut: parasetamol, ibuprofen, atau asam mefenamat (dibatasi ≤ 2–3 hari/minggu).",
+    "Relaksasi, manajemen stres, tidur cukup, peregangan & ergonomi kerja.",
+    "TTH kronik: pertimbangkan amitriptilin dosis rendah (preventif); hentikan analgesik berlebih.",
+    "Rujuk bila ada red flag."
+  ],
+  "approach": [
+    "Karakterisasi nyeri kepala (lokasi, kualitas, intensitas, gejala penyerta).",
+    "Cari red flag; periksa neurologis & funduskopi; ukur TD."
+  ]
+}

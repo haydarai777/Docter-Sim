@@ -1,0 +1,163 @@
+{
+  "disease": "urtikaria_akut",
+  "setting": "Puskesmas",
+  "station": "Kulit — ruam, biduran & reaksi obat",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "utama",
+        "reason": "Antihistamin H1 non-sedatif.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "utama",
+        "reason": "Antihistamin H1 non-sedatif.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid oral singkat",
+        "role": "pendukung",
+        "reason": "Angioedema/berat.",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 20–40 mg/hari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          },
+          {
+            "drug": "metilprednisolon",
+            "label": "Metilprednisolon 16–32 mg/hari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "forms": ["metilprednisolon-tab16"],
+            "dose": [16, 32],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["angioedema"], "ageMin": 12 }
+      },
+      {
+        "id": "steroid_anak",
+        "label": "Kortikosteroid oral singkat (anak)",
+        "role": "pendukung",
+        "reason": "Angioedema/berat.",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 1 mg/kgBB/hari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "forms": ["prednison-tab5"],
+            "dosePerKg": [0.5, 1.5],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["angioedema"], "ageMax": 11 }
+      }
+    ],
+    "avoid": [{ "groups": ["oains"], "reason": "OAINS/aspirin dapat memperberat urtikaria.", "severity": "salah" }]
+  },
+  "nonPharm": [
+    { "id": "pencetus", "text": "Hindari pencetus (obat tersangka, makanan)", "kind": "benar" },
+    {
+      "id": "stop_oains",
+      "text": "Hentikan OAINS yang diduga pencetus",
+      "kind": "benar",
+      "when": { "traits": ["pencetus_obat"] }
+    },
+    {
+      "id": "infeksi",
+      "text": "Obati infeksi yang mendahului",
+      "kind": "benar",
+      "when": { "traits": ["pencetus_infeksi"] }
+    },
+    {
+      "id": "bedak",
+      "text": "Gosok bentol dengan bedak/minyak kayu putih",
+      "kind": "berbahaya",
+      "why": "Gesekan memperberat urtika & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini biduran (urtikaria akut): reaksi kulit yang umumnya hilang dalam beberapa hari–minggu",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Antihistamin diminum teratur 1–2 minggu", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak, suara serak, bengkak lidah/tenggorok, pusing/pingsan, atau muntah hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1–2 minggu; bila > 6 minggu perlu evaluasi urtikaria kronik",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "alergi_semua",
+      "text": "Harus pantang semua makanan laut, telur, & ayam seumur hidup",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Pantangan hanya untuk pencetus yang terbukti."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

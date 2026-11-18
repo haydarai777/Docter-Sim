@@ -1,0 +1,87 @@
+{
+  "disease": "bppv",
+  "setting": "Puskesmas",
+  "station": "Saraf — nyeri kepala, wajah & pusing",
+  "therapy": {
+    "items": [
+      {
+        "id": "antivertigo",
+        "label": "Antivertigo/antiemetik jangka pendek",
+        "role": "opsional",
+        "reason": "Hanya bila mual berat; tidak menggantikan manuver.",
+        "options": [
+          {
+            "drug": "betahistin",
+            "label": "Betahistin 3 × 6–12 mg selama 3–7 hari",
+            "schedules": ["rutin", "prn"],
+            "forms": ["betahistin-tab6"],
+            "dose": [6, 12],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          },
+          {
+            "drug": "dimenhidrinat",
+            "label": "Dimenhidrinat 50 mg bila mual (≤ 3 hari)",
+            "schedules": ["prn"],
+            "dose": [50, 50],
+            "timesPerDay": [1, 3],
+            "days": [1, 3]
+          }
+        ]
+      }
+    ],
+    "note": "Tatalaksana utama manuver Epley — obat simptomatik hanya opsional jangka pendek."
+  },
+  "nonPharm": [
+    { "id": "epley", "text": "Manuver reposisi kanalit (Epley) sesuai sisi yang positif", "kind": "benar" },
+    { "id": "brandt", "text": "Latihan Brandt–Daroff di rumah", "kind": "benar" },
+    { "id": "perlahan", "text": "Bangun dari tidur perlahan & cegah jatuh", "kind": "benar" },
+    {
+      "id": "baring_total",
+      "text": "Tirah baring total berhari-hari tanpa menggerakkan kepala",
+      "kind": "berbahaya",
+      "why": "Memperlambat kompensasi vestibular; risiko jatuh & trombosis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini vertigo posisi (BPPV) karena kristal kecil di telinga dalam berpindah",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Pengobatan utama adalah manuver reposisi; obat hanya sebentar bila mual",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila pusing disertai bicara pelo, lemah/kesemutan sesisi, penglihatan ganda, atau sulit berjalan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1 minggu; manuver dapat diulang bila masih kambuh",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "obat_terus",
+      "text": "Minum obat pusing terus-menerus agar tidak kambuh",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Menghambat kompensasi vestibular."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  }
+}

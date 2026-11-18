@@ -1,0 +1,179 @@
+{
+  "id": "hipoglikemia",
+  "name": "Hipoglikemia ringan",
+  "aliases": ["Gula darah rendah", "Hipoglikemia", "Drop gula"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Glukosa darah < 70 mg/dL dengan gejala, tersering pada pasien DM yang memakai sulfonilurea/insulin dengan telat/tidak makan, aktivitas berlebih, alkohol, atau gangguan ginjal. Gejala otonom: gemetar, berkeringat dingin, berdebar, lapar, cemas; neuroglikopenik ringan: sulit konsentrasi, bingung ringan. Ringan = masih sadar dan dapat makan/minum sendiri. Aturan 15–15, lalu cari penyebab & sesuaikan obat.",
+  "presentationDay": [1, 1],
+  "demographics": { "ageBands": [{ "min": 40, "max": 59, "weight": 3 }, { "min": 60, "max": 75, "weight": 4 }], "maleRatio": 0.5 },
+  "traits": [
+    { "id": "sulfonilurea", "probability": 0.65 },
+    { "id": "insulin", "probability": 0.35, "when": { "notTraits": ["sulfonilurea"] } },
+    { "id": "telat_makan", "probability": 0.7 },
+    { "id": "gangguan_ginjal", "probability": 0.15, "when": { "ageMin": 60 } }
+  ],
+  "traitLabels": {
+    "sulfonilurea": "Memakai sulfonilurea (glibenklamid).",
+    "insulin": "Memakai insulin.",
+    "telat_makan": "Telat/tidak makan.",
+    "gangguan_ginjal": "Penurunan fungsi ginjal (obat lebih lama bekerja)."
+  },
+  "symptoms": [
+    { "id": "gemetar", "probability": 1 },
+    { "id": "keringat_dingin", "probability": 0.9 },
+    { "id": "berdebar", "probability": 0.7 },
+    { "id": "lapar", "probability": 0.7 },
+    { "id": "lemas", "probability": 0.8 },
+    { "id": "bingung", "probability": 0.3 },
+    { "id": "nyeri_kepala", "probability": 0.3 },
+    { "id": "cemas", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["gemetar"], "extraPool": ["keringat_dingin", "berdebar"] },
+  "clueSymptoms": ["keringat_dingin", "berdebar", "lapar", "lemas", "bingung", "nyeri_kepala"],
+  "misattributions": ["darah rendah", "masuk angin", "kecapekan"],
+  "fears": ["serangan jantung", "stroke"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Setengah jam lalu, Dok, tiba-tiba gemetar, keringat dingin, deg-degan, lemas.",
+        "clue": "Onset mendadak gejala otonom"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Saya kencing manis, Dok, minum glibenklamid pagi. Tadi pagi tetap minum padahal belum sarapan.",
+        "when": { "traits": ["sulfonilurea"] },
+        "clue": "Sulfonilurea diminum tanpa makan"
+      },
+      {
+        "text": "Saya kencing manis pakai suntik insulin, Dok. Tadi suntik seperti biasa tapi makannya sedikit.",
+        "when": { "traits": ["insulin"] },
+        "clue": "Insulin dengan asupan kurang"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Tadi pagi nggak sempat sarapan, Dok, langsung ke sawah/kerja.",
+        "when": { "traits": ["telat_makan"] },
+        "clue": "Telat makan"
+      },
+      {
+        "text": "Tadi habis olahraga lebih lama dari biasanya, Dok.",
+        "when": { "notTraits": ["telat_makan"] },
+        "clue": "Aktivitas berlebih"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Masih sadar, Dok, masih bisa jalan dan minum sendiri.",
+        "clue": "Masih sadar & dapat minum sendiri (ringan)"
+      }
+    ],
+    "pemberat_peringan": [{ "text": "Kemarin juga sempat begini, Dok, habis minum teh manis enakan.", "clue": "Membaik dengan gula" }],
+    "riwayat_penyakit": [
+      {
+        "text": "Kata dokter ginjal saya mulai kurang bagus, Dok.",
+        "when": { "traits": ["gangguan_ginjal"] },
+        "clue": "Gangguan ginjal"
+      },
+      { "text": "Saya cuma kencing manis, Dok.", "when": { "notTraits": ["gangguan_ginjal"] } }
+    ],
+    "lokasi": [{ "text": "Nggak sakit di satu tempat, Dok. Badan gemetar, keringat dingin." }]
+  },
+  "findings": [
+    { "tool": "fungsi_ginjal", "param": "kreatinin", "when": { "traits": ["gangguan_ginjal"] }, "range": [1.6, 2.4] },
+    { "tool": "gula_darah", "param": "gds", "diagnostic": true, "range": [45, 64] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [100, 118] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "range": [130, 150] },
+    { "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak pucat, berkeringat, gemetar, sadar"] },
+    { "tool": "ekstremitas_kulit", "param": "akral", "values": ["Dingin, basah berkeringat"] }
+  ],
+  "differentials": [
+    {
+      "id": "hipoglikemia_berat",
+      "howToDistinguish": "Hipoglikemia berat: penurunan kesadaran/kejang, butuh bantuan — dekstrosa IV & rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["keadaan_umum"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "sindrom_koroner_akut",
+      "howToDistinguish": "SKA: nyeri dada khas, keringat dingin, EKG iskemik; gula darah tidak rendah.",
+      "excludeBy": { "tools": ["gula_darah"], "topics": ["keluhan_lain"] }
+    },
+    {
+      "id": "gangguan_cemas",
+      "howToDistinguish": "Serangan panik: berdebar, gemetar, keringat dengan gula darah normal.",
+      "excludeBy": { "tools": ["gula_darah"] }
+    }
+  ],
+  "keyFindings": [
+    "Gemetar, keringat dingin, berdebar, lapar pada pasien DM dengan sulfonilurea/insulin",
+    "GDS < 70 mg/dL, pasien sadar",
+    "Membaik cepat dengan gula"
+  ],
+  "teachingPoints": [
+    "Aturan 15–15: berikan 15–20 g gula (3 sdt gula/150–200 mL teh manis), cek ulang 15 menit, ulangi bila masih < 70, lalu makan.",
+    "Hipoglikemia akibat sulfonilurea kerja panjang dapat berulang — observasi & tinjau ulang obat."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKENI. Pedoman Pengelolaan dan Pencegahan Diabetes Melitus Tipe 2 Dewasa di Indonesia (2021)",
+      "IDAI. Konsensus Nasional Pengelolaan DM Tipe 1 (2017)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "kebiasaan", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [{ "tool": "keadaan_umum", "role": "kunci", "reason": "Kesadaran & tanda otonom." }],
+    "tests": [
+      { "tool": "gula_darah", "role": "kunci", "reason": "Konfirmasi hipoglikemia & pemantauan ulang." },
+      {
+        "tool": "fungsi_ginjal",
+        "role": "pendukung",
+        "when": { "traits": ["gangguan_ginjal"] },
+        "reason": "Gangguan ginjal memperpanjang kerja obat."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "sulfonilurea": "dm_tipe2", "insulin": "dm_tipe2" },
+  "disposition": [
+    {
+      "value": "observasi",
+      "reason": "Koreksi gula oral, cek ulang tiap 15 menit, observasi beberapa jam (sulfonilurea), tinjau ulang dosis obat.",
+      "alsoAccept": ["rawat_jalan"]
+    }
+  ],
+  "management": [
+    "15–20 g glukosa oral (gula/teh manis), cek ulang 15 menit; ulangi bila masih rendah.",
+    "Setelah normal: makan karbohidrat kompleks.",
+    "Tinjau obat: kurangi/ganti glibenklamid (mis. gliklazid/metformin), sesuaikan insulin; perhatikan fungsi ginjal.",
+    "Edukasi tanda & penanganan hipoglikemia, selalu bawa permen, jangan lewatkan makan."
+  ],
+  "approach": ["Konfirmasi dengan GDS; nilai kesadaran (ringan vs berat).", "Cari penyebab: obat, makan, aktivitas, ginjal."]
+}

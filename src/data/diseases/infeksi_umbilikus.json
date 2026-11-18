@@ -1,0 +1,203 @@
+{
+  "id": "infeksi_umbilikus",
+  "name": "Infeksi pada umbilikus (omfalitis)",
+  "aliases": ["Omfalitis", "Infeksi tali pusat", "Pusar bayi bernanah"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "tinggi",
+  "prevalenceWeight": 0.6,
+  "summary": "Infeksi bakteri pada tunggul tali pusat/umbilikus neonatus: kemerahan periumbilikal, bengkak, pus, berbau. Risiko meningkat pada perawatan tali pusat yang tidak bersih (diberi abu, ramuan, kopi). Kemerahan meluas > 1 cm ke kulit perut atau tanda sepsis (malas menyusu, demam/hipotermia, letargi) adalah infeksi bakteri berat — rujuk segera setelah dosis antibiotik pertama.",
+  "presentationDay": [1, 5],
+  "demographics": {
+    "ageBands": [{ "min": 0, "max": 0, "weight": 1 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "bayi", "weight": 1 }],
+    "occupationBias": 1,
+    "infantAge": { "unit": "hari", "range": [5, 21] }
+  },
+  "traits": [
+    { "id": "meluas", "probability": 0.3 },
+    { "id": "ramuan", "probability": 0.5 },
+    { "id": "lahir_di_rumah", "probability": 0.4 }
+  ],
+  "traitLabels": {
+    "meluas": "Kemerahan meluas > 1 cm / tanda infeksi berat.",
+    "ramuan": "Tali pusat diberi ramuan/abu.",
+    "lahir_di_rumah": "Persalinan di rumah oleh dukun."
+  },
+  "symptoms": [
+    { "id": "demam", "probability": 0.8, "when": { "traits": ["meluas"] } },
+    { "id": "malas_menyusu", "probability": 0.9, "when": { "traits": ["meluas"] } },
+    { "id": "pusar_bermasalah", "probability": 1 },
+    { "id": "demam", "probability": 0.2 },
+    { "id": "malas_menyusu", "probability": 0.2 },
+    { "id": "rewel", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["pusar_bermasalah"], "extraPool": ["rewel"] },
+  "clueSymptoms": ["demam", "malas_menyusu", "rewel"],
+  "misattributions": ["pusar belum kering", "biasa pada bayi", "kena air"],
+  "fears": ["bayinya infeksi berat", "pusarnya bodong"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} ini pusarnya merah dan basah, Dok, baunya nggak enak.",
+        "clue": "Akut, umbilikus merah basah berbau"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Kata neneknya pusarnya ditaburi abu dapur biar cepat kering, Dok.",
+        "when": { "traits": ["ramuan"] },
+        "clue": "Perawatan tali pusat tidak bersih (ramuan/abu)"
+      },
+      {
+        "text": "Tali pusatnya dibungkus kasa, Dok, kadang kena popok basah.",
+        "when": { "notTraits": ["ramuan"] },
+        "clue": "Tali pusat lembap/kotor"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Lahirnya di rumah dibantu dukun, Dok, tali pusatnya dipotong pakai gunting biasa.",
+        "when": { "traits": ["lahir_di_rumah"] },
+        "clue": "Persalinan di rumah, alat tidak steril"
+      },
+      {
+        "text": "Lahir di bidan, Dok, cukup bulan, beratnya tiga kilo.",
+        "when": { "notTraits": ["lahir_di_rumah"] },
+        "clue": "Lahir cukup bulan di fasilitas"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang nggak mau menyusu, Dok, badannya panas, lemas dan tidur terus.",
+        "reveals": ["malas_menyusu", "demam"],
+        "when": { "traits": ["meluas"], "symptoms": ["malas_menyusu", "demam"] },
+        "clue": "Malas menyusu, demam, letargi (tanda infeksi berat)"
+      },
+      {
+        "text": "Menyusunya masih kuat, Dok, gerak aktif.",
+        "when": { "notTraits": ["meluas"] },
+        "clue": "Menyusu baik, aktif"
+      }
+    ],
+    "lokasi": [{ "text": "Di pusarnya, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "umbilikus",
+      "when": { "traits": ["meluas"] },
+      "diagnostic": true,
+      "values": ["Kemerahan & indurasi meluas > 1 cm ke dinding perut sekitar pusar, pus (+), berbau"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["meluas"] }, "range": [37.8, 38.8] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["meluas"] }, "range": [165, 185] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["meluas"] },
+      "values": ["Tampak sakit sedang, letargi, menyusu lemah"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "notTraits": ["meluas"] },
+      "values": ["Tampak sehat, aktif, menangis kuat"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "umbilikus",
+      "diagnostic": true,
+      "values": ["Kemerahan periumbilikal < 1 cm, pus sedikit, berbau"]
+    },
+    { "tool": "timbangan", "param": "tb", "absolute": true, "range": [48, 54] },
+    { "tool": "timbangan", "param": "imt", "absolute": true, "range": [12, 14] }
+  ],
+  "differentials": [
+    {
+      "id": "sepsis",
+      "howToDistinguish": "Sepsis neonatorum: malas menyusu, demam/hipotermia, letargi, takipnea, kejang — infeksi bakteri berat, rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["keadaan_umum", "tanda_vital"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "granuloma_umbilikus",
+      "howToDistinguish": "Granuloma umbilikus: jaringan merah lembap di dasar pusar tanpa kemerahan kulit sekitar & tanpa bau.",
+      "excludeBy": { "tools": ["pemeriksaan_anak"] }
+    }
+  ],
+  "keyFindings": [
+    "Neonatus dengan umbilikus merah, bengkak, bernanah, berbau",
+    "Kemerahan > 1 cm atau tanda sepsis = infeksi bakteri berat",
+    "Perawatan tali pusat tidak bersih"
+  ],
+  "teachingPoints": ["Perawatan tali pusat yang dianjurkan: bersih dan kering (dry cord care) — tanpa abu, ramuan, atau dibungkus rapat."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (Manajemen Terpadu Balita Sakit)",
+      "Kemenkes RI. Buku Bagan MTBM (Manajemen Terpadu Bayi Muda)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "meluas",
+      "name": "Omfalitis meluas / infeksi bakteri berat",
+      "trait": "meluas",
+      "redFlag": true,
+      "assess": { "tools": ["pemeriksaan_anak", "keadaan_umum", "tanda_vital"] },
+      "explanation": "Kemerahan > 1 cm, malas menyusu, demam/hipotermia, letargi — antibiotik pertama lalu rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_anak", "role": "kunci", "reason": "Luas kemerahan umbilikus & status hidrasi." },
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Tanda infeksi bakteri berat." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "BB untuk dosis obat." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Infeksi bakteri berat (kemerahan meluas/tanda sepsis): beri antibiotik dosis pertama, jaga hangat & ASI, rujuk segera.",
+      "when": { "traits": ["meluas"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Infeksi lokal: bersihkan & keringkan, antiseptik lokal, antibiotik oral; kontrol 2 hari."
+    }
+  ],
+  "management": [
+    "Infeksi lokal: bersihkan dengan air matang/antiseptik (klorheksidin), biarkan kering & terbuka; gentian violet/antibiotik topikal sesuai pedoman.",
+    "Antibiotik oral (amoksisilin) 5 hari pada infeksi bakteri lokal (MTBM).",
+    "Tanda bahaya (kemerahan meluas, malas menyusu, demam, kejang): rujuk segera setelah dosis pertama antibiotik.",
+    "Edukasi perawatan tali pusat bersih-kering, ASI eksklusif, cuci tangan."
+  ],
+  "approach": ["Nilai luas kemerahan & tanda infeksi bakteri berat (MTBM).", "Tentukan rawat jalan vs rujuk."]
+}

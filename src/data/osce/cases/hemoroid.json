@@ -1,0 +1,103 @@
+{
+  "disease": "hemoroid",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — perut & anus",
+  "therapy": {
+    "items": [
+      {
+        "id": "simptomatik",
+        "label": "Obat hemoroid topikal",
+        "role": "utama",
+        "reason": "Meredakan nyeri, gatal, & perdarahan ringan.",
+        "options": [
+          {
+            "drug": "supp_hemoroid",
+            "label": "Supositoria hemoroid 1–2 × 1 selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [5, 7]
+          }
+        ]
+      },
+      {
+        "id": "pelunak",
+        "label": "Pelunak feses",
+        "role": "pendukung",
+        "reason": "Mencegah mengedan.",
+        "options": [
+          {
+            "drug": "laktulosa",
+            "label": "Laktulosa 10–15 mL 1–2 × sehari",
+            "schedules": ["rutin", "prn"],
+            "dose": [6.6, 9.9],
+            "timesPerDay": [1, 2],
+            "days": [7, 14]
+          }
+        ]
+      },
+      {
+        "id": "besi",
+        "label": "Preparat besi",
+        "role": "pendukung",
+        "reason": "Anemia karena perdarahan kronik.",
+        "options": [
+          {
+            "drug": "sulfas_ferosus",
+            "label": "Sulfas ferosus 300 mg 1–3 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["sf-tab300"],
+            "dose": [300, 300],
+            "timesPerDay": [1, 3],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "traits": ["anemia_kronik"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "serat", "text": "Serat 25–30 g/hari (sayur, buah) & air ≥ 2 L/hari", "kind": "benar" },
+    { "id": "toilet", "text": "Hindari mengedan & duduk lama di toilet", "kind": "benar" },
+    { "id": "rendam", "text": "Rendam duduk air hangat 10–15 menit 2–3 × sehari", "kind": "benar" },
+    {
+      "id": "tumbuhan",
+      "text": "Ikat benjolan wasir dengan benang di rumah",
+      "kind": "berbahaya",
+      "why": "Nekrosis, infeksi, & perdarahan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini wasir (hemoroid): pelebaran pembuluh darah di anus",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai sesuai aturan; kunci utama BAB lunak tanpa mengedan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perdarahan banyak, benjolan tidak bisa masuk & nyeri hebat, pucat/lemas, atau BB turun",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "pedas",
+      "text": "Wasir disebabkan makanan pedas sehingga cukup berhenti makan pedas",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penyebab utama konstipasi & mengedan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

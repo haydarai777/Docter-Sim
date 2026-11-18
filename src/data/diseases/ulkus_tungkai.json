@@ -1,0 +1,193 @@
+{
+  "id": "ulkus_tungkai",
+  "name": "Ulkus pada tungkai (ulkus vena)",
+  "aliases": ["Borok kaki", "Ulkus varikosum", "Ulkus venosum", "Luka kaki menahun"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Ulkus kronik (> 4–6 minggu) di tungkai bawah, tersering akibat insufisiensi vena: dangkal, tepi landai ireguler, dasar granulasi dengan eksudat, di atas maleolus medial; kulit sekitar hiperpigmentasi, dermatitis stasis, edema, varises. Bedakan dari ulkus arterial (nyeri, pulsasi lemah, ABI < 0,9) dan diabetik (neuropati, di titik tekanan). ABI ≥ 0,8 diperlukan sebelum kompresi.",
+  "presentationDay": [30, 180],
+  "demographics": {
+    "ageBands": [{ "min": 40, "max": 59, "weight": 3 }, { "min": 60, "max": 75, "weight": 4 }],
+    "maleRatio": 0.45,
+    "occupations": [{ "id": "pedagang_pasar", "weight": 2 }, { "id": "guru", "weight": 1 }, { "id": "satpam", "weight": 1 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "infeksi_sekunder", "probability": 0.3 }, { "id": "dm_menyertai", "probability": 0.15 }],
+  "traitLabels": { "infeksi_sekunder": "Infeksi sekunder/selulitis sekitar ulkus.", "dm_menyertai": "DM menyertai." },
+  "symptoms": [
+    { "id": "demam", "probability": 0.5, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "luka_sulit_sembuh", "probability": 1 },
+    { "id": "bengkak_kaki", "probability": 0.7 },
+    { "id": "varises", "probability": 0.75 },
+    { "id": "gatal_kulit", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["luka_sulit_sembuh"], "extraPool": ["bengkak_kaki"] },
+  "clueSymptoms": ["bengkak_kaki", "varises", "gatal_kulit", "demam"],
+  "misattributions": ["luka biasa", "kena kutu air", "guna-guna"],
+  "fears": ["diamputasi", "kencing manis"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, luka di mata kaki kiri nggak sembuh-sembuh, makin lebar.",
+        "clue": "Ulkus kronik > 6 minggu"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Kalau berdiri lama kaki bengkak dan pegal, Dok, diangkat ke atas enakan.",
+        "clue": "Memberat berdiri lama, membaik dengan elevasi (vena)"
+      }
+    ],
+    "kebiasaan": [
+      { "text": "Kerja saya berdiri seharian, Dok, jualan di pasar.", "clue": "Berdiri lama" },
+      { "text": "Saya nggak merokok, Dok.", "weight": 0.5, "clue": "Tanpa merokok" }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dari dulu urat di kaki saya menonjol berkelok-kelok, Dok.",
+        "reveals": ["varises"],
+        "when": { "symptoms": ["varises"] },
+        "clue": "Varises"
+      },
+      { "text": "Saya nggak pernah sakit kaki kalau jalan jauh, Dok.", "clue": "Tanpa klaudikasio (bukan arterial)" }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang lukanya bernanah, sekitarnya merah, badan meriang, Dok.",
+        "reveals": ["demam"],
+        "when": { "traits": ["infeksi_sekunder"], "symptoms": ["demam"] },
+        "clue": "Tanda infeksi sekunder"
+      },
+      {
+        "text": "Lukanya basah tapi nggak terlalu sakit, Dok.",
+        "when": { "notTraits": ["infeksi_sekunder"] },
+        "clue": "Nyeri ringan (khas vena)"
+      }
+    ],
+    "lokasi": [{ "text": "Di atas mata kaki kiri, Dok, sebelah dalam." }]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "notTraits": ["infeksi_sekunder"] },
+      "values": ["Tepi landai ireguler; kulit sekitar hiperpigmentasi coklat, indurasi (lipodermatosklerosis)"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "tepi_dasar",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Tepi ireguler dengan pus; eritema & hangat meluas 2 cm di sekitar ulkus"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.8, 38.6] },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_menyertai"] }, "range": [220, 300] },
+    {
+      "tool": "darah_lengkap",
+      "param": "leukosit",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "range": [11500, 15500]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "diagnostic": true,
+      "values": ["Ulkus dangkal 3 × 4 cm di atas maleolus medial kiri, dasar jaringan granulasi dengan fibrin, eksudat sedang"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "distal",
+      "values": ["Pulsasi dorsalis pedis & tibialis posterior teraba kuat; sensorik baik"]
+    },
+    { "tool": "ekstremitas_kulit", "param": "edema", "values": ["Edema pitting tungkai bawah kiri"] },
+    { "tool": "ekstremitas_kulit", "param": "kulit", "values": ["Varises tungkai kiri, dermatitis stasis"] },
+    { "tool": "abi_doppler", "param": "abi", "range": [0.95, 1.15] }
+  ],
+  "differentials": [
+    {
+      "id": "penyakit_arteri_perifer",
+      "howToDistinguish": "Ulkus arterial: nyeri hebat terutama malam/elevasi, di ujung jari/tumit, kaki dingin pucat, pulsasi lemah, ABI < 0,9.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["abi_doppler", "status_lokalis"] }
+    },
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "Ulkus diabetik: di titik tekanan telapak, neuropati (monofilamen −), gula darah tinggi.",
+      "excludeBy": { "tools": ["gula_darah", "kaki_diabetik"] }
+    },
+    {
+      "id": "karsinoma_sel_skuamosa_kulit",
+      "howToDistinguish": "Ulkus Marjolin: ulkus kronik yang tepinya meninggi keras, mudah berdarah — biopsi.",
+      "excludeBy": { "tools": ["status_lokalis"] }
+    }
+  ],
+  "keyFindings": [
+    "Ulkus kronik dangkal di atas maleolus medial dengan dasar granulasi",
+    "Varises, edema, hiperpigmentasi/dermatitis stasis",
+    "Pulsasi teraba, ABI normal"
+  ],
+  "teachingPoints": ["Terapi utama ulkus vena adalah KOMPRESI + elevasi — pastikan ABI ≥ 0,8 terlebih dulu."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "pola", "kebiasaan", "riwayat_penyakit", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_lokalis", "role": "kunci", "reason": "Deskripsi ulkus & neurovaskular distal." },
+      { "tool": "ekstremitas_kulit", "role": "kunci", "reason": "Edema, varises, kulit sekitar." },
+      { "tool": "kaki_diabetik", "role": "pendukung", "reason": "Neuropati & pulsasi." }
+    ],
+    "tests": [
+      { "tool": "abi_doppler", "role": "kunci", "reason": "Menyingkirkan penyakit arteri sebelum kompresi." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM." },
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "when": { "traits": ["infeksi_sekunder"] },
+        "reason": "Infeksi sekunder."
+      }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "dm_menyertai": "dm_tipe2" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Perawatan luka lembap, kompresi & elevasi, antibiotik bila infeksi; kontrol 1–2 minggu; rujuk bila tidak membaik 12 minggu.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Bersihkan dengan NaCl 0,9%, debridemen jaringan nekrotik, balutan lembap sesuai eksudat.",
+    "Kompresi (perban elastis/stoking) bila ABI ≥ 0,8; elevasi tungkai saat istirahat.",
+    "Antibiotik sistemik bila selulitis/infeksi; emolien/steroid ringan untuk dermatitis stasis.",
+    "Kelola DM, berat badan, aktivitas jalan kaki; rujuk bila tidak membaik."
+  ],
+  "approach": ["Tentukan etiologi: vena vs arteri vs diabetik dari lokasi, nyeri, pulsasi, ABI.", "Nilai infeksi sekunder."]
+}

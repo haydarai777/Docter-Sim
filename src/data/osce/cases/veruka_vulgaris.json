@@ -1,0 +1,81 @@
+{
+  "disease": "veruka_vulgaris",
+  "setting": "Puskesmas",
+  "station": "Kulit — benjolan, kutil & luka kronik",
+  "therapy": {
+    "items": [
+      {
+        "id": "keratolitik",
+        "label": "Keratolitik",
+        "role": "utama",
+        "reason": "Mengelupas lapisan kutil sedikit demi sedikit.",
+        "options": [
+          {
+            "drug": "asam_salisilat",
+            "label": "Asam salisilat 16,7% + asam laktat dioles tiap malam (rendam & kikis dulu) selama 4–12 minggu",
+            "schedules": ["rutin"],
+            "forms": ["salisilat-veruka"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [28, 84]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Steroid topikal tidak bermanfaat untuk kutil.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "rendam", "text": "Rendam air hangat & kikis permukaan kutil sebelum mengoles obat", "kind": "benar" },
+    { "id": "krio", "text": "Krioterapi/elektrokauter untuk lesi membandel", "kind": "benar" },
+    { "id": "gigit", "text": "Jangan digigit/digaruk; handuk & alat pribadi terpisah", "kind": "benar" },
+    {
+      "id": "silet",
+      "text": "Potong kutil sendiri dengan silet/gunting kuku",
+      "kind": "berbahaya",
+      "why": "Perdarahan, infeksi, & penyebaran virus."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini kutil, disebabkan virus HPV di kulit", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Obat dioles rutin tiap malam beberapa minggu; kulit sehat di sekitarnya dilindungi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila kutil berdarah, berubah warna/bentuk cepat, atau tanda infeksi",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Jangan menggaruk/menggigit kutil agar tidak menyebar",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "kapur",
+      "text": "Kutil hilang bila ditempel kapur sirih",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Mitos; dapat melukai kulit."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

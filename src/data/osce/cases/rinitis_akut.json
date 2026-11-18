@@ -1,0 +1,155 @@
+{
+  "disease": "rinitis_akut",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan hidung",
+  "therapy": {
+    "items": [
+      {
+        "id": "simptomatik",
+        "label": "Terapi simptomatik",
+        "role": "utama",
+        "reason": "Pilek virus swasirna: pereda gejala.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "pseudoefedrin",
+            "label": "Pseudoefedrin 3 × 60 mg (≤ 3–5 hari)",
+            "schedules": ["rutin", "prn"],
+            "dose": [60, 60],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [3, 7]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          },
+          {
+            "drug": "nacl_nasal",
+            "label": "NaCl 0,9% semprot hidung 2 semprot tiap lubang 3 × sehari",
+            "schedules": ["rutin", "prn"],
+            "dose": [1, 2],
+            "timesPerDay": [2, 4],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "simptomatik_anak",
+        "label": "Terapi simptomatik (anak)",
+        "role": "utama",
+        "reason": "Pilek virus swasirna: pereda gejala.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "nacl_nasal",
+            "label": "NaCl 0,9% semprot/tetes hidung 1–2 semprot tiap lubang 3 × sehari",
+            "schedules": ["rutin", "prn"],
+            "dose": [1, 2],
+            "timesPerDay": [2, 4],
+            "days": [5, 7]
+          },
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Infeksi virus/non-bakteri: antibiotik tidak diperlukan.",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["pseudoefedrin"],
+        "reason": "Dekongestan oral tidak untuk anak kecil.",
+        "severity": "salah",
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "istirahat", "text": "Istirahat dan cukup cairan", "kind": "benar" },
+    { "id": "cuci", "text": "Cuci hidung dengan NaCl 0,9%", "kind": "benar" },
+    { "id": "etiket", "text": "Etiket batuk-bersin, masker, cuci tangan", "kind": "benar" },
+    {
+      "id": "ab",
+      "text": "Minta antibiotik agar ingus kuning cepat hilang",
+      "kind": "berbahaya",
+      "why": "Ingus kental bagian perjalanan alami infeksi virus; antibiotik tidak bermanfaat."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini pilek biasa karena virus; sembuh sendiri 7–10 hari",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat hanya meringankan gejala; antibiotik tidak diperlukan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, demam tinggi > 3 hari, nyeri wajah/telinga, atau > 10 hari tidak membaik",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 10 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

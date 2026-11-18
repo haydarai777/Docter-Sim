@@ -1,0 +1,120 @@
+{
+  "disease": "kusta",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi kronik (TB kulit, kusta, sifilis)",
+  "therapy": {
+    "items": [
+      {
+        "id": "mdt_mb",
+        "label": "MDT-MB",
+        "role": "utama",
+        "reason": "Kusta multibasiler: 12 blister dalam 12–18 bulan.",
+        "options": [
+          {
+            "drug": "mdt_mb",
+            "label": "MDT-MB 1 blister/bulan (dosis bulanan diawasi + dosis harian) — total 12 blister",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [28, 336]
+          }
+        ],
+        "when": { "traits": ["mb"] }
+      },
+      {
+        "id": "mdt_pb",
+        "label": "MDT-PB",
+        "role": "utama",
+        "reason": "Kusta pausibasiler: 6 blister dalam 6–9 bulan.",
+        "options": [
+          {
+            "drug": "mdt_pb",
+            "label": "MDT-PB 1 blister/bulan — total 6 blister",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [28, 168]
+          }
+        ],
+        "when": { "notTraits": ["mb"] }
+      },
+      {
+        "id": "reaksi",
+        "label": "Kortikosteroid",
+        "role": "pendukung",
+        "reason": "Reaksi kusta (sambil merujuk).",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 30–40 mg/hari pagi, diturunkan bertahap",
+            "schedules": ["rutin"],
+            "dose": [30, 40],
+            "timesPerDay": [1, 1],
+            "days": [14, 14]
+          }
+        ],
+        "when": { "traits": ["reaksi"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "rawat_diri",
+      "text": "Rawat diri: periksa & rendam tangan-kaki, oles minyak, lindungi mata",
+      "kind": "benar"
+    },
+    { "id": "saraf", "text": "Periksa fungsi saraf (POD) rutin", "kind": "benar" },
+    { "id": "kontak", "text": "Periksa kontak serumah & kemoprofilaksis rifampisin dosis tunggal", "kind": "benar" },
+    { "id": "stigma", "text": "Edukasi keluarga & masyarakat untuk mengurangi stigma", "kind": "benar" },
+    {
+      "id": "isolasi",
+      "text": "Isolasi pasien dari keluarga",
+      "kind": "berbahaya",
+      "why": "Tidak perlu (tidak menular setelah MDT) & memperkuat stigma."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini kusta (lepra), infeksi kuman yang menyerang kulit & saraf — dapat disembuhkan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "MDT diminum teratur tanpa putus sesuai blister hingga selesai",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Kulit dapat menjadi lebih gelap (klofazimin) & urine kemerahan (rifampisin) — tidak berbahaya",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila bercak memerah-nyeri mendadak, saraf nyeri/bengkak, kelemahan tangan-kaki baru, atau mata merah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Ambil obat & kontrol tiap bulan", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "kutukan",
+      "text": "Kusta adalah penyakit keturunan/kutukan yang tidak bisa sembuh",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penyakit infeksi yang dapat disembuhkan dengan MDT."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kemenkes RI. PNPK Tata Laksana Kusta (2019)"
+    ]
+  }
+}
