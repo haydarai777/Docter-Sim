@@ -202,7 +202,7 @@ export const SYOK_SEPTIK: EdScenario = {
     },
     pasien: { topics: { keluhan_utama: 'Lemas… batuk…' }, symptoms: { batuk: 'Batuk…', sesak_napas: 'Sesak sedikit…' } },
   },
-  findings: { dada: 'Ronki basah kasar & suara napas bronkial di basal paru kanan.' },
+  // Ronki & suara napas bronkial di basal kanan muncul dari fisiologi (pneumonia) — tidak ditulis ganda.
   tests: {
     darah_lengkap: { text: (c) => `Hb ${c.vitals.hb} g/dL · leukosit 21,4 ×10³/µL (neutrofil 88%, batang 12%) · trombosit 142 ×10³/µL` },
     rontgen_thorax: { text: 'Konsolidasi lobus bawah kanan dengan air bronchogram.' },

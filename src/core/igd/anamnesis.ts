@@ -5,7 +5,7 @@
  * kegawatdaruratan (SAMPLE: makan terakhir & kejadian/mekanisme). Jawaban pasien yang sesak
  * berat terpotong-potong; pasien yang tidak sadar tidak menjawab.
  */
-import { interpretQuestion } from '../nlu';
+import { interpretQuestion, resolveAlternatives } from '../nlu';
 import type { GameContent } from '../types';
 import { speech } from './assessment';
 import type { EdPatient, EdScenario, InformantId, InformantSpec, Support, Vitals } from './types';
@@ -118,7 +118,7 @@ export function askInformant(question: string, topic: string | null, who: Inform
   if (direct) add(answerTopic(spec, who, direct), direct);
   if (!direct || !parts.length) {
     const it = interpretQuestion(question, content, 3);
-    for (const intent of it.intents) {
+    for (const intent of resolveAlternatives(it.intents, (s) => Boolean(spec?.symptoms?.[s]))) {
       if (intent.kind === 'topic') add(answerTopic(spec, who, intent.topic) ?? (who === 'pasien' ? null : 'Kurang tahu, Dok.'), intent.topic);
       else if (intent.kind === 'symptom' || intent.kind === 'symptom_detail') {
         const yes = spec?.symptoms?.[intent.symptom];

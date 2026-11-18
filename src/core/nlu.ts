@@ -24,9 +24,11 @@ import type { GameContent } from './types';
 
 export type Intent =
   | { kind: 'topic'; topic: string }
-  | { kind: 'symptom'; symptom: string }
+  /** `alts`: gejala lain yang memakai kata yang sama ("gemetar" = menggigil atau tremor) — pasien
+   *  menjawab dengan yang memang dialaminya (lihat `resolveAlternatives`). */
+  | { kind: 'symptom'; symptom: string; alts?: string[] }
   /** Pertanyaan detail (onset, keparahan, ...) tentang gejala tertentu. */
-  | { kind: 'symptom_detail'; topic: string; symptom: string }
+  | { kind: 'symptom_detail'; topic: string; symptom: string; alts?: string[] }
   /** Tinjauan sistem: "BAB-nya bagaimana?" (beberapa gejala sekaligus). */
   | { kind: 'review'; group: string }
   | { kind: 'greeting' }
@@ -273,6 +275,8 @@ const COMMON_WORDS =
   'tolong mohon permisi selamat kabar senang sedih takut khawatir bingung capek ngantuk lapar haus ' +
   'nama umur usia alamat kerja pekerjaan sibuk menikah cerai janda duda hamil haid anaknya ' +
   'kucing anjing ayam bebek burung ikan sapi kambing kuda tikus hewan peliharaan bunga pohon kebun sawah';
+
+const EVERYDAY = new Set(COMMON_WORDS.split(' '));
 
 interface Lexicon {
   keywords: Keyword[];
@@ -552,6 +556,8 @@ interface Match {
   size: number;
   intent: KeywordIntent;
   phrase: string;
+  /** Gejala lain yang dicocokkan frasa yang persis sama (kata bermakna ganda). */
+  alts?: string[];
 }
 
 /** Cocokkan satu kata kunci mulai dari posisi i, boleh disisipi kata pengisi (maks. 1 per celah, 2 total). */
@@ -649,6 +655,24 @@ const POSSESSIVE_OK = new Set(['lengkap', 'panggilan', 'asli', 'sendiri', 'siapa
 /** Kata yang bukan "isi" pertanyaan (untuk mendeteksi pertanyaan di luar konteks). */
 const NON_CONTENT = new Set(['apa', 'apakah', 'yang', 'ini', 'itu', 'ya', 'tidak', 'sudah', 'belum', 'bisa', 'mau', 'coba', 'tolong', 'dan', 'atau', 'dengan', 'untuk', 'dari', 'di', 'ke', 'mana', 'kapan', 'berapa', 'bagaimana', 'sekarang', 'tadi', 'dulu', 'sih', 'deh', 'dong', 'kok', 'nah', 'nih', 'tuh', 'saja', 'paling', 'lebih', 'tepat', 'persis', 'sakit', 'nyeri', 'pegal', 'linu', 'perih', 'gatal', 'bengkak', 'benjolan', 'luka', 'ruam', 'keluhan', 'terasa']);
 
+function withAlts<T extends Intent & { alts?: string[] }>(it: T, alts: string[] | undefined): T {
+  return alts?.length ? { ...it, alts: [...alts] } : it;
+}
+
+/**
+ * Kata bermakna ganda: bila pasien tidak mengalami gejala yang ditafsirkan tetapi mengalami salah
+ * satu alternatifnya ("Gemetar?" pada hipoglikemia → tremor, pada malaria → menggigil), pertanyaan
+ * dijawab untuk gejala yang dialami. Penanda `alts` dibuang dari hasil.
+ */
+export function resolveAlternatives(intents: readonly Intent[], has: (symptom: string) => boolean): Intent[] {
+  return intents.map((it) => {
+    if ((it.kind !== 'symptom' && it.kind !== 'symptom_detail') || !it.alts) return it;
+    const { alts, ...rest } = it;
+    const pick = has(it.symptom) ? it.symptom : (alts.find(has) ?? it.symptom);
+    return { ...rest, symptom: pick } as Intent;
+  });
+}
+
 function interpretClause(tokens: readonly string[], rawTokens: readonly string[], endsWithQuestionMark: boolean, lex: Lexicon): ClauseResult {
   const matches: Match[] = [];
   for (let i = 0; i < tokens.length; i++) {
@@ -683,6 +707,11 @@ function interpretClause(tokens: readonly string[], rawTokens: readonly string[]
     const [o] = overlapping;
     let absorbsDescriptor = false;
     for (let i = m.start; i < m.end; i++) if (!taken[i] && descriptor.has(i)) absorbsDescriptor = true;
+    // Frasa yang persis sama milik gejala lain ("gemetar": menggigil / tremor) → alternatif.
+    if (overlapping.size === 1 && o!.start === m.start && o!.end === m.end && o!.intent.kind === 'symptom' && m.intent.kind === 'symptom' && o!.intent.symptom !== m.intent.symptom) {
+      if (!(o!.alts ??= []).includes(m.intent.symptom)) o!.alts.push(m.intent.symptom);
+      continue;
+    }
     if (overlapping.size === 1 && sameIntent(o!, m) && !absorbsDescriptor) {
       for (let i = m.start; i < m.end; i++) {
         if (taken[i]) continue;
@@ -705,12 +734,16 @@ function interpretClause(tokens: readonly string[], rawTokens: readonly string[]
 
   const topics: string[] = [];
   const symptoms: string[] = [];
+  const altsOf = new Map<string, string[]>();
   const reviews: { group: string; weak: boolean; single: boolean }[] = [];
   const result: ClauseResult = { intents: [], greeting: false, thanks: false, consent: false, repeat: false };
   for (const m of accepted) {
     const it = m.intent;
     if (it.kind === 'topic' && !topics.includes(it.topic)) topics.push(it.topic);
-    else if (it.kind === 'symptom' && !symptoms.includes(it.symptom)) symptoms.push(it.symptom);
+    else if (it.kind === 'symptom' && !symptoms.includes(it.symptom)) {
+      symptoms.push(it.symptom);
+      if (m.alts?.length) altsOf.set(it.symptom, m.alts);
+    }
     else if (it.kind === 'review') {
       const prev = reviews.find((r) => r.group === it.group);
       if (prev) prev.single &&= m.size === 1;
@@ -802,7 +835,8 @@ function interpretClause(tokens: readonly string[], rawTokens: readonly string[]
   // Pertanyaan di luar konteks yang kebetulan memuat "di mana" ("Mobilnya parkir di mana?").
   if (topics.length === 1 && topics[0] === 'lokasi' && symptoms.length === 0 && phrasesOf('topic', 'lokasi').every((p) => p === 'di mana' || p === 'dimana')) {
     const covered = new Set(accepted.flatMap((m) => Array.from({ length: m.end - m.start }, (_, k) => m.start + k)));
-    const content = tokens.filter((t, i) => !covered.has(i) && !FILLERS.has(t) && !NON_CONTENT.has(t) && !ADDRESS_WORDS.has(t) && !lex.vocab.has(t));
+    // Kata sehari-hari tetap dihitung walau kebetulan ada di frasa kunci lain ("mobil" ← "naik mobil").
+    const content = tokens.filter((t, i) => !covered.has(i) && !FILLERS.has(t) && !NON_CONTENT.has(t) && !ADDRESS_WORDS.has(t) && (!lex.vocab.has(t) || EVERYDAY.has(t)));
     if (content.length >= 2) topics.length = 0;
   }
   // "Di rumah ada yang batuk lama?" / "Tetangga ada yang sakit serupa?" → tentang keluarga/kontak, bukan pasien.
@@ -833,11 +867,11 @@ function interpretClause(tokens: readonly string[], rawTokens: readonly string[]
   const detailTopics = topics.filter((t) => DETAIL_TOPICS.has(t));
   if (symptoms.length > 0 && detailTopics.length > 0) {
     // "Sejak kapan batuknya?" → detail gejala. Topik non-detail tetap dijawab terpisah.
-    for (const s of symptoms) for (const t of detailTopics) intents.push({ kind: 'symptom_detail', topic: t, symptom: s });
+    for (const s of symptoms) for (const t of detailTopics) intents.push(withAlts({ kind: 'symptom_detail', topic: t, symptom: s }, altsOf.get(s)));
     for (const t of topics.filter((x) => !DETAIL_TOPICS.has(x))) intents.push({ kind: 'topic', topic: t });
   } else {
     for (const t of topics) intents.push({ kind: 'topic', topic: t });
-    for (const s of symptoms) intents.push({ kind: 'symptom', symptom: s });
+    for (const s of symptoms) intents.push(withAlts({ kind: 'symptom', symptom: s }, altsOf.get(s)));
   }
   // Tinjauan "umum" bagian tubuh ("perutnya bagaimana?") hanya bila tidak ada gejala spesifik;
   // tinjauan yang hanya disebut satu kata dibuang bila gejala kelompoknya sudah ditanyakan.
@@ -874,6 +908,10 @@ function splitClauses(text: string): { text: string; question: boolean }[] {
 
 const DEICTIC = /\b(itu|tadi|tersebut|barusan|yang tadi)\b/;
 
+/** "Demamnya tinggi?", "Berapa derajat panasnya?" → derajat demam (bukan "tinggi" milik tensi/badan/gula). */
+const FEVER_HEIGHT = /\b(tinggi|derajat|suhu(nya)? berapa|berapa suhu(nya)?|panas sekali|panas banget|panasnya sekali)\b/;
+const NOT_FEVER_HEIGHT = /darah tinggi|tinggi badan|badannya tinggi|gula|kolesterol|hipertensi/;
+
 /**
  * Tafsirkan satu pertanyaan bebas.
  * @param maxIntents batas jumlah topik/gejala yang dijawab dari satu pertanyaan.
@@ -896,6 +934,11 @@ export function interpretQuestion(text: string, content: GameContent, maxIntents
     const tokens = canonicalTokens(raw, lex);
     normalizedParts.push(tokens.join(' '));
     const r = interpretClause(tokens, raw, clause.question, lex);
+    // "Demamnya tinggi?", "Seberapa tinggi panasnya?", "Suhunya berapa?" → derajat demam,
+    // bukan sekadar ada/tidaknya demam ("tinggi" saja tak bisa jadi kata kunci: darah tinggi, tinggi badan).
+    if (FEVER_HEIGHT.test(norm) && !NOT_FEVER_HEIGHT.test(norm)) {
+      r.intents = r.intents.map((it): Intent => (it.kind === 'symptom' && it.symptom === 'demam' ? { kind: 'symptom_detail', topic: 'keparahan', symptom: 'demam' } : it));
+    }
     greeting ||= r.greeting;
     thanks ||= r.thanks;
     consent ||= r.consent;

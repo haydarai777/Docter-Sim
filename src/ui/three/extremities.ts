@@ -16,8 +16,9 @@ const Y = new Vector3(0, 1, 0);
  * Geometri tangan kiri. `k` = skala tangan (meter per satuan); `wrist` = jari-jari ujung lengan
  * bawah (X = tebal, Z = lebar, meter) supaya pangkal tangan menyambung rata dengan lengan.
  */
-export function buildHand(k: number, plump: number, wrist: { x: number; z: number }): BufferGeometry {
+export function buildHand(k: number, plump: number, wrist: { x: number; z: number }, detail: 'tinggi' | 'standar' = 'tinggi'): BufferGeometry {
   const geo = new GeoBuilder();
+  const hi = detail !== 'standar';
   const t = 1 + 0.22 * plump;
   const wx = wrist.x / k;
   const wz = wrist.z / k;
@@ -44,7 +45,7 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
     rings.push({ c: [0.001 * k, y * k, zc * k], rx: rx * k * tt, rf: rf * k, rb: rb * k, n: 2.3 });
   }
   // Jumlah segmen sama dengan lengan bawah agar tepi keduanya tidak saling silang.
-  geo.addLoft(rings, { segments: 26, capStart: true, capEnd: true });
+  geo.addLoft(rings, { segments: hi ? 26 : 14, capStart: true, capEnd: true });
 
   // Jari: [z pangkal, y pangkal, panjang, jari-jari, tekukan total (rad), sebaran z]
   const fingers = [
@@ -75,7 +76,7 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
       const y = yb - (len / curl) * Math.sin(phi);
       f.push({ c: [(0.001 + x) * k, y * k, (zb + spread * u) * k], rx: r * rk * k * t, rf: r * rk * k * t });
     }
-    geo.addLoft(f, { segments: 12, capStart: true, capEnd: true });
+    geo.addLoft(f, { segments: hi ? 12 : 7, capStart: true, capEnd: true });
   }
 
   // Ibu jari: keluar dari pangkal telapak sisi +Z, mengarah ke depan-bawah, agak ke telapak.
@@ -101,7 +102,7 @@ export function buildHand(k: number, plump: number, wrist: { x: number; z: numbe
     const bend = Math.max(0, d - 0.03) * 0.35;
     thumb.push({ c: [(base.x + dir.x * d) * k, (base.y + dir.y * d - bend * 0.4) * k, (base.z + dir.z * d - bend) * k], rx: r * k * t, rf: r * k * t });
   }
-  geo.addLoft(thumb, { segments: 12, capStart: true, capEnd: true, u, v });
+  geo.addLoft(thumb, { segments: hi ? 12 : 7, capStart: true, capEnd: true, u, v });
   return geo.build(false);
 }
 

@@ -133,7 +133,7 @@ export class Director implements StageUpdatable {
     if (companion) {
       // Pengantar diperbarui lebih dulu agar anak yang digendong mengikuti posisinya pada frame yang sama.
       this.stage.remove(actor);
-      guide = this.companion = new Actor(companion.look, seed ^ 0x5bd1e995);
+      guide = this.companion = new Actor(companion.look, seed ^ 0x5bd1e995, 'standar');
       this.companionMode = companion.mode;
       this.stage.scene.add(guide.character.root);
       this.stage.add(guide);

@@ -13,7 +13,7 @@ import { examFinding, gcsText, testResult } from './assessment';
 import { DISPOSITIONS_BY_ID, EXAMS_BY_ID, FLUIDS_BY_ID, PROCS_BY_ID, SPECIALTIES_BY_ID, TESTS_BY_ID } from './catalog';
 import { DRUGS_BY_ID, GENERIC_HARMS } from './drugs';
 import { done, firstTime, recordMatches } from './match';
-import { addMod, addRamp, causeLabel, clamp, computeVitals, createPhysio, deliverShock, eff, rhythmLabel, stepPhysio } from './physiology';
+import { addMod, addRamp, causeLabel, clamp, computeVitals, createPhysio, deliverShock, eff, rhythmLabel, settlePhysio, stepPhysio } from './physiology';
 import type {
   ActionMatch,
   ActionRecord,
@@ -123,6 +123,7 @@ function buildPatient(index: number, sc: EdScenario, variantId: string | undefin
   }
   const devices = { ...defaultDevices(), ...(sc.arrival.devices ?? {}) };
   const support = supportFrom(devices, atSec);
+  settlePhysio(physio, support, atSec);
   const v = computeVitals(physio, support, atSec);
   return {
     id: `p${index + 1}`,
@@ -312,6 +313,8 @@ function enqueue(shift: EdShift, p: EdPatient, performer: Performer, label: stri
     shift.doctor.busyUntil = shift.time + seconds;
     shift.doctor.task = task.id;
     shift.doctor.bedId = p.bedId;
+    shift.doctor.label = null;
+    shift.doctor.patientId = p.id;
   } else assignNurses(shift);
   return task;
 }
@@ -381,10 +384,23 @@ function stopContinuousFor(shift: EdShift, p: EdPatient, procId: ProcId): void {
   for (const t of shift.tasks.filter((x) => x.patientId === p.id && x.action.kind === 'proc' && x.action.id === procId)) stopTask(shift, t.id);
 }
 
-export function doctorBusy(shift: EdShift): { busy: boolean; label: string | null; left: number } {
+export function doctorBusy(shift: EdShift): { busy: boolean; label: string | null; left: number; patientId: string | null } {
   const left = Math.max(0, shift.doctor.busyUntil - shift.time);
   const task = shift.tasks.find((t) => t.id === shift.doctor.task);
-  return { busy: left > 0, label: task?.label ?? null, left };
+  return { busy: left > 0, label: task?.label ?? shift.doctor.label ?? null, left, patientId: shift.doctor.patientId ?? null };
+}
+
+/**
+ * Pesan "dokter masih sibuk" yang menyebut kegiatannya dan — bila berbeda — pasien yang sedang
+ * ditangani (bukan selalu "pasien lain", yang keliru saat dokter masih memeriksa pasien yang sama).
+ */
+export function busyMessage(shift: EdShift, forPatientId: string | null, withTime = true): string {
+  const d = doctorBusy(shift);
+  const what = d.label ? d.label.charAt(0).toLowerCase() + d.label.slice(1) : 'sibuk';
+  const other = d.patientId && d.patientId !== forPatientId ? shift.patients.find((x) => x.id === d.patientId) : undefined;
+  const who = other ? ` (${other.name})` : '';
+  const time = withTime ? ` — ± ${Math.max(1, Math.ceil(d.left / 60))} menit lagi` : '';
+  return `Anda sedang ${what}${who}${time}.`;
 }
 
 // ---------------------------------------------------------------------------
@@ -638,11 +654,14 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
   const sc = scenarioOf(ctx, p);
   const now = shift.time;
   const away = p.awayUntil !== null && now < p.awayUntil;
-  const doctorAction = (seconds: number): ActResult | null => {
+  const doctorAction = (seconds: number, label: string): ActResult | null => {
     const d = doctorBusy(shift);
-    if (d.busy) return fail(`Anda sedang ${d.label ?? 'menangani pasien lain'} (± ${Math.ceil(d.left / 60)} menit lagi).`);
+    if (d.busy) return fail(busyMessage(shift, p.id));
     shift.doctor.busyUntil = now + seconds;
     shift.doctor.bedId = p.bedId;
+    shift.doctor.task = null;
+    shift.doctor.label = label;
+    shift.doctor.patientId = p.id;
     return null;
   };
   const markSeen = () => {
@@ -675,7 +694,7 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
       if (away) return fail('Pasien sedang di radiologi.');
       const def = EXAMS_BY_ID.get(action.exam);
       if (!def) return fail('Pemeriksaan tidak dikenal.');
-      const busy = doctorAction(def.seconds);
+      const busy = doctorAction(def.seconds, `memeriksa ${def.short.charAt(0).toLowerCase() + def.short.slice(1)}`);
       if (busy) return busy;
       markSeen();
       const s = supportOf(p, now);
@@ -687,7 +706,7 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
     }
     case 'tanya': {
       // Bertanya bisa sambil memeriksa; tidak bisa saat mengerjakan tindakan (intubasi, WSD, dsb.).
-      if (doctorBusy(shift).busy && shift.doctor.task) return fail(`Anda sedang ${doctorBusy(shift).label ?? 'sibuk'}.`);
+      if (doctorBusy(shift).busy && shift.doctor.task) return fail(busyMessage(shift, p.id, false));
       const s = supportOf(p, now);
       const v = computeVitals(p.physio, s, now);
       const who = informants(p, sc, v, s, now).find((i) => i.id === action.who);
@@ -779,7 +798,7 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
       const spec = SPECIALTIES_BY_ID.get(action.specialty);
       if (!spec) return fail('Konsulen tidak dikenal.');
       if (p.consults.some((c) => c.specialty === action.specialty && !c.answered)) return fail('Konsul sedang menunggu jawaban.');
-      const busy = doctorAction(60);
+      const busy = doctorAction(60, `menelepon konsulen ${spec.label ?? action.specialty}`);
       if (busy) return busy;
       const r = createRng(deriveSeed(shift.seed, `konsul-${p.id}-${action.specialty}`));
       const wait = r.int(spec.responseMin[0], spec.responseMin[1]) * 60;
@@ -865,7 +884,7 @@ function orderTest(shift: EdShift, p: EdPatient, id: TestId, ctx: EdContext): Ac
     if (d.busy) {
       p.tests.pop();
       p.actions.pop();
-      return fail(`Anda sedang ${d.label ?? 'sibuk'}.`);
+      return fail(busyMessage(shift, p.id));
     }
     enqueue(shift, p, 'dokter', def.label, def.seconds, { kind: 'test_bedside', id }, idx);
     return ok(`Anda melakukan ${def.label}.`);
@@ -949,7 +968,7 @@ function orderProc(shift: EdShift, p: EdPatient, id: ProcId, param: string | und
     const busy = doctorBusy(shift);
     if (busy.busy && id !== 'hentikan_rjp' && id !== 'defibrilasi') {
       p.actions.pop();
-      return fail(`Anda sedang ${busy.label ?? 'sibuk'} (± ${Math.ceil(busy.left / 60)} menit lagi).`);
+      return fail(busyMessage(shift, p.id));
     }
     if (id === 'hentikan_rjp' || id === 'defibrilasi') {
       // Tindakan sekejap saat henti jantung: langsung.

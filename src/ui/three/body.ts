@@ -70,6 +70,8 @@ export interface BodySpec {
   chestBand?: boolean;
   /** Ujung celana per tungkai (jarak dari sendi panggul, × s) — celana digunting/dilipat. */
   pantsEnd?: { L?: number; R?: number };
+  /** Tingkat detail kulit lengan/tungkai (pasien = tinggi). */
+  detail?: 'tinggi' | 'standar';
 }
 
 export interface BodyGeometry {
@@ -226,6 +228,7 @@ export function buildBody(spec: BodySpec): BodyGeometry {
   // Anatomi permukaan (otot, tulang, pusar, puting …) — lihat anatomy.ts.
   const ana: AnatomySpec = { s, male, ageGroup, fat, thin, hy: spec.hipsY, bare: !!spec.bareTorso };
   const sculptTorso = torsoSculpt(ana);
+  const hiDetail = spec.detail !== 'standar';
   const sculptCloth = torsoSculpt(ana, true);
 
   // --- Bobot tulang untuk torso (berdasarkan tinggi relatif & posisi samping) ---------
@@ -325,9 +328,9 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     }
     // Kulit lengan yang terlihat (di bawah lengan baju) sampai pergelangan.
     const skin: Ring[] = [];
-    for (let d = bare ? -0.03 : spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += 0.011) skin.push(armRing(d, 0));
+    for (let d = bare ? -0.03 : spec.longSleeves ? 0.47 : 0.1; d < 0.505; d += hiDetail ? 0.011 : 0.018) skin.push(armRing(d, 0));
     skin.push(armRing(0.505, 0));
-    skinArms.addLoft(skin, { segments: 22, capEnd: true, sculpt: sculptArm });
+    skinArms.addLoft(skin, { segments: hiDetail ? 22 : 14, capEnd: true, sculpt: sculptArm });
     const elbow = landmark(armRing(0.272, 0), Math.PI, sculptArm);
     if (side === 1) elbowL.copy(elbow);
     else elbowR.copy(elbow);
@@ -505,9 +508,9 @@ export function buildBody(spec: BodySpec): BodyGeometry {
     bottom.addLoft(cloth, { segments: 18, capStart: true, sculpt: scaled(sculptLeg, shortLeg ? 0.45 : 0.25) });
     // Kulit: tungkai yang tidak tertutup celana (celana pendek/digunting) atau hanya pergelangan kaki.
     const skin: Ring[] = [];
-    for (let d = Math.max(-0.02, pantsEnd - 0.04); d < 0.785; d += 0.012) skin.push(legRing(d, 0));
+    for (let d = Math.max(-0.02, pantsEnd - 0.04); d < 0.785; d += hiDetail ? 0.012 : 0.02) skin.push(legRing(d, 0));
     skin.push(legRing(0.79, 0));
-    skinLegs.addLoft(skin, { segments: 22, sculpt: sculptLeg });
+    skinLegs.addLoft(skin, { segments: hiDetail ? 22 : 14, sculpt: sculptLeg });
     const knee = landmark(legRing(0.405, 0), 0, sculptLeg);
     if (side === 1) kneeL.copy(knee);
     else kneeR.copy(knee);

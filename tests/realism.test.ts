@@ -147,3 +147,30 @@ describe('Tekstur prosedural kulit & rambut', () => {
     expect(max - min).toBeGreaterThan(100);
   });
 });
+
+describe('Penyesuaian kualitas otomatis (perangkat lambat)', () => {
+  type Fake = { ao: boolean; pixelRatio: number; shadows: boolean } & Record<string, unknown>;
+  const fake = (): Fake => ({
+    throttle: 1, slowFrames: 0, slowTime: 0, fastFrames: 0, fastRun: 0, ao: true, pixelRatio: 1.5, shadows: true, width: 100, height: 100,
+    renderer: { setPixelRatio() {}, setSize() {} }, composer: null, room: { setShadows() {} }, alt: null,
+  });
+  const run = async (st: Fake, dts: number[]) => {
+    (globalThis as { window?: unknown }).window ??= { devicePixelRatio: 1 };
+    const { Stage } = await import('../src/ui/three/stage');
+    const adapt = (Stage.prototype as unknown as { adapt(this: Fake, dt: number): void }).adapt;
+    for (const dt of dts) adapt.call(st, dt);
+    return st;
+  };
+
+  it('perangkat ± 1 fps melepas oklusi ambien dalam hitungan frame, bukan 45 frame', async () => {
+    const st = await run(fake(), Array(7).fill(1));
+    expect(st.ao).toBe(false);
+  });
+
+  it('perangkat kuat dengan beberapa hambatan kompilasi shader tetap memakai AO', async () => {
+    const hitch = [0.9, 0.8, 0.7];
+    const smooth = Array(40).fill(1 / 60);
+    const st = await run(fake(), [...hitch, ...smooth, ...hitch, ...smooth]);
+    expect(st.ao).toBe(true);
+  });
+});

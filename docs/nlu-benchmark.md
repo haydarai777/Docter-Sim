@@ -33,8 +33,8 @@ npm test                # tests/nluBenchmark.test.ts menjaga ambang akurasi
 | Penyetelan | 315 | 231 (73,3%) | — (dipakai menyetel) | 315 (100%) |
 | Uji terpisah ronde 1 | 146 | 88 (60,3%) | 117 (80,1%) | 146 (100%) |
 | Uji terpisah ronde 2 | 168 | 94 (56,0%) | 128 (76,2%) | 168 (100%) |
-| Uji terpisah ronde 3 | 143 | 85 (59,4%) | 119 (83,2%) | 142 (99,3%) |
-| **Total uji terpisah** | **457** | **267 (58,4%)** | **364 (79,7%)** | **456 (99,8%)** |
+| Uji terpisah ronde 3 | 143 | 85 (59,4%) | 119 (83,2%) | 143 (100%) |
+| **Total uji terpisah** | **457** | **267 (58,4%)** | **364 (79,7%)** | **457 (100%)** |
 
 Cara membaca:
 
@@ -47,8 +47,14 @@ Cara membaca:
 - Satu label ronde 3 dikoreksi setelah pengukuran: "Perut begah?" di konten berarti rasa penuh
   setelah makan (`cepat_kenyang`, sesuai KBBI), bukan `kembung`. Angka buta 119/143 tetap menghitungnya
   sebagai meleset.
-- Yang masih meleset: "Demamnya tinggi?" (ambigu antara menanyakan adanya demam tinggi atau derajat
-  demam yang sudah diketahui).
+"Demamnya tinggi?" / "Panas tinggi?" kini dibaca sebagai derajat demam (`keparahan`). Pasien yang
+  tidak demam tetap menyangkal, dan pasien yang demam menjawab tingginya sekaligus mengakui demamnya.
+  Label ronde 2 "Panas tinggi?" disesuaikan.
+- Dua label lama dikoreksi setelah gejala yang lebih khusus masuk ke konten: "Telat datang bulan?" →
+  gejala `terlambat_haid`, dan "Ada batuk pilek?" → `batuk` + `pilek`.
+- **Kata bermakna ganda**: frasa yang persis sama milik dua gejala ("gemetar/gemetaran" = menggigil
+  atau tremor) ditandai sebagai alternatif. Pasien menjawab untuk gejala yang memang dialaminya, jadi
+  pasien malaria mengaku menggigil dan pasien hipoglikemia mengaku tremor.
 
 Kecepatan: indeks kata kunci dibangun sekali (± 70 ms), lalu ± 30 µs per pertanyaan di laptop
 pengembang — tidak terasa di HP.

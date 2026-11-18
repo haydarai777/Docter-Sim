@@ -35,8 +35,10 @@ klinis**, bukan sekadar tebakan diagnosis.
   isi jawaban; ekspresi cemas, kesakitan, lesu, tenang mengikuti kepribadian & kondisi.
 - **Monitor RME di meja** memuat seluruh tindakan (riwayat percakapan, pemeriksaan, penalaran,
   keputusan); jawaban pasien juga tampil sebagai teks berjalan di ruangan.
-- **Ringan**: ± 16 ribu segitiga, satu pasien dalam satu waktu (sumber daya dibuang saat pasien pergi),
-  resolusi & bayangan menyesuaikan kemampuan perangkat; tanpa WebGL game tetap bisa dimainkan (2D).
+- **Ringan**: ± 66 ribu segitiga (sebagian besar tubuh pasien yang realistis), satu pasien dalam satu
+  waktu (sumber daya dibuang saat pasien pergi). Oklusi ambien, resolusi, dan bayangan diturunkan
+  otomatis bila perangkat kewalahan; perangkat sangat lambat menyesuaikan dalam beberapa detik.
+  Tanpa WebGL game tetap bisa dimainkan (2D).
 - **Anamnesis bebas tanpa batas.** Ketik pertanyaan dengan bahasa sendiri. Pasien hanya menjawab
   yang ditanyakan dan mengingat pertanyaan sebelumnya (jawaban konsisten bila diulang).
   - **Mode lokal (bawaan, tanpa kuota Claude):** pemahaman bahasa berjalan di perangkat. Paham

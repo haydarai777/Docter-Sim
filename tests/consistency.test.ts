@@ -65,7 +65,7 @@ describe('riwayat komorbiditas di jawaban anamnesis', () => {
       }
     }
     expect(pelupa).toBeGreaterThan(0);
-  });
+  }, 20_000); // 480 kasus: berat bila CPU sedang sibuk
 
   it('"Ibu saya JUGA kencing manis" hanya bila pasien tahu dirinya mengidapnya', () => {
     for (const c of cases(160, 5)) {

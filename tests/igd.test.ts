@@ -291,3 +291,35 @@ describe('IGD — anamnesis', () => {
     expect(ans.text).toMatch(/terengah|terputus/);
   });
 });
+
+describe('IGD — konsistensi kode', () => {
+  it('setiap kunci dosis yang dibaca skenario/mesin benar-benar dicatat oleh obatnya', async () => {
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const root = path.resolve(__dirname, '..');
+    const read = (dir: string): string =>
+      fs
+        .readdirSync(path.join(root, dir), { withFileTypes: true })
+        .map((e) => (e.isDirectory() ? read(path.join(dir, e.name)) : e.name.endsWith('.ts') ? fs.readFileSync(path.join(root, dir, e.name), 'utf8') : ''))
+        .join('\n');
+    const src = read('src');
+    const counted = new Set([...src.matchAll(/count\(p, '([a-z_0-9]+)'\)/g)].map((m) => m[1]));
+    const readKeys = new Set([...src.matchAll(/doses\.([a-z_0-9]+)/g)].map((m) => m[1]));
+    for (const k of readKeys) expect(counted.has(k), `doses.${k} dibaca tetapi tidak pernah dicatat`).toBe(true);
+  });
+});
+
+describe('IGD — pesan dokter sibuk', () => {
+  it('menyebut kegiatan yang sedang dikerjakan, bukan "pasien lain" untuk pasien yang sama', () => {
+    const shift = createShift(singleConfig('asma_berat', undefined, 60), 3, ctx);
+    const p = shift.patients[0]!;
+    advance(shift, (p.arriveAt - shift.time) + 5, ctx);
+    act(shift, p.id, { type: 'triase', ats: 2, bedId: 'R1' }, ctx);
+    const first = act(shift, p.id, { type: 'periksa', exam: 'dada' }, ctx);
+    expect(first.ok).toBe(true);
+    const second = act(shift, p.id, { type: 'periksa', exam: 'abdomen' }, ctx);
+    expect(second.ok).toBe(false);
+    expect(second.message).toContain('memeriksa');
+    expect(second.message).not.toContain('pasien lain');
+  });
+});

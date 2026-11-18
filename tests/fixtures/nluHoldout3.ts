@@ -119,7 +119,7 @@ export const NLU_HOLDOUT_3: NluCase[] = [
   { q: 'Buang air besar cair?', expect: [S('diare')] },
   { q: 'Gusi atau hidung berdarah?', expect: [S('perdarahan_mukosa')] },
   { q: 'Mata atau kulit kuning?', expect: [S('kuning')] },
-  { q: 'Ada batuk pilek?', expect: [S('batuk')] },
+  { q: 'Ada batuk pilek?', expect: [S('batuk'), S('pilek')] }, // gejala pilek ditambahkan setelah ronde ini ditulis
   { q: 'Nyeri di ulu hati?', expect: [S('nyeri_ulu_hati')] },
   // Label diperbaiki setelah pengukuran buta: di konten, "begah" = rasa penuh setelah makan
   // (KBBI: "merasa sesak/penuh perut karena terlalu kenyang") → gejala cepat_kenyang, bukan kembung.

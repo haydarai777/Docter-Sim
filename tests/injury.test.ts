@@ -164,3 +164,49 @@ describe('Cedera yang tampak (luka & perdarahan)', () => {
     }
   });
 });
+
+describe('Teks pemeriksaan IGD tidak menggandakan temuan', () => {
+  it('tidak ada klausa ganda/hampir sama dalam satu hasil pemeriksaan (semua skenario, saat tiba)', async () => {
+    const { EXAMS } = await import('../src/core/igd/catalog');
+    const { advance } = await import('../src/core/igd/engine');
+    const words = (c: string) => new Set(c.toLowerCase().replace(/[()]/g, '').split(/\s+/).filter((w) => w.length > 2 && !['dan', 'yang', 'di'].includes(w)));
+    for (const sc of ED_SCENARIOS) {
+      const shift = createShift(singleConfig(sc.id, undefined, 60), 5, ctx);
+      const p = shift.patients[0]!;
+      advance(shift, p.arriveAt - shift.time + 5, ctx);
+      for (const ex of EXAMS) {
+        const text = examFinding(ex.id, p, sc, vitalsOf(p, shift.time), supportOf(p, shift.time), shift.time);
+        const clauses = text.split(/[.;]\s*/).map(words).filter((w) => w.size >= 3);
+        for (let i = 0; i < clauses.length; i++) {
+          for (let j = i + 1; j < clauses.length; j++) {
+            const a = clauses[i]!;
+            const b = clauses[j]!;
+            const inter = [...a].filter((w) => b.has(w)).length;
+            const jac = inter / (a.size + b.size - inter);
+            expect(jac, `${sc.id} ${ex.id}: «${text}»`).toBeLessThan(0.75);
+          }
+        }
+      }
+    }
+  });
+});
+
+describe('Pupil 3D selaras dengan teks pemeriksaan', () => {
+  it('pin-point, miosis, isokor normal sesuai teks pemeriksaan D', async () => {
+    const { pupilSizes } = await import('../src/core/igd/assessment');
+    const { advance } = await import('../src/core/igd/engine');
+    for (const sc of ED_SCENARIOS) {
+      const shift = createShift(singleConfig(sc.id, undefined, 60), 5, ctx);
+      const p = shift.patients[0]!;
+      advance(shift, p.arriveAt - shift.time + 30, ctx);
+      const t = shift.time;
+      const text = examFinding('D', p, sc, vitalsOf(p, t), supportOf(p, t), t);
+      const [l, r] = pupilSizes(p.physio, t);
+      if (/pin-point/.test(text)) expect(Math.max(l, r), sc.id).toBeLessThanOrEqual(1.2);
+      else if (/miosis/.test(text)) expect(Math.max(l, r), sc.id).toBeLessThan(2.5);
+      else if (/midriasis/.test(text)) expect(Math.min(l, r), sc.id).toBeGreaterThanOrEqual(4.5);
+      else if (/anisokor/.test(text)) expect(Math.abs(l - r), sc.id).toBeGreaterThanOrEqual(1.5);
+      else if (/isokor 3\/3/.test(text)) expect([l, r], sc.id).toEqual([3, 3]);
+    }
+  });
+});

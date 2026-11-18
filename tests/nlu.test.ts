@@ -106,6 +106,32 @@ describe('pemahaman pertanyaan bebas', () => {
     expect(ids('Badannya panas?')).toEqual(['demam']);
   });
 
+  it('"seberapa tinggi demamnya" menanyakan derajat demam, bukan sekadar ada/tidaknya', () => {
+    for (const q of ['Demamnya tinggi?', 'Seberapa tinggi demamnya?', 'Panasnya tinggi sekali?', 'Berapa derajat panasnya?'])
+      expect(topicsOf(q), q).toEqual(['keparahan/demam']);
+    expect(kindsOf('Ada demam?')).toEqual(['symptom']);
+    // "tinggi" milik tekanan darah / gula / tinggi badan tidak dibelokkan ke demam.
+    expect(topicsOf('Demam dan darah tinggi?')).not.toContain('keparahan/demam');
+    expect(topicsOf('Tinggi badannya berapa?')).toEqual([]);
+  });
+
+  it('kata bermakna ganda ("gemetar") dijawab sesuai gejala yang dialami pasien', async () => {
+    const { askQuestion, startEncounter } = await import('../src/core/encounter');
+    const ask = (diseaseId: string, q: string) => {
+      const c = generateCase(content, config, { diseaseId, seed: 3 });
+      const r = askQuestion(startEncounter(c), q, content, config);
+      return r.state.revealedSymptoms;
+    };
+    expect(ask('hipoglikemia', 'Gemetar?')).toContain('gemetar');
+    expect(ask('malaria', 'Sampai gemetaran?')).toContain('menggigil');
+    expect(ask('malaria', 'Tangannya gemetar?')).not.toContain('menggigil');
+  });
+
+  it('pertanyaan di luar konteks yang memuat "di mana" tidak dijawab sebagai lokasi keluhan', () => {
+    expect(interpretQuestion('Mobilnya parkir di mana?', content).intents).toEqual([]);
+    expect(topicsOf('Sakitnya di mana?')).toEqual(['lokasi']);
+  });
+
   it('pertanyaan yang tidak dipahami menghasilkan daftar kosong', () => {
     expect(interpretQuestion('Siapa presiden pertama?', content).intents).toEqual([]);
     expect(interpretQuestion('   ', content).intents).toEqual([]);

@@ -735,6 +735,8 @@ export class WoundSet {
   }
 
   private hemaSoak: RevealMaterial | null = null;
+  /** Decal di luar luka (noda muntah darah, celana basah darah) — dilepas saat dispose. */
+  private readonly extras: Mesh[] = [];
 
   /** Darah muntahan di bagian depan baju (rembesan meluas sesuai volume muntah darah). */
   setHematemesis(ml: number): void {
@@ -748,7 +750,8 @@ export class WoundSet {
       const targets = an.cloth.length ? an.cloth : an.targets;
       const pr = this.projector(an, 0.24, 0.3, 0);
       pr.depth = 0.2;
-      this.addDecal(an, pr, this.hemaSoak.material, 2, targets);
+      const m = this.addDecal(an, pr, this.hemaSoak.material, 2, targets);
+      if (m) this.extras.push(m);
     }
     this.hemaSoak.setReveal(Math.min(1, 0.25 + ml / 500));
   }
@@ -770,7 +773,8 @@ export class WoundSet {
         const targets = pants.length ? pants : an.targets;
         const pr = this.projector(an, 0.15, 0.24, 0);
         pr.depth = 0.14;
-        this.addDecal(an, pr, this.vagSoak.material, 2, targets);
+        const m = this.addDecal(an, pr, this.vagSoak.material, 2, targets);
+        if (m) this.extras.push(m);
       }
     }
     this.vagSoak.setReveal(ml > 5 ? Math.min(1, 0.3 + ml / 1100) : 0);
@@ -783,6 +787,8 @@ export class WoundSet {
       w.tourniquet?.removeFromParent();
       w.wrap?.removeFromParent();
     }
+    for (const m of this.extras) m.removeFromParent();
+    this.extras.length = 0;
     for (const d of this.disposables) d.dispose();
     this.disposables.length = 0;
   }

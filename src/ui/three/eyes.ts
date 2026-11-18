@@ -40,6 +40,8 @@ export interface EyeSpec {
   /** Kemiringan celah mata (sudut luar lebih tinggi bila positif), radian. */
   tilt: number;
   skin: Material;
+  /** Tingkat detail geometri (pasien = tinggi; orang lain yang dilihat dari jauh = standar). */
+  detail?: 'tinggi' | 'standar';
 }
 
 const DEG = Math.PI / 180;
@@ -176,7 +178,8 @@ export class Eyes {
       this.disposables.push(x);
       return x;
     };
-    const ballGeo = track(new SphereGeometry(r, 40, 28));
+    const hi = spec.detail !== 'standar';
+    const ballGeo = track(new SphereGeometry(r, hi ? 32 : 18, hi ? 22 : 12));
     ballGeo.rotateX(Math.PI / 2); // kutub +Y → +Z (depan)
     const tex = track(eyeTexture(spec.iris, seed));
     const pupilU = this.pupilU;
@@ -224,20 +227,21 @@ export class Eyes {
     const marginMat = track(new MeshStandardMaterial({ color: new Color(spec.lash).lerp(new Color('#3a2219'), 0.3), roughness: 0.7 }));
     const lowerMarginMat = track(new MeshStandardMaterial({ color: '#b97a6c', roughness: 0.45 }));
     const caruncleMat = track(new MeshPhysicalMaterial({ color: '#d58a80', roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.1 }));
-    const lidU = track(new SphereGeometry(rl, 40, 14, 0, Math.PI * 2, 0, this.thetaU));
-    const lidL = track(new SphereGeometry(rl * 0.995, 40, 14, 0, Math.PI * 2, 0, this.thetaL));
+    const lidSeg = hi ? 32 : 18;
+    const lidU = track(new SphereGeometry(rl, lidSeg, hi ? 10 : 6, 0, Math.PI * 2, 0, this.thetaU));
+    const lidL = track(new SphereGeometry(rl * 0.995, lidSeg, hi ? 10 : 6, 0, Math.PI * 2, 0, this.thetaL));
     lidL.rotateZ(Math.PI); // tudung bawah: sumbu −Y
     const edgeU = rl * Math.sin(this.thetaU);
     const edgeL = rl * 0.995 * Math.sin(this.thetaL);
-    const marginU = track(new TorusGeometry(edgeU, 0.0012 * (r / 0.0118), 8, 48));
+    const marginU = track(new TorusGeometry(edgeU, 0.0012 * (r / 0.0118), hi ? 6 : 4, hi ? 32 : 18));
     marginU.rotateX(Math.PI / 2);
     marginU.translate(0, rl * Math.cos(this.thetaU), 0);
-    const marginL = track(new TorusGeometry(edgeL, 0.0008 * (r / 0.0118), 8, 48));
+    const marginL = track(new TorusGeometry(edgeL, 0.0008 * (r / 0.0118), hi ? 6 : 4, hi ? 32 : 18));
     marginL.rotateX(Math.PI / 2);
     marginL.translate(0, -rl * 0.995 * Math.cos(this.thetaL), 0);
     // Bulu mata atas: pita melebar ke luar dari tepi kelopak, hanya di sisi depan.
     const lashLen = (spec.female ? 0.0042 : 0.0032) * (r / 0.0118);
-    const lashes = track(new CylinderGeometry(edgeU + lashLen * 0.75, edgeU, lashLen * 0.6, 40, 1, true, -1.15, 2.3));
+    const lashes = track(new CylinderGeometry(edgeU + lashLen * 0.75, edgeU, lashLen * 0.6, hi ? 24 : 12, 1, true, -1.15, 2.3));
     lashes.translate(0, rl * Math.cos(this.thetaU) - lashLen * 0.3, 0);
     const caruncle = track(new SphereGeometry(r * 0.13, 10, 8));
 

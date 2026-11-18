@@ -65,7 +65,11 @@ export class Stage {
   // Pengukuran kinerja untuk menurunkan kualitas secara adaptif.
   private pixelRatio: number;
   private slowFrames = 0;
+  /** Lama (detik) frame lambat terkumpul — perangkat sangat lambat (± 1 fps) tidak menunggu 45 frame. */
+  private slowTime = 0;
   private fastFrames = 0;
+  /** Frame tidak lambat berturut-turut: hambatan sesaat (kompilasi shader) tidak dihitung menumpuk. */
+  private fastRun = 0;
   private shadows: boolean;
   private readonly tmp = new Vector3();
   /** Ruang pengganti (mis. IGD) — ruang praktik disembunyikan selama aktif. */
@@ -131,6 +135,13 @@ export class Stage {
     window.addEventListener('resize', this.resize);
     document.addEventListener('visibilitychange', this.onVisibility);
     this.canvas.addEventListener('webglcontextlost', (e) => e.preventDefault());
+    // Setelah konteks WebGL pulih, isi peta lingkungan (render target) hilang → potret ulang.
+    this.canvas.addEventListener('webglcontextrestored', () => {
+      for (const rt of this.envs.values()) rt.dispose();
+      this.envs.clear();
+      this.applyEnvironment(this.alt ?? this.room);
+      this.composer?.setSize(this.width, this.height);
+    });
     this.resize();
     this.applyEnvironment(this.room);
     if (this.ao) this.setupComposer();
@@ -368,10 +379,19 @@ export class Stage {
   /** Turunkan resolusi/bayangan bila perangkat kewalahan; naikkan lagi bila longgar. */
   private adapt(rawDt: number): void {
     if (this.throttle > 1 || rawDt <= 0) return;
-    if (rawDt > 1 / 28) this.slowFrames++;
-    else if (rawDt < 1 / 50) this.fastFrames++;
-    if (this.slowFrames > 45) {
+    if (rawDt > 1 / 28) {
+      this.slowFrames++;
+      this.slowTime += Math.min(rawDt, 1);
+      this.fastRun = 0;
+    } else {
+      if (rawDt < 1 / 50) this.fastFrames++;
+      if (++this.fastRun >= 30) this.slowTime = 0;
+    }
+    // 45 frame lambat, atau ≥ 6 frame yang totalnya > 2,5 detik (beberapa frame kompilasi shader saja
+    // tidak cukup untuk menurunkan kualitas pada perangkat yang sebenarnya kuat).
+    if (this.slowFrames > 45 || (this.slowFrames >= 6 && this.slowTime > 2.5)) {
       this.slowFrames = 0;
+      this.slowTime = 0;
       this.fastFrames = 0;
       const floor = Math.min(1, window.devicePixelRatio || 1);
       if (this.ao) {
@@ -396,6 +416,7 @@ export class Stage {
     if (this.fastFrames > 600) {
       this.fastFrames = 0;
       this.slowFrames = Math.max(0, this.slowFrames - 20);
+      this.slowTime = 0;
     }
   }
 

@@ -31,7 +31,7 @@
         "exaggerated": ["menggigilnya hebat sampai gigi gemeletuk, pakai selimut tebal juga masih dingin"],
         "downplayed": ["kadang agak kedinginan sedikit"]
       },
-      "keywords": ["menggigil", "kedinginan", "gemetar", "gigi gemeletuk"]
+      "keywords": ["menggigil", "kedinginan", "gemetar", "gemetaran", "badan gemetar", "gigi gemeletuk"]
     },
     {
       "id": "berkeringat",
@@ -2272,7 +2272,7 @@
         "exaggerated": ["gemetarnya sampai nggak bisa pegang gelas"],
         "downplayed": ["tangan agak gemetar"]
       },
-      "keywords": ["tangan gemetar", "gemetaran", "tremor", "tangan bergetar", "badan gemetar"]
+      "keywords": ["tangan gemetar", "gemetar", "gemetaran", "tremor", "tangan bergetar", "badan gemetar"]
     },
     {
       "id": "bingung",

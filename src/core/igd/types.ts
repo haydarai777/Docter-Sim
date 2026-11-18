@@ -262,7 +262,9 @@ export interface PhysioState {
   /** Penghitung (detik) untuk pemicu henti jantung & kerusakan. */
   counters: { lowMap: number; lowSat: number; herniation: number; hypoK: number };
   /** Nilai langkah sebelumnya (umpan balik: dorongan napas hipoksik, jatuhnya lidah, dsb.). */
-  memo: { gcs: number; pao2: number; map: number; sa: number; perfusion: number };
+  memo: { gcs: number; pao2: number; map: number; sa: number; perfusion: number; paco2?: number };
+  /** Waktu `memo` terakhir diperbarui (dasar kinetika cadangan oksigen & CO₂). */
+  memoT?: number;
   /** Skala perburukan (tingkat kesulitan). */
   deterioration: number;
   /** Perkiraan tingkat hidrasi kulit/mukosa untuk temuan (dehidrasi). */
@@ -298,6 +300,9 @@ export interface Gcs {
 }
 
 export interface Vitals {
+  /** Nilai mentah (tanpa pembulatan) untuk memori fisiologi — agar perubahan kecil tiap langkah tidak hilang. */
+  rawSa?: number;
+  rawPaco2?: number;
   hr: number;
   /** Nadi teraba? (false saat henti jantung). */
   pulse: boolean;
@@ -837,7 +842,11 @@ export interface EdShift {
   patients: EdPatient[];
   beds: { id: string; label: string; kind: BedKind; patientId: string | null }[];
   nurses: NurseState[];
-  doctor: { busyUntil: number; task: string | null; bedId: string | null };
+  /**
+   * Kesibukan dokter: tugas berjangka (tindakan) atau kegiatan singkat (pemeriksaan, telepon
+   * konsul) — `label` = kegiatan itu, `patientId` = pasien yang sedang ditangani.
+   */
+  doctor: { busyUntil: number; task: string | null; bedId: string | null; label?: string | null; patientId?: string | null };
   tasks: EdTask[];
   /** Ventilator yang tersedia (id pasien yang memakai). */
   ventilators: (string | null)[];

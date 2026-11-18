@@ -280,6 +280,7 @@ export class Character {
       bareTorso,
       chestBand: bareTorso && !male && a.age >= 10,
       pantsEnd: expose?.legs ? { L: legCut(expose.legs.kiri), R: legCut(expose.legs.kanan) } : undefined,
+      detail,
     }));
     const skinned = (geo: BufferGeometry | null, m: Material, layer: 'kulit' | 'pakaian' = 'pakaian', part?: 'atas' | 'bawah'): void => {
       if (!geo) return;
@@ -331,7 +332,7 @@ export class Character {
 
     // --- Tangan ------------------------------------------------------------
     const frame = child ? 0.9 : young ? 0.955 : male ? 1 : 0.935;
-    const handGeo = this.track(buildHand(s * frame * (1 - 0.05 * thin), fat, body.wrist));
+    const handGeo = this.track(buildHand(s * frame * (1 - 0.05 * thin), fat, body.wrist, detail));
     const handMat = longSleeves && rash ? rash : skin;
     for (const [arm, side] of [
       [this.armL, 1],
@@ -408,6 +409,7 @@ export class Character {
         child,
         tilt: (0.05 + 0.07 * shape.vary.eyeTilt) * 0.55,
         skin,
+        detail,
       },
       seed,
     );

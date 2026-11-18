@@ -162,7 +162,9 @@ export class HeadShape {
   point(yn: number, a: number, out: Vector3, thick = 0): Vector3 {
     this.pointRaw(yn, a, out, thick);
     // Relief wajah (rongga mata, tulang alis & pipi, bibir, dagu …) ke arah keluar permukaan.
-    const r = Math.cos(a) > 0.05 ? this.relief(out.x, yn) : 0;
+    // Relief memudar halus ke sisi kepala (tanpa lompatan di batas wajah).
+    const fade = smooth(0, 0.3, Math.cos(a));
+    const r = fade > 0 ? this.relief(out.x, yn) * fade : 0;
     if (r !== 0) {
       const dz = out.z - this.hd * (sampleStations(this.table, yn)[3] as number);
       const len = Math.hypot(out.x, dz) || 1;
@@ -531,7 +533,8 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
   const mat = track(createHairMaterial({ color: look.hairColor }));
   // Lapisan helai luar yang jarang (rambut pendek sekali tidak perlu).
   if (style.thick >= 0.008) {
-    const fuzz = new Mesh(track(hairShell(shape, style, 0.0018 * hs)), track(createHairMaterial({ color: look.hairColor, fuzz: true })));
+    // Lapisan luar cukup kisi jarang (helai tipis, tak perlu siluet halus).
+    const fuzz = new Mesh(track(hairShell(shape, style, 0.0018 * hs, 0.55)), track(createHairMaterial({ color: look.hairColor, fuzz: true })));
     group.add(fuzz);
   }
   if (style.tail === 'sanggul') {
@@ -541,24 +544,24 @@ function buildHair(shape: HeadShape, look: HeadLook, group: Group, track: <T ext
     bun.castShadow = true;
     group.add(bun);
   }
-  const mesh = new Mesh(track(hairShell(shape, style, 0)), mat);
+  const mesh = new Mesh(track(hairShell(shape, style, 0, shape.spec.detail === 'standar' ? 0.6 : 1)), mat);
   mesh.castShadow = true;
   group.add(mesh);
 }
 
 /** Selubung rambut (+ tirai & ekor) dengan ketebalan tambahan `extra` (m) untuk lapisan luar. */
-function hairShell(shape: HeadShape, style: HairStyle, extra: number): BufferGeometry {
+function hairShell(shape: HeadShape, style: HairStyle, extra: number, res = 1): BufferGeometry {
   const { hs } = shape.spec;
   const center = new Vector3(0, 0, -0.01);
   const geo = new GeoBuilder();
   const T = style.thick * hs;
-  const COLS = 84;
+  const COLS = Math.round(84 * res);
   const a0 = style.band ? style.band.from : 0;
   const a1 = style.band ? Math.PI * 2 - style.band.from : Math.PI * 2;
   const closed = !style.band;
 
   // Selubung utama: dari garis rambut naik ke ubun-ubun.
-  const ROWS = style.curl ? 30 : 20;
+  const ROWS = Math.max(8, Math.round((style.curl ? 30 : 20) * res));
   const rows: Vector3[][] = [];
   for (let i = 0; i <= ROWS; i++) {
     const t = i / ROWS;
@@ -589,8 +592,8 @@ function hairShell(shape: HeadShape, style: HairStyle, extra: number): BufferGeo
   if (style.curtain) {
     const { to, from } = style.curtain;
     const cRows: Vector3[][] = [];
-    const C_ROWS = Math.max(12, Math.round((0.05 - to) * 20));
-    const C_COLS = 60;
+    const C_ROWS = Math.max(8, Math.round((0.05 - to) * 20 * res));
+    const C_COLS = Math.round(60 * res);
     for (let i = 0; i <= C_ROWS; i++) {
       const t = i / C_ROWS;
       const yn = 0.05 + (to - 0.05) * t;

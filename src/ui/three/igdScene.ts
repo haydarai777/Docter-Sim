@@ -1138,10 +1138,16 @@ export class IgdScene implements StageUpdatable {
       const p = patientById(shift, pv.id);
       if (bay && p && !pv.hidden) occupied.set(bay.id, { pv, p });
     }
+    // Bed yang masih dipesan pasien yang sedang di radiologi: sprei (noda darah) & selimut tetap;
+    // hanya monitor yang padam (pasien sementara keluar bersama infusnya).
+    const reserved = new Set(shift.patients.filter((x) => x.bedId && x.status === 'dirawat' && x.awayUntil !== null && now < x.awayUntil).map((x) => x.bedId!));
     for (const bay of room.bays.values()) {
       const o = occupied.get(bay.id);
       if (!o) {
-        this.resetBay(bay);
+        if (reserved.has(bay.id)) {
+          bay.setMonitorOn(false);
+          bay.setBags(0, false);
+        } else this.resetBay(bay);
         continue;
       }
       const { pv, p } = o;
@@ -1383,15 +1389,24 @@ export class IgdScene implements StageUpdatable {
   }
 
   private removeBloodProps(pv: PV): void {
+    // Buang geometri & bahan GPU juga (bukan sekadar dilepas dari adegan) agar tidak menumpuk.
+    const free = (o: Object3D) =>
+      o.traverse((x) => {
+        const m = x as Mesh;
+        if (!m.isMesh) return;
+        m.geometry.dispose();
+        for (const mat of Array.isArray(m.material) ? m.material : [m.material]) mat.dispose();
+      });
     if (pv.pad) {
       this.blood?.removeSurface(pv.pad.stain);
       pv.pad.stain.dispose();
       pv.pad.mesh.removeFromParent();
-      pv.pad.mesh.geometry.dispose();
+      free(pv.pad.mesh);
       pv.pad = null;
     }
     if (pv.basin) {
       pv.basin.group.removeFromParent();
+      free(pv.basin.group);
       pv.basin = null;
     }
   }

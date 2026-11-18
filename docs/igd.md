@@ -72,8 +72,9 @@ Seluruhnya prosedural (tanpa berkas model/tekstur), sehingga tetap satu berkas H
   menjadi sorotan di mata, kulit berkeringat, dan logam. Cahaya kunci datang dari arah kepala bed
   sehingga bayangan lembut di bawah tulang selangka, otot dada, dan lutut membentuk tubuh.
 - **Oklusi ambien layar (GTAO)** di perangkat desktop: bayangan halus di lekuk & titik kontak
-  (ketiak, bawah dagu, antara tubuh dan kasur). Dimatikan otomatis bila frame melambat; ponsel
-  tidak memakainya. Bisa dimatikan dengan `?ao=0`.
+  (ketiak, bawah dagu, antara tubuh dan kasur). Dimatikan otomatis bila frame melambat (45 frame
+  lambat, atau ≥ 6 frame lambat yang totalnya > 2,5 detik pada perangkat ± 1 fps; hambatan sesaat
+  saat kompilasi shader tidak dihitung). Ponsel tidak memakainya. Bisa dimatikan dengan `?ao=0`.
 - **Kulit** (`skin.ts`): hamburan bawah permukaan per kanal warna (merah menembus paling jauh →
   batas terang–gelap hangat seperti kulit sungguhan), dua lobus kilap (kulit + lapisan minyak tipis),
   pori & garis kulit halus serta tonjolan lembut (triplanar di ruang ikat, memudar sesuai jarak),
@@ -161,6 +162,10 @@ anggota gerak (berbaring, berjalan, mengulurkan lengan).
   resistensi, refleks baroreseptor, ventilasi/PaCO₂, persamaan gas alveolar, kurva disosiasi O₂,
   GCS, dan pemicu henti jantung (hipotensi berat, hipoksia, herniasi, hipo/hiperkalemia, iskemia).
   Henti jantung dikelola dengan RJP, irama yang dapat dikejut, ROSC berkala, dan batas resusitasi.
+  **Cadangan oksigen & CO₂**: saturasi berubah bertahap (± 40 detik dewasa, ± 18 detik anak) dan
+  PaCO₂ menumpuk perlahan saat hipoventilasi (cepat dibuang saat ventilasi pulih) — tidak ada
+  lonjakan semu; pasien kejadian akut (mis. tersedak) tiba masih sadar lalu memburuk dalam hitungan
+  menit bila tidak ditolong. Hipoksemia berat menumpuk "utang oksigen" bergradasi menuju henti jantung.
 - **Triase** memakai Australasian Triage Scale (ATS 1–5, target waktu 0/10/30/60/120 menit).
 - **Pemeriksaan** ABCDE + survei sekunder memberi temuan sesuai keadaan saat itu (bukan teks statis).
 - **Anamnesis** bebas atau pertanyaan cepat (SAMPLE). Narasumber: pasien (bila mampu bicara — sesak

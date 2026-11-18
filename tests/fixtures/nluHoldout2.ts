@@ -130,11 +130,11 @@ export const NLU_HOLDOUT_2: NluCase[] = [
   { q: 'Kapan terakhir haid?', expect: [T('haid_kehamilan')] },
   { q: 'Siklus haidnya teratur?', expect: [T('haid_kehamilan')] },
   { q: 'Ada kemungkinan hamil?', expect: [T('haid_kehamilan')] },
-  { q: 'Telat datang bulan?', expect: [T('haid_kehamilan')] },
+  { q: 'Telat datang bulan?', expect: [S('terlambat_haid')] }, // gejala khusus ditambahkan setelah ronde ini ditulis
 
   // --- Gejala (awam, daerah, medis) ---
   { q: 'Badannya meriang?', expect: [S('demam')] },
-  { q: 'Panas tinggi?', expect: [S('demam')] },
+  { q: 'Panas tinggi?', expect: [D('demam', 'keparahan')] }, // derajat demam (tetap mengungkap ada/tidaknya)
   { q: 'Febris?', expect: [S('demam')] },
   { q: 'Sampai menggigil?', expect: [S('menggigil')] },
   { q: 'Keringat banyak?', expect: [S('berkeringat')] },

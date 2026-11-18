@@ -19,7 +19,7 @@ import {
   symptomOnsetDays,
 } from './dialogue';
 import { evaluateEncounter } from './evaluation';
-import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion, stripChildReference } from './nlu';
+import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion, resolveAlternatives, stripChildReference } from './nlu';
 import { fillTemplate } from './text';
 import { toolPrice } from './scoring';
 import type {
@@ -229,6 +229,12 @@ export function applyIntents(state: EncounterState, intents: readonly Intent[], 
  * — sama seperti percakapan sungguhan ("Ada batuk?" "Iya, Dok." "Sejak kapan?").
  */
 export function interpretInContext(state: EncounterState, question: string, content: GameContent, config: GameConfig): Interpretation {
+  const interp = interpretWithFocus(state, question, content, config);
+  const has = (s: string) => state.case.symptoms.includes(s);
+  return { ...interp, intents: resolveAlternatives(interp.intents, has) };
+}
+
+function interpretWithFocus(state: EncounterState, question: string, content: GameContent, config: GameConfig): Interpretation {
   // Alloanamnesis: "anaknya/adik/bayinya" adalah pasien itu sendiri.
   const p = state.case.patient;
   const text = p.companion ? stripChildReference(question, [p.callName, p.name.split(' ')[0] ?? '']) || question : question;

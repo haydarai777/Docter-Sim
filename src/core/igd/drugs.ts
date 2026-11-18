@@ -903,6 +903,8 @@ export const DRUGS: readonly DrugDef[] = [
     hint: 'Dehidrasi ringan–sedang: 75 ml/kg dalam 3 jam; setiap BAB cair: 100–200 ml (anak) / sesuka (dewasa).',
     range: (kg) => kgr(kg, 5, 75, 2000),
     apply: ({ p, dose, now, kg }) => {
+      // Dicatat agar skenario diare tahu rehidrasi oral sudah dimulai (kehilangan cairan berkurang).
+      count(p, 'oralit');
       addRamp(p, 'volume', (dose / (kg * 70)) * 0.25, now, 10, 60, 'oralit');
       return {};
     },

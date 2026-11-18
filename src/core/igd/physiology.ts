@@ -360,6 +360,13 @@ export function computeVitals(p: PhysioState, s: Support, t: number): Vitals {
   rr = clamp(rr, 0, 70);
   const co2 = 1 + 0.25 * fever + (p.seizure ? 0.6 : 0) + 0.15 * pain;
   let paco2 = clamp((40 * co2) / Math.max(ve, 0.06), 12, 160);
+  // CO₂ menumpuk perlahan saat hipoventilasi/apnea (± 3–10 mmHg/menit), tetapi cepat dibuang
+  // begitu ventilasi pulih.
+  if (p.memoT !== undefined && p.memo.paco2 !== undefined && !p.arrest) {
+    const dtm = Math.max(0, t - p.memoT);
+    const tau = paco2 > p.memo.paco2 ? (p.ageYears < 8 ? 360 : 600) : 45;
+    paco2 = p.memo.paco2 + (paco2 - p.memo.paco2) * (1 - Math.exp(-dtm / tau));
+  }
 
   // --- Oksigenasi -------------------------------------------------------------
   const fio2 = s.assist !== 'none' ? Math.max(s.fio2, s.assist === 'ventilator' ? 0.6 : 0.21) : s.fio2;
@@ -372,6 +379,15 @@ export function computeVitals(p: PhysioState, s: Support, t: number): Vitals {
   const sv = clamp(0.74 - 0.3 * Math.max(0, 1 - perfusion) - 0.04 * fever, 0.3, 0.8);
   let sa = (1 - shunt) * sc + shunt * sv;
   sa = clamp(sa, 0.05, 0.995);
+  // Cadangan oksigen tubuh (paru & darah): saturasi bergerak bertahap menuju nilai seimbangnya,
+  // tidak seketika — desaturasi saat apnea/sumbatan butuh puluhan detik (lebih cepat pada anak),
+  // pemulihan dengan oksigen sedikit lebih cepat.
+  if (p.memoT !== undefined && !p.arrest) {
+    const dtm = Math.max(0, t - p.memoT);
+    const child = p.ageYears < 8;
+    const tau = sa < p.memo.sa ? (child ? 18 : 40) : child ? 9 : 15;
+    sa = p.memo.sa + (sa - p.memo.sa) * (1 - Math.exp(-dtm / tau));
+  }
   let pao2 = po2FromSat(sa);
   if (sa > 0.985) pao2 = Math.max(pao2, pc * (1 - shunt * 2.2));
 
@@ -420,12 +436,16 @@ export function computeVitals(p: PhysioState, s: Support, t: number): Vitals {
     crt = 7;
     paco2 = clamp(paco2 + 20, 40, 160);
     ph = clamp(ph - 0.2, 6.6, 7.4);
+    // Tanpa sirkulasi efektif darah arteri tidak teroksigenasi normal (RJP + ventilasi: sebagian).
+    pao2 = Math.min(pao2, s.cpr && s.assist !== 'none' ? 70 : s.cpr ? 45 : 25);
   } else if (map < 40) {
     // Nadi perifer & saturasi sulit terbaca pada syok berat.
     spo2 = map < 32 ? null : spo2;
   }
 
   return {
+    rawSa: sa,
+    rawPaco2: paco2,
     hr: Math.round(hr),
     pulse,
     rhythm,
@@ -664,8 +684,12 @@ export function stepPhysio(p: PhysioState, s: Support, dt: number, now: number, 
   if (!p.arrest) {
     const map = v1.map ?? 0;
     p.counters.lowMap = map < 35 ? p.counters.lowMap + dt : Math.max(0, p.counters.lowMap - dt * 2);
-    const sa = v1.spo2 === null ? (map < 32 ? 0.5 : 0.9) : v1.spo2 / 100;
-    p.counters.lowSat = v1.pao2 < 30 ? p.counters.lowSat + dt : Math.max(0, p.counters.lowSat - dt * 2);
+    const sa = v1.spo2 === null ? (map < 32 ? 0.5 : 0.9) : (v1.rawSa ?? v1.spo2 / 100);
+    // Hipoksemia berat menumpuk "utang" oksigen: makin rendah PaO₂ makin cepat (PaO₂ 30 → ± 3 menit
+    // menuju henti jantung, PaO₂ 24 → ± 1,5 menit); pulih hanya bila oksigenasi benar-benar membaik.
+    const pa = v1.pao2;
+    if (pa < 36) p.counters.lowSat += dt * Math.min(3, (36 - pa) / 6);
+    else if (pa >= 45) p.counters.lowSat = Math.max(0, p.counters.lowSat - dt * 2);
     p.counters.herniation = p.v.icp >= 0.98 ? p.counters.herniation + dt : Math.max(0, p.counters.herniation - dt);
     let cause: ArrestCause | null = null;
     let rhythm: ArrestRhythm = 'pea';
@@ -696,7 +720,8 @@ export function stepPhysio(p: PhysioState, s: Support, dt: number, now: number, 
       startArrest(p, rhythm, cause, t1);
       events.push({ kind: 'henti_jantung', text: `Henti jantung — irama ${rhythmLabel(rhythm)}.` });
     }
-    p.memo = { gcs: v1.gcs.total, pao2: v1.pao2, map: v1.map ?? 0, sa, perfusion: v1.perfusion };
+    p.memo = { gcs: v1.gcs.total, pao2: v1.pao2, map: v1.map ?? 0, sa, perfusion: v1.perfusion, paco2: v1.rawPaco2 ?? v1.paco2 };
+    p.memoT = t1;
   } else {
     const a = p.arrest;
     if (s.cpr) a.cprSeconds += dt;
@@ -727,9 +752,32 @@ export function stepPhysio(p: PhysioState, s: Support, dt: number, now: number, 
       p.deathCause = `henti jantung (${causeLabel(a.cause)}) tanpa ROSC`;
       events.push({ kind: 'meninggal', text: 'Pasien meninggal.' });
     }
-    p.memo = { gcs: 3, pao2: 30, map: 0, sa: 0.4, perfusion: 0 };
+    p.memo = { gcs: 3, pao2: 30, map: 0, sa: 0.4, perfusion: 0, paco2: 70 };
+    p.memoT = t1;
   }
   return events;
+}
+
+/**
+ * Mantapkan keadaan awal saat pasien tiba: umpan balik kesadaran ↔ jalan napas ↔ oksigenasi
+ * diselaraskan (tanpa lonjakan di detik pertama). Kejadian akut (sumbatan, apnea) belum
+ * menghabiskan cadangan oksigen: saturasi awal tidak di bawah 80%, lalu turun bertahap.
+ */
+export function settlePhysio(p: PhysioState, s: Support, t: number): void {
+  p.memoT = undefined;
+  let v = computeVitals(p, s, t);
+  for (let i = 0; i < 6; i++) {
+    p.memo = { gcs: v.gcs.total, pao2: v.pao2, map: v.map ?? 0, sa: v.rawSa ?? (v.spo2 ?? 90) / 100, perfusion: v.perfusion };
+    v = computeVitals(p, s, t);
+  }
+  // Kejadian akut: cadangan O₂ belum habis & CO₂ belum sempat menumpuk.
+  p.memo.sa = Math.max(0.8, Math.min(p.memo.sa, 0.99));
+  p.memo.paco2 = Math.min(v.rawPaco2 ?? v.paco2, 78);
+  p.memoT = t;
+  for (let i = 0; i < 4; i++) {
+    v = computeVitals(p, s, t);
+    p.memo = { gcs: v.gcs.total, pao2: v.pao2, map: v.map ?? 0, sa: p.memo.sa, perfusion: v.perfusion, paco2: p.memo.paco2 };
+  }
 }
 
 export function rhythmLabel(r: Rhythm): string {

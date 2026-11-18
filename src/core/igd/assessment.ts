@@ -152,7 +152,17 @@ export function examFinding(id: ExamId, patient: EdPatient, sc: EdScenario, v: V
   const p = patient.physio;
   const ctx: ResultContext = { vitals: v, physio: p, patient, minute: (t - patient.arriveAt) / 60 };
   const extra = staticFinding(sc, id, ctx);
-  const add = (base: string) => (extra ? `${base}. ${extra}` : base);
+  // Gabungkan teks bawaan + temuan tertulis skenario; klausa bawaan yang sudah tercakup temuan
+  // skenario (kata-katanya hampir sama) dibuang agar tidak tertulis dua kali.
+  const add = (base: string) => {
+    if (!extra) return base;
+    const extraClauses = extra.split(/[.;]\s*/).map(clauseWords).filter((w) => w.size >= 2);
+    const kept = base.split(/;\s*/).filter((c) => {
+      const w = clauseWords(c);
+      return !extraClauses.some((e) => overlap(w, e) >= 0.75);
+    });
+    return kept.length ? `${cap(kept.join('; '))}. ${extra}` : extra;
+  };
   if (patient.awayUntil !== null && t < patient.awayUntil) return 'Pasien sedang di ruang radiologi.';
   switch (id) {
     case 'A': {
@@ -205,8 +215,10 @@ export function examFinding(id: ExamId, patient: EdPatient, sc: EdScenario, v: V
     }
     case 'kepala_leher': {
       // Jejas kepala-leher dari daftar cedera yang tampak; "tidak ada jejas" hanya bila memang tidak ada.
-      const marks = (sc.injuries?.wounds ?? []).filter((w) => w.region === 'kepala' || w.region === 'leher').map((w) => w.label.toLowerCase());
-      const look = eff(p, 'angioedema', t) > 0.15 ? 'angioedema bibir & lidah' : marks.length ? marks.join('; ') : extra ? '' : 'tidak ada jejas yang tampak';
+      // Temuan tertulis skenario sudah menjelaskan jejas kepala-leher → jangan ditulis ganda.
+      const marks = extra ? [] : (sc.injuries?.wounds ?? []).filter((w) => w.region === 'kepala' || w.region === 'leher').map((w) => w.label.toLowerCase());
+      const swollen = eff(p, 'angioedema', t) > 0.15 ? (p.airwayCause === 'inhalasi' ? 'edema bibir & lidah (luka bakar jalan napas)' : 'angioedema bibir & lidah') : '';
+      const look = swollen || (marks.length ? marks.join('; ') : extra ? '' : 'tidak ada jejas yang tampak');
       return add(cap([jvp(p, t), `trakea ${p.chestSide && eff(p, 'obstruction', t) > 0.4 ? `deviasi ke ${opposite(p.chestSide)}` : 'di tengah'}`, look].filter(Boolean).join('; ')));
     }
     case 'dada': {
@@ -245,6 +257,17 @@ export function examLabel(id: ExamId): string {
 }
 
 const cap = (s: string) => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
+
+/** Kata bermakna dalam satu klausa (untuk mendeteksi temuan yang tertulis ganda). */
+function clauseWords(c: string): Set<string> {
+  return new Set(c.toLowerCase().replace(/[()]/g, '').split(/\s+/).filter((w) => w.length > 2 && w !== 'dan' && w !== 'yang'));
+}
+
+function overlap(a: Set<string>, b: Set<string>): number {
+  if (!a.size || !b.size) return 0;
+  const inter = [...a].filter((w) => b.has(w)).length;
+  return inter / (a.size + b.size - inter);
+}
 
 /** Jenis cedera yang dilaporkan pada pemeriksaan "Luka" (bukan ruam/bengkak/emfisema). */
 const WOUND_EXAM_KINDS = new Set<InjuryKind>(['laserasi', 'bacok', 'iris', 'tusuk', 'bekas_suntik', 'ekskoriasi', 'memar', 'hematoma', 'jejas', 'luka_bakar', 'ulkus']);
