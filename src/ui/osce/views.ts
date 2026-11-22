@@ -205,18 +205,39 @@ export function prescriptionLineText(app: App, line: PrescriptionLine): { r: str
   return { r: `R/ ${entry.drug.name} ${entry.form.label} No. ${toRoman(line.quantity)}`, s: signaText(line, entry.form) };
 }
 
+/**
+ * Tab Tatalaksana (mode OSCE & mode praktik): resep, saran non-farmakologi, dan KIE.
+ * Mode praktik menyimpan isinya di konsultasi; mode OSCE di sesi stasiun.
+ */
 export function treatmentTab(app: App, enc: EncounterState): HTMLElement {
-  const session = app.osce!;
-  const work = session.work;
+  const work = app.treatmentWork;
   const c = enc.case;
-  const def = app.osceContent.casesById.get(c.diseaseId)!;
+  const def = app.osceContent.casesById.get(c.diseaseId);
   const weighed = enc.examsDone.includes('timbangan');
   const kg = patientWeight(c);
   const disabled = !app.canInteract;
+  if (!def) {
+    return h(
+      'div',
+      { class: 'tab-panel osce-treatment' },
+      h(
+        'p',
+        { class: 'banner banner--info', role: 'status' },
+        'Data terapi untuk penyakit ini belum tersedia — tab Tatalaksana tidak dinilai pada pasien ini. Bobotnya dibagi ke komponen lain sehingga total tetap 100.',
+      ),
+      h('p', { class: 'hint' }, 'Lanjutkan ke tab Keputusan untuk menetapkan diagnosis & disposisi.'),
+    );
+  }
+  const allergyAsked = enc.askedTopics.includes('alergi');
   return h(
     'div',
     { class: 'tab-panel osce-treatment' },
-    h('p', { class: 'hint' }, 'Tuliskan resep, saran non-farmakologi, dan edukasi (KIE). Lalu tetapkan diagnosis & disposisi di tab Keputusan.'),
+    h(
+      'p',
+      { class: 'hint' },
+      'Tuliskan resep, saran non-farmakologi, dan edukasi (KIE). Tanyakan alergi obat & timbang pasien bila dosis berbasis berat badan. Lalu tetapkan diagnosis & disposisi di tab Keputusan.',
+    ),
+    app.osce ? null : h('p', { class: 'hint' }, 'Dinilai: resep tepat (obat, dosis, aturan pakai, lama, jumlah), saran non-farmakologi, dan KIE. Obat yang membuat pasien alergi, obat berbahaya, atau antibiotik tanpa indikasi menurunkan skor dan reputasi.'),
     h(
       'section',
       { class: 'rx' },
@@ -224,7 +245,7 @@ export function treatmentTab(app: App, enc: EncounterState): HTMLElement {
       h(
         'div',
         { class: 'rx__paper' },
-        h('p', { class: 'rx__head' }, `${def.setting.toUpperCase()} · dr. (Anda) · SIP 000/DU/OSCE`),
+        h('p', { class: 'rx__head' }, app.osce ? `${def.setting.toUpperCase()} · dr. (Anda) · SIP 000/DU/OSCE` : 'PRAKTIK DOKTER UMUM · dr. (Anda) · SIP 000/DU'),
         work.prescription.length
           ? work.prescription.map((line, i) => {
               const t = prescriptionLineText(app, line);
@@ -237,11 +258,13 @@ export function treatmentTab(app: App, enc: EncounterState): HTMLElement {
             })
           : h('p', { class: 'hint' }, 'Belum ada obat. Tambahkan di bawah (atau biarkan kosong bila memang tidak perlu obat).'),
         h('p', { class: 'rx__pro' }, `Pro: ${c.patient.companion ? 'An. ' : ''}${c.patient.name} (${patientAgeText(c.patient).replace(' tahun', ' th')}) · BB: ${weighed && kg ? `${String(kg).replace('.', ',')} kg` : '— (belum ditimbang)'}`),
+        h('p', { class: 'rx__pro' }, `Alergi obat: ${allergyAsked ? (c.allergy ?? 'tidak ada') : '— (belum ditanyakan)'}`),
       ),
-      drugForm(app, disabled),
+      drugForm(app, disabled, weighed ? kg : null),
     ),
     adviceChecklist(app, 'Tatalaksana non-farmakologi', shuffledAdvice(def.nonPharm, c.seed), work.nonPharm, (id) => app.toggleOsceAdvice('nonPharm', id), disabled),
     adviceChecklist(app, 'Komunikasi, informasi & edukasi (KIE)', shuffledAdvice(def.education, c.seed + 1), work.education, (id) => app.toggleOsceAdvice('education', id), disabled),
+    h('div', { class: 'tab-next' }, h('button', { class: 'btn btn--primary', type: 'button', onclick: () => app.setTab('keputusan') }, 'Lanjut ke Keputusan ▸')),
   );
 }
 
@@ -266,9 +289,31 @@ function adviceChecklist(app: App, title: string, options: AdviceOption[], chose
   );
 }
 
-function drugForm(app: App, disabled: boolean): HTMLElement {
+/** Satuan kekuatan sediaan yang bisa dihitung per kgBB. */
+const PER_KG_UNITS = new Set(['mg', 'mcg', 'g', 'IU', 'mL']);
+
+const num1 = (n: number) => (Math.round(n * 100) / 100).toLocaleString('id-ID');
+
+/** Hitungan dosis draf: per kali, per hari, dan per kgBB (hanya hitungan — tidak menilai benar/salah). */
+function doseCheck(d: { units: number; schedule: PrescriptionLine['schedule']; timesPerDay: number }, form: { strength: number; unit: string }, kg: number | null): HTMLElement | null {
+  if (!PER_KG_UNITS.has(form.unit) || !(d.units > 0)) return null;
+  const perDose = d.units * form.strength;
+  const perDay = perDose * (d.schedule === 'tunggal' ? 1 : d.timesPerDay);
+  const parts = [`Per kali ${num1(perDose)} ${form.unit}`];
+  if (d.schedule !== 'tunggal') parts.push(`per hari ${num1(perDay)} ${form.unit}`);
+  return h(
+    'p',
+    { class: 'hint rx-field--wide rx-dose', 'aria-live': 'polite' },
+    `${parts.join(' · ')}`,
+    kg
+      ? ` · ≈ ${num1(perDose / kg)} ${form.unit}/kgBB per kali${d.schedule !== 'tunggal' ? ` (${num1(perDay / kg)} ${form.unit}/kgBB/hari)` : ''} untuk BB ${num1(kg)} kg`
+      : ' · timbang pasien (tab Fisik → Timbangan) untuk menghitung dosis per kgBB',
+  );
+}
+
+function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
   const osce = app.osceContent;
-  const d = app.osce!.draft;
+  const d = app.rxDraft;
   const q = normalizeForSearch(d.query);
   const matches = q ? osce.drugs.filter((x) => normalizeForSearch(drugSearchText(x)).includes(q)).slice(0, 8) : [];
   const drug = d.drug ? osce.drugsById.get(d.drug) : undefined;
@@ -324,6 +369,7 @@ function drugForm(app: App, disabled: boolean): HTMLElement {
           ),
           d.schedule !== 'tunggal' ? num('Kali sehari', d.timesPerDay, 1, 1, (v) => app.patchRxDraft({ timesPerDay: Math.max(1, Math.round(v)), quantity: null })) : null,
           d.schedule !== 'tunggal' ? num('Lama (hari)', d.days, 1, 1, (v) => app.patchRxDraft({ days: Math.max(1, Math.round(v)), quantity: null })) : null,
+          form ? doseCheck(d, form, kg) : null,
           h(
             'label',
             { class: 'rx-field' },

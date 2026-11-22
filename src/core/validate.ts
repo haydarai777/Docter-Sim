@@ -403,6 +403,11 @@ function validateEvaluationConfig(config: GameConfig, err: ErrFn): void {
   const w = config.evaluation.weights;
   const sum = Object.values(w).reduce((a, b) => a + b, 0);
   if (Math.abs(sum - 100) > 1e-9) err('config.evaluation.weights', `total bobot harus 100 (sekarang ${sum})`);
+  const split = config.evaluation.treatment.split;
+  const splitSum = split.farmakologi + split.nonfarmakologi + split.kie;
+  if (Math.abs(splitSum - 1) > 1e-9) err('config.evaluation.treatment.split', `total pembagian harus 1 (sekarang ${splitSum})`);
+  const f = config.evaluation.treatment.unindicatedAntibioticFactor;
+  if (!(f >= 0 && f <= 1)) err('config.evaluation.treatment.unindicatedAntibioticFactor', 'harus 0..1');
   if (!config.evaluation.grades.length) err('config.evaluation.grades', 'kosong');
 }
 

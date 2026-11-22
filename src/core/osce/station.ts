@@ -6,23 +6,16 @@
  * Kesalahan kritis (salah diagnosis kerja, obat berbahaya/alergi, pasien gawat dipulangkan)
  * menyebabkan tidak lulus apa pun totalnya — sesuai rubrik OSCE komprehensif.
  */
-import { matchesCondition, type ConditionContext } from '../conditions';
+import { matchesCondition } from '../conditions';
 import { caseContext, dispositionCredit, evaluateEncounter, expectedDisposition } from '../evaluation';
 import type { ClinicalDecision, EncounterState, EvaluationResult, GameConfig, GameContent } from '../types';
 import type { OsceContent } from './content';
 import { evaluatePrescription, scorePrescription } from './prescription';
-import { type AdviceOption, KIE_CATEGORIES, type KieCategory, type LtKey, type LtResult, type OsceCategory, type OsceResult, type OsceWork } from './types';
+import { adviceApplies, DEFAULT_KIE_REQUIRED, KIE_LABEL } from './advice';
+import { KIE_CATEGORIES, type KieCategory, type LtKey, type LtResult, type OsceCategory, type OsceResult, type OsceWork } from './types';
 
-export const KIE_LABEL: Record<KieCategory, string> = {
-  diagnosis: 'Penjelasan penyakit',
-  pengobatan: 'Pengobatan & kepatuhan',
-  efek_samping: 'Efek samping obat',
-  tanda_bahaya: 'Tanda bahaya (kapan segera kembali)',
-  kontrol: 'Jadwal kontrol',
-  pencegahan: 'Pencegahan',
-};
-
-const DEFAULT_KIE_REQUIRED: KieCategory[] = ['diagnosis', 'pengobatan', 'tanda_bahaya', 'kontrol'];
+// Dipakai juga oleh tab Tatalaksana mode praktik (aturan ada di advice.ts).
+export { adviceApplies, KIE_LABEL } from './advice';
 
 export const LT_INFO: Record<LtKey, { no: number; label: string; criteria: [string, string, string] }> = {
   anamnesis: { no: 1, label: 'Anamnesis', criteria: ['Tidak dilakukan / sangat kurang', 'Sebagian poin penting', 'Lengkap & terarah (termasuk tanda bahaya)'] },
@@ -33,14 +26,6 @@ export const LT_INFO: Record<LtKey, { no: number; label: string; criteria: [stri
   nonfarmakologi: { no: 6, label: 'Tatalaksana non-farmakologi & disposisi', criteria: ['Tidak ada / ada saran berbahaya', 'Sebagian saran tepat / disposisi kurang tepat', 'Saran lengkap & disposisi tepat'] },
   kie: { no: 7, label: 'Komunikasi, informasi & edukasi (KIE)', criteria: ['Tidak ada / edukasi keliru', 'KIE sebagian', 'KIE lengkap: penyakit, pengobatan, tanda bahaya, kontrol'] },
 };
-
-/** Saran yang benar untuk kasus ini (memperhitungkan kondisi when/whenAny). */
-export function adviceApplies(a: AdviceOption, ctx: ConditionContext): boolean {
-  if (a.kind !== 'benar') return false;
-  if (a.when && !matchesCondition(a.when, ctx)) return false;
-  if (a.whenAny && !a.whenAny.some((w) => matchesCondition(w, ctx))) return false;
-  return true;
-}
 
 function bucket(fraction: number, full: number, half: number): 0 | 1 | 2 {
   return fraction >= full ? 2 : fraction >= half ? 1 : 0;

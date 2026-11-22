@@ -82,12 +82,22 @@ export function tutorialSteps(app: App): TutorialStep[] {
       ],
     },
     {
+      icon: '💊',
+      title: '5 · Tatalaksana',
+      points: [
+        'Di tab Tatalaksana (di layar sempit: "Terapi"), tulis resep: cari obat, pilih sediaan, dosis per kali, aturan pakai, lama, dan jumlah (No.). Hitungan dosis per kali, per hari, dan per kgBB tampil saat mengisi — timbang pasien dulu bila dosis berbasis berat badan.',
+        'Pilih saran non-farmakologi dan poin KIE (penyakit, pengobatan, tanda bahaya, kontrol). Ada pilihan yang keliru atau berbahaya.',
+        `Tanyakan alergi sebelum meresepkan. Obat yang membuat pasien alergi (reputasi −${config.reputation.allergyDrugPenalty}), obat berbahaya (−${config.reputation.harmfulDrugPenalty}), atau antibiotik tanpa indikasi (−${config.reputation.unindicatedAntibioticPenalty}) menurunkan skor dan reputasi.`,
+        'Kunci terapi berasal dari formularium latihan yang belum ditinjau dokter. Penyakit yang belum punya data terapi tidak dinilai di tab ini.',
+      ],
+    },
+    {
       icon: '⚖️',
-      title: '5 · Keputusan & penilaian',
+      title: '6 · Keputusan & penilaian',
       points: [
         'Tentukan diagnosis kerja, komplikasi (atau tanpa komplikasi), masalah lain, dan disposisi: rawat jalan, observasi, rujuk spesialis, atau rujuk segera.',
-        `Bobot nilai: anamnesis ${w.anamnesis}% · fisik ${w.fisik}% · penunjang ${w.penunjang}% · diagnosis banding ${w.banding}% · komplikasi ${w.komplikasi}% · diagnosis & tata laksana ${w.keputusan}%.`,
-        `Reputasi naik bila skor di atas ${config.reputation.neutralScore}; turun lebih besar bila penyakit berbahaya terlewat atau pasien gawat dipulangkan. Di bawah ${config.reputation.gameOverBelow}: game over.`,
+        `Bobot nilai: anamnesis ${w.anamnesis}% · fisik ${w.fisik}% · penunjang ${w.penunjang}% · diagnosis banding ${w.banding}% · komplikasi ${w.komplikasi}% · diagnosis & disposisi ${w.keputusan}% · tatalaksana ${w.tatalaksana}%.`,
+        `Reputasi naik bila skor di atas ${config.reputation.neutralScore}; turun lebih besar bila penyakit berbahaya terlewat, pasien gawat dipulangkan, atau resep membahayakan. Di bawah ${config.reputation.gameOverBelow}: game over.`,
         'Pelajari umpan baliknya: yang terlewat, asumsi yang keliru, dan pendekatan yang dianjurkan.',
       ],
     },

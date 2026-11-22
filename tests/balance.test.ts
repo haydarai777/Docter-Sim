@@ -7,7 +7,11 @@ import { describe, expect, it } from 'vitest';
 import { matchesCondition } from '../src/core/conditions';
 import { planTestCost, toolPrice } from '../src/core/scoring';
 import { simulateBot } from '../src/core/simulate';
+import { loadOsceContent } from '../src/data/osce';
 import { config, content } from './helpers';
+
+// Bot juga mengisi tab Tatalaksana (resep, non-farmakologi, KIE) seperti pemain mode praktik.
+const osce = loadOsceContent();
 
 const minPoorBudget = config.economy.classes.miskin.budget[0];
 const maxMiddleBudget = config.economy.classes.menengah.budget[1];
@@ -52,10 +56,10 @@ describe('keseimbangan ekonomi', () => {
 
 // Simulasi ratusan sesi cukup berat; beri batas waktu longgar agar tidak gagal di mesin yang sibuk.
 describe('keseimbangan reputasi (simulasi bot)', { timeout: 30_000 }, () => {
-  const sim = (skill: number) => simulateBot(content, config, { skill, runs: 80, maxPatients: 40, seed: 2024 });
+  const sim = (skill: number) => simulateBot(content, config, { skill, runs: 80, maxPatients: 40, seed: 2024, osce });
 
   it('asal menebak cepat berujung game over', () => {
-    const r = simulateBot(content, config, { skill: 0.1, accuracy: 1 / content.diseases.length, runs: 80, maxPatients: 40, seed: 7 });
+    const r = simulateBot(content, config, { skill: 0.1, accuracy: 1 / content.diseases.length, runs: 80, maxPatients: 40, seed: 7, osce });
     expect(r.gameOverRate).toBe(1);
     expect(r.medianPatientsToGameOver!).toBeLessThanOrEqual(6);
   });

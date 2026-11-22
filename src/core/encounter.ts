@@ -18,7 +18,9 @@ import {
   durationReaction,
   symptomOnsetDays,
 } from './dialogue';
-import { evaluateEncounter } from './evaluation';
+import { evaluateEncounter, type TreatmentInput } from './evaluation';
+import type { PrescriptionLine, TreatmentWork } from './osce/types';
+import { EMPTY_TREATMENT } from './treatment';
 import { DETAIL_TOPICS, type Intent, type Interpretation, interpretQuestion, resolveAlternatives, stripChildReference } from './nlu';
 import { fillTemplate } from './text';
 import { toolPrice } from './scoring';
@@ -365,6 +367,8 @@ export function submitDecision(
   decision: ClinicalDecision,
   content: GameContent,
   config: GameConfig,
+  /** Mode praktik: nilai isi tab Tatalaksana dengan kunci terapi ini. Tidak diisi pada mode OSCE. */
+  treatment?: TreatmentInput,
 ): EncounterState {
   assertOk(canSubmitDecision(state, decision, content));
   const finalDecision: ClinicalDecision = {
@@ -372,7 +376,7 @@ export function submitDecision(
     secondary: uniq(decision.secondary.filter((id) => id !== decision.primary && content.catalogById.has(id))),
     complications: uniq(decision.complications),
   };
-  const evaluation = evaluateEncounter(state, finalDecision, content, config);
+  const evaluation = evaluateEncounter(state, finalDecision, content, config, treatment);
   const name = content.catalogById.get(finalDecision.primary)!.name;
   // Penutup: dokter menjelaskan, pasien berpamitan (dipakai juga oleh adegan pasien keluar ruangan).
   const closing = conversationReply('closing', state.case, content, 'akhir');
@@ -388,4 +392,33 @@ export function submitDecision(
       { kind: 'patient', text: farewell },
     ],
   };
+}
+
+// ---------------------------------------------------------------------------
+// Tatalaksana (mode praktik): resep, non-farmakologi, KIE
+// ---------------------------------------------------------------------------
+
+/** Isi tab Tatalaksana (kosong untuk konsultasi lama yang belum punya bagian ini). */
+export function treatmentOf(state: EncounterState): TreatmentWork {
+  return state.treatment ?? EMPTY_TREATMENT;
+}
+
+function withTreatment(state: EncounterState, patch: Partial<TreatmentWork>): EncounterState {
+  assertOk(checkActive(state));
+  return { ...state, treatment: { ...treatmentOf(state), ...patch } };
+}
+
+export function addPrescriptionLine(state: EncounterState, line: PrescriptionLine): EncounterState {
+  if (!(line.units > 0) || !(line.quantity > 0)) throw new EncounterError('Jumlah obat per kali dan jumlah yang diserahkan harus lebih dari 0.');
+  return withTreatment(state, { prescription: [...treatmentOf(state).prescription, { ...line }] });
+}
+
+export function removePrescriptionLine(state: EncounterState, index: number): EncounterState {
+  return withTreatment(state, { prescription: treatmentOf(state).prescription.filter((_, i) => i !== index) });
+}
+
+/** Centang/batalkan satu saran non-farmakologi atau poin KIE. */
+export function toggleTreatmentAdvice(state: EncounterState, kind: 'nonPharm' | 'education', id: string): EncounterState {
+  const list = treatmentOf(state)[kind];
+  return withTreatment(state, { [kind]: list.includes(id) ? list.filter((x) => x !== id) : [...list, id] });
 }

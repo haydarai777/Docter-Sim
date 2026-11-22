@@ -2358,3 +2358,45 @@ body {
   flex: 0 1 13rem;
   width: auto;
 }
+
+/* ==========================================================================
+   Tatalaksana di mode praktik: kunci jawaban & resep pemain di ringkasan, hitungan dosis
+   ========================================================================== */
+.fb-key {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+  font-size: 0.9rem;
+}
+.fb-key .plain-list {
+  margin-top: 0.3rem;
+}
+.rx-list li {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.rx-dose {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.tab__short {
+  display: none;
+}
+.tab-next {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0 0.25rem;
+}
+@media (max-width: 480px) {
+  .tab__label {
+    display: none;
+  }
+  .tab__short {
+    display: inline;
+  }
+  .monitor .tab {
+    padding-inline: 0.25rem;
+    font-size: 0.82rem;
+  }
+}

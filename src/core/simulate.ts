@@ -10,6 +10,8 @@
 import { applyIntents, canPerformExam, performExam, setDdx } from './encounter';
 import { caseContext, caseSecondaryProblems, expectedDisposition, hasEvidence } from './evaluation';
 import { matchesCondition } from './conditions';
+import type { OsceContent } from './osce/content';
+import { idealTreatment } from './osce/answerKey';
 import { createRng, type Rng } from './rng';
 import { createRun, finishCurrent, startNextPatient } from './run';
 import type { ClinicalDecision, EncounterState, GameConfig, GameContent } from './types';
@@ -20,6 +22,8 @@ export interface BotOptions {
   skill: number;
   /** Peluang diagnosis utama benar (default = skill). */
   accuracy?: number;
+  /** Kunci terapi: bila ada, bot juga mengisi tab Tatalaksana (resep, non-farmakologi, KIE). */
+  osce?: OsceContent;
 }
 
 /** Bot memainkan satu konsultasi sampai siap memutuskan. */
@@ -77,6 +81,26 @@ export function playEncounterBot(
   const complications = primary === disease.id ? c.complications.filter(() => rng.chance(skill)) : [];
   const expected = expectedDisposition(disease, ctx).value;
   const disposition = rng.chance(skill) ? expected : rng.pick(DISPOSITIONS);
+
+  // --- Tatalaksana -------------------------------------------------------------
+  const osce = options.osce;
+  const def = osce?.casesById.get(c.diseaseId);
+  if (osce && def) {
+    if (!state.examsDone.includes('timbangan') && rng.chance(skill)) tryExam('timbangan');
+    // Bot yang salah diagnosis menulis tatalaksana untuk diagnosis pilihannya (bila kuncinya ada).
+    const treatedCase = primary === disease.id || !osce.casesById.has(primary) ? c : { ...c, diseaseId: primary };
+    const work = idealTreatment(treatedCase, ctx, osce, () => rng.chance(skill));
+    // Bot kurang terampil kadang memberi antibiotik tanpa indikasi & saran yang keliru.
+    if (rng.chance((1 - skill) * 0.3)) {
+      const antibiotics = osce.drugs.filter((d) => d.class === 'antibiotik');
+      const drug = rng.pick(antibiotics);
+      const form = drug.forms[0]!;
+      work.prescription.push({ drug: drug.id, form: form.id, units: 1, schedule: 'rutin', timesPerDay: 3, days: 5, quantity: form.package ? 1 : 15 });
+    }
+    for (const a of def.nonPharm) if (!work.nonPharm.includes(a.id) && rng.chance((1 - skill) * 0.15)) work.nonPharm.push(a.id);
+    for (const a of def.education) if (!work.education.includes(a.id) && rng.chance((1 - skill) * 0.15)) work.education.push(a.id);
+    state = { ...state, treatment: work };
+  }
   return { state, decision: { primary, secondary, complications, disposition } };
 }
 
@@ -110,7 +134,7 @@ export function simulateBot(
     while (run.status === 'playing' && patients < options.maxPatients) {
       run = startNextPatient(run, content, config);
       const played = playEncounterBot(run.encounter!, options, rng.fork(`bot:${r}:${patients}`), content, config);
-      run = finishCurrent({ ...run, encounter: played.state }, played.decision, content, config);
+      run = finishCurrent({ ...run, encounter: played.state }, played.decision, content, config, options.osce);
       scoreSum += run.history.at(-1)!.score;
       scoreCount++;
       patients++;

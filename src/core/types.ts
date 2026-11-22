@@ -14,6 +14,8 @@
 // Enum sederhana
 // ---------------------------------------------------------------------------
 
+import type { TreatmentWork } from './osce/types';
+
 export type Sex = 'male' | 'female';
 export type EconomyClass = 'miskin' | 'menengah' | 'kaya';
 export type DangerLevel = 'rendah' | 'sedang' | 'tinggi' | 'kritis';
@@ -803,6 +805,13 @@ export interface GameConfig {
       banding: number;
       komplikasi: number;
       keputusan: number;
+      /** Resep, non-farmakologi & KIE (dinilai dari kunci terapi per penyakit). */
+      tatalaksana: number;
+    };
+    /** Pembagian bobot tatalaksana (total 1) & pengali skor resep bila ada antibiotik tanpa indikasi. */
+    treatment: {
+      split: { farmakologi: number; nonfarmakologi: number; kie: number };
+      unindicatedAntibioticFactor: number;
     };
     /** Pengurangan skor penunjang per pemeriksaan yang tidak perlu / kurang relevan. */
     unnecessaryTestPenalty: number;
@@ -834,6 +843,10 @@ export interface GameConfig {
     wrongBase: number;
     /** Penalti keselamatan bila pasien yang perlu rujuk segera dipulangkan. */
     unsafeDispositionPenalty: number;
+    /** Penalti resep: obat yang membuat pasien alergi / obat berbahaya / antibiotik tanpa indikasi. */
+    allergyDrugPenalty: number;
+    harmfulDrugPenalty: number;
+    unindicatedAntibioticPenalty: number;
     dangerMultiplier: Record<DangerLevel, number>;
     /** Gelar sesuai reputasi (min = batas bawah inklusif). */
     titles: { min: number; label: string }[];
@@ -1006,6 +1019,10 @@ export interface ComponentScore {
   good: FeedbackItem[];
   /** Yang terlewat / keliru. */
   missed: FeedbackItem[];
+  /** Kunci jawaban ringkas (mis. resep yang dianjurkan). */
+  answerKey?: string[];
+  /** true = komponen tidak dinilai (data belum tersedia); bobotnya dibagi ke komponen lain. */
+  unscored?: boolean;
 }
 
 export interface EvaluationResult {
@@ -1025,7 +1042,9 @@ export interface EvaluationResult {
   pitfalls: string[];
   recommendations: string[];
   reputationDelta: number;
-  reputationBreakdown: { fromScore: number; wrongPrimary: number; unsafe: number };
+  reputationBreakdown: { fromScore: number; wrongPrimary: number; unsafe: number; treatment?: number };
+  /** Kesalahan resep yang membahayakan pasien (alergi, obat berbahaya, antibiotik tanpa indikasi). */
+  treatmentSafety?: { allergy: string[]; harmful: string[]; antibiotic: string[] };
   spent: number;
 }
 
@@ -1051,6 +1070,8 @@ export interface EncounterState {
   focus?: { symptom: string; turn: number };
   decision?: ClinicalDecision;
   evaluation?: EvaluationResult;
+  /** Isi tab Tatalaksana mode praktik (resep, non-farmakologi, KIE); tidak ada pada sesi lama. */
+  treatment?: TreatmentWork;
 }
 
 /** Catatan ringkas satu pasien yang sudah selesai. */

@@ -5,52 +5,19 @@ import { generateCase } from '../src/core/generator';
 import { createRng } from '../src/core/rng';
 import { playEncounterBot } from '../src/core/simulate';
 import type { OsceContent } from '../src/core/osce/content';
-import { drugCausesAllergy, evaluatePrescription, expectedQuantity, patientWeight, toRoman } from '../src/core/osce/prescription';
-import { matchesCondition } from '../src/core/conditions';
-import { abnormalParams, adviceApplies, evaluateStation } from '../src/core/osce/station';
-import type { DoseOption, OsceWork, PrescriptionLine } from '../src/core/osce/types';
+import { idealTreatment } from '../src/core/osce/answerKey';
+import { evaluatePrescription, expectedQuantity, patientWeight, toRoman } from '../src/core/osce/prescription';
+import { abnormalParams, evaluateStation } from '../src/core/osce/station';
+import type { OsceWork, PrescriptionLine } from '../src/core/osce/types';
 import type { EncounterState, PatientCase } from '../src/core/types';
 import { loadOsceContent } from '../src/data/osce';
 import { config, content, DISEASE_IDS, perDisease } from './helpers';
 
 const osce: OsceContent = loadOsceContent();
 
-/** Baris resep yang benar untuk satu pilihan dosis (dipakai sebagai "jawaban ideal"). */
-function idealLine(opt: DoseOption, c: PatientCase): PrescriptionLine {
-  const drug = osce.drugsById.get(opt.drug)!;
-  const form = drug.forms.find((f) => !opt.forms || opt.forms.includes(f.id))!;
-  const kg = patientWeight(c)!;
-  let units = 1;
-  if (opt.unitsByWeight) units = opt.unitsByWeight.find((b) => kg >= b.minKg && kg < b.maxKg + 1)!.units;
-  else if (opt.dose) units = opt.dose[0] / form.strength;
-  else if (opt.dosePerKg) units = Math.round(((opt.dosePerKg[0] + opt.dosePerKg[1]) / 2) * kg / form.strength * 4) / 4;
-  const schedule = opt.schedules[0]!;
-  const timesPerDay = opt.timesPerDay?.[0] ?? 1;
-  const days = opt.days?.[0] ?? 3;
-  const line: PrescriptionLine = { drug: opt.drug, form: form.id, units, schedule, timesPerDay, days, quantity: 0 };
-  line.quantity = expectedQuantity(line, form);
-  return line;
-}
-
+/** Jawaban ideal: kunci resep/non-farmakologi/KIE (src/core/osce/answerKey.ts) + tandai semua hasil abnormal. */
 function idealWork(state: EncounterState): OsceWork {
-  const c = state.case;
-  const ctx = caseContext(state);
-  const def = osce.casesById.get(c.diseaseId)!;
-  const prescription: PrescriptionLine[] = [];
-  for (const item of def.therapy.items) {
-    if (!matchesCondition(item.when, ctx)) continue;
-    // Pilih obat yang tidak membuat pasien alergi dan (bila dosis per pita BB) sesuai berat badan pasien.
-    const kg = patientWeight(c)!;
-    const fitsWeight = (o: DoseOption) => !o.unitsByWeight || o.unitsByWeight.some((b) => kg >= b.minKg && kg < b.maxKg + 1);
-    const opt = item.options.find((o) => !drugCausesAllergy(osce.drugsById.get(o.drug)!, c.allergy, osce) && fitsWeight(o)) ?? item.options[0]!;
-    prescription.push(idealLine(opt, c));
-  }
-  return {
-    prescription,
-    nonPharm: def.nonPharm.filter((a) => adviceApplies(a, ctx)).map((a) => a.id),
-    education: def.education.filter((a) => adviceApplies(a, ctx)).map((a) => a.id),
-    abnormalMarks: abnormalParams(state, content, config),
-  };
+  return { ...idealTreatment(state.case, caseContext(state), osce), abnormalMarks: abnormalParams(state, content, config) };
 }
 
 describe('angka Romawi & jumlah obat', () => {

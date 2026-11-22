@@ -10,13 +10,19 @@
  *  4. Banding     — diagnosis benar & banding penting dipertimbangkan, disingkirkan DENGAN bukti.
  *  5. Komplikasi  — tanda bahaya/komplikasi dinilai & diklasifikasikan dengan benar.
  *  6. Keputusan   — diagnosis utama, masalah lain (komorbid/insidental), dan disposisi.
+ *  7. Tatalaksana — resep, non-farmakologi & KIE dari kunci terapi per penyakit (treatment.ts).
+ *                   Tanpa data terapi (atau di mode OSCE yang menilai tatalaksana sendiri), komponen ini
+ *                   tidak dihitung dan enam komponen lain diskalakan ulang ke total 100.
  *
  * Semua ekspektasi berasal dari data penyakit (plan, differentials, complications,
  * disposition, pitfalls) sehingga penilaian bersifat spesifik kasus.
  */
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
+import type { OsceContent } from './osce/content';
+import type { TreatmentWork } from './osce/types';
 import { toolPrice, wrongPenalty } from './scoring';
+import { EMPTY_TREATMENT, evaluateTreatment, type TreatmentOutcome } from './treatment';
 import type {
   ClinicalDecision,
   ComponentScore,
@@ -81,6 +87,13 @@ const ratio = (earned: number, total: number) => (total <= 0 ? 1 : Math.max(0, M
 
 function component(key: ComponentScore['key'], label: string, max: number, fraction: number, good: FeedbackItem[], missed: FeedbackItem[]): ComponentScore {
   return { key, label, max, score: Math.round(max * Math.max(0, Math.min(1, fraction)) * 10) / 10, good, missed };
+}
+
+/** Penilaian tatalaksana mode praktik: kunci terapi (konten OSCE) + isi tab Tatalaksana. */
+export interface TreatmentInput {
+  osce: OsceContent;
+  /** Bawaan: state.treatment (isi tab Tatalaksana). */
+  work?: TreatmentWork;
 }
 
 /** Item rencana yang berlaku untuk kasus ini, digabung per group (cukup salah satu). */
@@ -171,6 +184,7 @@ export function evaluateEncounter(
   decision: ClinicalDecision,
   content: GameContent,
   config: GameConfig,
+  treatment?: TreatmentInput,
 ): EvaluationResult {
   const c = state.case;
   const disease = content.diseasesById.get(c.diseaseId)!;
@@ -472,7 +486,24 @@ export function evaluateEncounter(
     if (dispCredit === 1) good.push({ text: `Disposisi tepat: ${DISPOSITION_LABEL[decision.disposition]}.`, detail: exp.reason });
     else missed.push({ text: `Disposisi kurang tepat: ${DISPOSITION_LABEL[decision.disposition]} (seharusnya ${DISPOSITION_LABEL[exp.value]}).`, detail: exp.reason });
     if (unsafe) missed.push({ text: 'KESELAMATAN PASIEN: pasien yang perlu dirujuk segera tidak dirujuk.', detail: exp.reason });
-    components.push(component('keputusan', 'Diagnosis akhir & tata laksana', W.keputusan, fraction, good, missed));
+    components.push(component('keputusan', 'Diagnosis akhir & disposisi', W.keputusan, fraction, good, missed));
+  }
+
+  // ===================================================================== 7. TATALAKSANA
+  let tx: TreatmentOutcome | null = null;
+  if (treatment) {
+    tx = evaluateTreatment(state, treatment.work ?? state.treatment ?? EMPTY_TREATMENT, treatment.osce, ctx, config);
+    if (tx.scored) components.push({ ...component('tatalaksana', 'Tatalaksana', W.tatalaksana, tx.fraction, tx.good, tx.missed), answerKey: tx.answerKey });
+  }
+  if (!tx?.scored) {
+    // Tatalaksana tidak dinilai: enam komponen lain diskalakan ulang ke total 100.
+    const base = components.reduce((s, x) => s + x.max, 0);
+    const k = base > 0 ? 100 / base : 1;
+    for (const x of components) {
+      x.max = Math.round(x.max * k * 10) / 10;
+      x.score = Math.round(x.score * k * 10) / 10;
+    }
+    if (tx) components.push({ key: 'tatalaksana', label: 'Tatalaksana', max: 0, score: 0, good: tx.good, missed: tx.missed, unscored: true });
   }
 
   // ===================================================================== TOTAL
@@ -483,6 +514,8 @@ export function evaluateEncounter(
   const fromScore = Math.round((total - R.neutralScore) * R.perScorePoint);
   const wrongPrimary = primaryCorrect ? 0 : -wrongPenalty(disease, config);
   const unsafePenalty = unsafe ? -R.unsafeDispositionPenalty : 0;
+  const treatmentPenalty = tx?.scored ? tx.reputation : 0;
+  const safety = tx?.scored ? tx.safety : undefined;
 
   return {
     total,
@@ -497,8 +530,9 @@ export function evaluateEncounter(
     unsafe,
     pitfalls: evaluatePitfalls(state, decision, disease),
     recommendations: recommendations(components),
-    reputationDelta: fromScore + wrongPrimary + unsafePenalty,
-    reputationBreakdown: { fromScore, wrongPrimary, unsafe: unsafePenalty },
+    reputationDelta: fromScore + wrongPrimary + unsafePenalty + treatmentPenalty,
+    reputationBreakdown: { fromScore, wrongPrimary, unsafe: unsafePenalty, ...(tx?.scored ? { treatment: treatmentPenalty } : {}) },
+    ...(safety && (safety.allergy.length || safety.harmful.length || safety.antibiotic.length) ? { treatmentSafety: safety } : {}),
     spent: state.spent,
   };
 }
@@ -553,11 +587,13 @@ const RECOMMENDATION: Record<ComponentScore['key'], string> = {
   banding: 'Susun minimal tiga diagnosis banding termasuk yang berbahaya, lalu singkirkan masing-masing dengan bukti anamnesis/pemeriksaan.',
   komplikasi: 'Setelah menemukan penyakit, tanyakan: apakah sudah ada komplikasi? Nilai tanda bahaya dan fungsi organ sebelum memutuskan.',
   keputusan: 'Tentukan disposisi berdasarkan derajat keparahan & tanda bahaya, dan catat semua masalah lain yang ditemukan (komorbid, temuan insidental).',
+  tatalaksana:
+    'Tanyakan alergi & timbang pasien sebelum menulis resep. Tulis obat utama dengan dosis, aturan pakai, lama, dan jumlah yang tepat; hindari antibiotik tanpa indikasi; lengkapi saran non-farmakologi dan KIE (penyakit, pengobatan, tanda bahaya, kontrol).',
 };
 
 function recommendations(components: readonly ComponentScore[]): string[] {
   return [...components]
-    .filter((x) => x.score / x.max < 0.7)
+    .filter((x) => x.max > 0 && !x.unscored && x.score / x.max < 0.7)
     .sort((a, b) => a.score / a.max - b.score / b.max)
     .map((x) => RECOMMENDATION[x.key]);
 }

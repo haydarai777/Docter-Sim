@@ -8,7 +8,21 @@
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
 import { bodySide, buildAppearance, buildCompanionAppearance, chiefSite, companionMode, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
-import { askQuestion, canSubmitDecision, EncounterError, interpretInContext, performExam, setDdx, startEncounter, submitDecision as submitEncounterDecision } from '../core/encounter';
+import {
+  addPrescriptionLine,
+  askQuestion,
+  canSubmitDecision,
+  EncounterError,
+  interpretInContext,
+  performExam,
+  removePrescriptionLine,
+  setDdx,
+  startEncounter,
+  submitDecision as submitEncounterDecision,
+  toggleTreatmentAdvice,
+  treatmentOf,
+} from '../core/encounter';
+import type { TreatmentWork } from '../core/osce/types';
 import { generateCase } from '../core/generator';
 import type { OsceContent } from '../core/osce/content';
 import { expectedQuantity } from '../core/osce/prescription';
@@ -138,6 +152,8 @@ export class App {
   finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
   /** Indeks log pertama yang "baru" pada render ini (untuk animasi masuk). */
   newLogFrom = 0;
+  /** Draf baris resep di tab Tatalaksana mode praktik (mode OSCE memakai draf sesinya). */
+  private practiceDraft: DraftLine = { ...EMPTY_DRAFT };
   /** Pertanyaan yang sedang menunggu jawaban pasien AI (ditampilkan sementara di transkrip). */
   pendingQuestion: string | null = null;
   /** Penampilan pasien saat ini (juga dipakai mode tanpa 3D untuk deskripsi teks). */
@@ -307,6 +323,7 @@ export class App {
     this.igdScene?.exit();
     const run = createRun(randomSeed(), this.config, this.focusSystem);
     this.run = startNextPatient(run, this.content, this.config);
+    this.practiceDraft = { ...EMPTY_DRAFT };
     this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
     this.finalRecords = null;
     this.renderedLogLength = 0;
@@ -320,6 +337,7 @@ export class App {
     this.cancelAi();
     this.stopOsce();
     this.run = saved.run;
+    this.practiceDraft = { ...EMPTY_DRAFT };
     const active = saved.run.encounter?.status === 'active';
     this.ui = { ...INITIAL_UI, screen: active ? 'consult' : 'summary' };
     this.finalRecords = null;
@@ -548,7 +566,7 @@ export class App {
       this.finishOsceStation(decision, false);
       return;
     }
-    this.run = finishCurrent(this.run, decision, this.content, this.config);
+    this.run = finishCurrent(this.run, decision, this.content, this.config, this.osceContent);
     const farewell = this.run.encounter!.log.at(-1);
     if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
       this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: null, actionTab: 'anamnesis', monitorSmall: true };
@@ -586,6 +604,7 @@ export class App {
     if (!this.run || this.run.status !== 'playing' || this.run.encounter?.status === 'active') return;
     this.cancelAi();
     this.run = startNextPatient(this.run, this.content, this.config);
+    this.practiceDraft = { ...EMPTY_DRAFT };
     this.ui = { ...INITIAL_UI, screen: 'consult' };
     this.renderedLogLength = 0;
     this.beginScene(false);
@@ -832,39 +851,67 @@ export class App {
   }
 
   // --- Tatalaksana (resep, non-farmakologi, KIE, interpretasi) ---------------
+  // Mode OSCE menyimpan pekerjaan di sesi stasiun; mode praktik di konsultasi (ikut tersimpan & dilanjutkan).
+
+  /** Isi tab Tatalaksana yang sedang dikerjakan. */
+  get treatmentWork(): TreatmentWork {
+    if (this.osce) return this.osce.work;
+    return this.encounter ? treatmentOf(this.encounter) : { prescription: [], nonPharm: [], education: [] };
+  }
+
+  /** Draf baris resep di formulir "tambah obat". */
+  get rxDraft(): DraftLine {
+    return this.osce ? this.osce.draft : this.practiceDraft;
+  }
 
   patchRxDraft(patch: Partial<DraftLine>, rerender = true): void {
-    if (!this.osce) return;
-    this.osce.draft = { ...this.osce.draft, ...patch };
+    if (this.osce) this.osce.draft = { ...this.osce.draft, ...patch };
+    else this.practiceDraft = { ...this.practiceDraft, ...patch };
     if (rerender) this.render();
   }
 
   addRxLine(): void {
-    const s = this.osce;
-    if (!s || !this.canInteract) return;
-    const d = s.draft;
+    if (!this.encounter || !this.canInteract) return;
+    const d = this.rxDraft;
     const entry = d.form ? this.osceContent.formsById.get(d.form) : undefined;
     if (!d.drug || !entry) return;
     const line = { drug: d.drug, form: d.form!, units: d.units, schedule: d.schedule, timesPerDay: d.schedule === 'tunggal' ? 1 : d.timesPerDay, days: d.schedule === 'tunggal' ? 1 : d.days, quantity: 0, timing: d.timing };
     line.quantity = d.quantity ?? expectedQuantity(line, entry.form);
-    s.work.prescription.push(line);
-    s.draft = { ...EMPTY_DRAFT };
-    this.render();
+    if (this.osce) {
+      this.osce.work.prescription.push(line);
+      this.osce.draft = { ...EMPTY_DRAFT };
+      this.render();
+      return;
+    }
+    const before = this.encounter;
+    this.updateEncounter((s) => addPrescriptionLine(s, line));
+    if (this.encounter !== before) {
+      this.practiceDraft = { ...EMPTY_DRAFT };
+      this.render();
+    }
   }
 
   removeRxLine(index: number): void {
-    if (!this.osce || !this.canInteract) return;
-    this.osce.work.prescription.splice(index, 1);
-    this.render();
+    if (!this.canInteract) return;
+    if (this.osce) {
+      this.osce.work.prescription.splice(index, 1);
+      this.render();
+      return;
+    }
+    this.updateEncounter((s) => removePrescriptionLine(s, index));
   }
 
   toggleOsceAdvice(kind: 'nonPharm' | 'education', id: string): void {
-    if (!this.osce || !this.canInteract) return;
-    const list = this.osce.work[kind];
-    const i = list.indexOf(id);
-    if (i >= 0) list.splice(i, 1);
-    else list.push(id);
-    this.render();
+    if (!this.canInteract) return;
+    if (this.osce) {
+      const list = this.osce.work[kind];
+      const i = list.indexOf(id);
+      if (i >= 0) list.splice(i, 1);
+      else list.push(id);
+      this.render();
+      return;
+    }
+    this.updateEncounter((s) => toggleTreatmentAdvice(s, kind, id));
   }
 
   isMarkedAbnormal(toolId: string, paramId: string): boolean {
@@ -999,6 +1046,14 @@ export class App {
       if (top !== undefined) el.scrollTop = top;
     });
     if (focusedKey) this.root.querySelector<HTMLElement>(`[data-focus-key="${focusedKey}"]`)?.focus();
+    // Tab aktif selalu terlihat di deretan tab yang bisa digulir (layar sempit).
+    const tabs = this.root.querySelector<HTMLElement>('.monitor .tabs');
+    const activeTab = tabs?.querySelector<HTMLElement>('.tab.is-active');
+    if (tabs && activeTab && tabs.scrollWidth > tabs.clientWidth) {
+      const left = activeTab.offsetLeft - tabs.offsetLeft;
+      if (left < tabs.scrollLeft) tabs.scrollLeft = left - 8;
+      else if (left + activeTab.offsetWidth > tabs.scrollLeft + tabs.clientWidth) tabs.scrollLeft = left + activeTab.offsetWidth - tabs.clientWidth + 8;
+    }
 
     // Gulir transkrip ke bawah bila ada pesan baru.
     const chat = this.root.querySelector<HTMLElement>('[data-chat]');

@@ -173,6 +173,9 @@ export interface OsceWork {
 
 export const EMPTY_WORK: OsceWork = { prescription: [], nonPharm: [], education: [], abnormalMarks: [] };
 
+/** Pekerjaan tab Tatalaksana di mode praktik (tanpa penandaan hasil abnormal khas OSCE). */
+export type TreatmentWork = Pick<OsceWork, 'prescription' | 'nonPharm' | 'education'>;
+
 // ---------------------------------------------------------------------------
 // Hasil stasiun
 // ---------------------------------------------------------------------------

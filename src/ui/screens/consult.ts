@@ -3,7 +3,7 @@
  *  - HUD di atas (reputasi, bantuan, pengaturan);
  *  - "monitor" Rekam Medis Elektronik (RME) di meja dokter — berisi data pasien, transkrip
  *    percakapan + kolom tanya, dan tab alur klinis: Anamnesis → Fisik → Penunjang →
- *    Penalaran (diagnosis banding) → Keputusan;
+ *    Penalaran (diagnosis banding) → Tatalaksana (resep, non-farmakologi, KIE) → Keputusan;
  *  - pasien 3D terlihat di area ruangan yang tidak tertutup monitor.
  */
 import { doctorQuestion } from '../../core/dialogue';
@@ -78,17 +78,14 @@ function hud(app: App): HTMLElement {
 // Monitor RME
 // ---------------------------------------------------------------------------
 
-const TABS: { id: ActionTab; label: string; step: string }[] = [
+/** Tab alur klinis (mode praktik & OSCE): Tatalaksana tepat sebelum Keputusan. */
+const TABS: { id: ActionTab; label: string; short?: string; step: string }[] = [
   { id: 'anamnesis', label: 'Anamnesis', step: '1' },
   { id: 'fisik', label: 'Fisik', step: '2' },
   { id: 'penunjang', label: 'Penunjang', step: '3' },
   { id: 'penalaran', label: 'Penalaran', step: '4' },
-  { id: 'keputusan', label: 'Keputusan', step: '5' },
-];
-/** Mode OSCE menambah tab Tatalaksana (resep, non-farmakologi, KIE) sebelum Keputusan. */
-const OSCE_TABS: { id: ActionTab; label: string; step: string }[] = [
-  ...TABS.slice(0, 4),
-  { id: 'tatalaksana', label: 'Tatalaksana', step: '5' },
+  // Layar sempit: label pendek agar keenam tab muat.
+  { id: 'tatalaksana', label: 'Tatalaksana', short: 'Terapi', step: '5' },
   { id: 'keputusan', label: 'Keputusan', step: '6' },
 ];
 
@@ -110,7 +107,7 @@ function monitor(app: App, enc: EncounterState): HTMLElement {
       body = reasoningTab(app, enc);
       break;
     case 'tatalaksana':
-      body = app.osce ? treatmentTab(app, enc) : decisionTab(app, enc);
+      body = treatmentTab(app, enc);
       break;
     case 'keputusan':
       body = decisionTab(app, enc);
@@ -135,7 +132,7 @@ function monitor(app: App, enc: EncounterState): HTMLElement {
     h(
       'nav',
       { class: 'tabs', role: 'tablist' },
-      (app.osce ? OSCE_TABS : TABS).map((t) =>
+      TABS.map((t) =>
         h(
           'button',
           {
@@ -143,10 +140,11 @@ function monitor(app: App, enc: EncounterState): HTMLElement {
             role: 'tab',
             type: 'button',
             'aria-selected': t.id === tab ? 'true' : 'false',
+            'aria-label': t.label,
             onclick: () => app.setTab(t.id),
           },
           h('span', { class: 'tab__step', 'aria-hidden': 'true' }, t.step),
-          t.label,
+          t.short ? [h('span', { class: 'tab__label' }, t.label), h('span', { class: 'tab__short', 'aria-hidden': 'true' }, t.short)] : t.label,
         ),
       ),
     ),
@@ -800,7 +798,8 @@ function confirmDialog(app: App): HTMLElement {
   const name = (id: string) => app.content.catalogById.get(id)?.name ?? id;
   const disease = d.primary ? app.content.diseasesById.get(d.primary) : undefined;
   const cxName = (id: string) => disease?.complications?.find((c) => c.id === id)?.name ?? id;
-  const work = app.osce?.work;
+  const work = app.treatmentWork;
+  const scored = app.osceContent.casesById.has(app.encounter?.case.diseaseId ?? '');
   return modal({
     title: app.osce ? 'Selesaikan stasiun?' : 'Selesaikan konsultasi?',
     body: h(
@@ -817,10 +816,10 @@ function confirmDialog(app: App): HTMLElement {
         h('dd', null, d.secondary.map(name).join(', ') || '—'),
         h('dt', null, 'Disposisi'),
         h('dd', null, d.disposition ? DISPOSITION_LABEL[d.disposition] : '—'),
-        work ? [h('dt', null, 'Tatalaksana'), h('dd', null, `${work.prescription.length} obat · ${work.nonPharm.length} saran non-farmakologi · ${work.education.length} poin KIE`)] : null,
+        scored ? [h('dt', null, 'Tatalaksana'), h('dd', null, `${work.prescription.length} obat · ${work.nonPharm.length} saran non-farmakologi · ${work.education.length} poin KIE`)] : null,
       ),
-      work && work.prescription.length + work.nonPharm.length + work.education.length === 0
-        ? h('p', { class: 'notice' }, 'Tab Tatalaksana masih kosong — resep, non-farmakologi, dan KIE ikut dinilai (LT5–LT7).')
+      scored && work.prescription.length + work.nonPharm.length + work.education.length === 0
+        ? h('p', { class: 'notice' }, app.osce ? 'Tab Tatalaksana masih kosong — resep, non-farmakologi, dan KIE ikut dinilai (LT5–LT7).' : 'Tab Tatalaksana masih kosong — resep, non-farmakologi, dan KIE ikut dinilai.')
         : null,
       h('p', { class: 'hint' }, 'Anda akan menjelaskan hasilnya ke pasien; setelah itu pasien berpamitan dan Anda tidak bisa bertanya atau memeriksa lagi.'),
     ),

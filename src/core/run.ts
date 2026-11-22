@@ -2,6 +2,7 @@
  * Sesi permainan: antrean pasien, reputasi, riwayat, dan game over.
  */
 import { startEncounter, submitDecision } from './encounter';
+import type { OsceContent } from './osce/content';
 import { generateCase } from './generator';
 import { createRng, deriveSeed } from './rng';
 import { applyReputation, isGameOver } from './scoring';
@@ -63,10 +64,13 @@ export function updateEncounter(run: RunState, encounter: EncounterState): RunSt
   return { ...run, encounter };
 }
 
-/** Kirim keputusan klinis untuk pasien saat ini; perbarui reputasi, riwayat, dan status game over. */
-export function finishCurrent(run: RunState, decision: ClinicalDecision, content: GameContent, config: GameConfig): RunState {
+/**
+ * Kirim keputusan klinis untuk pasien saat ini; perbarui reputasi, riwayat, dan status game over.
+ * `osce` = kunci terapi per penyakit untuk menilai tab Tatalaksana (tanpa ini tatalaksana tidak dinilai).
+ */
+export function finishCurrent(run: RunState, decision: ClinicalDecision, content: GameContent, config: GameConfig, osce?: OsceContent): RunState {
   if (!run.encounter) throw new Error('Tidak ada pasien.');
-  const encounter = submitDecision(run.encounter, decision, content, config);
+  const encounter = submitDecision(run.encounter, decision, content, config, osce ? { osce } : undefined);
   const ev = encounter.evaluation!;
   const reputation = applyReputation(run.reputation, ev.reputationDelta, config);
   const record: PatientRecord = {

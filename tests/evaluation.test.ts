@@ -5,7 +5,10 @@ import { generateCase } from '../src/core/generator';
 import { createRng, deriveSeed } from '../src/core/rng';
 import { playEncounterBot } from '../src/core/simulate';
 import type { ClinicalDecision, EncounterState, EvaluationResult, PatientCase } from '../src/core/types';
+import { loadOsceContent } from '../src/data/osce';
 import { config, content } from './helpers';
+
+const osce = loadOsceContent();
 
 function findCase(diseaseId: string, pred: (c: PatientCase) => boolean, tries = 600): PatientCase {
   for (let i = 0; i < tries; i++) {
@@ -35,13 +38,26 @@ const exam = (s: EncounterState, ...tools: string[]) => tools.reduce((acc, t) =>
 const askTopics = (s: EncounterState, ...topics: string[]) => applyIntents(s, topics.map((topic) => ({ kind: 'topic' as const, topic })), content).state;
 
 describe('penilaian klinis: struktur', () => {
-  it('bobot komponen mengikuti config (25/15/20/20/10/10) dan total ≤ 100', () => {
-    const c = generateCase(content, config, { diseaseId: 'dengue', seed: 1 });
-    const ev = decide(startEncounter(c), {});
-    expect(ev.components.map((x) => [x.key, x.max])).toEqual(Object.entries(config.evaluation.weights));
+  it('bobot komponen mengikuti config (20/15/15/20/10/10/10) dan total ≤ 100', () => {
+    expect(config.evaluation.weights).toEqual({ anamnesis: 20, fisik: 15, penunjang: 15, banding: 20, komplikasi: 10, keputusan: 10, tatalaksana: 10 });
     expect(Object.values(config.evaluation.weights).reduce((a, b) => a + b, 0)).toBe(100);
+    const c = generateCase(content, config, { diseaseId: 'dengue', seed: 1 });
+    const s = startEncounter(c);
+    const disease = content.diseasesById.get('dengue')!;
+    const decision: ClinicalDecision = { primary: 'dengue', secondary: [], complications: [], disposition: expectedDisposition(disease, caseContext(s)).value };
+    const ev = evaluateEncounter(s, decision, content, config, { osce });
+    expect(ev.components.map((x) => [x.key, x.max])).toEqual(Object.entries(config.evaluation.weights));
     expect(ev.total).toBeGreaterThanOrEqual(0);
     expect(ev.total).toBeLessThanOrEqual(100);
+  });
+
+  it('tanpa penilaian tatalaksana (mode OSCE): enam komponen diskalakan ulang ke total 100', () => {
+    const c = generateCase(content, config, { diseaseId: 'dengue', seed: 1 });
+    const ev = decide(startEncounter(c), {});
+    expect(ev.components.map((x) => x.key)).toEqual(['anamnesis', 'fisik', 'penunjang', 'banding', 'komplikasi', 'keputusan']);
+    expect(ev.components.reduce((s, x) => s + x.max, 0)).toBeCloseTo(100, 0);
+    // Perbandingan antar-komponen tetap: anamnesis 20 : fisik 15.
+    expect(comp(ev, 'anamnesis').max / comp(ev, 'fisik').max).toBeCloseTo(20 / 15, 2);
   });
 
   it('proses lengkap & tepat → nilai A pada semua penyakit', () => {

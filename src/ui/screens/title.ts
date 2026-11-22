@@ -21,7 +21,7 @@ export function renderTitle(app: App): HTMLElement {
         { class: 'title-howto' },
         h('li', null, 'Pasien masuk ke ruang praktik Anda. Amati penampilan dan bahasa tubuhnya, lalu wawancarai dengan pertanyaan bebas.'),
         h('li', null, 'Periksa fisik (gratis) dan pilih pemeriksaan penunjang sesuai tujuan (memotong budget pasien).'),
-        h('li', null, 'Susun diagnosis banding, nilai komplikasi, lalu putuskan diagnosis & disposisi. Seluruh proses klinis Anda dinilai.'),
+        h('li', null, 'Susun diagnosis banding dan nilai komplikasi, tulis resep & edukasi, lalu putuskan diagnosis & disposisi. Seluruh proses klinis Anda dinilai.'),
       ),
       h(
         'label',

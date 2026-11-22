@@ -30,14 +30,23 @@ export const GAME_CONFIG: GameConfig = {
   },
 
   // Bobot komponen penilaian klinis (total 100).
+  // Penyakit yang belum punya data terapi: tatalaksana tidak dinilai dan enam komponen lain
+  // diskalakan ulang ke total 100 (perbandingannya tetap). Mode OSCE menilai tatalaksana sendiri (LT5–LT7).
   evaluation: {
     weights: {
-      anamnesis: 25, // kelengkapan anamnesis
+      anamnesis: 20, // kelengkapan anamnesis
       fisik: 15, // pemeriksaan fisik
-      penunjang: 20, // pemilihan pemeriksaan penunjang
+      penunjang: 15, // pemilihan pemeriksaan penunjang
       banding: 20, // diagnosis banding & penyingkiran
       komplikasi: 10, // penilaian komplikasi & tanda bahaya
-      keputusan: 10, // diagnosis akhir & tata laksana (disposisi)
+      keputusan: 10, // diagnosis akhir, masalah lain & disposisi
+      tatalaksana: 10, // resep, non-farmakologi & KIE (kunci terapi per penyakit)
+    },
+    treatment: {
+      // Pembagian bobot tatalaksana (total 1).
+      split: { farmakologi: 0.6, nonfarmakologi: 0.2, kie: 0.2 },
+      // Skor resep dikalikan angka ini bila ada antibiotik sistemik di luar kunci terapi kasus.
+      unindicatedAntibioticFactor: 0.5,
     },
     // Pengurangan poin (dari skor penunjang) per pemeriksaan yang tidak perlu / kurang relevan.
     unnecessaryTestPenalty: 3,
@@ -172,6 +181,10 @@ export const GAME_CONFIG: GameConfig = {
     wrongBase: 4.5,
     // Penalti keselamatan: pasien yang perlu dirujuk segera justru dipulangkan/diobservasi.
     unsafeDispositionPenalty: 6,
+    // Penalti resep (sekali per konsultasi untuk tiap jenis kesalahan):
+    allergyDrugPenalty: 8, // obat yang membuat pasien alergi
+    harmfulDrugPenalty: 6, // obat berbahaya: kontraindikasi kritis kasus atau melebihi dosis harian maksimum
+    unindicatedAntibioticPenalty: 3, // antibiotik sistemik tanpa indikasi pada kasus ini
     dangerMultiplier: {
       rendah: 1,
       sedang: 1.5,

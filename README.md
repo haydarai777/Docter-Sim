@@ -65,8 +65,10 @@ klinis**, bukan sekadar tebakan diagnosis.
   Fisik dan Penunjang punya **kolom cari** (nama alat, organ, atau penyakit yang dicurigai).
 - **Papan diagnosis banding** (diagnosis kerja / dipertimbangkan / disingkirkan) dan **keputusan akhir**
   (diagnosis kerja, komplikasi, masalah lain, disposisi: rawat jalan · observasi · rujuk spesialis · rujuk segera).
-- **Penilaian berbobot** — anamnesis 25 · fisik 15 · penunjang 20 · diagnosis banding 20 ·
-  komplikasi/tanda bahaya 10 · diagnosis akhir & tata laksana 10 — dengan umpan balik rinci: topik
+- **Tab Tatalaksana** (juga di mode praktik): resep dengan hitungan dosis per kali/per hari/per kgBB,
+  saran non-farmakologi, dan KIE — dinilai dengan kunci terapi per penyakit yang sama dengan mode OSCE.
+- **Penilaian berbobot** — anamnesis 20 · fisik 15 · penunjang 15 · diagnosis banding 20 ·
+  komplikasi/tanda bahaya 10 · diagnosis akhir & disposisi 10 · tatalaksana 10 — dengan umpan balik rinci: topik
   yang terlewat, keluhan yang tidak digali, pemeriksaan yang kurang/tidak perlu, banding yang
   terlewat atau disingkirkan tanpa bukti, komplikasi yang tidak dinilai, asumsi keliru (mis. "fungsi
   ginjal normal menyingkirkan batu"), pendekatan yang dianjurkan, dan rekomendasi.
@@ -277,20 +279,26 @@ semua angka di `src/data/config.ts`, semua konten medis di file JSON.
 Semua angka ada di `src/data/config.ts`. Ekspektasi tiap kasus berasal dari data penyakit
 (`plan`, `differentials`, `complications`, `disposition`, `pitfalls`), jadi penilaian spesifik kasus:
 
-- **Anamnesis (25):** topik inti (bobot ekstra untuk topik kunci kasus, keluhan lain, episode
+- **Anamnesis (20):** topik inti (bobot ekstra untuk topik kunci kasus, keluhan lain, episode
   sebelumnya) + keluhan tambahan yang berhasil digali (gejala tersembunyi bernilai lebih).
 - **Fisik (15):** tanda vital + pemeriksaan terarah sesuai rencana kasus & komorbiditas.
-- **Penunjang (20):** pemeriksaan kunci/pendukung/komplikasi sesuai indikasi, **disesuaikan budget
+- **Penunjang (15):** pemeriksaan kunci/pendukung/komplikasi sesuai indikasi, **disesuaikan budget
   pasien**; pemeriksaan tidak perlu dikurangi; catatan interpretasi positif/negatif palsu.
 - **Diagnosis banding (20):** diagnosis benar ada di papan; banding penting (terutama yang
   berbahaya) dipertimbangkan dan disingkirkan **dengan bukti**.
 - **Komplikasi (10):** tanda bahaya dinilai dan komplikasi diklasifikasikan dengan benar.
 - **Keputusan (10):** diagnosis kerja, masalah lain yang sudah ditemukan, disposisi
   (under-triage = 0; pasien gawat tidak dirujuk = penalti keselamatan).
+- **Tatalaksana (10):** resep 60% (obat utama/pendukung, dosis per kali atau per kgBB, aturan pakai,
+  lama, jumlah), non-farmakologi 20%, KIE 20% (kategori wajib: penyakit, pengobatan, tanda bahaya,
+  kontrol). Kunci dari `src/data/osce/cases` (BELUM DITINJAU DOKTER). Penyakit tanpa data terapi tidak
+  dinilai di sini; enam komponen lain diskalakan ulang ke total 100.
 
 Reputasi awal **50** (0–100), **game over < 20**. Per pasien: `(skor − 50) × 0,25`, lalu
 −4 × pengali bahaya bila diagnosis utama salah (×1 / ×1,5 / ×2,5 / ×3,5) dan −6 bila pasien
-yang perlu rujuk segera tidak dirujuk.
+yang perlu rujuk segera tidak dirujuk. Resep: obat yang membuat pasien alergi −8 (skor resep 0), obat
+berbahaya (kontraindikasi kritis / melebihi dosis harian maksimum) −6 (skor resep 0), antibiotik
+sistemik tanpa indikasi −3 (skor resep × 0,5).
 
 Simulasi bot (`npm run balance-report`): kemampuan 0,4 hampir selalu game over; 0,5 bertahan
 ± 15 pasien; ≥ 0,7 hampir selalu bertahan; bot sempurna rata-rata skor ≥ 90.

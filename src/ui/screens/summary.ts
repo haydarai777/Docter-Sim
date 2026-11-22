@@ -3,6 +3,7 @@
  * yang sudah baik & yang terlewat, asumsi keliru, rekomendasi, dan materi kasus.
  */
 import { DISPOSITION_LABEL } from '../../core/evaluation';
+import { prescriptionText } from '../../core/treatment';
 import { formatRupiah } from '../../core/text';
 import type { ComponentScore, EvaluationResult } from '../../core/types';
 import type { App } from '../app';
@@ -71,6 +72,7 @@ export function renderSummary(app: App): HTMLElement {
           `skor ${signed(ev.reputationBreakdown.fromScore)}`,
           ev.reputationBreakdown.wrongPrimary ? ` · diagnosis salah ${signed(ev.reputationBreakdown.wrongPrimary)} (${DANGER_LABEL[disease.danger].toLowerCase()})` : '',
           ev.reputationBreakdown.unsafe ? ` · keselamatan ${signed(ev.reputationBreakdown.unsafe)}` : '',
+          ev.reputationBreakdown.treatment ? ` · resep ${signed(ev.reputationBreakdown.treatment)}` : '',
         ),
       ),
       h(
@@ -86,13 +88,30 @@ export function renderSummary(app: App): HTMLElement {
       ? h('p', { class: 'banner banner--warn', role: 'alert' }, `⚠ Keselamatan pasien: kasus ini perlu ${DISPOSITION_LABEL[ev.expectedDisposition].toLowerCase()}. ${ev.dispositionReason}`)
       : null,
 
+    ev.treatmentSafety
+      ? h(
+          'div',
+          { class: 'banner banner--warn', role: 'alert' },
+          h('strong', null, '⚠ Keselamatan resep'),
+          h(
+            'ul',
+            { class: 'plain-list' },
+            [
+              ...ev.treatmentSafety.allergy.map((x) => `Obat yang membuat pasien alergi: ${x}.`),
+              ...ev.treatmentSafety.harmful.map((x) => `Obat berbahaya: ${x}`),
+              ...ev.treatmentSafety.antibiotic.map((x) => `Antibiotik tanpa indikasi: ${x}.`),
+            ].map((t) => h('li', null, t)),
+          ),
+        )
+      : null,
+
     section(
       'Penilaian proses klinis',
       h('p', { class: 'hint' }, 'Ketuk tiap komponen untuk melihat yang sudah baik (✓) dan yang terlewat (✗).'),
       h(
         'div',
         { class: 'score-list' },
-        ev.components.map((comp) => componentRow(app, comp)),
+        ev.components.map((comp) => componentRow(app, comp, comp.key === 'tatalaksana' ? (enc.treatment?.prescription ?? []).map((l) => prescriptionText(l, app.osceContent)) : [])),
       ),
     ),
 
@@ -151,7 +170,11 @@ export function renderSummary(app: App): HTMLElement {
             ),
           ]
         : null,
-      h('p', { class: 'hint' }, 'Hanya prinsip umum untuk edukasi — tanpa dosis obat. Ikuti pedoman resmi & penilaian dokter.'),
+      h(
+        'p',
+        { class: 'hint' },
+        'Prinsip umum untuk edukasi. Kunci resep & dosis di komponen Tatalaksana berasal dari formularium latihan yang BELUM DITINJAU DOKTER — ikuti pedoman resmi & penilaian dokter.',
+      ),
     ),
 
     section('Temuan khas', h('ul', { class: 'plain-list' }, disease.keyFindings.map((k) => h('li', null, k)))),
@@ -200,16 +223,18 @@ function verdict(_app: App, ev: EvaluationResult, trueName: string, chosenName: 
         h('strong', null, ev.primaryCorrect ? trueName : chosenName),
       ),
       !ev.primaryCorrect ? h('p', null, 'Diagnosis sebenarnya: ', h('strong', null, trueName)) : null,
-      h('p', { class: 'muted' }, `Nilai dari proses klinis: ${ev.components.map((x) => `${x.label.toLowerCase()} ${x.max}%`).join(' · ')}.`),
+      h('p', { class: 'muted' }, `Nilai dari proses klinis: ${ev.components.filter((x) => !x.unscored).map((x) => `${x.label.toLowerCase()} ${fmtNum(x.max)}%`).join(' · ')}.`),
     ),
   );
 }
 
-function componentRow(app: App, comp: ComponentScore): HTMLElement {
+const fmtNum = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(1).replace('.', ','));
+
+function componentRow(app: App, comp: ComponentScore, written: string[] = []): HTMLElement {
   const pct = comp.max > 0 ? (comp.score / comp.max) * 100 : 0;
   const open = app.ui.openFeedback === comp.key;
   const level = pct >= 75 ? 'good' : pct >= 50 ? 'mid' : 'low';
-  const score = Number.isInteger(comp.score) ? String(comp.score) : comp.score.toFixed(1).replace('.', ',');
+  const score = fmtNum(comp.score);
   return h(
     'div',
     { class: cx('score-row', open && 'is-open') },
@@ -222,7 +247,7 @@ function componentRow(app: App, comp: ComponentScore): HTMLElement {
         { class: 'score-bar', role: 'meter', 'aria-valuemin': 0, 'aria-valuemax': comp.max, 'aria-valuenow': comp.score, 'aria-label': comp.label },
         h('span', { class: cx('score-bar__fill', `score-bar__fill--${level}`), style: `width:${pct}%` }),
       ),
-      h('span', { class: 'score-row__value' }, `${score}/${comp.max}`),
+      h('span', { class: 'score-row__value' }, comp.unscored ? 'tidak dinilai' : `${score}/${fmtNum(comp.max)}`),
       h('span', { class: 'score-row__chev', 'aria-hidden': 'true' }, open ? '▴' : '▾'),
     ),
     open
@@ -243,6 +268,16 @@ function componentRow(app: App, comp: ComponentScore): HTMLElement {
                 comp.missed.map((m) => h('li', { class: 'fb fb--missed' }, h('span', { class: 'fb__mark', 'aria-label': 'terlewat' }, '✗'), h('div', null, h('span', null, m.text), m.detail ? h('p', { class: 'muted' }, m.detail) : null))),
               )
             : h('p', { class: 'muted' }, 'Tidak ada yang terlewat. 👍'),
+          written.length ? h('div', { class: 'fb-key' }, h('strong', null, 'Resep Anda'), h('ul', { class: 'plain-list rx-list' }, written.map((w) => h('li', null, w)))) : null,
+          comp.answerKey?.length
+            ? h(
+                'div',
+                { class: 'fb-key' },
+                h('strong', null, 'Kunci jawaban '),
+                h('span', { class: 'tag' }, 'belum ditinjau dokter'),
+                h('ul', { class: 'plain-list' }, comp.answerKey.map((k) => h('li', null, k))),
+              )
+            : null,
         )
       : null,
   );
