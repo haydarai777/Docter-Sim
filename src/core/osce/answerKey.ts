@@ -11,6 +11,20 @@ import type { DoseOption, PrescriptionLine, TherapyItem, TreatmentWork } from '.
 
 const fitsWeight = (o: DoseOption, kg: number) => !o.unitsByWeight || o.unitsByWeight.some((b) => kg >= b.minKg && kg < b.maxKg + 1);
 
+/**
+ * Jumlah satuan per kali yang memberi dosis dalam rentang [lo, hi]: utamakan kelipatan ¼ (½ tablet,
+ * ¼ sendok takar); bila tidak ada (mis. neonatus 3 kg dengan sirup 200 mg/5 mL), kelipatan 0,1 lalu 0,05.
+ */
+function unitsFor(lo: number, hi: number, strength: number): number {
+  const mid = (lo + hi) / 2;
+  for (const step of [1, 0.5, 0.25, 0.1, 0.05]) {
+    const u = Math.max(step, Math.round(mid / strength / step) * step);
+    const amount = u * strength;
+    if (amount >= lo * 0.99 && amount <= hi * 1.01) return Math.round(u * 1000) / 1000;
+  }
+  return Math.round((mid / strength) * 1000) / 1000;
+}
+
 /** Baris resep yang benar untuk satu pilihan dosis. */
 export function idealLine(opt: DoseOption, c: PatientCase, osce: OsceContent): PrescriptionLine {
   const drug = osce.drugsById.get(opt.drug)!;
@@ -18,8 +32,8 @@ export function idealLine(opt: DoseOption, c: PatientCase, osce: OsceContent): P
   const kg = patientWeight(c) ?? 60;
   let units = 1;
   if (opt.unitsByWeight) units = opt.unitsByWeight.find((b) => kg >= b.minKg && kg < b.maxKg + 1)?.units ?? 1;
-  else if (opt.dose) units = opt.dose[0] / form.strength;
-  else if (opt.dosePerKg) units = Math.round((((opt.dosePerKg[0] + opt.dosePerKg[1]) / 2) * kg) / form.strength * 4) / 4;
+  else if (opt.dose) units = unitsFor(opt.dose[0], opt.dose[1], form.strength);
+  else if (opt.dosePerKg) units = unitsFor(opt.dosePerKg[0] * kg, opt.dosePerKg[1] * kg, form.strength);
   const line: PrescriptionLine = {
     drug: opt.drug,
     form: form.id,

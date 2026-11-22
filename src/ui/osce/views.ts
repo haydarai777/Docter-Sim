@@ -8,7 +8,7 @@ import { procedureCards } from '../../core/osce/procedure';
 import { CATEGORY_LABEL } from '../../core/osce/station';
 import type { AdviceOption, OsceCategory, PrescriptionLine, ProcedureResult } from '../../core/osce/types';
 import { createRng } from '../../core/rng';
-import { normalizeForSearch, patientAgeText } from '../../core/text';
+import { formatDecimalInput, normalizeForSearch, parseDecimal, patientAgeText } from '../../core/text';
 import type { EncounterState } from '../../core/types';
 import type { App } from '../app';
 import { modal } from '../components/modal';
@@ -295,38 +295,77 @@ const PER_KG_UNITS = new Set(['mg', 'mcg', 'g', 'IU', 'mL']);
 const num1 = (n: number) => (Math.round(n * 100) / 100).toLocaleString('id-ID');
 
 /** Hitungan dosis draf: per kali, per hari, dan per kgBB (hanya hitungan — tidak menilai benar/salah). */
-function doseCheck(d: { units: number; schedule: PrescriptionLine['schedule']; timesPerDay: number }, form: { strength: number; unit: string }, kg: number | null): HTMLElement | null {
-  if (!PER_KG_UNITS.has(form.unit) || !(d.units > 0)) return null;
+function doseCheckText(d: { units: number; schedule: PrescriptionLine['schedule']; timesPerDay: number }, form: { strength: number; unit: string }, kg: number | null): string {
+  if (!PER_KG_UNITS.has(form.unit) || !(d.units > 0)) return '';
   const perDose = d.units * form.strength;
   const perDay = perDose * (d.schedule === 'tunggal' ? 1 : d.timesPerDay);
   const parts = [`Per kali ${num1(perDose)} ${form.unit}`];
-  if (d.schedule !== 'tunggal') parts.push(`per hari ${num1(perDay)} ${form.unit}`);
-  return h(
-    'p',
-    { class: 'hint rx-field--wide rx-dose', 'aria-live': 'polite' },
-    `${parts.join(' · ')}`,
-    kg
+  if (d.schedule !== 'tunggal') parts.push(`${d.schedule === 'prn' ? 'maks. per hari' : 'per hari'} ${num1(perDay)} ${form.unit}`);
+  return (
+    parts.join(' · ') +
+    (kg
       ? ` · ≈ ${num1(perDose / kg)} ${form.unit}/kgBB per kali${d.schedule !== 'tunggal' ? ` (${num1(perDay / kg)} ${form.unit}/kgBB/hari)` : ''} untuk BB ${num1(kg)} kg`
-      : ' · timbang pasien (tab Fisik → Timbangan) untuk menghitung dosis per kgBB',
+      : ' · timbang pasien (tab Fisik → Timbangan) untuk menghitung dosis per kgBB')
   );
 }
 
 function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
   const osce = app.osceContent;
   const d = app.rxDraft;
-  const q = normalizeForSearch(d.query);
-  const matches = q ? osce.drugs.filter((x) => normalizeForSearch(drugSearchText(x)).includes(q)).slice(0, 8) : [];
   const drug = d.drug ? osce.drugsById.get(d.drug) : undefined;
   const form = drug && d.form ? drug.forms.find((f) => f.id === d.form) : undefined;
-  const auto = form ? expectedQuantity(d, form) : 0;
-  const quantity = d.quantity ?? auto;
-  const num = (label: string, value: number, step: number, min: number, onchange: (v: number) => void) =>
-    h(
-      'label',
-      { class: 'rx-field' },
-      h('span', null, label),
-      h('input', { class: 'input', type: 'number', inputmode: 'decimal', value: String(value), step: String(step), min: String(min), disabled, onchange: (e: Event) => onchange(Number((e.target as HTMLInputElement).value)) }),
+  const quantityOf = (x: typeof d) => x.quantity ?? (form ? expectedQuantity(x, form) : 0);
+  const quantity = quantityOf(d);
+  // Hitungan dosis & jumlah diperbarui DI TEMPAT saat angka berubah — tanpa menggambar ulang layar,
+  // agar ketukan berikutnya (mis. "Tambahkan ke resep") tidak hilang karena tombolnya diganti.
+  const doseEl = h('p', { class: 'hint rx-field--wide rx-dose', 'aria-live': 'polite' }, form ? doseCheckText(d, form, kg) : '');
+  const qtyLabel = h('span', null, `Jumlah (No. ${toRoman(quantity)})`);
+  let qtyInput: HTMLInputElement | null = null;
+  const refresh = () => {
+    const x = app.rxDraft;
+    const q = quantityOf(x);
+    doseEl.textContent = form ? doseCheckText(x, form, kg) : '';
+    doseEl.hidden = !doseEl.textContent;
+    qtyLabel.textContent = `Jumlah (No. ${toRoman(q)})`;
+    if (qtyInput && document.activeElement !== qtyInput) qtyInput.value = formatDecimalInput(q);
+  };
+  doseEl.hidden = !doseEl.textContent;
+  // Kolom angka berupa teks ber-keyboard desimal: "0,5" dibaca 0,5 (type=number di sebagian browser
+  // membuang koma → 5). Isian yang bukan angka ditolak dan nilai sebelumnya dipertahankan.
+  const num = (label: string | HTMLElement, value: number, valid: (v: number) => boolean, patch: (v: number) => Partial<typeof d>, focusKey: string) => {
+    const input = h('input', {
+      class: 'input',
+      type: 'text',
+      inputmode: 'decimal',
+      autocomplete: 'off',
+      value: formatDecimalInput(value),
+      disabled,
+      'data-focus-key': focusKey,
+      onchange: (e: Event) => {
+        const v = parseDecimal((e.target as HTMLInputElement).value);
+        const name = typeof label === 'string' ? label : (label.textContent ?? '');
+        if (v === null || !valid(v)) {
+          app.rxInputInvalid(name);
+          return;
+        }
+        app.patchRxDraft(patch(v), false);
+        app.clearNotice();
+        refresh();
+      },
+    }) as HTMLInputElement;
+    return { el: h('label', { class: 'rx-field' }, typeof label === 'string' ? h('span', null, label) : label, input), input };
+  };
+  // Saran obat diperbarui langsung saat mengetik (tanpa menggambar ulang layar agar fokus tidak hilang).
+  const chips = h('div', { class: 'chip-row', 'aria-live': 'polite' });
+  const renderChips = (query: string) => {
+    const q = normalizeForSearch(query);
+    const matches = q ? osce.drugs.filter((x) => normalizeForSearch(drugSearchText(x)).includes(q)).slice(0, 8) : [];
+    chips.replaceChildren(
+      ...matches.map((m) => h('button', { class: 'chip', type: 'button', disabled, onclick: () => app.patchRxDraft({ drug: m.id, form: m.forms[0]!.id, query: m.name, quantity: null }) }, m.name)),
+      ...(q && !matches.length ? [h('span', { class: 'hint' }, 'Obat tidak ditemukan di formularium latihan.')] : []),
     );
+  };
+  if (!drug) renderChips(d.query);
   return h(
     'div',
     { class: 'rx-form' },
@@ -337,12 +376,13 @@ function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
       value: d.query,
       disabled,
       'data-focus-key': 'cari-obat',
-      oninput: (e: Event) => app.patchRxDraft({ query: (e.target as HTMLInputElement).value }, false),
-      onchange: () => app.patchRxDraft({}),
+      oninput: (e: Event) => {
+        const value = (e.target as HTMLInputElement).value;
+        app.patchRxDraft({ query: value }, false);
+        if (!drug) renderChips(value);
+      },
     })),
-    matches.length && !drug
-      ? h('div', { class: 'chip-row' }, matches.map((m) => h('button', { class: 'chip', type: 'button', disabled, onclick: () => app.patchRxDraft({ drug: m.id, form: m.forms[0]!.id, query: m.name, quantity: null }) }, m.name)))
-      : null,
+    drug ? null : chips,
     drug
       ? h(
           'div',
@@ -354,7 +394,7 @@ function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
             h('span', null, 'Sediaan'),
             h('select', { class: 'select', disabled, onchange: (e: Event) => app.patchRxDraft({ form: (e.target as HTMLSelectElement).value, quantity: null }) }, drug.forms.map((f) => h('option', { value: f.id, selected: f.id === d.form }, f.label))),
           ),
-          num(`Per kali (${form?.dosageUnit ?? 'satuan'})`, d.units, 0.25, 0.25, (v) => app.patchRxDraft({ units: v > 0 ? v : 1, quantity: null })),
+          num(`Per kali (${form?.dosageUnit ?? 'satuan'})`, d.units, (v) => v > 0 && v <= 1000, (v) => ({ units: v, quantity: null }), 'rx-units').el,
           h(
             'label',
             { class: 'rx-field' },
@@ -367,9 +407,9 @@ function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
               h('option', { value: 'tunggal', selected: d.schedule === 'tunggal' }, 'Dosis tunggal'),
             ),
           ),
-          d.schedule !== 'tunggal' ? num('Kali sehari', d.timesPerDay, 1, 1, (v) => app.patchRxDraft({ timesPerDay: Math.max(1, Math.round(v)), quantity: null })) : null,
-          d.schedule !== 'tunggal' ? num('Lama (hari)', d.days, 1, 1, (v) => app.patchRxDraft({ days: Math.max(1, Math.round(v)), quantity: null })) : null,
-          form ? doseCheck(d, form, kg) : null,
+          d.schedule !== 'tunggal' ? num('Kali sehari', d.timesPerDay, (v) => Number.isInteger(v) && v >= 1 && v <= 24, (v) => ({ timesPerDay: v, quantity: null }), 'rx-times').el : null,
+          d.schedule !== 'tunggal' ? num('Lama (hari)', d.days, (v) => Number.isInteger(v) && v >= 1 && v <= 365, (v) => ({ days: v, quantity: null }), 'rx-days').el : null,
+          doseEl,
           h(
             'label',
             { class: 'rx-field' },
@@ -380,7 +420,11 @@ function drugForm(app: App, disabled: boolean, kg: number | null): HTMLElement {
               (['', 'sebelum makan', 'sesudah makan', 'saat makan', 'malam hari'] as const).map((t) => h('option', { value: t, selected: d.timing === t }, t || '—')),
             ),
           ),
-          num(`Jumlah (No. ${toRoman(quantity)})`, quantity, 1, 1, (v) => app.patchRxDraft({ quantity: Math.max(1, Math.round(v)) })),
+          (() => {
+            const q = num(qtyLabel, quantity, (v) => Number.isInteger(v) && v >= 1 && v <= 1000, (v) => ({ quantity: v }), 'rx-qty');
+            qtyInput = q.input;
+            return q.el;
+          })(),
           h('button', { class: 'btn btn--primary rx-field--wide', type: 'button', disabled, onclick: () => app.addRxLine() }, 'Tambahkan ke resep'),
         )
       : null,

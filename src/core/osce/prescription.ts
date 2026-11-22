@@ -199,8 +199,14 @@ export function evaluatePrescription(
       if (daily > drug.maxDaily * 1.001) overdose.push({ line: i, drug, daily, max: drug.maxDaily });
     }
     const expected = expectedQuantity(line, entry.form);
+    // Bila perlu (p.r.n.): cukup untuk minimal satu kali pakai, tidak berlebihan. Sediaan berkemasan
+    // (inhaler, botol) dihitung per kemasan — jangan dibandingkan dengan jumlah semprot/tetes per kali.
     const okQuantity =
-      line.schedule === 'prn' ? line.quantity >= line.units && line.quantity <= Math.max(expected, line.units * 30) : Math.abs(line.quantity - expected) < 0.01;
+      line.schedule === 'prn'
+        ? entry.form.package
+          ? line.quantity >= 1 && line.quantity <= Math.max(expected, 3)
+          : line.quantity >= line.units && line.quantity <= Math.max(expected, line.units * 30)
+        : Math.abs(line.quantity - expected) < 0.01;
     if (!okQuantity) quantityIssues.push({ line: i, expected });
     if (!used.has(i) && !avoided.some((a) => a.line === i)) extras.push(i);
   });

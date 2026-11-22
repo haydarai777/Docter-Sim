@@ -20,8 +20,11 @@ import type { EncounterState, FeedbackItem, GameConfig } from './types';
 
 export const EMPTY_TREATMENT: TreatmentWork = { prescription: [], nonPharm: [], education: [] };
 
-/** Kelas obat yang dihitung sebagai antibiotik sistemik (bukan topikal/tetes). */
-const SYSTEMIC_ANTIBIOTIC_CLASSES = new Set(['antibiotik']);
+/**
+ * Kelas obat yang dihitung sebagai antibiotik sistemik (bukan topikal/tetes): antibiotik umum, OAT
+ * (rifampisin, isoniazid, …), dan MDT kusta (rifampisin, dapson, klofazimin).
+ */
+const SYSTEMIC_ANTIBIOTIC_CLASSES = new Set(['antibiotik', 'oat', 'kusta']);
 
 export interface TreatmentOutcome {
   /** false = data terapi penyakit ini belum tersedia → tidak dinilai. */

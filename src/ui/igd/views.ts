@@ -10,7 +10,7 @@ import { clockText, doctorBusy, freeBeds, minuteOf, nurseOf, scenarioOf, support
 import type { EdEvaluation } from '../../core/igd/evaluation';
 import { MODE_INFO } from '../../core/igd/shift';
 import type { Ats, EdCategory, EdPatient, EdShift, ExamId, ProcId, Route, ShiftMode, TestId, Vitals } from '../../core/igd/types';
-import { normalizeForSearch } from '../../core/text';
+import { normalizeForSearch, parseDecimal } from '../../core/text';
 import { ED_SCENARIOS } from '../../data/igd';
 import type { App } from '../app';
 import { disclaimer } from '../components/disclaimer';
@@ -741,7 +741,8 @@ function drugTab(app: App, shift: EdShift, p: EdPatient): HTMLElement {
                   class: 'igd-inline',
                   onsubmit: (e: Event) => {
                     e.preventDefault();
-                    const dose = Number(String(c.ui.drug.dose).replace(',', '.'));
+                    // Isian bukan angka → NaN → mesin menolak dengan pesan (bukan dibaca angka lain).
+                    const dose = parseDecimal(String(c.ui.drug.dose)) ?? NaN;
                     if (route) c.do({ type: 'obat', drug: drug.id, route, dose });
                   },
                 },
@@ -758,11 +759,11 @@ function drugTab(app: App, shift: EdShift, p: EdPatient): HTMLElement {
                   class: 'igd-inline',
                   onsubmit: (e: Event) => {
                     e.preventDefault();
-                    c.do({ type: 'infus_obat', drug: drug.id, rate: Number(String(c.ui.drug.rate).replace(',', '.')) });
+                    c.do({ type: 'infus_obat', drug: drug.id, rate: parseDecimal(String(c.ui.drug.rate)) ?? NaN });
                   },
                 },
                 h('span', null, 'Infus kontinu'),
-                h('input', { class: 'search igd-num', type: 'text', inputmode: 'decimal', placeholder: 'laju', 'aria-label': `Laju (${drug.infusion.unit})`, 'data-focus-key': 'igd-rate', value: d.rate, oninput: (e: Event) => c.patch({ drug: { ...c.ui.drug, rate: (e.target as HTMLInputElement).value } }, false) }),
+                h('input', { class: 'search igd-num', type: 'text', inputmode: 'decimal', placeholder: 'laju', title: 'Isi 0 untuk menghentikan infus', 'aria-label': `Laju (${drug.infusion.unit}; 0 = hentikan)`, 'data-focus-key': 'igd-rate', value: d.rate, oninput: (e: Event) => c.patch({ drug: { ...c.ui.drug, rate: (e.target as HTMLInputElement).value } }, false) }),
                 h('span', { class: 'igd-unit' }, drug.infusion.unit),
                 h('button', { class: 'btn btn--small', type: 'submit' }, running.some((i) => i.ref === drug.id) ? 'Ubah laju' : 'Mulai infus'),
                 hints ? h('small', { class: 'hint' }, drug.infusion.hint) : null,
@@ -777,7 +778,7 @@ function drugTab(app: App, shift: EdShift, p: EdPatient): HTMLElement {
         class: 'igd-inline igd-fluid',
         onsubmit: (e: Event) => {
           e.preventDefault();
-          c.do({ type: 'cairan', fluid: c.ui.fluid.id, volumeMl: Number(c.ui.fluid.volume), overMin: Number(c.ui.fluid.over) });
+          c.do({ type: 'cairan', fluid: c.ui.fluid.id, volumeMl: parseDecimal(String(c.ui.fluid.volume)) ?? NaN, overMin: parseDecimal(String(c.ui.fluid.over)) ?? NaN });
         },
       },
       h('select', { class: 'select select--small', 'aria-label': 'Jenis cairan', onchange: (e: Event) => c.patch({ fluid: { ...c.ui.fluid, id: (e.target as HTMLSelectElement).value as typeof c.ui.fluid.id } }) }, FLUIDS.map((f) => h('option', { value: f.id, selected: f.id === fluid.id }, f.label))),

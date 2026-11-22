@@ -144,3 +144,19 @@ export function ageText(age: number, infant?: { unit: 'hari' | 'bulan'; value: n
 export function patientAgeText(p: { age: number; ageText?: string }): string {
   return p.ageText ?? `${p.age} tahun`;
 }
+
+/**
+ * Angka dari isian pemain: menerima koma desimal Indonesia ("0,5") maupun titik ("0.5").
+ * Mengembalikan null bila bukan angka (mis. "abc", "", "1,2,3") — jangan diam-diam diganti angka lain.
+ */
+export function parseDecimal(text: string): number | null {
+  const t = text.trim().replace(/\s+/g, '').replace(',', '.');
+  if (!/^(\d+(\.\d*)?|\.\d+)$/.test(t)) return null;
+  const v = Number(t);
+  return Number.isFinite(v) ? v : null;
+}
+
+/** Angka untuk ditampilkan di kolom isian (koma desimal). */
+export function formatDecimalInput(value: number): string {
+  return String(Math.round(value * 1000) / 1000).replace('.', ',');
+}

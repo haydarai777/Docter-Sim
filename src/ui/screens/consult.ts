@@ -701,7 +701,7 @@ function decisionTab(app: App, enc: EncounterState): HTMLElement {
   return h(
     'div',
     { class: 'tab-panel decision' },
-    h('p', { class: 'hint' }, 'Keputusan akhir dinilai bersama seluruh proses: anamnesis, pemeriksaan, diagnosis banding, komplikasi, dan disposisi.'),
+    h('p', { class: 'hint' }, 'Keputusan akhir dinilai bersama seluruh proses: anamnesis, pemeriksaan, diagnosis banding, komplikasi, tatalaksana (tab Tatalaksana), dan disposisi.'),
 
     h('fieldset', { class: 'decision__block' }, h('legend', null, '1. Diagnosis kerja'), select),
 
@@ -769,7 +769,7 @@ function decisionTab(app: App, enc: EncounterState): HTMLElement {
     h(
       'fieldset',
       { class: 'decision__block' },
-      h('legend', null, '4. Tata laksana / disposisi'),
+      h('legend', null, '4. Disposisi (tindak lanjut pasien)'),
       h(
         'div',
         { class: 'checks' },

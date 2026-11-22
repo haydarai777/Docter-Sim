@@ -358,7 +358,7 @@ export function canSubmitDecision(state: EncounterState, decision: Partial<Clini
   if (!active.ok) return active;
   if (!decision.primary) return { ok: false, reason: 'Tentukan diagnosis kerja (utama).' };
   if (!content.catalogById.has(decision.primary)) return { ok: false, reason: 'Diagnosis utama tidak dikenal.' };
-  if (!decision.disposition) return { ok: false, reason: 'Pilih tata laksana/disposisi pasien.' };
+  if (!decision.disposition) return { ok: false, reason: 'Pilih disposisi pasien (rawat jalan, observasi, atau rujuk).' };
   return OK;
 }
 

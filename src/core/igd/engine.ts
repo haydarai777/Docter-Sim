@@ -752,8 +752,11 @@ export function act(shift: EdShift, patientId: string, action: EdAction, ctx: Ed
       if (!drug?.infusion) return fail('Obat ini tidak diberikan sebagai infus kontinu.');
       if (!hasIv(p)) return fail('Belum ada akses IV/IO.');
       const running = p.infusions.find((i) => i.kind === 'obat' && i.ref === drug.id && i.stoppedAt === null);
+      // Laju bukan angka (salah ketik) tidak boleh masuk ke fisiologi (NaN merusak tanda vital).
+      if (!Number.isFinite(action.rate)) return fail('Isi laju infus yang valid (0 untuk menghentikan).');
       if (action.rate <= 0) {
-        if (running) running.stoppedAt = now;
+        if (!running) return fail(`Infus ${drug.name} tidak sedang berjalan.`);
+        running.stoppedAt = now;
         record(p, { type: 'stop', id: drug.id, label: `Hentikan infus ${drug.name}` }, now);
         return ok(`Infus ${drug.name} dihentikan.`);
       }

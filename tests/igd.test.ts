@@ -126,6 +126,23 @@ describe('IGD — mesin shift', () => {
     return { shift, p: shift.patients[0]! };
   };
 
+  it('laju infus bukan angka ditolak (NaN tidak boleh merusak tanda vital); laju 0 hanya menghentikan infus yang berjalan', () => {
+    const { shift, p } = start('syok_septik');
+    act(shift, p.id, { type: 'triase', ats: 2, bedId: 'A1' }, ctx);
+    act(shift, p.id, { type: 'tindakan', proc: 'iv' }, ctx);
+    advance(shift, 8 * 60, ctx);
+    const bad = act(shift, p.id, { type: 'infus_obat', drug: 'noradrenalin', rate: NaN }, ctx);
+    expect(bad.ok).toBe(false);
+    expect(p.infusions.some((i) => i.kind === 'obat')).toBe(false);
+    expect(act(shift, p.id, { type: 'infus_obat', drug: 'noradrenalin', rate: 0 }, ctx).ok).toBe(false);
+    expect(act(shift, p.id, { type: 'infus_obat', drug: 'noradrenalin', rate: 0.1 }, ctx).ok).toBe(true);
+    advance(shift, 5 * 60, ctx);
+    const v = vitalsOf(p, shift.time);
+    expect(Number.isFinite(v.hr)).toBe(true);
+    expect(act(shift, p.id, { type: 'infus_obat', drug: 'noradrenalin', rate: 0 }, ctx).ok).toBe(true);
+    expect(p.infusions.filter((i) => i.kind === 'obat' && i.stoppedAt === null)).toHaveLength(0);
+  });
+
   it('obat IV butuh akses IV; perawat memasang IV dalam beberapa menit', () => {
     const { shift, p } = start('asma_berat', 'berat');
     act(shift, p.id, { type: 'triase', ats: 2, bedId: 'A1' }, ctx);

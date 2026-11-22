@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { capitalize, durationText, fillTemplate, findUnfilledPlaceholders, formatNumber, formatRupiah, joinList, numberToWords } from '../src/core/text';
+import { capitalize, durationText, fillTemplate, findUnfilledPlaceholders, formatDecimalInput, formatNumber, formatRupiah, joinList, numberToWords, parseDecimal } from '../src/core/text';
 
 describe('format & teks', () => {
   it('formatNumber memakai gaya Indonesia', () => {
@@ -57,5 +57,18 @@ describe('format & teks', () => {
     expect(fillTemplate('{x} tetap', {})).toBe('{x} tetap');
     expect(findUnfilledPlaceholders('a {b} c {D}')).toEqual(['b', 'D']);
     expect(capitalize('abc')).toBe('Abc');
+  });
+});
+
+describe('isian angka resep', () => {
+  it('menerima koma desimal Indonesia & titik; menolak yang bukan angka (tidak diam-diam diganti)', () => {
+    expect(parseDecimal('0,5')).toBe(0.5);
+    expect(parseDecimal('0.5')).toBe(0.5);
+    expect(parseDecimal(' 2 ')).toBe(2);
+    expect(parseDecimal(',25')).toBe(0.25);
+    expect(parseDecimal('12,')).toBe(12);
+    for (const bad of ['', 'abc', '1,2,3', '1/2', '-1', '0,5 tab']) expect(parseDecimal(bad), bad).toBeNull();
+    expect(formatDecimalInput(0.5)).toBe('0,5');
+    expect(formatDecimalInput(2)).toBe('2');
   });
 });

@@ -864,10 +864,27 @@ export class App {
     return this.osce ? this.osce.draft : this.practiceDraft;
   }
 
+  /** Hapus pemberitahuan tanpa menggambar ulang (mis. setelah isian angka resep yang valid). */
+  clearNotice(): void {
+    if (!this.ui.notice) return;
+    this.ui = { ...this.ui, notice: null };
+    this.root.querySelectorAll('.monitor > .banner--info').forEach((el) => el.remove());
+  }
+
+  /** Isian angka resep tidak valid: nilai lama dipertahankan & pemain diberi tahu. */
+  rxInputInvalid(label: string): void {
+    const field = label.replace(/\s*\(.*$/, '');
+    this.ui = { ...this.ui, notice: `${field}: isi dengan angka yang valid (mis. 1, 2, atau 0,5). Nilai sebelumnya dipertahankan.` };
+    this.render();
+  }
+
   patchRxDraft(patch: Partial<DraftLine>, rerender = true): void {
     if (this.osce) this.osce.draft = { ...this.osce.draft, ...patch };
     else this.practiceDraft = { ...this.practiceDraft, ...patch };
-    if (rerender) this.render();
+    if (rerender) {
+      this.ui = { ...this.ui, notice: null };
+      this.render();
+    }
   }
 
   addRxLine(): void {

@@ -300,8 +300,8 @@ yang perlu rujuk segera tidak dirujuk. Resep: obat yang membuat pasien alergi �
 berbahaya (kontraindikasi kritis / melebihi dosis harian maksimum) −6 (skor resep 0), antibiotik
 sistemik tanpa indikasi −3 (skor resep × 0,5).
 
-Simulasi bot (`npm run balance-report`): kemampuan 0,4 hampir selalu game over; 0,5 bertahan
-± 15 pasien; ≥ 0,7 hampir selalu bertahan; bot sempurna rata-rata skor ≥ 90.
+Simulasi bot (`npm run balance-report`, bot juga menulis resep & KIE): kemampuan 0,4 hampir selalu
+game over; 0,5 separuh sesi game over; ≥ 0,7 hampir selalu bertahan; bot sempurna rata-rata skor ≥ 90.
 `tests/balance.test.ts` menjaga keseimbangan ini.
 
 ## Cara kerja kasus pasien

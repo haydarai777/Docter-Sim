@@ -193,7 +193,7 @@ describe('konsultasi: penalaran & keputusan', () => {
   it('keputusan butuh diagnosis utama & disposisi', () => {
     const s = startEncounter(caseWithBudget(1));
     expect(canSubmitDecision(s, {}, content).reason).toBe('Tentukan diagnosis kerja (utama).');
-    expect(canSubmitDecision(s, { primary: 'dengue' }, content).reason).toBe('Pilih tata laksana/disposisi pasien.');
+    expect(canSubmitDecision(s, { primary: 'dengue' }, content).reason).toBe('Pilih disposisi pasien (rawat jalan, observasi, atau rujuk).');
     expect(canSubmitDecision(s, { primary: 'xyz', disposition: 'rawat_jalan' }, content).ok).toBe(false);
   });
 

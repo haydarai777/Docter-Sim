@@ -52,8 +52,12 @@ const ideal = (state: EncounterState) => idealTreatment(state.case, caseContext(
 describe('tatalaksana: skor dari kunci terapi', () => {
   it('jawaban ideal (resep, non-farmakologi, KIE kunci) mendapat skor tatalaksana penuh di semua penyakit', { timeout: 300_000 }, () => {
     for (const id of DISEASE_IDS) {
-      for (let i = 0; i < perDisease(4); i++) {
-        const { state, decision } = wellExamined(generateCase(content, config, { diseaseId: id, seed: deriveSeed(91, `${id}:${i}`) }));
+      for (let i = 0; i < perDisease(4, 10); i++) {
+        const base = generateCase(content, config, { diseaseId: id, seed: deriveSeed(91, `${id}:${i}`) });
+        // Sebagian kasus dipaksa alergi obat agar pilihan obat pengganti ikut teruji.
+        const allergies = ['amoksisilin', 'kotrimoksazol', 'ibuprofen', 'antalgin (metamizol)'];
+        const c = i % 3 === 2 ? { ...base, allergy: allergies[i % allergies.length]! } : base;
+        const { state, decision } = wellExamined(c);
         const ev = evaluateWith(state, decision, ideal(state));
         const t = tx(ev);
         expect(t.score, `${id}#${i}: ${t.missed.map((m) => m.text).join(' | ')}`).toBe(t.max);
@@ -114,6 +118,23 @@ describe('tatalaksana: keselamatan resep menurunkan skor & reputasi', () => {
     const S = config.evaluation.treatment;
     const lost = tx(base).max * S.split.farmakologi * (1 - S.unindicatedAntibioticFactor);
     expect(tx(ev).score).toBeCloseTo(tx(base).score - lost, 1);
+  });
+
+  it('OAT tanpa indikasi juga dihitung sebagai antibiotik tanpa indikasi', () => {
+    const { state, decision } = dengue();
+    const kdt = osce.drugsById.get('oat_kdt_intensif')!;
+    const ev = evaluateWith(state, decision, { ...ideal(state), prescription: [...ideal(state).prescription, line(kdt.id, kdt.forms[0]!.id, 3, 1, 56)] });
+    expect(ev.treatmentSafety?.antibiotic).toEqual([kdt.name]);
+    expect(ev.reputationBreakdown.treatment).toBe(-R.unindicatedAntibioticPenalty);
+  });
+
+  it('neonatus alergi amoksisilin: eritromisin sirup dosis per kgBB tetap bisa ditulis tepat (kelipatan 0,1 sendok)', () => {
+    const c = findCase('infeksi_umbilikus', (x) => x.patient.age === 0 && !x.traits.includes('meluas'));
+    const { state, decision } = wellExamined({ ...c, allergy: 'amoksisilin' });
+    const work = ideal(state);
+    expect(work.prescription[0]!.drug).toBe('eritromisin');
+    const ev = evaluateWith(state, decision, work);
+    expect(tx(ev).score, tx(ev).missed.map((m) => m.text).join(' | ')).toBe(tx(ev).max);
   });
 
   it('obat yang membuat pasien alergi → skor resep 0, reputasi −allergyDrugPenalty', () => {

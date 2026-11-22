@@ -108,6 +108,19 @@ describe('kesalahan yang harus terdeteksi', () => {
     expect(lt5.missed.join(' ')).toMatch(/lama 7 hari \(seharusnya 3 hari\)/);
   });
 
+  it('inhaler bila perlu: jumlah dihitung per kemasan, bukan dibandingkan dengan jumlah semprot per kali', () => {
+    const s = setup('asma');
+    const def = osce.casesById.get('asma')!;
+    const twoPuffs = { ...line('salbutamol_mdi', 'salbutamol-mdi100', 2, 4, 30, 'prn'), quantity: 1 };
+    const ev = evaluatePrescription([twoPuffs], def, s.state.case, caseContext(s.state), osce, true);
+    expect(ev.quantityIssues).toEqual([]);
+    const tooMany = { ...twoPuffs, quantity: 10 };
+    expect(evaluatePrescription([tooMany], def, s.state.case, caseContext(s.state), osce, true).quantityIssues).toHaveLength(1);
+    // Tablet bila perlu tetap minimal satu kali pakai.
+    const prnTab = { ...line('parasetamol', 'parasetamol-tab500', 2, 3, 3, 'prn'), quantity: 1 };
+    expect(evaluatePrescription([prnTab], osce.casesById.get('dengue')!, s.state.case, caseContext(s.state), osce, true).quantityIssues).toHaveLength(1);
+  });
+
   it('dosis berbasis BB: TB tanpa menimbang dan jumlah tablet salah terdeteksi', () => {
     const s = setup('tb_paru');
     const kg = patientWeight(s.state.case)!;

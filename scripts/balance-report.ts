@@ -7,8 +7,11 @@ import { simulateBot } from '../src/core/simulate';
 import { formatRupiah } from '../src/core/text';
 import { ECONOMY_CLASSES } from '../src/core/types';
 import { GAME_CONFIG, loadDefaultContent } from '../src/data';
+import { loadOsceContent } from '../src/data/osce';
 
 const content = loadDefaultContent();
+// Bot mengisi tab Tatalaksana seperti pemain mode praktik (kunci terapi = konten OSCE).
+const osce = loadOsceContent();
 const cfg = GAME_CONFIG;
 const pad = (s: string | number, n: number) => String(s).padEnd(n);
 
@@ -24,7 +27,7 @@ for (const d of content.diseases) {
   );
 }
 
-console.log('\n=== Simulasi bot (200 sesi, maks. 40 pasien) ===');
+console.log('\n=== Simulasi bot (200 sesi, maks. 40 pasien; termasuk tatalaksana) ===');
 console.log(`${pad('Skill', 8)}${pad('Akurasi', 10)}${pad('Skor rata2', 12)}${pad('Game over', 12)}${pad('Median pasien', 16)}Reputasi akhir rata-rata`);
 for (const [skill, accuracy] of [
   [0.2, 1 / content.diseases.length],
@@ -36,7 +39,7 @@ for (const [skill, accuracy] of [
   [0.9, 0.9],
   [1, 1],
 ] as const) {
-  const r = simulateBot(content, cfg, { skill, accuracy, runs: 200, maxPatients: 40, seed: 1 });
+  const r = simulateBot(content, cfg, { skill, accuracy, runs: 200, maxPatients: 40, seed: 1, osce });
   console.log(
     `${pad(skill, 8)}${pad(Math.round(accuracy * 100) + '%', 10)}${pad(r.averageScore.toFixed(1), 12)}${pad(Math.round(r.gameOverRate * 100) + '%', 12)}${pad(r.medianPatientsToGameOver ?? '-', 16)}${r.averageFinalReputation.toFixed(1)}`,
   );
