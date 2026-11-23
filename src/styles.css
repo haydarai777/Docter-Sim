@@ -703,15 +703,27 @@ h3 {
   display: grid;
   place-items: center;
   padding: 1rem;
+  /* Cadangan: bila browser tidak mendukung dvh, latar tetap bisa digulir. */
+  overflow-y: auto;
   z-index: 10;
 }
+/* Dialog tidak pernah lebih tinggi dari layar: judul & tombol tetap terlihat, isi yang digulir
+   (sebelumnya dialog konfirmasi dengan isi panjang mendorong tombol "Ya, selesaikan" keluar layar). */
 .modal {
   width: 100%;
   max-width: 420px;
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  display: flex;
+  flex-direction: column;
   background: var(--surface);
   border-radius: 16px;
   padding: 1.25rem;
   box-shadow: var(--shadow);
+}
+.modal__head,
+.modal__actions {
+  flex: none;
 }
 .modal h2 {
   margin: 0;
@@ -1084,6 +1096,8 @@ h3 {
   overflow-y: auto;
   min-height: 0;
   margin-top: 0.5rem;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 .modal__body h3 {
   font-size: 0.95rem;
