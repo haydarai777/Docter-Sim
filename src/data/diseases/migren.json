@@ -1,0 +1,208 @@
+{
+  "id": "migren",
+  "name": "Migren",
+  "aliases": ["Migrain", "Sakit kepala sebelah", "Migren dengan aura", "Migren tanpa aura"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.1,
+  "summary": "Nyeri kepala primer berulang 4–72 jam: unilateral, berdenyut, sedang–berat, diperberat aktivitas, disertai mual/muntah dan/atau fotofobia & fonofobia. Sebagian dengan aura visual (kilatan, zig-zag) 5–60 menit sebelum nyeri. Pencetus: haid, kurang tidur, stres, makanan tertentu, telat makan. Perempuan 3:1. Neurologis normal di luar serangan.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 4 },
+      { "min": 31, "max": 50, "weight": 4 },
+      { "min": 51, "max": 60, "weight": 1 }
+    ],
+    "maleRatio": 0.25
+  },
+  "traits": [
+    { "id": "dengan_aura", "probability": 0.3 },
+    { "id": "pencetus_haid", "probability": 0.5, "when": { "sex": "female", "ageMax": 50 } },
+    { "id": "riwayat_keluarga_migren", "probability": 0.6 },
+    { "id": "sering", "probability": 0.3 }
+  ],
+  "traitLabels": {
+    "dengan_aura": "Migren dengan aura.",
+    "pencetus_haid": "Migren terkait haid.",
+    "riwayat_keluarga_migren": "Riwayat keluarga migren.",
+    "sering": "Serangan ≥ 4 kali/bulan (indikasi preventif)."
+  },
+  "symptoms": [
+    { "id": "aura_visual", "probability": 1, "when": { "traits": ["dengan_aura"] } },
+    { "id": "sakit_kepala_sebelah", "probability": 1 },
+    { "id": "mual_muntah", "probability": 0.8 },
+    { "id": "silau", "probability": 0.85 }
+  ],
+  "chiefComplaint": { "primary": ["sakit_kepala_sebelah"], "extraPool": ["mual_muntah"] },
+  "clueSymptoms": ["mual_muntah", "silau", "aura_visual"],
+  "misattributions": ["darah tinggi", "masuk angin", "maag"],
+  "fears": ["tumor otak", "stroke", "pecah pembuluh darah otak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mulai tadi pagi, Dok, perlahan makin berat dalam satu-dua jam.",
+        "clue": "Onset bertahap (bukan thunderclap)"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Kepala sebelah kanan, Dok, kadang pindah ke kiri di lain waktu.",
+        "clue": "Unilateral (dapat berganti sisi)"
+      }
+    ],
+    "karakter": [{ "text": "Nyut-nyutan, Dok, berdenyut kayak jantung.", "clue": "Berdenyut (pulsatil)" }],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau jalan atau naik tangga makin sakit. Di kamar gelap dan tidur agak mendingan, Dok. Cahaya dan suara bikin tambah sakit.",
+        "reveals": ["silau"],
+        "when": { "symptoms": ["silau"] },
+        "clue": "Diperberat aktivitas; fotofobia & fonofobia"
+      }
+    ],
+    "durasi": [{ "text": "Biasanya sehari, Dok, kadang sampai dua hari.", "clue": "Durasi 4–72 jam" }],
+    "pola": [
+      {
+        "text": "Sering kambuh menjelang haid, Dok.",
+        "when": { "traits": ["pencetus_haid"] },
+        "clue": "Terkait siklus haid"
+      },
+      {
+        "text": "Kambuh kalau kurang tidur atau telat makan, Dok.",
+        "when": { "notTraits": ["pencetus_haid"] },
+        "clue": "Dipicu kurang tidur/telat makan"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Sejak SMA sering begini, Dok, sebulan bisa empat-lima kali.",
+        "when": { "traits": ["sering"] },
+        "clue": "Berulang sejak muda, sering"
+      },
+      {
+        "text": "Sejak SMA kambuh-kambuhan, Dok, sebulan sekali.",
+        "when": { "notTraits": ["sering"] },
+        "clue": "Berulang sejak muda"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Ibu saya juga sering sakit kepala sebelah, Dok.",
+        "when": { "traits": ["riwayat_keluarga_migren"] },
+        "clue": "Riwayat keluarga migren"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Sebelum sakit kepala biasanya saya lihat kilatan cahaya zig-zag sekitar dua puluh menit, Dok, lalu hilang.",
+        "reveals": ["aura_visual"],
+        "when": { "traits": ["dengan_aura"], "symptoms": ["aura_visual"] },
+        "clue": "Aura visual reversibel sebelum nyeri"
+      },
+      {
+        "text": "Sakitnya datang begitu saja, Dok, nggak ada tanda-tanda sebelumnya.",
+        "when": { "notTraits": ["dengan_aura"] },
+        "clue": "Tanpa aura"
+      }
+    ]
+  },
+  "findings": [{ "tool": "keadaan_umum", "param": "kesan_sakit", "values": ["Tampak kesakitan, menghindari cahaya"] }],
+  "differentials": [
+    {
+      "id": "stroke",
+      "howToDistinguish": "Perdarahan subaraknoid/stroke: nyeri kepala mendadak terhebat (thunderclap), defisit neurologis, kaku kuduk — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["saraf_kranial", "neurologis"] }
+    },
+    {
+      "id": "tension_headache",
+      "howToDistinguish": "TTH: bilateral, menekan, ringan–sedang, tanpa mual, tidak diperberat aktivitas.",
+      "excludeBy": { "topics": ["lokasi", "karakter"] }
+    },
+    {
+      "id": "glaukoma_akut",
+      "howToDistinguish": "Glaukoma akut: nyeri mata & kepala dengan mata merah, visus turun, halo.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "tumor_otak",
+      "howToDistinguish": "Lesi intrakranial: progresif, defisit neurologis, papil edema.",
+      "excludeBy": { "tools": ["funduskopi"], "topics": ["episode_sebelumnya"] }
+    }
+  ],
+  "keyFindings": [
+    "Nyeri kepala unilateral berdenyut sedang–berat 4–72 jam",
+    "Mual/muntah, fotofobia & fonofobia, diperberat aktivitas",
+    "Berulang dengan pencetus; neurologis normal"
+  ],
+  "teachingPoints": [
+    "Aura khas: gejala visual positif (kilatan, zig-zag) berkembang bertahap 5–60 menit lalu hilang total — bila mendadak atau menetap, curigai stroke.",
+    "Migren dengan aura: hindari kontrasepsi hormonal kombinasi (risiko stroke)."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)",
+      "IHS. International Classification of Headache Disorders (ICHD-3)"
+    ]
+  },
+  "plan": {
+    "keyTopics": [
+      "onset",
+      "lokasi",
+      "karakter",
+      "pemberat_peringan",
+      "durasi",
+      "pola",
+      "episode_sebelumnya",
+      "riwayat_keluarga",
+      "keluhan_lain"
+    ],
+    "exams": [
+      { "tool": "saraf_kranial", "role": "kunci", "reason": "Menyingkirkan defisit neurologis." },
+      { "tool": "funduskopi", "role": "kunci", "reason": "Menyingkirkan papil edema." },
+      { "tool": "neurologis", "role": "kunci", "reason": "Rangsang meningeal & motorik." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Menyingkirkan glaukoma akut." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Terapi abortif, edukasi pencetus & buku harian nyeri kepala; preventif bila sering."
+    }
+  ],
+  "management": [
+    "Abortif: parasetamol/ibuprofen/asam mefenamat sedini mungkin, ditambah metoklopramid/domperidon bila mual.",
+    "Istirahat di ruangan gelap & tenang.",
+    "Preventif (≥ 4 serangan/bulan): propranolol atau flunarizin.",
+    "Hindari pencetus, catat buku harian nyeri kepala; batasi analgesik ≤ 10 hari/bulan."
+  ],
+  "approach": [
+    "Kriteria ICHD-3: ≥ 5 serangan, 4–72 jam, 2 dari (unilateral, pulsatil, sedang–berat, diperberat aktivitas) + 1 dari (mual/muntah, foto/fonofobia).",
+    "Singkirkan nyeri kepala sekunder (red flag)."
+  ]
+}

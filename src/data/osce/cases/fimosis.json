@@ -1,0 +1,124 @@
+{
+  "disease": "fimosis",
+  "setting": "Puskesmas",
+  "station": "Bedah/Anak — keluhan genital",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid topikal",
+        "role": "utama",
+        "reason": "Melonggarkan cincin preputium (dengan retraksi lembut).",
+        "options": [
+          {
+            "drug": "betametason_krim",
+            "label": "Betametason krim dioles tipis di ujung kulup 2 × sehari selama 4–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 56]
+          },
+          {
+            "drug": "mometason_krim",
+            "label": "Mometason furoat 0,1% krim 1 × sehari selama 4–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [28, 56]
+          }
+        ]
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "pendukung",
+        "reason": "Balanopostitis.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["balanitis"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "retraksi",
+      "text": "Retraksi kulup perlahan tanpa paksaan saat mandi, bersihkan, lalu kembalikan",
+      "kind": "benar"
+    },
+    {
+      "id": "higiene",
+      "text": "Rendam air hangat & jaga kebersihan",
+      "kind": "benar",
+      "when": { "traits": ["balanitis"] }
+    },
+    {
+      "id": "sirkumsisi",
+      "text": "Rencanakan sirkumsisi (fimosis patologis/ISK berulang/gagal terapi)",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["isk_berulang"] }, { "ageMin": 18 }]
+    },
+    {
+      "id": "paksa",
+      "text": "Tarik paksa kulup sampai terbuka penuh",
+      "kind": "berbahaya",
+      "why": "Robekan, parut, & parafimosis."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini fimosis: kulup kepala penis sulit ditarik ke belakang",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Krim dioles tipis di ujung kulup sambil ditarik perlahan setiap hari selama 4–8 minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila kulup tertarik ke belakang & tidak bisa dikembalikan (bengkak), sulit kencing, atau demam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 4 minggu; bila gagal dipertimbangkan sirkumsisi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "bedak",
+      "text": "Taburi kemaluan dengan bedak agar tidak lengket",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak bermanfaat; iritasi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "IAUI. Panduan Urologi Anak"
+    ]
+  }
+}

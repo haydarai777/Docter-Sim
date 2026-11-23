@@ -1,0 +1,238 @@
+{
+  "id": "benda_asing_tht",
+  "name": "Benda asing di hidung atau telinga",
+  "aliases": [
+    "Corpus alienum hidung",
+    "Corpus alienum telinga",
+    "Benda asing hidung",
+    "Benda asing telinga",
+    "Serangga masuk telinga"
+  ],
+  "system": "Telinga, hidung & tenggorok",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Benda asing (biji-bijian, manik-manik, kertas, baterai kancing, serangga) di kavum nasi atau liang telinga, tersering pada anak 2–6 tahun. Hidung: ingus berbau dari SATU lubang hidung bila tidak diketahui. Telinga: penuh, tuli, nyeri; serangga hidup sangat nyeri & bising. Baterai kancing adalah kedaruratan (nekrosis). Ekstraksi dengan alat yang sesuai; jangan irigasi benda organik/baterai.",
+  "presentationDay": [1, 7],
+  "presentationDayByTrait": [{ "trait": "serangga", "range": [1, 1] }],
+  "demographics": {
+    "ageBands": [{ "min": 1, "max": 5, "weight": 5 }, { "min": 6, "max": 9, "weight": 3 }, { "min": 10, "max": 40, "weight": 1 }],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "balita", "weight": 3 }, { "id": "anak_tk", "weight": 3 }],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "di_hidung", "probability": 0.6 },
+    { "id": "serangga", "probability": 0.5, "when": { "notTraits": ["di_hidung"] } },
+    { "id": "organik", "probability": 0.5, "when": { "notTraits": ["serangga"] } },
+    { "id": "baterai", "probability": 0.05, "when": { "notTraits": ["serangga"] } }
+  ],
+  "traitLabels": {
+    "di_hidung": "Benda asing di hidung.",
+    "serangga": "Serangga hidup di liang telinga.",
+    "organik": "Benda organik (biji/kacang) — dapat mengembang.",
+    "baterai": "Baterai kancing — kedaruratan."
+  },
+  "symptoms": [
+    { "id": "ingus_satu_sisi", "probability": 0.6, "when": { "traits": ["di_hidung"], "dayMin": 2 } },
+    { "id": "hidung_tersumbat", "probability": 0.5, "when": { "traits": ["di_hidung"] } },
+    { "id": "telinga_penuh", "probability": 0.7, "when": { "notTraits": ["di_hidung"] } },
+    { "id": "nyeri_telinga", "probability": 1, "when": { "traits": ["serangga"] } },
+    { "id": "nyeri_telinga", "probability": 0.3, "when": { "notTraits": ["di_hidung"] } },
+    { "id": "pendengaran_turun", "probability": 0.5, "when": { "notTraits": ["di_hidung"] } },
+    { "id": "rewel", "probability": 0.7, "when": { "ageMax": 4 } },
+    { "id": "benda_masuk", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["benda_masuk"], "extraPool": ["ingus_satu_sisi", "telinga_penuh"] },
+  "clueSymptoms": ["ingus_satu_sisi", "hidung_tersumbat", "telinga_penuh", "nyeri_telinga", "pendengaran_turun", "rewel"],
+  "misattributions": ["pilek biasa", "kotoran telinga"],
+  "fears": ["masuk ke paru-paru", "masuk ke otak"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu, Dok, kakaknya lihat dia masukin biji ke hidung.",
+        "when": { "traits": ["di_hidung", "organik"] },
+        "clue": "Kejadian disaksikan (hidung)"
+      },
+      {
+        "text": "Katanya tadi masukin manik-manik ke hidung, Dok.",
+        "when": { "traits": ["di_hidung"], "notTraits": ["organik"] },
+        "clue": "Kejadian disaksikan (hidung)"
+      },
+      {
+        "text": "Tadi malam waktu tidur ada yang masuk ke telinga, Dok, kayak serangga, bunyi kresek-kresek.",
+        "when": { "traits": ["serangga"] },
+        "clue": "Serangga masuk telinga saat tidur"
+      },
+      {
+        "text": "{LamaSakit} lalu waktu main, dia masukin manik-manik ke telinga, Dok.",
+        "when": { "notTraits": ["di_hidung", "serangga"] },
+        "clue": "Benda dimasukkan ke telinga"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Dari satu lubang hidung keluar ingus bau, Dok, yang sebelah bersih.",
+        "reveals": ["ingus_satu_sisi"],
+        "when": { "traits": ["di_hidung"], "symptoms": ["ingus_satu_sisi"] },
+        "clue": "Rinore unilateral berbau (khas benda asing hidung)"
+      },
+      {
+        "text": "Sakit sekali, Dok, kayak ada yang bergerak di dalam.",
+        "when": { "traits": ["serangga"] },
+        "clue": "Nyeri & sensasi bergerak (serangga hidup)"
+      }
+    ],
+    "keparahan": [{ "text": "Napasnya biasa, Dok, nggak batuk atau sesak.", "clue": "Tanpa batuk/sesak (bukan aspirasi)" }],
+    "riwayat_obat": [
+      {
+        "text": "Sudah coba dikorek pakai lidi, Dok, malah makin masuk.",
+        "clue": "Upaya mengeluarkan sendiri (risiko benda terdorong)"
+      }
+    ],
+    "lokasi": [
+      { "text": "Di lubang hidung kanan, Dok.", "when": { "traits": ["di_hidung"] } },
+      { "text": "Di telinga kanan, Dok.", "when": { "notTraits": ["di_hidung"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "kavum_nasi",
+      "when": { "traits": ["di_hidung", "organik"] },
+      "diagnostic": true,
+      "values": ["Tampak benda asing coklat (biji) di kavum nasi kanan anterior, mukosa sekitar edema"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "kavum_nasi",
+      "when": { "traits": ["di_hidung"], "notTraits": ["organik", "baterai"] },
+      "diagnostic": true,
+      "values": ["Tampak benda asing manik-manik plastik di kavum nasi kanan"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "kavum_nasi",
+      "when": { "traits": ["di_hidung", "baterai"] },
+      "diagnostic": true,
+      "values": ["Tampak benda bulat logam (baterai kancing) di kavum nasi kanan, mukosa sekitar kehitaman"]
+    },
+    {
+      "tool": "pemeriksaan_hidung",
+      "param": "sekret_hidung",
+      "when": { "symptoms": ["ingus_satu_sisi"] },
+      "values": ["Mukopurulen berbau dari kavum nasi kanan"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "traits": ["serangga"] },
+      "diagnostic": true,
+      "values": ["Tampak serangga (kecoa kecil) bergerak di liang telinga kanan"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "liang_telinga",
+      "when": { "notTraits": ["di_hidung", "serangga"] },
+      "diagnostic": true,
+      "values": ["Tampak benda asing manik-manik plastik di liang telinga kanan"]
+    },
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "membran_timpani",
+      "when": { "notTraits": ["di_hidung"] },
+      "values": ["Telinga kanan tidak dapat dinilai (tertutup benda asing)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "aspirasi_benda_asing",
+      "howToDistinguish": "Aspirasi: tersedak, batuk mendadak, sesak, stridor/mengi unilateral — kedaruratan.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "sinusitis",
+      "howToDistinguish": "Rinosinusitis: sekret purulen bilateral, nyeri wajah, tanpa benda asing.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["pemeriksaan_hidung"] }
+    },
+    {
+      "id": "otitis_eksterna",
+      "howToDistinguish": "Otitis eksterna: nyeri tarik aurikula, liang edema tanpa benda asing.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "keyFindings": [
+    "Riwayat memasukkan benda / serangga masuk",
+    "Rinore unilateral berbau (hidung) atau telinga penuh/nyeri",
+    "Benda asing tampak pada rinoskopi/otoskopi"
+  ],
+  "teachingPoints": [
+    "Ingus berbau dari SATU lubang hidung pada anak = benda asing sampai terbukti lain.",
+    "Baterai kancing di hidung/telinga adalah kedaruratan — rujuk segera.",
+    "Benda organik jangan diirigasi (mengembang); serangga hidup dimatikan dulu dengan minyak mineral/lidokain."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis Telinga Hidung Tenggorok-Bedah Kepala Leher"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "keparahan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_hidung",
+        "role": "kunci",
+        "when": { "traits": ["di_hidung"] },
+        "reason": "Rinoskopi anterior mencari benda asing."
+      },
+      {
+        "tool": "pemeriksaan_telinga",
+        "role": "kunci",
+        "when": { "notTraits": ["di_hidung"] },
+        "reason": "Otoskopi mencari benda asing."
+      },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Menyingkirkan aspirasi ke saluran napas." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    { "value": "rujuk_segera", "reason": "Baterai kancing: rujuk segera.", "when": { "traits": ["baterai"] } },
+    {
+      "value": "rawat_jalan",
+      "reason": "Ekstraksi di klinik dengan alat sesuai (pengait/forsep), fiksasi anak; rujuk bila gagal atau sulit.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Fiksasi kepala anak dengan aman (dipangku/dibedong).",
+    "Hidung: dekongestan topikal, ekstraksi dengan pengait/forsep aligator; teknik tiupan orang tua ('mother's kiss') untuk benda di anterior.",
+    "Telinga: serangga dimatikan dulu dengan minyak mineral, lalu ekstraksi/irigasi; benda organik jangan diirigasi.",
+    "Periksa kedua lubang hidung & telinga (benda asing multipel); rujuk bila gagal, benda di posterior, atau baterai."
+  ],
+  "approach": ["Pastikan tidak ada tanda aspirasi.", "Lokasi & jenis benda menentukan teknik ekstraksi."]
+}

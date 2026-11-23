@@ -1,0 +1,194 @@
+{
+  "disease": "demam_tifoid",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam akut",
+  "therapy": {
+    "items": [
+      {
+        "id": "antibiotik",
+        "label": "Antibiotik tifoid",
+        "role": "utama",
+        "reason": "Eradikasi Salmonella typhi; pilihan lini pertama di FKTP.",
+        "options": [
+          {
+            "drug": "kloramfenikol",
+            "label": "Kloramfenikol 4 × 500 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [10, 14]
+          },
+          {
+            "drug": "tiamfenikol",
+            "label": "Tiamfenikol 4 × 500 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 14]
+          },
+          {
+            "drug": "kotrimoksazol",
+            "label": "Kotrimoksazol 2 × 960 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "dose": [960, 960],
+            "timesPerDay": [2, 2],
+            "days": [10, 14]
+          },
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 3–4 × 1000 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "dose": [1000, 1000],
+            "timesPerDay": [3, 4],
+            "days": [10, 14]
+          },
+          {
+            "drug": "siprofloksasin",
+            "label": "Siprofloksasin 2 × 500 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "levofloksasin",
+            "label": "Levofloksasin 1 × 500 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          },
+          {
+            "drug": "sefiksim",
+            "label": "Sefiksim 2 × 100–200 mg selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [100, 200],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          }
+        ]
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 500–1000 mg 3–4 × sehari bila demam/nyeri (maks. 4 g/hari)",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 15 }
+      },
+      {
+        "id": "antipiretik_anak",
+        "label": "Antipiretik-analgesik (anak)",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam",
+            "schedules": ["prn", "rutin"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMax": 14 }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid hanya untuk tifoid berat (ensefalopati/syok) di rumah sakit.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Pilih satu antibiotik sesuai ketersediaan & riwayat alergi pasien. Komplikasi (perdarahan/perforasi usus) → rujuk segera."
+  },
+  "nonPharm": [
+    { "id": "tirah", "text": "Tirah baring sampai demam turun", "kind": "benar" },
+    { "id": "diet", "text": "Diet lunak mudah dicerna (bubur/nasi tim), porsi kecil sering", "kind": "benar" },
+    { "id": "cairan", "text": "Cukup cairan 2–2,5 L/hari", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Puasakan, pasang infus, dan rujuk segera ke rumah sakit",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["perforasi"] }, { "traits": ["perdarahan_usus"] }],
+      "why": "Curiga perforasi/perdarahan usus."
+    },
+    { "id": "olahraga", "text": "Olahraga ringan agar keringat keluar dan demam cepat turun", "kind": "pengecoh" },
+    {
+      "id": "pencahar",
+      "text": "Beri obat pencahar bila sulit BAB",
+      "kind": "berbahaya",
+      "why": "Pencahar/enema berisiko memicu perforasi usus pada tifoid."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini demam tifoid, infeksi bakteri dari makanan/minuman yang tercemar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antibiotik harus diminum sampai habis walau demam sudah turun",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Laporkan bila muncul ruam/gatal atau keluhan baru setelah minum obat",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke RS bila nyeri perut hebat, BAB hitam/berdarah, muntah terus, atau mengantuk/bingung",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 3 hari lagi atau lebih cepat bila demam tidak turun",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Cuci tangan pakai sabun, makan & minum yang dimasak matang, hindari jajan sembarangan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Hentikan antibiotik bila demam sudah turun agar tidak kebal obat",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Antibiotik yang tidak tuntas meningkatkan kekambuhan & karier."
+    },
+    {
+      "id": "udara",
+      "text": "Tifoid menular lewat udara sehingga pasien harus diisolasi",
+      "kind": "pengecoh",
+      "category": "diagnosis"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Demam Tifoid",
+      "Kemenkes RI. KMK Pedoman Nasional Pelayanan Kedokteran Tata Laksana Demam Tifoid"
+    ]
+  }
+}

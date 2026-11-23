@@ -1,0 +1,62 @@
+{
+  "disease": "astigmatisma",
+  "setting": "Puskesmas",
+  "station": "Mata — gangguan penglihatan",
+  "therapy": { "items": [], "note": "Tatalaksana dengan kacamata koreksi — tidak memerlukan obat." },
+  "nonPharm": [
+    {
+      "id": "kacamata",
+      "text": "Resepkan kacamata dengan koreksi silinder (dan sferis bila perlu) sesuai hasil uji",
+      "kind": "benar"
+    },
+    { "id": "istirahat", "text": "Istirahatkan mata saat kerja dekat lama dengan pencahayaan cukup", "kind": "benar" },
+    {
+      "id": "tetes_herbal",
+      "text": "Tetes mata herbal/vitamin untuk 'menyembuhkan' kelainan refraksi",
+      "kind": "berbahaya",
+      "why": "Tidak memperbaiki refraksi; risiko iritasi/infeksi."
+    },
+    {
+      "id": "salah",
+      "text": "Resepkan lensa sferis saja tanpa silinder",
+      "kind": "pengecoh",
+      "why": "Koreksi tidak tepat memicu astenopia/sakit kepala."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Penglihatan kabur karena kelainan pembiasan cahaya pada mata (bukan penyakit berbahaya)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kacamata dipakai sesuai anjuran; ukuran dapat berubah sehingga perlu diperiksa ulang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila penglihatan turun mendadak, nyeri mata, kilatan cahaya, atau bayangan hitam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Periksa mata ulang 6–12 bulan sekali", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "lepas",
+      "text": "Sering melepas kacamata agar mata 'terlatih' dan minusnya berkurang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Mitos; tidak menurunkan ukuran."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

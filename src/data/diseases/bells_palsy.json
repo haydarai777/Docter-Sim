@@ -1,0 +1,209 @@
+{
+  "id": "bells_palsy",
+  "name": "Bell's palsy",
+  "aliases": ["Kelumpuhan saraf wajah perifer", "Paresis N. VII perifer", "Mulut mencong"],
+  "system": "Kepala & saraf",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.8,
+  "summary": "Kelumpuhan akut N. VII tipe perifer idiopatik (diduga reaktivasi HSV), berkembang < 72 jam: seluruh otot wajah sesisi lemah TERMASUK dahi, mata sulit menutup (lagoftalmus, fenomena Bell), sudut mulut turun, kadang nyeri belakang telinga, hiperakusis, gangguan pengecapan. Bedakan dengan stroke (paresis sentral: dahi tetap bisa dikerutkan + kelemahan anggota gerak). Terapi: prednison dalam 72 jam + perlindungan mata.",
+  "presentationDay": [1, 3],
+  "demographics": {
+    "ageBands": [
+      { "min": 15, "max": 30, "weight": 3 },
+      { "min": 31, "max": 50, "weight": 3 },
+      { "min": 51, "max": 70, "weight": 2 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "ojek_online", "weight": 2 }, { "id": "pegawai_kantor", "weight": 1 }, { "id": "sopir_truk", "weight": 1 }],
+    "occupationBias": 0.2
+  },
+  "traits": [
+    { "id": "nyeri_retroaurikula", "probability": 0.5 },
+    { "id": "gangguan_kecap", "probability": 0.5 },
+    { "id": "paparan_angin", "probability": 0.4 },
+    { "id": "dm_curiga", "probability": 0.1, "when": { "ageMin": 40 } }
+  ],
+  "traitLabels": {
+    "nyeri_retroaurikula": "Nyeri di belakang telinga.",
+    "gangguan_kecap": "Gangguan pengecapan 2/3 depan lidah.",
+    "paparan_angin": "Riwayat terpapar angin/AC (pencetus yang diyakini)",
+    "dm_curiga": "Faktor risiko diabetes."
+  },
+  "symptoms": [
+    { "id": "nyeri_telinga", "probability": 1, "when": { "traits": ["nyeri_retroaurikula"] } },
+    { "id": "wajah_mencong", "probability": 1 },
+    { "id": "mata_tidak_menutup", "probability": 0.9 },
+    { "id": "mata_berair", "probability": 0.4 },
+    { "id": "mata_kering", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["wajah_mencong"], "extraPool": ["mata_tidak_menutup"] },
+  "clueSymptoms": ["mata_tidak_menutup", "mata_berair", "nyeri_telinga", "mata_kering"],
+  "misattributions": ["kena angin", "stroke ringan", "kena guna-guna"],
+  "fears": ["stroke", "lumpuh selamanya"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu bangun tidur, Dok, waktu kumur air keluar dari sudut mulut, mulut mencong ke kiri.",
+        "clue": "Onset akut, disadari pagi hari"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Wajah sebelah kanan, Dok. Dahi kanan juga nggak bisa dikerutkan.",
+        "clue": "Seluruh wajah sesisi termasuk dahi (perifer)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Mata kanan nggak bisa merem rapat, Dok, perih dan berair.",
+        "reveals": ["mata_tidak_menutup"],
+        "when": { "symptoms": ["mata_tidak_menutup"] },
+        "clue": "Lagoftalmus"
+      },
+      { "text": "Makanan suka nyelip di pipi kanan, Dok." }
+    ],
+    "keparahan": [
+      {
+        "text": "Tangan dan kaki saya kuat, Dok, bicara juga jelas, nggak pelo.",
+        "clue": "Tanpa kelemahan anggota gerak & disartria (bukan stroke)"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kemarin malam naik motor jauh kena angin malam, Dok.",
+        "when": { "traits": ["paparan_angin"] },
+        "clue": "Paparan angin (diyakini pencetus)"
+      },
+      { "text": "Nggak ada apa-apa sebelumnya, Dok.", "when": { "notTraits": ["paparan_angin"] } }
+    ],
+    "progresi": [
+      {
+        "text": "Kemarin sore belakang telinga kanan sakit, Dok, terus pagi ini mencong.",
+        "reveals": ["nyeri_telinga"],
+        "when": { "traits": ["nyeri_retroaurikula"], "symptoms": ["nyeri_telinga"] },
+        "clue": "Didahului nyeri retroaurikula"
+      },
+      { "text": "Sejak pagi sama saja, Dok.", "when": { "notTraits": ["nyeri_retroaurikula"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Saya nggak punya darah tinggi, Dok. Telinga juga nggak ada bintil-bintil.",
+        "clue": "Tanpa riwayat hipertensi & tanpa vesikel telinga"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_telinga",
+      "param": "aurikula",
+      "when": { "traits": ["nyeri_retroaurikula"] },
+      "values": ["Bentuk normal, tidak ada vesikel, nyeri tekan retroaurikula ringan kanan"]
+    },
+    {
+      "tool": "saraf_kranial",
+      "param": "n_fasialis",
+      "diagnostic": true,
+      "values": [
+        "Paresis N. VII perifer kanan: dahi tidak dapat dikerutkan, lagoftalmus 3 mm dengan fenomena Bell (+), sudut mulut kanan tertinggal, plika nasolabialis kanan mendatar"
+      ]
+    },
+    {
+      "tool": "saraf_kranial",
+      "param": "n_trigeminus",
+      "probability": 0.4,
+      "values": ["Sensibilitas wajah normal, refleks kornea kanan menurun (komponen motorik VII)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "probability": 0.3,
+      "values": ["Uji fluoresein: pungtata halus di kornea inferior kanan (paparan)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "stroke",
+      "howToDistinguish": "Stroke: paresis N. VII SENTRAL (dahi masih dapat dikerutkan) disertai hemiparesis/disartria — rujuk segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["neurologis", "saraf_kranial"] }
+    },
+    {
+      "id": "ramsay_hunt",
+      "howToDistinguish": "Ramsay Hunt: vesikel di daun/liang telinga, nyeri telinga hebat, kadang tuli/vertigo — perlu asiklovir.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    },
+    {
+      "id": "otitis_media_akut",
+      "howToDistinguish": "Paresis fasialis akibat OMA/kolesteatoma: membran timpani abnormal, otore.",
+      "excludeBy": { "tools": ["pemeriksaan_telinga"] }
+    }
+  ],
+  "keyFindings": [
+    "Kelemahan seluruh otot wajah sesisi termasuk dahi, onset < 72 jam",
+    "Lagoftalmus dengan fenomena Bell",
+    "Motorik anggota gerak & saraf kranial lain normal"
+  ],
+  "teachingPoints": [
+    "Kunci membedakan perifer vs sentral: kemampuan mengerutkan dahi (dahi mendapat persarafan bilateral pada lesi sentral).",
+    "Lindungi kornea: air mata buatan siang, salep & plester mata saat tidur."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "keparahan", "progresi", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "saraf_kranial",
+        "role": "kunci",
+        "reason": "Tipe paresis N. VII (perifer vs sentral) & saraf kranial lain."
+      },
+      { "tool": "neurologis", "role": "kunci", "reason": "Motorik anggota gerak (singkirkan stroke)." },
+      { "tool": "pemeriksaan_telinga", "role": "kunci", "reason": "Vesikel (Ramsay Hunt) & otitis media." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Kerusakan kornea akibat lagoftalmus." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "gula_darah", "reason": "Faktor risiko diabetes sebelum steroid." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Prednison dalam 72 jam, perlindungan mata, latihan otot wajah; kontrol 1–2 minggu; rujuk bila atipikal/tidak membaik 3 minggu.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Prednison 1 mg/kg/hari (maks. 60 mg) 5 hari lalu tapering, idealnya < 72 jam onset; asiklovir dapat dipertimbangkan pada kasus berat.",
+    "Perlindungan mata: air mata buatan, salep mata, plester/kacamata saat tidur.",
+    "Latihan otot wajah di depan cermin, pijat, fisioterapi.",
+    "Edukasi: sebagian besar pulih 3–6 bulan; rujuk bila tidak membaik atau ada defisit lain."
+  ],
+  "approach": ["Tentukan perifer vs sentral (dahi), periksa saraf kranial lain & motorik.", "Periksa telinga (vesikel) dan kornea."]
+}

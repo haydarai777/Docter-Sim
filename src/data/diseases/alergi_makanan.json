@@ -1,0 +1,183 @@
+{
+  "id": "alergi_makanan",
+  "name": "Alergi makanan",
+  "aliases": ["Alergi seafood", "Alergi udang", "Alergi kacang", "Alergi susu sapi", "Food allergy"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Reaksi imunologis (umumnya IgE) terhadap protein makanan (udang/kerang, ikan, kacang, telur, susu sapi): menit–2 jam setelah makan timbul urtikaria, gatal, angioedema bibir/kelopak, kadang mual-muntah, nyeri perut, diare. Berbeda dari anafilaksis bila TIDAK ada gangguan napas atau sirkulasi. Terapi: hindari alergen, antihistamin, edukasi tanda anafilaksis.",
+  "presentationDay": [1, 1],
+  "demographics": {
+    "ageBands": [{ "min": 1, "max": 9, "weight": 3 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 2 }],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "seafood", "probability": 0.6 },
+    { "id": "susu_sapi", "probability": 0.5, "when": { "ageMax": 3 } },
+    { "id": "atopi", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "seafood": "Pencetus makanan laut.",
+    "susu_sapi": "Alergi protein susu sapi.",
+    "atopi": "Riwayat atopi (eksim, asma, rinitis)."
+  },
+  "symptoms": [
+    { "id": "biduran", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 0.8 },
+    { "id": "bengkak_bibir_mata", "probability": 0.5 },
+    { "id": "mual_muntah", "probability": 0.4 },
+    { "id": "nyeri_perut", "probability": 0.3 },
+    { "id": "diare", "probability": 0.25 }
+  ],
+  "chiefComplaint": { "primary": ["biduran"], "extraPool": ["bengkak_bibir_mata", "gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "bengkak_bibir_mata", "mual_muntah", "nyeri_perut", "diare"],
+  "misattributions": ["keracunan", "biduran karena kotor", "masuk angin"],
+  "fears": ["alergi seumur hidup", "tidak bisa napas"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Satu jam lalu, Dok, habis makan udang di acara keluarga langsung bentol-bentol gatal.",
+        "when": { "traits": ["seafood"] },
+        "clue": "Onset < 2 jam setelah makanan laut"
+      },
+      {
+        "text": "Satu jam lalu, Dok, habis minum susu formula baru, langsung bentol dan muntah.",
+        "when": { "traits": ["susu_sapi"] },
+        "clue": "Onset setelah susu sapi"
+      },
+      {
+        "text": "Satu jam lalu, Dok, habis makan kue kacang, langsung bentol-bentol.",
+        "when": { "notTraits": ["seafood", "susu_sapi"] },
+        "clue": "Onset setelah makan kacang"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Napas biasa, Dok, nggak sesak, nggak pusing mau pingsan.",
+        "clue": "Tanpa gangguan napas/sirkulasi (bukan anafilaksis)"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Dulu juga pernah gatal-gatal habis makan yang sama, Dok.",
+        "clue": "Reaksi berulang terhadap makanan yang sama"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Saya/ dia punya eksim waktu kecil, ibunya asma, Dok.",
+        "when": { "traits": ["atopi"] },
+        "clue": "Riwayat atopi"
+      },
+      { "text": "Di keluarga nggak ada yang alergi, Dok.", "when": { "notTraits": ["atopi"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Belum minum obat apa pun hari ini, Dok, nggak ada obat baru juga.",
+        "clue": "Tanpa obat baru (bukan erupsi obat)"
+      }
+    ],
+    "lokasi": [{ "text": "Bentolnya di muka, leher, badan, sampai tangan kaki, Dok." }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "symptoms": ["bengkak_bibir_mata"] },
+      "diagnostic": true,
+      "values": ["Urtika multipel dengan angioedema bibir & kelopak mata"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Wajah, leher, badan, ekstremitas"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Urtika eritematosa multipel berbagai ukuran, dermografisme (+)"]
+    },
+    { "tool": "tanda_vital", "param": "td_sistolik", "range": [110, 128] },
+    { "tool": "tanda_vital", "param": "spo2", "range": [97, 99] }
+  ],
+  "differentials": [
+    {
+      "id": "reaksi_anafilaktik",
+      "howToDistinguish": "Anafilaksis: urtikaria/angioedema DISERTAI sesak, mengi, stridor, hipotensi, atau muntah hebat — adrenalin IM segera.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "intoleransi_makanan",
+      "howToDistinguish": "Intoleransi makanan: gejala GI saja tanpa urtikaria/angioedema.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "keracunan_makanan",
+      "howToDistinguish": "Keracunan makanan: muntah-diare pada banyak orang yang makan makanan yang sama, tanpa urtikaria.",
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["riwayat_keluarga"] }
+    },
+    {
+      "id": "urtikaria_akut",
+      "howToDistinguish": "Urtikaria akut karena pencetus lain (infeksi, obat, gigitan) — telusuri riwayat.",
+      "excludeBy": { "topics": ["onset", "riwayat_obat"] }
+    }
+  ],
+  "keyFindings": [
+    "Urtikaria ± angioedema menit–2 jam setelah makanan tertentu",
+    "Berulang pada makanan yang sama, sering ada atopi",
+    "Tanpa gangguan napas/sirkulasi"
+  ],
+  "teachingPoints": [
+    "Setiap pasien alergi makanan diajari tanda anafilaksis dan kapan segera ke IGD; tes alergi/ adrenalin autoinjektor bila riwayat reaksi berat."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "IDAI. Rekomendasi Diagnosis dan Tata Laksana Alergi Susu Sapi"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "keparahan", "episode_sebelumnya", "riwayat_keluarga", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Urtikaria & angioedema." },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Mengi (singkirkan anafilaksis)." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Edema faring/uvula." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Antihistamin, hindari alergen, edukasi tanda anafilaksis; rujuk tes alergi bila perlu."
+    }
+  ],
+  "management": [
+    "Hentikan & hindari makanan pencetus; baca label makanan.",
+    "Antihistamin H1 (setirizin/loratadin; CTM) beberapa hari; kortikosteroid singkat bila angioedema luas.",
+    "Alergi susu sapi pada bayi: lanjutkan ASI dengan ibu diet bebas susu sapi atau formula terhidrolisat ekstensif.",
+    "Edukasi tanda anafilaksis; rujuk konsultan alergi."
+  ],
+  "approach": ["Hubungkan onset dengan makanan; nilai napas & sirkulasi.", "Bedakan dari anafilaksis, intoleransi, dan keracunan."]
+}

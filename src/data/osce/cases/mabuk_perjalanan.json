@@ -1,0 +1,101 @@
+{
+  "disease": "mabuk_perjalanan",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan umum",
+  "therapy": {
+    "items": [
+      {
+        "id": "antimabuk",
+        "label": "Antihistamin antimabuk",
+        "role": "utama",
+        "reason": "Diminum 30–60 menit sebelum berangkat.",
+        "options": [
+          {
+            "drug": "dimenhidrinat",
+            "label": "Dimenhidrinat 50 mg 30–60 menit sebelum berangkat, dapat diulang tiap 4–6 jam",
+            "schedules": ["tunggal", "prn"],
+            "dose": [50, 100],
+            "timesPerDay": [1, 4],
+            "days": [1, 3]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antimabuk_anak",
+        "label": "Antihistamin antimabuk (anak)",
+        "role": "utama",
+        "reason": "Diminum 30–60 menit sebelum berangkat.",
+        "options": [
+          {
+            "drug": "dimenhidrinat",
+            "label": "Dimenhidrinat 12,5–25 mg (¼–½ tablet) 30–60 menit sebelum berangkat",
+            "schedules": ["tunggal", "prn"],
+            "dose": [12.5, 25],
+            "timesPerDay": [1, 3],
+            "days": [1, 3]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "posisi", "text": "Duduk di depan/tengah kendaraan dan pandang horizon", "kind": "benar" },
+    { "id": "hp", "text": "Jangan membaca atau bermain HP selama perjalanan", "kind": "benar" },
+    {
+      "id": "makan",
+      "text": "Makan ringan sebelum berangkat, hindari makanan berlemak; ventilasi baik",
+      "kind": "benar"
+    },
+    {
+      "id": "alkohol",
+      "text": "Minum obat antimabuk bersama alkohol agar cepat tidur",
+      "kind": "berbahaya",
+      "why": "Depresi SSP berlebihan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Mabuk perjalanan karena ketidaksesuaian sinyal keseimbangan & penglihatan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Obat diminum 30–60 menit SEBELUM berangkat", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "es",
+      "text": "Obat dapat menyebabkan kantuk — jangan menyetir/mengoperasikan mesin",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Periksakan bila pusing berputar/muntah terjadi tanpa perjalanan atau disertai sakit kepala hebat/lemah anggota gerak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila keluhan tidak membaik dengan pencegahan",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "saat_muntah",
+      "text": "Obat paling baik diminum setelah mulai muntah",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Kurang efektif bila diminum setelah gejala muncul."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

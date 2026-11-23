@@ -1,0 +1,111 @@
+{
+  "disease": "gerd",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — nyeri dada/ulu hati",
+  "therapy": {
+    "items": [
+      {
+        "id": "ppi",
+        "label": "Penekan asam (PPI)",
+        "role": "utama",
+        "reason": "Terapi empiris GERD: PPI 4–8 minggu (uji PPI).",
+        "options": [
+          {
+            "drug": "omeprazol",
+            "label": "Omeprazol 20 mg 1–2 × sehari 30 menit sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 2],
+            "days": [14, 56]
+          },
+          {
+            "drug": "lansoprazol",
+            "label": "Lansoprazol 30 mg 1 × sehari sebelum makan, 2–8 minggu",
+            "schedules": ["rutin"],
+            "dose": [30, 30],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "groups": ["oains"], "reason": "OAINS memperberat iritasi mukosa dan refluks.", "severity": "salah" },
+      { "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }
+    ],
+    "note": "Antasida boleh sebagai tambahan simtomatik. Tanda alarm (disfagia, BB turun, perdarahan, anemia) → rujuk endoskopi."
+  },
+  "nonPharm": [
+    { "id": "kepala", "text": "Tinggikan kepala tempat tidur 15–20 cm", "kind": "benar" },
+    { "id": "berbaring", "text": "Jangan berbaring 2–3 jam setelah makan", "kind": "benar" },
+    { "id": "porsi", "text": "Makan porsi kecil; kurangi kopi, cokelat, makanan berlemak & pedas", "kind": "benar" },
+    { "id": "bb", "text": "Turunkan berat badan", "kind": "benar", "when": { "traits": ["obesitas"] } },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["perokok"] } },
+    {
+      "id": "rujuk",
+      "text": "Rujuk ke spesialis penyakit dalam untuk endoskopi",
+      "kind": "benar",
+      "why": "Ada tanda alarm.",
+      "when": { "traits": ["alarm"] }
+    },
+    {
+      "id": "susu",
+      "text": "Minum segelas susu sebelum tidur untuk menetralkan asam",
+      "kind": "pengecoh",
+      "why": "Susu justru merangsang sekresi asam."
+    },
+    {
+      "id": "tidur",
+      "text": "Langsung tidur setelah makan malam agar lambung beristirahat",
+      "kind": "berbahaya",
+      "why": "Posisi berbaring setelah makan memperberat refluks."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Asam lambung naik ke kerongkongan karena katup di ujung bawah kerongkongan melemah",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum omeprazol 30 menit sebelum makan pagi setiap hari selama 4–8 minggu; jangan berhenti sendiri",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sulit/nyeri menelan, muntah darah, BAB hitam, berat badan turun, atau nyeri dada saat aktivitas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–4 minggu untuk menilai respons pengobatan",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Pertahankan gaya hidup: porsi kecil, tidak langsung berbaring, berat badan ideal",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "jantung",
+      "text": "Semua nyeri dada pasti dari lambung, tidak perlu memikirkan jantung",
+      "kind": "berbahaya",
+      "category": "tanda_bahaya",
+      "why": "Nyeri dada terkait aktivitas harus dievaluasi sebagai jantung."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "PGI. Revisi Konsensus Nasional Penatalaksanaan GERD di Indonesia (2022)",
+      "Kemenkes RI. PPK Fasyankes Primer — Refluks Gastroesofageal"
+    ]
+  }
+}

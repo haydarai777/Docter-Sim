@@ -1,0 +1,115 @@
+{
+  "disease": "askariasis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — cacingan & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "antelmintik",
+        "label": "Antelmintik",
+        "role": "utama",
+        "reason": "Eradikasi Ascaris.",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400]
+          },
+          {
+            "drug": "mebendazol",
+            "label": "Mebendazol 500 mg dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["mebendazol-tab500"],
+            "dose": [500, 500]
+          },
+          {
+            "drug": "pirantel",
+            "label": "Pirantel pamoat 10 mg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["pirantel-tab125"],
+            "dosePerKg": [9, 11]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antelmintik_anak",
+        "label": "Antelmintik (anak)",
+        "role": "utama",
+        "reason": "Eradikasi Ascaris.",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg dosis tunggal (usia 1–2 tahun: 200 mg)",
+            "schedules": ["tunggal"],
+            "forms": ["albendazol-tab400"],
+            "dose": [200, 400]
+          },
+          {
+            "drug": "pirantel",
+            "label": "Pirantel pamoat 10 mg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["pirantel-tab125"],
+            "dosePerKg": [9, 11]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "alas", "text": "Pakai alas kaki & BAB di jamban sehat", "kind": "benar" },
+    { "id": "cuci", "text": "Cuci tangan pakai sabun sebelum makan & potong kuku", "kind": "benar" },
+    { "id": "berkala", "text": "Obat cacing berkala tiap 6 bulan sesuai program", "kind": "benar" },
+    {
+      "id": "bawang",
+      "text": "Ganti obat cacing dengan perasan bawang putih mentah",
+      "kind": "berbahaya",
+      "why": "Tidak membunuh cacing; menunda terapi."
+    },
+    { "id": "gizi", "text": "Perbaikan gizi", "kind": "benar", "when": { "traits": ["gizi_kurang"] } },
+    { "id": "rujuk", "text": "Rujuk segera (obstruksi usus)", "kind": "benar", "when": { "traits": ["obstruksi"] } }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini cacingan oleh cacing gelang (Ascaris) dari telur yang tertelan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat cacing diminum sesuai dosis; ulangi sesuai jadwal program",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila perut kembung hebat, muntah terus/muntah cacing, tidak bisa BAB/kentut, atau sangat pucat & sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu (periksa ulang feses/Hb)", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Seluruh anggota keluarga ikut menjaga kebersihan & minum obat cacing berkala",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "sekali",
+      "text": "Sekali minum obat cacing akan kebal seumur hidup",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Reinfeksi sering terjadi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

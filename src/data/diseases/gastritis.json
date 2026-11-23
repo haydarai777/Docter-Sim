@@ -1,0 +1,355 @@
+{
+  "id": "gastritis",
+  "name": "Gastritis akut",
+  "aliases": ["Gastritis", "Radang lambung", "Maag akut", "Gastritis erosif", "Gastropati OAINS"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1,
+  "summary": "Peradangan akut mukosa lambung. Pemicu tersering: obat antinyeri golongan OAINS (termasuk jamu pegal linu yang sering dicampur OAINS/steroid), alkohol, makanan sangat pedas/asam, dan infeksi Helicobacter pylori. Keluhan perih ulu hati yang MUNCUL MENDADAK dalam beberapa hari setelah paparan pemicu, mual-muntah, dan nyeri tekan epigastrium. Gastritis erosif dapat berdarah (muntah darah, BAB hitam, anemia) — tanda bahaya yang harus dirujuk segera.",
+  "presentationDay": [1, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 30, "weight": 3 },
+      { "min": 31, "max": 45, "weight": 4 },
+      { "min": 46, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [
+      { "id": "buruh_pabrik", "weight": 3 },
+      { "id": "pekerja_proyek", "weight": 3 },
+      { "id": "petani", "weight": 2 },
+      { "id": "sopir_truk", "weight": 2 },
+      { "id": "ojek_online", "weight": 1 },
+      { "id": "mahasiswa", "weight": 1 }
+    ],
+    "occupationBias": 0.45
+  },
+  "traits": [
+    { "id": "oains", "probability": 0.45 },
+    { "id": "alkohol", "when": { "sex": "male" }, "probability": 0.2 },
+    { "id": "alkohol", "probability": 0.05 },
+    { "id": "makanan_iritatif", "probability": 0.4 },
+    { "id": "h_pylori", "probability": 0.3 },
+    { "id": "perdarahan_saluran_cerna", "when": { "traits": ["oains"] }, "probability": 0.22 },
+    { "id": "perdarahan_saluran_cerna", "when": { "traits": ["alkohol"] }, "probability": 0.15 },
+    { "id": "perdarahan_saluran_cerna", "probability": 0.05 }
+  ],
+  "traitLabels": {
+    "oains": "Pemicu: obat antinyeri (OAINS) atau jamu pegal linu beberapa hari terakhir.",
+    "alkohol": "Pemicu: minum minuman beralkohol.",
+    "makanan_iritatif": "Pemicu: makanan sangat pedas/asam.",
+    "h_pylori": "Penyebab: infeksi Helicobacter pylori.",
+    "perdarahan_saluran_cerna": "Komplikasi: gastritis erosif dengan perdarahan saluran cerna atas (muntah darah/BAB hitam, anemia)."
+  },
+  "symptoms": [
+    { "id": "nyeri_ulu_hati", "probability": 1 },
+    { "id": "mual_muntah", "probability": 0.8 },
+    { "id": "nafsu_makan_turun", "probability": 0.5 },
+    { "id": "kembung", "probability": 0.35 },
+    { "id": "heartburn", "probability": 0.2 },
+    { "id": "muntah_darah", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 0.55 },
+    { "id": "bab_hitam", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 0.8 },
+    { "id": "lemas", "when": { "traits": ["perdarahan_saluran_cerna"] }, "probability": 1 },
+    { "id": "lemas", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["nyeri_ulu_hati"], "extraPool": ["mual_muntah"] },
+  "clueSymptoms": ["mual_muntah"],
+  "misattributions": ["masuk angin", "maag kambuh", "salah makan", "asam lambung naik"],
+  "fears": ["usus buntu", "penyakit jantung", "tukak lambung"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mendadak, Dok, baru {lamaSakit} ini. Sebelumnya nggak pernah separah ini.",
+        "clue": "Onset akut (beberapa hari)"
+      }
+    ],
+    "lokasi": [{ "text": "Di ulu hati, Dok, perut atas bagian tengah.", "clue": "Nyeri terlokalisasi di epigastrium" }],
+    "karakter": [
+      { "text": "Perih sekali, Dok, kayak terbakar di dalam.", "clue": "Perih/terbakar di ulu hati" },
+      { "text": "Perih melilit, Dok, rasanya panas di ulu hati." }
+    ],
+    "pola": [{ "text": "Terus-terusan perih, Dok, apalagi habis makan atau minum." }],
+    "durasi": [{ "text": "Hampir seharian, Dok, cuma reda sebentar-sebentar." }],
+    "keparahan": [
+      {
+        "text": "Lemas sekali, Dok, kepala kliyengan kalau berdiri.",
+        "when": { "traits": ["perdarahan_saluran_cerna"] },
+        "clue": "Lemas & pusing saat berdiri (curiga perdarahan saluran cerna)"
+      },
+      {
+        "text": "Lumayan berat, Dok, sampai nggak bisa {kegiatan} kemarin.",
+        "when": { "notTraits": ["perdarahan_saluran_cerna"] }
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Dari kemarin makin perih, Dok. Muntah juga kalau dipaksa makan.",
+        "when": { "symptoms": ["mual_muntah"] },
+        "reveals": ["mual_muntah"]
+      },
+      { "text": "Dari kemarin makin perih, Dok, makan jadi takut.", "when": { "notSymptoms": ["mual_muntah"] } }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau perut diisi atau habis minum kopi tambah perih, Dok. Minum obat maag sedikit mendingan.",
+        "clue": "Memberat setelah makan/kopi; sedikit membaik dengan antasida"
+      }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Baru kali ini, Dok. Biasanya perut saya nggak pernah rewel.",
+        "weight": 3,
+        "clue": "Episode pertama (akut)"
+      },
+      { "text": "Dulu pernah maag ringan, Dok, tapi nggak separah ini.", "weight": 1 }
+    ],
+    "riwayat_penyakit": [
+      { "text": "Nggak ada penyakit apa-apa, Dok.", "weight": 2 },
+      {
+        "text": "Paling asam urat, Dok, lutut sering sakit.",
+        "when": { "traits": ["oains"], "ageMin": 56 },
+        "weight": 2
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Seminggu ini saya minum jamu pegal linu tiap hari, Dok, badan pegal habis kerja berat.",
+        "when": { "traits": ["oains"], "ageMax": 55 },
+        "clue": "Jamu pegal linu (sering dicampur OAINS/steroid) setiap hari"
+      },
+      {
+        "text": "Lututnya sakit, Dok, jadi tiap hari saya minum obat asam urat sama obat antinyeri dari warung.",
+        "when": { "traits": ["oains"], "ageMin": 56 },
+        "clue": "Obat antinyeri (OAINS) rutin beberapa hari terakhir"
+      },
+      { "text": "Cuma obat maag dari warung, Dok, tapi kurang mempan.", "when": { "notTraits": ["oains"] } }
+    ],
+    "riwayat_keluarga": [{ "text": "Nggak ada yang sakit kayak gini, Dok." }],
+    "kebiasaan": [
+      {
+        "text": "Malam Minggu kemarin saya ikut minum-minum sama teman, Dok, lumayan banyak. Habis itu makan seblak yang pedas sekali.",
+        "when": { "traits": ["alkohol", "makanan_iritatif"] },
+        "clue": "Minum alkohol dan makanan sangat pedas sebelum keluhan muncul"
+      },
+      {
+        "text": "Malam Minggu kemarin saya ikut minum-minum sama teman, Dok, lumayan banyak.",
+        "when": { "traits": ["alkohol"], "notTraits": ["makanan_iritatif"] },
+        "clue": "Minum alkohol sebelum keluhan muncul"
+      },
+      {
+        "text": "Dua hari lalu saya makan seblak level paling pedas, Dok, terus minum es jeruk.",
+        "when": { "traits": ["makanan_iritatif"], "notTraits": ["alkohol"] },
+        "clue": "Makanan sangat pedas/asam sebelum keluhan"
+      },
+      { "text": "Biasa saja, Dok. Kopi pagi satu gelas.", "when": { "notTraits": ["alkohol", "makanan_iritatif"] } }
+    ],
+    "bepergian_lingkungan": [{ "text": "Nggak ke mana-mana, Dok." }]
+  },
+  "findings": [
+    { "tool": "pemeriksaan_abdomen", "param": "nyeri_tekan", "probability": 0.9, "values": ["Nyeri tekan epigastrium"] },
+    {
+      "tool": "tes_h_pylori",
+      "param": "antigen",
+      "when": { "traits": ["h_pylori"] },
+      "probability": 0.92,
+      "values": ["Positif"],
+      "diagnostic": true
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "male" },
+      "range": [8, 10.5]
+    },
+    {
+      "tool": "darah_lengkap",
+      "param": "hb",
+      "when": { "traits": ["perdarahan_saluran_cerna"], "sex": "female" },
+      "range": [7.5, 10]
+    },
+    {
+      "tool": "kepala_leher",
+      "param": "konjungtiva",
+      "when": { "traits": ["perdarahan_saluran_cerna"] },
+      "values": ["Anemis (pucat)"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["perdarahan_saluran_cerna"] }, "range": [102, 118] },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "traits": ["perdarahan_saluran_cerna"] },
+      "values": ["Tampak pucat dan lemas"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "kesan_sakit",
+      "when": { "notTraits": ["perdarahan_saluran_cerna"] },
+      "probability": 0.5,
+      "values": ["Tampak sakit ringan, sesekali memegang ulu hati"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "dispepsia",
+      "howToDistinguish": "Dispepsia fungsional: keluhan KRONIK hilang timbul berbulan-bulan (cepat kenyang, begah, perih ulu hati) tanpa pemicu jelas dan tanpa tanda alarm. Gastritis akut: muncul mendadak beberapa hari setelah pemicu (OAINS/jamu pegal linu, alkohol, makanan sangat pedas), sering disertai mual-muntah.",
+      "excludeBy": { "topics": ["onset", "episode_sebelumnya", "riwayat_obat"] }
+    },
+    {
+      "id": "gerd",
+      "howToDistinguish": "GERD: rasa terbakar di belakang tulang dada dan regurgitasi asam, memberat saat berbaring. Gastritis: perih di ulu hati dengan nyeri tekan epigastrium.",
+      "excludeBy": { "topics": ["lokasi", "karakter"] }
+    },
+    {
+      "id": "tukak_peptik",
+      "howToDistinguish": "Tukak peptik: nyeri ulu hati lebih menetap berminggu-minggu, khas terkait makan (tukak duodenum membaik saat makan), risiko perdarahan/perforasi. Gastritis akut: onset beberapa hari setelah pemicu. Keduanya bisa berdarah → rujuk endoskopi bila ada tanda alarm.",
+      "excludeBy": { "topics": ["onset", "riwayat_obat"], "symptoms": ["bab_hitam", "muntah_darah"] }
+    },
+    {
+      "id": "angina_stabil",
+      "howToDistinguish": "Angina/iskemia inferior dapat terasa di ulu hati: dipicu aktivitas fisik, membaik dengan istirahat, faktor risiko kardiovaskular. Gastritis: terkait makan/pemicu iritan, nyeri tekan epigastrium.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["pemberat_peringan"], "tools": ["ekg"] }
+    },
+    {
+      "id": "pankreatitis_akut",
+      "howToDistinguish": "Pankreatitis: nyeri epigastrium sangat hebat menjalar ke punggung, muntah terus, sering setelah alkohol berat atau batu empedu. Gastritis: perih lebih ringan, tanpa penjalaran ke punggung.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan", "lokasi"] }
+    },
+    {
+      "id": "kolik_bilier",
+      "howToDistinguish": "Kolik bilier: nyeri kanan atas setelah makan berlemak, Murphy (+).",
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "apendisitis_akut",
+      "howToDistinguish": "Apendisitis awal bisa dimulai di ulu hati lalu berpindah ke perut kanan bawah, disertai demam dan nyeri tekan McBurney. Gastritis: nyeri tetap di epigastrium tanpa demam.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen", "tanda_vital"] }
+    }
+  ],
+  "otherDifferentials": ["Gastroenteritis akut", "Keracunan makanan", "Kolesistitis akut", "Sindrom koroner akut (iskemia inferior)"],
+  "keyFindings": [
+    "Perih/nyeri ulu hati yang muncul mendadak (beberapa hari), sering dengan mual-muntah",
+    "Ada pemicu: OAINS/jamu pegal linu, alkohol, atau makanan sangat pedas/asam",
+    "Nyeri tekan epigastrium; tanpa demam",
+    "Tanda bahaya perdarahan: muntah darah, BAB hitam, pucat, takikardia"
+  ],
+  "teachingPoints": [
+    "Tanyakan SPESIFIK obat antinyeri, obat asam urat, dan jamu pegal linu — pasien sering tidak menganggapnya \"obat\".",
+    "Gastritis akut adalah diagnosis klinis: hentikan pemicu, beri penekan asam. Pemeriksaan penunjang hanya bila ada tanda bahaya.",
+    "Muntah darah atau BAB hitam = perdarahan saluran cerna atas → stabilisasi dan rujuk segera.",
+    "Tes H. pylori boleh dilakukan; bila positif, pertimbangkan eradikasi untuk mencegah kekambuhan dan tukak."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Dipisahkan dari dispepsia fungsional: gastritis di game = gastritis/gastropati AKUT dengan pemicu jelas.",
+      "Tes H. pylori dinilai opsional (tanpa penalti) karena ketersediaannya di layanan primer terbatas."
+    ],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer — Gastritis",
+      "PGI. Konsensus Nasional Penatalaksanaan Dispepsia dan Infeksi Helicobacter pylori (2021)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "perdarahan_saluran_cerna",
+      "name": "Perdarahan saluran cerna atas",
+      "trait": "perdarahan_saluran_cerna",
+      "redFlag": true,
+      "assess": { "symptoms": ["bab_hitam", "muntah_darah"], "tools": ["darah_lengkap", "kepala_leher", "tanda_vital"] },
+      "explanation": "Muntah darah/BAB hitam, anemia, takikardia → gastritis erosif berdarah: stabilisasi dan rujuk segera untuk endoskopi."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "riwayat_obat", "kebiasaan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "pemeriksaan_abdomen",
+        "role": "kunci",
+        "reason": "Nyeri tekan epigastrium; singkirkan apendisitis, kolik bilier, dan peritonitis."
+      },
+      { "tool": "kepala_leher", "role": "pendukung", "reason": "Konjungtiva anemis (tanda perdarahan)." }
+    ],
+    "tests": [
+      {
+        "tool": "darah_lengkap",
+        "role": "komplikasi",
+        "reason": "Menilai anemia akibat perdarahan saluran cerna.",
+        "when": { "traits": ["perdarahan_saluran_cerna"] }
+      },
+      {
+        "tool": "ekg",
+        "role": "pendukung",
+        "reason": "Pada usia > 45 tahun, nyeri epigastrium bisa berasal dari iskemia inferior.",
+        "when": { "ageMin": 45 }
+      }
+    ],
+    "optional": [{ "tool": "tes_h_pylori", "reason": "Mencari infeksi H. pylori sebagai penyebab/pencetus kekambuhan." }],
+    "unnecessary": [
+      {
+        "tool": "ct_abdomen",
+        "reason": "CT-scan mahal dan tidak diindikasikan untuk gastritis tanpa komplikasi bedah."
+      },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih atau obstruksi usus." },
+      { "tool": "usg_abdomen", "reason": "Tanpa nyeri kanan atas atau tanda alarm, USG tidak diperlukan." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "rdt_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "mikroskopis_malaria", "reason": "Tidak ada demam/riwayat daerah endemis." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "widal", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "bta_sputum", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan akut ini." },
+      { "tool": "spirometri", "reason": "Tidak ada keluhan sesak/obstruksi saluran napas." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan napas." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Perdarahan saluran cerna atas (gastritis erosif) memerlukan penanganan dan endoskopi di rumah sakit.",
+      "when": { "traits": ["perdarahan_saluran_cerna"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Gastritis akut tanpa tanda bahaya dikelola di layanan primer: hentikan pemicu dan beri penekan asam.",
+      "alsoAccept": ["observasi"]
+    }
+  ],
+  "management": [
+    "Hentikan pemicu: OAINS/jamu pegal linu, alkohol, makanan sangat pedas/asam; ganti antinyeri ke parasetamol bila perlu.",
+    "Penekan asam/antasida dan obat simptomatik (mual) — keputusan dokter.",
+    "Makan porsi kecil tapi sering; cukup minum.",
+    "Bila H. pylori positif: eradikasi sesuai panduan.",
+    "Muntah darah/BAB hitam/pucat: pasang akses infus, stabilisasi, rujuk segera."
+  ],
+  "approach": [
+    "Nyeri ulu hati akut: kapan mulai dan apa pemicunya (obat antinyeri, jamu, alkohol, makanan).",
+    "Cari tanda bahaya perdarahan: muntah darah, BAB hitam, lemas/pusing saat berdiri; periksa konjungtiva dan nadi.",
+    "Periksa abdomen: nyeri tekan epigastrium; singkirkan apendisitis, kolik bilier, pankreatitis.",
+    "Usia > 45 tahun dengan faktor risiko: pikirkan iskemia (EKG)."
+  ],
+  "pitfalls": [
+    {
+      "when": { "topicNotAsked": "riwayat_obat", "traits": ["oains"] },
+      "text": "Obat antinyeri/jamu pegal linu tidak ditanyakan — penyebab gastritis tersering sekaligus pemicu perdarahan."
+    },
+    {
+      "when": { "topicNotAsked": "kebiasaan", "traits": ["alkohol"] },
+      "text": "Kebiasaan minum alkohol tidak ditanyakan — pemicu gastritis akut yang harus dihentikan."
+    },
+    {
+      "when": { "traits": ["perdarahan_saluran_cerna"], "topicNotAsked": "keluhan_lain" },
+      "text": "Muntah darah/BAB hitam jarang disebut spontan — tanyakan gejala penyerta dan warna BAB secara spesifik."
+    },
+    {
+      "when": { "primaryIs": "dispepsia" },
+      "text": "Keluhan yang muncul mendadak setelah pemicu jelas (OAINS, alkohol, makanan iritatif) bukan dispepsia fungsional — dispepsia fungsional bersifat kronik tanpa penyebab organik."
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "disease": "bronkitis_akut",
+  "setting": "Puskesmas",
+  "station": "Pulmonologi — batuk/sesak",
+  "therapy": {
+    "items": [
+      {
+        "id": "simptomatik",
+        "label": "Terapi simptomatik",
+        "role": "utama",
+        "reason": "Bronkitis akut umumnya virus: pereda gejala.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "gg",
+            "label": "Gliseril guaiakolat 3 × 100–200 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [100, 200],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          },
+          {
+            "drug": "dekstrometorfan",
+            "label": "Dekstrometorfan 3 × 15 mg bila batuk kering mengganggu tidur",
+            "schedules": ["rutin", "prn"],
+            "dose": [15, 15],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "simptomatik_anak",
+        "label": "Terapi simptomatik (anak)",
+        "role": "utama",
+        "reason": "Pereda demam/nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "bronkodilator",
+        "label": "Bronkodilator",
+        "role": "pendukung",
+        "reason": "Mengi/bronkospasme.",
+        "options": [
+          {
+            "drug": "salbutamol_mdi",
+            "label": "Salbutamol MDI 100 mcg 1–2 puff bila sesak/mengi (maks. 4 × sehari)",
+            "schedules": ["prn"],
+            "dose": [100, 200],
+            "timesPerDay": [3, 4],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["mengi_ringan"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Bronkitis akut pada imunokompeten tidak memerlukan antibiotik.",
+        "severity": "salah"
+      },
+      {
+        "classes": ["antitusif"],
+        "reason": "Antitusif tidak dianjurkan pada anak.",
+        "severity": "salah",
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "minum", "text": "Banyak minum, madu/air hangat", "kind": "benar" },
+    { "id": "rokok", "text": "Berhenti merokok & hindari asap rokok", "kind": "benar" },
+    { "id": "istirahat", "text": "Istirahat cukup", "kind": "benar" },
+    {
+      "id": "ab",
+      "text": "Minum antibiotik agar dahak kuning cepat hilang",
+      "kind": "berbahaya",
+      "why": "Umumnya virus; antibiotik tidak bermanfaat."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang saluran napas besar (bronkitis), umumnya karena virus",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat untuk meringankan gejala; batuk dapat bertahan 2–3 minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, demam tinggi > 3 hari, batuk darah, atau nyeri dada",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Periksa ulang bila batuk > 3 minggu (skrining TB)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

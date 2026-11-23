@@ -1,0 +1,89 @@
+{
+  "disease": "hepatitis_a",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — perut & anus",
+  "therapy": {
+    "items": [
+      {
+        "id": "antiemetik",
+        "label": "Antiemetik",
+        "role": "opsional",
+        "reason": "Mual mengganggu asupan.",
+        "options": [
+          {
+            "drug": "domperidon",
+            "label": "Domperidon 3 × 10 mg sebelum makan",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [3, 3],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      }
+    ],
+    "avoid": [
+      { "drugs": ["ketokonazol_tab"], "reason": "Obat hepatotoksik dihindari.", "severity": "salah" },
+      { "groups": ["steroid"], "reason": "Kortikosteroid tidak bermanfaat.", "severity": "salah" },
+      { "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }
+    ],
+    "note": "Tidak ada terapi spesifik; suportif. Antiemetik hanya opsional; parasetamol dosis rendah bila perlu."
+  },
+  "nonPharm": [
+    { "id": "istirahat", "text": "Istirahat sesuai toleransi; makan cukup kalori & cukup minum", "kind": "benar" },
+    { "id": "alkohol", "text": "Hindari alkohol & obat/jamu yang membebani hati", "kind": "benar" },
+    {
+      "id": "lapor",
+      "text": "Laporkan KLB & lakukan penyelidikan sumber",
+      "kind": "benar",
+      "when": { "traits": ["kluster"] }
+    },
+    { "id": "higiene", "text": "Cuci tangan, makanan & air matang, jamban sehat; alat makan terpisah", "kind": "benar" },
+    {
+      "id": "jamu",
+      "text": "Minum jamu temulawak dosis tinggi agar kuning cepat hilang",
+      "kind": "berbahaya",
+      "why": "Herbal dapat memperberat kerusakan hati."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini hepatitis A (sakit kuning) karena virus yang menular lewat makanan/minuman tercemar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak ada obat khusus; hati pulih sendiri dengan istirahat & gizi cukup dalam beberapa minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila kuning makin pekat disertai mengantuk/bingung, muntah terus, perdarahan, atau perut membesar",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu untuk cek fungsi hati", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Cuci tangan pakai sabun, jangan berbagi alat makan; anggota keluarga dapat divaksin",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "lemak",
+      "text": "Tidak boleh makan apa pun kecuali bubur putih sampai kuning hilang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Pantangan berlebihan menyebabkan malnutrisi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

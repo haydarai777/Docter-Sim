@@ -1,0 +1,148 @@
+{
+  "disease": "tinea_kapitis",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi jamur",
+  "therapy": {
+    "items": [
+      {
+        "id": "griseofulvin",
+        "label": "Antijamur oral",
+        "role": "utama",
+        "reason": "Tinea kapitis wajib antijamur oral (topikal tidak menembus folikel).",
+        "options": [
+          {
+            "drug": "griseofulvin",
+            "label": "Griseofulvin 20–25 mg/kgBB/hari sesudah makan berlemak selama 6–8 minggu",
+            "schedules": ["rutin"],
+            "forms": ["griseofulvin-tab125"],
+            "dosePerKg": [10, 25],
+            "timesPerDay": [1, 2],
+            "days": [42, 56]
+          }
+        ]
+      },
+      {
+        "id": "sampo",
+        "label": "Sampo antijamur",
+        "role": "opsional",
+        "reason": "Mengurangi penularan spora.",
+        "options": [
+          {
+            "drug": "ketokonazol_sampo",
+            "label": "Sampo ketokonazol 2% 2–3 × seminggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          },
+          {
+            "drug": "selenium_sulfida",
+            "label": "Sampo selenium sulfida 2–3 × seminggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [14, 56]
+          }
+        ]
+      },
+      {
+        "id": "kerion",
+        "label": "Kortikosteroid oral singkat",
+        "role": "opsional",
+        "reason": "Kerion (pertimbangkan rujuk).",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 1 mg/kgBB/hari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["kerion"] }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["ketokonazol_tab"],
+        "reason": "Ketokonazol oral hepatotoksik — tidak untuk infeksi jamur kulit.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "sisir",
+      "text": "Sisir, topi, & bantal tidak dipakai bersama; obati anggota keluarga/hewan peliharaan",
+      "kind": "benar"
+    },
+    { "id": "sekolah", "text": "Boleh tetap sekolah setelah terapi dimulai", "kind": "benar" },
+    { "id": "insisi", "text": "Jangan insisi kerion", "kind": "benar", "when": { "traits": ["kerion"] } },
+    {
+      "id": "kucing",
+      "text": "Bawa kucing peliharaan ke dokter hewan",
+      "kind": "benar",
+      "when": { "traits": ["kontak_kucing"] }
+    },
+    {
+      "id": "cukur_bakar",
+      "text": "Cukur gundul lalu oles minyak tanah",
+      "kind": "berbahaya",
+      "why": "Iritasi & luka bakar kimia."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini tinea kapitis: infeksi jamur kulit kepala & rambut",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai teratur 6–8 minggu sesudah makan (berlemak) tanpa putus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila meluas, bernanah/bengkak merah nyeri, demam, atau tidak membaik setelah 2 minggu",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Keringkan badan setelah mandi & jangan berbagi handuk/pakaian",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "es",
+      "text": "Griseofulvin dapat menyebabkan sakit kepala/mual & kulit sensitif cahaya",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Hentikan obat jamur begitu gatal hilang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Jamur belum tuntas → kambuh."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

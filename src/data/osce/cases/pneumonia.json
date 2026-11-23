@@ -1,0 +1,131 @@
+{
+  "disease": "pneumonia",
+  "setting": "Puskesmas",
+  "station": "Pulmonologi — batuk/sesak",
+  "therapy": {
+    "items": [
+      {
+        "id": "antibiotik",
+        "label": "Antibiotik empiris rawat jalan",
+        "role": "utama",
+        "reason": "CAP derajat ringan (CURB-65 0–1).",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 500–1000 mg 3 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 3],
+            "days": [5, 7]
+          },
+          {
+            "drug": "azitromisin",
+            "label": "Azitromisin 500 mg 1 × sehari selama 3–5 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 1],
+            "days": [3, 5]
+          },
+          {
+            "drug": "levofloksasin",
+            "label": "Levofloksasin 750 mg 1 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 750],
+            "timesPerDay": [1, 1],
+            "days": [5, 7]
+          }
+        ]
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 500–1000 mg 3–4 × sehari bila demam/nyeri (maks. 4 g/hari)",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMin": 15 }
+      },
+      {
+        "id": "antipiretik_anak",
+        "label": "Antipiretik-analgesik (anak)",
+        "role": "pendukung",
+        "reason": "Simtomatik demam/nyeri; aman pada kasus ini.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam",
+            "schedules": ["prn", "rutin"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 7]
+          }
+        ],
+        "when": { "ageMax": 14 }
+      }
+    ],
+    "avoid": [{ "groups": ["steroid"], "reason": "Kortikosteroid tidak rutin pada CAP ringan.", "severity": "salah" }],
+    "note": "Hipoksia (SpO₂ < 92–94%) atau CURB-65 ≥ 2 → oksigen, infus, rujuk segera untuk antibiotik IV."
+  },
+  "nonPharm": [
+    { "id": "istirahat", "text": "Istirahat cukup", "kind": "benar" },
+    { "id": "cairan", "text": "Minum 2–3 L/hari untuk mengencerkan dahak", "kind": "benar" },
+    { "id": "batuk", "text": "Latihan napas dalam dan batuk efektif", "kind": "benar" },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["perokok"] } },
+    {
+      "id": "rujuk",
+      "text": "Berikan oksigen, pasang infus, lalu rujuk segera",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["hipoksia"] }, { "traits": ["curb_berat"] }],
+      "why": "Pneumonia berat."
+    },
+    { "id": "balsem", "text": "Kompres dada dengan balsem panas", "kind": "pengecoh" },
+    {
+      "id": "penekan",
+      "text": "Minum obat penekan batuk kuat agar dahak tidak keluar",
+      "kind": "berbahaya",
+      "why": "Dahak tertahan memperburuk infeksi."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini infeksi paru-paru (radang paru) oleh kuman", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Antibiotik wajib dihabiskan walau sudah membaik",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak memberat, bibir kebiruan, bingung, atau demam tidak turun > 3 hari",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 48–72 jam untuk menilai respons", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Vaksinasi influenza & pneumokokus (lansia/komorbid) dan berhenti merokok",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "stop",
+      "text": "Hentikan antibiotik bila demam sudah turun",
+      "kind": "berbahaya",
+      "category": "pengobatan"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["PDPI. Pneumonia Komuniti: Pedoman Diagnosis dan Penatalaksanaan di Indonesia (2022)"]
+  }
+}

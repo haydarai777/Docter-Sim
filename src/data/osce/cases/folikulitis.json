@@ -1,0 +1,139 @@
+{
+  "disease": "folikulitis",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Infeksi folikel rambut superfisial.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "eritromisin_topikal",
+            "label": "Eritromisin 2% gel 2 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "pendukung",
+        "reason": "Folikulitis luas/berulang.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["berulang"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "cukur",
+      "text": "Hentikan mencukur sementara; bila mencukur gunakan pisau bersih searah tumbuh rambut",
+      "kind": "benar",
+      "when": { "traits": ["mencukur"] }
+    },
+    { "id": "pakaian", "text": "Pakaian longgar dari bahan menyerap keringat", "kind": "benar" },
+    { "id": "antiseptik", "text": "Mandi dengan sabun antiseptik (klorheksidin)", "kind": "benar" },
+    {
+      "id": "pencet",
+      "text": "Pencet/korek lesi agar nanahnya keluar",
+      "kind": "berbahaya",
+      "why": "Penyebaran infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini folikulitis: infeksi bakteri pada pangkal rambut",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Obat dioles teratur 7–10 hari", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila benjolan membesar & nyeri (bisul), kemerahan meluas, atau demam",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "jerawat",
+      "text": "Ini jerawat biasa, cukup dipencet",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Folikulitis tidak disertai komedo; memencet menyebarkan infeksi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

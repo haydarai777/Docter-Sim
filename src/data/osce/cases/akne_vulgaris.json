@@ -1,0 +1,121 @@
+{
+  "disease": "akne_vulgaris",
+  "setting": "Puskesmas",
+  "station": "Kulit — wajah & folikel",
+  "therapy": {
+    "items": [
+      {
+        "id": "retinoid",
+        "label": "Retinoid topikal",
+        "role": "utama",
+        "reason": "Komedolitik — dasar terapi akne.",
+        "options": [
+          {
+            "drug": "tretinoin",
+            "label": "Tretinoin 0,025% krim dioles tipis malam hari selama 8–12 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 1],
+            "days": [56, 84]
+          }
+        ]
+      },
+      {
+        "id": "bpo",
+        "label": "Benzoil peroksida",
+        "role": "pendukung",
+        "reason": "Lesi papulopustular & mencegah resistansi antibiotik.",
+        "options": [
+          {
+            "drug": "benzoil_peroksida",
+            "label": "Benzoil peroksida 2,5–5% gel 1 × sehari (pagi) selama 8–12 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [56, 84]
+          }
+        ]
+      },
+      {
+        "id": "klindamisin",
+        "label": "Antibiotik topikal",
+        "role": "opsional",
+        "reason": "Papulopustul; selalu bersama benzoil peroksida.",
+        "options": [
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [56, 84]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "classes": ["antibiotik"], "reason": "Antibiotik oral tidak diperlukan pada akne ringan.", "severity": "salah" },
+      { "classes": ["kortikosteroid_topikal"], "reason": "Steroid memperburuk akne.", "severity": "salah" },
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik tidak diperlukan & berisiko rebound.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "cuci", "text": "Cuci muka 2 × sehari dengan pembersih lembut", "kind": "benar" },
+    {
+      "id": "kosmetik",
+      "text": "Gunakan kosmetik/pelembap non-komedogenik",
+      "kind": "benar",
+      "when": { "traits": ["kosmetik"] }
+    },
+    { "id": "tabir", "text": "Gunakan tabir surya", "kind": "benar" },
+    {
+      "id": "pencet",
+      "text": "Pencet/korek jerawat agar cepat kempis",
+      "kind": "berbahaya",
+      "why": "Infeksi, hiperpigmentasi & parut."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini jerawat (akne vulgaris) derajat ringan", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Krim retinoid dioles tipis malam hari; hasil baru terlihat setelah 6–8 minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Kulit dapat kemerahan/kering/mengelupas di awal — kurangi frekuensi, jangan berhenti",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila muncul benjolan besar nyeri/kista, parut, atau haid tidak teratur & bulu berlebih",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 6–8 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "makanan",
+      "text": "Jerawat hanya karena makan gorengan & cokelat",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Multifaktorial (hormon, sebum, bakteri, keratinisasi)."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kelompok Studi Dermatologi Kosmetik Indonesia. Konsensus Akne (2019)"
+    ]
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "disease": "tension_headache",
+  "setting": "Puskesmas",
+  "station": "Saraf — nyeri kepala, wajah & pusing",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik serangan akut",
+        "role": "utama",
+        "reason": "Episodik: analgesik sederhana dibatasi ≤ 2–3 hari/minggu.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "notTraits": ["kronik"] }
+      },
+      {
+        "id": "preventif",
+        "label": "Preventif",
+        "role": "utama",
+        "reason": "TTH kronik: antidepresan trisiklik dosis rendah.",
+        "options": [
+          {
+            "drug": "amitriptilin",
+            "label": "Amitriptilin 12,5–25 mg malam hari selama 1–3 bulan",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [1, 1],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "traits": ["kronik"] }
+      },
+      {
+        "id": "analgesik_kronik",
+        "label": "Analgesik bila perlu",
+        "role": "opsional",
+        "reason": "Dibatasi agar tidak terjadi nyeri kepala karena obat.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "traits": ["kronik"], "notTraits": ["analgesik_berlebih"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "relaksasi", "text": "Relaksasi, manajemen stres, tidur cukup", "kind": "benar" },
+    { "id": "ergonomi", "text": "Peregangan leher-bahu & perbaiki postur/ergonomi kerja", "kind": "benar" },
+    {
+      "id": "stop_analgesik",
+      "text": "Hentikan penggunaan analgesik berlebih",
+      "kind": "benar",
+      "when": { "traits": ["analgesik_berlebih"] }
+    },
+    {
+      "id": "tiap_hari",
+      "text": "Minum obat sakit kepala setiap hari agar tidak kambuh",
+      "kind": "berbahaya",
+      "why": "Medication overuse headache."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini nyeri kepala tegang otot, berkaitan dengan stres/postur, bukan tumor otak",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat pereda nyeri dipakai saat serangan saja, tidak lebih dari 2–3 hari per minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila nyeri kepala hebat mendadak, demam & kaku kuduk, muntah proyektil, kelemahan/kejang, atau penglihatan ganda",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 2–4 minggu dengan catatan harian nyeri kepala",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "ct",
+      "text": "Perlu CT scan kepala untuk memastikan tidak ada tumor",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Tanpa red flag tidak diperlukan pencitraan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  }
+}

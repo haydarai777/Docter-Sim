@@ -1,0 +1,143 @@
+{
+  "disease": "abses_folikel",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi bakteri",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Abses dengan selulitis di sekitarnya.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["selulitis_sekitar"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri pasca-insisi.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "note": "Tatalaksana utama insisi & drainase; antibiotik sistemik bila selulitis/demam/wajah/imunokompromais."
+  },
+  "nonPharm": [
+    {
+      "id": "insisi",
+      "text": "Insisi & drainase dengan anestesi lokal, irigasi NaCl, pasang drain/tampon bila perlu",
+      "kind": "benar"
+    },
+    { "id": "balutan", "text": "Ganti balutan berkala", "kind": "benar" },
+    {
+      "id": "eksisi",
+      "text": "Eksisi kista lengkap dengan kapsul setelah radang reda",
+      "kind": "benar",
+      "when": { "traits": ["kista_sebelumnya"] }
+    },
+    {
+      "id": "tempel",
+      "text": "Tempelkan koyo/daun panas agar abses pecah sendiri",
+      "kind": "berbahaya",
+      "why": "Luka bakar & infeksi menyebar."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini abses: kumpulan nanah di bawah kulit akibat infeksi bakteri",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Nanah sudah dikeluarkan; obat diminum sesuai aturan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam, kemerahan meluas, nanah berulang, atau nyeri bertambah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 hari untuk ganti balutan", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

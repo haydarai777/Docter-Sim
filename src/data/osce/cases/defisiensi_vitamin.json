@@ -1,0 +1,105 @@
+{
+  "disease": "defisiensi_vitamin",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — gizi & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "tiamin",
+        "label": "Tiamin",
+        "role": "utama",
+        "reason": "Beri-beri.",
+        "options": [
+          {
+            "drug": "tiamin",
+            "label": "Tiamin 50–100 mg 1 × sehari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [50, 100],
+            "timesPerDay": [1, 2],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "traits": ["beriberi"] }
+      },
+      {
+        "id": "vit_c",
+        "label": "Vitamin C",
+        "role": "utama",
+        "reason": "Skorbut.",
+        "options": [
+          {
+            "drug": "vitamin_c",
+            "label": "Vitamin C 500–1000 mg/hari selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "forms": ["vitc-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 2],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "traits": ["skorbut"] }
+      },
+      {
+        "id": "b_kompleks",
+        "label": "Vitamin B kompleks",
+        "role": "utama",
+        "reason": "Defisiensi riboflavin/B kompleks.",
+        "options": [
+          {
+            "drug": "vitamin_b_kompleks",
+            "label": "Vitamin B kompleks 3 × 1 tablet selama 2–4 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [14, 30]
+          }
+        ],
+        "when": { "traits": ["b_kompleks"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "gizi", "text": "Gizi seimbang: lauk, sayur, buah; beras tidak disosoh berlebihan", "kind": "benar" },
+    { "id": "alkohol", "text": "Hentikan konsumsi alkohol", "kind": "benar", "when": { "traits": ["alkohol"] } },
+    { "id": "masak", "text": "Masak sayur sebentar agar vitamin tidak rusak", "kind": "benar" },
+    {
+      "id": "suplemen_dosis_tinggi",
+      "text": "Minum semua vitamin dosis sangat tinggi jangka panjang tanpa pengawasan",
+      "kind": "berbahaya",
+      "why": "Risiko toksisitas (mis. vitamin A, D)."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Keluhan disebabkan kekurangan vitamin akibat pola makan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Vitamin diminum sesuai dosis & diikuti perbaikan pola makan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, bengkak kaki, berdebar, kesemutan/lemah tungkai berat, atau perdarahan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "vitamin_ganti_makan",
+      "text": "Suplemen vitamin bisa menggantikan sayur & buah",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Pola makan seimbang tetap utama."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

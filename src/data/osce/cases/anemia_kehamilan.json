@@ -1,0 +1,133 @@
+{
+  "disease": "anemia_kehamilan",
+  "setting": "Puskesmas",
+  "station": "Obstetri — antenatal & pascakeguguran",
+  "therapy": {
+    "items": [
+      {
+        "id": "besi",
+        "label": "Besi elemental dosis terapi",
+        "role": "utama",
+        "reason": "120 mg besi elemental/hari + asam folat hingga Hb normal.",
+        "options": [
+          {
+            "drug": "tablet_tambah_darah",
+            "label": "Tablet tambah darah 2 × 1 (Fe 120 mg/hari) setiap hari",
+            "schedules": ["rutin"],
+            "dose": [60, 60],
+            "timesPerDay": [2, 2],
+            "days": [30, 90]
+          },
+          {
+            "drug": "sulfas_ferosus",
+            "label": "Sulfas ferosus 300 mg (Fe 60 mg) 2 × sehari + asam folat",
+            "schedules": ["rutin"],
+            "forms": ["sf-tab300"],
+            "dose": [300, 300],
+            "timesPerDay": [2, 2],
+            "days": [30, 90]
+          }
+        ]
+      },
+      {
+        "id": "cacing",
+        "label": "Antelmintik",
+        "role": "pendukung",
+        "reason": "Cacingan (setelah trimester 1).",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg dosis tunggal (setelah trimester 1)",
+            "schedules": ["tunggal"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400]
+          }
+        ],
+        "when": { "traits": ["cacingan"] }
+      },
+      {
+        "id": "vit_c",
+        "label": "Vitamin C",
+        "role": "opsional",
+        "reason": "Meningkatkan absorpsi besi.",
+        "options": [
+          {
+            "drug": "vitamin_c",
+            "label": "Vitamin C 100 mg bersama tablet besi",
+            "schedules": ["rutin"],
+            "dose": [100, 200],
+            "timesPerDay": [1, 2],
+            "days": [30, 90]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["tetrasiklin"],
+        "reason": "Tetrasiklin/doksisiklin kontraindikasi pada kehamilan (gigi & tulang janin).",
+        "severity": "kritis"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "vit_c", "text": "Minum tablet besi bersama jus jeruk; hindari teh/kopi/susu", "kind": "benar" },
+    { "id": "gizi", "text": "Gizi seimbang tinggi besi (daging, hati, ikan, sayur hijau)", "kind": "benar" },
+    { "id": "persalinan", "text": "Rencanakan persalinan di fasilitas kesehatan", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk ke dokter spesialis (anemia berat)",
+      "kind": "benar",
+      "when": { "traits": ["berat"] }
+    },
+    {
+      "id": "stop_mual",
+      "text": "Hentikan tablet besi bila mual",
+      "kind": "berbahaya",
+      "why": "Anemia memburuk; atasi efek samping (minum malam/bersama makan)."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini anemia pada kehamilan, umumnya karena kekurangan zat besi",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum tablet besi 2 kali sehari secara teratur",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Tinja hitam normal; mual/sembelit dapat dikurangi dengan minum malam hari",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke fasilitas kesehatan bila sesak, berdebar, pingsan, perdarahan, atau gerak janin berkurang",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol Hb 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "darah_tinggi",
+      "text": "Kurang darah berarti tekanan darah rendah, cukup minum kopi",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Anemia ≠ hipotensi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

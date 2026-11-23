@@ -1,0 +1,144 @@
+{
+  "disease": "morbili",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi virus & ruam demam",
+  "therapy": {
+    "items": [
+      {
+        "id": "vit_a_bayi",
+        "label": "Vitamin A",
+        "role": "utama",
+        "reason": "Campak: menurunkan komplikasi & kematian.",
+        "options": [
+          {
+            "drug": "vitamin_a",
+            "label": "Vitamin A 100.000 IU (6–11 bulan) hari ke-1 & ke-2",
+            "schedules": ["rutin"],
+            "forms": ["vita-100rb"],
+            "dose": [100000, 100000],
+            "timesPerDay": [1, 1],
+            "days": [2, 2]
+          }
+        ],
+        "when": { "ageMax": 0 }
+      },
+      {
+        "id": "vit_a",
+        "label": "Vitamin A",
+        "role": "utama",
+        "reason": "Campak: menurunkan komplikasi & kematian.",
+        "options": [
+          {
+            "drug": "vitamin_a",
+            "label": "Vitamin A 200.000 IU (≥ 12 bulan) hari ke-1 & ke-2",
+            "schedules": ["rutin"],
+            "forms": ["vita-200rb"],
+            "dose": [200000, 200000],
+            "timesPerDay": [1, 1],
+            "days": [2, 2]
+          }
+        ],
+        "when": { "ageMin": 1 }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik",
+        "role": "pendukung",
+        "reason": "Demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "antipiretik_dewasa",
+        "label": "Antipiretik",
+        "role": "pendukung",
+        "reason": "Demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Tanpa komplikasi bakteri, antibiotik tidak diperlukan.",
+        "severity": "salah",
+        "when": { "notTraits": ["pneumonia"] }
+      },
+      {
+        "drugs": ["aspirin_rendah"],
+        "reason": "Aspirin pada anak dengan infeksi virus berisiko sindrom Reye.",
+        "severity": "kritis"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "cairan", "text": "Cairan & nutrisi cukup, kompres hangat", "kind": "benar" },
+    {
+      "id": "isolasi",
+      "text": "Isolasi hingga 4 hari setelah ruam muncul; laporkan ke Puskesmas/Dinkes",
+      "kind": "benar"
+    },
+    { "id": "mr", "text": "Imunisasi MR untuk kontak & kejar imunisasi", "kind": "benar" },
+    { "id": "rujuk", "text": "Rujuk segera (pneumonia)", "kind": "benar", "when": { "traits": ["pneumonia"] } },
+    {
+      "id": "mandi_larang",
+      "text": "Jangan dimandikan & jangan diberi minum air dingin sampai ruam hilang",
+      "kind": "berbahaya",
+      "why": "Mitos; dehidrasi & higiene buruk."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini campak, infeksi virus yang sangat menular", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Vitamin A diberikan 2 hari berturut-turut; obat penurun panas bila demam",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak/napas cepat, kejang, diare berat, tidak mau minum, mata keruh, atau sangat lemas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–3 hari", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Imunisasi MR melindungi anak & saudara", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "ab",
+      "text": "Antibiotik dibutuhkan agar ruam cepat hilang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Virus; antibiotik hanya untuk komplikasi bakteri."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "tanda_bahaya", "kontrol", "pencegahan"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "Kemenkes RI. Buku Bagan MTBS (2022)"
+    ]
+  }
+}

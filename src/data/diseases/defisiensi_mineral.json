@@ -1,0 +1,210 @@
+{
+  "id": "defisiensi_mineral",
+  "name": "Defisiensi mineral (iodium, kalsium)",
+  "aliases": ["Gondok endemik", "GAKY", "Kekurangan yodium", "Kekurangan kalsium", "Hipokalsemia ringan"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.5,
+  "summary": "Gangguan akibat kekurangan iodium (GAKY): gondok difus eutiroid di daerah pegunungan/endemik dengan garam tidak beryodium. Kekurangan kalsium: kram otot, kesemutan perioral & ujung jari, tetani ringan (Chvostek/Trousseau positif) pada asupan kurang, kehamilan/menyusui, atau defisiensi vitamin D. Tata laksana: suplementasi & garam beryodium/sumber kalsium, rujuk bila gondok besar/nodular atau hipokalsemia berat.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 55, "weight": 3 },
+      { "min": 56, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.35,
+    "occupations": [{ "id": "petani", "weight": 2 }, { "id": "ibu_rumah_tangga", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "iodium", "probability": 0.65 }],
+  "traitLabels": { "iodium": "Defisiensi iodium (gondok endemik)." },
+  "symptoms": [
+    { "id": "benjolan_leher_depan", "probability": 1, "when": { "traits": ["iodium"] } },
+    { "id": "kram_otot", "probability": 1, "when": { "notTraits": ["iodium"] } },
+    { "id": "kesemutan", "probability": 0.7, "when": { "notTraits": ["iodium"] } },
+    { "id": "lemas", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["benjolan_leher_depan", "kram_otot"] },
+  "clueSymptoms": ["kesemutan", "lemas"],
+  "misattributions": ["kelenjar biasa", "masuk angin", "kurang olahraga"],
+  "fears": ["kanker tiroid", "lumpuh"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, leher depan saya pelan-pelan membesar.",
+        "when": { "traits": ["iodium"] },
+        "clue": "Gondok membesar perlahan"
+      },
+      {
+        "text": "{LamaSakit} ini, Dok, sering kram di betis dan tangan, bibir kadang kesemutan.",
+        "when": { "notTraits": ["iodium"] },
+        "clue": "Kram & parestesia perioral"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Saya tinggal di desa di pegunungan, Dok. Banyak tetangga juga lehernya besar.",
+        "when": { "traits": ["iodium"] },
+        "clue": "Daerah endemis GAKY"
+      },
+      { "text": "Di rumah saja, Dok.", "when": { "notTraits": ["iodium"] } }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Garamnya garam krosok dari pasar, Dok, bukan yang bungkus beryodium.",
+        "when": { "traits": ["iodium"] },
+        "clue": "Garam tidak beryodium"
+      },
+      {
+        "text": "Saya nggak suka susu, jarang makan ikan, jarang kena matahari, Dok.",
+        "when": { "notTraits": ["iodium"] },
+        "clue": "Asupan kalsium & vitamin D kurang"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Nggak berdebar, nggak gemetar, berat badan tetap, Dok. Napas dan menelan biasa.",
+        "when": { "traits": ["iodium"] },
+        "clue": "Tanpa gejala hipertiroid & obstruksi (eutiroid)"
+      },
+      {
+        "text": "Nggak sampai kejang atau sesak, Dok.",
+        "when": { "notTraits": ["iodium"] },
+        "clue": "Tanpa tetani berat"
+      }
+    ],
+    "haid_kehamilan": [
+      {
+        "text": "Saya baru melahirkan, sedang menyusui, Dok.",
+        "when": { "notTraits": ["iodium"], "sex": "female", "ageMin": 18, "ageMax": 45 },
+        "clue": "Menyusui (kebutuhan kalsium meningkat)"
+      }
+    ],
+    "lokasi": [
+      { "text": "Di leher depan, Dok, ada benjolan.", "when": { "traits": ["iodium"] } },
+      { "text": "Kramnya di betis dan tangan, Dok.", "when": { "notTraits": ["iodium"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_lokalis",
+      "param": "benjolan",
+      "when": { "traits": ["iodium"] },
+      "diagnostic": true,
+      "values": ["Benjolan leher depan difus, kenyal, ikut bergerak saat menelan, tidak nyeri, tanpa nodul (gondok grade 1)"]
+    },
+    { "tool": "kepala_leher", "param": "kgb", "when": { "traits": ["iodium"] }, "values": ["Tidak teraba pembesaran"] },
+    { "tool": "fungsi_tiroid", "param": "tsh", "when": { "traits": ["iodium"] }, "range": [3, 5.5] },
+    { "tool": "fungsi_tiroid", "param": "ft4", "when": { "traits": ["iodium"] }, "range": [0.85, 1.1] },
+    {
+      "tool": "elektrolit",
+      "param": "kalsium",
+      "when": { "notTraits": ["iodium"] },
+      "diagnostic": true,
+      "range": [7, 8.2]
+    },
+    {
+      "tool": "refleks_tonus",
+      "param": "tonus",
+      "when": { "notTraits": ["iodium"] },
+      "probability": 0.6,
+      "values": ["Chvostek (+), Trousseau (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "karsinoma_tiroid",
+      "howToDistinguish": "Karsinoma tiroid: nodul soliter keras, cepat membesar, suara serak, KGB leher — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_lokalis", "kepala_leher"] }
+    },
+    {
+      "id": "hipertiroid",
+      "howToDistinguish": "Hipertiroid: gondok + berdebar, BB turun, tremor, tidak tahan panas; TSH rendah.",
+      "excludeBy": { "topics": ["keparahan"], "tools": ["fungsi_tiroid"] }
+    },
+    {
+      "id": "gangguan_elektrolit",
+      "howToDistinguish": "Hipokalsemia berat/hipoparatiroid: tetani, kejang, laringospasme — rujuk.",
+      "excludeBy": { "tools": ["elektrolit"], "topics": ["keparahan"] }
+    }
+  ],
+  "keyFindings": [
+    "Gondok difus eutiroid pada penduduk daerah endemis dengan garam tidak beryodium",
+    "Atau kram, parestesia perioral, Chvostek/Trousseau (+), kalsium rendah",
+    "Tanpa nodul keras/KGB"
+  ],
+  "teachingPoints": [
+    "Garam beryodium (≥ 30 ppm) adalah strategi utama pencegahan GAKY; ibu hamil di daerah endemis berisiko kretin pada bayi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Penanggulangan GAKY"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "bepergian_lingkungan", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [
+      {
+        "tool": "status_lokalis",
+        "role": "kunci",
+        "when": { "traits": ["iodium"] },
+        "reason": "Ukuran & konsistensi gondok."
+      },
+      { "tool": "kepala_leher", "role": "pendukung", "when": { "traits": ["iodium"] }, "reason": "KGB leher." },
+      {
+        "tool": "refleks_tonus",
+        "role": "kunci",
+        "when": { "notTraits": ["iodium"] },
+        "reason": "Tanda tetani (Chvostek/Trousseau)."
+      }
+    ],
+    "tests": [
+      {
+        "tool": "fungsi_tiroid",
+        "role": "pendukung",
+        "when": { "traits": ["iodium"] },
+        "reason": "Status tiroid (eutiroid)."
+      },
+      { "tool": "elektrolit", "role": "kunci", "when": { "notTraits": ["iodium"] }, "reason": "Kadar kalsium." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Suplementasi & edukasi gizi; rujuk bila gondok besar/nodular, gejala obstruksi, atau hipokalsemia berat.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Iodium: garam beryodium di rumah tangga, kapsul minyak beryodium sesuai program daerah endemis.",
+    "Kalsium: kalsium karbonat 500–1000 mg/hari + vitamin D; susu, ikan teri, tahu, sayur hijau, paparan matahari pagi.",
+    "Rujuk: gondok nodular/besar/obstruksi, hipertiroid, atau tetani berat."
+  ],
+  "approach": ["Gondok: daerah endemis & garam; nilai nodul & fungsi tiroid.", "Kram/kesemutan: tanda tetani & kalsium."]
+}

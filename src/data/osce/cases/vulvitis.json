@@ -1,0 +1,123 @@
+{
+  "disease": "vulvitis",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid topikal lemah",
+        "role": "utama",
+        "reason": "Dermatitis iritan vulva.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1% krim 2 × sehari selama ≤ 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim1"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["iritan"] }
+      },
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal",
+        "role": "utama",
+        "reason": "Vulvitis kandida.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          },
+          {
+            "drug": "klotrimazol_krim",
+            "label": "Klotrimazol 1% krim 2 × sehari selama 1–2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["kandida"] }
+      },
+      {
+        "id": "kremi",
+        "label": "Antelmintik",
+        "role": "utama",
+        "reason": "Cacing kremi (enterobiasis) — obati seluruh keluarga, ulang 2 minggu.",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg dosis tunggal, ulang 2 minggu",
+            "schedules": ["tunggal"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400]
+          },
+          {
+            "drug": "pirantel",
+            "label": "Pirantel pamoat 10 mg/kgBB dosis tunggal, ulang 2 minggu",
+            "schedules": ["tunggal"],
+            "forms": ["pirantel-tab125"],
+            "dosePerKg": [9, 11]
+          }
+        ],
+        "when": { "traits": ["cacing_kremi"] }
+      }
+    ],
+    "note": "Bila tidak ada kandida, iritan, maupun cacing: higiene & hindari pencetus."
+  },
+  "nonPharm": [
+    { "id": "iritan", "text": "Hentikan sabun wangi/pantyliner; celana katun longgar", "kind": "benar" },
+    { "id": "cebok", "text": "Cebok dari depan ke belakang dengan air bersih", "kind": "benar" },
+    {
+      "id": "keluarga",
+      "text": "Seluruh anggota keluarga minum obat cacing, potong kuku, cuci sprei",
+      "kind": "benar",
+      "when": { "traits": ["cacing_kremi"] }
+    },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini radang kulit kemaluan luar (vulvitis)", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Gunakan obat sesuai aturan & hentikan pencetus",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila keluar cairan berbau/berdarah, luka, demam, atau nyeri saat kencing",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "bedak",
+      "text": "Taburi kemaluan dengan bedak wangi agar kering",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Iritan."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

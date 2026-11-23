@@ -8,7 +8,7 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { createRng, deriveSeed, type Rng } from './rng';
-import { capitalize, fillTemplate, joinList } from './text';
+import { capitalize, durationText, fillTemplate, joinList, toCompanionVoice } from './text';
 import type {
   AnswerResult,
   AnswerVariant,
@@ -19,10 +19,16 @@ import type {
   SymptomDef,
 } from './types';
 
-/** Pilih satu frasa gejala sesuai gaya; jatuh ke 'lay' jika gaya itu tidak ada. */
-export function symptomPhrase(symptom: SymptomDef, style: PhraseStyle, rng: Rng): string {
+/** Pilih satu frasa gejala sesuai gaya; jatuh ke 'lay' jika gaya itu tidak ada. companion = diucapkan pengantar anak. */
+export function symptomPhrase(symptom: SymptomDef, style: PhraseStyle, rng: Rng, companion = false): string {
   const list = symptom.phrases[style] ?? symptom.phrases.lay;
-  return rng.pick(list);
+  const phrase = rng.pick(list);
+  return companion ? toCompanionVoice(phrase) : phrase;
+}
+
+/** Kasus anak < 10 tahun: yang berbicara adalah pengantarnya. */
+export function spokenByCompanion(c: PatientCase): boolean {
+  return !!c.patient.companion;
 }
 
 /**
@@ -52,10 +58,11 @@ export function buildComplaint(
   personality: PersonalityDef,
   values: Record<string, string>,
   rng: Rng,
+  companion = false,
 ): string {
   const fragments = symptoms.map((s) => {
     const style: PhraseStyle = s.phrases.vague && rng.chance(personality.vagueRate) ? 'vague' : personality.complaintStyle;
-    return symptomPhrase(s, style, rng);
+    return symptomPhrase(s, style, rng, companion);
   });
   const frame = rng.pick(personality.complaintFrames);
   return fillTemplate(frame, { ...values, keluhan: joinList(fragments) });
@@ -77,10 +84,13 @@ export function buildCategoryAnswer(
   ctx: ConditionContext,
   values: Record<string, string>,
   rng: Rng,
+  companion = false,
 ): AnswerResult {
   const chosen = pickVariant(variants ?? [], ctx, rng) ?? pickVariant(fallback, ctx, rng);
   if (!chosen) return { text: 'Hmm, saya kurang tahu, Dok.' };
-  const text = fillTemplate(applyPersonalityAffix(chosen.text, personality, rng, categoryId), values);
+  // Pengantar anak: kalimat tentang pasien diubah ke orang ketiga SEBELUM imbuhan kepribadian & placeholder.
+  const raw = companion ? toCompanionVoice(chosen.text) : chosen.text;
+  const text = fillTemplate(applyPersonalityAffix(raw, personality, rng, categoryId), values);
   const result: AnswerResult = { text };
   if (chosen.clue) result.clue = chosen.clue;
   if (chosen.reveals?.length) result.reveals = [...chosen.reveals];
@@ -109,7 +119,7 @@ export function answerOtherComplaints(
   const next = c.revealOrder.filter((id) => !alreadyRevealed.includes(id)).slice(0, personality.otherComplaintCount);
   if (next.length === 0) return { text: rng.pick(templates.none), revealed: [] };
 
-  const fragments = next.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng));
+  const fragments = next.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng, spokenByCompanion(c)));
   const text = fillTemplate(rng.pick(templates.found), caseValues(c, { daftar: joinList(fragments) }));
   return { text, revealed: next };
 }
@@ -131,7 +141,7 @@ export function answerSymptomQuestion(
   if (c.symptoms.includes(symptomId)) {
     // Saat ditanya langsung, pasien mengonfirmasi dengan jelas (frasa kabur diganti awam).
     const style: PhraseStyle = personality.complaintStyle === 'vague' ? 'lay' : personality.complaintStyle;
-    const phrase = symptomPhrase(symptom, style, rng);
+    const phrase = symptomPhrase(symptom, style, rng, spokenByCompanion(c));
     return { text: fillTemplate(rng.pick(personality.symptomYes), caseValues(c, { gejala: phrase })), revealed: true };
   }
   if (personality.symptomUncertain?.length && rng.chance(personality.uncertainAbsentRate)) {
@@ -143,4 +153,103 @@ export function answerSymptomQuestion(
 /** Pertanyaan dokter untuk kategori anamnesis, dengan sapaan pasien. */
 export function doctorQuestion(template: string, c: PatientCase): string {
   return capitalize(fillTemplate(template, caseValues(c)));
+}
+
+/** Pilih satu templat percakapan secara deterministik (salt membedakan kejadian). */
+function pickConversation(list: readonly string[], c: PatientCase, salt: string, values: Record<string, string> = {}): string {
+  const rng = createRng(deriveSeed(c.seed, `percakapan:${salt}`));
+  return fillTemplate(rng.pick(list), caseValues(c, values));
+}
+
+export type SmallTalk =
+  | 'greeting'
+  | 'thanks'
+  | 'consent'
+  | 'unknown'
+  | 'repeat'
+  | 'alreadySaid'
+  | 'farewell'
+  | 'farewellReferral'
+  | 'closing'
+  | 'repeatAsked'
+  | 'durationSame'
+  | 'durationLonger'
+  | 'durationShorter';
+
+/** Balasan basa-basi / pertanyaan tidak dipahami / awalan pengulangan. */
+export function conversationReply(kind: SmallTalk, c: PatientCase, content: GameContent, salt: string): string {
+  return pickConversation(content.conversation[kind], c, `${kind}:${salt}`);
+}
+
+/** Mengulang keluhan utama ("apa keluhannya?"). */
+export function chiefComplaintReply(c: PatientCase, content: GameContent): string {
+  // "Dok, tolong..." → hindari "Itu tadi, Dok. Dok, tolong..."
+  const keluhanAwal = capitalize(c.complaint.replace(/^(dok(ter)?)[,.!…\s]+/i, ''));
+  return pickConversation(content.conversation.chief, c, 'chief', { keluhanAwal });
+}
+
+/**
+ * Sejak berapa hari gejala ini dirasakan. Keluhan utama = lama sakit; gejala lain muncul
+ * belakangan (deterministik per kasus, tidak pernah lebih lama dari lama sakit).
+ */
+export function symptomOnsetDays(c: PatientCase, symptomId: string): number {
+  if (c.chiefComplaintSymptoms.includes(symptomId) || !c.symptoms.includes(symptomId)) return c.day;
+  const rng = createRng(deriveSeed(c.seed, `mulai:${symptomId}`));
+  const lo = Math.max(1, Math.round(c.day * 0.3));
+  return Math.min(c.day, rng.int(lo, Math.max(lo, c.day)));
+}
+
+/**
+ * Pertanyaan detail (onset/keparahan/...) tentang gejala yang BUKAN keluhan utama.
+ * Gejala ada → konfirmasi + detail umum; tidak ada → penyangkalan seperti pertanyaan gejala.
+ */
+export function answerSymptomDetail(
+  c: PatientCase,
+  topic: string,
+  symptomId: string,
+  content: GameContent,
+): { text: string; revealed: boolean } {
+  if (!c.symptoms.includes(symptomId)) return answerSymptomQuestion(c, symptomId, content);
+  const symptom = content.symptomsById.get(symptomId)!;
+  const rng = createRng(deriveSeed(c.seed, `detail:${topic}:${symptomId}`));
+  const onsetDays = symptomOnsetDays(c, symptomId);
+  // Gejala yang baru muncul hari ini: "baru tadi", bukan "kira-kira sehari yang lalu".
+  const today = onsetDays <= 1 ? content.conversation.detail[`${topic}_hari_ini`] : undefined;
+  const templates = today ?? content.conversation.detail[topic] ?? content.conversation.detail.default;
+  const phrase = symptomPhrase(symptom, 'lay', rng, spokenByCompanion(c));
+  const lamaGejala = durationText(onsetDays);
+  return { text: fillTemplate(rng.pick(templates), caseValues(c, { gejala: phrase, lamaGejala })), revealed: true };
+}
+
+/**
+ * Tanggapan atas lama sakit yang disebut dokter ("Sudah 3 hari?"): membenarkan, atau mengoreksi
+ * bila sebenarnya lebih lama / belum selama itu. Toleransi ±25% (minimal 1 hari).
+ */
+export function durationReaction(c: PatientCase, askedDays: number, actualDays: number, content: GameContent, salt: string): string {
+  const tolerance = Math.max(1, Math.round(actualDays * 0.25));
+  const kind = Math.abs(askedDays - actualDays) <= tolerance ? 'durationSame' : actualDays > askedDays ? 'durationLonger' : 'durationShorter';
+  return conversationReply(kind, c, content, `durasi:${salt}`);
+}
+
+/**
+ * Jawaban tinjauan sistem ("BAB-nya bagaimana?"): sebutkan gejala kelompok itu yang ADA
+ * (termasuk yang tidak disebut sukarela), atau jawaban normal bila tidak ada.
+ */
+export function answerReview(
+  c: PatientCase,
+  groupId: string,
+  content: GameContent,
+): { text: string; revealed: string[] } {
+  const group = content.reviewsById.get(groupId);
+  if (!group) throw new Error(`Tinjauan sistem tidak dikenal: ${groupId}`);
+  const personality = content.personalitiesById.get(c.patient.personalityId)!;
+  const rng = createRng(deriveSeed(c.seed, `tinjauan:${groupId}`));
+  const present = group.symptoms.filter((id) => c.symptoms.includes(id));
+  const companion = spokenByCompanion(c);
+  if (present.length === 0) {
+    const normal = rng.pick(group.normal);
+    return { text: fillTemplate(companion ? toCompanionVoice(normal) : normal, caseValues(c)), revealed: [] };
+  }
+  const phrases = present.map((id) => symptomPhrase(content.symptomsById.get(id)!, 'lay', rng, companion));
+  return { text: fillTemplate(rng.pick(personality.symptomYes), caseValues(c, { gejala: joinList(phrases) })), revealed: present };
 }

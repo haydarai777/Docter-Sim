@@ -1,0 +1,227 @@
+{
+  "id": "morbili",
+  "name": "Morbili (campak) tanpa komplikasi",
+  "aliases": ["Campak", "Measles", "Rubeola", "Tampek"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi virus campak sangat menular pada anak yang belum diimunisasi. Stadium prodromal 3–4 hari: demam tinggi, batuk, pilek, konjungtivitis (3C), bercak Koplik di mukosa pipi. Lalu ruam makulopapular eritematosa mulai di belakang telinga/wajah menyebar ke badan & ekstremitas; ruam menghilang meninggalkan hiperpigmentasi & deskuamasi. Komplikasi: pneumonia, diare, otitis, ensefalitis, xeroftalmia. Vitamin A wajib; laporkan (PD3I).",
+  "presentationDay": [4, 7],
+  "demographics": {
+    "ageBands": [
+      { "min": 0, "max": 0, "weight": 1 },
+      { "min": 1, "max": 5, "weight": 5 },
+      { "min": 6, "max": 9, "weight": 3 },
+      { "min": 10, "max": 20, "weight": 1 }
+    ],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "balita", "weight": 2 }, { "id": "anak_tk", "weight": 2 }, { "id": "anak_sd", "weight": 2 }],
+    "occupationBias": 0.4,
+    "infantAge": { "unit": "bulan", "range": [9, 11] }
+  },
+  "traits": [
+    { "id": "tidak_imunisasi", "probability": 0.85 },
+    { "id": "pneumonia", "probability": 0.08 },
+    { "id": "kontak_campak", "probability": 0.7 }
+  ],
+  "traitLabels": {
+    "tidak_imunisasi": "Belum imunisasi campak/MR.",
+    "pneumonia": "Komplikasi pneumonia.",
+    "kontak_campak": "Kontak dengan penderita campak."
+  },
+  "symptoms": [
+    { "id": "rewel", "probability": 0.6, "when": { "ageMax": 5 } },
+    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["pneumonia"] } },
+    { "id": "demam", "probability": 1 },
+    { "id": "ruam_kulit", "probability": 1 },
+    { "id": "batuk", "probability": 0.9 },
+    { "id": "pilek", "probability": 0.8 },
+    { "id": "mata_merah", "probability": 0.8 },
+    { "id": "mata_berair", "probability": 0.5 },
+    { "id": "diare", "probability": 0.3 },
+    { "id": "nafsu_makan_turun", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["ruam_kulit", "demam"], "extraPool": ["demam", "batuk"] },
+  "clueSymptoms": ["batuk", "pilek", "mata_merah", "mata_berair", "diare", "rewel"],
+  "misattributions": ["alergi", "biang keringat", "masuk angin"],
+  "fears": ["campak", "anaknya buta", "menular ke adiknya"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu panas tinggi, batuk pilek, matanya merah berair, Dok. Kemarin muncul bintik merah di belakang telinga, sekarang sampai badan.",
+        "reveals": ["batuk", "mata_merah"],
+        "when": { "symptoms": ["batuk", "mata_merah"] },
+        "clue": "Prodromal 3C lalu ruam mulai di belakang telinga menyebar ke bawah"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Merahnya mulai dari belakang telinga dan muka, Dok, terus turun ke dada dan kaki.",
+        "clue": "Penyebaran sefalokaudal"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Imunisasinya nggak lengkap, Dok, campak belum.",
+        "when": { "traits": ["tidak_imunisasi"] },
+        "clue": "Belum imunisasi campak/MR"
+      },
+      { "text": "Imunisasinya lengkap, Dok.", "when": { "notTraits": ["tidak_imunisasi"] } }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Di kampung banyak anak yang lagi campak, Dok.",
+        "when": { "traits": ["kontak_campak"] },
+        "clue": "Kontak/KLB campak"
+      },
+      { "text": "Belum tahu ada yang sakit sama, Dok.", "when": { "notTraits": ["kontak_campak"] } }
+    ],
+    "keparahan": [
+      {
+        "text": "Sekarang napasnya cepat dan sesak, Dok.",
+        "reveals": ["sesak_napas"],
+        "when": { "traits": ["pneumonia"], "symptoms": ["sesak_napas"] },
+        "clue": "Sesak (curiga pneumonia)"
+      },
+      {
+        "text": "Masih mau minum, Dok, nggak sesak, nggak kejang.",
+        "when": { "notTraits": ["pneumonia"] },
+        "clue": "Tanpa tanda komplikasi"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["pneumonia"] },
+      "values": ["Ronkhi basah halus (+/+)"]
+    },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["pneumonia"] }, "range": [42, 55] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["pneumonia"] }, "range": [90, 93] },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "values": ["Belakang telinga, wajah, leher, badan, ekstremitas (sefalokaudal)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Makula-papul eritematosa sebagian konfluens (morbiliformis)"]
+    },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "mukosa_mulut",
+      "probability": 0.7,
+      "diagnostic": true,
+      "values": ["Bercak Koplik: bintik putih keabuan di mukosa bukal setinggi molar"]
+    },
+    { "tool": "segmen_anterior", "param": "konjungtiva_bulbi", "values": ["Injeksi konjungtiva bilateral, berair"] },
+    { "tool": "tanda_vital", "param": "suhu", "range": [38.8, 40] },
+    { "tool": "kepala_leher", "param": "kgb", "probability": 0.5, "values": ["KGB servikal kecil multipel"] }
+  ],
+  "differentials": [
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam tinggi dengan ruam/petekie, uji tourniquet (+), trombositopenia, tanpa 3C & Koplik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["uji_tourniquet", "pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "rubela",
+      "howToDistinguish": "Rubela: lebih ringan, demam ringan, KGB retroaurikular/oksipital, tanpa Koplik.",
+      "excludeBy": { "tools": ["kepala_leher", "pemeriksaan_tenggorok"] }
+    },
+    {
+      "id": "erupsi_obat",
+      "howToDistinguish": "Erupsi obat: riwayat obat 1–2 minggu sebelumnya, gatal, tanpa prodromal 3C.",
+      "excludeBy": { "topics": ["riwayat_obat"] }
+    },
+    {
+      "id": "pneumonia",
+      "howToDistinguish": "Pneumonia (komplikasi): takipnea, retraksi, ronki — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    }
+  ],
+  "keyFindings": [
+    "Demam tinggi + batuk + pilek + konjungtivitis (3C) 3–4 hari",
+    "Bercak Koplik; ruam makulopapular sefalokaudal",
+    "Belum imunisasi, kontak campak"
+  ],
+  "teachingPoints": [
+    "Vitamin A dosis sesuai umur 2 hari berturut-turut pada setiap anak campak mengurangi kematian & komplikasi mata.",
+    "Campak adalah penyakit wajib lapor (PD3I) — lakukan surveilans."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)",
+      "Kemenkes RI. Petunjuk Teknis Surveilans Campak-Rubela"
+    ]
+  },
+  "complications": [
+    {
+      "id": "pneumonia",
+      "name": "Pneumonia campak",
+      "trait": "pneumonia",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "pemeriksaan_paru"] },
+      "explanation": "Takipnea, ronki, SpO2 turun — rujuk segera."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "kebiasaan", "riwayat_keluarga", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & penyebaran ruam." },
+      { "tool": "pemeriksaan_tenggorok", "role": "kunci", "reason": "Bercak Koplik." },
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Komplikasi pneumonia." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Konjungtivitis/xeroftalmia." },
+      { "tool": "uji_tourniquet", "role": "pendukung", "reason": "Menyingkirkan dengue." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Campak dengan pneumonia/komplikasi berat: rujuk.",
+      "when": { "traits": ["pneumonia"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Vitamin A 2 hari, antipiretik, cairan & nutrisi, isolasi; laporkan; kontrol bila sesak/diare/kejang."
+    }
+  ],
+  "management": [
+    "Vitamin A: < 6 bln 50.000 IU, 6–11 bln 100.000 IU, ≥ 12 bln 200.000 IU, hari 1 & 2.",
+    "Antipiretik (parasetamol), cairan & nutrisi cukup.",
+    "Isolasi hingga 4 hari setelah ruam muncul; laporkan ke Puskesmas/Dinkes.",
+    "Imunisasi MR untuk kontak & catch-up."
+  ],
+  "approach": ["Kenali prodromal 3C + Koplik + pola ruam.", "Nilai komplikasi (pneumonia, diare, otitis, mata)."]
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { capitalize, fillTemplate, findUnfilledPlaceholders, formatNumber, formatRupiah, joinList, numberToWords } from '../src/core/text';
+import { capitalize, durationText, fillTemplate, findUnfilledPlaceholders, formatDecimalInput, formatNumber, formatRupiah, joinList, numberToWords, parseDecimal } from '../src/core/text';
 
 describe('format & teks', () => {
   it('formatNumber memakai gaya Indonesia', () => {
@@ -29,10 +29,46 @@ describe('format & teks', () => {
     expect(numberToWords(21)).toBe('dua puluh satu');
   });
 
+  it('durationText', () => {
+    expect(durationText(4)).toBe('empat hari');
+    expect(durationText(21)).toBe('tiga minggu');
+    expect(durationText(75)).toBe('tiga bulan');
+    expect(durationText(1)).toBe('sehari');
+    expect(durationText(360)).toBe('setahun');
+    expect(durationText(720)).toBe('dua tahun');
+  });
+
+  it('fillTemplate: hari sakit pertama berbunyi "tadi", bukan "sehari lalu"', () => {
+    const day1 = { hari: '1', lamaSakit: 'sehari' };
+    expect(fillTemplate('{LamaSakit} lalu, Dok, tiba-tiba mimisan.', day1)).toBe('Tadi, Dok, tiba-tiba mimisan.');
+    expect(fillTemplate('Sudah {lamaSakit}, Dok, gatal.', day1)).toBe('Sejak tadi, Dok, gatal.');
+    expect(fillTemplate('Panasnya sudah {lamaSakit} ini, Dok.', day1)).toBe('Panasnya sejak tadi, Dok.');
+    expect(fillTemplate('Mendadak, Dok, {lamaSakit} lalu menggigil.', day1)).toBe('Mendadak, Dok, tadi menggigil.');
+    expect(fillTemplate('{LamaSakit} ini pusarnya merah.', day1)).toBe('Hari ini pusarnya merah.');
+    const d1 = { ...day1, hariTeks: 'satu' };
+    expect(fillTemplate('Sudah {hariTeks} hari ini, Dok, hilang-timbul.', d1)).toBe('Sejak tadi, Dok, hilang-timbul.');
+    expect(fillTemplate('Mulainya sekitar {hariTeks} hari yang lalu, Dok.', d1)).toBe('Mulainya sejak tadi, Dok.');
+    expect(fillTemplate('Panasnya mulai {hariTeks} hari yang lalu, Dok.', d1)).toBe('Panasnya mulai tadi, Dok.');
+    expect(fillTemplate('Sudah {lamaSakit}, Dok.', { hari: '3', lamaSakit: 'tiga hari' })).toBe('Sudah tiga hari, Dok.');
+  });
+
   it('fillTemplate mengisi placeholder, termasuk versi kapital', () => {
     expect(fillTemplate('Halo {nama}. {Keluhan}.', { nama: 'Budi', keluhan: 'saya pusing' })).toBe('Halo Budi. Saya pusing.');
     expect(fillTemplate('{x} tetap', {})).toBe('{x} tetap');
     expect(findUnfilledPlaceholders('a {b} c {D}')).toEqual(['b', 'D']);
     expect(capitalize('abc')).toBe('Abc');
+  });
+});
+
+describe('isian angka resep', () => {
+  it('menerima koma desimal Indonesia & titik; menolak yang bukan angka (tidak diam-diam diganti)', () => {
+    expect(parseDecimal('0,5')).toBe(0.5);
+    expect(parseDecimal('0.5')).toBe(0.5);
+    expect(parseDecimal(' 2 ')).toBe(2);
+    expect(parseDecimal(',25')).toBe(0.25);
+    expect(parseDecimal('12,')).toBe(12);
+    for (const bad of ['', 'abc', '1,2,3', '1/2', '-1', '0,5 tab']) expect(parseDecimal(bad), bad).toBeNull();
+    expect(formatDecimalInput(0.5)).toBe('0,5');
+    expect(formatDecimalInput(2)).toBe('2');
   });
 });

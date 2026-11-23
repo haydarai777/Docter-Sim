@@ -1,0 +1,123 @@
+{
+  "disease": "tetanus",
+  "setting": "IGD Puskesmas",
+  "station": "Saraf — kejang & kaku",
+  "therapy": {
+    "items": [
+      {
+        "id": "htig",
+        "label": "Antitoksin tetanus",
+        "role": "utama",
+        "reason": "Menetralkan toksin yang belum terikat.",
+        "options": [
+          {
+            "drug": "htig",
+            "label": "HTIG 3.000–6.000 IU IM dosis tunggal",
+            "schedules": ["tunggal"],
+            "dose": [3000, 6000]
+          }
+        ]
+      },
+      {
+        "id": "metronidazol",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Eradikasi C. tetani.",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 3 × 500 mg selama 7–10 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 4],
+            "days": [7, 10]
+          }
+        ]
+      },
+      {
+        "id": "diazepam",
+        "label": "Antispasme",
+        "role": "pendukung",
+        "reason": "Mengendalikan spasme sebelum/selama rujukan.",
+        "options": [
+          {
+            "drug": "diazepam",
+            "label": "Diazepam 10 mg IV pelan (dapat diulang)",
+            "schedules": ["tunggal", "prn"],
+            "forms": ["diazepam-amp10"],
+            "dose": [5, 10],
+            "timesPerDay": [1, 4],
+            "days": [1, 2]
+          }
+        ]
+      },
+      {
+        "id": "td",
+        "label": "Imunisasi aktif",
+        "role": "pendukung",
+        "reason": "Vaksin Td di sisi tubuh berbeda dari HTIG.",
+        "options": [{ "drug": "toksoid_tetanus", "label": "Vaksin Td 0,5 mL IM", "schedules": ["tunggal"], "dose": [0.5, 0.5] }]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "tenang", "text": "Ruangan tenang & redup, minimalkan rangsang", "kind": "benar" },
+    { "id": "napas", "text": "Amankan jalan napas & beri oksigen", "kind": "benar" },
+    { "id": "luka", "text": "Debridemen & rawat luka setelah HTIG", "kind": "benar" },
+    { "id": "rujuk", "text": "Rujuk segera ke RS dengan pendampingan", "kind": "benar" },
+    {
+      "id": "pulang",
+      "text": "Pulangkan dengan obat minum karena pasien masih sadar",
+      "kind": "berbahaya",
+      "why": "Spasme laring & gagal napas dapat terjadi mendadak."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini tetanus, infeksi racun kuman dari luka kotor yang menyerang saraf",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Perlu perawatan di rumah sakit untuk serum antitetanus, antibiotik, & obat kejang",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kekakuan & kejang bisa mengganggu napas — harus segera dirawat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Setelah sembuh lanjutkan imunisasi tetanus lengkap",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Imunisasi tetanus lengkap & rawat setiap luka kotor dengan benar",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "kebal",
+      "text": "Setelah sembuh tetanus orang menjadi kebal seumur hidup",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Tidak menimbulkan kekebalan; tetap perlu vaksin."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  }
+}

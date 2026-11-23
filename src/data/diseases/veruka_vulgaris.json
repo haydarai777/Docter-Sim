@@ -1,0 +1,121 @@
+{
+  "id": "veruka_vulgaris",
+  "name": "Veruka vulgaris",
+  "aliases": ["Kutil", "Common wart", "Kutil biasa"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.9,
+  "summary": "Infeksi HPV pada epidermis: papul/nodul berbatas tegas, permukaan kasar verukosa keabuan, sering di punggung tangan, jari, periungual, lutut; titik hitam (kapiler trombosis). Menular melalui kontak dan autoinokulasi (fenomena Koebner). Dapat hilang spontan; terapi keratolitik (asam salisilat), krioterapi, atau elektrokauter.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [{ "min": 5, "max": 9, "weight": 3 }, { "min": 10, "max": 25, "weight": 4 }, { "min": 26, "max": 50, "weight": 2 }],
+    "maleRatio": 0.5,
+    "occupations": [{ "id": "pelajar", "weight": 2 }, { "id": "anak_sd", "weight": 2 }],
+    "occupationBias": 0.3
+  },
+  "traits": [{ "id": "periungual", "probability": 0.3 }, { "id": "koebner", "probability": 0.3 }],
+  "traitLabels": { "periungual": "Veruka periungual.", "koebner": "Autoinokulasi/Koebner (suka digigit/digaruk)." },
+  "symptoms": [{ "id": "kutil", "probability": 1 }],
+  "chiefComplaint": { "primary": ["kutil"] },
+  "misattributions": ["mata ikan", "tahi lalat", "kapalan"],
+  "fears": ["kanker kulit", "menular"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, mulai satu lalu jadi banyak.", "clue": "Bertambah jumlah dalam bulan" }],
+    "lokasi": [{ "text": "Di punggung jari tangan kanan, Dok, ada juga di pinggir kuku.", "clue": "Jari & periungual" }],
+    "karakter": [
+      {
+        "text": "Kasar, keras, nggak sakit, Dok. Ada titik-titik hitamnya.",
+        "clue": "Permukaan kasar, titik hitam, tidak nyeri"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Suka saya gigit-gigit dan korek, Dok.",
+        "when": { "traits": ["koebner"] },
+        "clue": "Menggigit/mengorek (autoinokulasi)"
+      },
+      { "text": "Nggak saya otak-atik, Dok.", "when": { "notTraits": ["koebner"] } }
+    ],
+    "riwayat_keluarga": [
+      { "text": "Adik saya juga ada kutil, Dok.", "weight": 0.5, "clue": "Kontak penderita kutil" },
+      { "text": "Di rumah cuma saya yang begini, Dok." }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "tanda_khusus",
+      "when": { "traits": ["koebner"] },
+      "values": ["Tersusun linear di bekas garukan (fenomena Koebner)"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Punggung jari II–III tangan kanan & periungual"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Papul-nodul verukosa multipel 3–8 mm, permukaan kasar keabuan, dengan titik-titik hitam"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "karsinoma_sel_skuamosa_kulit",
+      "howToDistinguish": "Keganasan: lesi tunggal cepat membesar, ulserasi, mudah berdarah, usia lanjut — biopsi.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "klavus",
+      "howToDistinguish": "Klavus: di titik tekanan, berinti, garis kulit tetap, nyeri ditekan langsung.",
+      "excludeBy": { "topics": ["lokasi"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "moluskum_kontagiosum",
+      "howToDistinguish": "Moluskum: papul kubah mengkilap dengan delle, bukan permukaan kasar.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": ["Papul/nodul verukosa permukaan kasar dengan titik hitam", "Di tangan/jari/periungual, tidak nyeri", "Autoinokulasi"],
+  "teachingPoints": ["Kutil dapat hilang spontan dalam 1–2 tahun; terapi untuk mempercepat & mencegah penyebaran."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "kebiasaan", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi & distribusi lesi." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Keratolitik topikal ± krioterapi/elektrokauter; kontrol 2–4 minggu." }],
+  "management": [
+    "Asam salisilat 17–40% topikal (rendam & kikis dulu) tiap malam ± oklusi, beberapa minggu.",
+    "Krioterapi nitrogen cair atau elektrokauter/bedah listrik untuk lesi membandel.",
+    "Jangan digigit/digaruk; handuk & alat pribadi terpisah."
+  ],
+  "approach": ["Inspeksi morfologi khas; bedakan dari klavus & keganasan."]
+}

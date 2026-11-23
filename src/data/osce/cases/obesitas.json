@@ -1,0 +1,63 @@
+{
+  "disease": "obesitas",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — gizi & metabolik",
+  "therapy": {
+    "items": [],
+    "avoid": [{ "drugs": ["hidroklorotiazid"], "reason": "Diuretik bukan obat penurun berat badan.", "severity": "salah" }],
+    "note": "Tatalaksana gaya hidup — tidak memerlukan resep obat di FKTP."
+  },
+  "nonPharm": [
+    {
+      "id": "defisit",
+      "text": "Defisit energi 500–750 kkal/hari; kurangi gula, gorengan, minuman manis (Isi Piringku)",
+      "kind": "benar"
+    },
+    { "id": "aktivitas", "text": "Aktivitas fisik 150–300 menit/minggu + latihan kekuatan", "kind": "benar" },
+    { "id": "perilaku", "text": "Catat makanan, tidur cukup, kelola stres", "kind": "benar" },
+    { "id": "komorbid", "text": "Skrining & kelola komorbid (tekanan darah, gula, lemak darah)", "kind": "benar" },
+    { "id": "osa", "text": "Rujuk evaluasi sleep apnea", "kind": "benar", "when": { "traits": ["osa"] } },
+    {
+      "id": "pelangsing",
+      "text": "Minum obat pelangsing/teh detoks tanpa resep",
+      "kind": "berbahaya",
+      "why": "Kandungan tidak jelas (diuretik, sibutramin) — risiko jantung & ginjal."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini obesitas: kelebihan lemak tubuh yang meningkatkan risiko diabetes, hipertensi, & penyakit jantung",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kunci pengobatan adalah perubahan pola makan & aktivitas; target turun 5–10% BB dalam 6 bulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila nyeri dada, sesak, mendengkur dengan henti napas, atau sering haus & kencing",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol & timbang tiap bulan", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "puasa_total",
+      "text": "Tidak makan sama sekali selama berhari-hari agar cepat kurus",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Kehilangan otot, hipoglikemia, & efek yoyo."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Tata Laksana Obesitas Dewasa (2015)"
+    ]
+  }
+}

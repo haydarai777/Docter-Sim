@@ -1,0 +1,165 @@
+{
+  "disease": "migren",
+  "setting": "Puskesmas",
+  "station": "Saraf — nyeri kepala, wajah & pusing",
+  "therapy": {
+    "items": [
+      {
+        "id": "abortif",
+        "label": "Abortif (analgesik)",
+        "role": "utama",
+        "reason": "Diminum sedini mungkin saat serangan.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 1000 mg saat serangan",
+            "schedules": ["prn"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [1, 4],
+            "days": [3, 10]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 400 mg saat serangan",
+            "schedules": ["prn"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [1, 3],
+            "days": [3, 10]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 500 mg saat serangan",
+            "schedules": ["prn"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 3],
+            "days": [3, 10]
+          },
+          {
+            "drug": "natrium_diklofenak",
+            "label": "Natrium diklofenak 50 mg saat serangan",
+            "schedules": ["prn"],
+            "dose": [50, 50],
+            "timesPerDay": [1, 3],
+            "days": [3, 10]
+          }
+        ]
+      },
+      {
+        "id": "antiemetik",
+        "label": "Antiemetik",
+        "role": "opsional",
+        "reason": "Mual saat serangan; juga mempercepat absorpsi.",
+        "options": [
+          {
+            "drug": "metoklopramid",
+            "label": "Metoklopramid 10 mg saat serangan",
+            "schedules": ["prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 3],
+            "days": [3, 10]
+          },
+          {
+            "drug": "domperidon",
+            "label": "Domperidon 10 mg saat serangan",
+            "schedules": ["prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 3],
+            "days": [3, 10]
+          }
+        ]
+      },
+      {
+        "id": "preventif",
+        "label": "Profilaksis migren",
+        "role": "utama",
+        "reason": "≥ 4 serangan/bulan.",
+        "options": [
+          {
+            "drug": "propranolol",
+            "label": "Propranolol 2 × 10–40 mg selama 2–3 bulan",
+            "schedules": ["rutin"],
+            "dose": [10, 40],
+            "timesPerDay": [2, 3],
+            "days": [60, 90]
+          },
+          {
+            "drug": "flunarizin",
+            "label": "Flunarizin 5–10 mg malam hari selama 2–3 bulan",
+            "schedules": ["rutin"],
+            "dose": [5, 10],
+            "timesPerDay": [1, 1],
+            "days": [60, 90]
+          },
+          {
+            "drug": "amitriptilin",
+            "label": "Amitriptilin 12,5–25 mg malam hari selama 2–3 bulan",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [1, 1],
+            "days": [60, 90]
+          }
+        ],
+        "when": { "traits": ["sering"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "gelap", "text": "Istirahat di ruangan gelap & tenang saat serangan", "kind": "benar" },
+    {
+      "id": "pencetus",
+      "text": "Kenali & hindari pencetus (kurang tidur, telat makan, stres); catat buku harian nyeri kepala",
+      "kind": "benar"
+    },
+    { "id": "tidur", "text": "Pola tidur & makan teratur", "kind": "benar" },
+    {
+      "id": "analgesik_tiap_hari",
+      "text": "Minum analgesik setiap hari untuk mencegah serangan",
+      "kind": "berbahaya",
+      "why": "Medication overuse headache."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini migren: nyeri kepala berulang berdenyut, bukan stroke/tumor",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Minum obat sedini mungkin saat serangan; batasi ≤ 10 hari per bulan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera periksa bila nyeri kepala terberat seumur hidup/mendadak, aura > 1 jam, kelemahan anggota gerak, atau pola nyeri berubah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 4–8 minggu dengan buku harian nyeri kepala",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "estrogen",
+      "text": "Pil KB kombinasi aman untuk semua penderita migren",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Migren dengan aura: kontraindikasi estrogen (risiko stroke).",
+      "when": { "traits": ["dengan_aura"] }
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  }
+}

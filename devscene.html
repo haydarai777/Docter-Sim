@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0;height:100%;overflow:hidden}#stage{position:fixed;inset:0}canvas{width:100%;height:100%;display:block}#info{position:fixed;left:8px;top:8px;font:12px system-ui;background:#000a;color:#fff;padding:4px 8px;border-radius:6px;max-width:70%}</style></head>
+<body><div id="stage"></div><div id="info"></div>
+<script type="module">
+// Halaman pengembang: adegan Director lengkap (datang/duduk/pamit) termasuk pengantar pasien anak.
+import { Stage } from '/src/ui/three/stage.ts';
+import { Director } from '/src/ui/three/director.ts';
+import { loadDefaultContent, GAME_CONFIG } from '/src/data/index.ts';
+import { generateCase } from '/src/core/generator.ts';
+import { buildAppearance, buildCompanionAppearance, companionMode } from '/src/core/appearance.ts';
+const q = new URLSearchParams(location.search);
+const stage = Stage.create(document.getElementById('stage'));
+const W = innerWidth, H = innerHeight;
+if (q.get('layout') === 'mobile') stage.setFreeRect({ left: 0, top: 52, right: W, bottom: H * 0.44 });
+else stage.setFreeRect({ left: 0, top: 56, right: W - 476, bottom: H });
+const content = loadDefaultContent();
+const disease = q.get('disease') ?? 'kejang_demam';
+const ageMax = Number(q.get('ageMax') ?? 99), ageMin = Number(q.get('ageMin') ?? 0);
+let c;
+for (let i = 0; i < 3000; i++) {
+  c = generateCase(content, GAME_CONFIG, { diseaseId: disease, seed: Number(q.get('seed') ?? 1) + i });
+  if (c.patient.age <= ageMax && c.patient.age >= ageMin) break;
+}
+const look = buildAppearance(c, content);
+const comp = c.patient.companion;
+const cl = comp ? buildCompanionAppearance(c, content, look) : null;
+window.log = [];
+const director = new Director(stage, { onIntro: (s) => window.log.push('intro' + s), onSubtitle: (sub) => { if (sub) document.getElementById('info').textContent = `${sub.speaker}: ${sub.text}`; }, onLeft: () => (window.left = true) });
+window.director = director;
+document.getElementById('info').textContent = `${c.patient.name} ${c.patient.age} th (TB ${look.heightCm}) · pengantar ${comp ? comp.relation + ' ' + comp.address + ' ' + comp.age + ' th' : '-'} · mode ${comp ? companionMode(c.patient.age) : '-'}`;
+stage.start();
+director.enter(look, c.seed, c.patient.callName, c.greeting, c.complaint, [], q.get('instant') === '1', comp && cl ? { look: cl, mode: companionMode(c.patient.age), name: comp.address } : null);
+if (q.get('leave')) setTimeout(() => director.leave('Terima kasih, Dok. Permisi.'), Number(q.get('leave')));
+window.ready = true;
+</script></body></html>

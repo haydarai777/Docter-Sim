@@ -1,0 +1,114 @@
+{
+  "disease": "parotitis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — keluhan mulut",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "utama",
+        "reason": "Simptomatik (infeksi virus swasirna).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "utama",
+        "reason": "Simptomatik (infeksi virus swasirna).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "avoid": [{ "classes": ["antibiotik"], "reason": "Infeksi virus: antibiotik tidak diperlukan.", "severity": "salah" }]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres hangat/dingin pada pipi yang bengkak", "kind": "benar" },
+    { "id": "lunak", "text": "Makanan lunak, hindari makanan asam, cukup minum", "kind": "benar" },
+    { "id": "isolasi", "text": "Istirahat & tidak sekolah sampai 5 hari setelah bengkak muncul", "kind": "benar" },
+    {
+      "id": "skrotum",
+      "text": "Kompres dingin & penyangga skrotum",
+      "kind": "benar",
+      "when": { "traits": ["orkitis"] }
+    },
+    {
+      "id": "blau",
+      "text": "Oleskan blau/belau ke pipi agar bengkak kempis",
+      "kind": "berbahaya",
+      "why": "Tidak bermanfaat & mengiritasi kulit."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini gondongan (parotitis), infeksi virus kelenjar ludah yang menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat hanya meredakan nyeri/demam; sembuh sendiri 1–2 minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sakit kepala hebat & kaku kuduk, muntah terus, nyeri perut hebat, atau buah zakar bengkak nyeri",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 1 minggu", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Vaksin MMR/MR untuk anak & saudara", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

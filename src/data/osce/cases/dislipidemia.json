@@ -1,0 +1,106 @@
+{
+  "disease": "dislipidemia",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "statin",
+        "label": "Statin",
+        "role": "utama",
+        "reason": "Menurunkan LDL & risiko kardiovaskular.",
+        "options": [
+          {
+            "drug": "simvastatin",
+            "label": "Simvastatin 20–40 mg malam hari",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "atorvastatin",
+            "label": "Atorvastatin 10–20 mg 1 × sehari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ],
+        "when": { "notTraits": ["tg_tinggi"] }
+      },
+      {
+        "id": "fibrat",
+        "label": "Fibrat",
+        "role": "utama",
+        "reason": "Hipertrigliseridemia menonjol.",
+        "options": [
+          {
+            "drug": "gemfibrozil",
+            "label": "Gemfibrozil 2 × 300 mg sebelum makan (atau 600 mg 1–2 × sehari)",
+            "schedules": ["rutin"],
+            "dose": [300, 600],
+            "timesPerDay": [1, 2],
+            "days": [30, 30]
+          }
+        ],
+        "when": { "traits": ["tg_tinggi"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "diet", "text": "Diet rendah lemak jenuh & trans, perbanyak serat", "kind": "benar" },
+    { "id": "olahraga", "text": "Olahraga aerobik 150 menit/minggu", "kind": "benar" },
+    { "id": "bb", "text": "Turunkan berat badan", "kind": "benar", "when": { "traits": ["obesitas_menyertai"] } },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["merokok"] } },
+    {
+      "id": "stop",
+      "text": "Hentikan obat kolesterol bila hasil lab sudah normal",
+      "kind": "berbahaya",
+      "why": "Kadar kembali naik; risiko kardiovaskular."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini dislipidemia: kadar lemak darah tidak normal, faktor risiko penyakit jantung & stroke",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum setiap hari jangka panjang bersama perubahan pola hidup",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Laporkan nyeri/lemah otot atau air kencing gelap (efek samping statin)",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila nyeri dada, sesak, kelemahan sesisi, atau bicara pelo",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Cek profil lipid 4–12 minggu setelah terapi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "minyak_ikan",
+      "text": "Cukup minum kapsul minyak ikan, obat tidak perlu",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak menggantikan statin pada risiko tinggi."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKI. Panduan Tata Laksana Dislipidemia (2022)"
+    ]
+  }
+}

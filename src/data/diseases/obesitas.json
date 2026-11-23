@@ -1,0 +1,196 @@
+{
+  "id": "obesitas",
+  "name": "Obesitas",
+  "aliases": ["Kegemukan", "Kelebihan berat badan", "Obes", "Overweight"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.2,
+  "summary": "Penumpukan lemak berlebih: IMT ≥ 25 kg/m² (kriteria Asia-Pasifik; ≥ 30 obesitas II) dan/atau lingkar perut ≥ 90 cm (laki-laki) / ≥ 80 cm (perempuan). Meningkatkan risiko DM tipe 2, hipertensi, dislipidemia, OSA, osteoartritis. Tata laksana: target turun 5–10% BB dalam 6 bulan melalui defisit kalori, aktivitas fisik, dan perubahan perilaku; skrining komorbid; singkirkan penyebab sekunder.",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 18, "max": 34, "weight": 3 },
+      { "min": 35, "max": 59, "weight": 4 },
+      { "min": 60, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.45,
+    "occupations": [
+      { "id": "pegawai_kantor", "weight": 3 },
+      { "id": "ibu_rumah_tangga", "weight": 2 },
+      { "id": "karyawan_bank", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "obesitas2", "probability": 0.45 },
+    { "id": "sindrom_metabolik", "probability": 0.35 },
+    { "id": "osa", "probability": 0.12, "when": { "traits": ["obesitas2"] } }
+  ],
+  "traitLabels": {
+    "obesitas2": "Obesitas II (IMT ≥ 30).",
+    "sindrom_metabolik": "Sindrom metabolik (TD, gula, TG).",
+    "osa": "Curiga obstructive sleep apnea."
+  },
+  "symptoms": [
+    { "id": "mengantuk_siang", "probability": 0.8, "when": { "traits": ["osa"] } },
+    { "id": "bb_naik", "probability": 1 },
+    { "id": "sesak_napas", "probability": 0.35 },
+    { "id": "nyeri_otot_sendi", "probability": 0.4 },
+    { "id": "lemas", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["bb_naik"], "extraPool": ["sesak_napas"] },
+  "clueSymptoms": ["sesak_napas", "nyeri_otot_sendi", "mengantuk_siang", "lemas"],
+  "misattributions": ["keturunan", "tulang besar", "banyak air di badan"],
+  "fears": ["kencing manis", "serangan jantung"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} ini berat badan naik terus, Dok, sekarang hampir seratus kilo.",
+        "when": { "traits": ["obesitas2"] },
+        "clue": "BB naik progresif bertahun-tahun"
+      },
+      {
+        "text": "{LamaSakit} ini berat badan naik, Dok, celana sudah nggak muat.",
+        "when": { "notTraits": ["obesitas2"] },
+        "clue": "BB naik bertahap"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Suka ngemil dan minum manis, Dok, makan malam larut, jarang olahraga, kerja duduk terus.",
+        "clue": "Asupan kalori tinggi & sedentari"
+      }
+    ],
+    "pola": [
+      {
+        "text": "Kata istri saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok.",
+        "reveals": ["mengantuk_siang"],
+        "when": { "traits": ["osa"], "sex": "male", "symptoms": ["mengantuk_siang"] },
+        "clue": "Mendengkur, henti napas, mengantuk siang (OSA)"
+      },
+      {
+        "text": "Kata suami saya ngorok keras dan kadang berhenti napas, siangnya ngantuk terus, Dok.",
+        "reveals": ["mengantuk_siang"],
+        "when": { "traits": ["osa"], "sex": "female", "symptoms": ["mengantuk_siang"] },
+        "clue": "Mendengkur, henti napas, mengantuk siang (OSA)"
+      },
+      { "text": "Tidur biasa, Dok.", "when": { "notTraits": ["osa"] } }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Belum pernah cek gula atau kolesterol, Dok. Nggak pernah minum obat steroid lama.",
+        "clue": "Belum skrining komorbid; tanpa obat pemicu"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Orang tua saya dua-duanya gemuk, ibu saya kencing manis, Dok.",
+        "clue": "Riwayat keluarga obesitas & DM"
+      }
+    ],
+    "harapan": [{ "text": "Saya mau turun berat badan, Dok, biar sehat.", "clue": "Motivasi menurunkan BB" }],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok, cuma berat badan terus naik. Lutut kadang pegal." }]
+  },
+  "findings": [
+    {
+      "tool": "timbangan",
+      "param": "imt",
+      "when": { "traits": ["obesitas2"] },
+      "diagnostic": true,
+      "range": [30.5, 36]
+    },
+    { "tool": "timbangan", "param": "lingkar_perut", "when": { "traits": ["obesitas2"] }, "range": [100, 118] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["sindrom_metabolik"] }, "range": [138, 152] },
+    { "tool": "tanda_vital", "param": "td_diastolik", "when": { "traits": ["sindrom_metabolik"] }, "range": [88, 96] },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["sindrom_metabolik"] }, "range": [140, 190] },
+    { "tool": "profil_lipid", "param": "tg", "when": { "traits": ["sindrom_metabolik"] }, "range": [165, 260] },
+    { "tool": "profil_lipid", "param": "hdl", "when": { "traits": ["sindrom_metabolik"] }, "range": [32, 39] },
+    { "tool": "timbangan", "param": "imt", "diagnostic": true, "range": [25.5, 29.5] },
+    { "tool": "timbangan", "param": "lingkar_perut", "range": [90, 102] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "probability": 0.3,
+      "values": ["Akantosis nigrikans (plak hiperpigmentasi beludru)"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "probability": 0.3, "values": ["Lipatan leher & aksila"] }
+  ],
+  "differentials": [
+    {
+      "id": "dm_tipe2",
+      "howToDistinguish": "DM tipe 2 sering menyertai obesitas — skrining gula darah.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["gula_darah"] }
+    },
+    {
+      "id": "hipotiroid",
+      "howToDistinguish": "Hipotiroid: BB naik dengan lelah, tidak tahan dingin, konstipasi, kulit kering.",
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "sindrom_cushing",
+      "howToDistinguish": "Cushing: obesitas sentral, moon face, striae ungu lebar, riwayat steroid.",
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "IMT ≥ 25 (Asia-Pasifik) & lingkar perut di atas batas",
+    "Asupan kalori tinggi & sedentari, riwayat keluarga",
+    "Skrining komorbid: TD, gula, lipid, OSA"
+  ],
+  "teachingPoints": ["Penurunan 5–10% BB sudah memperbaiki TD, gula darah, dan lipid secara bermakna."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Umum Pengendalian Obesitas"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "pola", "riwayat_penyakit", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "IMT & lingkar perut." },
+      { "tool": "status_dermatologis", "role": "pendukung", "reason": "Akantosis nigrikans, striae." }
+    ],
+    "tests": [
+      { "tool": "gula_darah", "role": "kunci", "reason": "Skrining DM." },
+      { "tool": "profil_lipid", "role": "pendukung", "reason": "Skrining dislipidemia." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Program penurunan BB terstruktur, aktivitas fisik, konseling gizi & perilaku; kontrol bulanan."
+    }
+  ],
+  "management": [
+    "Defisit 500–750 kkal/hari; kurangi gula, gorengan, minuman manis; porsi 'Isi Piringku'.",
+    "Aktivitas fisik 150–300 menit/minggu intensitas sedang + latihan kekuatan.",
+    "Terapi perilaku: pencatatan makan, tidur cukup, kelola stres.",
+    "Skrining & tata laksana komorbid; rujuk untuk farmakoterapi/bariatrik bila IMT sangat tinggi dengan komorbid."
+  ],
+  "approach": ["Ukur IMT & lingkar perut; klasifikasi.", "Skrining komorbid & penyebab sekunder; tetapkan target realistis."]
+}

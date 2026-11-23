@@ -1,0 +1,158 @@
+{
+  "id": "hidradenitis_supurativa",
+  "name": "Hidradenitis supurativa",
+  "aliases": ["Bisul ketiak berulang", "Acne inversa", "Hidradenitis"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.4,
+  "summary": "Penyakit radang kronik-kambuhan folikel rambut di area lipatan (aksila, inguinal, submamaria, perianal): nodus nyeri dalam yang berulang di tempat sama, menjadi abses, sinus/terowongan berdrainase, dan parut (stadium Hurley I–III). Lebih sering pada perempuan muda, obesitas, perokok. Bukan infeksi primer — antibiotik jangka panjang anti-inflamasi, berhenti merokok, turunkan BB; rujuk untuk tindakan bila berat.",
+  "presentationDay": [30, 365],
+  "demographics": { "ageBands": [{ "min": 16, "max": 30, "weight": 4 }, { "min": 31, "max": 45, "weight": 3 }], "maleRatio": 0.35 },
+  "traits": [
+    { "id": "hurley2", "probability": 0.4 },
+    { "id": "merokok", "probability": 0.35 },
+    { "id": "obesitas_menyertai", "probability": 0.45 }
+  ],
+  "traitLabels": { "hurley2": "Hurley II (sinus & parut).", "merokok": "Perokok.", "obesitas_menyertai": "Obesitas." },
+  "symptoms": [{ "id": "bisul", "probability": 1 }, { "id": "demam", "probability": 0.1 }],
+  "chiefComplaint": { "primary": ["bisul"] },
+  "clueSymptoms": ["demam"],
+  "misattributions": ["bisul biasa", "kurang bersih", "deodoran"],
+  "fears": ["infeksi terus", "harus operasi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, bisul di ketiak kambuh terus di tempat yang sama.",
+        "clue": "Kronik berulang di lokasi sama"
+      }
+    ],
+    "lokasi": [{ "text": "Di ketiak kanan-kiri dan lipat paha, Dok.", "clue": "Lipatan (aksila & inguinal)" }],
+    "karakter": [
+      {
+        "text": "Sekarang ada lubang-lubang yang terus keluar cairan, kulitnya jadi berparut, Dok.",
+        "when": { "traits": ["hurley2"] },
+        "clue": "Sinus berdrainase & parut (Hurley II)"
+      },
+      {
+        "text": "Benjolan sakit dalam, kadang pecah lalu sembuh, terus muncul lagi, Dok.",
+        "when": { "notTraits": ["hurley2"] },
+        "clue": "Nodus/abses berulang tanpa sinus (Hurley I)"
+      }
+    ],
+    "kebiasaan": [
+      { "text": "Saya merokok sebungkus sehari, Dok.", "when": { "traits": ["merokok"] }, "clue": "Merokok" },
+      { "text": "Berat badan saya berlebih, Dok.", "when": { "traits": ["obesitas_menyertai"] }, "clue": "Obesitas" }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah berkali-kali minum antibiotik, Dok, sembuh sebentar lalu kambuh.",
+        "clue": "Kambuh setelah antibiotik jangka pendek"
+      }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["hurley2"] },
+      "values": ["Aksila kanan & kiri, lipat paha"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["hurley2"] },
+      "diagnostic": true,
+      "values": ["Nodus inflamasi nyeri multipel, beberapa abses, sinus berdrainase & parut (Hurley II)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["hurley2"] },
+      "values": ["Aksila kanan & kiri"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["hurley2"] },
+      "diagnostic": true,
+      "values": ["Nodus inflamasi nyeri & abses berulang tanpa sinus (Hurley I), parut minimal"]
+    },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas_menyertai"] }, "range": [28, 34] }
+  ],
+  "differentials": [
+    {
+      "id": "skrofuloderma",
+      "howToDistinguish": "Skrofuloderma: KGB konglomerasi tidak nyeri dengan fistel & ulkus bergaung, gejala TB, Mantoux kuat positif.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"], "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "furunkel_karbunkel",
+      "howToDistinguish": "Furunkel: nodus folikular akut tunggal, tidak berulang di lipatan yang sama dengan sinus.",
+      "excludeBy": { "topics": ["onset"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "limfadenitis",
+      "howToDistinguish": "Limfadenitis: KGB aksila nyeri dengan fokus infeksi di lengan, tanpa sinus/parut.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Nodus/abses nyeri berulang di lipatan (aksila, inguinal)",
+    "Sinus berdrainase & parut (Hurley II)",
+    "Obesitas, merokok"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "karakter", "kebiasaan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Distribusi, sinus, stadium Hurley." },
+      { "tool": "timbangan", "role": "pendukung", "reason": "Obesitas." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "obesitas_menyertai": "obesitas" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Modifikasi gaya hidup, antiseptik, antibiotik topikal/oral jangka panjang; rujuk bila Hurley II–III berat.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Berhenti merokok, turunkan BB, pakaian longgar, hindari cukur kasar.",
+    "Antiseptik (klorheksidin) & klindamisin topikal untuk Hurley I.",
+    "Doksisiklin/tetrasiklin oral 12 minggu untuk lesi luas/Hurley II; analgesik.",
+    "Insisi drainase abses akut; rujuk untuk deroofing/eksisi atau terapi biologik."
+  ],
+  "approach": ["Kenali rekurensi di lipatan & sinus.", "Tentukan stadium Hurley; singkirkan TB kulit."]
+}

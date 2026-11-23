@@ -1,0 +1,133 @@
+{
+  "id": "presbiopia",
+  "name": "Presbiopia",
+  "aliases": ["Mata tua", "Rabun dekat usia lanjut", "Butuh kacamata baca"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.2,
+  "summary": "Berkurangnya daya akomodasi lensa karena usia (mulai ± 40 tahun): sulit membaca/melihat dekat, harus menjauhkan bacaan, butuh cahaya terang, mata lelah saat membaca. Penglihatan jauh normal. Dikoreksi dengan kacamata baca (addisi) sesuai usia: ± S +1,00 D (40 th) hingga S +3,00 D (60 th).",
+  "presentationDay": [30, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 40, "max": 49, "weight": 3 },
+      { "min": 50, "max": 59, "weight": 3 },
+      { "min": 60, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [{ "id": "usia_50an", "probability": 1, "when": { "ageMin": 50 } }],
+  "symptoms": [
+    { "id": "kabur_dekat", "probability": 1 },
+    { "id": "mata_lelah", "probability": 0.8 },
+    { "id": "nyeri_kepala", "probability": 0.3 }
+  ],
+  "chiefComplaint": { "primary": ["kabur_dekat"], "extraPool": ["mata_lelah"] },
+  "clueSymptoms": ["mata_lelah", "nyeri_kepala"],
+  "misattributions": ["mata minus", "katarak", "kurang vitamin"],
+  "fears": ["katarak", "mata buta"],
+  "anamnesis": {
+    "onset": [{ "text": "{LamaSakit} terakhir ini, Dok, pelan-pelan.", "clue": "Bertahap setelah usia 40" }],
+    "karakter": [
+      {
+        "text": "Kalau baca koran atau HP harus dijauhkan, Dok, baru jelas. Lihat jauh masih bagus.",
+        "clue": "Harus menjauhkan bacaan; penglihatan jauh baik"
+      }
+    ],
+    "pemberat_peringan": [
+      {
+        "text": "Kalau cahayanya terang lebih enak bacanya, Dok. Malam hari susah.",
+        "clue": "Membaik dengan cahaya terang"
+      }
+    ],
+    "riwayat_penyakit": [{ "text": "Saya nggak ada kencing manis, Dok. Belum pernah cek mata." }],
+    "riwayat_obat": [{ "text": "Belum pernah pakai kacamata, Dok." }],
+    "lokasi": [{ "text": "Matanya, Dok, dua-duanya, kalau baca tulisan kecil dari dekat." }]
+  },
+  "findings": [
+    {
+      "tool": "visus",
+      "param": "visus_dekat",
+      "when": { "notTraits": ["usia_50an"] },
+      "diagnostic": true,
+      "values": ["J5–J6 tanpa koreksi; dengan addisi S +1,50 D menjadi J1"]
+    },
+    {
+      "tool": "visus",
+      "param": "visus_dekat",
+      "when": { "traits": ["usia_50an"] },
+      "diagnostic": true,
+      "values": ["J7 tanpa koreksi; dengan addisi S +2,00 D menjadi J1"]
+    },
+    { "tool": "visus", "param": "koreksi", "values": ["Visus jauh 6/6 tanpa koreksi; addisi baca sesuai usia"] }
+  ],
+  "differentials": [
+    {
+      "id": "hipermetropia",
+      "howToDistinguish": "Hipermetropia: kabur dekat sejak usia muda, juga butuh lensa plus untuk jauh pada derajat tinggi.",
+      "excludeBy": { "topics": ["identitas_umur"], "tools": ["visus"] }
+    },
+    {
+      "id": "katarak",
+      "howToDistinguish": "Katarak: kabur jauh & dekat seperti berkabut, silau, refleks fundus berkurang.",
+      "excludeBy": { "tools": ["visus", "segmen_anterior", "funduskopi"] }
+    },
+    {
+      "id": "glaukoma_kronik",
+      "howToDistinguish": "Glaukoma kronik pada usia > 40 tahun sering tanpa gejala — skrining papil & TIO.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["segmen_anterior", "funduskopi"] }
+    }
+  ],
+  "keyFindings": [
+    "Usia ≥ 40 tahun, sulit membaca dekat, menjauhkan bacaan",
+    "Visus jauh normal; visus dekat membaik dengan addisi sesuai usia"
+  ],
+  "teachingPoints": ["Pada usia > 40 tahun, momen pemberian kacamata baca adalah kesempatan skrining glaukoma (papil, TIO) dan DM."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata",
+      "Kemenkes RI. Pedoman Penanggulangan Gangguan Penglihatan dan Kebutaan"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "pemberat_peringan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Visus jauh & dekat dan addisi." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Lensa & TIO palpasi." },
+      { "tool": "funduskopi", "role": "pendukung", "reason": "Skrining glaukoma/retinopati." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [{ "value": "rawat_jalan", "reason": "Resep kacamata baca (addisi) sesuai usia dan jarak kerja." }],
+  "management": [
+    "Kacamata baca dengan addisi sesuai usia (40 th ± +1,00 D; 50 th ± +2,00 D; ≥ 60 th ± +3,00 D), dicoba pada jarak baca 33 cm.",
+    "Pencahayaan cukup saat membaca.",
+    "Skrining glaukoma & gula darah pada usia > 40 tahun."
+  ],
+  "approach": ["Pastikan visus jauh normal, lalu uji visus dekat dan addisi.", "Skrining kelainan organik (lensa, papil)."]
+}

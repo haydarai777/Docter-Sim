@@ -1,0 +1,127 @@
+{
+  "disease": "mastitis",
+  "setting": "Puskesmas",
+  "station": "Obstetri — nifas & menyusui",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik antistafilokokus",
+        "role": "utama",
+        "reason": "Mastitis infektif.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [10, 14]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [10, 14]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 4 × 500 mg selama 10–14 hari (alergi penisilin)",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [10, 14]
+          }
+        ]
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "pendukung",
+        "reason": "Nyeri & demam.",
+        "options": [
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "susui", "text": "Tetap menyusui/memerah ASI sering, termasuk dari payudara yang sakit", "kind": "benar" },
+    { "id": "pelekatan", "text": "Perbaiki posisi & pelekatan menyusui", "kind": "benar" },
+    {
+      "id": "kompres",
+      "text": "Kompres hangat sebelum & dingin sesudah menyusui; istirahat & cairan cukup",
+      "kind": "benar"
+    },
+    {
+      "id": "insisi",
+      "text": "Aspirasi/insisi drainase abses (rujuk)",
+      "kind": "benar",
+      "when": { "traits": ["abses"] }
+    },
+    {
+      "id": "stop",
+      "text": "Hentikan menyusui dari payudara yang sakit",
+      "kind": "berbahaya",
+      "why": "Stasis ASI memperberat mastitis & memicu abses."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang payudara (mastitis) karena ASI tertahan dan infeksi",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Antibiotik aman untuk menyusui; diminum sampai habis",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila benjolan bernanah/berfluktuasi, demam menetap 48 jam, atau kemerahan meluas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 48–72 jam", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "asi_racun",
+      "text": "ASI dari payudara yang sakit beracun dan harus dibuang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "ASI tetap aman untuk bayi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)",
+      "WHO. Mastitis: causes and management"
+    ]
+  }
+}

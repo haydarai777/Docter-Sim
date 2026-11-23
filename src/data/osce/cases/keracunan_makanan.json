@@ -1,0 +1,148 @@
+{
+  "disease": "keracunan_makanan",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — diare & muntah",
+  "therapy": {
+    "items": [
+      {
+        "id": "oralit",
+        "label": "Rehidrasi oral",
+        "role": "utama",
+        "reason": "Mengganti cairan.",
+        "options": [
+          {
+            "drug": "oralit",
+            "label": "Oralit 200 mL setiap BAB cair/muntah",
+            "schedules": ["prn", "rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "oralit_anak",
+        "label": "Rehidrasi oral (anak)",
+        "role": "utama",
+        "reason": "Mengganti cairan.",
+        "options": [
+          {
+            "drug": "oralit",
+            "label": "Oralit 50–200 mL (¼–1 sachet) setiap BAB cair (< 2 th 50–100 mL; 2–10 th 100–200 mL)",
+            "schedules": ["prn", "rutin"],
+            "dose": [0.25, 1],
+            "timesPerDay": [3, 10],
+            "days": [2, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "antiemetik",
+        "label": "Antiemetik",
+        "role": "pendukung",
+        "reason": "Muntah (dewasa).",
+        "options": [
+          {
+            "drug": "domperidon",
+            "label": "Domperidon 3 × 10 mg sebelum makan",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [3, 3],
+            "days": [1, 3]
+          },
+          {
+            "drug": "ondansetron",
+            "label": "Ondansetron 2–3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [1, 3]
+          },
+          {
+            "drug": "metoklopramid",
+            "label": "Metoklopramid 3 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [3, 3],
+            "days": [1, 3]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Keracunan makanan umumnya tidak memerlukan antibiotik.",
+        "severity": "salah"
+      },
+      { "drugs": ["loperamid"], "reason": "Antimotilitas menahan toksin di usus.", "severity": "salah" }
+    ]
+  },
+  "nonPharm": [
+    {
+      "id": "sedikit",
+      "text": "Minum oralit sedikit-sedikit tapi sering, lalu makanan lunak bertahap",
+      "kind": "benar"
+    },
+    {
+      "id": "infus",
+      "text": "Infus bila muntah terus/dehidrasi & observasi",
+      "kind": "benar",
+      "when": { "traits": ["dehidrasi"] }
+    },
+    {
+      "id": "lapor",
+      "text": "Laporkan KLB ke Dinas Kesehatan & amankan sampel makanan",
+      "kind": "benar",
+      "when": { "traits": ["kluster"] }
+    },
+    {
+      "id": "pancing_muntah",
+      "text": "Pancing muntah dengan memasukkan jari ke tenggorokan",
+      "kind": "berbahaya",
+      "why": "Risiko aspirasi & cedera."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini keracunan makanan akibat racun/kuman dari makanan tercemar",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kunci pengobatan adalah cairan; antibiotik tidak diperlukan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila muntah terus, BAB berdarah, lemas berat, kencing sedikit, pandangan ganda, atau sulit menelan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik 24–48 jam", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Simpan & masak makanan dengan benar; jangan makan makanan basi",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "susu_beruang",
+      "text": "Minum susu kaleng untuk menetralkan racun",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak menetralkan racun."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

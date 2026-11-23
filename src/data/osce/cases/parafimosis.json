@@ -1,0 +1,117 @@
+{
+  "disease": "parafimosis",
+  "setting": "Puskesmas",
+  "station": "Bedah/Anak — keluhan genital",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "note": "Tatalaksana utama reposisi manual; analgesik pendukung."
+  },
+  "nonPharm": [
+    { "id": "edema", "text": "Kompres es/penekanan glans untuk mengurangi edema", "kind": "benar" },
+    {
+      "id": "reposisi",
+      "text": "Reposisi manual: ibu jari mendorong glans, jari lain menarik preputium ke distal",
+      "kind": "benar"
+    },
+    {
+      "id": "rujuk",
+      "text": "Rujuk segera (iskemia/nekrosis glans)",
+      "kind": "benar",
+      "when": { "traits": ["nekrosis"] }
+    },
+    { "id": "sirkumsisi", "text": "Sirkumsisi elektif setelah edema hilang", "kind": "benar" },
+    {
+      "id": "tunggu",
+      "text": "Biarkan dulu beberapa hari sampai bengkak kempis sendiri",
+      "kind": "berbahaya",
+      "why": "Iskemia & nekrosis glans."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini parafimosis: kulup terjepit di belakang kepala penis — gawat darurat",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kulup sudah dikembalikan; obat pereda nyeri bila perlu & rencana sirkumsisi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila kepala penis kebiruan/menghitam, sangat nyeri, atau tidak bisa kencing",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu untuk rencana sirkumsisi", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "tarik_lagi",
+      "text": "Latih menarik kulup ke belakang dan biarkan di sana",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Memicu parafimosis berulang."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

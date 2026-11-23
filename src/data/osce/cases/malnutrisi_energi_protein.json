@@ -1,0 +1,166 @@
+{
+  "disease": "malnutrisi_energi_protein",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam/Anak — gizi & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Gizi buruk: antibiotik rutin (infeksi tersembunyi).",
+        "options": [
+          {
+            "drug": "amoksisilin",
+            "label": "Amoksisilin 15–25 mg/kgBB/kali 2–3 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["amoksisilin-syr125", "amoksisilin-syr250"],
+            "dosePerKg": [13, 27],
+            "timesPerDay": [2, 3],
+            "days": [5, 5]
+          },
+          {
+            "drug": "kotrimoksazol",
+            "label": "Kotrimoksazol 4 mg TMP/kgBB/kali 2 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["kotrimoksazol-syr"],
+            "dosePerKg": [18, 30],
+            "timesPerDay": [2, 2],
+            "days": [5, 5]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [5, 5]
+          }
+        ],
+        "when": { "traits": ["gizi_buruk"] }
+      },
+      {
+        "id": "vit_a",
+        "label": "Vitamin A",
+        "role": "pendukung",
+        "reason": "Gizi buruk: vitamin A dosis sesuai umur.",
+        "options": [
+          {
+            "drug": "vitamin_a",
+            "label": "Vitamin A 100.000 IU (6–11 bulan) / 200.000 IU (≥ 12 bulan) dosis tunggal",
+            "schedules": ["tunggal"],
+            "dose": [100000, 200000]
+          }
+        ],
+        "when": { "traits": ["gizi_buruk"] }
+      },
+      {
+        "id": "folat",
+        "label": "Asam folat",
+        "role": "pendukung",
+        "reason": "Gizi buruk.",
+        "options": [
+          {
+            "drug": "asam_folat",
+            "label": "Asam folat 1 mg/hari (hari pertama 5 mg)",
+            "schedules": ["rutin"],
+            "forms": ["asamfolat-tab1"],
+            "dose": [1, 5],
+            "timesPerDay": [1, 1],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["gizi_buruk"] }
+      },
+      {
+        "id": "zinc",
+        "label": "Zinc",
+        "role": "pendukung",
+        "reason": "Diare berulang.",
+        "options": [
+          {
+            "drug": "zinc",
+            "label": "Zinc 10–20 mg 1 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [10, 20],
+            "timesPerDay": [1, 1],
+            "days": [10, 10]
+          }
+        ],
+        "when": { "traits": ["diare_berulang"] }
+      }
+    ],
+    "note": "Gizi kurang tanpa gizi buruk: tatalaksana gizi (PMT, konseling) tanpa obat rutin."
+  },
+  "nonPharm": [
+    { "id": "pmt", "text": "PMT pemulihan & konseling MPASI padat gizi (protein hewani)", "kind": "benar" },
+    {
+      "id": "f75",
+      "text": "Rujuk ke pusat pemulihan gizi (F-75 → F-100/RUTF, 10 langkah)",
+      "kind": "benar",
+      "when": { "traits": ["gizi_buruk"] }
+    },
+    {
+      "id": "hangat",
+      "text": "Jaga bayi tetap hangat & cegah hipoglikemia (beri makan sering) selama rujukan",
+      "kind": "benar",
+      "when": { "traits": ["gizi_buruk"] }
+    },
+    {
+      "id": "tb",
+      "text": "Skrining TB anak (kontak & batuk lama)",
+      "kind": "benar",
+      "when": { "traits": ["tb_curiga"] }
+    },
+    { "id": "pantau", "text": "Pantau BB & z-skor berkala; stimulasi tumbuh kembang", "kind": "benar" },
+    {
+      "id": "tajin",
+      "text": "Ganti susu/MPASI dengan air tajin & teh manis",
+      "kind": "berbahaya",
+      "why": "Miskin protein — memperberat malnutrisi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Anak mengalami kekurangan gizi (berat badan tidak sesuai tinggi badan)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Pemulihan utama dengan makanan bergizi tinggi protein; obat sesuai kebutuhan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke fasilitas kesehatan bila anak tidak mau makan/minum, muntah terus, diare, sesak, sangat lemas, bengkak, atau dingin",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol & timbang tiap 1–2 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Lengkapi imunisasi & posyandu rutin tiap bulan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "vitamin_saja",
+      "text": "Cukup diberi vitamin penambah nafsu makan",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak menggantikan asupan energi-protein."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Pencegahan & Tata Laksana Gizi Buruk pada Balita (2019)"
+    ]
+  }
+}

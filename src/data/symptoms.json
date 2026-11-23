@@ -17,7 +17,8 @@
         "vague": ["badan rasanya nggak enak, kayak masuk angin", "badan saya nggak karuan rasanya"],
         "exaggerated": ["panasnya tinggi banget, kayak terbakar", "badan saya panas sekali sampai nggak kuat bangun"],
         "downplayed": ["badan agak anget sedikit", "sumeng sedikit"]
-      }
+      },
+      "keywords": ["demam", "panas", "meriang", "badan panas", "suhu tinggi", "febris", "sumeng", "anget"]
     },
     {
       "id": "menggigil",
@@ -29,7 +30,8 @@
         "vague": ["kadang badan dingin semua"],
         "exaggerated": ["menggigilnya hebat sampai gigi gemeletuk, pakai selimut tebal juga masih dingin"],
         "downplayed": ["kadang agak kedinginan sedikit"]
-      }
+      },
+      "keywords": ["menggigil", "kedinginan", "gemetar", "gemetaran", "badan gemetar", "gigi gemeletuk"]
     },
     {
       "id": "berkeringat",
@@ -41,7 +43,16 @@
         "vague": ["badan saya suka basah"],
         "exaggerated": ["keringatnya banjir, sampai kasur basah semua"],
         "downplayed": ["agak keringetan sedikit"]
-      }
+      },
+      "keywords": [
+        "berkeringat",
+        "keringat banyak",
+        "keringetan",
+        "keringat dingin habis panas",
+        "banjir keringat",
+        "keringat",
+        "keringatan"
+      ]
     },
     {
       "id": "lemas",
@@ -53,7 +64,8 @@
         "vague": ["badan rasanya loyo"],
         "exaggerated": ["lemasnya sampai nggak kuat jalan"],
         "downplayed": ["agak capek sedikit"]
-      }
+      },
+      "keywords": ["lemas", "lemes", "lelah", "capek", "loyo", "tidak bertenaga", "nggak bertenaga", "lesu", "lemah", "badan lemah"]
     },
     {
       "id": "nafsu_makan_turun",
@@ -65,7 +77,20 @@
         "vague": ["mulut saya rasanya pahit"],
         "exaggerated": ["sama sekali nggak bisa makan, dipaksa juga mau muntah"],
         "downplayed": ["makannya agak berkurang"]
-      }
+      },
+      "keywords": [
+        "nafsu makan",
+        "tidak nafsu",
+        "nggak nafsu",
+        "tidak mau makan",
+        "mulut pahit",
+        "selera makan",
+        "selera makan berkurang",
+        "nafsu makan berkurang",
+        "nafsu makan turun",
+        "tidak selera makan",
+        "nafsu makan menurun"
+      ]
     },
     {
       "id": "nyeri_kepala",
@@ -77,7 +102,19 @@
         "vague": ["kepala rasanya berat"],
         "exaggerated": ["kepala saya sakit sekali kayak mau pecah"],
         "downplayed": ["kepala agak pusing sedikit"]
-      }
+      },
+      "keywords": [
+        "sakit kepala",
+        "pusing",
+        "nyeri kepala",
+        "kepala sakit",
+        "sefalgia",
+        "kepala berat",
+        "pening",
+        "mumet",
+        "puyeng",
+        "kliyengan"
+      ]
     },
     {
       "id": "nyeri_retroorbital",
@@ -89,7 +126,16 @@
         "vague": ["mata rasanya berat"],
         "exaggerated": ["mata saya sakit sekali kayak mau copot"],
         "downplayed": ["mata agak pegal"]
-      }
+      },
+      "keywords": [
+        "belakang mata",
+        "bola mata",
+        "mata pegal",
+        "nyeri mata",
+        "sakit mata kalau melirik",
+        "retroorbital",
+        "retro orbital"
+      ]
     },
     {
       "id": "nyeri_otot_sendi",
@@ -101,7 +147,20 @@
         "vague": ["badan rasanya remuk"],
         "exaggerated": ["sendi saya sakit semua kayak tulang mau patah"],
         "downplayed": ["agak pegal-pegal"]
-      }
+      },
+      "keywords": [
+        "pegal",
+        "linu",
+        "nyeri otot",
+        "nyeri sendi",
+        "sakit sendi",
+        "otot sakit",
+        "mialgia",
+        "artralgia",
+        "badan remuk",
+        "ngilu",
+        "pegel"
+      ]
     },
     {
       "id": "mual_muntah",
@@ -113,7 +172,8 @@
         "vague": ["perut rasanya nggak enak"],
         "exaggerated": ["muntah terus, apa saja yang masuk keluar lagi"],
         "downplayed": ["agak mual sedikit"]
-      }
+      },
+      "keywords": ["mual", "muntah", "eneg", "enek", "muntah muntah"]
     },
     {
       "id": "nyeri_perut",
@@ -121,11 +181,12 @@
       "system": "Pencernaan",
       "question": "Apakah perutnya sakit?",
       "phrases": {
-        "lay": ["perut saya sakit", "ulu hati saya perih"],
+        "lay": ["perut saya sakit", "perut saya sakit melilit-melilit"],
         "vague": ["perut rasanya nggak enak, begah"],
         "exaggerated": ["perut saya sakit sekali, melilit"],
         "downplayed": ["perut agak nggak enak sedikit"]
-      }
+      },
+      "keywords": ["sakit perut", "nyeri perut", "perut sakit", "perut melilit", "mules perut", "mules", "mulas"]
     },
     {
       "id": "diare",
@@ -137,7 +198,8 @@
         "vague": ["perut saya mules terus"],
         "exaggerated": ["mencret terus, bolak-balik ke WC"],
         "downplayed": ["BAB agak lembek"]
-      }
+      },
+      "keywords": ["mencret", "diare", "bab cair", "buang air besar cair", "berak cair", "bab encer"]
     },
     {
       "id": "konstipasi",
@@ -149,7 +211,17 @@
         "vague": ["perut saya kembung, BAB nggak lancar"],
         "exaggerated": ["sudah lama sekali nggak bisa BAB, perut penuh rasanya"],
         "downplayed": ["BAB agak jarang"]
-      }
+      },
+      "keywords": [
+        "susah bab",
+        "sulit bab",
+        "sembelit",
+        "tidak bab",
+        "belum bab",
+        "sulit buang air besar",
+        "susah buang air besar",
+        "konstipasi"
+      ]
     },
     {
       "id": "bintik_merah",
@@ -158,10 +230,19 @@
       "question": "Apakah ada bintik-bintik merah di kulit?",
       "phrases": {
         "lay": ["ada bintik-bintik merah di kulit saya, kayak bekas digigit nyamuk", "kulit saya ada bintik merahnya"],
-        "vague": ["kulit saya ada yang merah-merah"],
+        "vague": ["kulit saya ada bintik-bintik halus"],
         "exaggerated": ["bintik merahnya banyak sekali di tangan dan kaki"],
         "downplayed": ["ada bintik merah sedikit, paling digigit nyamuk"]
-      }
+      },
+      "keywords": [
+        "bintik merah",
+        "bintik bintik",
+        "petekie",
+        "bintik di kulit",
+        "bintik merah di kulit",
+        "bintik bintik merah di kulit",
+        "bintik merah di badan"
+      ]
     },
     {
       "id": "perdarahan_mukosa",
@@ -173,7 +254,8 @@
         "vague": ["ada darah sedikit waktu sikat gigi"],
         "exaggerated": ["mimisannya banyak, sampai tisu sekotak habis"],
         "downplayed": ["gusi berdarah sedikit, paling karena sikat gigi kekerasan"]
-      }
+      },
+      "keywords": ["mimisan", "gusi berdarah", "berdarah gusi", "hidung berdarah", "perdarahan gusi", "epistaksis"]
     },
     {
       "id": "kuning",
@@ -185,7 +267,8 @@
         "vague": ["warna mata saya agak lain"],
         "exaggerated": ["mata saya kuning sekali, saya takut liver"],
         "downplayed": ["mata agak kuning sedikit, mungkin kurang tidur"]
-      }
+      },
+      "keywords": ["kuning", "mata kuning", "kulit kuning", "ikterus", "jaundice"]
     },
     {
       "id": "batuk",
@@ -197,7 +280,2859 @@
         "vague": ["tenggorokan saya gatal"],
         "exaggerated": ["batuknya nggak berhenti-berhenti"],
         "downplayed": ["batuk sedikit"]
-      }
+      },
+      "keywords": ["batuk", "batuk batuk", "berdahak", "dahak"]
+    },
+    {
+      "id": "nyeri_ulu_hati",
+      "label": "Nyeri/perih ulu hati (epigastrium)",
+      "system": "Pencernaan",
+      "question": "Apakah ada nyeri atau perih di ulu hati?",
+      "phrases": {
+        "lay": ["ulu hati saya perih", "perut bagian atas saya sakit, perih"],
+        "vague": ["perut saya rasanya nggak enak"],
+        "exaggerated": ["ulu hati saya perih sekali, kayak disayat"],
+        "downplayed": ["ulu hati agak perih sedikit"]
+      },
+      "keywords": [
+        "ulu hati",
+        "epigastrium",
+        "perut atas",
+        "perih di perut",
+        "maag",
+        "lambung",
+        "ulu hati panas",
+        "ulu hati terasa panas",
+        "perut panas",
+        "perut terasa panas"
+      ]
+    },
+    {
+      "id": "kembung",
+      "label": "Kembung / sering sendawa",
+      "system": "Pencernaan",
+      "question": "Apakah perut sering kembung atau sering bersendawa?",
+      "phrases": {
+        "lay": ["perut saya kembung", "perut kembung, sering sendawa"],
+        "vague": ["perut rasanya nggak enak, banyak angin"],
+        "exaggerated": ["perut saya kembung sekali kayak mau meledak"],
+        "downplayed": ["perut agak kembung"]
+      },
+      "keywords": ["kembung", "sendawa", "perut kembung", "banyak gas", "banyak angin", "sering sendawa", "bersendawa"]
+    },
+    {
+      "id": "cepat_kenyang",
+      "label": "Cepat kenyang / begah setelah makan",
+      "system": "Pencernaan",
+      "question": "Apakah cepat kenyang atau perut terasa begah setelah makan?",
+      "phrases": {
+        "lay": ["baru makan sedikit sudah kenyang", "perut begah setelah makan"],
+        "vague": ["perut rasanya penuh terus"],
+        "exaggerated": ["makan dua suap saja perut sudah penuh sekali"],
+        "downplayed": ["agak cepat kenyang"]
+      },
+      "keywords": [
+        "cepat kenyang",
+        "begah",
+        "perut penuh",
+        "sebah",
+        "penuh setelah makan",
+        "sedikit sudah kenyang",
+        "kenyang duluan",
+        "tidak bisa makan banyak",
+        "perut terasa penuh"
+      ]
+    },
+    {
+      "id": "heartburn",
+      "label": "Rasa terbakar di dada (heartburn)",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa panas atau terbakar di dada?",
+      "phrases": {
+        "lay": ["dada saya rasanya panas, kayak terbakar", "ada rasa panas naik dari ulu hati ke dada"],
+        "vague": ["dada saya rasanya nggak enak, kayak masuk angin"],
+        "exaggerated": ["dada saya panas sekali kayak disiram air mendidih"],
+        "downplayed": ["dada agak panas sedikit"]
+      },
+      "keywords": [
+        "dada panas",
+        "dada terbakar",
+        "rasa terbakar di dada",
+        "heartburn",
+        "panas di dada",
+        "perih di dada",
+        "dada terasa panas",
+        "dada rasanya panas",
+        "dada terasa terbakar",
+        "dada rasanya terbakar",
+        "dada seperti terbakar",
+        "terbakar di dada",
+        "panas atau terbakar di dada",
+        "panas terbakar di dada"
+      ]
+    },
+    {
+      "id": "regurgitasi",
+      "label": "Regurgitasi asam",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa asam atau pahit yang naik ke mulut?",
+      "phrases": {
+        "lay": ["sering ada rasa asam naik ke mulut", "mulut saya suka pahit, kayak ada yang naik dari perut"],
+        "vague": ["mulut saya rasanya aneh"],
+        "exaggerated": ["asamnya naik terus sampai tenggorokan perih"],
+        "downplayed": ["kadang mulut agak asam"]
+      },
+      "keywords": ["asam naik", "pahit di mulut", "rasa asam", "regurgitasi", "naik ke tenggorokan", "naik ke mulut"]
+    },
+    {
+      "id": "nyeri_dada",
+      "label": "Nyeri dada (berat/tertekan)",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah ada nyeri dada, rasa berat atau seperti ditekan?",
+      "phrases": {
+        "lay": ["dada saya rasanya berat, kayak ditekan", "dada saya sakit di tengah"],
+        "vague": ["dada saya rasanya nggak enak, kayak masuk angin", "dada saya kayak kena angin duduk"],
+        "exaggerated": ["dada saya sakit sekali kayak ditindih batu besar"],
+        "downplayed": ["dada agak berat sedikit"]
+      },
+      "keywords": [
+        "nyeri dada",
+        "sakit dada",
+        "dada sakit",
+        "dada berat",
+        "dada ditekan",
+        "dada tertekan",
+        "dada sesak",
+        "angin duduk",
+        "dada tidak enak",
+        "dada nggak enak"
+      ]
+    },
+    {
+      "id": "nyeri_menjalar",
+      "label": "Nyeri menjalar ke lengan kiri/leher/rahang",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah nyerinya menjalar ke lengan, leher, atau rahang?",
+      "phrases": {
+        "lay": ["sakitnya kadang menjalar ke lengan kiri", "nyerinya sampai ke leher dan rahang"],
+        "vague": ["lengan kiri saya suka kesemutan"],
+        "exaggerated": ["sakitnya menjalar sampai lengan kiri lemas semua"],
+        "downplayed": ["lengan kiri agak pegal"]
+      },
+      "keywords": ["menjalar ke lengan", "lengan kiri", "rahang", "menjalar ke leher", "tangan kiri", "penjalaran ke lengan"]
+    },
+    {
+      "id": "keringat_dingin",
+      "label": "Keringat dingin",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah keluar keringat dingin saat keluhan muncul?",
+      "phrases": {
+        "lay": ["keluar keringat dingin"],
+        "vague": ["badan saya suka dingin-dingin"],
+        "exaggerated": ["keringat dinginnya sampai basah kuyup"],
+        "downplayed": ["agak keringetan sedikit"]
+      },
+      "keywords": ["keringat dingin", "keringetan dingin", "dingin berkeringat", "berkeringat dingin"]
+    },
+    {
+      "id": "sesak_napas",
+      "label": "Sesak napas",
+      "system": "Pernapasan",
+      "question": "Apakah ada sesak napas?",
+      "phrases": {
+        "lay": ["napas saya sesak", "saya gampang ngos-ngosan"],
+        "vague": ["dada saya rasanya sempit", "napas saya nggak lega"],
+        "exaggerated": ["sesak sekali, kayak nggak bisa napas"],
+        "downplayed": ["agak ngos-ngosan dikit"]
+      },
+      "keywords": [
+        "sesak",
+        "sesak napas",
+        "napas berat",
+        "ngos ngosan",
+        "susah napas",
+        "sulit bernapas",
+        "napas pendek",
+        "engap",
+        "dispnea"
+      ]
+    },
+    {
+      "id": "mengi",
+      "label": "Mengi (wheezing)",
+      "system": "Pernapasan",
+      "question": "Apakah napasnya berbunyi 'ngik-ngik'?",
+      "phrases": {
+        "lay": ["napas saya bunyi ngik-ngik"],
+        "vague": ["dada saya ada bunyinya kalau napas"],
+        "exaggerated": ["bunyinya keras sekali sampai kedengaran orang serumah"],
+        "downplayed": ["kadang napas agak bunyi"]
+      },
+      "keywords": ["mengi", "ngik ngik", "bengek", "napas bunyi", "wheezing", "bunyi saat napas"]
+    },
+    {
+      "id": "nyeri_dada_pleuritik",
+      "label": "Nyeri dada saat bernapas/batuk (pleuritik)",
+      "system": "Pernapasan",
+      "question": "Apakah dadanya sakit saat menarik napas dalam atau batuk?",
+      "phrases": {
+        "lay": ["dada saya sakit kalau tarik napas atau batuk"],
+        "vague": ["dada saya nyeri-nyeri"],
+        "exaggerated": ["dada saya sakit sekali sampai takut napas dalam"],
+        "downplayed": ["dada agak nyeri kalau batuk"]
+      },
+      "keywords": [
+        "sakit kalau tarik napas",
+        "nyeri saat napas",
+        "nyeri kalau batuk",
+        "sakit dada kalau batuk",
+        "dada sakit saat menarik napas",
+        "pleuritik",
+        "nyeri saat batuk",
+        "sakit saat batuk",
+        "sakit kalau batuk",
+        "saat bernapas",
+        "napas dalam",
+        "bernapas dalam",
+        "tarik napas dalam",
+        "nyeri saat bernapas"
+      ]
+    },
+    {
+      "id": "batuk_darah",
+      "label": "Batuk darah (hemoptisis)",
+      "system": "Pernapasan",
+      "question": "Apakah batuknya pernah keluar darah?",
+      "phrases": {
+        "lay": ["dahak saya ada darahnya"],
+        "vague": ["dahak saya warnanya aneh, kemerahan"],
+        "exaggerated": ["batuk saya keluar darah banyak"],
+        "downplayed": ["ada bercak darah sedikit di dahak"]
+      },
+      "keywords": [
+        "batuk darah",
+        "dahak berdarah",
+        "batuk berdarah",
+        "hemoptisis",
+        "darah saat batuk",
+        "dahak ada darah",
+        "batuk keluar darah",
+        "batuk ada darah",
+        "batuk bercampur darah"
+      ]
+    },
+    {
+      "id": "keringat_malam",
+      "label": "Keringat malam",
+      "system": "Umum",
+      "question": "Apakah sering berkeringat di malam hari tanpa beraktivitas?",
+      "phrases": {
+        "lay": ["malam-malam saya keringetan padahal nggak gerah"],
+        "vague": ["tidur saya nggak nyenyak, badan basah"],
+        "exaggerated": ["tiap malam keringatnya banjir sampai ganti baju"],
+        "downplayed": ["malam agak keringetan"]
+      },
+      "keywords": [
+        "keringat malam",
+        "berkeringat malam",
+        "keringetan malam",
+        "malam berkeringat",
+        "malam keringetan",
+        "malam keringatan"
+      ]
+    },
+    {
+      "id": "berat_badan_turun",
+      "label": "Berat badan turun",
+      "system": "Umum",
+      "question": "Apakah berat badannya turun akhir-akhir ini?",
+      "phrases": {
+        "lay": ["berat badan saya turun, celana jadi longgar", "saya makin kurus"],
+        "vague": ["baju saya kok jadi longgar ya"],
+        "exaggerated": ["saya kurus kering, turun banyak sekali"],
+        "downplayed": ["berat badan agak turun sedikit"]
+      },
+      "keywords": [
+        "berat badan turun",
+        "bb turun",
+        "makin kurus",
+        "kurus",
+        "turun berat",
+        "celana longgar",
+        "berat badan berkurang",
+        "berat badan menurun",
+        "berat menurun"
+      ]
+    },
+    {
+      "id": "haus",
+      "label": "Sering haus (polidipsia)",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah sering merasa haus?",
+      "phrases": {
+        "lay": ["saya gampang haus, minum terus"],
+        "vague": ["tenggorokan saya kering terus"],
+        "exaggerated": ["hausnya nggak ketulungan, minum segalon sehari"],
+        "downplayed": ["agak sering haus"]
+      },
+      "keywords": ["haus", "sering minum", "banyak minum", "polidipsia", "tenggorokan kering"]
+    },
+    {
+      "id": "lapar",
+      "label": "Sering lapar (polifagia)",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah jadi sering lapar atau makan lebih banyak?",
+      "phrases": {
+        "lay": ["saya cepat lapar, makannya jadi banyak"],
+        "vague": ["perut saya kosong terus rasanya"],
+        "exaggerated": ["laparnya terus-terusan, baru makan sudah lapar lagi"],
+        "downplayed": ["agak sering lapar"]
+      },
+      "keywords": ["lapar", "banyak makan", "sering makan", "polifagia", "cepat lapar"]
+    },
+    {
+      "id": "kesemutan",
+      "label": "Kesemutan/kebas di tangan atau kaki",
+      "system": "Kepala & saraf",
+      "question": "Apakah sering kesemutan atau kebas di tangan atau kaki?",
+      "phrases": {
+        "lay": ["kaki saya sering kesemutan", "telapak kaki saya kebas"],
+        "vague": ["kaki saya rasanya aneh"],
+        "exaggerated": ["kaki saya kebas sekali kayak bukan kaki sendiri"],
+        "downplayed": ["kadang kesemutan sedikit"]
+      },
+      "keywords": ["kesemutan", "kebas", "baal", "mati rasa", "semutan"]
+    },
+    {
+      "id": "pandangan_kabur",
+      "label": "Pandangan kabur",
+      "system": "Kepala & saraf",
+      "question": "Apakah penglihatannya jadi kabur?",
+      "phrases": {
+        "lay": ["mata saya kabur"],
+        "vague": ["mata saya agak kurang jelas"],
+        "exaggerated": ["mata saya kabur sekali sampai nggak bisa baca"],
+        "downplayed": ["mata agak buram sedikit"]
+      },
+      "keywords": ["pandangan kabur", "penglihatan kabur", "mata kabur", "buram", "rabun"]
+    },
+    {
+      "id": "luka_sulit_sembuh",
+      "label": "Luka lama sembuh",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada luka yang lama sembuh?",
+      "phrases": {
+        "lay": ["ada luka di kaki saya yang nggak sembuh-sembuh"],
+        "vague": ["kulit saya gampang luka"],
+        "exaggerated": ["lukanya sudah sebulan nggak kering-kering"],
+        "downplayed": ["ada luka kecil yang agak lama sembuh"]
+      },
+      "keywords": ["luka", "luka lama sembuh", "luka tidak sembuh", "borok", "luka di kaki"]
+    },
+    {
+      "id": "disuria",
+      "label": "Nyeri/perih saat berkemih (disuria)",
+      "system": "Saluran kemih",
+      "question": "Apakah sakit atau perih saat buang air kecil?",
+      "phrases": {
+        "lay": ["kencing saya perih, anyang-anyangan", "pas pipis rasanya panas"],
+        "vague": ["pipis saya rasanya nggak enak"],
+        "exaggerated": ["kencingnya perih sekali kayak ditusuk-tusuk"],
+        "downplayed": ["kencing agak perih sedikit"]
+      },
+      "keywords": [
+        "perih saat kencing",
+        "nyeri saat kencing",
+        "sakit kencing",
+        "kencing perih",
+        "anyang anyangan",
+        "anyang-anyangan",
+        "pipis perih",
+        "disuria",
+        "panas saat pipis",
+        "sakit pipis",
+        "perih kalau pipis",
+        "perih kalau kencing",
+        "sakit kalau pipis",
+        "sakit kalau kencing",
+        "nyeri kalau kencing",
+        "kencing panas",
+        "pipis panas",
+        "perih saat buang air kecil",
+        "sakit saat buang air kecil",
+        "nyeri saat buang air kecil",
+        "sakit atau perih saat buang air kecil",
+        "sakit atau perih saat kencing"
+      ]
+    },
+    {
+      "id": "sering_kencing",
+      "label": "Sering berkemih",
+      "system": "Saluran kemih",
+      "question": "Apakah jadi lebih sering buang air kecil?",
+      "phrases": {
+        "lay": ["saya jadi sering kencing", "bolak-balik ke kamar mandi buat pipis"],
+        "vague": ["saya sering ke belakang"],
+        "exaggerated": ["tiap lima menit pengin kencing terus"],
+        "downplayed": ["agak sering pipis"]
+      },
+      "keywords": [
+        "sering kencing",
+        "sering pipis",
+        "bolak balik kamar mandi",
+        "kencing terus",
+        "sering buang air kecil",
+        "beser",
+        "kencing malam",
+        "sering bak",
+        "pipis malam",
+        "sering pipis malam",
+        "bolak balik ke kamar mandi",
+        "bolak balik kencing",
+        "bolak balik pipis",
+        "bolak balik wc",
+        "bolak balik ke wc",
+        "bolak balik toilet",
+        "sedikit tapi sering",
+        "kencing sering",
+        "kencing sedikit"
+      ]
+    },
+    {
+      "id": "nyeri_suprapubik",
+      "label": "Nyeri perut bawah (suprapubik)",
+      "system": "Saluran kemih",
+      "question": "Apakah ada nyeri di perut bagian bawah, di atas kemaluan?",
+      "phrases": {
+        "lay": ["perut bagian bawah saya nyeri", "bawah pusar rasanya sakit"],
+        "vague": ["perut bawah rasanya nggak enak"],
+        "exaggerated": ["perut bawah sakit sekali"],
+        "downplayed": ["perut bawah agak nyeri"]
+      },
+      "keywords": [
+        "perut bawah",
+        "bawah pusar",
+        "atas kemaluan",
+        "suprapubik",
+        "perut bagian bawah",
+        "nyeri perut bawah",
+        "sakit perut bawah",
+        "nyeri perut bagian bawah"
+      ]
+    },
+    {
+      "id": "nyeri_pinggang",
+      "label": "Nyeri pinggang",
+      "system": "Saluran kemih",
+      "question": "Apakah ada nyeri di pinggang?",
+      "phrases": {
+        "lay": ["pinggang saya sakit sekali", "sakit di pinggang sampai ke perut bawah"],
+        "vague": ["pinggang saya pegal, mungkin salah urat"],
+        "exaggerated": ["pinggang saya sakit sekali sampai guling-guling"],
+        "downplayed": ["pinggang agak pegal"]
+      },
+      "keywords": ["pinggang", "punggung bawah", "nyeri pinggang", "sakit pinggang", "kolik", "encok"]
+    },
+    {
+      "id": "kencing_merah",
+      "label": "Kencing berwarna merah (hematuria)",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya berwarna merah atau kemerahan?",
+      "phrases": {
+        "lay": ["air kencing saya kemerahan"],
+        "vague": ["warna pipis saya agak lain"],
+        "exaggerated": ["kencing saya merah kayak darah"],
+        "downplayed": ["kencing agak kemerahan sedikit"]
+      },
+      "keywords": [
+        "kencing merah",
+        "kencing berdarah",
+        "pipis merah",
+        "air kencing merah",
+        "hematuria",
+        "kencing darah",
+        "kencing kemerahan",
+        "air kencing kemerahan",
+        "kencing berwarna merah",
+        "kencing warna merah",
+        "pipis kemerahan"
+      ]
+    },
+    {
+      "id": "urin_keruh",
+      "label": "Urin keruh/berbau",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya keruh atau berbau menyengat?",
+      "phrases": {
+        "lay": ["kencing saya keruh dan bau"],
+        "vague": ["warna pipis saya agak beda"],
+        "exaggerated": ["kencingnya bau sekali dan keruh pekat"],
+        "downplayed": ["kencing agak keruh"]
+      },
+      "keywords": [
+        "kencing keruh",
+        "pipis keruh",
+        "air kencing keruh",
+        "kencing bau",
+        "urin keruh",
+        "pipis bau",
+        "keruh",
+        "berbusa",
+        "kencing berbusa"
+      ]
+    },
+    {
+      "id": "muntah_darah",
+      "label": "Muntah darah (hematemesis)",
+      "system": "Pencernaan",
+      "question": "Apakah pernah muntah darah atau muntah hitam seperti ampas kopi?",
+      "phrases": {
+        "lay": ["muntah darah", "muntahnya hitam kayak ampas kopi"],
+        "vague": ["muntahnya warnanya agak gelap"],
+        "exaggerated": ["muntah darah banyak sekali, saya takut"],
+        "downplayed": ["muntahnya ada sedikit merah-merahnya"]
+      },
+      "keywords": [
+        "muntah darah",
+        "muntah berdarah",
+        "muntah hitam",
+        "muntah seperti kopi",
+        "seperti ampas kopi",
+        "ampas kopi",
+        "hematemesis",
+        "seperti kopi"
+      ]
+    },
+    {
+      "id": "bab_hitam",
+      "label": "BAB hitam (melena)",
+      "system": "Pencernaan",
+      "question": "Apakah BAB-nya pernah berwarna hitam seperti aspal atau ada darahnya?",
+      "phrases": {
+        "lay": ["BAB saya hitam kayak aspal", "kotoran saya warnanya hitam pekat"],
+        "vague": ["BAB saya warnanya agak gelap"],
+        "exaggerated": ["BAB saya hitam pekat, saya takut sekali"],
+        "downplayed": ["BAB agak gelap sedikit, mungkin karena makanan"]
+      },
+      "keywords": [
+        "bab hitam",
+        "berak hitam",
+        "tinja hitam",
+        "feses hitam",
+        "kotoran hitam",
+        "melena",
+        "bab warna hitam",
+        "warna bab",
+        "warna tinja",
+        "warna feses",
+        "bab berwarna hitam",
+        "hitam seperti aspal",
+        "seperti aspal",
+        "berak berwarna hitam"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "sulit_menelan",
+      "label": "Sulit menelan (disfagia)",
+      "system": "Pencernaan",
+      "question": "Apakah ada rasa sulit atau nyangkut saat menelan?",
+      "phrases": {
+        "lay": ["makanan saya kayak nyangkut kalau menelan", "saya susah menelan"],
+        "vague": ["tenggorokan saya rasanya ada yang ganjal"],
+        "exaggerated": ["saya hampir nggak bisa menelan apa pun"],
+        "downplayed": ["kadang agak seret kalau menelan"]
+      },
+      "keywords": [
+        "susah menelan",
+        "sulit menelan",
+        "nyangkut",
+        "tersangkut",
+        "disfagia",
+        "sakit menelan",
+        "nyeri menelan",
+        "makanan nyangkut",
+        "makanan tersangkut"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "urin_gelap",
+      "label": "Urin gelap seperti teh",
+      "system": "Saluran kemih",
+      "question": "Apakah air kencingnya berwarna gelap seperti teh?",
+      "phrases": {
+        "lay": ["air kencing saya gelap kayak teh"],
+        "vague": ["warna pipis saya agak beda"],
+        "exaggerated": ["kencing saya hitam kayak kopi"],
+        "downplayed": ["kencing agak gelap sedikit, kurang minum mungkin"]
+      },
+      "keywords": [
+        "kencing seperti teh",
+        "air kencing gelap",
+        "pipis coklat",
+        "kencing coklat",
+        "urin gelap",
+        "kencing pekat",
+        "warna kencing",
+        "warna pipis",
+        "warna urin",
+        "warna teh",
+        "seperti teh",
+        "seperti air teh",
+        "teh pekat"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "mata_merah",
+      "label": "Mata merah",
+      "system": "Mata",
+      "question": "Apakah matanya merah?",
+      "phrases": {
+        "lay": ["mata saya merah", "mata saya merah dan nggak enak"],
+        "vague": ["kayaknya mata saya agak lain"],
+        "exaggerated": ["mata saya merah sekali kayak darah"],
+        "downplayed": ["mata agak merah sedikit, paling kurang tidur"]
+      },
+      "keywords": ["mata merah", "mata memerah", "mata kemerahan", "merah di mata", "matanya merah"]
+    },
+    {
+      "id": "mata_berair",
+      "label": "Mata berair (epifora)",
+      "system": "Mata",
+      "question": "Apakah matanya berair terus?",
+      "phrases": {
+        "lay": ["mata saya berair terus", "air mata saya keluar terus"],
+        "exaggerated": ["air matanya nggak berhenti-berhenti, sampai basah terus"],
+        "downplayed": ["mata kadang agak berair"]
+      },
+      "keywords": ["mata berair", "berair", "air mata keluar", "keluar air mata", "nrocos", "mata basah"]
+    },
+    {
+      "id": "belekan",
+      "label": "Sekret mata (belekan)",
+      "system": "Mata",
+      "question": "Apakah ada kotoran mata (belek)?",
+      "phrases": {
+        "lay": ["mata saya belekan", "banyak kotoran di mata saya, bangun tidur sampai lengket"],
+        "vague": ["mata saya agak kotor"],
+        "exaggerated": ["beleknya banyak sekali sampai mata nggak bisa dibuka waktu bangun"],
+        "downplayed": ["ada belek sedikit"]
+      },
+      "keywords": ["belek", "belekan", "kotoran mata", "mata lengket", "sekret mata", "kotoran di mata"]
+    },
+    {
+      "id": "mata_gatal",
+      "label": "Mata gatal",
+      "system": "Mata",
+      "question": "Apakah matanya terasa gatal?",
+      "phrases": {
+        "lay": ["mata saya gatal", "mata saya gatal, pengin dikucek terus"],
+        "exaggerated": ["gatalnya nggak tahan, saya kucek terus"],
+        "downplayed": ["mata agak gatal sedikit"]
+      },
+      "keywords": ["mata gatal", "gatal di mata", "matanya gatal", "pengin kucek mata", "mengucek mata"]
+    },
+    {
+      "id": "mata_mengganjal",
+      "label": "Rasa mengganjal/berpasir di mata",
+      "system": "Mata",
+      "question": "Apakah ada rasa mengganjal atau berpasir di mata?",
+      "phrases": {
+        "lay": ["mata saya rasanya mengganjal, kayak ada pasir", "kayak ada yang masuk ke mata saya"],
+        "vague": ["mata saya rasanya aneh"],
+        "exaggerated": ["mengganjalnya bikin nggak bisa melek"],
+        "downplayed": ["agak ngganjal sedikit"]
+      },
+      "keywords": [
+        "mengganjal",
+        "ganjal",
+        "berpasir",
+        "kelilipan",
+        "ada yang masuk ke mata",
+        "kemasukan",
+        "kemasukan sesuatu",
+        "benda masuk ke mata"
+      ]
+    },
+    {
+      "id": "nyeri_mata",
+      "label": "Nyeri / perih pada mata",
+      "system": "Mata",
+      "question": "Apakah matanya terasa sakit atau perih?",
+      "phrases": {
+        "lay": ["mata saya perih", "mata saya sakit"],
+        "exaggerated": ["mata saya sakit sekali sampai nggak bisa dibuka"],
+        "downplayed": ["mata agak perih sedikit"]
+      },
+      "keywords": ["mata sakit", "mata perih", "sakit di mata", "perih di mata", "mata nyeri", "sakit matanya"]
+    },
+    {
+      "id": "silau",
+      "label": "Silau (fotofobia)",
+      "system": "Mata",
+      "question": "Apakah silau atau sakit kalau kena cahaya?",
+      "phrases": {
+        "lay": ["saya silau kalau lihat cahaya", "kena lampu mata saya sakit"],
+        "exaggerated": ["silaunya sampai harus pakai kacamata hitam terus"],
+        "downplayed": ["agak silau sedikit"]
+      },
+      "keywords": ["silau", "fotofobia", "tidak tahan cahaya", "sakit kena cahaya", "sakit kena lampu", "tidak tahan sinar"],
+      "volunteer": false
+    },
+    {
+      "id": "benjolan_kelopak",
+      "label": "Benjolan / bengkak di kelopak mata",
+      "system": "Mata",
+      "question": "Apakah ada benjolan atau bengkak di kelopak mata?",
+      "phrases": {
+        "lay": ["ada benjolan di kelopak mata saya, merah dan sakit", "kelopak mata saya bengkak"],
+        "vague": ["mata saya kayak bintitan"],
+        "exaggerated": ["benjolannya besar sekali sampai mata susah melek"],
+        "downplayed": ["ada benjolan kecil di kelopak"]
+      },
+      "keywords": [
+        "bintitan",
+        "timbilan",
+        "benjolan di kelopak",
+        "kelopak bengkak",
+        "bengkak di kelopak",
+        "benjolan kelopak",
+        "kelopak mata bengkak",
+        "benjolan atau bengkak di kelopak mata",
+        "bengkak di kelopak mata",
+        "benjolan di kelopak mata",
+        "kelopak mata membengkak"
+      ]
+    },
+    {
+      "id": "bulu_mata_menusuk",
+      "label": "Bulu mata terasa menusuk",
+      "system": "Mata",
+      "question": "Apakah ada bulu mata yang terasa menusuk mata?",
+      "phrases": {
+        "lay": ["bulu mata saya kayak menusuk-nusuk mata", "bulu mata saya ada yang tumbuhnya ke dalam"],
+        "exaggerated": ["tiap kedip rasanya ditusuk"],
+        "downplayed": ["kadang bulu matanya kena mata"]
+      },
+      "keywords": [
+        "bulu mata menusuk",
+        "bulu mata masuk",
+        "bulu mata ke dalam",
+        "bulu mata kena mata",
+        "bulu mata tumbuh ke dalam",
+        "bulu mata"
+      ]
+    },
+    {
+      "id": "kelopak_bersisik",
+      "label": "Tepi kelopak merah bersisik",
+      "system": "Mata",
+      "question": "Apakah pinggir kelopak matanya merah atau bersisik?",
+      "phrases": {
+        "lay": ["pinggir kelopak mata saya merah dan bersisik", "bulu mata saya kayak ada ketombenya"],
+        "vague": ["kelopak saya kayak kotor"],
+        "exaggerated": ["sisiknya banyak sampai bulu mata rontok"],
+        "downplayed": ["pinggir kelopak agak merah"]
+      },
+      "keywords": [
+        "kelopak bersisik",
+        "ketombe di bulu mata",
+        "pinggir kelopak merah",
+        "tepi kelopak merah",
+        "pinggir kelopak",
+        "kerak di bulu mata"
+      ]
+    },
+    {
+      "id": "mata_kering",
+      "label": "Mata terasa kering",
+      "system": "Mata",
+      "question": "Apakah matanya terasa kering?",
+      "phrases": {
+        "lay": ["mata saya kering, seret", "mata saya rasanya kering dan panas"],
+        "exaggerated": ["keringnya sampai sakit kalau kedip"],
+        "downplayed": ["mata agak kering"]
+      },
+      "keywords": ["mata kering", "mata terasa kering", "mata seret", "kering di mata", "matanya kering"]
+    },
+    {
+      "id": "mata_lelah",
+      "label": "Mata cepat lelah (astenopia)",
+      "system": "Mata",
+      "question": "Apakah matanya cepat lelah kalau membaca atau melihat layar?",
+      "phrases": {
+        "lay": ["mata saya cepat capek kalau baca atau lihat layar", "habis lihat HP lama mata saya pegal"],
+        "exaggerated": ["mata saya capek sekali, baru sebentar baca sudah nggak kuat"],
+        "downplayed": ["mata agak capek"]
+      },
+      "keywords": ["mata lelah", "mata capek", "mata cepat lelah", "mata cepat capek", "lelah membaca", "capek melihat layar"]
+    },
+    {
+      "id": "kabur_jauh",
+      "label": "Sulit melihat jauh",
+      "system": "Mata",
+      "question": "Apakah sulit melihat benda yang jauh?",
+      "phrases": {
+        "lay": ["lihat jauh kabur, tulisan di papan nggak kelihatan", "saya susah lihat jauh"],
+        "vague": ["mata saya kurang jelas"],
+        "exaggerated": ["lihat jauh sama sekali nggak jelas"],
+        "downplayed": ["lihat jauh agak kurang jelas"]
+      },
+      "keywords": [
+        "lihat jauh",
+        "melihat jauh",
+        "jarak jauh",
+        "rabun jauh",
+        "papan tulis",
+        "tulisan di papan",
+        "jauh kabur",
+        "jauh tidak jelas",
+        "melihat benda yang jauh",
+        "melihat benda jauh",
+        "lihat benda jauh",
+        "sulit melihat jauh",
+        "susah melihat jauh",
+        "pandangan jauh kabur"
+      ]
+    },
+    {
+      "id": "kabur_dekat",
+      "label": "Sulit melihat dekat / membaca",
+      "system": "Mata",
+      "question": "Apakah sulit melihat dekat atau membaca tulisan kecil?",
+      "phrases": {
+        "lay": ["kalau baca tulisan kecil kabur, harus dijauhkan", "saya susah lihat dekat"],
+        "vague": ["mata saya kurang jelas"],
+        "exaggerated": ["sama sekali nggak bisa baca tulisan dekat"],
+        "downplayed": ["baca agak susah sedikit"]
+      },
+      "keywords": [
+        "lihat dekat",
+        "melihat dekat",
+        "rabun dekat",
+        "baca tulisan kecil",
+        "sulit membaca",
+        "susah membaca",
+        "membaca dekat",
+        "tulisan kecil",
+        "harus dijauhkan",
+        "baca dekat kabur",
+        "dekat kabur",
+        "baca dekat",
+        "lihat dekat kabur"
+      ]
+    },
+    {
+      "id": "rabun_senja",
+      "label": "Sulit melihat saat gelap (rabun senja)",
+      "system": "Mata",
+      "question": "Apakah sulit melihat saat senja atau di tempat gelap?",
+      "phrases": {
+        "lay": ["kalau sudah sore atau gelap saya susah lihat", "kalau magrib saya sering nabrak barang"],
+        "exaggerated": ["malam sama sekali nggak bisa lihat apa-apa"],
+        "downplayed": ["kalau gelap agak susah lihat"]
+      },
+      "keywords": [
+        "rabun senja",
+        "buta senja",
+        "buta ayam",
+        "lihat malam",
+        "melihat di gelap",
+        "kalau gelap",
+        "saat gelap",
+        "waktu magrib",
+        "melihat saat senja",
+        "saat senja",
+        "kalau senja",
+        "tempat gelap",
+        "melihat di tempat gelap",
+        "melihat malam hari",
+        "sulit melihat malam"
+      ]
+    },
+    {
+      "id": "bercak_darah_mata",
+      "label": "Bercak merah darah di putih mata",
+      "system": "Mata",
+      "question": "Apakah ada bercak merah seperti darah di bagian putih mata?",
+      "phrases": {
+        "lay": ["putih mata saya tiba-tiba merah kayak darah", "ada bercak darah di mata saya"],
+        "exaggerated": ["merahnya kayak darah segar, saya takut sekali"],
+        "downplayed": ["ada merah sedikit di pinggir mata"]
+      },
+      "keywords": [
+        "bercak darah di mata",
+        "mata merah darah",
+        "darah di mata",
+        "putih mata merah",
+        "bercak merah di mata",
+        "mata berdarah",
+        "darah di putih mata",
+        "merah di putih mata",
+        "bercak merah seperti darah",
+        "bagian putih mata merah",
+        "putih mata ada darah"
+      ]
+    },
+    {
+      "id": "nyeri_telinga",
+      "label": "Nyeri telinga (otalgia)",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah telinganya sakit?",
+      "phrases": {
+        "lay": ["telinga saya sakit", "kuping saya nyeri"],
+        "exaggerated": ["telinga saya sakit sekali sampai nggak bisa tidur"],
+        "downplayed": ["telinga agak sakit"]
+      },
+      "keywords": ["sakit telinga", "telinga sakit", "nyeri telinga", "kuping sakit", "sakit kuping", "telinga nyeri", "otalgia"]
+    },
+    {
+      "id": "telinga_berair",
+      "label": "Keluar cairan dari telinga (otore)",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah ada cairan atau nanah yang keluar dari telinga?",
+      "phrases": {
+        "lay": ["telinga saya keluar cairan", "ada cairan keluar dari kuping saya"],
+        "exaggerated": ["nanahnya keluar terus dari telinga, bau"],
+        "downplayed": ["keluar cairan sedikit"]
+      },
+      "keywords": [
+        "telinga berair",
+        "keluar cairan dari telinga",
+        "cairan dari telinga",
+        "congek",
+        "kuping berair",
+        "telinga bernanah",
+        "nanah dari telinga",
+        "keluar dari telinga"
+      ]
+    },
+    {
+      "id": "pendengaran_turun",
+      "label": "Pendengaran berkurang",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah pendengarannya berkurang?",
+      "phrases": {
+        "lay": ["pendengaran saya berkurang", "suara jadi kurang jelas terdengar"],
+        "vague": ["kayaknya telinga saya kurang enak"],
+        "exaggerated": ["sama sekali nggak dengar sebelah"],
+        "downplayed": ["agak kurang dengar sedikit"]
+      },
+      "keywords": [
+        "pendengaran berkurang",
+        "kurang dengar",
+        "tidak dengar",
+        "budek",
+        "tuli",
+        "pendengaran turun",
+        "susah mendengar",
+        "pendengaran menurun"
+      ]
+    },
+    {
+      "id": "telinga_penuh",
+      "label": "Telinga terasa penuh/tersumbat",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah telinganya terasa penuh atau tersumbat?",
+      "phrases": {
+        "lay": ["telinga saya rasanya penuh, kayak tersumbat", "kuping saya kayak kemasukan air"],
+        "exaggerated": ["tersumbat sekali sampai pusing"],
+        "downplayed": ["agak penuh sedikit"]
+      },
+      "keywords": [
+        "telinga penuh",
+        "telinga tersumbat",
+        "kuping buntu",
+        "telinga buntu",
+        "kemasukan air",
+        "telinga tertutup",
+        "kuping penuh"
+      ]
+    },
+    {
+      "id": "telinga_berdenging",
+      "label": "Telinga berdenging (tinitus)",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah telinganya berdenging?",
+      "phrases": {
+        "lay": ["telinga saya berdenging", "kuping saya ngiung-ngiung"],
+        "exaggerated": ["dengingnya kencang terus"],
+        "downplayed": ["kadang berdenging sedikit"]
+      },
+      "keywords": ["berdenging", "telinga berdenging", "tinitus", "kuping berdengung", "berdengung", "ngiung"],
+      "volunteer": false
+    },
+    {
+      "id": "telinga_gatal",
+      "label": "Telinga gatal",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah telinganya gatal?",
+      "phrases": {
+        "lay": ["telinga saya gatal", "kuping saya gatal, sering saya korek"],
+        "exaggerated": ["gatalnya bikin saya ngorek terus"],
+        "downplayed": ["agak gatal"]
+      },
+      "keywords": ["telinga gatal", "kuping gatal", "gatal di telinga", "gatal di kuping"]
+    },
+    {
+      "id": "pilek",
+      "label": "Pilek (rinore)",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah ada pilek atau ingus?",
+      "phrases": {
+        "lay": ["saya pilek", "hidung saya meler"],
+        "exaggerated": ["ingusnya keluar terus, sampai tisu habis"],
+        "downplayed": ["pilek sedikit"]
+      },
+      "keywords": ["pilek", "ingus", "meler", "beringus", "hidung meler", "flu", "selesma", "keluar ingus"]
+    },
+    {
+      "id": "hidung_tersumbat",
+      "label": "Hidung tersumbat",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah hidungnya tersumbat?",
+      "phrases": {
+        "lay": ["hidung saya mampet", "hidung saya tersumbat"],
+        "exaggerated": ["hidung buntu total sampai napas lewat mulut"],
+        "downplayed": ["hidung agak mampet"]
+      },
+      "keywords": ["hidung tersumbat", "hidung mampet", "mampet", "buntu", "hidung buntu", "tersumbat", "susah napas lewat hidung"]
+    },
+    {
+      "id": "bersin",
+      "label": "Bersin-bersin",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah sering bersin?",
+      "phrases": {
+        "lay": ["saya bersin-bersin terus", "pagi-pagi saya bersin terus"],
+        "exaggerated": ["bersinnya sampai puluhan kali"],
+        "downplayed": ["kadang bersin"]
+      },
+      "keywords": ["bersin", "bersin bersin", "sering bersin"]
+    },
+    {
+      "id": "ingus_satu_sisi",
+      "label": "Ingus berbau dari satu lubang hidung",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah ada ingus berbau dari satu lubang hidung saja?",
+      "phrases": {
+        "lay": ["dari satu lubang hidung keluar ingus yang bau", "hidung sebelah keluar cairan bau"],
+        "exaggerated": ["baunya busuk sekali"],
+        "downplayed": ["ada ingus sedikit dari satu sisi"]
+      },
+      "keywords": ["ingus bau", "hidung bau", "satu lubang hidung", "sebelah hidung", "ingus sebelah", "cairan bau dari hidung"],
+      "volunteer": false
+    },
+    {
+      "id": "hidung_bengkak_nyeri",
+      "label": "Bengkak nyeri di hidung",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah ada bengkak atau bisul yang nyeri di hidung?",
+      "phrases": {
+        "lay": ["ada bisul di hidung saya, sakit sekali", "ujung hidung saya bengkak, merah, sakit"],
+        "exaggerated": ["hidung saya bengkak besar, nyut-nyutan"],
+        "downplayed": ["ada jerawat kecil di hidung"]
+      },
+      "keywords": [
+        "bisul di hidung",
+        "hidung bengkak",
+        "bengkak di hidung",
+        "ujung hidung",
+        "jerawat di hidung",
+        "hidung merah",
+        "lubang hidung sakit",
+        "nyeri di hidung",
+        "bisul yang nyeri di hidung",
+        "bengkak atau bisul di hidung",
+        "hidung sakit dan bengkak"
+      ]
+    },
+    {
+      "id": "benda_masuk",
+      "label": "Ada benda yang masuk ke lubang tubuh",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah ada benda yang dimasukkan atau masuk ke hidung/telinga?",
+      "phrases": {
+        "lay": ["ada benda yang masuk", "kemasukan biji-bijian"],
+        "exaggerated": ["bendanya masuk dalam sekali"],
+        "downplayed": ["kayaknya ada yang masuk sedikit"]
+      },
+      "keywords": [
+        "benda asing",
+        "kemasukan benda",
+        "memasukkan benda",
+        "dimasukkan ke hidung",
+        "dimasukkan ke telinga",
+        "masuk ke hidung",
+        "masuk ke telinga",
+        "biji masuk",
+        "kacang masuk",
+        "manik masuk",
+        "serangga masuk"
+      ]
+    },
+    {
+      "id": "nyeri_tenggorokan",
+      "label": "Nyeri tenggorokan",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah tenggorokannya sakit?",
+      "phrases": {
+        "lay": ["tenggorokan saya sakit", "tenggorokan saya perih"],
+        "vague": ["tenggorokan saya nggak enak"],
+        "exaggerated": ["tenggorokan saya sakit sekali kayak disayat"],
+        "downplayed": ["tenggorokan agak sakit"]
+      },
+      "keywords": [
+        "sakit tenggorokan",
+        "nyeri tenggorokan",
+        "tenggorokan sakit",
+        "tenggorokan perih",
+        "radang tenggorokan",
+        "tenggorokan nyeri",
+        "amandel",
+        "radang amandel"
+      ]
+    },
+    {
+      "id": "suara_serak",
+      "label": "Suara serak",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah suaranya serak?",
+      "phrases": {
+        "lay": ["suara saya serak", "suara saya hilang"],
+        "exaggerated": ["suara saya hilang sama sekali"],
+        "downplayed": ["suara agak serak"]
+      },
+      "keywords": ["serak", "suara serak", "suara hilang", "parau", "suara habis"]
+    },
+    {
+      "id": "batuk_rejan",
+      "label": "Batuk beruntun dengan tarikan napas berbunyi (whoop)",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah batuknya beruntun panjang lalu ada bunyi saat menarik napas?",
+      "phrases": {
+        "lay": [
+          "batuk saya beruntun sampai muka merah, habis itu tarik napasnya bunyi",
+          "batuknya nggak berhenti sampai muntah"
+        ],
+        "exaggerated": ["batuknya sampai biru dan muntah"],
+        "downplayed": ["batuknya kadang beruntun"]
+      },
+      "keywords": [
+        "batuk rejan",
+        "batuk beruntun",
+        "batuk seratus hari",
+        "batuk sampai muntah",
+        "whoop",
+        "batuk sampai biru",
+        "batuk terus menerus"
+      ]
+    },
+    {
+      "id": "pusing_berputar",
+      "label": "Pusing berputar (vertigo)",
+      "system": "Kepala & saraf",
+      "question": "Apakah pusingnya terasa berputar?",
+      "phrases": {
+        "lay": ["kepala saya pusing berputar", "rasanya kamar muter-muter"],
+        "vague": ["kepala saya rasanya nggak enak"],
+        "exaggerated": ["muternya hebat sampai saya jatuh"],
+        "downplayed": ["agak muter sebentar"]
+      },
+      "keywords": [
+        "pusing berputar",
+        "berputar",
+        "muter",
+        "muter muter",
+        "vertigo",
+        "ruangan berputar",
+        "sekeliling berputar",
+        "kliyeng berputar"
+      ]
+    },
+    {
+      "id": "mabuk_kendaraan",
+      "label": "Mual & pusing saat naik kendaraan",
+      "system": "Telinga, hidung & tenggorok",
+      "question": "Apakah mual atau pusing kalau naik kendaraan?",
+      "phrases": {
+        "lay": ["kalau naik bus atau kapal saya mual, pusing", "saya gampang mabuk kalau perjalanan"],
+        "exaggerated": ["tiap naik kendaraan pasti muntah"],
+        "downplayed": ["kadang agak mual di kendaraan"]
+      },
+      "keywords": [
+        "mabuk perjalanan",
+        "mabuk darat",
+        "mabuk laut",
+        "mabuk kendaraan",
+        "naik kendaraan",
+        "naik bus",
+        "naik kapal",
+        "naik mobil"
+      ]
+    },
+    {
+      "id": "kejang",
+      "label": "Kejang",
+      "system": "Kepala & saraf",
+      "question": "Apakah ada kejang?",
+      "phrases": {
+        "lay": ["saya kejang, kelojotan", "badan saya kaku lalu kelojotan"],
+        "exaggerated": ["kejangnya lama sekali"],
+        "downplayed": ["sempat kaku sebentar"]
+      },
+      "keywords": ["kejang", "step", "kelojotan", "kejang kejang", "sawan", "stuip"]
+    },
+    {
+      "id": "kaku_rahang",
+      "label": "Sulit membuka mulut (trismus)",
+      "system": "Kepala & saraf",
+      "question": "Apakah mulutnya sulit dibuka atau rahangnya kaku?",
+      "phrases": {
+        "lay": ["mulut saya susah dibuka", "rahang saya kaku"],
+        "exaggerated": ["mulut sama sekali nggak bisa dibuka"],
+        "downplayed": ["rahang agak kaku"]
+      },
+      "keywords": [
+        "mulut susah dibuka",
+        "rahang kaku",
+        "kaku rahang",
+        "tidak bisa membuka mulut",
+        "sulit membuka mulut",
+        "trismus",
+        "susah buka mulut"
+      ]
+    },
+    {
+      "id": "kaku_badan",
+      "label": "Kekakuan / kejang otot badan",
+      "system": "Kepala & saraf",
+      "question": "Apakah badan atau ototnya kaku?",
+      "phrases": {
+        "lay": ["badan saya kaku-kaku", "otot perut dan punggung saya kaku"],
+        "exaggerated": ["badan saya kaku sampai melengkung"],
+        "downplayed": ["badan agak kaku"]
+      },
+      "keywords": ["badan kaku", "otot kaku", "kaku seluruh badan", "punggung melengkung", "kekakuan", "perut kaku seperti papan"]
+    },
+    {
+      "id": "wajah_mencong",
+      "label": "Wajah/mulut mencong",
+      "system": "Kepala & saraf",
+      "question": "Apakah wajah atau mulutnya mencong?",
+      "phrases": {
+        "lay": ["mulut saya mencong", "wajah saya sebelah turun"],
+        "vague": ["muka saya rasanya aneh"],
+        "exaggerated": ["muka saya miring sekali"],
+        "downplayed": ["mulut agak miring sedikit"]
+      },
+      "keywords": [
+        "mulut mencong",
+        "wajah mencong",
+        "muka mencong",
+        "perot",
+        "mulut miring",
+        "wajah tidak simetris",
+        "muka miring",
+        "wajah miring",
+        "mencong"
+      ]
+    },
+    {
+      "id": "mata_tidak_menutup",
+      "label": "Kelopak mata tidak bisa menutup",
+      "system": "Kepala & saraf",
+      "question": "Apakah matanya tidak bisa menutup rapat?",
+      "phrases": {
+        "lay": ["mata saya nggak bisa merem rapat", "kelopak mata saya nggak bisa nutup"],
+        "exaggerated": ["mata saya terbuka terus, perih"],
+        "downplayed": ["kadang mata agak susah merem"]
+      },
+      "keywords": [
+        "mata tidak bisa menutup",
+        "tidak bisa merem",
+        "kelopak tidak menutup",
+        "mata tidak bisa ditutup",
+        "susah merem",
+        "merem tidak rapat",
+        "mata tidak bisa menutup rapat",
+        "tidak bisa menutup rapat",
+        "mata bisa ditutup rapat",
+        "ditutup rapat",
+        "menutup rapat",
+        "mata menutup rapat"
+      ]
+    },
+    {
+      "id": "sakit_kepala_sebelah",
+      "label": "Sakit kepala sebelah berdenyut",
+      "system": "Kepala & saraf",
+      "question": "Apakah sakit kepalanya di sebelah sisi dan berdenyut?",
+      "phrases": {
+        "lay": ["kepala saya sakit sebelah, cenat-cenut", "sakitnya separuh kepala, berdenyut"],
+        "exaggerated": ["sebelah kepala saya kayak mau pecah"],
+        "downplayed": ["kepala agak senut sebelah"]
+      },
+      "keywords": [
+        "sakit kepala sebelah",
+        "kepala sebelah",
+        "sebelah kepala",
+        "separuh kepala",
+        "migren",
+        "migrain",
+        "kepala separuh"
+      ]
+    },
+    {
+      "id": "aura_visual",
+      "label": "Kilatan cahaya sebelum sakit kepala (aura)",
+      "system": "Kepala & saraf",
+      "question": "Apakah sebelum sakit kepala ada kilatan cahaya atau garis zig-zag di penglihatan?",
+      "phrases": {
+        "lay": ["sebelum sakit kepala saya lihat kilatan cahaya", "pandangan saya kayak ada garis zig-zag dulu"],
+        "exaggerated": ["kilatannya bikin saya nggak bisa lihat"],
+        "downplayed": ["kadang ada kilatan sebentar"]
+      },
+      "keywords": ["kilatan cahaya", "kilatan", "zig zag", "aura", "lihat cahaya berkedip", "pandangan berkilat"],
+      "volunteer": false
+    },
+    {
+      "id": "tengkuk_tegang",
+      "label": "Tengkuk/leher tegang",
+      "system": "Kepala & saraf",
+      "question": "Apakah tengkuk atau lehernya terasa tegang atau berat?",
+      "phrases": {
+        "lay": ["tengkuk saya berat, tegang", "leher belakang saya kaku dan pegal"],
+        "exaggerated": ["tengkuk saya kaku sekali kayak ditarik"],
+        "downplayed": ["tengkuk agak pegal"]
+      },
+      "keywords": [
+        "tengkuk",
+        "tengkuk tegang",
+        "tengkuk berat",
+        "leher tegang",
+        "leher belakang",
+        "pundak tegang",
+        "kepala diikat",
+        "seperti diikat",
+        "kencang di kepala"
+      ]
+    },
+    {
+      "id": "sulit_tidur",
+      "label": "Sulit tidur (insomnia)",
+      "system": "Jiwa & tidur",
+      "question": "Apakah sulit tidur atau sering terbangun malam?",
+      "phrases": {
+        "lay": ["saya susah tidur", "saya sering terbangun tengah malam lalu nggak bisa tidur lagi"],
+        "vague": ["tidur saya nggak nyenyak"],
+        "exaggerated": ["sudah berhari-hari saya hampir nggak tidur sama sekali"],
+        "downplayed": ["tidur agak kurang nyenyak"]
+      },
+      "keywords": [
+        "susah tidur",
+        "sulit tidur",
+        "insomnia",
+        "terbangun malam",
+        "bangun malam",
+        "tidak nyenyak",
+        "susah memulai tidur"
+      ]
+    },
+    {
+      "id": "mengantuk_siang",
+      "label": "Lelah & mengantuk di siang hari",
+      "system": "Jiwa & tidur",
+      "question": "Apakah siang hari jadi mengantuk atau tidak bertenaga?",
+      "phrases": {
+        "lay": ["siangnya saya ngantuk dan susah konsentrasi", "siang hari saya jadi lemas, nggak konsen"],
+        "exaggerated": ["di kantor saya sampai ketiduran"],
+        "downplayed": ["siang agak ngantuk"]
+      },
+      "keywords": [
+        "mengantuk",
+        "ngantuk",
+        "ngantuk siang",
+        "susah konsentrasi",
+        "sulit konsentrasi",
+        "tidak konsentrasi",
+        "kurang konsentrasi"
+      ]
+    },
+    {
+      "id": "cemas",
+      "label": "Cemas / gelisah",
+      "system": "Jiwa & tidur",
+      "question": "Apakah sering merasa cemas atau gelisah?",
+      "phrases": {
+        "lay": ["saya sering cemas dan gelisah", "pikiran saya nggak tenang"],
+        "vague": ["perasaan saya nggak enak"],
+        "exaggerated": ["saya cemas terus sampai nggak bisa ngapa-ngapain"],
+        "downplayed": ["agak cemas sedikit"]
+      },
+      "keywords": ["gelisah", "perasaan cemas", "merasa cemas", "pikiran tidak tenang", "tidak tenang", "resah", "panik"]
+    },
+    {
+      "id": "berdebar",
+      "label": "Jantung berdebar (palpitasi)",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah jantungnya terasa berdebar?",
+      "phrases": {
+        "lay": ["jantung saya berdebar-debar", "dada saya deg-degan"],
+        "exaggerated": ["jantung saya berdebar kencang sekali kayak mau copot"],
+        "downplayed": ["kadang agak deg-degan"]
+      },
+      "keywords": ["berdebar", "deg degan", "dag dig dug", "jantung berdebar", "dada berdebar", "palpitasi", "jantung cepat"]
+    },
+    {
+      "id": "keluhan_berpindah",
+      "label": "Keluhan fisik berpindah-pindah tanpa sebab jelas",
+      "system": "Jiwa & tidur",
+      "question": "Apakah keluhannya berpindah-pindah tempat?",
+      "phrases": {
+        "lay": [
+          "sakitnya pindah-pindah, Dok, kadang kepala, kadang perut, kadang dada",
+          "badan saya sakit di mana-mana gantian"
+        ],
+        "exaggerated": ["semua badan saya rasanya sakit, nggak ada yang beres"],
+        "downplayed": ["kadang di sini kadang di sana"]
+      },
+      "keywords": [
+        "pindah pindah",
+        "berpindah pindah",
+        "sakitnya berpindah",
+        "gantian sakitnya",
+        "macam macam keluhan",
+        "banyak keluhan"
+      ]
+    },
+    {
+      "id": "sariawan",
+      "label": "Sariawan (ulkus mulut)",
+      "system": "Pencernaan",
+      "question": "Apakah ada sariawan di mulut?",
+      "phrases": {
+        "lay": ["saya sariawan", "ada luka di mulut saya, perih kalau makan"],
+        "exaggerated": ["sariawannya banyak sekali sampai nggak bisa makan"],
+        "downplayed": ["ada sariawan kecil"]
+      },
+      "keywords": ["sariawan", "luka di mulut", "seriawan", "stomatitis", "panas dalam", "mulut perih", "sariwan"]
+    },
+    {
+      "id": "bercak_putih_mulut",
+      "label": "Bercak putih di mulut/lidah",
+      "system": "Pencernaan",
+      "question": "Apakah ada bercak putih di mulut atau lidah?",
+      "phrases": {
+        "lay": ["di mulut saya ada bercak-bercak putih", "lidah saya putih-putih kayak ada susu yang nempel"],
+        "exaggerated": ["putihnya banyak sekali, perih"],
+        "downplayed": ["ada sedikit putih di lidah"]
+      },
+      "keywords": [
+        "bercak putih di mulut",
+        "putih di lidah",
+        "lidah putih",
+        "bercak putih di lidah",
+        "mulut putih",
+        "seperti susu menempel",
+        "jamur di mulut"
+      ]
+    },
+    {
+      "id": "bengkak_rahang",
+      "label": "Bengkak di depan telinga/rahang",
+      "system": "Pencernaan",
+      "question": "Apakah ada bengkak di pipi atau di depan telinga?",
+      "phrases": {
+        "lay": ["pipi saya bengkak di depan telinga", "rahang saya bengkak, sakit kalau ngunyah"],
+        "exaggerated": ["pipi saya bengkak besar sekali"],
+        "downplayed": ["agak bengkak sedikit di pipi"]
+      },
+      "keywords": [
+        "gondongan",
+        "pipi bengkak",
+        "bengkak di pipi",
+        "bengkak di depan telinga",
+        "rahang bengkak",
+        "sakit mengunyah",
+        "nyeri mengunyah",
+        "bengkak di bawah telinga"
+      ]
+    },
+    {
+      "id": "bab_darah",
+      "label": "BAB berdarah / berlendir darah",
+      "system": "Pencernaan",
+      "question": "Apakah BAB-nya berdarah atau berlendir?",
+      "phrases": {
+        "lay": ["BAB saya ada darahnya", "BAB saya berlendir campur darah"],
+        "vague": ["BAB saya agak aneh"],
+        "exaggerated": ["darahnya banyak setiap BAB"],
+        "downplayed": ["ada sedikit darah di tisu"]
+      },
+      "keywords": [
+        "bab berdarah",
+        "berak darah",
+        "bab darah",
+        "darah segar",
+        "darah menetes",
+        "lendir darah",
+        "berlendir",
+        "bab berlendir",
+        "berak berlendir",
+        "tinja berdarah",
+        "darah saat bab"
+      ]
+    },
+    {
+      "id": "keluar_cacing",
+      "label": "Keluar cacing / potongan cacing",
+      "system": "Pencernaan",
+      "question": "Apakah pernah keluar cacing atau potongan seperti pita saat BAB?",
+      "phrases": {
+        "lay": ["waktu BAB keluar cacing", "ada cacing keluar dari kotoran saya"],
+        "exaggerated": ["cacingnya banyak sekali keluar"],
+        "downplayed": ["kayaknya ada cacing kecil"]
+      },
+      "keywords": ["keluar cacing", "cacing", "cacingan", "potongan cacing", "cacing pita", "seperti biji ketimun", "cacing di bab"]
+    },
+    {
+      "id": "gatal_anus",
+      "label": "Gatal di sekitar anus",
+      "system": "Pencernaan",
+      "question": "Apakah ada gatal di sekitar dubur?",
+      "phrases": {
+        "lay": ["dubur saya gatal", "pantat saya gatal terutama malam"],
+        "exaggerated": ["gatalnya nggak tahan sampai lecet"],
+        "downplayed": ["agak gatal di dubur"]
+      },
+      "keywords": [
+        "gatal di dubur",
+        "dubur gatal",
+        "anus gatal",
+        "gatal anus",
+        "pantat gatal",
+        "gatal di pantat",
+        "gatal di sekitar dubur",
+        "dubur terasa gatal",
+        "gatal di sekitar anus"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "benjolan_anus",
+      "label": "Benjolan di anus",
+      "system": "Pencernaan",
+      "question": "Apakah ada benjolan di dubur?",
+      "phrases": {
+        "lay": ["ada benjolan di dubur saya", "ada daging yang keluar dari dubur waktu BAB"],
+        "exaggerated": ["benjolannya keluar terus, sakit"],
+        "downplayed": ["ada benjolan kecil"]
+      },
+      "keywords": [
+        "benjolan di dubur",
+        "benjolan di anus",
+        "wasir",
+        "ambeien",
+        "ambeyen",
+        "daging keluar dari dubur",
+        "benjolan keluar saat bab"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "bab_pucat",
+      "label": "BAB pucat seperti dempul",
+      "system": "Pencernaan",
+      "question": "Apakah warna BAB-nya pucat seperti dempul?",
+      "phrases": {
+        "lay": ["BAB saya pucat kayak dempul", "kotoran saya warnanya keputihan"],
+        "exaggerated": ["kotoran saya putih kayak kapur"],
+        "downplayed": ["BAB agak pucat"]
+      },
+      "keywords": ["bab pucat", "tinja pucat", "dempul", "kotoran pucat", "bab putih", "berak pucat"],
+      "volunteer": false
+    },
+    {
+      "id": "perut_membuncit",
+      "label": "Perut membuncit",
+      "system": "Pencernaan",
+      "question": "Apakah perutnya makin membesar atau buncit?",
+      "phrases": {
+        "lay": ["perut saya makin buncit", "perut saya membesar"],
+        "exaggerated": ["perut saya besar sekali kayak hamil"],
+        "downplayed": ["perut agak buncit"]
+      },
+      "keywords": [
+        "perut buncit",
+        "perut membesar",
+        "perut membuncit",
+        "perut besar",
+        "perut makin besar",
+        "perut makin membesar",
+        "perut makin buncit",
+        "perut membesar atau buncit"
+      ]
+    },
+    {
+      "id": "pusar_bermasalah",
+      "label": "Pusar bayi merah/berbau/bernanah",
+      "system": "Anak",
+      "question": "Apakah pusarnya merah, bengkak, berbau, atau bernanah?",
+      "phrases": {
+        "lay": ["pusarnya merah dan bau", "tali pusatnya basah dan bernanah"],
+        "exaggerated": ["pusarnya merah meluas, nanahnya banyak"],
+        "downplayed": ["pusarnya agak basah"]
+      },
+      "keywords": ["pusar", "tali pusat", "pusar merah", "pusar bau", "pusar bernanah", "puser", "udel"]
+    },
+    {
+      "id": "rewel",
+      "label": "Rewel / menangis terus",
+      "system": "Anak",
+      "question": "Apakah anaknya rewel atau menangis terus?",
+      "phrases": {
+        "lay": ["saya rewel terus", "saya nangis terus"],
+        "exaggerated": ["nangisnya nggak berhenti-berhenti semalaman"],
+        "downplayed": ["agak rewel"]
+      },
+      "keywords": [
+        "rewel",
+        "menangis terus",
+        "nangis terus",
+        "cengeng",
+        "tidak bisa diam",
+        "susah ditenangkan",
+        "rewel atau menangis",
+        "sering rewel",
+        "menangis terus menerus"
+      ]
+    },
+    {
+      "id": "malas_menyusu",
+      "label": "Malas menyusu / minum",
+      "system": "Anak",
+      "question": "Apakah anaknya malas menyusu atau malas minum?",
+      "phrases": {
+        "lay": ["saya nggak mau menyusu", "saya malas minum susu"],
+        "exaggerated": ["sama sekali nggak mau menyusu"],
+        "downplayed": ["menyusunya agak berkurang"]
+      },
+      "keywords": [
+        "tidak mau menyusu",
+        "malas menyusu",
+        "malas minum",
+        "tidak mau minum",
+        "menyusu",
+        "menetek",
+        "nyusu",
+        "malas netek",
+        "malas menyusu atau malas minum",
+        "malas menyusu atau minum",
+        "susah menyusu",
+        "nggak mau menyusu",
+        "kuat menyusu"
+      ]
+    },
+    {
+      "id": "bb_tidak_naik",
+      "label": "Berat badan tidak naik",
+      "system": "Anak",
+      "question": "Apakah berat badannya susah naik?",
+      "phrases": {
+        "lay": ["berat badan saya nggak naik-naik", "kata bidan berat badan saya di bawah garis merah"],
+        "exaggerated": ["berat badan saya malah turun terus"],
+        "downplayed": ["berat agak susah naik"]
+      },
+      "keywords": [
+        "berat badan tidak naik",
+        "bb tidak naik",
+        "tidak naik berat",
+        "di bawah garis merah",
+        "bgm",
+        "gizi kurang",
+        "susah gemuk",
+        "kms",
+        "berat badan susah naik",
+        "susah naik berat badan",
+        "berat badan tidak bertambah",
+        "berat badan naik sesuai umur",
+        "berat badan sesuai umur"
+      ]
+    },
+    {
+      "id": "duh_uretra",
+      "label": "Keluar nanah/cairan dari saluran kencing",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah keluar nanah atau cairan dari saluran kencing?",
+      "phrases": {
+        "lay": ["keluar nanah dari kemaluan saya", "ujung kemaluan saya keluar cairan kental"],
+        "vague": ["celana dalam saya basah terus"],
+        "exaggerated": ["nanahnya banyak, menetes terus"],
+        "downplayed": ["keluar cairan sedikit di pagi hari"]
+      },
+      "keywords": [
+        "kencing nanah",
+        "keluar nanah",
+        "nanah dari kemaluan",
+        "cairan dari penis",
+        "cairan dari kemaluan",
+        "keluar cairan dari kemaluan",
+        "kencing bernanah"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "keputihan",
+      "label": "Keputihan",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada keputihan?",
+      "phrases": {
+        "lay": ["saya keputihan", "keputihan saya banyak dan bau"],
+        "vague": ["celana dalam saya basah terus"],
+        "exaggerated": ["keputihannya banyak sekali sampai harus ganti celana"],
+        "downplayed": ["keputihan sedikit"]
+      },
+      "keywords": ["keputihan", "cairan dari vagina", "keputihan bau", "lendir dari vagina", "cairan kemaluan", "flour albus"]
+    },
+    {
+      "id": "gatal_kemaluan",
+      "label": "Gatal di kemaluan",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada gatal di daerah kemaluan?",
+      "phrases": {
+        "lay": ["kemaluan saya gatal", "di daerah kemaluan saya gatal"],
+        "exaggerated": ["gatalnya nggak tahan sampai lecet"],
+        "downplayed": ["agak gatal di kemaluan"]
+      },
+      "keywords": [
+        "gatal di kemaluan",
+        "kemaluan gatal",
+        "gatal di vagina",
+        "vagina gatal",
+        "gatal kemaluan",
+        "gatal di alat kelamin",
+        "gatal di bibir kemaluan",
+        "rambut kemaluan gatal",
+        "gatal di daerah kemaluan",
+        "gatal di area kemaluan",
+        "gatal di kelamin",
+        "kelamin gatal"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "nyeri_senggama",
+      "label": "Nyeri saat berhubungan seksual",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada nyeri saat berhubungan suami-istri?",
+      "phrases": {
+        "lay": ["kalau berhubungan dengan suami terasa sakit", "sakit waktu berhubungan"],
+        "exaggerated": ["sakit sekali sampai nggak bisa berhubungan"],
+        "downplayed": ["agak sakit waktu berhubungan"]
+      },
+      "keywords": [
+        "nyeri saat berhubungan",
+        "sakit saat berhubungan",
+        "sakit waktu berhubungan",
+        "sakit berhubungan",
+        "dispareunia",
+        "nyeri senggama",
+        "berhubungan suami istri",
+        "nyeri saat berhubungan suami istri",
+        "sakit saat berhubungan suami istri",
+        "sakit waktu berhubungan suami istri",
+        "nyeri saat bersenggama",
+        "sakit saat bersenggama"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "luka_kemaluan",
+      "label": "Luka/koreng di kemaluan",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada luka atau koreng di kemaluan?",
+      "phrases": {
+        "lay": ["ada luka di kemaluan saya", "ada koreng di alat kelamin saya"],
+        "exaggerated": ["lukanya besar dan banyak"],
+        "downplayed": ["ada luka kecil di kemaluan"]
+      },
+      "keywords": [
+        "luka di kemaluan",
+        "koreng di kemaluan",
+        "luka di alat kelamin",
+        "luka di penis",
+        "luka di vagina",
+        "lecet di kemaluan",
+        "lepuh di kemaluan",
+        "luka kelamin"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "kulup_sempit",
+      "label": "Kulup tidak bisa ditarik / menggelembung saat kencing",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah kulup penisnya susah ditarik ke belakang, atau menggelembung saat kencing?",
+      "phrases": {
+        "lay": ["kulupnya nggak bisa ditarik, waktu kencing menggelembung", "ujung kulup saya sempit"],
+        "exaggerated": ["kencingnya sampai netes-netes karena kulupnya sempit"],
+        "downplayed": ["kulup agak susah ditarik"]
+      },
+      "keywords": [
+        "kulup",
+        "kulup tidak bisa ditarik",
+        "kulup sempit",
+        "menggelembung saat kencing",
+        "kencing menggelembung",
+        "belum sunat",
+        "kulit penis",
+        "kencing menetes",
+        "kulup susah ditarik",
+        "kulup penis susah ditarik",
+        "susah ditarik ke belakang",
+        "kulup menggelembung"
+      ]
+    },
+    {
+      "id": "kulup_terjepit",
+      "label": "Kulup terjepit di belakang kepala penis",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah kulupnya tertarik ke belakang dan tidak bisa dikembalikan?",
+      "phrases": {
+        "lay": ["kulit penis saya ketarik ke belakang dan nggak bisa balik", "kepala penis saya bengkak, kulupnya terjepit"],
+        "exaggerated": ["bengkaknya makin besar dan sakit sekali"],
+        "downplayed": ["kulupnya agak susah dikembalikan"]
+      },
+      "keywords": [
+        "kulup terjepit",
+        "kulup tidak bisa dikembalikan",
+        "kepala penis bengkak",
+        "kulup tertarik",
+        "penis bengkak",
+        "kulup terjebak"
+      ]
+    },
+    {
+      "id": "perdarahan_pervaginam",
+      "label": "Perdarahan dari jalan lahir",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada perdarahan dari jalan lahir?",
+      "phrases": {
+        "lay": ["keluar darah dari jalan lahir", "saya flek-flek darah"],
+        "exaggerated": ["darahnya banyak sekali, gumpal-gumpal"],
+        "downplayed": ["ada flek sedikit"]
+      },
+      "keywords": [
+        "perdarahan dari jalan lahir",
+        "keluar darah dari vagina",
+        "flek",
+        "pendarahan dari jalan lahir",
+        "perdarahan dari vagina",
+        "darah dari kemaluan",
+        "keluar darah dari kemaluan",
+        "keluar darah dari jalan lahir",
+        "darah dari jalan lahir",
+        "berdarah dari jalan lahir"
+      ]
+    },
+    {
+      "id": "keluar_jaringan",
+      "label": "Keluar gumpalan/jaringan dari jalan lahir",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah keluar gumpalan atau jaringan seperti daging?",
+      "phrases": {
+        "lay": ["keluar gumpalan kayak daging", "ada jaringan yang keluar dari jalan lahir"],
+        "exaggerated": ["gumpalannya besar-besar"],
+        "downplayed": ["ada gumpalan kecil"]
+      },
+      "keywords": ["keluar gumpalan", "gumpalan darah", "keluar jaringan", "seperti daging", "keluar daging", "gumpalan"],
+      "volunteer": false
+    },
+    {
+      "id": "terlambat_haid",
+      "label": "Terlambat haid",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah haidnya terlambat?",
+      "phrases": {
+        "lay": ["saya telat haid", "haid saya terlambat"],
+        "exaggerated": ["sudah tiga bulan saya nggak haid"],
+        "downplayed": ["haid agak telat"]
+      },
+      "keywords": [
+        "telat haid",
+        "terlambat haid",
+        "telat datang bulan",
+        "tidak haid",
+        "belum haid lagi",
+        "haid terlambat",
+        "telat mens"
+      ]
+    },
+    {
+      "id": "nyeri_perineum",
+      "label": "Nyeri di jalan lahir/perineum",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada nyeri atau luka di jalan lahir?",
+      "phrases": {
+        "lay": ["jalan lahir saya sakit dan perih", "bekas melahirkan di bawah saya perih"],
+        "exaggerated": ["sakit sekali sampai nggak bisa duduk"],
+        "downplayed": ["agak perih di bawah"]
+      },
+      "keywords": [
+        "nyeri di jalan lahir",
+        "sakit di jalan lahir",
+        "luka di jalan lahir",
+        "robekan jalan lahir",
+        "robek jalan lahir",
+        "perineum",
+        "jahitan"
+      ]
+    },
+    {
+      "id": "payudara_nyeri_bengkak",
+      "label": "Payudara nyeri, bengkak, kemerahan",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah payudaranya nyeri, bengkak, atau merah?",
+      "phrases": {
+        "lay": ["payudara saya bengkak, merah, sakit", "payudara saya keras dan panas"],
+        "exaggerated": ["payudara saya sakit sekali sampai nggak bisa disentuh"],
+        "downplayed": ["payudara agak nyeri"]
+      },
+      "keywords": [
+        "payudara bengkak",
+        "payudara sakit",
+        "payudara nyeri",
+        "payudara merah",
+        "payudara keras",
+        "nyeri payudara",
+        "susu bengkak",
+        "tetek bengkak"
+      ]
+    },
+    {
+      "id": "puting_lecet",
+      "label": "Puting lecet/pecah",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah putingnya lecet atau pecah-pecah?",
+      "phrases": {
+        "lay": ["puting saya lecet dan perih waktu menyusui", "puting saya pecah-pecah, kadang berdarah"],
+        "exaggerated": ["puting saya luka berdarah, sakit sekali tiap menyusui"],
+        "downplayed": ["puting agak lecet"]
+      },
+      "keywords": ["puting lecet", "puting luka", "puting pecah", "puting perih", "puting berdarah", "puting sakit"]
+    },
+    {
+      "id": "puting_masuk",
+      "label": "Puting masuk ke dalam (inverted)",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah putingnya masuk ke dalam atau datar?",
+      "phrases": {
+        "lay": ["puting saya masuk ke dalam", "puting saya datar, bayi susah ngempeng"],
+        "exaggerated": ["puting saya sama sekali nggak keluar"],
+        "downplayed": ["puting agak datar"]
+      },
+      "keywords": [
+        "puting masuk",
+        "puting masuk ke dalam",
+        "puting datar",
+        "puting tidak menonjol",
+        "puting tenggelam",
+        "puting terbenam"
+      ]
+    },
+    {
+      "id": "sulit_menyusui",
+      "label": "Kesulitan menyusui",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah ada kesulitan saat menyusui?",
+      "phrases": {
+        "lay": ["saya susah menyusui", "bayi saya susah menyusu ke saya"],
+        "exaggerated": ["sama sekali nggak bisa menyusui"],
+        "downplayed": ["menyusui agak susah"]
+      },
+      "keywords": [
+        "susah menyusui",
+        "sulit menyusui",
+        "kesulitan menyusui",
+        "asi susah keluar",
+        "asi tidak keluar",
+        "bayi susah menyusu"
+      ]
+    },
+    {
+      "id": "gemetar",
+      "label": "Gemetar / tangan tremor",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah tangannya gemetar?",
+      "phrases": {
+        "lay": ["tangan saya gemetaran", "badan saya gemetar, lemas"],
+        "exaggerated": ["gemetarnya sampai nggak bisa pegang gelas"],
+        "downplayed": ["tangan agak gemetar"]
+      },
+      "keywords": ["tangan gemetar", "gemetar", "gemetaran", "tremor", "tangan bergetar", "badan gemetar"]
+    },
+    {
+      "id": "bingung",
+      "label": "Bingung / linglung",
+      "system": "Kepala & saraf",
+      "question": "Apakah sempat bingung atau linglung?",
+      "phrases": {
+        "lay": ["saya sempat bingung, nggak nyambung", "kata keluarga saya sempat linglung"],
+        "exaggerated": ["saya sampai nggak kenal orang"],
+        "downplayed": ["agak bingung sebentar"]
+      },
+      "keywords": ["bingung", "linglung", "tidak nyambung", "nggak nyambung", "kebingungan", "disorientasi", "ngelantur"]
+    },
+    {
+      "id": "sendi_bengkak",
+      "label": "Sendi bengkak, merah, nyeri",
+      "system": "Otot & sendi",
+      "question": "Apakah ada sendi yang bengkak, merah, dan nyeri?",
+      "phrases": {
+        "lay": ["jempol kaki saya bengkak, merah, sakit sekali", "sendi saya bengkak dan panas"],
+        "exaggerated": ["sakitnya sampai kena selimut saja nggak tahan"],
+        "downplayed": ["sendi agak bengkak"]
+      },
+      "keywords": [
+        "sendi bengkak",
+        "bengkak di sendi",
+        "jempol kaki bengkak",
+        "jempol bengkak",
+        "sendi merah",
+        "sendi panas",
+        "asam urat kambuh",
+        "pangkal jempol",
+        "sendi yang bengkak",
+        "sendi bengkak merah",
+        "sendi yang bengkak merah",
+        "bengkak di persendian"
+      ]
+    },
+    {
+      "id": "benjolan_leher_depan",
+      "label": "Benjolan di leher depan (gondok)",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah ada benjolan di leher bagian depan?",
+      "phrases": {
+        "lay": ["leher depan saya membesar", "ada benjolan di leher depan saya, ikut naik kalau menelan"],
+        "exaggerated": ["benjolannya besar sekali sampai susah napas"],
+        "downplayed": ["leher agak besar sedikit"]
+      },
+      "keywords": [
+        "gondok",
+        "leher depan",
+        "benjolan di leher depan",
+        "leher membesar",
+        "tiroid",
+        "kelenjar gondok",
+        "benjolan di leher bagian depan",
+        "leher bagian depan",
+        "benjolan leher depan"
+      ]
+    },
+    {
+      "id": "kram_otot",
+      "label": "Kram otot",
+      "system": "Otot & sendi",
+      "question": "Apakah sering kram otot?",
+      "phrases": {
+        "lay": ["saya sering kram", "betis dan tangan saya sering kram"],
+        "exaggerated": ["kramnya sampai jari-jari tertekuk kaku"],
+        "downplayed": ["kadang kram"]
+      },
+      "keywords": ["kram", "kram otot", "keram", "kejang otot", "otot tertarik"]
+    },
+    {
+      "id": "bb_naik",
+      "label": "Berat badan berlebih / naik",
+      "system": "Endokrin & metabolik",
+      "question": "Apakah berat badannya naik atau berlebih?",
+      "phrases": {
+        "lay": ["berat badan saya naik terus", "saya makin gemuk"],
+        "exaggerated": ["saya gemuk sekali, baju nggak ada yang muat"],
+        "downplayed": ["agak gemuk sedikit"]
+      },
+      "keywords": ["berat badan naik", "bb naik", "gemuk", "kegemukan", "kelebihan berat badan", "obesitas", "makin gemuk"]
+    },
+    {
+      "id": "pucat",
+      "label": "Pucat",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah wajah atau kulitnya tampak pucat?",
+      "phrases": {
+        "lay": ["kata keluarga saya pucat", "muka saya pucat"],
+        "exaggerated": ["muka saya pucat sekali kayak kertas"],
+        "downplayed": ["agak pucat"]
+      },
+      "keywords": ["pucat", "muka pucat", "wajah pucat", "kurang darah", "bibir pucat", "telapak pucat"]
+    },
+    {
+      "id": "ngidam_es",
+      "label": "Suka mengunyah es/benda tidak lazim (pika)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah suka mengunyah es batu atau benda yang tidak lazim?",
+      "phrases": {
+        "lay": ["saya suka sekali ngunyah es batu", "saya suka ngemil es batu terus"],
+        "exaggerated": ["sehari bisa satu kantong es batu saya kunyah"],
+        "downplayed": ["kadang ngemil es"]
+      },
+      "keywords": ["es batu", "mengunyah es", "makan es", "ngemil es", "kunyah es", "makan tanah", "pika"],
+      "volunteer": false
+    },
+    {
+      "id": "rambut_rontok",
+      "label": "Rambut rontok / pitak",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah rambutnya rontok atau ada pitak?",
+      "phrases": {
+        "lay": ["rambut saya rontok", "ada bagian kepala saya yang botak, pitak"],
+        "exaggerated": ["rambut saya rontok banyak sekali"],
+        "downplayed": ["rambut agak rontok"]
+      },
+      "keywords": ["rambut rontok", "rontok", "pitak", "botak", "kebotakan", "rambut mudah dicabut", "rambut jarang"]
+    },
+    {
+      "id": "bengkak_kaki",
+      "label": "Bengkak di tungkai/kaki",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah kakinya bengkak?",
+      "phrases": {
+        "lay": ["kaki saya bengkak", "tungkai saya membesar"],
+        "exaggerated": ["kaki saya besar sekali, kayak kaki gajah"],
+        "downplayed": ["kaki agak bengkak sedikit"]
+      },
+      "keywords": [
+        "kaki bengkak",
+        "bengkak di kaki",
+        "tungkai bengkak",
+        "kaki membesar",
+        "kaki gajah",
+        "sembab",
+        "kaki sembab",
+        "edema"
+      ]
+    },
+    {
+      "id": "sudut_bibir_pecah",
+      "label": "Sudut bibir pecah-pecah",
+      "system": "Pencernaan",
+      "question": "Apakah sudut bibirnya pecah-pecah?",
+      "phrases": {
+        "lay": ["sudut bibir saya pecah-pecah", "bibir saya pecah di pinggir"],
+        "exaggerated": ["sudut bibir saya luka sampai berdarah"],
+        "downplayed": ["sudut bibir agak pecah"]
+      },
+      "keywords": ["sudut bibir", "bibir pecah", "bibir pecah pecah", "ujung bibir", "pinggir bibir pecah"]
+    },
+    {
+      "id": "benjolan_kgb",
+      "label": "Benjolan kelenjar getah bening (leher/ketiak/lipat paha)",
+      "system": "Umum",
+      "question": "Apakah ada benjolan di leher, ketiak, atau lipat paha?",
+      "phrases": {
+        "lay": ["ada benjolan di leher saya", "ada benjolan sakit di ketiak saya"],
+        "exaggerated": ["benjolannya banyak dan besar"],
+        "downplayed": ["ada benjolan kecil"]
+      },
+      "keywords": [
+        "benjolan di leher",
+        "benjolan di ketiak",
+        "benjolan di lipat paha",
+        "benjolan di selangkangan",
+        "kelenjar bengkak",
+        "kelenjar getah bening",
+        "kelenjar",
+        "benjolan leher",
+        "benjolan ketiak"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "nyeri_betis",
+      "label": "Nyeri betis",
+      "system": "Otot & sendi",
+      "question": "Apakah betisnya terasa nyeri?",
+      "phrases": {
+        "lay": ["betis saya sakit sekali", "betis saya nyeri kalau dipakai jalan"],
+        "exaggerated": ["betis saya sakit sampai nggak bisa jalan"],
+        "downplayed": ["betis agak pegal"]
+      },
+      "keywords": ["betis", "nyeri betis", "sakit betis", "betis sakit", "betis nyeri", "pegal betis"]
+    },
+    {
+      "id": "bengkak_bibir_mata",
+      "label": "Bengkak bibir/kelopak mata (angioedema)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah bibir atau kelopak matanya bengkak?",
+      "phrases": {
+        "lay": ["bibir saya bengkak", "kelopak mata dan bibir saya bengkak tiba-tiba"],
+        "exaggerated": ["bibir saya bengkak besar sekali, lidah juga tebal"],
+        "downplayed": ["bibir agak tebal"]
+      },
+      "keywords": [
+        "bibir bengkak",
+        "bengkak di bibir",
+        "muka bengkak",
+        "wajah bengkak",
+        "mata bengkak",
+        "lidah bengkak",
+        "bengkak tiba tiba",
+        "bibir atau kelopak mata bengkak",
+        "bibir atau mata bengkak",
+        "bibir dan kelopak mata bengkak",
+        "bibir atau kelopak matanya bengkak"
+      ]
+    },
+    {
+      "id": "mau_pingsan",
+      "label": "Kepala melayang / mau pingsan",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah sempat merasa mau pingsan atau berkunang-kunang?",
+      "phrases": {
+        "lay": ["saya rasanya mau pingsan", "mata saya berkunang-kunang, kepala melayang"],
+        "exaggerated": ["saya sempat pingsan"],
+        "downplayed": ["agak melayang sebentar"]
+      },
+      "keywords": [
+        "mau pingsan",
+        "pingsan",
+        "kepala melayang",
+        "berkunang kunang",
+        "kunang kunang",
+        "pandangan gelap",
+        "hampir pingsan",
+        "sinkop"
+      ]
+    },
+    {
+      "id": "hasil_cek_abnormal",
+      "label": "Hasil skrining kesehatan tidak normal",
+      "system": "Umum",
+      "question": "Apakah ada hasil pemeriksaan kesehatan sebelumnya yang tidak normal?",
+      "phrases": {
+        "lay": ["hasil cek kesehatan saya ada yang tinggi", "kata hasil medical check up di kantor ada yang nggak normal"],
+        "exaggerated": ["hasil lab saya merah semua, saya takut"],
+        "downplayed": ["ada sedikit yang di atas normal di hasil cek"]
+      },
+      "keywords": [
+        "hasil cek",
+        "hasil lab",
+        "medical check up",
+        "mcu",
+        "cek kesehatan",
+        "hasil pemeriksaan",
+        "skrining",
+        "check up"
+      ]
+    },
+    {
+      "id": "gatal_kulit",
+      "label": "Gatal di kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulitnya gatal?",
+      "phrases": {
+        "lay": ["kulit saya gatal", "badan saya gatal-gatal"],
+        "exaggerated": ["gatalnya nggak tahan, saya garuk sampai lecet"],
+        "downplayed": ["agak gatal sedikit"]
+      },
+      "keywords": [
+        "gatal",
+        "gatal gatal",
+        "kulit gatal",
+        "garuk",
+        "menggaruk",
+        "gatal di kulit",
+        "gatal di badan",
+        "pruritus",
+        "gatel"
+      ]
+    },
+    {
+      "id": "gatal_malam",
+      "label": "Gatal terutama malam hari",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah gatalnya lebih berat di malam hari?",
+      "phrases": {
+        "lay": ["gatalnya paling parah kalau malam", "malam-malam saya nggak bisa tidur karena gatal"],
+        "exaggerated": ["tiap malam garuk-garuk sampai berdarah"],
+        "downplayed": ["malam agak lebih gatal"]
+      },
+      "keywords": [
+        "gatal malam",
+        "gatal kalau malam",
+        "gatal waktu malam",
+        "malam gatal",
+        "gatal di malam hari",
+        "gatal lebih berat di malam hari",
+        "gatal lebih berat malam hari",
+        "gatal lebih berat malam",
+        "gatal makin berat malam",
+        "gatal terutama malam",
+        "gatal paling berat malam"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "ruam_kulit",
+      "label": "Ruam / bercak kemerahan di kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada ruam atau bercak kemerahan di kulit?",
+      "phrases": {
+        "lay": ["kulit saya ada bercak merahnya", "ada ruam merah di kulit saya"],
+        "vague": ["kulit saya ada yang aneh"],
+        "exaggerated": ["ruamnya banyak sekali, menyebar ke mana-mana"],
+        "downplayed": ["ada bercak merah sedikit"]
+      },
+      "keywords": [
+        "ruam",
+        "ruam merah",
+        "ruam kemerahan",
+        "bercak merah",
+        "bercak kemerahan",
+        "merah merah di kulit",
+        "bercak di kulit",
+        "bercak"
+      ]
+    },
+    {
+      "id": "kulit_bersisik",
+      "label": "Kulit bersisik / mengelupas",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulitnya bersisik atau mengelupas?",
+      "phrases": {
+        "lay": ["kulit saya bersisik", "kulitnya mengelupas halus"],
+        "exaggerated": ["sisiknya rontok terus kayak ketombe"],
+        "downplayed": ["agak bersisik sedikit"]
+      },
+      "keywords": ["bersisik", "sisik", "mengelupas", "kulit mengelupas", "terkelupas", "kulit pecah pecah", "kulit kasar"]
+    },
+    {
+      "id": "bercak_putih_kulit",
+      "label": "Bercak putih/terang di kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bercak putih atau lebih terang di kulit?",
+      "phrases": {
+        "lay": ["ada bercak putih di kulit saya", "kulit saya belang-belang putih"],
+        "exaggerated": ["bercak putihnya banyak sekali di punggung"],
+        "downplayed": ["ada belang sedikit"]
+      },
+      "keywords": ["bercak putih", "panu", "belang putih", "bercak keputihan", "bercak terang", "kulit belang", "bercak pucat"]
+    },
+    {
+      "id": "bercak_mati_rasa",
+      "label": "Bercak kulit mati rasa",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bercak di kulit yang terasa baal atau mati rasa?",
+      "phrases": {
+        "lay": [
+          "ada bercak di kulit saya yang nggak terasa kalau disentuh",
+          "bercaknya baal, kena api rokok juga nggak terasa"
+        ],
+        "exaggerated": ["bercaknya mati rasa semua"],
+        "downplayed": ["bercaknya agak kurang terasa"]
+      },
+      "keywords": [
+        "bercak mati rasa",
+        "bercak tidak terasa",
+        "bercak baal",
+        "kulit mati rasa",
+        "tidak terasa disentuh",
+        "mati rasa di bercak",
+        "bercak kebas",
+        "kulit yang terasa baal",
+        "bercak yang baal",
+        "bercak yang mati rasa",
+        "bercak di kulit yang mati rasa",
+        "bercak di kulit yang terasa baal",
+        "kulit terasa baal"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "bintil_bernanah",
+      "label": "Bintil bernanah (pustul)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bintil-bintil bernanah?",
+      "phrases": {
+        "lay": ["ada bintil-bintil kecil bernanah di kulit saya", "muncul bintik bernanah di sekitar rambut"],
+        "exaggerated": ["bintil nanahnya banyak sekali"],
+        "downplayed": ["ada bintil kecil"]
+      },
+      "keywords": [
+        "bintil bernanah",
+        "bintik nanah",
+        "bintil nanah",
+        "jerawat bernanah",
+        "pustul",
+        "bisul kecil",
+        "bintil berisi nanah",
+        "bernanah",
+        "ada nanah"
+      ]
+    },
+    {
+      "id": "bisul",
+      "label": "Bisul / benjolan bernanah",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bisul atau benjolan bernanah?",
+      "phrases": {
+        "lay": ["ada bisul di kulit saya", "ada benjolan merah bernanah, sakit cenut-cenut"],
+        "exaggerated": ["bisulnya besar dan banyak"],
+        "downplayed": ["ada bisul kecil"]
+      },
+      "keywords": ["bisul", "benjolan bernanah", "abses", "udun", "bengkak bernanah", "benjolan berisi nanah"]
+    },
+    {
+      "id": "jerawat",
+      "label": "Jerawat & komedo",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada jerawat atau komedo?",
+      "phrases": {
+        "lay": ["muka saya jerawatan", "banyak jerawat dan komedo di wajah saya"],
+        "exaggerated": ["jerawat saya parah sekali sampai minder"],
+        "downplayed": ["ada jerawat sedikit"]
+      },
+      "keywords": ["jerawat", "jerawatan", "komedo", "akne", "beruntusan"]
+    },
+    {
+      "id": "lepuh_kulit",
+      "label": "Lepuh / bintil berair di kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada lepuh atau bintil berisi air di kulit?",
+      "phrases": {
+        "lay": ["ada bintil berair di kulit saya", "kulit saya melepuh"],
+        "exaggerated": ["lepuhnya banyak sekali di seluruh badan"],
+        "downplayed": ["ada lepuh kecil"]
+      },
+      "keywords": [
+        "lepuh",
+        "melepuh",
+        "bintil berair",
+        "gelembung berisi air",
+        "lenting",
+        "bintil air",
+        "vesikel",
+        "cacar",
+        "plenting"
+      ]
+    },
+    {
+      "id": "lepuh_bibir",
+      "label": "Lepuh berkelompok di bibir",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada lepuh kecil berkelompok di bibir?",
+      "phrases": {
+        "lay": ["di bibir saya muncul lepuh kecil-kecil", "bibir saya ada bintil berair, perih"],
+        "exaggerated": ["bibir saya penuh lepuh, perih sekali"],
+        "downplayed": ["ada bintil kecil di bibir"]
+      },
+      "keywords": [
+        "lepuh di bibir",
+        "bintil di bibir",
+        "bibir melepuh",
+        "bibir berair",
+        "luka di bibir",
+        "dampa",
+        "bibir lecet",
+        "lepuh kecil berkelompok di bibir",
+        "berkelompok di bibir",
+        "lepuh kecil di bibir",
+        "bintil berair di bibir"
+      ]
+    },
+    {
+      "id": "koreng",
+      "label": "Koreng / keropeng (krusta)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada koreng atau keropeng di kulit?",
+      "phrases": {
+        "lay": ["ada koreng kuning di kulit saya", "lukanya jadi keropeng"],
+        "exaggerated": ["korengnya banyak dan basah"],
+        "downplayed": ["ada keropeng kecil"]
+      },
+      "keywords": ["koreng", "keropeng", "kerak", "krusta", "kerak kuning", "kudis"]
+    },
+    {
+      "id": "kutil",
+      "label": "Kutil",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada kutil?",
+      "phrases": {
+        "lay": ["ada kutil di tangan saya", "kulit saya tumbuh benjolan kasar kayak kutil"],
+        "exaggerated": ["kutilnya banyak sekali"],
+        "downplayed": ["ada kutil kecil"]
+      },
+      "keywords": ["kutil", "benjolan kasar", "kutil kulit"]
+    },
+    {
+      "id": "bintil_mutiara",
+      "label": "Bintil kecil mengkilap berlekuk",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bintil kecil mengkilap seperti mutiara?",
+      "phrases": {
+        "lay": ["ada bintil-bintil kecil mengkilap di kulit saya", "bintilnya kayak mutiara, tengahnya ada lekukan"],
+        "exaggerated": ["bintilnya banyak sekali"],
+        "downplayed": ["ada bintil kecil"]
+      },
+      "keywords": ["bintil mengkilap", "seperti mutiara", "bintil mutiara", "bintil berlekuk", "bintil putih kecil", "bintil kecil"]
+    },
+    {
+      "id": "benjolan_kulit",
+      "label": "Benjolan di bawah kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada benjolan di bawah kulit?",
+      "phrases": {
+        "lay": ["ada benjolan di bawah kulit saya", "ada benjolan lunak di punggung saya"],
+        "exaggerated": ["benjolannya makin besar"],
+        "downplayed": ["ada benjolan kecil"]
+      },
+      "keywords": [
+        "benjolan di bawah kulit",
+        "benjolan lunak",
+        "benjolan",
+        "daging tumbuh",
+        "gumpalan di bawah kulit",
+        "benjolan kenyal"
+      ]
+    },
+    {
+      "id": "nyeri_terbakar_kulit",
+      "label": "Nyeri seperti terbakar di kulit",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulitnya terasa nyeri seperti terbakar atau tertusuk?",
+      "phrases": {
+        "lay": ["kulit saya rasanya panas terbakar", "kulit di satu sisi badan saya perih kayak ditusuk-tusuk"],
+        "exaggerated": ["perihnya sampai nggak bisa kena baju"],
+        "downplayed": ["kulit agak perih"]
+      },
+      "keywords": [
+        "kulit terbakar",
+        "kulit panas",
+        "perih di kulit",
+        "nyeri di kulit",
+        "kulit perih",
+        "kulit seperti terbakar",
+        "kulit nyeri"
+      ]
+    },
+    {
+      "id": "kuku_rusak",
+      "label": "Kuku menebal / rapuh / berubah warna",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kukunya menebal, rapuh, atau berubah warna?",
+      "phrases": {
+        "lay": ["kuku saya tebal dan kuning", "kuku saya rapuh, kayak keropos"],
+        "exaggerated": ["kuku saya hancur semua"],
+        "downplayed": ["kuku agak kusam"]
+      },
+      "keywords": ["kuku tebal", "kuku rapuh", "kuku kuning", "kuku keropos", "kuku rusak", "kuku berubah warna", "kuku"]
+    },
+    {
+      "id": "kutu_rambut",
+      "label": "Kutu di rambut / rambut kemaluan",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada kutu atau telurnya di rambut?",
+      "phrases": {
+        "lay": ["ada kutu di rambut saya", "ada telur kutu putih-putih nempel di rambut"],
+        "exaggerated": ["kutunya banyak sekali"],
+        "downplayed": ["kayaknya ada kutu sedikit"]
+      },
+      "keywords": ["kutu", "kutuan", "kutu rambut", "telur kutu", "lisa", "kutu kepala"]
+    },
+    {
+      "id": "gatal_kepala",
+      "label": "Kulit kepala gatal",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulit kepalanya gatal?",
+      "phrases": {
+        "lay": ["kepala saya gatal", "kulit kepala saya gatal, saya garuk terus"],
+        "exaggerated": ["kepala saya gatal sekali sampai luka"],
+        "downplayed": ["kepala agak gatal"]
+      },
+      "keywords": ["kepala gatal", "gatal di kepala", "kulit kepala gatal", "gatal kulit kepala"]
+    },
+    {
+      "id": "garis_berkelok",
+      "label": "Garis merah berkelok yang gatal",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada garis merah berkelok-kelok di kulit yang gatal?",
+      "phrases": {
+        "lay": ["ada garis merah berkelok-kelok di kaki saya, gatal", "kayak ada jalur cacing di bawah kulit saya"],
+        "exaggerated": ["garisnya makin panjang tiap hari"],
+        "downplayed": ["ada garis merah kecil"]
+      },
+      "keywords": ["garis berkelok", "berkelok", "seperti benang", "jalur merah", "jalur cacing", "garis merah", "berliku"]
+    },
+    {
+      "id": "biduran",
+      "label": "Bentol-bentol kemerahan gatal (urtika)",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah muncul bentol-bentol kemerahan yang gatal?",
+      "phrases": {
+        "lay": ["badan saya bentol-bentol merah, gatal", "kulit saya bidur"],
+        "exaggerated": ["bentolnya di seluruh badan, makin melebar"],
+        "downplayed": ["ada bentol sedikit"]
+      },
+      "keywords": ["bentol", "bentol bentol", "kaligata", "duduran", "bidur", "urtikaria", "bentol merah", "bengkak gatal"]
+    },
+    {
+      "id": "bentol_gigitan",
+      "label": "Bentol bekas gigitan serangga",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bekas gigitan serangga?",
+      "phrases": {
+        "lay": ["ada bekas gigitan serangga yang bentol", "saya digigit serangga, bentol dan gatal"],
+        "exaggerated": ["gigitannya bengkak besar"],
+        "downplayed": ["bentol kecil bekas gigitan"]
+      },
+      "keywords": [
+        "digigit serangga",
+        "gigitan serangga",
+        "digigit semut",
+        "disengat",
+        "sengatan",
+        "tawon",
+        "digigit tawon",
+        "digigit ulat"
+      ]
+    },
+    {
+      "id": "kulit_kering",
+      "label": "Kulit kering",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulitnya kering?",
+      "phrases": {
+        "lay": ["kulit saya kering", "kulitnya kering kasar"],
+        "exaggerated": ["kulit saya kering sekali sampai pecah-pecah"],
+        "downplayed": ["kulit agak kering"]
+      },
+      "keywords": ["kulit kering", "kering kulit", "kulit kering kasar"]
+    },
+    {
+      "id": "biang_keringat",
+      "label": "Biang keringat",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bintik-bintik kecil biang keringat?",
+      "phrases": {
+        "lay": ["saya biang keringat", "muncul bintik-bintik kecil di leher dan punggung waktu gerah"],
+        "exaggerated": ["biang keringatnya penuh satu badan"],
+        "downplayed": ["ada biang keringat sedikit"]
+      },
+      "keywords": ["biang keringat", "keringat buntet", "bintik keringat", "keringet buntet", "miliaria"]
+    },
+    {
+      "id": "ruam_popok",
+      "label": "Ruam di area popok",
+      "system": "Anak",
+      "question": "Apakah ada ruam di daerah popok?",
+      "phrases": {
+        "lay": ["kulit di popok saya merah", "pantat saya lecet merah kena popok"],
+        "exaggerated": ["merahnya lecet sampai berdarah"],
+        "downplayed": ["agak merah di popok"]
+      },
+      "keywords": ["ruam popok", "merah di popok", "lecet popok", "daerah popok", "pantat merah", "iritasi popok"]
+    },
+    {
+      "id": "ketombe",
+      "label": "Ketombe / kulit kepala bersisik berminyak",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada ketombe atau sisik berminyak di kepala/wajah?",
+      "phrases": {
+        "lay": ["kepala saya ketombean", "ada sisik kekuningan berminyak di kepala dan alis"],
+        "exaggerated": ["ketombenya tebal sekali"],
+        "downplayed": ["ada ketombe sedikit"]
+      },
+      "keywords": ["ketombe", "ketombean", "kulit kepala bersisik", "sisik di kepala", "sisik di alis"]
+    },
+    {
+      "id": "bercak_kehitaman",
+      "label": "Bercak kehitaman di tempat yang sama",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah ada bercak kehitaman yang muncul berulang di tempat yang sama?",
+      "phrases": {
+        "lay": [
+          "ada bercak hitam yang muncul lagi di tempat yang sama",
+          "kalau minum obat itu, bibir saya muncul bercak kehitaman"
+        ],
+        "exaggerated": ["bercak hitamnya melepuh"],
+        "downplayed": ["ada bercak gelap sedikit"]
+      },
+      "keywords": [
+        "bercak hitam",
+        "bercak kehitaman",
+        "bekas hitam",
+        "muncul di tempat yang sama",
+        "bercak gelap",
+        "kulit menghitam"
+      ]
+    },
+    {
+      "id": "kulit_merah_panas",
+      "label": "Kulit merah, panas, bengkak, nyeri",
+      "system": "Kulit & perdarahan",
+      "question": "Apakah kulitnya merah, panas, bengkak, dan nyeri?",
+      "phrases": {
+        "lay": ["kaki saya merah, panas, bengkak", "kulit saya merah meluas dan sakit"],
+        "exaggerated": ["merahnya meluas cepat sekali, panas sekali"],
+        "downplayed": ["agak merah dan hangat"]
+      },
+      "keywords": [
+        "kulit merah panas",
+        "merah dan panas",
+        "bengkak merah",
+        "merah bengkak",
+        "kulit bengkak merah",
+        "merah meluas",
+        "kemerahan meluas"
+      ]
+    },
+    {
+      "id": "varises",
+      "label": "Pelebaran vena di tungkai",
+      "system": "Jantung & pembuluh darah",
+      "question": "Apakah ada urat yang menonjol berkelok di tungkai?",
+      "phrases": {
+        "lay": ["urat di kaki saya menonjol berkelok-kelok", "kaki saya varises"],
+        "exaggerated": ["varisesnya besar-besar"],
+        "downplayed": ["ada urat kecil"]
+      },
+      "keywords": ["varises", "urat menonjol", "urat kaki", "pembuluh darah menonjol", "urat berkelok"],
+      "volunteer": false
+    },
+    {
+      "id": "luka_robek",
+      "label": "Luka robek / terbuka",
+      "system": "Trauma & luka",
+      "question": "Apakah ada luka robek atau luka terbuka?",
+      "phrases": {
+        "lay": ["ada luka robek, Dok, berdarah", "kulit saya sobek dan berdarah"],
+        "exaggerated": ["lukanya lebar dan darahnya banyak sekali"],
+        "downplayed": ["lukanya kecil"]
+      },
+      "keywords": [
+        "luka robek",
+        "luka sobek",
+        "sobek",
+        "luka terbuka",
+        "luka menganga",
+        "terluka",
+        "berdarah terus",
+        "kena pisau",
+        "kena kaca",
+        "kena seng"
+      ]
+    },
+    {
+      "id": "luka_tusuk",
+      "label": "Luka tusuk",
+      "system": "Trauma & luka",
+      "question": "Apakah ada luka tusuk?",
+      "phrases": {
+        "lay": ["saya tertusuk", "kaki saya tertusuk paku"],
+        "exaggerated": ["tusukannya dalam sekali"],
+        "downplayed": ["cuma tertusuk sedikit"]
+      },
+      "keywords": ["tertusuk", "luka tusuk", "ketusuk", "tusukan", "tertusuk paku", "kena paku", "ditusuk"]
+    },
+    {
+      "id": "luka_bakar",
+      "label": "Luka bakar",
+      "system": "Trauma & luka",
+      "question": "Apakah ada luka bakar atau kena benda panas?",
+      "phrases": {
+        "lay": ["kulit saya kena air panas, melepuh", "saya kena luka bakar"],
+        "exaggerated": ["luka bakarnya luas sekali"],
+        "downplayed": ["cuma kena panas sedikit"]
+      },
+      "keywords": [
+        "luka bakar",
+        "kena air panas",
+        "tersiram air panas",
+        "tersiram",
+        "kena api",
+        "kena knalpot",
+        "kena minyak panas",
+        "kesiram"
+      ]
+    },
+    {
+      "id": "memar",
+      "label": "Memar / lebam / benjol",
+      "system": "Trauma & luka",
+      "question": "Apakah ada memar, lebam, atau benjol?",
+      "phrases": {
+        "lay": ["badan saya memar-memar", "ada lebam biru di badan saya"],
+        "exaggerated": ["memarnya banyak sekali, biru semua"],
+        "downplayed": ["ada memar sedikit"]
+      },
+      "keywords": ["memar", "lebam", "biru biru", "biru lebam", "bengkak kena pukul", "lebam biru"]
+    },
+    {
+      "id": "nyeri_luka",
+      "label": "Nyeri di bagian yang cedera",
+      "system": "Trauma & luka",
+      "question": "Apakah bagian yang cedera terasa nyeri?",
+      "phrases": {
+        "lay": ["lukanya sakit sekali", "bagian yang luka sakit kalau ditekan"],
+        "exaggerated": ["sakitnya luar biasa"],
+        "downplayed": ["agak nyeri"]
+      },
+      "keywords": [
+        "sakit di luka",
+        "nyeri luka",
+        "lukanya sakit",
+        "perih di luka",
+        "sakit yang kena",
+        "nyeri bekas pukulan",
+        "sakit bekas",
+        "bagian yang cedera terasa nyeri",
+        "bagian yang cedera",
+        "yang cedera terasa nyeri",
+        "cedera terasa nyeri",
+        "cedera sakit",
+        "luka terasa nyeri",
+        "lukanya nyeri",
+        "bekas luka sakit"
+      ]
+    },
+    {
+      "id": "risiko_ims",
+      "label": "Khawatir setelah pajanan berisiko (IMS/HIV)",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah pernah berhubungan seksual berisiko atau memakai jarum suntik bergantian?",
+      "phrases": {
+        "lay": ["saya khawatir karena pernah berhubungan berisiko", "pasangan saya ternyata positif HIV"],
+        "exaggerated": ["saya takut sekali sudah tertular"],
+        "downplayed": ["cuma mau cek saja"]
+      },
+      "keywords": [
+        "hubungan berisiko",
+        "seks bebas",
+        "jarum suntik",
+        "pasangan positif",
+        "tes hiv",
+        "pasangan hiv",
+        "berganti pasangan",
+        "jajan seks",
+        "hubungan seks"
+      ],
+      "volunteer": false
+    },
+    {
+      "id": "nyeri_testis",
+      "label": "Nyeri/bengkak buah zakar",
+      "system": "Kelamin & reproduksi",
+      "question": "Apakah buah zakarnya nyeri atau bengkak?",
+      "phrases": {
+        "lay": ["buah zakar saya bengkak dan sakit", "testis saya nyeri"],
+        "exaggerated": ["buah zakar saya bengkak besar sekali, sakit sekali"],
+        "downplayed": ["agak nyeri di bawah"]
+      },
+      "keywords": ["buah zakar", "testis", "zakar bengkak", "skrotum", "biji kemaluan", "pelir"],
+      "volunteer": false
     }
   ]
 }

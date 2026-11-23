@@ -1,0 +1,140 @@
+{
+  "disease": "cutaneous_larva_migrans",
+  "setting": "Puskesmas",
+  "station": "Kulit — gatal & parasit",
+  "therapy": {
+    "items": [
+      {
+        "id": "antelmintik",
+        "label": "Antelmintik",
+        "role": "utama",
+        "reason": "Membunuh larva cacing tambang hewan.",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg 1 × sehari selama 3 hari",
+            "schedules": ["rutin"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [1, 1],
+            "days": [3, 3]
+          },
+          {
+            "drug": "ivermektin",
+            "label": "Ivermektin 200 mcg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["ivermektin-tab3"],
+            "dosePerKg": [0.17, 0.25]
+          }
+        ]
+      },
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["kortikosteroid_topikal"],
+        "reason": "Kortikosteroid topikal memperberat & menyamarkan infeksi jamur (tinea inkognito).",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "alas", "text": "Pakai alas kaki di pantai/tanah & alas saat duduk di pasir", "kind": "benar" },
+    { "id": "hewan", "text": "Beri obat cacing untuk anjing/kucing peliharaan", "kind": "benar" },
+    { "id": "garuk", "text": "Potong kuku & jangan digaruk", "kind": "benar" },
+    {
+      "id": "es_bakar",
+      "text": "Bakar/sundut jalur larva dengan rokok/es batu kering",
+      "kind": "berbahaya",
+      "why": "Luka bakar; larva berada di depan jalur."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini creeping eruption: larva cacing tambang hewan yang berjalan di kulit",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat cacing diminum sesuai dosis; gatal berkurang dalam beberapa hari",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila bernanah, kemerahan meluas, demam, atau batuk/sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 1 minggu", "kind": "benar", "category": "kontrol" },
+    { "id": "cegah", "text": "Gunakan alas kaki di pantai & tanah lembap", "kind": "benar", "category": "pencegahan" },
+    {
+      "id": "menular",
+      "text": "Penyakit ini menular ke keluarga lewat sentuhan",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Tidak menular antarmanusia."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

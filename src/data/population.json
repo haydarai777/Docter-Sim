@@ -88,6 +88,22 @@
   },
   "occupations": [
     {
+      "id": "pelajar_sd",
+      "label": "Pelajar SD",
+      "intro": "masih sekolah SD",
+      "age": [10, 12],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 4
+    },
+    {
+      "id": "pelajar",
+      "label": "Pelajar SMP/SMA",
+      "intro": "masih sekolah",
+      "age": [13, 18],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 5
+    },
+    {
       "id": "mahasiswa",
       "label": "Mahasiswa",
       "intro": "masih kuliah",
@@ -271,10 +287,79 @@
       "age": [20, 55],
       "economy": ["miskin"],
       "weight": 1
+    },
+    {
+      "id": "bayi",
+      "label": "Bayi",
+      "intro": "masih bayi",
+      "age": [0, 0],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 5
+    },
+    {
+      "id": "balita",
+      "label": "Balita",
+      "intro": "belum sekolah",
+      "age": [1, 3],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 5
+    },
+    {
+      "id": "anak_tk",
+      "label": "Anak TK/PAUD",
+      "intro": "sekolah TK",
+      "age": [4, 6],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 4
+    },
+    {
+      "id": "anak_sd",
+      "label": "Pelajar SD",
+      "intro": "sekolah SD",
+      "age": [7, 9],
+      "economy": ["miskin", "menengah", "kaya"],
+      "weight": 4
     }
   ],
   "context": {
     "waktu": ["pagi", "siang", "sore"],
     "kotaWisata": ["Bali", "Yogyakarta", "Bandung", "Malang", "Semarang", "Danau Toba"]
+  },
+  "allergies": ["amoksisilin", "antalgin (metamizol)", "kotrimoksazol", "ibuprofen", "udang dan makanan laut", "debu"],
+  "childNames": {
+    "male": [
+      { "name": "Muhammad Rafa", "call": "Rafa" },
+      "Rizky Pratama",
+      "Arkan Maulana",
+      "Fathan Alfarizi",
+      "Dimas Saputra",
+      "Alif Ramadhan",
+      "Bima Aditya",
+      "Kenzo Wijaya",
+      "Raka Firmansyah",
+      "Zidan Akbar",
+      "Gibran Putra",
+      "Farel Nugroho",
+      "Azka Hidayat",
+      "Daffa Ramadan",
+      "Satria Hakim"
+    ],
+    "female": [
+      "Aqila Putri",
+      "Nayla Zahra",
+      "Kirana Ayu",
+      "Alya Safitri",
+      "Salsabila",
+      "Keisha Anindya",
+      "Zahira Nur",
+      "Ayesha Rahma",
+      "Naura Azzahra",
+      "Citra Lestari",
+      "Mikaela Putri",
+      "Bilqis Humaira",
+      "Tiara Anjani",
+      "Hana Kamila",
+      "Shafa Aulia"
+    ]
   }
 }

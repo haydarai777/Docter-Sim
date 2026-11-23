@@ -1,0 +1,3086 @@
+{
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": [
+      "Formularium latihan OSCE: sediaan umum di Indonesia (Fornas/obat generik). Bukan daftar obat lengkap.",
+      "Kekuatan sediaan dipakai untuk menghitung dosis per kali dari jumlah tablet/puff/tetes yang ditulis pemain.",
+      "Topikal & tetes: 1 satuan = 1 kali oles/tetes; jumlah kemasan dihitung dari perkiraan pemakaian per tube/botol."
+    ],
+    "references": ["Kemenkes RI. Formularium Nasional", "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer"]
+  },
+  "classes": {
+    "analgesik": "Analgesik-antipiretik",
+    "oains": "Antiinflamasi nonsteroid (OAINS)",
+    "ppi": "Penghambat pompa proton (PPI)",
+    "antasida": "Antasida & pelindung mukosa",
+    "prokinetik": "Prokinetik & antiemetik",
+    "antibiotik": "Antibiotik",
+    "antimalaria": "Antimalaria",
+    "oat": "Obat antituberkulosis (OAT)",
+    "vitamin": "Vitamin & suplemen",
+    "bronkodilator": "Bronkodilator",
+    "kortikosteroid": "Kortikosteroid",
+    "antidiabetes": "Antidiabetes oral",
+    "antiangina": "Antiangina & kardiovaskular",
+    "antiplatelet": "Antiplatelet",
+    "statin": "Penurun lipid (statin)",
+    "urologi": "Obat saluran kemih",
+    "antispasmodik": "Antispasmodik",
+    "antivirus": "Antivirus",
+    "arv": "Antiretrovirus (ARV)",
+    "antijamur": "Antijamur oral",
+    "antijamur_topikal": "Antijamur topikal",
+    "antiparasit": "Antelmintik & antiparasit",
+    "antiparasit_topikal": "Skabisida & pedikulisida",
+    "antibiotik_topikal": "Antibiotik topikal",
+    "kortikosteroid_topikal": "Kortikosteroid topikal",
+    "dermatologi": "Obat kulit lain (keratolitik, akne, emolien, pelindung)",
+    "luka": "Perawatan luka & antiseptik",
+    "obat_mata": "Obat mata",
+    "obat_telinga": "Obat telinga",
+    "obat_hidung": "Obat hidung",
+    "antihistamin": "Antihistamin",
+    "antitusif": "Batuk & ekspektoran",
+    "neurologi": "Obat saraf (antivertigo, antimigren, antikonvulsan)",
+    "psikiatri": "Obat jiwa (ansiolitik, hipnotik, antidepresan)",
+    "antihipertensi": "Antihipertensi",
+    "hematinik": "Hematinik (zat besi & asam folat)",
+    "antihiperurisemia": "Penurun asam urat",
+    "insulin": "Insulin",
+    "gawat_darurat": "Obat gawat darurat",
+    "vaksin_serum": "Vaksin & serum",
+    "kusta": "Multi Drug Therapy (MDT) kusta",
+    "antidiare": "Antidiare & probiotik",
+    "laksatif": "Pencahar & obat wasir",
+    "obat_vagina": "Obat vagina",
+    "uterotonika": "Uterotonika"
+  },
+  "allergyGroups": {
+    "amoksisilin": ["penisilin"],
+    "antalgin (metamizol)": ["metamizol"],
+    "kotrimoksazol": ["sulfa"],
+    "ibuprofen": ["ibuprofen"]
+  },
+  "drugs": [
+    {
+      "id": "parasetamol",
+      "name": "Parasetamol",
+      "aliases": ["Paracetamol", "Asetaminofen", "Panadol"],
+      "class": "analgesik",
+      "forms": [
+        {
+          "id": "parasetamol-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "parasetamol-syr",
+          "label": "sirup 120 mg/5 mL",
+          "strength": 120,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 1
+        },
+        {
+          "id": "parasetamol-drop",
+          "label": "drops 100 mg/mL (15 mL)",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "mL",
+          "route": "oral",
+          "package": 15
+        }
+      ],
+      "maxDaily": 4000
+    },
+    {
+      "id": "ibuprofen",
+      "name": "Ibuprofen",
+      "class": "oains",
+      "groups": ["oains", "ibuprofen"],
+      "forms": [
+        {
+          "id": "ibuprofen-tab400",
+          "label": "tab 400 mg",
+          "strength": 400,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "ibuprofen-syr",
+          "label": "sirup 100 mg/5 mL",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        },
+        {
+          "id": "ibuprofen-tab200",
+          "label": "tab 200 mg",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 2400
+    },
+    {
+      "id": "asam_mefenamat",
+      "name": "Asam mefenamat",
+      "aliases": ["Mefenamic acid"],
+      "class": "oains",
+      "groups": ["oains"],
+      "forms": [
+        {
+          "id": "asam_mefenamat-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 2000
+    },
+    {
+      "id": "natrium_diklofenak",
+      "name": "Natrium diklofenak",
+      "aliases": ["Diklofenak"],
+      "class": "oains",
+      "groups": ["oains"],
+      "forms": [
+        {
+          "id": "natrium_diklofenak-tab50",
+          "label": "tab 50 mg",
+          "strength": 50,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 150
+    },
+    {
+      "id": "metamizol",
+      "name": "Metamizol (antalgin)",
+      "aliases": ["Antalgin", "Metampiron"],
+      "class": "analgesik",
+      "groups": ["metamizol"],
+      "forms": [
+        {
+          "id": "metamizol-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 4000
+    },
+    {
+      "id": "aspirin_rendah",
+      "name": "Asam asetilsalisilat dosis rendah",
+      "aliases": ["Aspirin", "Asetosal", "ASA"],
+      "class": "antiplatelet",
+      "groups": ["oains", "salisilat"],
+      "forms": [
+        {
+          "id": "aspirin-tab80",
+          "label": "tab 80 mg",
+          "strength": 80,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 325
+    },
+    {
+      "id": "omeprazol",
+      "name": "Omeprazol",
+      "class": "ppi",
+      "forms": [
+        {
+          "id": "omeprazol-kap20",
+          "label": "kaps 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "lansoprazol",
+      "name": "Lansoprazol",
+      "class": "ppi",
+      "forms": [
+        {
+          "id": "lansoprazol-kap30",
+          "label": "kaps 30 mg",
+          "strength": 30,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "antasida",
+      "name": "Antasida (Al(OH)₃ + Mg(OH)₂)",
+      "aliases": ["Antasida doen", "Magh"],
+      "class": "antasida",
+      "forms": [
+        {
+          "id": "antasida-tabkunyah",
+          "label": "tab kunyah 200/200 mg",
+          "strength": 1,
+          "unit": "tablet",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "sukralfat",
+      "name": "Sukralfat",
+      "class": "antasida",
+      "forms": [
+        {
+          "id": "sukralfat-susp",
+          "label": "suspensi 500 mg/5 mL",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 1
+        }
+      ]
+    },
+    {
+      "id": "domperidon",
+      "name": "Domperidon",
+      "class": "prokinetik",
+      "forms": [
+        {
+          "id": "domperidon-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 30
+    },
+    {
+      "id": "metoklopramid",
+      "name": "Metoklopramid",
+      "class": "prokinetik",
+      "forms": [
+        {
+          "id": "metoklopramid-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 30
+    },
+    {
+      "id": "ondansetron",
+      "name": "Ondansetron",
+      "class": "prokinetik",
+      "forms": [
+        {
+          "id": "ondansetron-tab4",
+          "label": "tab 4 mg",
+          "strength": 4,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "amoksisilin",
+      "name": "Amoksisilin",
+      "aliases": ["Amoxicillin"],
+      "class": "antibiotik",
+      "groups": ["penisilin"],
+      "forms": [
+        {
+          "id": "amoksisilin-tab500",
+          "label": "kaps/tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "amoksisilin-syr125",
+          "label": "sirup kering 125 mg/5 mL",
+          "strength": 125,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        },
+        {
+          "id": "amoksisilin-syr250",
+          "label": "sirup kering forte 250 mg/5 mL",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "azitromisin",
+      "name": "Azitromisin",
+      "aliases": ["Azithromycin"],
+      "class": "antibiotik",
+      "groups": ["makrolid"],
+      "forms": [
+        {
+          "id": "azitromisin-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "azitromisin-syr200",
+          "label": "sirup kering 200 mg/5 mL",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "levofloksasin",
+      "name": "Levofloksasin",
+      "class": "antibiotik",
+      "groups": ["kuinolon"],
+      "forms": [
+        {
+          "id": "levofloksasin-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "levofloksasin-tab750",
+          "label": "tab 750 mg",
+          "strength": 750,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "siprofloksasin",
+      "name": "Siprofloksasin",
+      "aliases": ["Ciprofloxacin"],
+      "class": "antibiotik",
+      "groups": ["kuinolon"],
+      "forms": [
+        {
+          "id": "siprofloksasin-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "kloramfenikol",
+      "name": "Kloramfenikol",
+      "aliases": ["Chloramphenicol"],
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "kloramfenikol-kap250",
+          "label": "kaps 250 mg",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "tiamfenikol",
+      "name": "Tiamfenikol",
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "tiamfenikol-kap500",
+          "label": "kaps 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "sefiksim",
+      "name": "Sefiksim",
+      "aliases": ["Cefixime"],
+      "class": "antibiotik",
+      "groups": ["sefalosporin"],
+      "forms": [
+        {
+          "id": "sefiksim-kap100",
+          "label": "kaps 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "sefiksim-kap200",
+          "label": "kaps 200 mg",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "sefiksim-syr",
+          "label": "sirup kering 100 mg/5 mL",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "kotrimoksazol",
+      "name": "Kotrimoksazol",
+      "aliases": ["Cotrimoxazole", "Sulfametoksazol-trimetoprim"],
+      "class": "antibiotik",
+      "groups": ["sulfa"],
+      "forms": [
+        {
+          "id": "kotrimoksazol-tab480",
+          "label": "tab 480 mg",
+          "strength": 480,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "kotrimoksazol-tab960",
+          "label": "tab forte 960 mg",
+          "strength": 960,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "kotrimoksazol-syr",
+          "label": "suspensi 240 mg/5 mL",
+          "strength": 240,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "nitrofurantoin",
+      "name": "Nitrofurantoin",
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "nitrofurantoin-kap100",
+          "label": "kaps 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "fosfomisin",
+      "name": "Fosfomisin trometamol",
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "fosfomisin-sachet3g",
+          "label": "sachet 3 g",
+          "strength": 3000,
+          "unit": "mg",
+          "dosageUnit": "sachet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "dhp",
+      "name": "Dihidroartemisinin-piperakuin (DHP)",
+      "aliases": ["DHP", "ACT"],
+      "class": "antimalaria",
+      "forms": [
+        {
+          "id": "dhp-tab",
+          "label": "tab 40/320 mg",
+          "strength": 40,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "primakuin",
+      "name": "Primakuin",
+      "aliases": ["Primaquine"],
+      "class": "antimalaria",
+      "forms": [
+        {
+          "id": "primakuin-tab15",
+          "label": "tab 15 mg (basa)",
+          "strength": 15,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "oat_kdt_intensif",
+      "name": "OAT KDT fase intensif (RHZE)",
+      "aliases": ["OAT", "FDC", "KDT", "RHZE", "4FDC"],
+      "class": "oat",
+      "forms": [
+        {
+          "id": "oat-rhze",
+          "label": "tab RHZE 150/75/400/275 mg",
+          "strength": 1,
+          "unit": "tablet",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "oat_kdt_lanjutan",
+      "name": "OAT KDT fase lanjutan (RH)",
+      "aliases": ["2FDC", "RH"],
+      "class": "oat",
+      "forms": [
+        {
+          "id": "oat-rh",
+          "label": "tab RH 150/75 mg",
+          "strength": 1,
+          "unit": "tablet",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "piridoksin",
+      "name": "Piridoksin (vitamin B6)",
+      "aliases": ["Vitamin B6", "Pyridoxine"],
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "piridoksin-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "salbutamol_mdi",
+      "name": "Salbutamol inhaler (MDI)",
+      "aliases": ["Ventolin", "SABA"],
+      "class": "bronkodilator",
+      "forms": [
+        {
+          "id": "salbutamol-mdi100",
+          "label": "inhaler 100 mcg/puff (200 puff)",
+          "strength": 100,
+          "unit": "mcg",
+          "dosageUnit": "puff",
+          "route": "inhalasi",
+          "package": 200
+        }
+      ]
+    },
+    {
+      "id": "salbutamol_tab",
+      "name": "Salbutamol tablet",
+      "class": "bronkodilator",
+      "forms": [
+        {
+          "id": "salbutamol-tab2",
+          "label": "tab 2 mg",
+          "strength": 2,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "budesonid_inh",
+      "name": "Budesonid inhaler",
+      "aliases": ["Pulmicort", "ICS"],
+      "class": "kortikosteroid",
+      "forms": [
+        {
+          "id": "budesonid-inh200",
+          "label": "inhaler 200 mcg/dosis (100 dosis)",
+          "strength": 200,
+          "unit": "mcg",
+          "dosageUnit": "puff",
+          "route": "inhalasi",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "budesonid_formoterol",
+      "name": "Budesonid-formoterol inhaler",
+      "aliases": ["Symbicort", "ICS-formoterol"],
+      "class": "kortikosteroid",
+      "forms": [
+        {
+          "id": "budform-inh160",
+          "label": "inhaler 160/4,5 mcg/dosis (120 dosis)",
+          "strength": 160,
+          "unit": "mcg",
+          "dosageUnit": "puff",
+          "route": "inhalasi",
+          "package": 120
+        }
+      ]
+    },
+    {
+      "id": "prednison",
+      "name": "Prednison",
+      "class": "kortikosteroid",
+      "groups": ["steroid"],
+      "forms": [
+        {
+          "id": "prednison-tab5",
+          "label": "tab 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "prednison-tab20",
+          "label": "tab 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "metilprednisolon",
+      "name": "Metilprednisolon",
+      "class": "kortikosteroid",
+      "groups": ["steroid"],
+      "forms": [
+        {
+          "id": "metilprednisolon-tab4",
+          "label": "tab 4 mg",
+          "strength": 4,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "metilprednisolon-tab16",
+          "label": "tab 16 mg",
+          "strength": 16,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "deksametason",
+      "name": "Deksametason",
+      "class": "kortikosteroid",
+      "groups": ["steroid"],
+      "forms": [
+        {
+          "id": "deksametason-tab05",
+          "label": "tab 0,5 mg",
+          "strength": 0.5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "metformin",
+      "name": "Metformin",
+      "class": "antidiabetes",
+      "forms": [
+        {
+          "id": "metformin-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 3000
+    },
+    {
+      "id": "glimepirid",
+      "name": "Glimepirid",
+      "class": "antidiabetes",
+      "groups": ["sulfonilurea"],
+      "forms": [
+        {
+          "id": "glimepirid-tab1",
+          "label": "tab 1 mg",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "isdn",
+      "name": "Isosorbid dinitrat (ISDN)",
+      "aliases": ["ISDN", "Nitrat"],
+      "class": "antiangina",
+      "forms": [
+        {
+          "id": "isdn-sl5",
+          "label": "tab sublingual 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "sublingual"
+        }
+      ]
+    },
+    {
+      "id": "bisoprolol",
+      "name": "Bisoprolol",
+      "class": "antiangina",
+      "groups": ["penyekat_beta"],
+      "forms": [
+        {
+          "id": "bisoprolol-tab25",
+          "label": "tab 2,5 mg",
+          "strength": 2.5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "simvastatin",
+      "name": "Simvastatin",
+      "class": "statin",
+      "forms": [
+        {
+          "id": "simvastatin-tab20",
+          "label": "tab 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "atorvastatin",
+      "name": "Atorvastatin",
+      "class": "statin",
+      "forms": [
+        {
+          "id": "atorvastatin-tab20",
+          "label": "tab 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "tamsulosin",
+      "name": "Tamsulosin",
+      "class": "urologi",
+      "forms": [
+        {
+          "id": "tamsulosin-kap04",
+          "label": "kaps 0,4 mg",
+          "strength": 0.4,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "hiosin",
+      "name": "Hiosin butilbromida",
+      "aliases": ["Buscopan", "Butylscopolamine"],
+      "class": "antispasmodik",
+      "forms": [
+        {
+          "id": "hiosin-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "oralit",
+      "name": "Oralit",
+      "aliases": ["ORS", "Garam rehidrasi oral"],
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "oralit-sachet",
+          "label": "sachet 200 mL",
+          "strength": 1,
+          "unit": "sachet",
+          "dosageUnit": "sachet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "amoksisilin_klavulanat",
+      "name": "Amoksisilin-klavulanat",
+      "aliases": ["Co-amoxiclav", "Amoksiklav"],
+      "class": "antibiotik",
+      "groups": ["penisilin"],
+      "forms": [
+        {
+          "id": "amoksiklav-tab625",
+          "label": "tab 625 mg (500/125)",
+          "strength": 625,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "eritromisin",
+      "name": "Eritromisin",
+      "class": "antibiotik",
+      "groups": ["makrolid"],
+      "forms": [
+        {
+          "id": "eritromisin-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "eritromisin-syr200",
+          "label": "sirup 200 mg/5 mL",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ],
+      "maxDaily": 4000
+    },
+    {
+      "id": "sefadroksil",
+      "name": "Sefadroksil",
+      "class": "antibiotik",
+      "groups": ["sefalosporin"],
+      "forms": [
+        {
+          "id": "sefadroksil-kap500",
+          "label": "kaps 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "sefadroksil-syr125",
+          "label": "sirup 125 mg/5 mL",
+          "strength": 125,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "dikloksasilin",
+      "name": "Dikloksasilin",
+      "aliases": ["Kloksasilin", "Flukloksasilin"],
+      "class": "antibiotik",
+      "groups": ["penisilin"],
+      "forms": [
+        {
+          "id": "dikloksasilin-kap250",
+          "label": "kaps 250 mg",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "doksisiklin",
+      "name": "Doksisiklin",
+      "class": "antibiotik",
+      "groups": ["tetrasiklin"],
+      "forms": [
+        {
+          "id": "doksisiklin-kap100",
+          "label": "kaps 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ],
+      "note": "Kontraindikasi: hamil, menyusui, anak < 8 tahun."
+    },
+    {
+      "id": "tetrasiklin",
+      "name": "Tetrasiklin",
+      "class": "antibiotik",
+      "groups": ["tetrasiklin"],
+      "forms": [
+        {
+          "id": "tetrasiklin-kap250",
+          "label": "kaps 250 mg",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "tetrasiklin-kap500",
+          "label": "kaps 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "metronidazol",
+      "name": "Metronidazol",
+      "aliases": ["Flagyl"],
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "metronidazol-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "metronidazol-syr125",
+          "label": "suspensi 125 mg/5 mL",
+          "strength": 125,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "klindamisin",
+      "name": "Klindamisin",
+      "class": "antibiotik",
+      "forms": [
+        {
+          "id": "klindamisin-kap300",
+          "label": "kaps 300 mg",
+          "strength": 300,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "klindamisin-kap150",
+          "label": "kaps 150 mg",
+          "strength": 150,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "seftriakson",
+      "name": "Seftriakson",
+      "class": "antibiotik",
+      "groups": ["sefalosporin"],
+      "forms": [
+        {
+          "id": "seftriakson-vial1g",
+          "label": "vial 1 g (injeksi)",
+          "strength": 1000,
+          "unit": "mg",
+          "dosageUnit": "vial",
+          "route": "intramuskular"
+        },
+        {
+          "id": "seftriakson-ml",
+          "label": "vial 1 g dilarutkan 4 mL (250 mg/mL)",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "mL",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "benzatin_penisilin",
+      "name": "Benzatin penisilin G",
+      "aliases": ["Benzathine penicillin", "BPG"],
+      "class": "antibiotik",
+      "groups": ["penisilin"],
+      "forms": [
+        {
+          "id": "bpg-vial24",
+          "label": "vial 2,4 juta IU (injeksi IM)",
+          "strength": 2400000,
+          "unit": "IU",
+          "dosageUnit": "vial",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "ampisilin",
+      "name": "Ampisilin",
+      "class": "antibiotik",
+      "groups": ["penisilin"],
+      "forms": [
+        {
+          "id": "ampisilin-vial1g",
+          "label": "vial 1 g (injeksi)",
+          "strength": 1000,
+          "unit": "mg",
+          "dosageUnit": "vial",
+          "route": "intravena"
+        },
+        {
+          "id": "ampisilin-larutan",
+          "label": "vial 1 g dilarutkan 4 mL (250 mg/mL)",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "mL",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "gentamisin_inj",
+      "name": "Gentamisin injeksi",
+      "class": "antibiotik",
+      "groups": ["aminoglikosida"],
+      "forms": [
+        {
+          "id": "gentamisin-amp80",
+          "label": "ampul 80 mg/2 mL",
+          "strength": 80,
+          "unit": "mg",
+          "dosageUnit": "ampul",
+          "route": "intramuskular"
+        },
+        {
+          "id": "gentamisin-ml",
+          "label": "ampul 80 mg/2 mL (40 mg/mL)",
+          "strength": 40,
+          "unit": "mg",
+          "dosageUnit": "mL",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "asiklovir",
+      "name": "Asiklovir",
+      "aliases": ["Acyclovir"],
+      "class": "antivirus",
+      "forms": [
+        {
+          "id": "asiklovir-tab400",
+          "label": "tab 400 mg",
+          "strength": 400,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "asiklovir-tab800",
+          "label": "tab 800 mg",
+          "strength": 800,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "asiklovir-syr200",
+          "label": "suspensi 200 mg/5 mL",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ],
+      "maxDaily": 4000
+    },
+    {
+      "id": "asiklovir_krim",
+      "name": "Asiklovir krim 5%",
+      "class": "antivirus",
+      "forms": [
+        {
+          "id": "asiklovir-krim5",
+          "label": "krim 5% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 25
+        }
+      ]
+    },
+    {
+      "id": "tle",
+      "name": "Tenofovir-lamivudin-efavirenz (TLE)",
+      "aliases": ["ARV KDT", "TDF/3TC/EFV"],
+      "class": "arv",
+      "forms": [
+        {
+          "id": "tle-tab",
+          "label": "tab KDT 300/300/600 mg",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "tld",
+      "name": "Tenofovir-lamivudin-dolutegravir (TLD)",
+      "aliases": ["TDF/3TC/DTG"],
+      "class": "arv",
+      "forms": [
+        {
+          "id": "tld-tab",
+          "label": "tab KDT 300/300/50 mg",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "griseofulvin",
+      "name": "Griseofulvin",
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "griseofulvin-tab500",
+          "label": "tab 500 mg (fine)",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "griseofulvin-tab125",
+          "label": "tab 125 mg (fine)",
+          "strength": 125,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "terbinafin",
+      "name": "Terbinafin",
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "terbinafin-tab250",
+          "label": "tab 250 mg",
+          "strength": 250,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "itrakonazol",
+      "name": "Itrakonazol",
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "itrakonazol-kap100",
+          "label": "kaps 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 400
+    },
+    {
+      "id": "flukonazol",
+      "name": "Flukonazol",
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "flukonazol-kap150",
+          "label": "kaps 150 mg",
+          "strength": 150,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "flukonazol-kap50",
+          "label": "kaps 50 mg",
+          "strength": 50,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "ketokonazol_tab",
+      "name": "Ketokonazol tablet",
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "ketokonazol-tab200",
+          "label": "tab 200 mg",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "note": "Hepatotoksik — tidak dianjurkan untuk infeksi jamur kulit superfisial."
+    },
+    {
+      "id": "nistatin",
+      "name": "Nistatin suspensi oral",
+      "aliases": ["Mycostatin"],
+      "class": "antijamur",
+      "forms": [
+        {
+          "id": "nistatin-susp",
+          "label": "suspensi 100.000 IU/mL (12 mL)",
+          "strength": 100000,
+          "unit": "IU",
+          "dosageUnit": "mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "mikonazol_krim",
+      "name": "Mikonazol krim 2%",
+      "aliases": ["Mikonazol", "Daktarin"],
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "mikonazol-krim2",
+          "label": "krim 2% (10 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "ketokonazol_krim",
+      "name": "Ketokonazol krim 2%",
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "ketokonazol-krim2",
+          "label": "krim 2% (10 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "klotrimazol_krim",
+      "name": "Klotrimazol krim 1%",
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "klotrimazol-krim1",
+          "label": "krim 1% (10 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "terbinafin_krim",
+      "name": "Terbinafin krim 1%",
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "terbinafin-krim1",
+          "label": "krim 1% (10 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "ketokonazol_sampo",
+      "name": "Ketokonazol sampo 2%",
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "ketokonazol-sampo",
+          "label": "sampo 2% (60 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali keramas",
+          "route": "topikal",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "selenium_sulfida",
+      "name": "Selenium sulfida sampo 1,8%",
+      "aliases": ["Selsun"],
+      "class": "antijamur_topikal",
+      "forms": [
+        {
+          "id": "selsun-sampo",
+          "label": "sampo/losio 1,8% (60 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali pakai",
+          "route": "topikal",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "klotrimazol_vagina",
+      "name": "Klotrimazol tablet vagina",
+      "class": "obat_vagina",
+      "forms": [
+        {
+          "id": "klotrimazol-vag500",
+          "label": "tab vagina 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet vagina",
+          "route": "vaginal"
+        },
+        {
+          "id": "klotrimazol-vag100",
+          "label": "tab vagina 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet vagina",
+          "route": "vaginal"
+        }
+      ]
+    },
+    {
+      "id": "albendazol",
+      "name": "Albendazol",
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "albendazol-tab400",
+          "label": "tab 400 mg",
+          "strength": 400,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "albendazol-syr",
+          "label": "suspensi 200 mg/5 mL",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "mebendazol",
+      "name": "Mebendazol",
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "mebendazol-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "mebendazol-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "pirantel",
+      "name": "Pirantel pamoat",
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "pirantel-tab125",
+          "label": "tab 125 mg (basa)",
+          "strength": 125,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "ivermektin",
+      "name": "Ivermektin",
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "ivermektin-tab12",
+          "label": "tab 12 mg",
+          "strength": 12,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "ivermektin-tab3",
+          "label": "tab 3 mg",
+          "strength": 3,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "prazikuantel",
+      "name": "Prazikuantel",
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "prazikuantel-tab600",
+          "label": "tab 600 mg",
+          "strength": 600,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "dec",
+      "name": "Dietilkarbamazin (DEC)",
+      "aliases": ["DEC", "Diethylcarbamazine"],
+      "class": "antiparasit",
+      "forms": [
+        {
+          "id": "dec-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "permetrin_krim",
+      "name": "Permetrin krim 5%",
+      "aliases": ["Permetrin", "Scabimite"],
+      "class": "antiparasit_topikal",
+      "forms": [
+        {
+          "id": "permetrin-krim5",
+          "label": "krim 5% (30 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali oles seluruh tubuh",
+          "route": "topikal",
+          "package": 1
+        }
+      ]
+    },
+    {
+      "id": "permetrin_losion",
+      "name": "Permetrin losion 1%",
+      "class": "antiparasit_topikal",
+      "forms": [
+        {
+          "id": "permetrin-losion1",
+          "label": "losion/sampo 1% (60 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali pakai",
+          "route": "topikal",
+          "package": 1
+        }
+      ]
+    },
+    {
+      "id": "setirizin",
+      "name": "Setirizin",
+      "aliases": ["Cetirizine"],
+      "class": "antihistamin",
+      "forms": [
+        {
+          "id": "setirizin-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "setirizin-syr",
+          "label": "sirup 5 mg/5 mL",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "loratadin",
+      "name": "Loratadin",
+      "class": "antihistamin",
+      "forms": [
+        {
+          "id": "loratadin-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "ctm",
+      "name": "Klorfeniramin maleat (CTM)",
+      "aliases": ["CTM", "Chlorpheniramine"],
+      "class": "antihistamin",
+      "forms": [{ "id": "ctm-tab4", "label": "tab 4 mg", "strength": 4, "unit": "mg", "dosageUnit": "tablet", "route": "oral" }],
+      "maxDaily": 24
+    },
+    {
+      "id": "difenhidramin",
+      "name": "Difenhidramin injeksi",
+      "class": "antihistamin",
+      "forms": [
+        {
+          "id": "difenhidramin-amp10",
+          "label": "ampul 10 mg/mL",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "ampul",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "dimenhidrinat",
+      "name": "Dimenhidrinat",
+      "aliases": ["Antimo", "Dramamine"],
+      "class": "antihistamin",
+      "forms": [
+        {
+          "id": "dimenhidrinat-tab50",
+          "label": "tab 50 mg",
+          "strength": 50,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 400
+    },
+    {
+      "id": "gg",
+      "name": "Gliseril guaiakolat",
+      "aliases": ["GG", "Guaifenesin"],
+      "class": "antitusif",
+      "forms": [
+        {
+          "id": "gg-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "dekstrometorfan",
+      "name": "Dekstrometorfan",
+      "aliases": ["DMP"],
+      "class": "antitusif",
+      "forms": [
+        {
+          "id": "dmp-tab15",
+          "label": "tab 15 mg",
+          "strength": 15,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "pseudoefedrin",
+      "name": "Pseudoefedrin",
+      "class": "obat_hidung",
+      "forms": [
+        {
+          "id": "pseudoefedrin-tab60",
+          "label": "tab 60 mg",
+          "strength": 60,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 240
+    },
+    {
+      "id": "oksimetazolin",
+      "name": "Oksimetazolin semprot hidung 0,05%",
+      "class": "obat_hidung",
+      "forms": [
+        {
+          "id": "oksimetazolin-spray",
+          "label": "semprot hidung 0,05% (10 mL)",
+          "strength": 1,
+          "unit": "semprot",
+          "dosageUnit": "semprot tiap lubang",
+          "route": "semprot_hidung",
+          "package": 60
+        }
+      ]
+    },
+    {
+      "id": "mometason_nasal",
+      "name": "Mometason furoat semprot hidung",
+      "aliases": ["Steroid semprot hidung", "Flutikason semprot"],
+      "class": "obat_hidung",
+      "forms": [
+        {
+          "id": "mometason-nasal",
+          "label": "semprot hidung 50 mcg/semprot (120 semprot)",
+          "strength": 50,
+          "unit": "mcg",
+          "dosageUnit": "semprot",
+          "route": "semprot_hidung",
+          "package": 120
+        }
+      ]
+    },
+    {
+      "id": "nacl_nasal",
+      "name": "NaCl 0,9% cuci/semprot hidung",
+      "class": "obat_hidung",
+      "forms": [
+        {
+          "id": "nacl-nasal",
+          "label": "larutan NaCl 0,9% (semprot)",
+          "strength": 1,
+          "unit": "semprot",
+          "dosageUnit": "semprot tiap lubang",
+          "route": "semprot_hidung",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "kloramfenikol_tm",
+      "name": "Kloramfenikol tetes mata 0,5%",
+      "aliases": ["Cendo fenicol"],
+      "class": "obat_mata",
+      "forms": [
+        {
+          "id": "kloramfenikol-tm",
+          "label": "tetes mata 0,5% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "kloramfenikol_sm",
+      "name": "Kloramfenikol salep mata 1%",
+      "class": "obat_mata",
+      "forms": [
+        {
+          "id": "kloramfenikol-sm",
+          "label": "salep mata 1% (3,5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "tetes_mata",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "gentamisin_tm",
+      "name": "Gentamisin tetes mata 0,3%",
+      "class": "obat_mata",
+      "groups": ["aminoglikosida"],
+      "forms": [
+        {
+          "id": "gentamisin-tm",
+          "label": "tetes mata 0,3% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "levofloksasin_tm",
+      "name": "Levofloksasin tetes mata 0,5%",
+      "class": "obat_mata",
+      "groups": ["kuinolon"],
+      "forms": [
+        {
+          "id": "levofloksasin-tm",
+          "label": "tetes mata 0,5% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "air_mata_buatan",
+      "name": "Air mata buatan",
+      "aliases": ["Artificial tears", "Hidroksipropil metilselulosa", "Cendo lyteers"],
+      "class": "obat_mata",
+      "forms": [
+        {
+          "id": "airmata-tm",
+          "label": "tetes mata (15 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 300
+        }
+      ]
+    },
+    {
+      "id": "olopatadin_tm",
+      "name": "Olopatadin tetes mata 0,1%",
+      "aliases": ["Antihistamin tetes mata"],
+      "class": "obat_mata",
+      "forms": [
+        {
+          "id": "olopatadin-tm",
+          "label": "tetes mata 0,1% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "fluorometolon_tm",
+      "name": "Fluorometolon tetes mata 0,1%",
+      "aliases": ["FML", "Steroid tetes mata"],
+      "class": "obat_mata",
+      "groups": ["steroid_mata"],
+      "forms": [
+        {
+          "id": "fml-tm",
+          "label": "tetes mata 0,1% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "deksametason_tm",
+      "name": "Deksametason-neomisin tetes mata",
+      "aliases": ["Steroid-antibiotik tetes mata"],
+      "class": "obat_mata",
+      "groups": ["steroid_mata"],
+      "forms": [
+        {
+          "id": "deksa-tm",
+          "label": "tetes mata (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_mata",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "vitamin_a",
+      "name": "Vitamin A kapsul",
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "vita-100rb",
+          "label": "kapsul 100.000 IU (biru)",
+          "strength": 100000,
+          "unit": "IU",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        },
+        {
+          "id": "vita-200rb",
+          "label": "kapsul 200.000 IU (merah)",
+          "strength": 200000,
+          "unit": "IU",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "ofloksasin_tt",
+      "name": "Ofloksasin tetes telinga 0,3%",
+      "class": "obat_telinga",
+      "groups": ["kuinolon"],
+      "forms": [
+        {
+          "id": "ofloksasin-tt",
+          "label": "tetes telinga 0,3% (5 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_telinga",
+          "package": 100
+        }
+      ]
+    },
+    {
+      "id": "karbogliserin",
+      "name": "Karbogliserin 10% tetes telinga",
+      "aliases": ["Carbolic glycerin", "Pelunak serumen"],
+      "class": "obat_telinga",
+      "forms": [
+        {
+          "id": "karbogliserin-tt",
+          "label": "tetes telinga 10% (10 mL)",
+          "strength": 1,
+          "unit": "tetes",
+          "dosageUnit": "tetes",
+          "route": "tetes_telinga",
+          "package": 200
+        }
+      ]
+    },
+    {
+      "id": "hidrokortison_krim",
+      "name": "Hidrokortison krim",
+      "class": "kortikosteroid_topikal",
+      "groups": ["steroid_topikal"],
+      "forms": [
+        {
+          "id": "hidrokortison-krim1",
+          "label": "krim 1% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        },
+        {
+          "id": "hidrokortison-krim25",
+          "label": "krim 2,5% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "betametason_krim",
+      "name": "Betametason valerat krim 0,1%",
+      "class": "kortikosteroid_topikal",
+      "groups": ["steroid_topikal"],
+      "forms": [
+        {
+          "id": "betametason-krim01",
+          "label": "krim 0,1% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "mometason_krim",
+      "name": "Mometason furoat krim 0,1%",
+      "class": "kortikosteroid_topikal",
+      "groups": ["steroid_topikal"],
+      "forms": [
+        {
+          "id": "mometason-krim01",
+          "label": "krim 0,1% (10 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "mupirosin",
+      "name": "Mupirosin salep 2%",
+      "class": "antibiotik_topikal",
+      "forms": [
+        {
+          "id": "mupirosin-salep2",
+          "label": "salep 2% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "asam_fusidat",
+      "name": "Asam fusidat krim 2%",
+      "aliases": ["Fucidin"],
+      "class": "antibiotik_topikal",
+      "forms": [
+        {
+          "id": "fusidat-krim2",
+          "label": "krim 2% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "klindamisin_gel",
+      "name": "Klindamisin gel 1%",
+      "class": "antibiotik_topikal",
+      "forms": [
+        {
+          "id": "klindamisin-gel1",
+          "label": "gel 1% (15 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "metronidazol_gel",
+      "name": "Metronidazol gel 0,75%",
+      "class": "antibiotik_topikal",
+      "forms": [
+        {
+          "id": "metronidazol-gel",
+          "label": "gel/krim 0,75% (15 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "eritromisin_topikal",
+      "name": "Eritromisin gel 2%",
+      "class": "antibiotik_topikal",
+      "forms": [
+        {
+          "id": "eritromisin-gel2",
+          "label": "gel 2% (15 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "tretinoin",
+      "name": "Tretinoin krim 0,025%",
+      "aliases": ["Retinoid topikal", "Asam retinoat"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "tretinoin-krim",
+          "label": "krim 0,025% (20 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "benzoil_peroksida",
+      "name": "Benzoil peroksida gel",
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "bpo-gel25",
+          "label": "gel 2,5% (15 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        },
+        {
+          "id": "bpo-gel5",
+          "label": "gel 5% (15 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "asam_salisilat",
+      "name": "Asam salisilat",
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "salisilat-salep",
+          "label": "salep 3–5% (bedak/salep)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        },
+        {
+          "id": "salisilat-veruka",
+          "label": "larutan kutil 16,7% + asam laktat (10 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 60
+        }
+      ]
+    },
+    {
+      "id": "kalamin",
+      "name": "Losion kalamin",
+      "aliases": ["Caladine"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "kalamin-losion",
+          "label": "losion kalamin (60 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "zinc_oxide",
+      "name": "Salep zinc oxide",
+      "aliases": ["Pasta ZnO", "Salep pelindung"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "zno-salep",
+          "label": "salep/pasta ZnO 10% (25 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 40
+        }
+      ]
+    },
+    {
+      "id": "emolien",
+      "name": "Emolien (urea/vaselin)",
+      "aliases": ["Pelembap", "Vaselin", "Urea krim"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "urea-krim10",
+          "label": "krim urea 10% (40 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 40
+        },
+        {
+          "id": "vaselin",
+          "label": "vaselin album (25 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 40
+        }
+      ]
+    },
+    {
+      "id": "perak_sulfadiazin",
+      "name": "Perak sulfadiazin krim 1%",
+      "aliases": ["Silver sulfadiazine", "Burnazin"],
+      "class": "luka",
+      "groups": ["sulfa"],
+      "forms": [
+        {
+          "id": "ssd-krim1",
+          "label": "krim 1% (25 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 10
+        }
+      ]
+    },
+    {
+      "id": "povidon_iodin",
+      "name": "Povidon iodin 10%",
+      "aliases": ["Betadine"],
+      "class": "luka",
+      "forms": [
+        {
+          "id": "pvp-larutan",
+          "label": "larutan 10% (30 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "kompres_nacl",
+      "name": "NaCl 0,9% untuk kompres",
+      "class": "luka",
+      "forms": [
+        {
+          "id": "nacl-kompres",
+          "label": "larutan NaCl 0,9% (500 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali kompres",
+          "route": "topikal",
+          "package": 20
+        }
+      ]
+    },
+    {
+      "id": "diazepam_rektal",
+      "name": "Diazepam rektal",
+      "aliases": ["Stesolid"],
+      "class": "neurologi",
+      "groups": ["benzodiazepin"],
+      "forms": [
+        {
+          "id": "diazepam-rek5",
+          "label": "tube rektal 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tube rektal",
+          "route": "rektal"
+        },
+        {
+          "id": "diazepam-rek10",
+          "label": "tube rektal 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tube rektal",
+          "route": "rektal"
+        }
+      ]
+    },
+    {
+      "id": "diazepam",
+      "name": "Diazepam",
+      "class": "psikiatri",
+      "groups": ["benzodiazepin"],
+      "forms": [
+        {
+          "id": "diazepam-tab2",
+          "label": "tab 2 mg",
+          "strength": 2,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "diazepam-tab5",
+          "label": "tab 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "diazepam-amp10",
+          "label": "ampul 10 mg/2 mL",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "ampul",
+          "route": "intravena"
+        }
+      ]
+    },
+    {
+      "id": "lorazepam",
+      "name": "Lorazepam",
+      "class": "psikiatri",
+      "groups": ["benzodiazepin"],
+      "forms": [
+        {
+          "id": "lorazepam-tab05",
+          "label": "tab 0,5 mg",
+          "strength": 0.5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "lorazepam-tab1",
+          "label": "tab 1 mg",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "amitriptilin",
+      "name": "Amitriptilin",
+      "class": "psikiatri",
+      "forms": [
+        {
+          "id": "amitriptilin-tab25",
+          "label": "tab 25 mg",
+          "strength": 25,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "fluoksetin",
+      "name": "Fluoksetin",
+      "aliases": ["SSRI"],
+      "class": "psikiatri",
+      "forms": [
+        {
+          "id": "fluoksetin-kap20",
+          "label": "kaps 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "betahistin",
+      "name": "Betahistin",
+      "class": "neurologi",
+      "forms": [
+        {
+          "id": "betahistin-tab6",
+          "label": "tab 6 mg",
+          "strength": 6,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "betahistin-tab24",
+          "label": "tab 24 mg",
+          "strength": 24,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 48
+    },
+    {
+      "id": "flunarizin",
+      "name": "Flunarizin",
+      "class": "neurologi",
+      "forms": [
+        {
+          "id": "flunarizin-kap5",
+          "label": "kaps 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "propranolol",
+      "name": "Propranolol",
+      "class": "antihipertensi",
+      "groups": ["penyekat_beta"],
+      "forms": [
+        {
+          "id": "propranolol-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "amlodipin",
+      "name": "Amlodipin",
+      "class": "antihipertensi",
+      "forms": [
+        {
+          "id": "amlodipin-tab5",
+          "label": "tab 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "amlodipin-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 10
+    },
+    {
+      "id": "kaptopril",
+      "name": "Kaptopril",
+      "class": "antihipertensi",
+      "groups": ["ace_inhibitor"],
+      "forms": [
+        {
+          "id": "kaptopril-tab25",
+          "label": "tab 25 mg",
+          "strength": 25,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "lisinopril",
+      "name": "Lisinopril",
+      "class": "antihipertensi",
+      "groups": ["ace_inhibitor"],
+      "forms": [
+        {
+          "id": "lisinopril-tab10",
+          "label": "tab 10 mg",
+          "strength": 10,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "hidroklorotiazid",
+      "name": "Hidroklorotiazid",
+      "aliases": ["HCT", "HCTZ"],
+      "class": "antihipertensi",
+      "groups": ["tiazid"],
+      "forms": [
+        {
+          "id": "hct-tab25",
+          "label": "tab 25 mg",
+          "strength": 25,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "kandesartan",
+      "name": "Kandesartan",
+      "class": "antihipertensi",
+      "groups": ["arb"],
+      "forms": [
+        {
+          "id": "kandesartan-tab8",
+          "label": "tab 8 mg",
+          "strength": 8,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "alopurinol",
+      "name": "Alopurinol",
+      "class": "antihiperurisemia",
+      "forms": [
+        {
+          "id": "alopurinol-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "alopurinol-tab300",
+          "label": "tab 300 mg",
+          "strength": 300,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 900
+    },
+    {
+      "id": "kolkisin",
+      "name": "Kolkisin",
+      "class": "antihiperurisemia",
+      "forms": [
+        {
+          "id": "kolkisin-tab05",
+          "label": "tab 0,5 mg",
+          "strength": 0.5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "gemfibrozil",
+      "name": "Gemfibrozil",
+      "class": "statin",
+      "groups": ["fibrat"],
+      "forms": [
+        {
+          "id": "gemfibrozil-kap300",
+          "label": "kaps 300 mg",
+          "strength": 300,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "insulin_nph",
+      "name": "Insulin NPH (kerja menengah)",
+      "class": "insulin",
+      "forms": [
+        {
+          "id": "insulin-nph",
+          "label": "pen 100 IU/mL (3 mL)",
+          "strength": 1,
+          "unit": "IU",
+          "dosageUnit": "unit",
+          "route": "subkutan",
+          "package": 300
+        }
+      ]
+    },
+    {
+      "id": "insulin_reguler",
+      "name": "Insulin reguler (kerja pendek)",
+      "class": "insulin",
+      "forms": [
+        {
+          "id": "insulin-reg",
+          "label": "pen 100 IU/mL (3 mL)",
+          "strength": 1,
+          "unit": "IU",
+          "dosageUnit": "unit",
+          "route": "subkutan",
+          "package": 300
+        }
+      ]
+    },
+    {
+      "id": "dekstrosa",
+      "name": "Dekstrosa 40%",
+      "aliases": ["D40", "Glukosa 40%"],
+      "class": "gawat_darurat",
+      "forms": [
+        {
+          "id": "d40-flakon",
+          "label": "flakon 25 mL (10 g)",
+          "strength": 10,
+          "unit": "g",
+          "dosageUnit": "flakon",
+          "route": "intravena"
+        }
+      ]
+    },
+    {
+      "id": "adrenalin",
+      "name": "Adrenalin (epinefrin) 1 mg/mL",
+      "aliases": ["Epinefrin"],
+      "class": "gawat_darurat",
+      "forms": [
+        {
+          "id": "adrenalin-amp1",
+          "label": "ampul 1 mg/mL",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "mL",
+          "route": "intramuskular"
+        }
+      ],
+      "maxDaily": 1.5
+    },
+    {
+      "id": "htig",
+      "name": "Human tetanus immunoglobulin (HTIG)",
+      "aliases": ["Imunoglobulin tetanus"],
+      "class": "vaksin_serum",
+      "forms": [
+        {
+          "id": "htig-250",
+          "label": "vial 250 IU",
+          "strength": 250,
+          "unit": "IU",
+          "dosageUnit": "vial",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "toksoid_tetanus",
+      "name": "Vaksin tetanus-difteri (Td)",
+      "aliases": ["TT", "Toksoid tetanus", "Td"],
+      "class": "vaksin_serum",
+      "forms": [
+        {
+          "id": "td-amp",
+          "label": "ampul 0,5 mL",
+          "strength": 0.5,
+          "unit": "mL",
+          "dosageUnit": "ampul",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "sulfas_ferosus",
+      "name": "Sulfas ferosus",
+      "aliases": ["Tablet tambah darah", "Ferrous sulfate", "Zat besi"],
+      "class": "hematinik",
+      "forms": [
+        {
+          "id": "sf-tab300",
+          "label": "tab 300 mg (Fe elemental 60 mg)",
+          "strength": 300,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "sf-syr",
+          "label": "sirup besi elemental 15 mg/5 mL",
+          "strength": 15,
+          "unit": "mg",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "tablet_tambah_darah",
+      "name": "Tablet tambah darah (Fe 60 mg + asam folat 0,4 mg)",
+      "aliases": ["TTD"],
+      "class": "hematinik",
+      "forms": [
+        {
+          "id": "ttd-tab",
+          "label": "tab Fe elemental 60 mg + asam folat 400 mcg",
+          "strength": 60,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "asam_folat",
+      "name": "Asam folat",
+      "class": "hematinik",
+      "forms": [
+        {
+          "id": "asamfolat-tab1",
+          "label": "tab 1 mg",
+          "strength": 1,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "asamfolat-tab04",
+          "label": "tab 400 mcg",
+          "strength": 0.4,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "kalsium",
+      "name": "Kalsium karbonat",
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "kalsium-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "vitamin_b_kompleks",
+      "name": "Vitamin B kompleks",
+      "aliases": ["Neurobion", "Vitamin B1 B6 B12"],
+      "class": "vitamin",
+      "forms": [{ "id": "bkompleks-tab", "label": "tab", "strength": 1, "unit": "mg", "dosageUnit": "tablet", "route": "oral" }]
+    },
+    {
+      "id": "tiamin",
+      "name": "Tiamin (vitamin B1)",
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "tiamin-tab50",
+          "label": "tab 50 mg",
+          "strength": 50,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "vitamin_c",
+      "name": "Vitamin C",
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "vitc-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        },
+        {
+          "id": "vitc-tab500",
+          "label": "tab 500 mg",
+          "strength": 500,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "zinc",
+      "name": "Zinc",
+      "aliases": ["Zinkid"],
+      "class": "antidiare",
+      "forms": [
+        {
+          "id": "zinc-tab20",
+          "label": "tab dispersibel 20 mg",
+          "strength": 20,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "kalium_iodida",
+      "name": "Iodium (kapsul minyak beriodium)",
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "iodium-kap200",
+          "label": "kapsul 200 mg",
+          "strength": 200,
+          "unit": "mg",
+          "dosageUnit": "kapsul",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "f100",
+      "name": "Formula terapeutik F-75/F-100",
+      "aliases": ["F-100", "F-75", "RUTF"],
+      "class": "vitamin",
+      "forms": [
+        {
+          "id": "f75",
+          "label": "F-75 (sachet)",
+          "strength": 1,
+          "unit": "sachet",
+          "dosageUnit": "sachet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "loperamid",
+      "name": "Loperamid",
+      "class": "antidiare",
+      "forms": [
+        {
+          "id": "loperamid-tab2",
+          "label": "tab 2 mg",
+          "strength": 2,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "maxDaily": 16
+    },
+    {
+      "id": "laktulosa",
+      "name": "Laktulosa",
+      "class": "laksatif",
+      "forms": [
+        {
+          "id": "laktulosa-syr",
+          "label": "sirup 3,3 g/5 mL (60 mL)",
+          "strength": 3.3,
+          "unit": "g",
+          "dosageUnit": "sendok takar 5 mL",
+          "route": "oral",
+          "package": 12
+        }
+      ]
+    },
+    {
+      "id": "bisakodil",
+      "name": "Bisakodil",
+      "class": "laksatif",
+      "forms": [
+        {
+          "id": "bisakodil-tab5",
+          "label": "tab 5 mg",
+          "strength": 5,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "supp_hemoroid",
+      "name": "Supositoria hemoroid (lidokain-steroid)",
+      "aliases": ["Ultraproct", "Anusol"],
+      "class": "laksatif",
+      "forms": [
+        {
+          "id": "supp-hemoroid",
+          "label": "supositoria",
+          "strength": 1,
+          "unit": "paket",
+          "dosageUnit": "supositoria",
+          "route": "rektal"
+        }
+      ]
+    },
+    {
+      "id": "oksitosin",
+      "name": "Oksitosin",
+      "class": "uterotonika",
+      "forms": [
+        {
+          "id": "oksitosin-amp10",
+          "label": "ampul 10 IU/mL",
+          "strength": 10,
+          "unit": "IU",
+          "dosageUnit": "ampul",
+          "route": "intramuskular"
+        }
+      ]
+    },
+    {
+      "id": "metilergometrin",
+      "name": "Metilergometrin",
+      "class": "uterotonika",
+      "forms": [
+        {
+          "id": "metergin-tab0125",
+          "label": "tab 0,125 mg",
+          "strength": 0.125,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    },
+    {
+      "id": "mdt_pb",
+      "name": "MDT-PB dewasa (rifampisin + dapson)",
+      "aliases": ["MDT PB"],
+      "class": "kusta",
+      "forms": [
+        {
+          "id": "mdt-pb-dewasa",
+          "label": "blister PB dewasa (28 dosis)",
+          "strength": 1,
+          "unit": "paket",
+          "dosageUnit": "dosis harian",
+          "route": "oral",
+          "package": 28
+        }
+      ]
+    },
+    {
+      "id": "mdt_mb",
+      "name": "MDT-MB dewasa (rifampisin + klofazimin + dapson)",
+      "aliases": ["MDT MB"],
+      "class": "kusta",
+      "forms": [
+        {
+          "id": "mdt-mb-dewasa",
+          "label": "blister MB dewasa (28 dosis)",
+          "strength": 1,
+          "unit": "paket",
+          "dosageUnit": "dosis harian",
+          "route": "oral",
+          "package": 28
+        }
+      ]
+    },
+    {
+      "id": "dapson",
+      "name": "Dapson",
+      "class": "antibiotik",
+      "groups": ["sulfon"],
+      "forms": [
+        {
+          "id": "dapson-tab100",
+          "label": "tab 100 mg",
+          "strength": 100,
+          "unit": "mg",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ],
+      "note": "Alternatif profilaksis PCP bila alergi kotrimoksazol."
+    },
+    {
+      "id": "triamsinolon_orabase",
+      "name": "Triamsinolon asetonid 0,1% in orabase",
+      "aliases": ["Kenalog in orabase", "Steroid oral topikal"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "triamsinolon-orabase",
+          "label": "pasta gigi/oral 0,1% (5 g)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "oles",
+          "route": "topikal",
+          "package": 30
+        }
+      ]
+    },
+    {
+      "id": "klorheksidin_kumur",
+      "name": "Klorheksidin 0,2% obat kumur",
+      "aliases": ["Minosep", "Obat kumur antiseptik"],
+      "class": "dermatologi",
+      "forms": [
+        {
+          "id": "klorheksidin-kumur",
+          "label": "obat kumur 0,2% (150 mL)",
+          "strength": 1,
+          "unit": "oles",
+          "dosageUnit": "kali kumur (10 mL)",
+          "route": "topikal",
+          "package": 15
+        }
+      ]
+    },
+    {
+      "id": "oat_kdt_anak",
+      "name": "OAT KDT anak fase intensif (RHZ 75/50/150 mg)",
+      "aliases": ["KDT anak", "OAT anak"],
+      "class": "oat",
+      "forms": [
+        {
+          "id": "oat-anak-rhz",
+          "label": "tab dispersibel RHZ 75/50/150 mg",
+          "strength": 1,
+          "unit": "tablet",
+          "dosageUnit": "tablet",
+          "route": "oral"
+        }
+      ]
+    }
+  ]
+}

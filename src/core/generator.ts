@@ -15,10 +15,11 @@
 import type { ConditionContext } from './conditions';
 import { matchesCondition } from './conditions';
 import { buildCategoryAnswer, buildComplaint } from './dialogue';
-import { generateToolFindings } from './findings';
+import { applyInfantGrowth, type FindingSource, generateToolFindings, linkFindings } from './findings';
 import { createRng, type Rng } from './rng';
-import { fillTemplate, numberToWords } from './text';
+import { ageText, durationText, fillTemplate, numberToWords, toCompanionVoice } from './text';
 import type {
+  CompanionProfile,
   DiseaseTemplate,
   EconomyClass,
   GameConfig,
@@ -27,13 +28,31 @@ import type {
   OccupationDef,
   PatientCase,
   PatientProfile,
+  PersonalityDef,
   Sex,
   SymptomRule,
   TraitRule,
 } from './types';
 
-/** Usia di bawah ini disapa "Mas/Mbak", selebihnya "Pak/Bu". */
+/** Usia sampai batas ini disapa "Mas/Mbak", selebihnya "Pak/Bu". */
 const YOUNG_ADDRESS_MAX_AGE = 29;
+/** Usia sampai batas ini disapa "Dik". */
+const CHILD_ADDRESS_MAX_AGE = 14;
+/** Pasien di bawah usia ini diantar & diwakili pengantar (alloanamnesis). */
+export const COMPANION_BELOW_AGE = 10;
+
+/** Maksimal komorbiditas tambahan per pasien (selain yang sudah dimodelkan oleh penyakit utama). */
+const MAX_COMORBIDITIES = 2;
+
+/** Kegiatan sehari-hari pasien untuk kalimat seperti "biar bisa {kegiatan} lagi". */
+function activityOf(occupationId: string): string {
+  if (occupationId === 'bayi' || occupationId === 'balita') return 'main';
+  if (occupationId === 'pelajar_sd' || occupationId === 'pelajar' || occupationId === 'anak_tk' || occupationId === 'anak_sd') return 'sekolah';
+  if (occupationId === 'mahasiswa') return 'kuliah';
+  if (occupationId === 'ibu_rumah_tangga') return 'mengurus rumah';
+  if (occupationId === 'pensiunan') return 'beraktivitas';
+  return 'kerja';
+}
 
 interface Demographics {
   sex: Sex;
@@ -50,7 +69,12 @@ function sampleDemographics(disease: DiseaseTemplate, content: GameContent, conf
   const demo = disease.demographics;
   const sex: Sex = rng.chance(demo.maleRatio) ? 'male' : 'female';
   const { minAge, maxAge } = config.patient;
-  const all = content.population.occupations.filter((o) => occupationFits(o, sex, minAge, maxAge));
+  // Pekerjaan khusus anak kecil (bayi, balita, TK, SD awal) hanya untuk penyakit yang memang mengenai anak < 10 tahun,
+  // sehingga undian pekerjaan penyakit dewasa tidak berubah.
+  const childOk = demo.ageBands.some((b) => b.weight > 0 && b.min < COMPANION_BELOW_AGE);
+  const all = content.population.occupations.filter(
+    (o) => occupationFits(o, sex, minAge, maxAge) && (childOk || o.age[1] >= COMPANION_BELOW_AGE),
+  );
 
   for (let attempt = 0; attempt < 30; attempt++) {
     // 1) Pekerjaan: dari daftar berisiko penyakit (bias) atau populasi umum.
@@ -121,14 +145,26 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   const { sex, age, occupation } = sampleDemographics(disease, content, config, demoRng);
   const { economy, budget } = sampleEconomy(occupation, config, demoRng);
   const personality = demoRng.weighted(content.personalities, (p) => p.weight);
-  const { name, call } = nameOf(demoRng.pick(content.population.names[sex]));
-  const honorific = age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
+  const child = age < COMPANION_BELOW_AGE;
+  const childNames = content.population.childNames;
+  const { name, call } = nameOf(
+    child && childNames?.[sex].length ? rng.fork('nama_anak').pick(childNames[sex]) : demoRng.pick(content.population.names[sex]),
+  );
+  const honorific =
+    age <= CHILD_ADDRESS_MAX_AGE ? 'Dik' : age <= YOUNG_ADDRESS_MAX_AGE ? (sex === 'male' ? 'Mas' : 'Mbak') : sex === 'male' ? 'Pak' : 'Bu';
+  const infantRange = disease.demographics.infantAge ?? { unit: 'bulan' as const, range: [2, 11] as [number, number] };
+  const infantValue = age === 0 ? rng.fork('usia_bayi').int(infantRange.range[0], infantRange.range[1]) : null;
+  const shownAge = ageText(age, infantValue !== null ? { unit: infantRange.unit, value: infantValue } : undefined);
+  const infantMonths = infantValue === null ? null : infantRange.unit === 'hari' ? infantValue / 30 : infantValue;
+  const companion = child ? sampleCompanion(content, rng.fork('pengantar')) : undefined;
 
   const patient: PatientProfile = {
     name,
     callName: call,
-    address: `${honorific} ${call}`,
+    address: age === 0 ? 'adik bayi' : `${honorific} ${call}`,
     age,
+    ageText: shownAge,
+    ...(companion ? { companion } : {}),
     sex,
     occupationId: occupation.id,
     occupationLabel: occupation.label,
@@ -138,14 +174,34 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   };
 
   // --- Hari sakit, trait, gejala -----------------------------------------
-  const day = rng.fork('hari').int(disease.presentationDay[0], disease.presentationDay[1]);
+  let day = rng.fork('hari').int(disease.presentationDay[0], disease.presentationDay[1]);
   const traits = new Set<string>();
-  const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, traits };
+  const baseCtx: ConditionContext = { day, sex, age, occupationId: occupation.id, personality: personality.id, traits };
   sampleRules(disease.traits ?? [], baseCtx, rng.fork('trait'), traits);
+  // Varian dengan perjalanan waktu berbeda (mis. akut vs kronik) memakai rentang harinya sendiri.
+  const dayRule = disease.presentationDayByTrait?.find((r) => traits.has(r.trait));
+  if (dayRule) {
+    day = rng.fork('hari-trait').int(dayRule.range[0], dayRule.range[1]);
+    baseCtx.day = day;
+  }
+
+  // --- Komorbiditas & temuan insidental (id-nya ikut menjadi trait) -------
+  const comorbidities = sampleComorbidities(disease, content, baseCtx, rng.fork('komorbid'));
+  for (const c of comorbidities) traits.add(c.id);
+  const incidentals = sampleIncidentals(content, baseCtx, rng.fork('insidental'));
+  for (const id of incidentals) traits.add(id);
 
   const symptoms = new Set<string>();
   sampleRules(disease.symptoms, baseCtx, rng.fork('gejala'), symptoms);
+  for (const c of comorbidities) {
+    const def = content.comorbiditiesById.get(c.id)!;
+    sampleRules(def.symptoms ?? [], baseCtx, rng.fork(`gejala:${c.id}`), symptoms);
+  }
   const fullCtx: ConditionContext = { ...baseCtx, symptoms };
+  const complications = (disease.complications ?? []).filter((x) => traits.has(x.trait)).map((x) => x.id);
+  const allergyRng = rng.fork('alergi');
+  const allergy =
+    content.allergies.length > 0 && allergyRng.chance(config.patient.allergyRate) ? allergyRng.pick(content.allergies) : null;
 
   // --- Nilai placeholder teks --------------------------------------------
   const ctxRng = rng.fork('konteks');
@@ -156,9 +212,19 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
   Object.assign(context, {
     hari: String(day),
     hariTeks: numberToWords(day),
+    lamaSakit: durationText(day),
     nama: name,
-    sapaan: patient.address,
+    panggilan: call,
+    // Anak < 10 tahun: dokter berbicara dengan pengantarnya.
+    sapaan: companion ? companion.address : patient.address,
+    yangSakit: companion ? (age === 0 ? 'si kecil' : `Dik ${call}`) : patient.address,
+    kegiatan: activityOf(occupation.id),
     usia: String(age),
+    usiaTeks: shownAge,
+    saya: 'saya',
+    namaPengantar: companion?.name ?? name,
+    panggilanPengantar: companion?.callName ?? call,
+    hubungan: companion ? `${companion.relation}nya` : 'saya sendiri',
     pekerjaan: occupation.intro,
     salahKira: ctxRng.pick(disease.misattributions),
     ketakutan: ctxRng.pick(disease.fears?.length ? disease.fears : ['penyakit yang parah']),
@@ -166,44 +232,70 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
 
   // --- Keluhan utama (sengaja tidak lengkap) ------------------------------
   const ccRng = rng.fork('keluhan');
-  const primary = disease.chiefComplaint.primary.filter((id) => symptoms.has(id));
+  const primary = disease.chiefComplaint.primary.filter((id) => symptoms.has(id)).slice(0, 1);
+  // Sisakan minimal satu gejala yang harus digali (keluhan tidak pernah lengkap di awal).
+  const maxExtra = Math.max(0, Math.min(personality.complaintExtra, symptoms.size - primary.length - 1));
   const extras = ccRng
     .shuffle((disease.chiefComplaint.extraPool ?? []).filter((id) => symptoms.has(id) && !primary.includes(id)))
-    .slice(0, personality.complaintExtra);
+    .slice(0, maxExtra);
   let chiefComplaintSymptoms = [...primary, ...extras];
   if (chiefComplaintSymptoms.length === 0) chiefComplaintSymptoms = [...symptoms].slice(0, 1);
 
+  const voice = companion && personality.pengantar ? personality.pengantar : null;
   const complaint = buildComplaint(
     chiefComplaintSymptoms.map((id) => content.symptomsById.get(id)!),
-    personality,
+    voice ? { ...personality, complaintFrames: voice.complaintFrames } : personality,
     context,
     ccRng,
+    !!companion,
   );
-  const greeting = fillTemplate(ccRng.pick(personality.greetings), context);
+  const greeting = fillTemplate(ccRng.pick(voice ? voice.greetings : personality.greetings), context);
 
-  // Gejala lain akan disebut (sebagian) saat ditanya "keluhan lain".
-  const revealOrder = rng.fork('urutan').shuffle([...symptoms].filter((id) => !chiefComplaintSymptoms.includes(id)));
+  // Gejala lain akan disebut (sebagian) saat ditanya "keluhan lain"; gejala yang
+  // tidak disebut sukarela (mis. BAB hitam) hanya terungkap bila ditanya spesifik.
+  const others = [...symptoms].filter((id) => !chiefComplaintSymptoms.includes(id));
+  const volunteers = (id: string) => content.symptomsById.get(id)?.volunteer !== false;
+  const revealOrder = rng.fork('urutan').shuffle(others.filter(volunteers));
+  const hiddenSymptoms = others.filter((id) => !volunteers(id));
 
   // --- Jawaban anamnesis --------------------------------------------------
   const answers: PatientCase['answers'] = {};
   for (const cat of content.anamnesis) {
     if (cat.type !== 'static') continue;
+    if (cat.id === 'alergi') {
+      answers[cat.id] = allergy
+        ? { text: `${companion ? 'Dia' : 'Saya'} alergi ${allergy}, Dok. Dulu pernah gatal-gatal dan bengkak.`, clue: `Alergi ${allergy}` }
+        : { text: 'Nggak ada alergi, Dok.' };
+      continue;
+    }
     answers[cat.id] = buildCategoryAnswer(
       cat.id,
       disease.anamnesis[cat.id],
       cat.fallback,
-      personality,
+      voice
+        ? { ...personality, answerPrefixes: voice.answerPrefixes ?? personality.answerPrefixes, answerSuffixes: voice.answerSuffixes ?? personality.answerSuffixes }
+        : personality,
       fullCtx,
       context,
       rng.fork(`anamnesis:${cat.id}`),
+      !!companion,
     );
   }
 
+  mergeComorbidityHistory(answers, comorbidities, content, personality, context, { sex, age }, rng.fork('riwayat_komorbid'), !!companion);
+
   // --- Hasil semua pemeriksaan --------------------------------------------
+  const ruleSets: FindingSource[] = [
+    { origin: disease.id, rules: disease.findings },
+    ...comorbidities.map((c) => ({ origin: c.id, rules: content.comorbiditiesById.get(c.id)!.findings })),
+    ...incidentals.map((id) => ({ origin: id, rules: content.incidentalsById.get(id)!.findings })),
+  ];
   const findings: PatientCase['findings'] = {};
   for (const tool of content.tools) {
-    findings[tool.id] = generateToolFindings(tool, disease, fullCtx, config, rng.fork(`temuan:${tool.id}`));
+    findings[tool.id] = generateToolFindings(tool, ruleSets, fullCtx, config, rng.fork(`temuan:${tool.id}`));
+    if (infantMonths !== null && tool.id === 'timbangan') applyInfantGrowth(tool, findings[tool.id]!, { sex, age }, infantMonths, rng.fork('tumbuh_bayi'));
   }
+  linkFindings(content.tools, findings, { sex, age });
 
   return {
     seed: options.seed >>> 0,
@@ -214,10 +306,150 @@ export function generateCase(content: GameContent, config: GameConfig, options: 
     symptoms: [...symptoms],
     chiefComplaintSymptoms,
     revealOrder,
+    hiddenSymptoms,
     greeting,
     complaint,
     answers,
     findings,
     context,
+    comorbidities,
+    incidentals,
+    complications,
+    allergy,
   };
+}
+
+/** Komorbiditas yang memenuhi syarat usia/jenis kelamin & tidak bertabrakan dengan penyakit utama (maks. 2). */
+function sampleComorbidities(
+  disease: DiseaseTemplate,
+  content: GameContent,
+  ctx: ConditionContext,
+  rng: Rng,
+): { id: string; known: boolean }[] {
+  const out: { id: string; known: boolean }[] = [];
+  for (const c of rng.shuffle(content.comorbidities)) {
+    if (out.length >= MAX_COMORBIDITIES) break;
+    if (!fitsPopulation(c.when, ctx)) continue;
+    if (c.excludePrimary?.includes(disease.id)) continue;
+    if (c.excludeTraits?.some((t) => ctx.traits.has(t))) continue;
+    const cRng = rng.fork(c.id);
+    if (!cRng.chance(c.probability)) continue;
+    out.push({ id: c.id, known: cRng.chance(c.knownProbability) });
+  }
+  return out.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+const COMPANION_RELATIONS: { relation: CompanionProfile['relation']; sex: Sex; age: [number, number]; weight: number }[] = [
+  { relation: 'ibu', sex: 'female', age: [20, 42], weight: 7 },
+  { relation: 'ayah', sex: 'male', age: [23, 48], weight: 2 },
+  { relation: 'nenek', sex: 'female', age: [48, 70], weight: 1 },
+];
+
+/** Pengantar pasien anak: ibu (tersering), ayah, atau nenek. */
+function sampleCompanion(content: GameContent, rng: Rng): CompanionProfile {
+  const pick = rng.weighted(COMPANION_RELATIONS, (r) => r.weight);
+  const { name, call } = nameOf(rng.pick(content.population.names[pick.sex]));
+  return {
+    relation: pick.relation,
+    name,
+    callName: call,
+    address: `${pick.sex === 'male' ? 'Pak' : 'Bu'} ${call}`,
+    sex: pick.sex,
+    age: rng.int(pick.age[0], pick.age[1]),
+  };
+}
+
+function sampleIncidentals(content: GameContent, ctx: ConditionContext, rng: Rng): string[] {
+  for (const inc of rng.shuffle(content.incidentals)) {
+    if (!fitsPopulation(inc.when, ctx)) continue;
+    if (rng.fork(inc.id).chance(inc.probability)) return [inc.id];
+  }
+  return [];
+}
+
+function fitsPopulation(when: { ageMin?: number; ageMax?: number; sex?: Sex } | undefined, ctx: ConditionContext): boolean {
+  if (!when) return true;
+  if (when.ageMin !== undefined && ctx.age < when.ageMin) return false;
+  if (when.ageMax !== undefined && ctx.age > when.ageMax) return false;
+  if (when.sex && when.sex !== ctx.sex) return false;
+  return true;
+}
+
+/**
+ * Kalimat penyangkalan UMUM ("Nggak ada penyakit apa-apa, Dok.", "Keluarga sehat semua.",
+ * "Biasa saja, Dok.") yang akan bertentangan bila diikuti riwayat positif — dibuang saat riwayat
+ * komorbid ditambahkan. Penyangkalan spesifik ("Nggak ada yang sakit jantung") dibiarkan.
+ */
+const GENERIC_DENIAL =
+  /^(?:(?:(?:nggak|tidak|ndak|enggak|belum) (?:ada|pernah)(?: (?:penyakit|sakit))?(?: (?:apa-apa|lain|berat))?|belum minum obat(?: apa-apa)?|(?:nggak|tidak) tahu[^.!?]*|keluarga(?: di rumah)? sehat semua|biasa saja)(?:, dok)?[.!])\s*/i;
+
+/** Pisahkan kalimat pembuka khas kepribadian (mis. "Aduh, apa ya... oh iya.") dari isi jawaban. */
+function splitPersonalityPrefix(text: string, personality: PersonalityDef, values: Record<string, string>): [string, string] {
+  for (const raw of personality.answerPrefixes ?? []) {
+    const prefix = fillTemplate(raw, values);
+    if (text.startsWith(`${prefix} `)) return [`${prefix} `, text.slice(prefix.length + 1)];
+  }
+  return ['', text];
+}
+
+/**
+ * Tambahkan riwayat komorbiditas ke jawaban anamnesis agar konsisten:
+ * riwayat penyakit & obat hanya bila pasien TAHU; kebiasaan & keluarga selalu.
+ *
+ * Aturan penggabungan (supaya tidak ada jawaban seperti "Nggak ada penyakit apa-apa, Dok.
+ * Saya punya darah tinggi"):
+ *  - kalimat pembuka kepribadian dipertahankan di depan;
+ *  - penyangkalan umum di awal jawaban dibuang;
+ *  - bila jawaban sudah menyebut kondisi itu (nama/alias), kalimat tidak ditambahkan lagi.
+ */
+function mergeComorbidityHistory(
+  answers: PatientCase['answers'],
+  comorbidities: { id: string; known: boolean }[],
+  content: GameContent,
+  personality: PersonalityDef,
+  values: Record<string, string>,
+  who: { sex: Sex; age: number },
+  rng: Rng,
+  companion = false,
+): void {
+  /** "Saya juga …"/"Ibu saya juga …" tanpa kalimat lain yang dirujuk → buang "juga". */
+  const withoutAlso = (sentence: string) => sentence.replace(/\bjuga\s+/i, '');
+  const add = (topic: string, raw: string | undefined, clue: string, mentions: readonly RegExp[], dropAlso = false) => {
+    if (!raw) return;
+    let sentence = dropAlso ? withoutAlso(raw) : raw;
+    if (companion) sentence = toCompanionVoice(sentence);
+    const current = answers[topic];
+    if (!current) {
+      answers[topic] = { text: sentence, clue };
+      return;
+    }
+    const [prefix, body] = splitPersonalityPrefix(current.text, personality, values);
+    if (mentions.some((m) => m.test(body))) return;
+    let rest = body;
+    for (let m = GENERIC_DENIAL.exec(rest); m && m[0].length > 0; m = GENERIC_DENIAL.exec(rest)) rest = rest.slice(m[0].length);
+    // "Tapi memang jarang periksa." tanpa kalimat sebelumnya → "Memang jarang periksa."
+    if (rest !== body) rest = rest.replace(/^tapi\s+(\S)/i, (_, ch: string) => ch.toUpperCase());
+    if (!rest && topic === 'kebiasaan') sentence = withoutAlso(sentence);
+    // Sisa jawaban masih menyangkal ("Nggak ada, Dok, paling maag.") → pasien "teringat":
+    // "… Oh iya, saya punya darah tinggi" (koreksi diri yang wajar, bukan kontradiksi).
+    const addition = /\b(nggak|tidak|ndak|belum) (ada|pernah)\b/i.test(rest) ? `Oh iya, ${sentence[0]!.toLowerCase()}${sentence.slice(1)}` : sentence;
+    const text = `${prefix}${rest ? `${rest} ` : ''}${addition}`;
+    answers[topic] = rest ? { ...current, text, clue: current.clue ?? clue } : { text, clue };
+  };
+  for (const c of comorbidities) {
+    const def = content.comorbiditiesById.get(c.id)!;
+    // Utuh per kata: alias pendek seperti "HT"/"DM" tidak boleh cocok di dalam kata lain.
+    const mentions = [def.name, ...def.aliases, ...(def.history.mentions ?? [])].map(
+      (m) => new RegExp(`(^|[^a-z])${m.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^a-z])`, 'i'),
+    );
+    if (c.known) {
+      add('riwayat_penyakit', def.history.known || undefined, `Riwayat ${def.name.toLowerCase()}`, mentions);
+      add('riwayat_obat', def.history.medication, `Obat rutin untuk ${def.name.toLowerCase()}`, mentions);
+    }
+    add('kebiasaan', def.history.habit, `Faktor risiko ${def.name.toLowerCase()}`, mentions);
+    // Keluhan haid (mis. haid banyak pada anemia) hanya pada perempuan yang masih haid.
+    if (who.sex === 'female' && who.age >= 12 && who.age <= 49) add('haid_kehamilan', def.history.menstrual, `Faktor risiko ${def.name.toLowerCase()}`, mentions);
+    // "Ibu saya JUGA kencing manis" hanya wajar bila pasien tahu dirinya mengidap penyakit itu.
+    if (rng.fork(c.id).chance(0.5)) add('riwayat_keluarga', def.history.family, `Riwayat keluarga ${def.name.toLowerCase()}`, mentions, !c.known);
+  }
 }

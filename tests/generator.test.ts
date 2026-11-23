@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { generateCase } from '../src/core/generator';
 import { deriveSeed } from '../src/core/rng';
 import type { NumericParamDef, PatientCase } from '../src/core/types';
-import { config, configWith, content, DISEASE_IDS } from './helpers';
+import { config, configWith, content, DISEASE_IDS, perDisease } from './helpers';
 
 function many(diseaseId: string, n: number, cfg = config): PatientCase[] {
   return Array.from({ length: n }, (_, i) =>
@@ -32,7 +32,7 @@ describe('generator kasus', () => {
   it('demografi konsisten dengan penyakit, pekerjaan, dan config', () => {
     for (const id of DISEASE_IDS) {
       const disease = content.diseasesById.get(id)!;
-      for (const c of many(id, 200)) {
+      for (const c of many(id, perDisease(200, 20))) {
         const p = c.patient;
         const occ = content.occupationsById.get(p.occupationId)!;
         expect(p.age).toBeGreaterThanOrEqual(config.patient.minAge);
@@ -61,34 +61,39 @@ describe('generator kasus', () => {
     }
   });
 
-  it('hari sakit dalam rentang presentasi penyakit', () => {
+  it('hari sakit dalam rentang presentasi penyakit (atau rentang khusus trait varian)', () => {
+    let overridden = 0;
     for (const id of DISEASE_IDS) {
-      const [lo, hi] = content.diseasesById.get(id)!.presentationDay;
-      for (const c of many(id, 100)) {
-        expect(c.day).toBeGreaterThanOrEqual(lo);
-        expect(c.day).toBeLessThanOrEqual(hi);
+      const d = content.diseasesById.get(id)!;
+      for (const c of many(id, perDisease(100, 10))) {
+        const rule = d.presentationDayByTrait?.find((r) => c.traits.includes(r.trait));
+        if (rule) overridden++;
+        const [lo, hi] = rule?.range ?? d.presentationDay;
+        expect(c.day, `${id}${rule ? `:${rule.trait}` : ''}`).toBeGreaterThanOrEqual(lo);
+        expect(c.day, `${id}${rule ? `:${rule.trait}` : ''}`).toBeLessThanOrEqual(hi);
       }
     }
+    expect(overridden).toBeGreaterThan(0);
   });
 
   it('keluhan utama hanya menyebut sebagian gejala yang benar-benar ada', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         expect(c.chiefComplaintSymptoms.length).toBeGreaterThan(0);
         for (const s of c.chiefComplaintSymptoms) expect(c.symptoms).toContain(s);
         // revealOrder = gejala sisanya
-        expect([...c.chiefComplaintSymptoms, ...c.revealOrder].sort()).toEqual([...c.symptoms].sort());
+        expect([...c.chiefComplaintSymptoms, ...c.revealOrder, ...c.hiddenSymptoms].sort()).toEqual([...c.symptoms].sort());
       }
     }
-    // Gejala tidak pernah disebut lengkap di awal (secara umum).
-    const all = DISEASE_IDS.flatMap((id) => many(id, 100));
-    const complete = all.filter((c) => c.revealOrder.length === 0).length;
-    expect(complete / all.length).toBeLessThan(0.05);
+    // Gejala tidak pernah disebut lengkap di awal (kecuali pasien hanya punya satu gejala).
+    for (const c of DISEASE_IDS.flatMap((id) => many(id, perDisease(100, 10)))) {
+      if (c.symptoms.length > 1) expect(c.revealOrder.length + c.hiddenSymptoms.length).toBeGreaterThan(0);
+    }
   });
 
   it('jawaban anamnesis hanya mengungkap gejala yang ada', () => {
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         for (const a of Object.values(c.answers)) {
           for (const r of a.reveals ?? []) expect(c.symptoms).toContain(r);
         }
@@ -104,7 +109,7 @@ describe('generator kasus', () => {
       for (const r of results) {
         const param = tool.params.find((p) => p.id === r.paramId)!;
         expect(r.display.length).toBeGreaterThan(0);
-        if (param.kind === 'text' && r.flag === null) expect(param.normal).toContain(r.value);
+        if (param.kind === 'text' && r.flag === null) expect([...param.normal, ...(param.normalFemale ?? [])]).toContain(r.value);
         if (param.kind === 'numeric') expect(typeof r.value).toBe('number');
       }
     }
@@ -114,7 +119,7 @@ describe('generator kasus', () => {
     const tool = content.toolsById.get('darah_lengkap')!;
     const group = tool.groups![0]!;
     for (const id of DISEASE_IDS) {
-      for (const c of many(id, 100)) {
+      for (const c of many(id, perDisease(100, 10))) {
         const sum = c.findings.darah_lengkap!.filter((r) => group.params.includes(r.paramId)).reduce((s, r) => s + (r.value as number), 0);
         expect(sum).toBe(100);
       }
@@ -164,5 +169,100 @@ describe('generator kasus', () => {
         expect(ht.flag).toBe('H');
       }
     }
+  });
+
+  it('frekuensi EKG sama dengan nadi, irama mengikuti frekuensi', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, perDisease(40, 8))) {
+        const nadi = c.findings.tanda_vital!.find((r) => r.paramId === 'nadi')!.value as number;
+        const ekg = c.findings.ekg!;
+        expect(ekg.find((r) => r.paramId === 'frekuensi')!.value).toBe(nadi);
+        const irama = ekg.find((r) => r.paramId === 'irama')!.value;
+        // Ambang takikardia/bradikardia mengikuti rujukan usia (nadi bayi 130 = normal).
+        const flag = ekg.find((r) => r.paramId === 'frekuensi')!.flag;
+        if (flag === 'H') expect(irama).toBe('Sinus takikardia');
+        else if (flag === 'L') expect(irama).toBe('Sinus bradikardia');
+        else expect(irama).toBe('Sinus ritme');
+      }
+    }
+  });
+
+  it('berat badan konsisten dengan IMT dan tinggi badan', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, perDisease(40, 6))) {
+        const get = (p: string) => c.findings.timbangan!.find((r) => r.paramId === p)!.value as number;
+        const expected = get('imt') * (get('tb') / 100) ** 2;
+        expect(Math.abs(get('bb') - expected)).toBeLessThan(0.11);
+      }
+    }
+  });
+
+  it('kesan USG selalu konsisten dengan temuan organ (termasuk temuan insidental)', () => {
+    for (const id of ['batu_saluran_kemih', 'dispepsia', 'gastritis', 'demam_tifoid', 'dm_tipe2']) {
+      for (const c of many(id, perDisease(250, 25))) {
+        const usg = c.findings.usg_abdomen!;
+        const organs = usg.filter((r) => r.paramId !== 'kesan');
+        const kesan = usg.find((r) => r.paramId === 'kesan')!;
+        expect(kesan.flag !== null, `${id}: ${JSON.stringify(usg.map((r) => r.display))}`).toBe(organs.some((r) => r.flag !== null));
+        // Setiap sumber kelainan organ tercermin di kesan.
+        if (c.incidentals.length && organs.some((r) => r.origin === c.incidentals[0])) {
+          const label = content.incidentalsById.get(c.incidentals[0]!)!.findings.find((f) => f.param === 'kesan')!.values![0]!;
+          expect(kesan.display).toContain(label);
+        }
+      }
+    }
+  });
+
+  it('temuan mencatat asal kelainan (penyakit utama / komorbiditas / insidental)', () => {
+    for (const c of many('dengue', 200)) {
+      for (const results of Object.values(c.findings)) {
+        for (const r of results) {
+          if (r.source !== 'disease') continue;
+          expect([c.diseaseId, ...c.comorbidities.map((x) => x.id), ...c.incidentals]).toContain(r.origin);
+        }
+      }
+    }
+  });
+
+  it('setiap kategori anamnesis statis selalu punya jawaban untuk semua penyakit', () => {
+    for (const id of DISEASE_IDS) {
+      for (const c of many(id, perDisease(50, 6))) {
+        for (const cat of content.anamnesis.filter((x) => x.type === 'static')) {
+          expect(c.answers[cat.id]?.text.length, `${id}/${cat.id}`).toBeGreaterThan(3);
+        }
+      }
+    }
+  });
+});
+
+describe('antropometri wajar untuk semua usia', () => {
+  it('tinggi, IMT, dan berat selalu masuk akal (termasuk neonatus & gizi buruk)', () => {
+    const bad: string[] = [];
+    for (const id of DISEASE_IDS) {
+      for (let seed = 1; seed <= perDisease(40, 8); seed++) {
+        const c = generateCase(content, config, { diseaseId: id, seed });
+        const v = (p: string) => Number(c.findings.timbangan!.find((r) => r.paramId === p)!.value);
+        const [tb, imt, bb] = [v('tb'), v('imt'), v('bb')];
+        const age = c.patient.age;
+        const ok =
+          tb >= 44 && tb <= 200 && imt >= 9 && imt <= 50 && bb >= 1.8 && bb <= 200 &&
+          (age > 0 || (tb <= 80 && bb <= 12)) && (age < 18 || tb >= 135);
+        if (!ok) bad.push(`${id}#${seed} ${c.patient.ageText ?? `${age} th`}: TB ${tb}, IMT ${imt}, BB ${bb}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it('panjang badan bayi mengikuti usia bulan (neonatus ± 50 cm, 11 bulan ± 73 cm)', () => {
+    const tbOf = (id: string, pred: (t: string) => boolean) => {
+      for (let seed = 1; seed < 300; seed++) {
+        const c = generateCase(content, config, { diseaseId: id, seed });
+        if (c.patient.age === 0 && pred(c.patient.ageText ?? '')) return Number(c.findings.timbangan!.find((r) => r.paramId === 'tb')!.value);
+      }
+      throw new Error(`tidak ada bayi ${id}`);
+    };
+    expect(tbOf('infeksi_umbilikus', (t) => t.includes('hari'))).toBeLessThanOrEqual(55);
+    expect(tbOf('miliaria', (t) => t === '1 bulan')).toBeLessThanOrEqual(58);
+    expect(tbOf('napkin_eczema', (t) => /^(10|11) bulan$/.test(t))).toBeGreaterThanOrEqual(68);
   });
 });

@@ -2,137 +2,687 @@
  * Pengendali UI: menyimpan state permainan + state tampilan, menerima aksi
  * pemain, memanggil logika inti (src/core), lalu menggambar ulang layar.
  *
+ * Tampilan terdiri dari dua lapis:
+ *  - panggung 3D (ruang praktik & pasien) — menetap, tidak digambar ulang;
+ *  - lapisan UI HTML di atasnya (monitor RME, HUD, dialog) — digambar ulang tiap perubahan.
  * UI tidak berisi aturan permainan — semua aturan ada di src/core.
  */
-import { askCategory, askSymptom, EncounterError, performExam } from '../core/encounter';
-import { randomSeed } from '../core/rng';
-import { createRun, diagnoseCurrent, startNextPatient, updateEncounter } from '../core/run';
-import type { EncounterState, GameConfig, GameContent, RunState, ToolCategory } from '../core/types';
+import { bodySide, buildAppearance, buildCompanionAppearance, chiefSite, companionMode, type GestureCue, type PatientAppearance, planGestures } from '../core/appearance';
+import {
+  addPrescriptionLine,
+  askQuestion,
+  canSubmitDecision,
+  EncounterError,
+  interpretInContext,
+  performExam,
+  removePrescriptionLine,
+  setDdx,
+  startEncounter,
+  submitDecision as submitEncounterDecision,
+  toggleTreatmentAdvice,
+  treatmentOf,
+} from '../core/encounter';
+import type { TreatmentWork } from '../core/osce/types';
+import { generateCase } from '../core/generator';
+import type { OsceContent } from '../core/osce/content';
+import { expectedQuantity } from '../core/osce/prescription';
+import { evaluateProcedure } from '../core/osce/procedure';
+import { evaluateStation } from '../core/osce/station';
+import { loadOsceContent } from '../data/osce';
+import { DEFAULT_SETUP, EMPTY_DRAFT, type DraftLine, emptyWork, newSession, type OsceSession, type OsceSetup, planStations, secondsLeft, secondsUsed, formatClock } from './osce/session';
+import { briefingDialog, renderOsceFinal, renderOsceMenu, renderOsceResult, renderProcedure } from './osce/views';
+import type { Intent } from '../core/nlu';
+import { hashString, randomSeed } from '../core/rng';
+import { createRun, diseaseSystems, finishCurrent, retireRun, runStats, startNextPatient, updateEncounter } from '../core/run';
+import type { ClinicalDecision, DdxStatus, Disposition, EncounterState, GameConfig, GameContent, RunState } from '../core/types';
+import { AiError, type AiAvailability, askAiPatient, getSample } from './ai/patientAi';
+import { medicalRecordDialog, settingsDialog, tutorialDialog } from './components/dialogs';
+import { h } from './dom';
 import { renderConsult } from './screens/consult';
+import { renderFinal } from './screens/final';
 import { renderSummary } from './screens/summary';
 import { renderTitle } from './screens/title';
+import {
+  applyTheme,
+  clearSession,
+  loadSession,
+  loadSettings,
+  type Records,
+  saveSession,
+  saveSettings,
+  type SavedSession,
+  type Settings,
+  updateRecords,
+  addOsceHistory,
+  loadOsceHistory,
+} from './storage';
+import { Director, type Subtitle } from './three/director';
+import { IgdController } from './igd/controller';
+import { IgdScene } from './three/igdScene';
+import { renderIgd, renderIgdDebrief, renderIgdMenu } from './igd/views';
+import type { ShiftOptions } from '../core/igd/shift';
+import type { ShiftMode } from '../core/igd/types';
+import type { Stage } from './three/stage';
 
-export type Screen = 'title' | 'consult' | 'summary';
-export type ActionTab = 'anamnesis' | ToolCategory | 'diagnosis';
+export type Screen = 'title' | 'consult' | 'summary' | 'final' | 'osce_menu' | 'osce_result' | 'osce_final' | 'procedure' | 'igd_menu' | 'igd' | 'igd_debrief';
+export type ActionTab = 'anamnesis' | 'fisik' | 'penunjang' | 'penalaran' | 'tatalaksana' | 'keputusan';
+export type Dialog = 'tutorial' | 'settings' | 'record' | 'briefing' | null;
+/** Tahap adegan pasien di ruang praktik. */
+export type ScenePhase = 'datang' | 'konsultasi' | 'pamit';
+
+/** Draf keputusan akhir (diisi bertahap di tab Keputusan). */
+export interface DecisionDraft {
+  primary: string | null;
+  secondary: string[];
+  complications: string[];
+  /** true = pemain menyatakan tidak ada komplikasi. */
+  noComplication: boolean;
+  disposition: Disposition | null;
+}
 
 export interface UiState {
   screen: Screen;
   actionTab: ActionTab;
-  symptomQuery: string;
-  dxQuery: string;
-  dxSystem: string | null;
-  /** Id penyakit yang sedang dikonfirmasi di dialog. */
-  confirmDx: string | null;
+  /** Teks pertanyaan yang sedang diketik. */
+  draft: string;
+  catalogQuery: string;
+  /** Filter sistem organ di daftar kondisi ('' = semua). */
+  catalogSystem: string;
+  secondaryQuery: string;
+  /** Kata kunci pencarian alat di tab Fisik & Penunjang. */
+  toolQuery: { fisik: string; penunjang: string };
+  decision: DecisionDraft;
+  confirmDecision: boolean;
   /** Pesan singkat (mis. aksi ditolak). */
   notice: string | null;
+  dialog: Dialog;
+  tutorialStep: number;
+  /** Pasien sedang "berpikir" (menunggu pasien AI). */
+  waiting: boolean;
+  /** Bagian umpan balik yang dibuka di layar ringkasan. */
+  openFeedback: string | null;
+  phase: ScenePhase;
+  /** 0 = pasien belum bicara · 1 = sudah menyapa · 2 = keluhan disampaikan (boleh bertanya). */
+  intro: 0 | 1 | 2;
+  /** Monitor diperkecil (ponsel) agar ruangan lebih terlihat. */
+  monitorSmall: boolean;
 }
+
+const EMPTY_DECISION: DecisionDraft = { primary: null, secondary: [], complications: [], noComplication: false, disposition: null };
 
 const INITIAL_UI: UiState = {
   screen: 'title',
   actionTab: 'anamnesis',
-  symptomQuery: '',
-  dxQuery: '',
-  dxSystem: null,
-  confirmDx: null,
+  draft: '',
+  catalogQuery: '',
+  catalogSystem: '',
+  secondaryQuery: '',
+  toolQuery: { fisik: '', penunjang: '' },
+  decision: EMPTY_DECISION,
+  confirmDecision: false,
   notice: null,
+  dialog: null,
+  tutorialStep: 0,
+  waiting: false,
+  openFeedback: null,
+  phase: 'konsultasi',
+  intro: 2,
+  monitorSmall: false,
 };
 
 export class App {
   run: RunState | null = null;
   ui: UiState = { ...INITIAL_UI };
-  /** Jumlah entri log saat render terakhir (untuk auto-scroll percakapan). */
+  settings: Settings = loadSettings();
+  /** Status pasien AI di perangkat ini. */
+  ai: AiAvailability = 'checking';
+  /**
+   * Model yang menjawab pertanyaan AI terakhir: ID model (Haiku 5.5), 'cadangan' bila tier
+   * cadangan yang menjawab, atau null bila belum ada jawaban AI.
+   */
+  aiModelServed: string | null = null;
+  /** Konten mode OSCE (formularium, kunci stasiun, prosedur). */
+  readonly osceContent: OsceContent = loadOsceContent();
+  /** Sesi latihan OSCE yang berjalan (null = mode praktik biasa). */
+  osce: OsceSession | null = null;
+  /** Pengaturan menu OSCE. */
+  osceSetup: OsceSetup = { ...DEFAULT_SETUP };
+  private osceTimer: number | null = null;
+  /** Rekor setelah sesi berakhir (diisi sekali saat layar akhir dibuka). */
+  finalRecords: { records: Records; broken: (keyof Records)[] } | null = null;
+  /** Indeks log pertama yang "baru" pada render ini (untuk animasi masuk). */
+  newLogFrom = 0;
+  /** Draf baris resep di tab Tatalaksana mode praktik (mode OSCE memakai draf sesinya). */
+  private practiceDraft: DraftLine = { ...EMPTY_DRAFT };
+  /** Pertanyaan yang sedang menunggu jawaban pasien AI (ditampilkan sementara di transkrip). */
+  pendingQuestion: string | null = null;
+  /** Penampilan pasien saat ini (juga dipakai mode tanpa 3D untuk deskripsi teks). */
+  appearance: PatientAppearance | null = null;
+  /** Jumlah entri log saat render terakhir. */
   private renderedLogLength = 0;
+  /** Status buka/tutup panel lipat (details[data-keep-open]) — bertahan antar-render & antar-tab. */
+  private readonly detailsOpen = new Map<string, boolean>();
+  private aiAbort: AbortController | null = null;
+  private readonly director: Director | null;
+  private readonly subtitleEl: HTMLElement | null = null;
+  private subtitleText = '';
+  /** Sidik jari konten untuk validasi sesi tersimpan. */
+  readonly contentKey: string;
+  /** Mode Dokter Jaga IGD. */
+  readonly igd: IgdController;
 
   constructor(
     private readonly root: HTMLElement,
     readonly content: GameContent,
-    readonly config: GameConfig,
-  ) {}
+    private readonly baseConfig: GameConfig,
+    /** Panggung 3D; null bila WebGL tidak tersedia (UI tetap berfungsi penuh). */
+    readonly stage: Stage | null = null,
+    stageUi: HTMLElement | null = null,
+  ) {
+    this.contentKey = String(
+      hashString(
+        JSON.stringify([content.diseases, content.tools, content.symptoms, content.anamnesis, content.personalities, content.comorbidities, content.incidentals]),
+      ),
+    );
+    applyTheme(this.settings.theme);
+    document.documentElement.classList.toggle('no-3d', !stage);
+    const app = this;
+    this.igd = new IgdController(
+      {
+        render: () => this.render(),
+        get dialogOpen() {
+          return app.ui.dialog !== null;
+        },
+        onIgdTick: () => this.igdScene?.sync(),
+        onIgdEvent: (kind, detail) => this.igdScene?.event(kind, detail),
+      },
+      content,
+    );
+    window.addEventListener('keydown', (e) => {
+      if (this.ui.screen !== 'igd' || e.key !== ' ' || this.ui.dialog) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.tagName === 'BUTTON')) return;
+      e.preventDefault();
+      this.igd.togglePause();
+    });
+    if (stage && stageUi) {
+      this.subtitleEl = h('div', { class: 'subtitle', 'aria-live': 'off', hidden: true });
+      stageUi.append(this.subtitleEl);
+      this.director = new Director(stage, {
+        onIntro: (intro) => {
+          const phase: ScenePhase = this.ui.phase === 'pamit' ? 'pamit' : intro === 2 ? 'konsultasi' : 'datang';
+          this.ui = { ...this.ui, intro, phase };
+          this.render();
+        },
+        onSubtitle: (sub) => this.showSubtitle(sub),
+        onLeft: () => this.afterPatientLeft(),
+      });
+      this.igdScene = new IgdScene(stage, this.igd, content);
+      window.addEventListener('resize', () => this.syncStage());
+      stage.start();
+    } else {
+      this.director = null;
+    }
+  }
+
+  /** Config efektif = config dasar + pengaturan pemain (mis. mode latihan). */
+  get config(): GameConfig {
+    return { ...this.baseConfig, tests: { ...this.baseConfig.tests, realisticAccuracy: this.settings.realisticTests } };
+  }
 
   get encounter(): EncounterState | null {
     return this.run?.encounter ?? null;
   }
 
+  /** Pasien AI aktif untuk pertanyaan berikutnya? */
+  get aiActive(): boolean {
+    return this.settings.aiPatient && this.ai === 'ready';
+  }
+
+  /** Pemain boleh bertanya/memeriksa (pasien sudah duduk & menyampaikan keluhan)? */
+  get canInteract(): boolean {
+    return this.ui.phase === 'konsultasi' && this.ui.intro === 2 && this.encounter?.status === 'active';
+  }
+
+  /**
+   * Entri log yang sudah "terjadi" di ruang praktik: salam & keluhan pembuka baru muncul
+   * setelah pasien mengucapkannya (mengikuti adegan kedatangan).
+   */
+  visibleLog(): EncounterState['log'] {
+    const log = this.encounter?.log ?? [];
+    if (this.ui.intro >= 2) return log;
+    return log.slice(0, this.ui.intro);
+  }
+
+  /** Sesi tersimpan yang masih bisa dilanjutkan (atau null). */
+  get savedSession(): SavedSession<RunState> | null {
+    const saved = loadSession<RunState>(this.contentKey);
+    return saved && saved.run.status === 'playing' ? saved : null;
+  }
+
   mount(): void {
     this.render();
+    void getSample().then((sample) => {
+      this.ai = sample ? 'ready' : 'unavailable';
+      this.render();
+    });
   }
 
   // -------------------------------------------------------------------------
   // Aksi pemain
   // -------------------------------------------------------------------------
 
-  startGame(): void {
-    const run = createRun(randomSeed(), this.config);
-    this.run = startNextPatient(run, this.content, this.config);
-    this.ui = { ...INITIAL_UI, screen: 'consult' };
-    this.renderedLogLength = 0;
+  /** Batalkan pertanyaan ke pasien AI yang masih menunggu (pasien/sesi berganti). */
+  private cancelAi(): void {
+    this.aiAbort?.abort();
+    this.aiAbort = null;
+    this.pendingQuestion = null;
+  }
+
+  // -------------------------------------------------------------------------
+  // Mode Dokter Jaga IGD
+  // -------------------------------------------------------------------------
+
+  /** Adegan 3D IGD (dipasang bila WebGL tersedia). */
+  igdScene: { sync(): void; event(kind: string, detail?: { patientId?: string }): void; enter(): void; exit(): void } | null = null;
+
+  openIgdMenu(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
+    this.director?.clear();
+    this.ui = { ...INITIAL_UI, screen: 'igd_menu' };
     this.render();
   }
 
-  askCategory(categoryId: string): void {
-    this.updateEncounter((s) => askCategory(s, categoryId, this.content, this.config));
+  startIgd(mode: ShiftMode, opts: ShiftOptions): void {
+    this.director?.clear();
+    this.igdScene?.enter();
+    this.igd.start(mode, opts);
+    this.ui = { ...INITIAL_UI, screen: 'igd' };
+    this.render();
   }
 
-  askSymptom(symptomId: string): void {
-    this.updateEncounter((s) => askSymptom(s, symptomId, this.content, this.config));
+  resumeIgd(): void {
+    this.director?.clear();
+    this.igdScene?.enter();
+    if (!this.igd.resume()) return;
+    this.ui = { ...INITIAL_UI, screen: 'igd' };
+    this.render();
+  }
+
+  confirmEndIgd(): void {
+    if (window.confirm('Akhiri jaga sekarang? Pasien yang masih di IGD dinilai apa adanya.')) this.igd.endNow();
+  }
+
+  startGame(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
+    const run = createRun(randomSeed(), this.config, this.focusSystem);
+    this.run = startNextPatient(run, this.content, this.config);
+    this.practiceDraft = { ...EMPTY_DRAFT };
+    this.ui = { ...INITIAL_UI, screen: 'consult', dialog: this.settings.tutorialSeen ? null : 'tutorial' };
+    this.finalRecords = null;
+    this.renderedLogLength = 0;
+    this.beginScene(false);
+    this.render();
+  }
+
+  resumeGame(): void {
+    const saved = this.savedSession;
+    if (!saved) return;
+    this.cancelAi();
+    this.stopOsce();
+    this.run = saved.run;
+    this.practiceDraft = { ...EMPTY_DRAFT };
+    const active = saved.run.encounter?.status === 'active';
+    this.ui = { ...INITIAL_UI, screen: active ? 'consult' : 'summary' };
+    this.finalRecords = null;
+    this.renderedLogLength = 0;
+    if (active) this.beginScene(true);
+    else this.director?.clear();
+    this.render();
+  }
+
+  /** Mulai adegan pasien saat ini: datang lewat pintu (atau langsung duduk bila melanjutkan sesi). */
+  private beginScene(instant: boolean): void {
+    const enc = this.encounter;
+    if (!enc) return;
+    const c = enc.case;
+    this.appearance = buildAppearance(c, this.content);
+    if (!this.director) {
+      this.ui = { ...this.ui, phase: 'konsultasi', intro: 2 };
+      return;
+    }
+    // Hormati preferensi "kurangi gerakan": tanpa adegan berjalan masuk.
+    instant ||= this.reducedMotion;
+    this.ui = { ...this.ui, phase: instant ? 'konsultasi' : 'datang', intro: instant ? 2 : 0 };
+    const site = chiefSite(c, this.content);
+    const complaintGestures: GestureCue[] = site ? [{ kind: 'tunjuk', site, side: bodySide(c, this.content) }] : [];
+    const comp = c.patient.companion;
+    const companionLook = comp ? buildCompanionAppearance(c, this.content, this.appearance) : null;
+    const companion = comp && companionLook ? { look: companionLook, mode: companionMode(c.patient.age), name: `${comp.address} (${comp.relation})` } : null;
+    void this.director.enter(this.appearance, c.seed, c.patient.callName, c.greeting, c.complaint, complaintGestures, instant, companion);
+  }
+
+  /** Lewati adegan datang/pamit. */
+  skipScene(): void {
+    this.director?.skip();
+  }
+
+  setDraft(text: string): void {
+    this.ui.draft = text;
+  }
+
+  /** Ajukan pertanyaan bebas. Pasien AI bila tersedia; selain itu pemahaman bahasa lokal. */
+  async ask(text?: string): Promise<void> {
+    const enc = this.encounter;
+    const question = (text ?? this.ui.draft).trim();
+    if (!enc || !this.canInteract || !question || this.ui.waiting) return;
+    this.ui = { ...this.ui, draft: '', notice: null };
+
+    if (!this.aiActive) {
+      this.askLocal(enc, question);
+      return;
+    }
+    // Tandai menunggu SEBELUM await pertama: klik/Enter kedua tidak boleh mengirim pertanyaan ganda.
+    this.ui = { ...this.ui, waiting: true };
+    const sample = await getSample();
+    if (!sample) {
+      this.ai = 'unavailable';
+      this.ui = { ...this.ui, waiting: false };
+      if (this.encounter === enc) this.askLocal(enc, question);
+      return;
+    }
+    if (this.encounter !== enc) return; // pasien/sesi berganti selama menunggu
+    // Tampilkan pertanyaan dokter segera, lalu tunggu jawaban.
+    this.pendingQuestion = question;
+    this.render();
+    const controller = new AbortController();
+    this.aiAbort = controller;
+    const timer = window.setTimeout(() => controller.abort(), 45_000);
+    const runAtStart = this.run;
+    try {
+      // Tafsiran lokal (memakai konteks percakapan) dipakai bila Claude tidak mengambil fakta lewat alat.
+      const local = interpretInContext(enc, question, this.content, this.config).intents;
+      const result = await askAiPatient(sample, enc, question, this.content, local, controller.signal);
+      if (this.run !== runAtStart || this.encounter !== enc) return; // layar sudah berganti
+      this.run = updateEncounter(this.run!, result.state);
+      this.aiModelServed = result.model ?? 'cadangan';
+      this.perform(enc, result.state, result.reply, result.intents, result.parts, true);
+    } catch (e) {
+      if (this.run !== runAtStart || this.encounter !== enc) return;
+      const code = e instanceof AiError ? e.code : 'upstream_error';
+      if (e instanceof AiError && e.permanent) this.ai = 'unavailable';
+      const reason =
+        code === 'rate_limited'
+          ? 'Batas pemakaian Claude tercapai — pertanyaan ini dijawab mode lokal.'
+          : code === 'cancelled'
+            ? 'Pasien AI terlalu lama menjawab — dijawab mode lokal.'
+            : this.ai === 'unavailable'
+              ? 'Pasien AI tidak tersedia — beralih ke mode lokal.'
+              : 'Pasien AI gagal menjawab — dijawab mode lokal.';
+      this.askLocal(enc, question, false);
+      this.ui = { ...this.ui, notice: reason };
+    } finally {
+      window.clearTimeout(timer);
+      if (this.aiAbort === controller) this.aiAbort = null;
+      this.pendingQuestion = null;
+      this.ui = { ...this.ui, waiting: false };
+      this.render();
+      this.root.querySelector<HTMLTextAreaElement>('[data-ask-input]')?.focus();
+    }
+  }
+
+  private askLocal(enc: EncounterState, question: string, rerender = true): void {
+    try {
+      const r = askQuestion(enc, question, this.content, this.config);
+      this.run = updateEncounter(this.run!, r.state);
+      this.perform(enc, r.state, r.reply, r.intents, r.parts, r.understood);
+    } catch (e) {
+      if (!(e instanceof EncounterError)) throw e;
+      this.ui = { ...this.ui, notice: e.message };
+    }
+    if (rerender) this.render();
+  }
+
+  /** Pasien 3D mengucapkan jawaban dengan bahasa tubuh yang sesuai isi jawabannya. */
+  private perform(before: EncounterState, after: EncounterState, reply: string, intents: readonly Intent[], parts: readonly string[], understood: boolean): void {
+    if (!this.director) return;
+    const newlyRevealed = after.revealedSymptoms.filter((s) => !before.revealedSymptoms.includes(s));
+    // Obrolan ringan yang dijawab pasien AI tanpa mengambil fakta: cukup mengangguk.
+    const gestures: GestureCue[] = understood || intents.length > 0 ? planGestures(after.case, { intents, parts, newlyRevealed }, this.content) : [{ kind: 'bingung' }];
+    this.director.say(reply, intents.length === 0 && understood ? [{ kind: 'angguk' }] : gestures);
   }
 
   performExam(toolId: string): void {
+    const before = this.encounter?.examsDone.length ?? 0;
     this.updateEncounter((s) => performExam(s, toolId, this.content, this.config));
+    if ((this.encounter?.examsDone.length ?? 0) > before) this.director?.react(toolId);
   }
 
   setTab(tab: ActionTab): void {
-    this.ui = { ...this.ui, actionTab: tab, notice: null };
+    this.ui = { ...this.ui, actionTab: tab, notice: null, monitorSmall: false };
     this.render();
   }
 
-  /** Pencarian diperbarui tanpa render ulang penuh (agar fokus input tidak hilang). */
-  setSymptomQuery(query: string): void {
-    this.ui.symptomQuery = query;
-  }
-
-  setDxQuery(query: string): void {
-    this.ui.dxQuery = query;
-  }
-
-  setDxSystem(system: string | null): void {
-    this.ui = { ...this.ui, dxSystem: system };
+  toggleMonitor(): void {
+    this.ui = { ...this.ui, monitorSmall: !this.ui.monitorSmall };
     this.render();
   }
 
-  openDiagnosis(diseaseId: string): void {
-    this.ui = { ...this.ui, confirmDx: diseaseId };
+  setCatalogQuery(query: string): void {
+    this.ui.catalogQuery = query;
+  }
+
+  setToolQuery(tab: 'fisik' | 'penunjang', query: string): void {
+    this.ui.toolQuery = { ...this.ui.toolQuery, [tab]: query };
+  }
+
+  setCatalogSystem(system: string): void {
+    this.ui.catalogSystem = system;
+  }
+
+  /** Fokus sistem organ yang tersimpan (diabaikan bila tidak lagi ada di konten). */
+  get focusSystem(): string | null {
+    const f = this.settings.focusSystem;
+    return f && diseaseSystems(this.content).some((x) => x.system === f) ? f : null;
+  }
+
+  setSecondaryQuery(query: string): void {
+    this.ui.secondaryQuery = query;
+  }
+
+  /** Ubah status kondisi di papan diagnosis banding (null = hapus). */
+  setDdx(conditionId: string, status: DdxStatus | null): void {
+    const before = this.encounter;
+    this.updateEncounter((s) => setDdx(s, conditionId, status, this.content));
+    // Sinkronkan diagnosis utama di draf keputusan — hanya bila papan benar-benar berubah
+    // (aksi bisa ditolak saat menunggu jawaban) dan diagnosis kerjanya berganti.
+    const enc = this.encounter;
+    if (!enc || enc === before) return;
+    const utama = enc.ddx.find((d) => d.status === 'utama')?.id ?? null;
+    if (utama !== this.ui.decision.primary) {
+      this.patchDecision({ primary: utama, complications: [], noComplication: false });
+    }
+  }
+
+  patchDecision(patch: Partial<DecisionDraft>, rerender = true): void {
+    this.ui = { ...this.ui, decision: { ...this.ui.decision, ...patch } };
+    if (rerender) this.render();
+  }
+
+  toggleSecondary(id: string): void {
+    const list = this.ui.decision.secondary;
+    this.patchDecision({ secondary: list.includes(id) ? list.filter((x) => x !== id) : [...list, id] });
+  }
+
+  toggleComplication(id: string): void {
+    const list = this.ui.decision.complications;
+    this.patchDecision({ complications: list.includes(id) ? list.filter((x) => x !== id) : [...list, id], noComplication: false });
+  }
+
+  /** Alasan keputusan belum bisa dikirim (null = siap). */
+  decisionBlocker(): string | null {
+    const enc = this.encounter;
+    if (!enc) return 'Tidak ada pasien.';
+    if (!this.canInteract) return 'Tunggu pasien duduk dan menyampaikan keluhannya.';
+    const d = this.ui.decision;
+    const check = canSubmitDecision(enc, { primary: d.primary ?? undefined, disposition: d.disposition ?? undefined }, this.content);
+    if (!check.ok) return check.reason ?? 'Belum lengkap.';
+    const disease = d.primary ? this.content.diseasesById.get(d.primary) : undefined;
+    if (disease?.complications?.length && !d.noComplication && d.complications.length === 0) {
+      return 'Nilai komplikasi: pilih komplikasi yang ada, atau tandai "tanpa komplikasi".';
+    }
+    return null;
+  }
+
+  openConfirmDecision(): void {
+    const blocker = this.decisionBlocker();
+    this.ui = blocker ? { ...this.ui, notice: blocker } : { ...this.ui, confirmDecision: true, notice: null };
     this.render();
   }
 
-  cancelDiagnosis(): void {
-    this.ui = { ...this.ui, confirmDx: null };
+  cancelDecision(): void {
+    this.ui = { ...this.ui, confirmDecision: false };
     this.render();
   }
 
-  confirmDiagnosis(): void {
-    if (!this.run || !this.ui.confirmDx) return;
-    this.run = diagnoseCurrent(this.run, this.ui.confirmDx, this.content, this.config);
-    this.ui = { ...this.ui, screen: 'summary', confirmDx: null, notice: null };
+  /** Kirim keputusan: konsultasi dinilai, pasien berpamitan & keluar, lalu umpan balik tampil. */
+  submitDecision(): void {
+    if (!this.run?.encounter || this.decisionBlocker()) return;
+    const d = this.ui.decision;
+    const decision: ClinicalDecision = {
+      primary: d.primary!,
+      secondary: d.secondary,
+      complications: d.noComplication ? [] : d.complications,
+      disposition: d.disposition!,
+    };
+    this.cancelAi();
+    if (this.osce) {
+      this.finishOsceStation(decision, false);
+      return;
+    }
+    this.run = finishCurrent(this.run, decision, this.content, this.config, this.osceContent);
+    const farewell = this.run.encounter!.log.at(-1);
+    if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
+      this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: null, actionTab: 'anamnesis', monitorSmall: true };
+      this.render();
+      void this.director.leave(farewell.text);
+    } else {
+      this.director?.clear();
+      this.afterPatientLeft();
+    }
+  }
+
+  private get reducedMotion(): boolean {
+    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+  }
+
+  private afterPatientLeft(): void {
+    if (!this.run?.encounter || this.run.encounter.status !== 'finished' || this.ui.screen !== 'consult') return;
+    if (this.osce) {
+      this.ui = { ...this.ui, screen: 'osce_result', confirmDecision: false, notice: null, phase: 'konsultasi' };
+      this.render();
+      this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
+      return;
+    }
+    this.ui = { ...this.ui, screen: 'summary', confirmDecision: false, notice: null, openFeedback: null, phase: 'konsultasi' };
     this.render();
-    window.scrollTo({ top: 0 });
+    this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
+  }
+
+  toggleFeedback(key: string): void {
+    this.ui = { ...this.ui, openFeedback: this.ui.openFeedback === key ? null : key };
+    this.render();
   }
 
   nextPatient(): void {
-    if (!this.run || this.run.status !== 'playing') return;
+    if (!this.run || this.run.status !== 'playing' || this.run.encounter?.status === 'active') return;
+    this.cancelAi();
     this.run = startNextPatient(this.run, this.content, this.config);
+    this.practiceDraft = { ...EMPTY_DRAFT };
     this.ui = { ...INITIAL_UI, screen: 'consult' };
     this.renderedLogLength = 0;
+    this.beginScene(false);
     this.render();
   }
 
+  /** Akhiri praktek secara sukarela (di antara pasien) dan tampilkan hasil akhir. */
+  retire(): void {
+    if (!this.run || this.run.status !== 'playing') return;
+    this.run = retireRun(this.run);
+    this.showFinal();
+  }
+
+  /** Tampilkan layar hasil akhir dan perbarui rekor (sekali per sesi). */
+  showFinal(): void {
+    if (!this.run || this.run.status === 'playing') return;
+    if (!this.finalRecords) {
+      const stats = runStats(this.run, this.content, this.config);
+      this.finalRecords = updateRecords({
+        correct: stats.correct,
+        bestStreak: stats.bestStreak,
+        patients: stats.patientsSeen,
+        bestScore: stats.averageScore,
+      });
+    }
+    this.cancelAi();
+    this.director?.clear();
+    this.ui = { ...INITIAL_UI, screen: 'final' };
+    this.render();
+    this.root.querySelector<HTMLElement>('.overlay-page')?.scrollTo({ top: 0 });
+  }
+
   backToTitle(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
+    this.director?.clear();
     this.ui = { ...INITIAL_UI };
     this.render();
   }
 
+  // --- Dialog ---------------------------------------------------------------
+
+  openDialog(dialog: Exclude<Dialog, null>): void {
+    this.ui = { ...this.ui, dialog, tutorialStep: 0 };
+    this.render();
+  }
+
+  openTutorial(): void {
+    this.openDialog('tutorial');
+  }
+
+  setTutorialStep(step: number): void {
+    this.ui = { ...this.ui, tutorialStep: step };
+    this.render();
+  }
+
+  closeDialog(): void {
+    if (this.ui.dialog === 'tutorial' && !this.settings.tutorialSeen) this.updateSettings({ tutorialSeen: true }, false);
+    this.ui = { ...this.ui, dialog: null };
+    this.render();
+  }
+
+  updateSettings(patch: Partial<Settings>, rerender = true): void {
+    this.settings = { ...this.settings, ...patch };
+    saveSettings(this.settings);
+    applyTheme(this.settings.theme);
+    if (rerender) this.render();
+  }
+
   private updateEncounter(fn: (s: EncounterState) => EncounterState): void {
     if (!this.run?.encounter) return;
+    if (this.ui.waiting || !this.canInteract) {
+      this.ui = { ...this.ui, notice: this.ui.waiting ? 'Tunggu pasien selesai menjawab.' : 'Tunggu pasien duduk dan menyampaikan keluhannya.' };
+      this.render();
+      return;
+    }
     try {
       this.run = updateEncounter(this.run, fn(this.run.encounter));
       this.ui = { ...this.ui, notice: null };
@@ -144,16 +694,325 @@ export class App {
   }
 
   // -------------------------------------------------------------------------
+  // Mode OSCE
+  // -------------------------------------------------------------------------
+
+  openOsceMenu(): void {
+    this.cancelAi();
+    this.stopOsce();
+    this.igd.stop();
+    this.igdScene?.exit();
+    this.director?.clear();
+    this.ui = { ...INITIAL_UI, screen: 'osce_menu' };
+    this.render();
+  }
+
+  patchOsceSetup(patch: Partial<OsceSetup>): void {
+    this.osceSetup = { ...this.osceSetup, ...patch };
+    this.render();
+  }
+
+  osceHistory(): ReturnType<typeof loadOsceHistory> {
+    return loadOsceHistory();
+  }
+
+  startOsce(): void {
+    const stations = planStations(this.osceSetup, this.content, this.osceContent, randomSeed());
+    if (!stations.length) return;
+    this.osce = newSession({ ...this.osceSetup }, stations);
+    this.startStation();
+  }
+
+  /** Siapkan stasiun saat ini (lembar tugas tampil; waktu mulai setelah "Mulai"). */
+  private startStation(): void {
+    const s = this.osce;
+    if (!s) return;
+    this.cancelAi();
+    this.clearOsceTimer();
+    const spec = s.stations[s.index]!;
+    s.work = emptyWork();
+    s.draft = { ...EMPTY_DRAFT };
+    s.startedAt = null;
+    s.timeUp = false;
+    s.procedure = { attempt: { sequence: [], answers: {} }, phase: 'urutan' };
+    this.renderedLogLength = 0;
+    if (spec.kind === 'klinis') {
+      const c = generateCase(this.content, this.config, { diseaseId: spec.diseaseId, seed: spec.seed });
+      const run = createRun(spec.seed, this.config);
+      this.run = { ...run, patientIndex: s.index + 1, encounter: startEncounter(c) };
+      this.ui = { ...INITIAL_UI, screen: 'consult', dialog: 'briefing' };
+      this.beginScene(false);
+    } else {
+      this.run = null;
+      this.director?.clear();
+      this.ui = { ...INITIAL_UI, screen: 'procedure', dialog: 'briefing' };
+    }
+    this.render();
+  }
+
+  /** Tutup lembar tugas & mulai menghitung waktu. */
+  beginStation(): void {
+    const s = this.osce;
+    if (!s) return;
+    if (s.startedAt === null) s.startedAt = Date.now();
+    this.ui = { ...this.ui, dialog: null };
+    this.clearOsceTimer();
+    if (s.setup.minutes !== null) this.osceTimer = window.setInterval(() => this.osceTick(), 1000);
+    this.render();
+  }
+
+  private osceTick(): void {
+    const s = this.osce;
+    if (!s || s.startedAt === null) return;
+    const left = secondsLeft(s, Date.now());
+    this.root.querySelectorAll<HTMLElement>('[data-osce-timer]').forEach((el) => {
+      el.textContent = left === null ? '∞' : formatClock(left);
+      el.classList.toggle('osce-timer--low', left !== null && left <= 120);
+    });
+    if (left === 0) this.osceTimeUp();
+  }
+
+  private clearOsceTimer(): void {
+    if (this.osceTimer !== null) window.clearInterval(this.osceTimer);
+    this.osceTimer = null;
+  }
+
+  /** Akhiri sesi OSCE. Pasien stasiun dibuang agar tidak tersimpan sebagai sesi praktik. */
+  private stopOsce(): void {
+    this.clearOsceTimer();
+    if (this.osce) this.run = null;
+    this.osce = null;
+  }
+
+  /** Waktu habis: stasiun dinilai apa adanya. */
+  private osceTimeUp(): void {
+    const s = this.osce;
+    if (!s || s.timeUp) return;
+    s.timeUp = true;
+    this.clearOsceTimer();
+    const spec = s.stations[s.index]!;
+    if (spec.kind === 'prosedur') {
+      this.finishProcedure();
+      return;
+    }
+    if (this.ui.screen !== 'consult' || this.encounter?.status !== 'active') return;
+    const d = this.ui.decision;
+    this.finishOsceStation(
+      { primary: d.primary ?? '', secondary: d.secondary, complications: d.noComplication ? [] : d.complications, disposition: d.disposition ?? 'rawat_jalan' },
+      true,
+    );
+  }
+
+  /** Nilai stasiun klinis lalu pasien berpamitan; hasil tampil setelahnya. */
+  private finishOsceStation(decision: ClinicalDecision, timeUp: boolean): void {
+    const s = this.osce;
+    const enc = this.run?.encounter;
+    if (!s || !enc || enc.status !== 'active') return;
+    this.clearOsceTimer();
+    const now = Date.now();
+    const { result, clinical } = evaluateStation(enc, decision, s.work, this.content, this.osceContent, this.config, { secondsUsed: secondsUsed(s, now), timeUp });
+    s.outcomes.push({ kind: 'klinis', spec: s.stations[s.index]!, result, clinical, work: structuredClone(s.work), patientName: enc.case.patient.name });
+    addOsceHistory({ title: `${result.stationTitle} (${this.content.diseasesById.get(result.diseaseId)?.name ?? ''})`, percent: result.percent, category: result.category, date: new Date(now).toLocaleDateString('id-ID') });
+    const finished = submitEncounterDecision(enc, decision.primary ? decision : { ...decision, primary: this.content.catalog.find((e) => e.id !== enc.case.diseaseId)!.id }, this.content, this.config);
+    this.run = { ...this.run!, encounter: finished };
+    const farewell = finished.log.at(-1);
+    if (this.director && farewell?.kind === 'patient' && !this.reducedMotion) {
+      this.ui = { ...this.ui, phase: 'pamit', confirmDecision: false, notice: timeUp ? 'Waktu habis — stasiun dinilai.' : null, actionTab: 'anamnesis', monitorSmall: true, dialog: null };
+      this.render();
+      void this.director.leave(farewell.text);
+    } else {
+      this.director?.clear();
+      this.afterPatientLeft();
+    }
+  }
+
+  osceNext(): void {
+    const s = this.osce;
+    if (!s || s.index >= s.stations.length - 1) return;
+    s.index++;
+    this.startStation();
+  }
+
+  osceRetry(): void {
+    const s = this.osce;
+    if (!s) return;
+    s.outcomes.pop();
+    this.startStation();
+  }
+
+  osceFinish(): void {
+    if (!this.osce) return;
+    this.clearOsceTimer();
+    this.director?.clear();
+    const multi = this.osce.stations.length > 1;
+    if (!multi) this.stopOsce();
+    this.ui = { ...INITIAL_UI, screen: multi ? 'osce_final' : 'osce_menu' };
+    this.render();
+  }
+
+  // --- Tatalaksana (resep, non-farmakologi, KIE, interpretasi) ---------------
+  // Mode OSCE menyimpan pekerjaan di sesi stasiun; mode praktik di konsultasi (ikut tersimpan & dilanjutkan).
+
+  /** Isi tab Tatalaksana yang sedang dikerjakan. */
+  get treatmentWork(): TreatmentWork {
+    if (this.osce) return this.osce.work;
+    return this.encounter ? treatmentOf(this.encounter) : { prescription: [], nonPharm: [], education: [] };
+  }
+
+  /** Draf baris resep di formulir "tambah obat". */
+  get rxDraft(): DraftLine {
+    return this.osce ? this.osce.draft : this.practiceDraft;
+  }
+
+  /** Hapus pemberitahuan tanpa menggambar ulang (mis. setelah isian angka resep yang valid). */
+  clearNotice(): void {
+    if (!this.ui.notice) return;
+    this.ui = { ...this.ui, notice: null };
+    this.root.querySelectorAll('.monitor > .banner--info').forEach((el) => el.remove());
+  }
+
+  /** Isian angka resep tidak valid: nilai lama dipertahankan & pemain diberi tahu. */
+  rxInputInvalid(label: string): void {
+    const field = label.replace(/\s*\(.*$/, '');
+    this.ui = { ...this.ui, notice: `${field}: isi dengan angka yang valid (mis. 1, 2, atau 0,5). Nilai sebelumnya dipertahankan.` };
+    this.render();
+  }
+
+  patchRxDraft(patch: Partial<DraftLine>, rerender = true): void {
+    if (this.osce) this.osce.draft = { ...this.osce.draft, ...patch };
+    else this.practiceDraft = { ...this.practiceDraft, ...patch };
+    if (rerender) {
+      this.ui = { ...this.ui, notice: null };
+      this.render();
+    }
+  }
+
+  addRxLine(): void {
+    if (!this.encounter || !this.canInteract) return;
+    const d = this.rxDraft;
+    const entry = d.form ? this.osceContent.formsById.get(d.form) : undefined;
+    if (!d.drug || !entry) return;
+    const line = { drug: d.drug, form: d.form!, units: d.units, schedule: d.schedule, timesPerDay: d.schedule === 'tunggal' ? 1 : d.timesPerDay, days: d.schedule === 'tunggal' ? 1 : d.days, quantity: 0, timing: d.timing };
+    line.quantity = d.quantity ?? expectedQuantity(line, entry.form);
+    if (this.osce) {
+      this.osce.work.prescription.push(line);
+      this.osce.draft = { ...EMPTY_DRAFT };
+      this.render();
+      return;
+    }
+    const before = this.encounter;
+    this.updateEncounter((s) => addPrescriptionLine(s, line));
+    if (this.encounter !== before) {
+      this.practiceDraft = { ...EMPTY_DRAFT };
+      this.render();
+    }
+  }
+
+  removeRxLine(index: number): void {
+    if (!this.canInteract) return;
+    if (this.osce) {
+      this.osce.work.prescription.splice(index, 1);
+      this.render();
+      return;
+    }
+    this.updateEncounter((s) => removePrescriptionLine(s, index));
+  }
+
+  toggleOsceAdvice(kind: 'nonPharm' | 'education', id: string): void {
+    if (!this.canInteract) return;
+    if (this.osce) {
+      const list = this.osce.work[kind];
+      const i = list.indexOf(id);
+      if (i >= 0) list.splice(i, 1);
+      else list.push(id);
+      this.render();
+      return;
+    }
+    this.updateEncounter((s) => toggleTreatmentAdvice(s, kind, id));
+  }
+
+  isMarkedAbnormal(toolId: string, paramId: string): boolean {
+    return this.osce?.work.abnormalMarks.includes(`${toolId}.${paramId}`) ?? false;
+  }
+
+  toggleAbnormal(toolId: string, paramId: string): void {
+    if (!this.osce || !this.canInteract) return;
+    const key = `${toolId}.${paramId}`;
+    const list = this.osce.work.abnormalMarks;
+    const i = list.indexOf(key);
+    if (i >= 0) list.splice(i, 1);
+    else list.push(key);
+    this.render();
+  }
+
+  // --- Stasiun prosedur -----------------------------------------------------
+
+  procPick(id: string): void {
+    const s = this.osce;
+    if (!s || s.startedAt === null || s.procedure.attempt.sequence.includes(id)) return;
+    s.procedure.attempt.sequence.push(id);
+    this.render();
+  }
+
+  procRemove(index: number): void {
+    this.osce?.procedure.attempt.sequence.splice(index, 1);
+    this.render();
+  }
+
+  procToQuestions(): void {
+    if (!this.osce) return;
+    this.osce.procedure.phase = 'pertanyaan';
+    this.render();
+  }
+
+  procBack(): void {
+    if (!this.osce) return;
+    this.osce.procedure.phase = 'urutan';
+    this.render();
+  }
+
+  procAnswer(questionId: string, option: number): void {
+    if (!this.osce) return;
+    this.osce.procedure.attempt.answers[questionId] = option;
+    this.render();
+  }
+
+  finishProcedure(): void {
+    const s = this.osce;
+    if (!s) return;
+    const spec = s.stations[s.index]!;
+    if (spec.kind !== 'prosedur') return;
+    this.clearOsceTimer();
+    const proc = this.osceContent.proceduresById.get(spec.procedureId)!;
+    const attempt = structuredClone(s.procedure.attempt);
+    const result = evaluateProcedure(proc, attempt);
+    s.outcomes.push({ kind: 'prosedur', spec, result, attempt });
+    addOsceHistory({ title: proc.title, percent: result.percent, category: result.category, date: new Date().toLocaleDateString('id-ID') });
+    this.ui = { ...INITIAL_UI, screen: 'osce_result' };
+    this.render();
+  }
+
+  // -------------------------------------------------------------------------
   // Render
   // -------------------------------------------------------------------------
 
   render(): void {
-    // Simpan posisi scroll panel yang ingin dipertahankan.
+    this.persist();
+
+    // Simpan posisi scroll panel & fokus input yang ingin dipertahankan.
     const scrolls = new Map<string, number>();
     this.root.querySelectorAll<HTMLElement>('[data-keep-scroll]').forEach((el) => {
       scrolls.set(el.dataset.keepScroll!, el.scrollTop);
     });
+    const focusedKey = (document.activeElement as HTMLElement | null)?.dataset?.focusKey;
+    this.root.querySelectorAll<HTMLDetailsElement>('details[data-keep-open]').forEach((el) => {
+      this.detailsOpen.set(el.dataset.keepOpen!, el.open);
+    });
 
+    const logLength = this.visibleLog().length + (this.pendingQuestion ? 1 : 0);
+    this.newLogFrom = this.ui.screen === 'consult' && logLength > this.renderedLogLength ? this.renderedLogLength : logLength;
+
+    if (this.ui.screen === 'igd' && this.igd.summary) this.ui = { ...this.ui, screen: 'igd_debrief' };
     let view: HTMLElement;
     switch (this.ui.screen) {
       case 'title':
@@ -165,23 +1024,133 @@ export class App {
       case 'summary':
         view = renderSummary(this);
         break;
+      case 'final':
+        view = renderFinal(this);
+        break;
+      case 'osce_menu':
+        view = renderOsceMenu(this);
+        break;
+      case 'osce_result':
+        view = renderOsceResult(this);
+        break;
+      case 'osce_final':
+        view = renderOsceFinal(this);
+        break;
+      case 'procedure':
+        view = renderProcedure(this);
+        break;
+      case 'igd_menu':
+        view = renderIgdMenu(this);
+        break;
+      case 'igd':
+        view = this.igd.shift ? renderIgd(this) : renderIgdMenu(this);
+        break;
+      case 'igd_debrief':
+        view = this.igd.summary ? renderIgdDebrief(this) : renderIgdMenu(this);
+        break;
     }
-    this.root.replaceChildren(view);
+    // Layar selain konsultasi tampil sebagai lembar di atas ruang praktik.
+    if (this.ui.screen !== 'consult' && this.ui.screen !== 'igd') view = h('div', { class: `overlay-page overlay-page--${this.ui.screen}`, 'data-keep-scroll': this.ui.screen }, view);
+    const dialog = this.renderDialog();
+    this.root.replaceChildren(...(dialog ? [view, dialog] : [view]));
 
+    this.root.querySelectorAll<HTMLDetailsElement>('details[data-keep-open]').forEach((el) => {
+      const open = this.detailsOpen.get(el.dataset.keepOpen!);
+      if (open !== undefined) el.open = open;
+    });
     this.root.querySelectorAll<HTMLElement>('[data-keep-scroll]').forEach((el) => {
       const top = scrolls.get(el.dataset.keepScroll!);
       if (top !== undefined) el.scrollTop = top;
     });
-
-    // Gulir percakapan ke bawah bila ada pesan baru.
-    const chat = this.root.querySelector<HTMLElement>('[data-chat]');
-    const logLength = this.encounter?.log.length ?? 0;
-    if (chat && logLength !== this.renderedLogLength) {
-      chat.scrollTop = chat.scrollHeight;
+    if (focusedKey) this.root.querySelector<HTMLElement>(`[data-focus-key="${focusedKey}"]`)?.focus();
+    // Tab aktif selalu terlihat di deretan tab yang bisa digulir (layar sempit).
+    const tabs = this.root.querySelector<HTMLElement>('.monitor .tabs');
+    const activeTab = tabs?.querySelector<HTMLElement>('.tab.is-active');
+    if (tabs && activeTab && tabs.scrollWidth > tabs.clientWidth) {
+      const left = activeTab.offsetLeft - tabs.offsetLeft;
+      if (left < tabs.scrollLeft) tabs.scrollLeft = left - 8;
+      else if (left + activeTab.offsetWidth > tabs.scrollLeft + tabs.clientWidth) tabs.scrollLeft = left + activeTab.offsetWidth - tabs.clientWidth + 8;
     }
+
+    // Gulir transkrip ke bawah bila ada pesan baru.
+    const chat = this.root.querySelector<HTMLElement>('[data-chat]');
+    if (chat && logLength !== this.renderedLogLength) chat.scrollTop = chat.scrollHeight;
     this.renderedLogLength = logLength;
 
-    // Fokuskan tombol konfirmasi di dialog diagnosis.
+    // Fokuskan tombol utama di dialog yang terbuka.
     this.root.querySelector<HTMLElement>('[data-autofocus]')?.focus();
+    this.syncStage();
+  }
+
+  /** Beri tahu panggung area layar yang tidak tertutup panel, dan mode hemat daya. */
+  private syncStage(): void {
+    const stage = this.stage;
+    if (!stage) return;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const consult = this.ui.screen === 'consult' || this.ui.screen === 'igd';
+    let free = { left: 0, top: 0, right: W, bottom: H };
+    if (consult) {
+      const hud = this.root.querySelector<HTMLElement>('.hud')?.getBoundingClientRect();
+      const mon = this.root.querySelector<HTMLElement>('.monitor')?.getBoundingClientRect();
+      const brd = this.root.querySelector<HTMLElement>('.igd-board')?.getBoundingClientRect();
+      const top = hud ? hud.bottom : 0;
+      if (mon && mon.width > 0) {
+        // Monitor di samping (layar lebar) atau di bawah (ponsel).
+        free = mon.left > W * 0.3 ? { left: 0, top, right: mon.left, bottom: H } : { left: 0, top, right: W, bottom: mon.top };
+      } else free = { left: 0, top, right: W, bottom: H };
+      // Papan pasien IGD di kiri (layar lebar) atau pita di atas (ponsel).
+      if (brd && brd.width > 0) {
+        if (brd.height > H * 0.5) free.left = Math.max(free.left, brd.right);
+        else free.top = Math.max(free.top, brd.bottom);
+      }
+    }
+    stage.setFreeRect(free);
+    stage.setTitleMode(this.ui.screen === 'title');
+    stage.setThrottle(consult ? 1 : 4);
+    const s = document.documentElement.style;
+    s.setProperty('--free-left', `${free.left}px`);
+    s.setProperty('--free-right', `${W - free.right}px`);
+    s.setProperty('--free-top', `${free.top}px`);
+    s.setProperty('--free-bottom', `${H - free.bottom}px`);
+    if (this.subtitleEl) this.subtitleEl.hidden = !consult || !this.subtitleText;
+  }
+
+  /** Teks jawaban berjalan seiring gerak mulut pasien. */
+  private showSubtitle(sub: Subtitle | null): void {
+    const el = this.subtitleEl;
+    if (!el) return;
+    if (!sub) {
+      this.subtitleText = '';
+      el.hidden = true;
+      return;
+    }
+    const shown = sub.text.slice(0, sub.chars);
+    this.subtitleText = shown;
+    el.hidden = this.ui.screen !== 'consult' || !shown;
+    el.replaceChildren(h('span', { class: 'subtitle__who' }, sub.speaker), h('span', { class: 'subtitle__text' }, shown), sub.done ? '' : h('span', { class: 'subtitle__caret', 'aria-hidden': 'true' }, '▍'));
+  }
+
+  private renderDialog(): HTMLElement | null {
+    switch (this.ui.dialog) {
+      case 'tutorial':
+        return tutorialDialog(this);
+      case 'settings':
+        return settingsDialog(this);
+      case 'record':
+        return this.encounter ? medicalRecordDialog(this) : null;
+      case 'briefing':
+        return this.osce ? briefingDialog(this) : null;
+      default:
+        return null;
+    }
+  }
+
+  /** Simpan sesi berjalan agar bisa dilanjutkan; hapus jika sudah selesai. */
+  private persist(): void {
+    // Stasiun OSCE tidak menimpa sesi praktik yang tersimpan.
+    if (!this.run || this.osce) return;
+    if (this.run.status === 'playing') saveSession(this.run, this.contentKey);
+    else clearSession();
   }
 }

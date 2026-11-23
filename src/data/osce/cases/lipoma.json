@@ -1,0 +1,57 @@
+{
+  "disease": "lipoma",
+  "setting": "Puskesmas",
+  "station": "Kulit — benjolan, kutil & luka kronik",
+  "therapy": { "items": [], "note": "Tidak memerlukan obat — observasi atau eksisi." },
+  "nonPharm": [
+    { "id": "observasi", "text": "Observasi bila kecil & tidak bergejala", "kind": "benar" },
+    {
+      "id": "eksisi",
+      "text": "Eksisi bedah minor dengan anestesi lokal bila mengganggu (kosmetik/nyeri/membesar); kirim PA bila atipikal",
+      "kind": "benar"
+    },
+    { "id": "rujuk", "text": "Rujuk bila > 5 cm, keras, dalam, atau cepat membesar", "kind": "benar" },
+    {
+      "id": "tusuk",
+      "text": "Tusuk & sedot benjolan sendiri dengan jarum",
+      "kind": "berbahaya",
+      "why": "Infeksi & perdarahan; tidak menghilangkan lipoma."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini lipoma: benjolan lemak jinak di bawah kulit, bukan kanker",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak ada obat yang mengecilkan lipoma; dapat diangkat dengan operasi kecil bila mengganggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Periksa ulang bila benjolan cepat membesar, keras, nyeri, atau melekat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3–6 bulan atau bila berubah", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "salep",
+      "text": "Oleskan salep penghancur lemak agar benjolan hilang",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Tidak efektif."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

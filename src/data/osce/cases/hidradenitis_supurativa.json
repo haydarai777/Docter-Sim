@@ -1,0 +1,156 @@
+{
+  "disease": "hidradenitis_supurativa",
+  "setting": "Puskesmas",
+  "station": "Kulit — wajah & folikel",
+  "therapy": {
+    "items": [
+      {
+        "id": "topikal",
+        "label": "Klindamisin topikal",
+        "role": "utama",
+        "reason": "Hurley I: lesi inflamasi lokal.",
+        "options": [
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari selama 12 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 84]
+          }
+        ],
+        "when": { "notTraits": ["hurley2"] }
+      },
+      {
+        "id": "oral",
+        "label": "Antibiotik oral jangka panjang",
+        "role": "utama",
+        "reason": "Hurley II: efek antiinflamasi.",
+        "options": [
+          {
+            "drug": "doksisiklin",
+            "label": "Doksisiklin 2 × 100 mg selama 12 minggu",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [1, 2],
+            "days": [28, 84]
+          },
+          {
+            "drug": "tetrasiklin",
+            "label": "Tetrasiklin 2 × 500 mg selama 12 minggu",
+            "schedules": ["rutin"],
+            "forms": ["tetrasiklin-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [28, 84]
+          }
+        ],
+        "when": { "traits": ["hurley2"] }
+      },
+      {
+        "id": "topikal_tambahan",
+        "label": "Klindamisin topikal",
+        "role": "pendukung",
+        "reason": "Tambahan pada Hurley II.",
+        "options": [
+          {
+            "drug": "klindamisin_gel",
+            "label": "Klindamisin 1% gel 2 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [28, 84]
+          }
+        ],
+        "when": { "traits": ["hurley2"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["merokok"] } },
+    { "id": "bb", "text": "Turunkan berat badan", "kind": "benar", "when": { "traits": ["obesitas_menyertai"] } },
+    { "id": "pakaian", "text": "Pakaian longgar, hindari cukur kasar di area lipatan", "kind": "benar" },
+    {
+      "id": "rujuk",
+      "text": "Rujuk untuk tindakan (deroofing/eksisi) bila berat/berulang",
+      "kind": "benar",
+      "when": { "traits": ["hurley2"] }
+    },
+    {
+      "id": "pencet",
+      "text": "Pencet & peras benjolan sampai kosong setiap hari",
+      "kind": "berbahaya",
+      "why": "Memperluas sinus & parut."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini hidradenitis supurativa: radang kronik folikel rambut di lipatan, tidak menular & bukan karena kotor",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat dipakai jangka panjang (sekitar 3 bulan) untuk menekan peradangan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila demam, kemerahan meluas, atau nyeri hebat (abses)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 4–6 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "deodoran",
+      "text": "Penyebabnya deodoran — cukup ganti merek",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Penyakit radang kronik multifaktorial."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

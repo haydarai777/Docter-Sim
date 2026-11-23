@@ -1,0 +1,82 @@
+{
+  "disease": "miliaria",
+  "setting": "Puskesmas",
+  "station": "Kulit — ruam, biduran & reaksi obat",
+  "therapy": {
+    "items": [
+      {
+        "id": "kalamin",
+        "label": "Losion kalamin",
+        "role": "opsional",
+        "reason": "Menyejukkan & mengurangi gatal.",
+        "options": [
+          {
+            "drug": "kalamin",
+            "label": "Losion kalamin 2–3 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [3, 7]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "drugs": ["zinc_oxide", "emolien"], "reason": "Bahan oklusif memperberat miliaria.", "severity": "salah" },
+      { "classes": ["kortikosteroid_topikal"], "reason": "Steroid tidak diperlukan.", "severity": "salah" }
+    ],
+    "note": "Tatalaksana utama mendinginkan kulit & pakaian tipis — obat hanya opsional."
+  },
+  "nonPharm": [
+    { "id": "dingin", "text": "Dinginkan kulit: ruangan sejuk/berventilasi, mandi air sejuk", "kind": "benar" },
+    { "id": "pakaian", "text": "Pakaian tipis menyerap keringat", "kind": "benar" },
+    {
+      "id": "bedong",
+      "text": "Jangan membedong/memakaikan pakaian terlalu tebal",
+      "kind": "benar",
+      "when": { "traits": ["dibedong_tebal"] }
+    },
+    {
+      "id": "minyak",
+      "text": "Oleskan minyak telon/krim tebal di seluruh badan",
+      "kind": "berbahaya",
+      "why": "Oklusif — memperberat sumbatan kelenjar keringat."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini biang keringat (miliaria): saluran keringat tersumbat karena panas",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kunci pengobatan adalah mendinginkan kulit; losion kalamin bila gatal",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila demam, bayi malas menyusu/lemas, atau bintik bernanah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 1 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "campak",
+      "text": "Ini campak sehingga anak tidak boleh dimandikan",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Bukan campak; mandi air sejuk justru membantu."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

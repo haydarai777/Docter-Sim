@@ -1,0 +1,170 @@
+{
+  "id": "bronkitis_akut",
+  "name": "Bronkitis akut",
+  "aliases": ["Radang saluran napas", "Batuk berdahak akut", "Bronkitis"],
+  "system": "Pernapasan",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.4,
+  "summary": "Radang bronkus akut, > 90% virus, biasanya setelah ISPA: batuk (awalnya kering lalu berdahak, dahak bisa kekuningan) 1–3 minggu, kadang demam ringan, nyeri dada saat batuk, mengi ringan. Tanda vital normal dan tanpa tanda konsolidasi (berbeda dari pneumonia). Antibiotik tidak diperlukan.",
+  "presentationDay": [5, 18],
+  "demographics": {
+    "ageBands": [
+      { "min": 5, "max": 9, "weight": 1 },
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 4 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "didahului_ispa", "probability": 0.75 },
+    { "id": "perokok", "probability": 0.4, "when": { "sex": "male", "ageMin": 18 } },
+    { "id": "mengi_ringan", "probability": 0.25 }
+  ],
+  "traitLabels": { "didahului_ispa": "Didahului batuk-pilek.", "perokok": "Perokok.", "mengi_ringan": "Mengi ringan (bronkospasme)." },
+  "symptoms": [
+    { "id": "mengi", "probability": 1, "when": { "traits": ["mengi_ringan"] } },
+    { "id": "pilek", "probability": 0.5, "when": { "traits": ["didahului_ispa"] } },
+    { "id": "batuk", "probability": 1 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "nyeri_dada_pleuritik", "probability": 0.3 },
+    { "id": "nyeri_tenggorokan", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.4 },
+    { "id": "sesak_napas", "probability": 0.1 }
+  ],
+  "chiefComplaint": { "primary": ["batuk"], "extraPool": ["demam"] },
+  "clueSymptoms": ["demam", "nyeri_dada_pleuritik", "mengi", "pilek", "nyeri_tenggorokan", "lemas"],
+  "misattributions": ["masuk angin", "paru-paru basah", "TBC"],
+  "fears": ["paru-paru basah", "TBC"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {hariTeks} hari, Dok. Awalnya pilek, terus batuk.",
+        "when": { "traits": ["didahului_ispa"] },
+        "clue": "Batuk akut < 3 minggu setelah ISPA"
+      },
+      {
+        "text": "Sudah {hariTeks} hari, Dok, batuknya muncul tiba-tiba.",
+        "when": { "notTraits": ["didahului_ispa"] },
+        "clue": "Batuk akut < 3 minggu"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Awalnya kering, sekarang berdahak, Dok, dahaknya putih kekuningan.",
+        "clue": "Batuk berdahak mukoid–kekuningan"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Masih bisa kerja, Dok. Napas nggak sesak, demam juga cuma sumeng.",
+        "clue": "Tanpa sesak/demam tinggi"
+      }
+    ],
+    "kebiasaan": [
+      { "text": "Saya merokok sebungkus sehari, Dok.", "when": { "traits": ["perokok"] }, "clue": "Perokok" },
+      { "text": "Saya nggak merokok, Dok.", "when": { "notTraits": ["perokok"] } }
+    ],
+    "episode_sebelumnya": [
+      {
+        "text": "Nggak sering batuk lama, Dok. Belum pernah batuk sampai berbulan-bulan.",
+        "clue": "Tanpa batuk kronik"
+      }
+    ],
+    "riwayat_keluarga": [{ "text": "Di rumah nggak ada yang batuk lama atau minum obat TBC, Dok.", "clue": "Tanpa kontak TB" }],
+    "lokasi": [{ "text": "Batuknya dari dada, Dok, dada terasa berat kalau batuk terus." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "notTraits": ["mengi_ringan"] },
+      "probability": 0.6,
+      "values": ["Suara napas vesikuler, ronkhi basah kasar (+/+) yang berkurang setelah batuk"]
+    },
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["mengi_ringan"] },
+      "values": ["Suara napas vesikuler, ronkhi kasar (+/+), wheezing ekspirasi ringan (+/+)"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.5, 38] }
+  ],
+  "differentials": [
+    {
+      "id": "pneumonia",
+      "howToDistinguish": "Pneumonia: demam tinggi, takipnea, takikardia, SpO2 turun, ronki basah halus menetap/konsolidasi; infiltrat pada rontgen.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "tb_paru",
+      "howToDistinguish": "TB paru: batuk ≥ 2 minggu dengan demam lama, keringat malam, BB turun, kontak TB.",
+      "excludeBy": { "topics": ["onset", "riwayat_keluarga"] }
+    },
+    {
+      "id": "asma",
+      "howToDistinguish": "Asma: mengi & sesak episodik, riwayat atopi, reversibel dengan bronkodilator.",
+      "excludeBy": { "topics": ["episode_sebelumnya"], "tools": ["pemeriksaan_paru"] }
+    },
+    {
+      "id": "pertusis",
+      "howToDistinguish": "Pertusis: batuk paroksismal dengan whoop & muntah pascabatuk.",
+      "excludeBy": { "topics": ["karakter"] }
+    }
+  ],
+  "keyFindings": [
+    "Batuk akut (< 3 minggu) berdahak setelah ISPA",
+    "Tanda vital normal, tanpa konsolidasi",
+    "Ronki kasar yang berubah dengan batuk ± mengi ringan"
+  ],
+  "teachingPoints": ["Dahak kekuningan/hijau pada bronkitis akut BUKAN tanda infeksi bakteri — antibiotik tidak bermanfaat."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PDPI. Pedoman Diagnosis & Penatalaksanaan Infeksi Saluran Napas"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "keparahan", "kebiasaan", "episode_sebelumnya", "riwayat_keluarga", "keluhan_lain"],
+    "exams": [{ "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Membedakan dari pneumonia (konsolidasi) & asma." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "rontgen_thorax", "reason": "Hanya bila curiga pneumonia (demam tinggi, takipnea, ronki menetap)." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Simptomatik, banyak minum, berhenti merokok; kembali bila sesak, demam tinggi, atau batuk > 3 minggu."
+    }
+  ],
+  "management": [
+    "Simptomatik: banyak minum, madu/air hangat, parasetamol bila demam; ekspektoran/antitusif sesuai kebutuhan.",
+    "Bronkodilator (salbutamol) bila mengi.",
+    "Tanpa antibiotik pada pasien imunokompeten.",
+    "Berhenti merokok; kembali bila batuk > 3 minggu (skrining TB)."
+  ],
+  "approach": ["Pastikan akut & tanpa tanda pneumonia (tanda vital, auskultasi).", "Batuk ≥ 2 minggu: skrining TB."]
+}

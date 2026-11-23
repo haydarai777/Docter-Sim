@@ -1,0 +1,103 @@
+{
+  "disease": "laringitis",
+  "setting": "Puskesmas",
+  "station": "THT — nyeri tenggorok & batuk",
+  "therapy": {
+    "items": [
+      {
+        "id": "analgesik",
+        "label": "Analgesik-antipiretik",
+        "role": "opsional",
+        "reason": "Hanya bila nyeri/demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Infeksi virus/non-bakteri: antibiotik tidak diperlukan.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Tidak memerlukan antibiotik; analgesik-antipiretik hanya bila nyeri/demam."
+  },
+  "nonPharm": [
+    { "id": "istirahat_suara", "text": "Istirahat suara (jangan berbisik paksa)", "kind": "benar" },
+    { "id": "uap", "text": "Banyak minum & inhalasi uap hangat", "kind": "benar" },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["perokok"] } },
+    {
+      "id": "teriak",
+      "text": "Latih suara dengan berteriak agar pita suara kuat",
+      "kind": "berbahaya",
+      "why": "Memperberat cedera pita suara."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang pita suara, umumnya karena virus atau pemakaian suara berlebih",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kunci pengobatan adalah istirahat suara; obat hanya bila nyeri/demam",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, napas berbunyi (stridor), atau sulit menelan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Periksa ulang bila serak > 3 minggu (singkirkan tumor laring)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "ab_bebas",
+      "text": "Beli antibiotik sendiri di warung bila keluhan muncul lagi",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mendorong resistansi & menunda diagnosis."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

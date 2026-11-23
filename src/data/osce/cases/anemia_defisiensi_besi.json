@@ -1,0 +1,144 @@
+{
+  "disease": "anemia_defisiensi_besi",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — kardiovaskular & darah",
+  "therapy": {
+    "items": [
+      {
+        "id": "besi",
+        "label": "Preparat besi oral",
+        "role": "utama",
+        "reason": "Mengganti cadangan besi; lanjutkan 3 bulan setelah Hb normal.",
+        "options": [
+          {
+            "drug": "sulfas_ferosus",
+            "label": "Sulfas ferosus 300 mg (Fe 60 mg) 1–3 × sehari selama 3 bulan",
+            "schedules": ["rutin"],
+            "forms": ["sf-tab300"],
+            "dose": [300, 300],
+            "timesPerDay": [1, 3],
+            "days": [30, 90]
+          },
+          {
+            "drug": "tablet_tambah_darah",
+            "label": "Tablet tambah darah 1–2 × sehari selama 3 bulan",
+            "schedules": ["rutin"],
+            "dose": [60, 60],
+            "timesPerDay": [1, 2],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "besi_anak",
+        "label": "Preparat besi oral (anak)",
+        "role": "utama",
+        "reason": "Besi elemental 3 mg/kgBB/hari.",
+        "options": [
+          {
+            "drug": "sulfas_ferosus",
+            "label": "Sirup besi elemental 1–3 mg/kgBB/kali 1–3 × sehari (total 3 mg/kgBB/hari) selama 3 bulan",
+            "schedules": ["rutin"],
+            "forms": ["sf-syr"],
+            "dosePerKg": [1, 3],
+            "timesPerDay": [1, 3],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "cacing",
+        "label": "Antelmintik",
+        "role": "pendukung",
+        "reason": "Infeksi cacing tambang sebagai penyebab.",
+        "options": [
+          {
+            "drug": "albendazol",
+            "label": "Albendazol 400 mg dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["albendazol-tab400"],
+            "dose": [400, 400]
+          },
+          {
+            "drug": "pirantel",
+            "label": "Pirantel pamoat 10 mg/kgBB dosis tunggal",
+            "schedules": ["tunggal"],
+            "forms": ["pirantel-tab125"],
+            "dosePerKg": [9, 11]
+          }
+        ],
+        "when": { "traits": ["cacingan"] }
+      },
+      {
+        "id": "vit_c",
+        "label": "Vitamin C",
+        "role": "opsional",
+        "reason": "Meningkatkan absorpsi besi.",
+        "options": [
+          {
+            "drug": "vitamin_c",
+            "label": "Vitamin C 100 mg bersama tablet besi",
+            "schedules": ["rutin"],
+            "dose": [100, 200],
+            "timesPerDay": [1, 3],
+            "days": [30, 90]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "vit_c", "text": "Minum tablet besi bersama jus jeruk/vitamin C", "kind": "benar" },
+    { "id": "teh", "text": "Jauhkan dari teh, kopi, & susu (selisih 2 jam)", "kind": "benar" },
+    { "id": "gizi", "text": "Makan daging, hati, ikan, & sayuran hijau", "kind": "benar" },
+    {
+      "id": "menoragia",
+      "text": "Rujuk/evaluasi penyebab haid banyak",
+      "kind": "benar",
+      "when": { "traits": ["menorrhagia"] }
+    },
+    {
+      "id": "teh_obat",
+      "text": "Minum tablet besi dengan teh manis agar tidak mual",
+      "kind": "berbahaya",
+      "why": "Tanin menghambat absorpsi besi."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Ini kurang darah karena kekurangan zat besi", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Tablet besi diminum teratur 3 bulan setelah Hb normal untuk mengisi cadangan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Tinja menjadi hitam (normal) dan bisa mual/sembelit",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, berdebar, pingsan, atau BAB hitam disertai lemas berat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol Hb 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "stop",
+      "text": "Hentikan tablet besi begitu badan tidak lemas",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Cadangan besi belum terisi; anemia kambuh."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

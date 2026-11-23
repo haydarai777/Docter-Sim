@@ -1,0 +1,120 @@
+{
+  "disease": "pitiriasis_rosea",
+  "setting": "Puskesmas",
+  "station": "Kulit — ruam, biduran & reaksi obat",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihistamin",
+        "label": "Antihistamin",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ]
+      },
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid topikal lemah",
+        "role": "opsional",
+        "reason": "Gatal mengganggu.",
+        "options": [
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 2,5% krim 2 × sehari",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim25"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 21]
+          },
+          {
+            "drug": "hidrokortison_krim",
+            "label": "Hidrokortison 1% krim 2 × sehari selama ≤ 1–2 minggu",
+            "schedules": ["rutin"],
+            "forms": ["hidrokortison-krim1"],
+            "dose": [1, 1],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      { "classes": ["antijamur", "antijamur_topikal"], "reason": "Bukan infeksi jamur.", "severity": "salah" },
+      { "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }
+    ],
+    "note": "Swasirna — tidak memerlukan obat; antihistamin/steroid lemah hanya opsional untuk gatal."
+  },
+  "nonPharm": [
+    { "id": "edukasi", "text": "Jelaskan bahwa penyakit sembuh sendiri dalam 6–8 minggu", "kind": "benar" },
+    { "id": "sabun", "text": "Hindari sabun keras & pakaian ketat", "kind": "benar" },
+    { "id": "emolien", "text": "Pelembap untuk kulit kering", "kind": "benar" },
+    {
+      "id": "kerok",
+      "text": "Kerok/gosok bercak dengan jeruk nipis",
+      "kind": "berbahaya",
+      "why": "Iritasi & hiperpigmentasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini pitiriasis rosea: ruam kulit yang sembuh sendiri, bukan jamur & bukan penyakit kelamin",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Tidak perlu obat khusus; obat gatal bila perlu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Kembali bila ruam mengenai telapak tangan/kaki, luka di kelamin/mulut, atau lebih dari 3 bulan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 8 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "jamur",
+      "text": "Ini panu/kurap sehingga harus pakai salep jamur",
+      "kind": "pengecoh",
+      "category": "diagnosis",
+      "why": "Bukan infeksi jamur (KOH negatif)."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)"
+    ]
+  }
+}

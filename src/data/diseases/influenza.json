@@ -1,0 +1,206 @@
+{
+  "id": "influenza",
+  "name": "Influenza",
+  "aliases": ["Flu", "Flu berat", "Influenza musiman"],
+  "system": "Pernapasan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 1.4,
+  "summary": "Infeksi virus influenza A/B: demam tinggi MENDADAK, menggigil, nyeri otot & sendi hebat, sakit kepala, lemas berat, disertai batuk kering, nyeri tenggorok, pilek. Sembuh 5–7 hari; komplikasi pneumonia pada lansia, ibu hamil, dan komorbid. Bedakan dari common cold (lebih ringan) dan dengue (perdarahan, trombositopenia).",
+  "presentationDay": [1, 4],
+  "demographics": {
+    "ageBands": [
+      { "min": 3, "max": 9, "weight": 2 },
+      { "min": 10, "max": 30, "weight": 3 },
+      { "min": 31, "max": 60, "weight": 3 },
+      { "min": 61, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "risiko_tinggi", "probability": 1, "when": { "ageMin": 65 } },
+    { "id": "kontak_flu", "probability": 0.6 },
+    { "id": "pneumonia_sekunder", "probability": 0.06 }
+  ],
+  "traitLabels": {
+    "risiko_tinggi": "Kelompok risiko tinggi (lansia).",
+    "kontak_flu": "Kontak dengan penderita flu.",
+    "pneumonia_sekunder": "Komplikasi pneumonia."
+  },
+  "symptoms": [
+    { "id": "sesak_napas", "probability": 1, "when": { "traits": ["pneumonia_sekunder"] } },
+    { "id": "demam", "probability": 1 },
+    { "id": "nyeri_otot_sendi", "probability": 0.9 },
+    { "id": "nyeri_kepala", "probability": 0.8 },
+    { "id": "lemas", "probability": 0.85 },
+    { "id": "batuk", "probability": 0.85 },
+    { "id": "nyeri_tenggorokan", "probability": 0.6 },
+    { "id": "pilek", "probability": 0.6 },
+    { "id": "menggigil", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["demam"], "extraPool": ["nyeri_otot_sendi", "batuk"] },
+  "clueSymptoms": ["nyeri_otot_sendi", "nyeri_kepala", "lemas", "batuk", "nyeri_tenggorokan", "pilek"],
+  "misattributions": ["masuk angin", "kecapekan", "tifus"],
+  "fears": ["demam berdarah", "COVID", "tifus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Mendadak, Dok, {lamaSakit} lalu tiba-tiba menggigil, langsung panas tinggi.",
+        "clue": "Onset mendadak demam tinggi"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Badan remuk semua, Dok, otot-otot sakit, kepala pusing, lemas sekali.",
+        "clue": "Mialgia hebat & lemas berat"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Teman sekantor juga banyak yang flu berat minggu ini, Dok.",
+        "when": { "traits": ["kontak_flu"] },
+        "clue": "Kontak penderita flu (kluster)"
+      }
+    ],
+    "keparahan": [
+      { "text": "Lemas sampai nggak bisa bangun, Dok.", "clue": "Gejala sistemik berat" },
+      {
+        "text": "Sekarang napas saya sesak, Dok.",
+        "reveals": ["sesak_napas"],
+        "when": { "traits": ["pneumonia_sekunder"], "symptoms": ["sesak_napas"] },
+        "clue": "Sesak (curiga pneumonia)"
+      }
+    ],
+    "riwayat_obat": [{ "text": "Baru minum parasetamol, Dok, panas turun sebentar terus naik lagi." }],
+    "bepergian_lingkungan": [{ "text": "Nggak ada genangan atau banyak nyamuk di rumah, Dok.", "clue": "Tanpa paparan khas dengue/lepto" }],
+    "lokasi": [{ "text": "Badan pegal semua, Dok, kepala juga pusing." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_paru",
+      "param": "auskultasi",
+      "when": { "traits": ["pneumonia_sekunder"] },
+      "values": ["Ronkhi basah halus di basal paru kanan"]
+    },
+    { "tool": "tanda_vital", "param": "napas", "when": { "traits": ["pneumonia_sekunder"] }, "range": [24, 30] },
+    { "tool": "tanda_vital", "param": "spo2", "when": { "traits": ["pneumonia_sekunder"] }, "range": [90, 93] },
+    { "tool": "tanda_vital", "param": "suhu", "diagnostic": true, "range": [38.5, 39.8] },
+    { "tool": "tanda_vital", "param": "nadi", "range": [96, 112] },
+    {
+      "tool": "pemeriksaan_tenggorok",
+      "param": "dinding_faring",
+      "probability": 0.7,
+      "values": ["Faring hiperemis ringan"]
+    },
+    { "tool": "pemeriksaan_hidung", "param": "mukosa_konka", "probability": 0.5, "values": ["Mukosa hiperemis"] },
+    {
+      "tool": "swab_antigen",
+      "param": "influenza",
+      "probability": 0.7,
+      "diagnostic": true,
+      "values": ["Positif (influenza A)"]
+    },
+    { "tool": "darah_lengkap", "param": "leukosit", "probability": 0.4, "range": [3500, 5500] }
+  ],
+  "differentials": [
+    {
+      "id": "dengue",
+      "howToDistinguish": "Dengue: demam tinggi dengan nyeri retroorbital, uji tourniquet (+), trombositopenia; batuk-pilek jarang menonjol.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["uji_tourniquet"], "topics": ["keluhan_lain"] }
+    },
+    {
+      "id": "pneumonia",
+      "howToDistinguish": "Pneumonia: sesak, takipnea, ronki, SpO2 turun.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["tanda_vital", "pemeriksaan_paru"] }
+    },
+    {
+      "id": "covid19",
+      "howToDistinguish": "COVID-19: anosmia, kontak kasus; swab antigen SARS-CoV-2 positif.",
+      "excludeBy": { "tools": ["swab_antigen"], "topics": ["riwayat_keluarga"] }
+    },
+    {
+      "id": "rinitis_akut",
+      "howToDistinguish": "Common cold: lebih ringan, demam ringan, tanpa mialgia hebat.",
+      "excludeBy": { "topics": ["onset", "keparahan"] }
+    }
+  ],
+  "keyFindings": [
+    "Demam tinggi mendadak + mialgia hebat + lemas",
+    "Batuk, nyeri tenggorok, pilek",
+    "Swab antigen influenza positif (sensitivitas sedang)"
+  ],
+  "teachingPoints": ["Influenza bukan 'flu biasa': onset mendadak dan sistemik berat; lansia & komorbid berisiko pneumonia."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Clinical management of severe influenza"
+    ]
+  },
+  "complications": [
+    {
+      "id": "pneumonia_sekunder",
+      "name": "Pneumonia sekunder",
+      "trait": "pneumonia_sekunder",
+      "redFlag": true,
+      "assess": { "tools": ["tanda_vital", "pemeriksaan_paru"] },
+      "explanation": "Sesak, takipnea, ronki, SpO2 turun — rujuk."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_keluarga", "keparahan", "bepergian_lingkungan", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_paru", "role": "kunci", "reason": "Menyingkirkan pneumonia." },
+      { "tool": "pemeriksaan_tenggorok", "role": "pendukung", "reason": "Faring." },
+      { "tool": "uji_tourniquet", "role": "pendukung", "reason": "Menyingkirkan dengue pada demam akut." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "swab_antigen", "reason": "Konfirmasi influenza & menyingkirkan COVID-19 bila tersedia (tidak wajib)." },
+      { "tool": "ns1_dengue", "reason": "Bila curiga dengue di daerah endemis (hari 1–3)." },
+      { "tool": "darah_lengkap", "reason": "Leukopenia/trombosit bila curiga dengue." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Influenza dengan pneumonia/sesak: rujuk.",
+      "when": { "traits": ["pneumonia_sekunder"] }
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Istirahat, cairan, simptomatik; isolasi mandiri; kembali bila sesak atau demam > 3 hari."
+    }
+  ],
+  "management": [
+    "Istirahat, banyak minum, parasetamol untuk demam & nyeri.",
+    "Antiviral (oseltamivir) dipertimbangkan pada risiko tinggi/berat sesuai pedoman.",
+    "Etiket batuk, masker, isolasi mandiri; vaksin influenza tahunan untuk kelompok risiko.",
+    "Kembali bila sesak, nyeri dada, atau tidak membaik."
+  ],
+  "approach": [
+    "Demam akut: bedakan influenza, dengue, COVID-19, tifoid dari onset & gejala penyerta.",
+    "Periksa paru & tanda vital untuk pneumonia."
+  ]
+}

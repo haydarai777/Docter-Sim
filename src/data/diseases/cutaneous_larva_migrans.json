@@ -1,0 +1,129 @@
+{
+  "id": "cutaneous_larva_migrans",
+  "name": "Cutaneous larva migrans",
+  "aliases": ["CLM", "Creeping eruption", "Cacing tanah di kulit"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.6,
+  "summary": "Infestasi larva cacing tambang hewan (Ancylostoma braziliense dari kotoran anjing/kucing) yang menembus kulit saat kontak dengan pasir/tanah tercemar (pantai, kebun) tetapi tidak dapat menembus dermis: lesi linear serpiginosa (berkelok) eritematosa sedikit meninggi yang bergerak beberapa mm–cm per hari, sangat gatal, di kaki, bokong, atau tangan. Diagnosis klinis. Terapi albendazol/ivermektin.",
+  "presentationDay": [5, 30],
+  "demographics": {
+    "ageBands": [{ "min": 4, "max": 9, "weight": 3 }, { "min": 10, "max": 30, "weight": 3 }, { "min": 31, "max": 60, "weight": 2 }],
+    "maleRatio": 0.55
+  },
+  "traits": [{ "id": "pantai", "probability": 0.5 }],
+  "traitLabels": { "pantai": "Paparan pasir pantai." },
+  "symptoms": [{ "id": "garis_berkelok", "probability": 1 }, { "id": "gatal_kulit", "probability": 1 }],
+  "chiefComplaint": { "primary": ["garis_berkelok"], "extraPool": ["gatal_kulit"] },
+  "clueSymptoms": ["gatal_kulit"],
+  "misattributions": ["digigit serangga", "alergi", "kurap"],
+  "fears": ["cacing masuk ke badan"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "{LamaSakit} lalu, Dok, muncul garis merah gatal di telapak kaki, tiap hari makin panjang berkelok.",
+        "clue": "Lesi linear yang memanjang tiap hari"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Dua minggu lalu liburan ke pantai, jalan tanpa alas kaki di pasir, Dok.",
+        "when": { "traits": ["pantai"] },
+        "clue": "Kontak pasir pantai tanpa alas kaki"
+      },
+      {
+        "text": "Main di kebun tanpa sandal, Dok, banyak kucing dan anjing di sana.",
+        "when": { "notTraits": ["pantai"] },
+        "clue": "Kontak tanah tercemar kotoran hewan"
+      }
+    ],
+    "karakter": [{ "text": "Gatalnya bukan main, Dok, terutama malam.", "clue": "Sangat gatal" }],
+    "riwayat_penyakit": [
+      {
+        "text": "Nggak ada diare atau sakit ulu hati, Dok, garisnya nggak muncul di dubur.",
+        "clue": "Tanpa gejala GI/larva currens perianal"
+      }
+    ],
+    "lokasi": [{ "text": "Di telapak dan punggung kaki kanan, Dok. Garisnya pindah-pindah tiap hari." }]
+  },
+  "findings": [
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Telapak & punggung kaki kanan"] },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "diagnostic": true,
+      "values": ["Lesi eritematosa linear serpiginosa (berkelok) sedikit meninggi ± 5 cm dengan vesikel di ujung, ekskoriasi"]
+    },
+    { "tool": "darah_lengkap", "param": "eosinofil", "probability": 0.5, "range": [5, 9] }
+  ],
+  "differentials": [
+    {
+      "id": "strongiloidiasis",
+      "howToDistinguish": "Larva currens (Strongyloides): bergerak sangat cepat (cm/jam) di bokong/perianal dengan gejala GI & eosinofilia — butuh terapi sistemik & evaluasi.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["riwayat_penyakit"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "reaksi_gigitan_serangga",
+      "howToDistinguish": "Gigitan serangga: papul urtikaria berkelompok, tidak berjalan.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_pedis",
+      "howToDistinguish": "Tinea pedis: skuama/maserasi sela jari, KOH positif.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Lesi linear serpiginosa yang berpindah beberapa mm–cm/hari, sangat gatal",
+    "Kontak pasir/tanah tanpa alas kaki",
+    "Diagnosis klinis"
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "bepergian_lingkungan", "karakter", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Morfologi serpiginosa." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Albendazol 3 hari atau ivermektin dosis tunggal, antihistamin; kontrol 1 minggu."
+    }
+  ],
+  "management": [
+    "Albendazol 400 mg/hari selama 3 hari (anak ≥ 2 th) atau ivermektin 200 µg/kg dosis tunggal.",
+    "Antihistamin oral untuk gatal; antibiotik topikal bila infeksi sekunder.",
+    "Pakai alas kaki di pantai/tanah, alas saat duduk di pasir; obat cacing untuk hewan peliharaan."
+  ],
+  "approach": ["Kenali lesi berjalan berkelok; tanyakan paparan pasir/tanah."]
+}

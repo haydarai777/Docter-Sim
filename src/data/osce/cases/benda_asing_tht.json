@@ -1,0 +1,96 @@
+{
+  "disease": "benda_asing_tht",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan umum",
+  "therapy": {
+    "items": [],
+    "avoid": [
+      {
+        "classes": ["antibiotik"],
+        "reason": "Antibiotik tidak diperlukan setelah benda dikeluarkan tanpa infeksi.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Tatalaksana dengan tindakan ekstraksi — tidak memerlukan resep obat."
+  },
+  "nonPharm": [
+    { "id": "fiksasi", "text": "Fiksasi kepala anak dengan aman (dipangku/dibedong) sebelum tindakan", "kind": "benar" },
+    {
+      "id": "periksa_semua",
+      "text": "Periksa kedua lubang hidung & kedua telinga (benda asing multipel)",
+      "kind": "benar"
+    },
+    {
+      "id": "mother_kiss",
+      "text": "Coba teknik tiupan orang tua (mother's kiss) atau ekstraksi dengan pengait",
+      "kind": "benar",
+      "when": { "traits": ["di_hidung"] }
+    },
+    {
+      "id": "serangga",
+      "text": "Matikan serangga dengan minyak mineral sebelum ekstraksi",
+      "kind": "benar",
+      "when": { "traits": ["serangga"] }
+    },
+    {
+      "id": "organik",
+      "text": "Jangan irigasi benda organik (dapat mengembang); ekstraksi dengan pengait",
+      "kind": "benar",
+      "when": { "traits": ["organik"] }
+    },
+    {
+      "id": "baterai",
+      "text": "Rujuk segera — baterai kancing menyebabkan nekrosis cepat",
+      "kind": "benar",
+      "when": { "traits": ["baterai"] }
+    },
+    {
+      "id": "lidi",
+      "text": "Keluarkan sendiri di rumah dengan lidi/jepit rambut",
+      "kind": "berbahaya",
+      "why": "Benda terdorong lebih dalam & perlukaan."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ada benda asing di hidung/telinga yang perlu dikeluarkan",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Setelah benda dikeluarkan umumnya tidak perlu obat lanjutan",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, ingus berbau/berdarah dari satu sisi, nyeri, atau keluar cairan telinga",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila keluhan menetap 2–3 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Jauhkan benda kecil & baterai kancing dari jangkauan anak",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "tunggu",
+      "text": "Tunggu saja, benda akan keluar sendiri saat bersin",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Risiko aspirasi/infeksi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "disease": "hipertensi",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — kardiovaskular & darah",
+  "therapy": {
+    "items": [
+      {
+        "id": "antihipertensi",
+        "label": "Antihipertensi lini pertama",
+        "role": "utama",
+        "reason": "CCB, ACE-inhibitor/ARB, atau tiazid.",
+        "options": [
+          {
+            "drug": "amlodipin",
+            "label": "Amlodipin 1 × 5–10 mg",
+            "schedules": ["rutin"],
+            "forms": ["amlodipin-tab5"],
+            "dose": [5, 10],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "lisinopril",
+            "label": "Lisinopril 1 × 10 mg",
+            "schedules": ["rutin"],
+            "dose": [5, 20],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "kaptopril",
+            "label": "Kaptopril 2–3 × 12,5–25 mg",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [2, 3],
+            "days": [30, 30]
+          },
+          {
+            "drug": "kandesartan",
+            "label": "Kandesartan 1 × 8 mg",
+            "schedules": ["rutin"],
+            "dose": [8, 16],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "hidroklorotiazid",
+            "label": "Hidroklorotiazid 1 × 12,5–25 mg pagi",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ]
+      },
+      {
+        "id": "kombinasi",
+        "label": "Antihipertensi kedua (golongan berbeda)",
+        "role": "pendukung",
+        "reason": "Derajat 2: kombinasi dua obat sejak awal.",
+        "options": [
+          {
+            "drug": "lisinopril",
+            "label": "Lisinopril 1 × 10 mg",
+            "schedules": ["rutin"],
+            "dose": [5, 20],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "kaptopril",
+            "label": "Kaptopril 2–3 × 12,5–25 mg",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [2, 3],
+            "days": [30, 30]
+          },
+          {
+            "drug": "kandesartan",
+            "label": "Kandesartan 1 × 8 mg",
+            "schedules": ["rutin"],
+            "dose": [8, 16],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "hidroklorotiazid",
+            "label": "Hidroklorotiazid 1 × 12,5–25 mg pagi",
+            "schedules": ["rutin"],
+            "dose": [12.5, 25],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          },
+          {
+            "drug": "amlodipin",
+            "label": "Amlodipin 1 × 5–10 mg",
+            "schedules": ["rutin"],
+            "forms": ["amlodipin-tab5"],
+            "dose": [5, 10],
+            "timesPerDay": [1, 1],
+            "days": [30, 30]
+          }
+        ],
+        "when": { "traits": ["derajat2"] },
+        "separateLine": true
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "garam", "text": "Batasi garam < 5 g/hari (1 sendok teh), diet DASH", "kind": "benar" },
+    { "id": "olahraga", "text": "Olahraga aerobik 30 menit 5 × seminggu", "kind": "benar" },
+    { "id": "bb", "text": "Turunkan berat badan", "kind": "benar", "when": { "traits": ["obesitas_menyertai"] } },
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["merokok"] } },
+    { "id": "risiko", "text": "Kelola faktor risiko lain (gula darah, kolesterol)", "kind": "benar" },
+    {
+      "id": "stop_bila_normal",
+      "text": "Hentikan obat bila tekanan darah sudah normal",
+      "kind": "berbahaya",
+      "why": "Hipertensi kembali; risiko stroke & serangan jantung."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini tekanan darah tinggi (hipertensi), sering tanpa gejala",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat diminum setiap hari pada jam yang sama, umumnya seumur hidup",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Amlodipin dapat menyebabkan bengkak tungkai; kaptopril dapat menyebabkan batuk kering",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila nyeri dada, sesak, sakit kepala hebat, kelemahan sesisi, bicara pelo, atau penglihatan kabur mendadak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol tiap bulan untuk cek tekanan darah & mengambil obat",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "timun",
+      "text": "Cukup makan mentimun/jus seledri, obat tidak perlu",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Tidak menggantikan obat."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHI. Konsensus Penatalaksanaan Hipertensi (2021)"
+    ]
+  }
+}

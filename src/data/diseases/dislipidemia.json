@@ -1,0 +1,168 @@
+{
+  "id": "dislipidemia",
+  "name": "Dislipidemia",
+  "aliases": ["Kolesterol tinggi", "Hiperkolesterolemia", "Hipertrigliseridemia", "Lemak darah tinggi"],
+  "system": "Endokrin & metabolik",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.3,
+  "summary": "Kelainan kadar lipid darah (kolesterol total/LDL/trigliserida tinggi, HDL rendah) yang umumnya tanpa gejala dan ditemukan saat skrining. Faktor risiko utama penyakit kardiovaskular aterosklerotik bersama hipertensi, DM, merokok, obesitas. Tata laksana: modifikasi gaya hidup dan statin sesuai kategori risiko kardiovaskular; skrining penyebab sekunder (hipotiroid, DM, sindrom nefrotik) dan komorbid.",
+  "presentationDay": [7, 60],
+  "demographics": {
+    "ageBands": [
+      { "min": 30, "max": 44, "weight": 3 },
+      { "min": 45, "max": 59, "weight": 4 },
+      { "min": 60, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [{ "id": "pegawai_kantor", "weight": 3 }, { "id": "karyawan_bank", "weight": 2 }, { "id": "manajer", "weight": 2 }],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "tg_tinggi", "probability": 0.4 },
+    { "id": "obesitas_menyertai", "probability": 0.4 },
+    { "id": "dm_menyertai", "probability": 0.12 },
+    { "id": "merokok", "probability": 0.4, "when": { "sex": "male" } }
+  ],
+  "traitLabels": {
+    "tg_tinggi": "Hipertrigliseridemia menonjol.",
+    "obesitas_menyertai": "Obesitas sentral.",
+    "dm_menyertai": "DM menyertai.",
+    "merokok": "Perokok."
+  },
+  "symptoms": [{ "id": "hasil_cek_abnormal", "probability": 1 }, { "id": "tengkuk_tegang", "probability": 0.25 }],
+  "chiefComplaint": { "primary": ["hasil_cek_abnormal"] },
+  "clueSymptoms": ["tengkuk_tegang"],
+  "misattributions": ["kolesterol karena makan jeroan saja", "darah kental", "asam urat"],
+  "fears": ["serangan jantung", "stroke"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Bulan lalu medical check up di kantor, Dok, kolesterolnya tinggi, disuruh ke dokter. Saya nggak merasa apa-apa.",
+        "clue": "Ditemukan pada skrining, asimtomatik"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Sering makan gorengan, santan, dan daging, Dok, olahraga hampir nggak pernah.",
+        "clue": "Diet tinggi lemak jenuh & kurang aktivitas"
+      },
+      { "text": "Saya merokok, Dok, sebungkus sehari.", "when": { "traits": ["merokok"] }, "clue": "Merokok" }
+    ],
+    "riwayat_keluarga": [{ "text": "Bapak saya kena serangan jantung umur 60-an, Dok.", "clue": "Riwayat PJK keluarga" }],
+    "keparahan": [
+      {
+        "text": "Nggak pernah nyeri dada atau sesak waktu jalan, Dok.",
+        "clue": "Tanpa gejala penyakit jantung koroner"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Belum pernah dibilang darah tinggi atau kencing manis, Dok. Nggak gampang kedinginan, nggak bengkak.",
+        "clue": "Tanpa riwayat HT/DM; tanpa gejala hipotiroid/nefrotik"
+      }
+    ],
+    "lokasi": [{ "text": "Nggak ada yang sakit, Dok. Cuma hasil cek kolesterolnya tinggi." }]
+  },
+  "findings": [
+    { "tool": "profil_lipid", "param": "tg", "when": { "traits": ["tg_tinggi"] }, "range": [220, 420] },
+    { "tool": "timbangan", "param": "imt", "when": { "traits": ["obesitas_menyertai"] }, "range": [27.5, 32] },
+    { "tool": "timbangan", "param": "lingkar_perut", "when": { "traits": ["obesitas_menyertai"] }, "range": [94, 108] },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_menyertai"] }, "range": [210, 280] },
+    { "tool": "profil_lipid", "param": "kolesterol", "diagnostic": true, "range": [232, 285] },
+    { "tool": "profil_lipid", "param": "ldl", "diagnostic": true, "range": [162, 205] },
+    { "tool": "profil_lipid", "param": "hdl", "range": [31, 39] },
+    { "tool": "profil_lipid", "param": "tg", "range": [150, 210] },
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "probability": 0.08,
+      "values": ["Xantelasma kekuningan di kelopak medial"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "sindrom_koroner_akut",
+      "howToDistinguish": "Penyakit jantung koroner: nyeri dada khas saat aktivitas/istirahat — skrining gejala & EKG bila ada keluhan.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["keparahan"], "tools": ["pemeriksaan_jantung"] }
+    },
+    {
+      "id": "hipotiroid",
+      "howToDistinguish": "Dislipidemia sekunder hipotiroid: lelah, BB naik, tidak tahan dingin, kulit kering.",
+      "excludeBy": { "topics": ["riwayat_penyakit"] }
+    },
+    {
+      "id": "hiperkolesterolemia_familial",
+      "howToDistinguish": "FH: LDL > 190 sejak muda, xantoma tendon, PJK dini di keluarga.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["profil_lipid"] }
+    }
+  ],
+  "keyFindings": [
+    "Kolesterol total/LDL/TG tinggi atau HDL rendah pada skrining",
+    "Faktor risiko kardiovaskular lain: obesitas, merokok, DM, HT, keluarga",
+    "Asimtomatik"
+  ],
+  "teachingPoints": [
+    "Target terapi dislipidemia ditentukan oleh kategori risiko kardiovaskular, bukan angka kolesterol semata.",
+    "Statin diminum malam hari (simvastatin); waspadai nyeri otot."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERKI. Pedoman Tatalaksana Dislipidemia (2022)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_keluarga", "keparahan", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "timbangan", "role": "kunci", "reason": "IMT & lingkar perut." },
+      { "tool": "pemeriksaan_jantung", "role": "pendukung", "reason": "Tanda penyakit jantung." },
+      { "tool": "segmen_anterior", "role": "pendukung", "reason": "Xantelasma/arkus kornea." }
+    ],
+    "tests": [
+      { "tool": "profil_lipid", "role": "kunci", "reason": "Kolesterol total, LDL, HDL, TG." },
+      { "tool": "gula_darah", "role": "pendukung", "reason": "Skrining DM (faktor risiko)." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "traitComorbidities": { "obesitas_menyertai": "obesitas", "dm_menyertai": "dm_tipe2" },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Modifikasi gaya hidup ± statin sesuai risiko; kontrol profil lipid 4–12 minggu."
+    }
+  ],
+  "management": [
+    "Diet rendah lemak jenuh & trans, perbanyak serat; olahraga 150 menit/minggu; turunkan BB; berhenti merokok.",
+    "Statin (mis. simvastatin 20–40 mg malam) sesuai kategori risiko kardiovaskular; fibrat bila TG sangat tinggi (> 500).",
+    "Kelola faktor risiko lain (HT, DM).",
+    "Evaluasi profil lipid & keluhan otot 4–12 minggu setelah terapi."
+  ],
+  "approach": [
+    "Konfirmasi profil lipid puasa/tidak puasa; tentukan kategori risiko kardiovaskular.",
+    "Cari penyebab sekunder & komorbid."
+  ]
+}

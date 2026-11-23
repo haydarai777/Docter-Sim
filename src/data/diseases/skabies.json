@@ -1,0 +1,194 @@
+{
+  "id": "skabies",
+  "name": "Skabies",
+  "aliases": ["Kudis", "Gudik", "Budukan", "Scabies"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 1.6,
+  "summary": "Infestasi tungau Sarcoptes scabiei var. hominis yang sangat menular melalui kontak kulit erat/barang. Empat tanda kardinal (diagnosis bila ≥ 2): pruritus nokturna, mengenai sekelompok orang (keluarga, pesantren, asrama), terowongan (kunikulus) di predileksi (sela jari tangan, pergelangan, siku, aksila, areola, umbilikus, genital, bokong), dan tungau ditemukan. Sering infeksi sekunder (pioderma). Terapi permetrin 5% seluruh tubuh untuk SEMUA kontak serentak.",
+  "presentationDay": [14, 60],
+  "demographics": {
+    "ageBands": [
+      { "min": 1, "max": 9, "weight": 3 },
+      { "min": 10, "max": 20, "weight": 4 },
+      { "min": 21, "max": 50, "weight": 2 },
+      { "min": 51, "max": 75, "weight": 1 }
+    ],
+    "maleRatio": 0.55,
+    "occupations": [
+      { "id": "pelajar", "weight": 3 },
+      { "id": "anak_sd", "weight": 2 },
+      { "id": "pelajar_sd", "weight": 2 },
+      { "id": "balita", "weight": 1 }
+    ],
+    "occupationBias": 0.4
+  },
+  "traits": [
+    { "id": "pesantren", "probability": 0.4, "when": { "ageMin": 10, "ageMax": 20 } },
+    { "id": "infeksi_sekunder", "probability": 0.25 }
+  ],
+  "traitLabels": { "pesantren": "Tinggal di pesantren/asrama.", "infeksi_sekunder": "Pioderma sekunder." },
+  "symptoms": [
+    { "id": "bintil_bernanah", "probability": 1, "when": { "traits": ["infeksi_sekunder"] } },
+    { "id": "gatal_malam", "probability": 1 },
+    { "id": "gatal_kulit", "probability": 1 },
+    { "id": "ruam_kulit", "probability": 0.8 },
+    { "id": "sulit_tidur", "probability": 0.4 }
+  ],
+  "chiefComplaint": { "primary": ["gatal_malam"], "extraPool": ["gatal_kulit", "ruam_kulit"] },
+  "clueSymptoms": ["gatal_kulit", "ruam_kulit", "bintil_bernanah", "sulit_tidur"],
+  "misattributions": ["alergi", "biang keringat", "kurang mandi"],
+  "fears": ["menular ke keluarga", "penyakit kulit menahun"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, gatal sekali terutama malam, sampai nggak bisa tidur.",
+        "clue": "Pruritus nokturna"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Paling gatal di sela jari tangan, pergelangan, ketiak, pusar, dan kemaluan, Dok.",
+        "clue": "Predileksi khas skabies"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Teman sekamar di pondok juga banyak yang gatal begini, Dok.",
+        "when": { "traits": ["pesantren"] },
+        "clue": "Mengenai sekelompok orang (pesantren)"
+      },
+      {
+        "text": "Adik dan ibu saya di rumah juga gatal, Dok.",
+        "when": { "notTraits": ["pesantren"] },
+        "clue": "Mengenai anggota keluarga"
+      }
+    ],
+    "kebiasaan": [{ "text": "Handuk, baju, dan kasur sering dipakai bergantian, Dok.", "clue": "Berbagi barang pribadi" }],
+    "progresi": [
+      {
+        "text": "Sekarang banyak yang bernanah karena digaruk, Dok.",
+        "reveals": ["bintil_bernanah"],
+        "when": { "traits": ["infeksi_sekunder"], "symptoms": ["bintil_bernanah"] },
+        "clue": "Infeksi sekunder"
+      },
+      { "text": "Makin banyak bintilnya, Dok.", "when": { "notTraits": ["infeksi_sekunder"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["infeksi_sekunder"] },
+      "values": ["Sela jari tangan, pergelangan, siku, aksila, umbilikus, genital, bokong"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["infeksi_sekunder"] },
+      "diagnostic": true,
+      "values": ["Papul eritematosa & terowongan (kunikulus) keabuan berkelok dengan vesikel di ujungnya, ekskoriasi"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "values": ["Sela jari tangan, pergelangan, aksila, umbilikus, genital, bokong"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["infeksi_sekunder"] },
+      "diagnostic": true,
+      "values": ["Papul & terowongan keabuan, ekskoriasi, disertai pustul & krusta (pioderma sekunder)"]
+    },
+    {
+      "tool": "kerokan_skabies",
+      "param": "hasil",
+      "probability": 0.5,
+      "diagnostic": true,
+      "values": ["Ditemukan tungau Sarcoptes scabiei & telur"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "skabies_krustosa",
+      "howToDistinguish": "Skabies krustosa: krusta tebal luas pada imunokompromais/lansia, sangat menular — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "dermatitis_atopik",
+      "howToDistinguish": "Dermatitis atopik: lesi fleksural kronik, riwayat atopi, tanpa terowongan & tanpa kelompok tertular.",
+      "excludeBy": { "topics": ["riwayat_keluarga"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "reaksi_gigitan_serangga",
+      "howToDistinguish": "Gigitan serangga: papul urtikaria di area terbuka, tanpa terowongan & predileksi khas.",
+      "excludeBy": { "topics": ["lokasi"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "pedikulosis_pubis",
+      "howToDistinguish": "Pedikulosis pubis: kutu & nits di rambut pubis.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Pruritus nokturna, mengenai sekelompok orang",
+    "Papul & terowongan di predileksi (sela jari, pergelangan, umbilikus, genital)",
+    "Tungau/telur pada kerokan (sensitivitas rendah)"
+  ],
+  "teachingPoints": [
+    "Diagnosis skabies bila ≥ 2 dari 4 tanda kardinal — kerokan negatif TIDAK menyingkirkan.",
+    "Kunci keberhasilan: semua anggota keluarga/kontak diobati SERENTAK."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "riwayat_keluarga", "kebiasaan", "progresi", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Terowongan & distribusi predileksi." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [{ "tool": "kerokan_skabies", "reason": "Konfirmasi tungau (hasil negatif tidak menyingkirkan)." }]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Permetrin 5% seluruh tubuh untuk pasien & semua kontak serentak, ulang 1 minggu; dekontaminasi barang; kontrol 2 minggu."
+    }
+  ],
+  "management": [
+    "Permetrin 5% krim dari leher ke bawah (bayi & lansia termasuk kepala) malam hari, bilas setelah 8–12 jam; ulang 1 minggu.",
+    "Alternatif: salep 2-4 (sulfur 4%) 3 malam berturut-turut, benzil benzoat 25%; bayi < 2 bulan: sulfur presipitatum.",
+    "Obati semua kontak serentak; cuci pakaian/sprei/handuk air panas & jemur, atau simpan dalam plastik tertutup 3 hari.",
+    "Antihistamin untuk gatal (dapat bertahan 2–4 minggu); antibiotik bila pioderma."
+  ],
+  "approach": ["Gali 4 tanda kardinal.", "Periksa predileksi; nilai pioderma; data kontak."]
+}

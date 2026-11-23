@@ -1,0 +1,318 @@
+{
+  "id": "gastroenteritis_akut",
+  "name": "Gastroenteritis akut (termasuk kolera & giardiasis)",
+  "aliases": ["Diare akut", "Muntaber", "Mencret", "Kolera", "Giardiasis", "GEA"],
+  "system": "Pencernaan",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 2,
+  "summary": "Diare akut (≥ 3 kali/hari, < 14 hari), tersering virus (rotavirus/norovirus) atau bakteri, dengan/tanpa muntah, nyeri perut, demam ringan. Kunci tata laksana: menilai derajat DEHIDRASI (tanpa, ringan–sedang, berat) dan rehidrasi oralit (Rencana A/B/C), zinc pada anak, lanjutkan makan/ASI. Kolera: diare cair masif seperti air cucian beras → dehidrasi berat cepat. Giardiasis: diare berlemak berbau, kembung, > 1 minggu.",
+  "presentationDay": [1, 4],
+  "presentationDayByTrait": [{ "trait": "giardia", "range": [7, 21] }],
+  "demographics": {
+    "ageBands": [
+      { "min": 0, "max": 0, "weight": 1 },
+      { "min": 1, "max": 5, "weight": 4 },
+      { "min": 6, "max": 9, "weight": 2 },
+      { "min": 10, "max": 40, "weight": 3 },
+      { "min": 41, "max": 75, "weight": 2 }
+    ],
+    "maleRatio": 0.5
+  },
+  "traits": [
+    { "id": "dehidrasi_berat", "probability": 0.08 },
+    { "id": "dehidrasi_ringan_sedang", "probability": 0.35, "when": { "notTraits": ["dehidrasi_berat"] } },
+    { "id": "kolera", "probability": 0.06 },
+    { "id": "giardia", "probability": 0.08, "when": { "notTraits": ["kolera"] } },
+    { "id": "sumber_air_tercemar", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "dehidrasi_berat": "Dehidrasi berat.",
+    "dehidrasi_ringan_sedang": "Dehidrasi ringan–sedang.",
+    "kolera": "Kolera (air cucian beras).",
+    "giardia": "Giardiasis.",
+    "sumber_air_tercemar": "Air minum/makanan tercemar."
+  },
+  "symptoms": [
+    { "id": "haus", "probability": 0.9, "when": { "traits": ["dehidrasi_ringan_sedang"] } },
+    { "id": "kembung", "probability": 0.8, "when": { "traits": ["giardia"] } },
+    { "id": "rewel", "probability": 0.7, "when": { "ageMax": 4 } },
+    { "id": "malas_menyusu", "probability": 0.6, "when": { "traits": ["dehidrasi_berat"] } },
+    { "id": "diare", "probability": 1 },
+    { "id": "mual_muntah", "probability": 0.7 },
+    { "id": "nyeri_perut", "probability": 0.6 },
+    { "id": "demam", "probability": 0.3 },
+    { "id": "lemas", "probability": 0.6 },
+    { "id": "haus", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["diare"], "extraPool": ["mual_muntah", "nyeri_perut"] },
+  "clueSymptoms": ["mual_muntah", "nyeri_perut", "demam", "lemas", "haus", "kembung"],
+  "misattributions": ["masuk angin", "salah makan", "tumbuh gigi"],
+  "fears": ["kolera", "muntaber", "usus buntu"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sejak {lamaSakit} lalu, Dok, mencret lebih dari sepuluh kali, cair sekali.",
+        "when": { "notTraits": ["giardia"] },
+        "clue": "Diare akut cair, frekuensi tinggi"
+      },
+      {
+        "text": "Sudah {lamaSakit} lebih, Dok, mencret berbau busuk, berminyak, perut kembung.",
+        "reveals": ["kembung"],
+        "when": { "traits": ["giardia"], "symptoms": ["kembung"] },
+        "clue": "Diare > 7 hari berlemak & kembung (giardiasis)"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Cairnya kayak air cucian beras, Dok, banyak sekali, baunya amis.",
+        "when": { "traits": ["kolera"] },
+        "clue": "Tinja air cucian beras (kolera)"
+      },
+      {
+        "text": "Cair, Dok, nggak ada darah atau lendir.",
+        "when": { "notTraits": ["kolera"] },
+        "clue": "Cair tanpa darah/lendir"
+      }
+    ],
+    "keparahan": [
+      {
+        "text": "Lemas sekali, Dok, matanya cekung, dari tadi nggak bisa minum, pipisnya sedikit sekali.",
+        "reveals": ["haus"],
+        "when": { "traits": ["dehidrasi_berat"], "symptoms": ["haus"] },
+        "clue": "Tidak bisa minum, mata cekung, oliguria (dehidrasi berat)"
+      },
+      {
+        "text": "Haus terus, Dok, rewel, pipis jadi jarang.",
+        "reveals": ["haus"],
+        "when": { "traits": ["dehidrasi_ringan_sedang"], "symptoms": ["haus"] },
+        "clue": "Haus, rewel, oliguria (dehidrasi ringan–sedang)"
+      },
+      {
+        "text": "Masih mau makan minum biasa, Dok, pipis masih sering.",
+        "when": { "notTraits": ["dehidrasi_berat", "dehidrasi_ringan_sedang"] },
+        "clue": "Tanpa tanda dehidrasi"
+      }
+    ],
+    "bepergian_lingkungan": [
+      {
+        "text": "Air minumnya dari sumur, Dok, kadang nggak dimasak. Di kampung lagi banyak yang mencret.",
+        "when": { "traits": ["sumber_air_tercemar"] },
+        "clue": "Air minum tidak dimasak / kluster"
+      },
+      { "text": "Air minumnya air galon, Dok.", "when": { "notTraits": ["sumber_air_tercemar"] } }
+    ],
+    "riwayat_obat": [{ "text": "Sudah dikasih oralit sedikit, Dok, tapi dimuntahkan.", "clue": "Oralit sudah dicoba" }],
+    "lokasi": [{ "text": "Perutnya mules di sekitar pusar, Dok, hilang-timbul sebelum mencret." }]
+  },
+  "findings": [
+    { "tool": "keadaan_umum", "param": "kesadaran", "when": { "traits": ["dehidrasi_berat"] }, "values": ["Letargis"] },
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["dehidrasi_berat"] },
+      "diagnostic": true,
+      "values": ["Mukosa sangat kering, turgor kembali sangat lambat (> 2 detik), mata sangat cekung"]
+    },
+    {
+      "tool": "keadaan_umum",
+      "param": "hidrasi",
+      "when": { "traits": ["dehidrasi_ringan_sedang"] },
+      "diagnostic": true,
+      "values": ["Mukosa bibir kering, turgor kembali lambat, mata cekung"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "dehidrasi_anak",
+      "when": { "traits": ["dehidrasi_berat"] },
+      "values": ["Dehidrasi berat: letargis, mata sangat cekung, tidak bisa minum, cubitan kulit perut kembali sangat lambat"]
+    },
+    {
+      "tool": "pemeriksaan_anak",
+      "param": "dehidrasi_anak",
+      "when": { "traits": ["dehidrasi_ringan_sedang"] },
+      "values": ["Dehidrasi ringan-sedang: rewel/gelisah, mata cekung, haus, cubitan kulit perut kembali lambat"]
+    },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["dehidrasi_berat"] }, "range": [120, 145] },
+    { "tool": "tanda_vital", "param": "td_sistolik", "when": { "traits": ["dehidrasi_berat"] }, "range": [78, 90] },
+    { "tool": "tanda_vital", "param": "nadi", "when": { "traits": ["dehidrasi_ringan_sedang"] }, "range": [100, 115] },
+    { "tool": "ekstremitas_kulit", "param": "crt", "when": { "traits": ["dehidrasi_berat"] }, "values": ["> 3 detik"] },
+    {
+      "tool": "ekstremitas_kulit",
+      "param": "akral",
+      "when": { "traits": ["dehidrasi_berat"] },
+      "values": ["Dingin, lembap"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "symptoms": ["demam"] }, "range": [37.6, 38.4] },
+    {
+      "tool": "feses_rutin",
+      "param": "makroskopis",
+      "when": { "traits": ["kolera"] },
+      "values": ["Cair seperti air cucian beras, berbau amis"]
+    },
+    {
+      "tool": "feses_rutin",
+      "param": "makroskopis",
+      "when": { "traits": ["giardia"] },
+      "values": ["Lembek berminyak berbau busuk"]
+    },
+    {
+      "tool": "feses_rutin",
+      "param": "protozoa",
+      "when": { "traits": ["giardia"] },
+      "diagnostic": true,
+      "values": ["Kista Giardia lamblia (+)"]
+    },
+    { "tool": "elektrolit", "param": "kalium", "when": { "traits": ["dehidrasi_berat"] }, "range": [2.8, 3.3] },
+    {
+      "tool": "elektrolit",
+      "param": "natrium",
+      "when": { "traits": ["dehidrasi_berat"] },
+      "probability": 0.5,
+      "range": [129, 134]
+    },
+    { "tool": "fungsi_ginjal", "param": "ureum", "when": { "traits": ["dehidrasi_berat"] }, "range": [55, 95] },
+    {
+      "tool": "fungsi_ginjal",
+      "param": "kreatinin",
+      "when": { "traits": ["dehidrasi_berat"], "ageMin": 10 },
+      "range": [1.4, 2.2]
+    },
+    { "tool": "pemeriksaan_abdomen", "param": "auskultasi", "values": ["Bising usus meningkat"] },
+    {
+      "tool": "pemeriksaan_abdomen",
+      "param": "nyeri_tekan",
+      "probability": 0.5,
+      "values": ["Nyeri tekan ringan difus"]
+    },
+    { "tool": "feses_rutin", "param": "makroskopis", "values": ["Cair, lendir (−), darah (−)"] }
+  ],
+  "differentials": [
+    {
+      "id": "disentri",
+      "howToDistinguish": "Disentri: tinja berlendir & berdarah dengan tenesmus.",
+      "excludeBy": { "topics": ["karakter"], "tools": ["feses_rutin"] }
+    },
+    {
+      "id": "apendisitis_akut",
+      "howToDistinguish": "Apendisitis: nyeri perut kanan bawah menetap/berpindah, McBurney (+), diare minimal.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_abdomen"] }
+    },
+    {
+      "id": "keracunan_makanan",
+      "howToDistinguish": "Keracunan makanan: muntah dominan 1–6 jam setelah makan, kluster orang yang makan bersama.",
+      "excludeBy": { "topics": ["onset", "bepergian_lingkungan"] }
+    },
+    {
+      "id": "demam_tifoid",
+      "howToDistinguish": "Tifoid: demam bertahap > 5–7 hari, gangguan GI ringan, lidah kotor.",
+      "excludeBy": { "topics": ["onset"], "tools": ["tanda_vital"] }
+    }
+  ],
+  "keyFindings": [
+    "Diare cair akut ≥ 3 kali/hari ± muntah",
+    "Derajat dehidrasi (keadaan umum, mata, rasa haus/minum, turgor)",
+    "Kolera: air cucian beras masif; giardiasis: berlemak, kembung, > 1 minggu"
+  ],
+  "teachingPoints": [
+    "Oralit + zinc 10 hari (anak) + lanjutkan makan/ASI; antibiotik hanya untuk kolera, disentri, atau giardiasis.",
+    "Rencana A (tanpa dehidrasi), B (oralit 75 mL/kg dalam 3 jam), C (IV/RL 100 mL/kg) sesuai derajat dehidrasi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Bagan MTBS (Manajemen Terpadu Balita Sakit)",
+      "WHO. The treatment of diarrhoea (2005)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "dehidrasi_berat",
+      "name": "Dehidrasi berat",
+      "trait": "dehidrasi_berat",
+      "redFlag": true,
+      "assess": { "tools": ["keadaan_umum", "pemeriksaan_anak", "tanda_vital"] },
+      "explanation": "Letargis, tidak bisa minum, mata sangat cekung, turgor sangat lambat — Rencana C & rujuk."
+    },
+    {
+      "id": "dehidrasi_ringan_sedang",
+      "name": "Dehidrasi ringan–sedang",
+      "trait": "dehidrasi_ringan_sedang",
+      "redFlag": false,
+      "assess": { "tools": ["keadaan_umum", "pemeriksaan_anak"] },
+      "explanation": "Rewel, haus, mata cekung — Rencana B (oralit 3 jam, observasi)."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "keparahan", "bepergian_lingkungan", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "keadaan_umum", "role": "kunci", "reason": "Derajat dehidrasi." },
+      { "tool": "pemeriksaan_abdomen", "role": "kunci", "reason": "Nyeri tekan, tanda bedah akut." },
+      {
+        "tool": "pemeriksaan_anak",
+        "role": "kunci",
+        "when": { "ageMax": 9 },
+        "reason": "Tanda dehidrasi WHO pada anak."
+      },
+      { "tool": "ekstremitas_kulit", "role": "pendukung", "reason": "Perfusi (akral, CRT)." }
+    ],
+    "tests": [
+      {
+        "tool": "elektrolit",
+        "role": "komplikasi",
+        "when": { "traits": ["dehidrasi_berat"] },
+        "reason": "Gangguan elektrolit pada dehidrasi berat."
+      },
+      { "tool": "feses_rutin", "role": "pendukung", "when": { "traits": ["giardia"] }, "reason": "Mencari Giardia." },
+      { "tool": "feses_rutin", "role": "pendukung", "when": { "traits": ["kolera"] }, "reason": "Konfirmasi kolera." }
+    ],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_segera",
+      "reason": "Dehidrasi berat: Rencana C (infus RL) segera, lalu rujuk.",
+      "when": { "traits": ["dehidrasi_berat"] }
+    },
+    {
+      "value": "observasi",
+      "reason": "Dehidrasi ringan–sedang: Rencana B (oralit 75 mL/kg dalam 3 jam), observasi lalu evaluasi ulang.",
+      "when": { "traits": ["dehidrasi_ringan_sedang"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Tanpa dehidrasi: Rencana A — oralit tiap BAB, zinc (anak), lanjutkan makan; kembali bila ada tanda bahaya."
+    }
+  ],
+  "management": [
+    "Oralit sesuai derajat dehidrasi (Rencana A/B/C); infus RL untuk dehidrasi berat.",
+    "Zinc 10 hari (< 6 bulan 10 mg, ≥ 6 bulan 20 mg); lanjutkan ASI/makan.",
+    "Antibiotik hanya bila kolera (doksisiklin/azitromisin), disentri, atau giardiasis (metronidazol).",
+    "Edukasi tanda bahaya, cuci tangan, air minum dimasak, jamban sehat."
+  ],
+  "approach": ["Nilai derajat dehidrasi lebih dulu.", "Cari darah/lendir, durasi, kluster; singkirkan bedah akut."]
+}

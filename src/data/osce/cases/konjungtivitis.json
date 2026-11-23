@@ -1,0 +1,165 @@
+{
+  "disease": "konjungtivitis",
+  "setting": "Puskesmas",
+  "station": "Mata — mata merah",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_tetes",
+        "label": "Antibiotik tetes mata",
+        "role": "utama",
+        "reason": "Konjungtivitis bakteri (sekret mukopurulen).",
+        "options": [
+          {
+            "drug": "kloramfenikol_tm",
+            "label": "Kloramfenikol 0,5% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          },
+          {
+            "drug": "gentamisin_tm",
+            "label": "Gentamisin 0,3% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          },
+          {
+            "drug": "levofloksasin_tm",
+            "label": "Levofloksasin 0,5% tetes mata 1 tetes 4–6 × sehari selama 5–7 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "traits": ["bakteri"] }
+      },
+      {
+        "id": "antialergi",
+        "label": "Antihistamin/stabilisator sel mast tetes mata",
+        "role": "utama",
+        "reason": "Konjungtivitis alergi.",
+        "options": [
+          {
+            "drug": "olopatadin_tm",
+            "label": "Olopatadin 0,1% tetes mata 1 tetes 2 × sehari selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 2],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["alergi"] }
+      },
+      {
+        "id": "pelumas",
+        "label": "Air mata buatan",
+        "role": "utama",
+        "reason": "Konjungtivitis virus: suportif (swasirna).",
+        "options": [
+          {
+            "drug": "air_mata_buatan",
+            "label": "Air mata buatan 1 tetes 4–6 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [7, 30]
+          }
+        ],
+        "when": { "traits": ["virus"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["steroid_mata"],
+        "reason": "Steroid tetes mata tanpa pemeriksaan slit lamp berisiko keratitis herpes, glaukoma & katarak.",
+        "severity": "salah"
+      },
+      {
+        "drugs": ["kloramfenikol_tm", "gentamisin_tm", "levofloksasin_tm", "kloramfenikol_sm"],
+        "reason": "Antibiotik tetes tidak diperlukan pada konjungtivitis virus/alergi.",
+        "severity": "salah",
+        "when": { "notTraits": ["bakteri"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres dingin pada kelopak mata", "kind": "benar" },
+    {
+      "id": "higiene",
+      "text": "Cuci tangan sering, handuk & sarung bantal terpisah",
+      "kind": "benar",
+      "when": { "notTraits": ["alergi"] }
+    },
+    {
+      "id": "libur",
+      "text": "Tidak masuk sekolah/kerja sampai mata tidak merah berair (sangat menular)",
+      "kind": "benar",
+      "when": { "traits": ["virus"] }
+    },
+    {
+      "id": "alergen",
+      "text": "Hindari pencetus alergi (debu, bulu hewan) dan jangan mengucek",
+      "kind": "benar",
+      "when": { "traits": ["alergi"] }
+    },
+    {
+      "id": "kacamata_hitam",
+      "text": "Pakai kacamata hitam agar tidak menular lewat pandangan",
+      "kind": "pengecoh",
+      "why": "Penularan lewat kontak tangan/benda, bukan pandangan."
+    },
+    {
+      "id": "herbal",
+      "text": "Teteskan air sirih/ASI/obat herbal ke mata",
+      "kind": "berbahaya",
+      "why": "Iritasi & infeksi kornea."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang selaput bening mata (konjungtivitis); penyebabnya dinilai dari gejala",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Gunakan obat tetes sesuai aturan; jangan berbagi obat tetes",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila penglihatan kabur, silau, atau nyeri hebat",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila tidak membaik dalam 5–7 hari", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "cegah",
+      "text": "Penyakit ini mudah menular lewat tangan dan handuk",
+      "kind": "benar",
+      "category": "pencegahan",
+      "when": { "notTraits": ["alergi"] }
+    },
+    {
+      "id": "tetes_sisa",
+      "text": "Boleh memakai tetes mata sisa milik keluarga",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Obat bisa terkontaminasi/tidak sesuai (mis. steroid)."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Praktik Klinis Oftalmologi"
+    ]
+  }
+}

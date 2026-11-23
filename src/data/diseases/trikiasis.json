@@ -1,0 +1,175 @@
+{
+  "id": "trikiasis",
+  "name": "Trikiasis",
+  "aliases": ["Bulu mata tumbuh ke dalam", "Bulu mata salah arah"],
+  "system": "Mata",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.5,
+  "summary": "Bulu mata tumbuh mengarah ke bola mata sehingga menggesek kornea dan konjungtiva: rasa mengganjal, berair, merah, silau; dapat menimbulkan erosi hingga ulkus kornea. Penyebab: blefaritis kronik, trauma/jaringan parut, trakoma, usia lanjut (sering bersama entropion). Tata laksana awal: epilasi; rujuk bila berulang atau ada entropion.",
+  "presentationDay": [7, 90],
+  "demographics": { "ageBands": [{ "min": 30, "max": 50, "weight": 2 }, { "min": 51, "max": 75, "weight": 4 }], "maleRatio": 0.45 },
+  "traits": [
+    { "id": "erosi_kornea", "probability": 0.55 },
+    { "id": "entropion_curiga", "probability": 0.2 },
+    { "id": "riwayat_blefaritis", "probability": 0.4 }
+  ],
+  "traitLabels": {
+    "erosi_kornea": "Erosi kornea akibat gesekan bulu mata.",
+    "entropion_curiga": "Tepi kelopak melipat ke dalam (entropion).",
+    "riwayat_blefaritis": "Riwayat blefaritis kronik."
+  },
+  "symptoms": [
+    { "id": "silau", "probability": 0.5, "when": { "traits": ["erosi_kornea"] } },
+    { "id": "bulu_mata_menusuk", "probability": 1 },
+    { "id": "mata_mengganjal", "probability": 0.9 },
+    { "id": "mata_berair", "probability": 0.8 },
+    { "id": "mata_merah", "probability": 0.6 }
+  ],
+  "chiefComplaint": { "primary": ["bulu_mata_menusuk", "mata_mengganjal"], "extraPool": ["mata_berair"] },
+  "clueSymptoms": ["mata_berair", "mata_merah", "silau"],
+  "misattributions": ["kelilipan terus", "mata tua", "iritasi debu"],
+  "fears": ["mata buta"],
+  "anamnesis": {
+    "onset": [{ "text": "Sudah {lamaSakit}, Dok, ngganjal terus.", "clue": "Kronik/berulang" }],
+    "karakter": [
+      {
+        "text": "Tiap kedip rasanya ada yang menusuk, Dok, kayak ada bulu mata yang kena mata.",
+        "clue": "Sensasi tertusuk tiap berkedip"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Dulu kelopak mata saya sering merah bersisik, Dok.",
+        "when": { "traits": ["riwayat_blefaritis"] },
+        "clue": "Riwayat blefaritis kronik"
+      },
+      { "text": "Nggak ada sakit mata sebelumnya, Dok.", "when": { "notTraits": ["riwayat_blefaritis"] } }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sering saya cabut sendiri bulu matanya, Dok, tapi tumbuh lagi.",
+        "clue": "Sudah dicabut sendiri tetapi tumbuh kembali"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Makin lama makin perih, Dok, sekarang silau juga.",
+        "reveals": ["silau"],
+        "when": { "traits": ["erosi_kornea"], "symptoms": ["silau"] },
+        "clue": "Perburukan dengan silau (curiga erosi kornea)"
+      }
+    ],
+    "lokasi": [{ "text": "Di mata, Dok, kelopak bawah, rasanya ada yang menusuk." }]
+  },
+  "findings": [
+    {
+      "tool": "segmen_anterior",
+      "param": "palpebra",
+      "when": { "traits": ["entropion_curiga"] },
+      "values": ["Tepi kelopak bawah tampak melipat ke dalam (entropion)"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "kornea",
+      "when": { "traits": ["erosi_kornea"] },
+      "values": ["Uji fluoresein (+): erosi pungtata di area kontak bulu mata"]
+    },
+    {
+      "tool": "visus",
+      "param": "visus_od",
+      "when": { "traits": ["erosi_kornea"] },
+      "probability": 0.5,
+      "values": ["6/9"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "silia",
+      "values": ["Beberapa bulu mata di tepi kelopak bawah tumbuh mengarah ke bola mata dan menyentuh kornea"]
+    },
+    {
+      "tool": "segmen_anterior",
+      "param": "konjungtiva_bulbi",
+      "probability": 0.7,
+      "values": ["Injeksi konjungtiva ringan"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "entropion",
+      "howToDistinguish": "Entropion: seluruh tepi kelopak melipat ke dalam sehingga bulu mata normal ikut menggesek — perlu operasi.",
+      "excludeBy": { "tools": ["segmen_anterior"] }
+    },
+    {
+      "id": "keratitis",
+      "howToDistinguish": "Ulkus kornea akibat gesekan kronik: nyeri, visus turun, infiltrat — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["visus", "segmen_anterior"] }
+    },
+    {
+      "id": "benda_asing_konjungtiva",
+      "howToDistinguish": "Benda asing: onset mendadak setelah kelilipan, benda tampak di konjungtiva.",
+      "excludeBy": { "topics": ["onset"], "tools": ["segmen_anterior"] }
+    }
+  ],
+  "keyFindings": ["Bulu mata menggesek kornea, sensasi tertusuk saat berkedip", "Berair, merah, erosi kornea pada fluoresein"],
+  "teachingPoints": [
+    "Epilasi hanya solusi sementara (bulu mata tumbuh lagi 4–6 minggu); trikiasis berulang/entropion dirujuk untuk elektrolisis/operasi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDAMI. Panduan Nasional Pelayanan Kedokteran Ilmu Kesehatan Mata"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_penyakit", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "visus", "role": "kunci", "reason": "Menilai dampak pada kornea." },
+      { "tool": "segmen_anterior", "role": "kunci", "reason": "Arah bulu mata, entropion, erosi kornea (fluoresein)." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Trikiasis dengan entropion perlu operasi kelopak.",
+      "when": { "traits": ["entropion_curiga"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "Epilasi bulu mata dengan pinset, salep antibiotik bila erosi; rujuk bila berulang.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Epilasi bulu mata yang salah arah dengan pinset di bawah loupe.",
+    "Salep antibiotik dan air mata buatan bila ada erosi kornea.",
+    "Rujuk untuk elektrolisis/krioterapi/operasi bila berulang atau disertai entropion."
+  ],
+  "approach": ["Inspeksi arah bulu mata dan posisi tepi kelopak.", "Uji fluoresein untuk menilai kerusakan kornea."]
+}

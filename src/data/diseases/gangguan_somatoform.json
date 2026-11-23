@@ -1,0 +1,195 @@
+{
+  "id": "gangguan_somatoform",
+  "name": "Gangguan somatoform",
+  "aliases": ["Gangguan somatisasi", "Somatic symptom disorder", "Keluhan psikosomatis"],
+  "system": "Jiwa",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.9,
+  "summary": "Keluhan fisik berulang dan berpindah-pindah (nyeri, berdebar, sesak, kesemutan, gangguan pencernaan) disertai permintaan pemeriksaan berulang, padahal hasil pemeriksaan selalu normal dan pasien sulit diyakinkan tidak ada penyakit fisik. Sering berlatar stres psikososial; dapat bersama cemas/depresi. Singkirkan penyakit organik secara wajar, lalu bangun hubungan terapeutik dengan kontrol terjadwal.",
+  "presentationDay": [60, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 20, "max": 35, "weight": 3 },
+      { "min": 36, "max": 55, "weight": 4 },
+      { "min": 56, "max": 70, "weight": 1 }
+    ],
+    "maleRatio": 0.3
+  },
+  "traits": [
+    { "id": "stresor", "probability": 0.8 },
+    { "id": "doctor_shopping", "probability": 0.7 },
+    { "id": "depresi_menyertai", "probability": 0.25 }
+  ],
+  "traitLabels": {
+    "stresor": "Ada stresor psikososial.",
+    "doctor_shopping": "Berobat ke banyak dokter dengan hasil normal.",
+    "depresi_menyertai": "Gejala depresi menyertai."
+  },
+  "symptoms": [
+    { "id": "keluhan_berpindah", "probability": 1 },
+    { "id": "nyeri_kepala", "probability": 0.6 },
+    { "id": "berdebar", "probability": 0.6 },
+    { "id": "nyeri_perut", "probability": 0.5 },
+    { "id": "kesemutan", "probability": 0.4 },
+    { "id": "lemas", "probability": 0.6 },
+    { "id": "sesak_napas", "probability": 0.3 },
+    { "id": "cemas", "probability": 0.6 },
+    { "id": "sulit_tidur", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["keluhan_berpindah"], "extraPool": ["berdebar", "nyeri_kepala"] },
+  "clueSymptoms": ["nyeri_kepala", "berdebar", "nyeri_perut", "kesemutan", "lemas", "sesak_napas"],
+  "misattributions": ["sakit jantung", "kena guna-guna", "penyakit langka"],
+  "fears": ["sakit jantung", "kanker", "penyakit yang belum ketemu"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, macam-macam keluhannya, ganti-ganti, sudah ke beberapa dokter.",
+        "clue": "Kronik, keluhan multipel"
+      }
+    ],
+    "lokasi": [
+      {
+        "text": "Pindah-pindah, Dok. Kadang kepala, kadang dada berdebar, kadang perut, kadang kesemutan.",
+        "clue": "Keluhan berpindah lokasi"
+      }
+    ],
+    "riwayat_obat": [
+      {
+        "text": "Sudah ke banyak dokter dan rumah sakit, Dok, cek darah, rontgen, rekam jantung, katanya normal semua. Tapi saya masih merasa sakit.",
+        "when": { "traits": ["doctor_shopping"] },
+        "clue": "Pemeriksaan berulang selalu normal, sulit diyakinkan"
+      },
+      {
+        "text": "Sudah dua kali periksa di puskesmas, Dok, katanya hasilnya bagus, tapi saya tetap merasa sakit.",
+        "when": { "notTraits": ["doctor_shopping"] },
+        "clue": "Pemeriksaan sebelumnya normal"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Akhir-akhir ini banyak pikiran, Dok, masalah keluarga dan utang.",
+        "when": { "traits": ["stresor"] },
+        "clue": "Stresor psikososial"
+      },
+      { "text": "Kerjaan biasa saja, Dok.", "when": { "notTraits": ["stresor"] } }
+    ],
+    "kekhawatiran": [
+      {
+        "text": "Saya yakin ada penyakit yang belum ketemu, Dok. Tolong periksa lagi semuanya.",
+        "clue": "Keyakinan kuat ada penyakit fisik, meminta pemeriksaan ulang"
+      }
+    ],
+    "pendapat_pasien": [{ "text": "Pasti ada penyakit jantung atau apa, Dok, cuma dokternya belum nemu." }],
+    "keparahan": [
+      {
+        "text": "Saya jadi sering nggak masuk kerja, Dok. Akhir-akhir ini juga nggak semangat apa-apa.",
+        "when": { "traits": ["depresi_menyertai"] },
+        "clue": "Gangguan fungsi; gejala depresi"
+      },
+      { "text": "Kerja jadi terganggu, Dok.", "when": { "notTraits": ["depresi_menyertai"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_mentalis",
+      "param": "mood_afek",
+      "when": { "traits": ["depresi_menyertai"] },
+      "values": ["Mood depresif, afek menyempit"]
+    },
+    { "tool": "status_mentalis", "param": "mood_afek", "values": ["Mood cemas, afek serasi"] },
+    {
+      "tool": "status_mentalis",
+      "param": "proses_pikir",
+      "values": ["Koheren; preokupasi berlebihan terhadap keluhan fisik, tanpa waham"]
+    },
+    { "tool": "status_mentalis", "param": "tilikan", "values": ["Kurang (yakin keluhan karena penyakit fisik)"] },
+    { "tool": "tanda_vital", "param": "nadi", "probability": 0.5, "range": [88, 100] }
+  ],
+  "differentials": [
+    {
+      "id": "angina_stabil",
+      "howToDistinguish": "Penyakit organik (mis. jantung) harus disingkirkan secara wajar: nyeri dada khas terkait aktivitas, EKG/pemeriksaan jantung abnormal.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_jantung", "ekg"] }
+    },
+    {
+      "id": "depresi",
+      "howToDistinguish": "Depresi: mood depresif & hilang minat ≥ 2 minggu menonjol; tanyakan ide bunuh diri.",
+      "excludeBy": { "tools": ["status_mentalis"], "topics": ["keparahan"] }
+    },
+    {
+      "id": "gangguan_cemas",
+      "howToDistinguish": "Gangguan cemas: kekhawatiran berlebih berbagai hal dengan gejala otonom, bukan fokus pada keyakinan sakit fisik.",
+      "excludeBy": { "tools": ["status_mentalis"], "topics": ["kebiasaan"] }
+    }
+  ],
+  "keyFindings": [
+    "Keluhan fisik multipel, berpindah, kronik",
+    "Pemeriksaan berulang normal, pasien sulit diyakinkan",
+    "Stresor psikososial; status mentalis: cemas, tilikan kurang"
+  ],
+  "teachingPoints": [
+    "Hindari pemeriksaan berulang tanpa indikasi — memperkuat keyakinan sakit; jadwalkan kontrol rutin, bukan atas permintaan keluhan."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PDSKJI. Pedoman Nasional Pelayanan Kedokteran Jiwa; PPDGJ-III"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "lokasi", "riwayat_obat", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_mentalis", "role": "kunci", "reason": "Mood, afek, tilikan, waham." },
+      { "tool": "pemeriksaan_jantung", "role": "kunci", "reason": "Menyingkirkan kelainan jantung secara wajar." },
+      { "tool": "pemeriksaan_abdomen", "role": "pendukung", "reason": "Menyingkirkan kelainan abdomen." },
+      { "tool": "neurologis", "role": "pendukung", "reason": "Menyingkirkan defisit neurologis." }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "ekg", "reason": "Satu kali untuk keluhan berdebar/dada, bila belum pernah." },
+      { "tool": "darah_lengkap", "reason": "Pemeriksaan dasar bila belum pernah dilakukan." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Psikoedukasi, kontrol terjadwal, psikoterapi; rujuk psikiater bila berat/komorbid depresi.",
+      "alsoAccept": ["rujuk_spesialis"]
+    }
+  ],
+  "management": [
+    "Validasi keluhan (keluhan nyata dirasakan) tanpa memperkuat keyakinan penyakit fisik.",
+    "Kontrol terjadwal (mis. tiap 2–4 minggu), batasi pemeriksaan & rujukan berulang.",
+    "Psikoedukasi hubungan stres–gejala tubuh, teknik relaksasi; psikoterapi (CBT).",
+    "Antidepresan (SSRI) bila ada depresi/cemas — pertimbangkan rujuk psikiater."
+  ],
+  "approach": [
+    "Singkirkan penyakit organik secara wajar sesuai keluhan.",
+    "Gali stresor, mood, & tilikan; hindari over-investigasi."
+  ]
+}

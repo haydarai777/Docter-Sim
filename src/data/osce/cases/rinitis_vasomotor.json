@@ -1,0 +1,105 @@
+{
+  "disease": "rinitis_vasomotor",
+  "setting": "Puskesmas",
+  "station": "THT — keluhan hidung",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid_nasal",
+        "label": "Kortikosteroid intranasal",
+        "role": "utama",
+        "reason": "Mengurangi hiperreaktivitas mukosa.",
+        "options": [
+          {
+            "drug": "mometason_nasal",
+            "label": "Mometason furoat semprot hidung 2 semprot (100 mcg) tiap lubang 1 × sehari",
+            "schedules": ["rutin"],
+            "dose": [100, 100],
+            "timesPerDay": [1, 1],
+            "days": [14, 30]
+          }
+        ]
+      },
+      {
+        "id": "cuci",
+        "label": "Cuci hidung NaCl",
+        "role": "opsional",
+        "reason": "Membersihkan sekret.",
+        "options": [
+          {
+            "drug": "nacl_nasal",
+            "label": "NaCl 0,9% semprot hidung 2 semprot tiap lubang 2–3 × sehari",
+            "schedules": ["rutin", "prn"],
+            "dose": [1, 2],
+            "timesPerDay": [2, 3],
+            "days": [7, 30]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["oksimetazolin"],
+        "reason": "Dekongestan topikal > 5 hari memicu rinitis medikamentosa.",
+        "severity": "salah"
+      },
+      {
+        "classes": ["antibiotik"],
+        "reason": "Infeksi virus/non-bakteri: antibiotik tidak diperlukan.",
+        "severity": "salah"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "pencetus", "text": "Hindari pencetus (AC langsung, asap rokok, bau menyengat)", "kind": "benar" },
+    {
+      "id": "stop_dekongestan",
+      "text": "Hentikan semprot dekongestan yang dipakai berkepanjangan",
+      "kind": "benar",
+      "when": { "traits": ["pakai_semprot_dekongestan"] }
+    },
+    { "id": "olahraga", "text": "Olahraga teratur", "kind": "benar" },
+    {
+      "id": "semprot_terus",
+      "text": "Lanjutkan semprot dekongestan setiap hari agar hidung lega",
+      "kind": "berbahaya",
+      "why": "Rinitis medikamentosa (rebound)."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Hidung tersumbat/berair karena saraf hidung terlalu peka (bukan alergi/infeksi)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Semprot steroid dipakai rutin setiap hari, efek penuh setelah 1–2 minggu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Periksa segera bila mimisan berulang, ingus berdarah/berbau, atau nyeri wajah",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 2–4 minggu", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "ab",
+      "text": "Pilek menahun ini perlu antibiotik",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Bukan infeksi bakteri."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERHATI-KL. Panduan Praktik Klinis THT-KL"
+    ]
+  }
+}

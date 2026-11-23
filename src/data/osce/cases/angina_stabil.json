@@ -1,0 +1,167 @@
+{
+  "disease": "angina_stabil",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — nyeri dada/ulu hati",
+  "therapy": {
+    "items": [
+      {
+        "id": "nitrat",
+        "label": "Nitrat kerja cepat",
+        "role": "utama",
+        "reason": "Meredakan serangan angina.",
+        "options": [
+          {
+            "drug": "isdn",
+            "label": "ISDN 5 mg sublingual saat nyeri, boleh diulang tiap 5 menit (maks. 3 ×)",
+            "schedules": ["prn"],
+            "dose": [5, 5],
+            "timesPerDay": [1, 3]
+          }
+        ]
+      },
+      {
+        "id": "antiplatelet",
+        "label": "Antiplatelet",
+        "role": "utama",
+        "reason": "Pencegahan sekunder kejadian koroner.",
+        "options": [
+          {
+            "drug": "aspirin_rendah",
+            "label": "Asetosal 80–160 mg 1 × sehari sesudah makan",
+            "schedules": ["rutin"],
+            "dose": [80, 160],
+            "timesPerDay": [1, 1],
+            "days": [7, 90]
+          }
+        ]
+      },
+      {
+        "id": "statin",
+        "label": "Statin",
+        "role": "pendukung",
+        "reason": "Stabilisasi plak & penurunan LDL.",
+        "options": [
+          {
+            "drug": "simvastatin",
+            "label": "Simvastatin 20–40 mg 1 × sehari malam hari",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 1],
+            "days": [7, 90]
+          },
+          {
+            "drug": "atorvastatin",
+            "label": "Atorvastatin 20–40 mg 1 × sehari",
+            "schedules": ["rutin"],
+            "dose": [20, 40],
+            "timesPerDay": [1, 1],
+            "days": [7, 90]
+          }
+        ]
+      },
+      {
+        "id": "betabloker",
+        "label": "Penyekat beta",
+        "role": "pendukung",
+        "reason": "Antiangina lini pertama (menurunkan kebutuhan oksigen miokard).",
+        "options": [
+          {
+            "drug": "bisoprolol",
+            "label": "Bisoprolol 2,5–5 mg 1 × sehari pagi",
+            "schedules": ["rutin"],
+            "dose": [2.5, 5],
+            "timesPerDay": [1, 1],
+            "days": [7, 90]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["ibuprofen", "asam_mefenamat", "natrium_diklofenak"],
+        "reason": "OAINS non-aspirin meningkatkan risiko kardiovaskular.",
+        "severity": "salah"
+      }
+    ],
+    "note": "Disposisi: rujuk spesialis jantung untuk stratifikasi; nyeri yang makin sering/lama (kresendo) → rujuk segera (curiga SKA). ISDN dikontraindikasikan bila TD sistolik < 90 mmHg atau memakai penghambat PDE-5."
+  },
+  "nonPharm": [
+    { "id": "rokok", "text": "Berhenti merokok", "kind": "benar", "when": { "traits": ["perokok"] } },
+    { "id": "diet", "text": "Diet rendah lemak jenuh & rendah garam", "kind": "benar" },
+    {
+      "id": "aktivitas",
+      "text": "Aktivitas fisik teratur sesuai toleransi; hentikan aktivitas bila nyeri muncul",
+      "kind": "benar"
+    },
+    { "id": "bb", "text": "Turunkan berat badan", "kind": "benar", "when": { "traits": ["obesitas"] } },
+    {
+      "id": "rujuk_sp",
+      "text": "Rujuk ke spesialis jantung untuk evaluasi (uji latih jantung)",
+      "kind": "benar",
+      "when": { "notTraits": ["kresendo"] }
+    },
+    {
+      "id": "rujuk_igd",
+      "text": "Rujuk segera ke IGD RS dengan fasilitas jantung",
+      "kind": "benar",
+      "why": "Angina kresendo = curiga sindrom koroner akut.",
+      "when": { "traits": ["kresendo"] }
+    },
+    { "id": "tirah", "text": "Tirah baring total selama sebulan", "kind": "pengecoh" },
+    {
+      "id": "olahraga_berat",
+      "text": "Olahraga berat untuk 'melatih' jantung walau sedang nyeri dada",
+      "kind": "berbahaya",
+      "why": "Memicu iskemia/infark."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Nyeri dada karena pembuluh darah jantung menyempit sehingga otot jantung kekurangan oksigen saat aktivitas",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Saat nyeri: duduk, taruh ISDN di bawah lidah; boleh diulang tiap 5 menit, maksimal 3 kali",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "ISDN dapat menimbulkan sakit kepala/pusing; jangan dipakai bersama obat kuat (sildenafil)",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila nyeri > 20 menit, tidak hilang dengan 3 tablet ISDN, muncul saat istirahat, atau disertai keringat dingin/sesak",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol ke spesialis jantung sesuai rujukan dan periksa faktor risiko rutin",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Kendalikan tekanan darah, gula darah, dan kolesterol",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "tahan",
+      "text": "Bila nyeri datang, tahan saja sampai hilang sendiri walau lama",
+      "kind": "berbahaya",
+      "category": "tanda_bahaya"
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["PERKI. Pedoman Tatalaksana Sindrom Koroner Kronis (2019)", "ESC Guidelines on Chronic Coronary Syndromes"]
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "id": "kusta",
+  "name": "Lepra (kusta)",
+  "aliases": ["Kusta", "Morbus Hansen", "Lepra PB", "Lepra MB"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "sedang",
+  "prevalenceWeight": 0.6,
+  "summary": "Infeksi kronik Mycobacterium leprae pada kulit & saraf tepi. Tanda kardinal: (1) bercak hipopigmentasi/eritema yang MATI RASA, (2) penebalan saraf tepi dengan gangguan fungsi, (3) BTA positif pada slit skin smear. PB: 1–5 lesi, 1 saraf, BTA negatif. MB: > 5 lesi atau > 1 saraf atau BTA positif. Terapi MDT (12 blister MB / 6 blister PB), pencegahan cacat, pemeriksaan kontak.",
+  "presentationDay": [60, 365],
+  "demographics": {
+    "ageBands": [
+      { "min": 10, "max": 25, "weight": 3 },
+      { "min": 26, "max": 50, "weight": 4 },
+      { "min": 51, "max": 70, "weight": 2 }
+    ],
+    "maleRatio": 0.6,
+    "occupations": [{ "id": "petani", "weight": 2 }, { "id": "nelayan", "weight": 1 }, { "id": "buruh_pabrik", "weight": 1 }],
+    "occupationBias": 0.3
+  },
+  "traits": [
+    { "id": "mb", "probability": 0.5 },
+    { "id": "cacat", "probability": 0.2 },
+    { "id": "reaksi", "probability": 0.08 },
+    { "id": "kontak_kusta", "probability": 0.5 }
+  ],
+  "traitLabels": {
+    "mb": "Kusta multibasiler.",
+    "cacat": "Disabilitas (claw hand/ulkus plantar).",
+    "reaksi": "Reaksi kusta.",
+    "kontak_kusta": "Kontak penderita kusta."
+  },
+  "symptoms": [
+    { "id": "bercak_putih_kulit", "probability": 1, "when": { "notTraits": ["mb"] } },
+    { "id": "ruam_kulit", "probability": 1, "when": { "traits": ["mb"] } },
+    { "id": "luka_sulit_sembuh", "probability": 0.8, "when": { "traits": ["cacat"] } },
+    { "id": "nyeri_otot_sendi", "probability": 0.6, "when": { "traits": ["reaksi"] } },
+    { "id": "demam", "probability": 0.7, "when": { "traits": ["reaksi"] } },
+    { "id": "bercak_mati_rasa", "probability": 1 },
+    { "id": "kesemutan", "probability": 0.5 }
+  ],
+  "chiefComplaint": { "primary": ["bercak_putih_kulit", "ruam_kulit"], "extraPool": ["bercak_mati_rasa"] },
+  "clueSymptoms": ["bercak_mati_rasa", "kesemutan", "luka_sulit_sembuh", "nyeri_otot_sendi", "demam"],
+  "misattributions": ["panu", "kurap", "kena guna-guna"],
+  "fears": ["kusta", "dikucilkan", "jari putus"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit}, Dok, ada bercak keputihan di lengan dan punggung, nggak gatal.",
+        "when": { "notTraits": ["mb"] },
+        "clue": "Bercak kronik tidak gatal"
+      },
+      {
+        "text": "Sudah {lamaSakit}, Dok, bercak kemerahan banyak di badan dan muka, cuping telinga menebal.",
+        "when": { "traits": ["mb"] },
+        "clue": "Lesi eritema multipel & infiltrat cuping telinga"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Bercaknya mati rasa, Dok, kena air panas atau tersundut rokok nggak terasa.",
+        "reveals": ["bercak_mati_rasa"],
+        "when": { "symptoms": ["bercak_mati_rasa"] },
+        "clue": "Anestesi pada bercak"
+      }
+    ],
+    "progresi": [
+      {
+        "text": "Jari kelingking dan manis tangan kanan jadi bengkok, telapak kaki ada luka nggak sakit, Dok.",
+        "reveals": ["luka_sulit_sembuh"],
+        "when": { "traits": ["cacat"], "symptoms": ["luka_sulit_sembuh"] },
+        "clue": "Kecacatan (claw hand, ulkus plantar)"
+      },
+      {
+        "text": "Sekarang bercaknya merah meradang, nyeri, dan badan demam, Dok.",
+        "reveals": ["demam"],
+        "when": { "traits": ["reaksi"], "symptoms": ["demam"] },
+        "clue": "Lesi meradang + demam (reaksi kusta)"
+      },
+      {
+        "text": "Tangan dan kaki masih kuat, Dok.",
+        "when": { "notTraits": ["cacat", "reaksi"] },
+        "clue": "Tanpa kecacatan"
+      }
+    ],
+    "riwayat_keluarga": [
+      {
+        "text": "Paman saya dulu juga sakit kusta, Dok, tinggal serumah.",
+        "when": { "traits": ["kontak_kusta"] },
+        "clue": "Kontak serumah penderita kusta"
+      },
+      { "text": "Nggak ada yang sakit kulit di rumah, Dok.", "when": { "notTraits": ["kontak_kusta"] } }
+    ],
+    "riwayat_obat": [{ "text": "Sudah dikasih salep panu, Dok, nggak sembuh.", "clue": "Tidak respons antijamur" }],
+    "lokasi": [
+      { "text": "Di lengan kiri atas dan punggung, Dok.", "when": { "notTraits": ["mb"] } },
+      { "text": "Di muka, badan, tangan, dan kaki, Dok, banyak.", "when": { "traits": ["mb"] } }
+    ]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "notTraits": ["mb"] },
+      "values": ["Lengan atas kiri & punggung (2–4 lesi)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "notTraits": ["mb"] },
+      "diagnostic": true,
+      "values": ["Makula hipopigmentasi berbatas tegas, kering, tidak berkeringat, rambut rontok di atasnya"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "lokasi",
+      "when": { "traits": ["mb"] },
+      "values": ["Wajah, badan, ekstremitas simetris (> 5 lesi)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["mb"] },
+      "diagnostic": true,
+      "values": ["Makula-plak eritematosa multipel batas kurang tegas, infiltrat cuping telinga"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "saraf_tepi",
+      "when": { "notTraits": ["mb"] },
+      "values": ["Penebalan N. auricularis magnus kiri, tidak nyeri"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "saraf_tepi",
+      "when": { "traits": ["mb"] },
+      "diagnostic": true,
+      "values": ["Penebalan N. ulnaris & N. peroneus bilateral, nyeri tekan (−)"]
+    },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "when": { "traits": ["mb"] },
+      "probability": 0.5,
+      "values": ["Madarosis alis lateral"]
+    },
+    {
+      "tool": "bta_kulit",
+      "param": "hasil",
+      "when": { "traits": ["mb"] },
+      "diagnostic": true,
+      "values": ["BTA positif (IB 2+)"]
+    },
+    { "tool": "bta_kulit", "param": "hasil", "when": { "notTraits": ["mb"] }, "values": ["BTA negatif (IB 0)"] },
+    {
+      "tool": "neurologis",
+      "param": "motorik",
+      "when": { "traits": ["cacat"] },
+      "values": ["Kelemahan otot intrinsik tangan kanan (claw hand jari IV–V)"]
+    },
+    {
+      "tool": "status_lokalis",
+      "param": "luka",
+      "when": { "traits": ["cacat"] },
+      "values": ["Ulkus plantar tidak nyeri di kaput metatarsal I kiri"]
+    },
+    { "tool": "tanda_vital", "param": "suhu", "when": { "traits": ["reaksi"] }, "range": [37.8, 38.6] },
+    {
+      "tool": "status_dermatologis",
+      "param": "sensibilitas_lesi",
+      "diagnostic": true,
+      "values": ["Anestesi raba, nyeri, & suhu pada lesi"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "reaksi_kusta",
+      "howToDistinguish": "Reaksi kusta: lesi meradang/ENL, neuritis akut (nyeri & fungsi saraf turun), demam — prednison & rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["progresi"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "pitiriasis_versikolor",
+      "howToDistinguish": "Pitiriasis versikolor: skuama halus, sensibilitas NORMAL, Wood kuning keemasan, KOH positif.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "tinea_korporis",
+      "howToDistinguish": "Tinea korporis: tepi aktif gatal, KOH hifa positif, sensibilitas normal.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "vitiligo",
+      "howToDistinguish": "Vitiligo: depigmentasi putih susu, sensibilitas normal, tanpa penebalan saraf.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Bercak hipopigmentasi/eritema dengan anestesi",
+    "Penebalan saraf tepi ± gangguan fungsi",
+    "PB: ≤ 5 lesi, BTA negatif; MB: > 5 lesi/> 1 saraf/BTA positif"
+  ],
+  "teachingPoints": [
+    "Setiap bercak kulit yang mati rasa di daerah endemis harus dicurigai kusta.",
+    "Penderita yang sudah minum MDT tidak menular; MDT gratis dari program."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)",
+      "Kemenkes RI. Pedoman Nasional Program Pengendalian Penyakit Kusta (2012)"
+    ]
+  },
+  "complications": [
+    {
+      "id": "cacat",
+      "name": "Disabilitas kusta",
+      "trait": "cacat",
+      "redFlag": true,
+      "assess": { "tools": ["neurologis", "status_lokalis"] },
+      "explanation": "Claw hand/ulkus plantar — pencegahan cacat (POD) & perawatan diri."
+    },
+    {
+      "id": "reaksi",
+      "name": "Reaksi kusta",
+      "trait": "reaksi",
+      "redFlag": true,
+      "assess": { "tools": ["status_dermatologis", "tanda_vital"] },
+      "explanation": "Neuritis & lesi meradang — prednison, istirahat, rujuk."
+    }
+  ],
+  "plan": {
+    "keyTopics": ["onset", "karakter", "progresi", "riwayat_keluarga", "riwayat_obat", "keluhan_lain"],
+    "exams": [
+      { "tool": "status_dermatologis", "role": "kunci", "reason": "Lesi, sensibilitas, saraf tepi." },
+      { "tool": "neurologis", "role": "kunci", "reason": "Fungsi motorik & sensorik (POD)." }
+    ],
+    "tests": [{ "tool": "bta_kulit", "role": "kunci", "reason": "Klasifikasi PB/MB." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rujuk_spesialis",
+      "reason": "Reaksi kusta berat/neuritis: prednison & rujuk.",
+      "when": { "traits": ["reaksi"] },
+      "alsoAccept": ["rawat_jalan"]
+    },
+    {
+      "value": "rawat_jalan",
+      "reason": "MDT sesuai tipe, POD, edukasi perawatan diri, pemeriksaan kontak & kemoprofilaksis; kontrol bulanan."
+    }
+  ],
+  "management": [
+    "MDT-MB 12 blister (rifampisin 600 mg + klofazimin 300 mg + dapson 100 mg bulanan diawasi; klofazimin 50 mg + dapson 100 mg harian).",
+    "MDT-PB 6 blister sesuai pedoman program.",
+    "Pencegahan cacat: periksa fungsi saraf rutin, rawat diri tangan-kaki-mata.",
+    "Periksa kontak serumah & beri kemoprofilaksis rifampisin dosis tunggal; edukasi untuk mengurangi stigma."
+  ],
+  "approach": ["Uji sensibilitas setiap bercak, raba saraf tepi, slit skin smear.", "Klasifikasi PB/MB; nilai kecacatan & reaksi."]
+}

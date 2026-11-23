@@ -1,0 +1,121 @@
+{
+  "disease": "kehamilan_normal",
+  "setting": "Puskesmas",
+  "station": "Obstetri — antenatal & pascakeguguran",
+  "therapy": {
+    "items": [
+      {
+        "id": "ttd",
+        "label": "Tablet tambah darah",
+        "role": "utama",
+        "reason": "Suplementasi besi & asam folat selama kehamilan.",
+        "options": [
+          {
+            "drug": "tablet_tambah_darah",
+            "label": "Tablet tambah darah (Fe 60 mg + asam folat 400 mcg) 1 × 1 setiap hari",
+            "schedules": ["rutin"],
+            "dose": [60, 60],
+            "timesPerDay": [1, 1],
+            "days": [30, 90]
+          }
+        ]
+      },
+      {
+        "id": "b6",
+        "label": "Vitamin B6",
+        "role": "opsional",
+        "reason": "Emesis gravidarum ringan.",
+        "options": [
+          {
+            "drug": "piridoksin",
+            "label": "Piridoksin 3 × 10–25 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 20],
+            "timesPerDay": [3, 3],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["emesis"] }
+      },
+      {
+        "id": "kalsium",
+        "label": "Kalsium",
+        "role": "opsional",
+        "reason": "Suplementasi kalsium sejak trimester 2.",
+        "options": [
+          {
+            "drug": "kalsium",
+            "label": "Kalsium karbonat 1–3 × 500 mg",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [1, 3],
+            "days": [30, 90]
+          }
+        ],
+        "when": { "traits": ["trimester2"] }
+      }
+    ],
+    "avoid": [
+      {
+        "groups": ["tetrasiklin"],
+        "reason": "Tetrasiklin/doksisiklin kontraindikasi pada kehamilan (gigi & tulang janin).",
+        "severity": "kritis"
+      },
+      { "groups": ["ace_inhibitor"], "reason": "ACE-inhibitor kontraindikasi pada kehamilan.", "severity": "kritis" },
+      { "classes": ["antibiotik"], "reason": "Tidak ada indikasi antibiotik.", "severity": "salah" }
+    ]
+  },
+  "nonPharm": [
+    { "id": "gizi", "text": "Konseling gizi & kenaikan berat badan sesuai IMT", "kind": "benar" },
+    { "id": "td", "text": "Imunisasi Td sesuai status T", "kind": "benar" },
+    { "id": "p4k", "text": "Buku KIA & perencanaan persalinan (P4K) di fasilitas kesehatan", "kind": "benar" },
+    {
+      "id": "emesis",
+      "text": "Makan porsi kecil tapi sering, hindari pemicu mual",
+      "kind": "benar",
+      "when": { "traits": ["emesis"] }
+    },
+    {
+      "id": "pijat",
+      "text": "Pijat perut ke dukun agar posisi janin bagus",
+      "kind": "berbahaya",
+      "why": "Risiko solusio plasenta & perdarahan."
+    }
+  ],
+  "education": [
+    { "id": "dx", "text": "Kehamilan Anda normal dan sehat", "kind": "benar", "category": "diagnosis" },
+    {
+      "id": "obat",
+      "text": "Tablet tambah darah diminum setiap hari selama kehamilan (malam hari, jangan dengan teh/kopi)",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke fasilitas kesehatan bila perdarahan, keluar air ketuban, kejang, sakit kepala hebat/pandangan kabur, demam, gerak janin berkurang, atau bengkak wajah-tangan",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Pemeriksaan kehamilan minimal 6 kali (2 × pada trimester 1, 1 × trimester 2, 3 × trimester 3)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "pantang",
+      "text": "Hindari makan ikan & telur selama hamil agar bayi tidak amis",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Mitos; protein penting untuk janin."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

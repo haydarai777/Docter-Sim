@@ -1,0 +1,153 @@
+{
+  "disease": "pielonefritis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — keluhan berkemih & metabolik",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab_oral",
+        "label": "Antibiotik oral",
+        "role": "utama",
+        "reason": "Pielonefritis tanpa komplikasi, bisa minum obat.",
+        "options": [
+          {
+            "drug": "siprofloksasin",
+            "label": "Siprofloksasin 2 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "levofloksasin",
+            "label": "Levofloksasin 1 × 750 mg selama 5 hari",
+            "schedules": ["rutin"],
+            "forms": ["levofloksasin-tab750"],
+            "dose": [750, 750],
+            "timesPerDay": [1, 1],
+            "days": [5, 7]
+          },
+          {
+            "drug": "sefiksim",
+            "label": "Sefiksim 2 × 200 mg selama 10–14 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefiksim-kap200"],
+            "dose": [200, 200],
+            "timesPerDay": [2, 2],
+            "days": [10, 14]
+          }
+        ],
+        "when": { "notTraits": ["sepsis", "muntah_berat"] }
+      },
+      {
+        "id": "ab_iv",
+        "label": "Antibiotik parenteral pra-rujukan",
+        "role": "utama",
+        "reason": "Sepsis / tidak bisa minum obat oral.",
+        "options": [
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 1–2 g IV dosis pertama sebelum rujuk",
+            "schedules": ["tunggal"],
+            "forms": ["seftriakson-vial1g"],
+            "dose": [1000, 2000]
+          }
+        ],
+        "when": { "traits": ["sepsis"] }
+      },
+      {
+        "id": "ab_iv_muntah",
+        "label": "Antibiotik parenteral pra-rujukan",
+        "role": "utama",
+        "reason": "Muntah terus, tidak bisa minum obat oral.",
+        "options": [
+          {
+            "drug": "seftriakson",
+            "label": "Seftriakson 1–2 g IV dosis pertama sebelum rujuk",
+            "schedules": ["tunggal"],
+            "forms": ["seftriakson-vial1g"],
+            "dose": [1000, 2000]
+          }
+        ],
+        "when": { "traits": ["muntah_berat"], "notTraits": ["sepsis"] }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik-analgesik",
+        "role": "pendukung",
+        "reason": "Demam & nyeri pinggang.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "avoid": [
+      {
+        "drugs": ["nitrofurantoin", "fosfomisin"],
+        "reason": "Nitrofurantoin/fosfomisin tidak mencapai kadar adekuat di ginjal.",
+        "severity": "salah"
+      },
+      {
+        "groups": ["oains"],
+        "reason": "OAINS berisiko pada fungsi ginjal saat infeksi berat.",
+        "severity": "salah",
+        "when": { "traits": ["sepsis"] }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "minum", "text": "Banyak minum air (2–3 L/hari) bila tidak muntah", "kind": "benar" },
+    { "id": "evaluasi", "text": "Evaluasi 48–72 jam; rujuk bila tidak membaik", "kind": "benar" },
+    {
+      "id": "infus",
+      "text": "Pasang infus & rujuk segera",
+      "kind": "benar",
+      "whenAny": [{ "traits": ["sepsis"] }, { "traits": ["muntah_berat"] }]
+    },
+    {
+      "id": "kurang_minum",
+      "text": "Kurangi minum agar tidak sering kencing",
+      "kind": "berbahaya",
+      "why": "Memperberat infeksi & dehidrasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini infeksi ginjal (pielonefritis), lanjutan infeksi kandung kemih",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Antibiotik diminum teratur sampai habis", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila demam tinggi menggigil, muntah terus, lemas/pusing, atau kencing sangat sedikit",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 48–72 jam untuk menilai respons", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "IAUI. Panduan Penatalaksanaan ISK & Genitalia Pria (2021)"
+    ]
+  }
+}

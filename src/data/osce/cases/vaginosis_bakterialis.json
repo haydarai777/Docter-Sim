@@ -1,0 +1,89 @@
+{
+  "disease": "vaginosis_bakterialis",
+  "setting": "Puskesmas",
+  "station": "Kulit & Kelamin — duh tubuh & IMS",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik",
+        "role": "utama",
+        "reason": "Vaginosis bakterial (Gardnerella/anaerob).",
+        "options": [
+          {
+            "drug": "metronidazol",
+            "label": "Metronidazol 2 × 500 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["metronidazol-tab500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 2 × 300 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [2, 2],
+            "days": [7, 7]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "douching", "text": "Hentikan douching & sabun antiseptik vagina", "kind": "benar" },
+    { "id": "katun", "text": "Celana dalam katun & tidak lembap", "kind": "benar" },
+    {
+      "id": "pasangan",
+      "text": "Pasangan laki-laki harus selalu diobati",
+      "kind": "pengecoh",
+      "why": "Tidak terbukti mengurangi kekambuhan."
+    },
+    {
+      "id": "antiseptik",
+      "text": "Bilas kemaluan/vagina dengan cairan antiseptik atau sirih setiap hari",
+      "kind": "berbahaya",
+      "why": "Mengganggu flora normal & iritasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini vaginosis bakterial: ketidakseimbangan bakteri normal vagina (bukan IMS)",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Metronidazol diminum sampai habis 7 hari", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "alkohol",
+      "text": "Hindari alkohol selama & 24 jam setelah metronidazol",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila nyeri perut bawah, demam, atau (bila hamil) mulas/keluar air ketuban",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol bila kambuh", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "sirih",
+      "text": "Rutin membersihkan vagina dengan sabun sirih untuk mencegah kambuh",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Douching memicu kekambuhan."
+    }
+  ],
+  "kieRequired": ["diagnosis", "pengobatan", "efek_samping", "tanda_bahaya", "kontrol"],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Pedoman Nasional Penanganan Infeksi Menular Seksual (2016)"
+    ]
+  }
+}

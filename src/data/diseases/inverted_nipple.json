@@ -1,0 +1,175 @@
+{
+  "id": "inverted_nipple",
+  "name": "Inverted nipple (puting tenggelam)",
+  "aliases": ["Puting tenggelam", "Puting masuk", "Puting datar", "Retraksi puting"],
+  "system": "Obstetri & ginekologi",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.5,
+  "summary": "Puting yang tertarik ke dalam/datar sejak lahir (kongenital), sering bilateral, membuat bayi sulit melekat. Derajat 1 dapat dikeluarkan dengan penekanan areola dan bertahan; derajat 2 keluar tetapi kembali masuk; derajat 3 sulit dikeluarkan. Ibu tetap bisa menyusui karena bayi menyusu pada areola. Retraksi puting yang BARU dan unilateral pada perempuan tidak menyusui harus dicurigai keganasan.",
+  "presentationDay": [7, 90],
+  "demographics": { "ageBands": [{ "min": 18, "max": 29, "weight": 4 }, { "min": 30, "max": 40, "weight": 2 }], "maleRatio": 0 },
+  "traits": [{ "id": "hamil_tm3", "probability": 0.5 }, { "id": "derajat3", "probability": 0.2 }],
+  "traitLabels": { "hamil_tm3": "Ibu hamil trimester 3 (persiapan menyusui).", "derajat3": "Inverted derajat 3." },
+  "symptoms": [
+    { "id": "sulit_menyusui", "probability": 1, "when": { "notTraits": ["hamil_tm3"] } },
+    { "id": "puting_masuk", "probability": 1 }
+  ],
+  "chiefComplaint": { "primary": ["puting_masuk"], "extraPool": ["sulit_menyusui"] },
+  "clueSymptoms": ["sulit_menyusui"],
+  "misattributions": ["puting kecil", "keturunan", "ASI tidak akan keluar"],
+  "fears": ["tidak bisa menyusui", "kanker payudara"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Dari dulu, Dok, sejak remaja puting saya memang masuk ke dalam, dua-duanya.",
+        "clue": "Sejak lama/kongenital, bilateral"
+      }
+    ],
+    "haid_kehamilan": [
+      {
+        "text": "Saya hamil delapan bulan, Dok, khawatir nanti nggak bisa menyusui.",
+        "when": { "traits": ["hamil_tm3"] },
+        "clue": "Hamil trimester 3"
+      },
+      {
+        "text": "Melahirkan seminggu lalu, Dok, bayinya susah menyusu.",
+        "reveals": ["sulit_menyusui"],
+        "when": { "notTraits": ["hamil_tm3"], "symptoms": ["sulit_menyusui"] },
+        "clue": "Ibu menyusui minggu pertama"
+      }
+    ],
+    "karakter": [
+      {
+        "text": "Kalau areolanya saya tekan, putingnya bisa keluar sedikit lalu masuk lagi, Dok.",
+        "when": { "notTraits": ["derajat3"] },
+        "clue": "Puting dapat dikeluarkan sementara"
+      },
+      {
+        "text": "Ditekan pun putingnya tetap nggak keluar, Dok.",
+        "when": { "traits": ["derajat3"] },
+        "clue": "Sulit dikeluarkan (derajat 3)"
+      }
+    ],
+    "riwayat_penyakit": [
+      {
+        "text": "Nggak ada benjolan di payudara, Dok, nggak ada cairan berdarah.",
+        "clue": "Tanpa massa/cairan abnormal"
+      }
+    ],
+    "lokasi": [{ "text": "Puting yang kanan, Dok, masuk ke dalam." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "puting",
+      "when": { "notTraits": ["derajat3"] },
+      "diagnostic": true,
+      "values": ["Puting kanan & kiri tertarik ke dalam, dapat dikeluarkan dengan penekanan areola namun masuk kembali"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "puting",
+      "when": { "traits": ["derajat3"] },
+      "diagnostic": true,
+      "values": ["Puting kanan & kiri tertarik ke dalam, tidak dapat dikeluarkan dengan penekanan areola"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "tfu",
+      "when": { "traits": ["hamil_tm3"] },
+      "values": ["30 cm, sesuai usia kehamilan 32 minggu"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "djj",
+      "when": { "traits": ["hamil_tm3"] },
+      "values": ["142 ×/menit, reguler"]
+    },
+    {
+      "tool": "pemeriksaan_obstetri",
+      "param": "leopold",
+      "when": { "traits": ["hamil_tm3"] },
+      "values": ["Letak kepala, punggung kanan"]
+    },
+    { "tool": "pemeriksaan_payudara", "param": "palpasi_payudara", "values": ["Tidak teraba massa, tidak nyeri"] }
+  ],
+  "differentials": [
+    {
+      "id": "kanker_payudara",
+      "howToDistinguish": "Keganasan: retraksi puting BARU unilateral, massa keras, kulit peau d'orange, cairan berdarah — rujuk.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["onset"], "tools": ["pemeriksaan_payudara"] }
+    },
+    {
+      "id": "mastitis",
+      "howToDistinguish": "Mastitis: payudara merah, nyeri, demam.",
+      "excludeBy": { "tools": ["pemeriksaan_payudara"] }
+    }
+  ],
+  "keyFindings": [
+    "Puting tertarik ke dalam/datar sejak lama, bilateral",
+    "Derajat 1–3 sesuai kemampuan puting dikeluarkan",
+    "Tanpa massa (bukan retraksi akibat keganasan)"
+  ],
+  "teachingPoints": [
+    "Bayi menyusu pada AREOLA, bukan puting — ibu dengan puting datar/tenggelam tetap dapat menyusui dengan pelekatan baik.",
+    "Spuit 10 mL yang ujungnya dipotong & dibalik dapat dipakai untuk menarik puting sebelum menyusui."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Mastitis: causes and management (2000)",
+      "Kemenkes RI. Pedoman Konseling Menyusui"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "riwayat_penyakit", "keluhan_lain"],
+    "exams": [
+      { "tool": "pemeriksaan_payudara", "role": "kunci", "reason": "Derajat inversi & menyingkirkan massa." },
+      {
+        "tool": "pemeriksaan_obstetri",
+        "role": "pendukung",
+        "when": { "traits": ["hamil_tm3"] },
+        "reason": "Kesejahteraan janin (bila hamil)."
+      }
+    ],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Konseling menyusui, teknik menarik puting (spuit/pompa), pelekatan; kontrol/konselor laktasi."
+    }
+  ],
+  "management": [
+    "Edukasi: tetap dapat menyusui; latih pelekatan yang mencakup areola.",
+    "Tarik puting sebelum menyusui dengan spuit modifikasi/pompa ASI; bentuk puting dengan jari.",
+    "Bila bayi belum bisa melekat: perah ASI & berikan dengan cangkir/sendok sambil terus berlatih.",
+    "Rujuk konselor laktasi; rujuk bila retraksi baru/unilateral."
+  ],
+  "approach": ["Tentukan kongenital vs didapat; inspeksi & palpasi payudara.", "Nilai pelekatan bila sudah menyusui."]
+}

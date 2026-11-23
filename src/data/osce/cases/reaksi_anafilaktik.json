@@ -1,0 +1,133 @@
+{
+  "disease": "reaksi_anafilaktik",
+  "setting": "IGD Puskesmas",
+  "station": "Gawat darurat — reaksi alergi",
+  "therapy": {
+    "items": [
+      {
+        "id": "adrenalin",
+        "label": "Adrenalin IM",
+        "role": "utama",
+        "reason": "Obat pilihan pertama anafilaksis.",
+        "options": [
+          {
+            "drug": "adrenalin",
+            "label": "Adrenalin 1:1000 0,3–0,5 mg (0,3–0,5 mL) IM paha anterolateral, ulang tiap 5–15 menit bila perlu",
+            "schedules": ["tunggal"],
+            "dose": [0.3, 0.5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "adrenalin_anak",
+        "label": "Adrenalin IM (anak)",
+        "role": "utama",
+        "reason": "Obat pilihan pertama anafilaksis.",
+        "options": [
+          {
+            "drug": "adrenalin",
+            "label": "Adrenalin 1:1000 0,01 mg/kgBB IM (anak 5–9 th ± 0,25 mL), maks. 0,3 mg",
+            "schedules": ["tunggal"],
+            "dose": [0.25, 0.3]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "antihistamin",
+        "label": "Antihistamin H1 parenteral",
+        "role": "pendukung",
+        "reason": "Terapi tambahan (gejala kulit), bukan pengganti adrenalin.",
+        "options": [
+          {
+            "drug": "difenhidramin",
+            "label": "Difenhidramin 20–50 mg IM/IV",
+            "schedules": ["tunggal"],
+            "dose": [20, 50]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin H1 parenteral (anak)",
+        "role": "pendukung",
+        "reason": "Terapi tambahan.",
+        "options": [
+          {
+            "drug": "difenhidramin",
+            "label": "Difenhidramin 1 mg/kgBB IM/IV (anak 5–9 th ± 10–20 mg)",
+            "schedules": ["tunggal"],
+            "dose": [10, 30]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "hentikan", "text": "Hentikan pajanan pencetus & panggil bantuan", "kind": "benar" },
+    { "id": "posisi", "text": "Baringkan telentang dengan tungkai diangkat (duduk bila sesak)", "kind": "benar" },
+    {
+      "id": "cairan",
+      "text": "Oksigen & infus kristaloid cepat (anak 20 mL/kgBB)",
+      "kind": "benar",
+      "when": { "traits": ["syok"] }
+    },
+    { "id": "observasi", "text": "Observasi minimal 6–12 jam / rujuk karena risiko reaksi bifasik", "kind": "benar" },
+    {
+      "id": "oral_pulang",
+      "text": "Beri antihistamin oral lalu pulangkan",
+      "kind": "berbahaya",
+      "why": "Anafilaksis membutuhkan adrenalin & observasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini reaksi alergi berat (anafilaksis) yang mengancam nyawa",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Adrenalin adalah obat penyelamat utama; perlu observasi karena reaksi dapat muncul lagi",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila sesak, bengkak bibir/lidah, pusing/pingsan muncul lagi",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol setelah pulang untuk evaluasi pencetus & rujukan alergi",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Hindari pencetus; bawa kartu alergi dan beri tahu setiap tenaga kesehatan",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "tes_ulang",
+      "text": "Coba konsumsi lagi pencetusnya sedikit-sedikit di rumah untuk melatih kekebalan",
+      "kind": "berbahaya",
+      "category": "pencegahan",
+      "why": "Dapat memicu anafilaksis fatal."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "WAO Anaphylaxis Guidance 2020"
+    ]
+  }
+}

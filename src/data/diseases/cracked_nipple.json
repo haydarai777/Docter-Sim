@@ -1,0 +1,158 @@
+{
+  "id": "cracked_nipple",
+  "name": "Cracked nipple (puting lecet)",
+  "aliases": ["Puting lecet", "Puting pecah", "Nipple fissure"],
+  "system": "Obstetri & ginekologi",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.8,
+  "summary": "Lecet/fisura pada puting ibu menyusui, umumnya hari 3–14 pascasalin akibat posisi & pelekatan yang salah (bayi hanya mengisap puting), penggunaan sabun/alkohol, atau tongue-tie; dapat diperberat kandida (nyeri menusuk, puting merah muda mengkilat). Nyeri hebat saat menyusui, kadang berdarah. Menjadi pintu masuk mastitis. Kunci tata laksana: perbaikan posisi & pelekatan.",
+  "presentationDay": [2, 10],
+  "demographics": { "ageBands": [{ "min": 18, "max": 29, "weight": 4 }, { "min": 30, "max": 40, "weight": 2 }], "maleRatio": 0 },
+  "traits": [
+    { "id": "kandida_puting", "probability": 0.15 },
+    { "id": "pelekatan_salah", "probability": 0.85 },
+    { "id": "pakai_sabun", "probability": 0.4 }
+  ],
+  "traitLabels": {
+    "kandida_puting": "Infeksi kandida puting (bayi sariawan putih).",
+    "pelekatan_salah": "Posisi & pelekatan salah.",
+    "pakai_sabun": "Membersihkan puting dengan sabun/alkohol."
+  },
+  "symptoms": [
+    { "id": "puting_lecet", "probability": 1 },
+    { "id": "sulit_menyusui", "probability": 0.6 },
+    { "id": "payudara_nyeri_bengkak", "probability": 0.2 }
+  ],
+  "chiefComplaint": { "primary": ["puting_lecet"], "extraPool": ["sulit_menyusui"] },
+  "clueSymptoms": ["sulit_menyusui", "payudara_nyeri_bengkak"],
+  "misattributions": ["puting sensitif", "bayi gigit", "ASI kurang"],
+  "fears": ["harus berhenti menyusui", "infeksi"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Seminggu setelah melahirkan, Dok, puting saya lecet dan perih sekali tiap menyusui.",
+        "clue": "Puting lecet minggu pertama menyusui"
+      }
+    ],
+    "haid_kehamilan": [{ "text": "Melahirkan sepuluh hari lalu, Dok, anak pertama, ASI eksklusif.", "clue": "Ibu menyusui hari ke-10" }],
+    "karakter": [
+      {
+        "text": "Sakitnya kayak ditusuk-tusuk dan panas, Dok, bahkan setelah menyusui. Mulut bayi saya juga putih-putih.",
+        "when": { "traits": ["kandida_puting"] },
+        "clue": "Nyeri menusuk menetap + bayi sariawan putih (kandida)"
+      },
+      {
+        "text": "Paling sakit di awal bayi menyusu, Dok, putingnya sampai berdarah.",
+        "when": { "notTraits": ["kandida_puting"] },
+        "clue": "Nyeri saat awal menyusu, berdarah"
+      }
+    ],
+    "kebiasaan": [
+      {
+        "text": "Bayinya cuma ngisap ujung puting, Dok, mulutnya kecil.",
+        "when": { "traits": ["pelekatan_salah"] },
+        "clue": "Pelekatan dangkal (hanya puting)"
+      },
+      {
+        "text": "Tiap mau menyusui putingnya saya cuci pakai sabun biar bersih, Dok.",
+        "when": { "traits": ["pakai_sabun"] },
+        "clue": "Membersihkan puting dengan sabun"
+      },
+      { "text": "Posisinya sudah seperti diajari bidan, Dok.", "when": { "notTraits": ["pelekatan_salah"] } }
+    ],
+    "keparahan": [{ "text": "Nggak demam, Dok, payudaranya juga nggak merah.", "clue": "Tanpa tanda mastitis" }],
+    "lokasi": [{ "text": "Di puting, Dok, terutama yang kanan." }]
+  },
+  "findings": [
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "puting",
+      "when": { "notTraits": ["kandida_puting"] },
+      "diagnostic": true,
+      "values": ["Fisura & lecet di puting kanan dan kiri, sebagian berdarah, tanpa pus"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "puting",
+      "when": { "traits": ["kandida_puting"] },
+      "diagnostic": true,
+      "values": ["Puting merah muda mengkilat dengan fisura halus, areola sedikit bersisik"]
+    },
+    {
+      "tool": "pemeriksaan_payudara",
+      "param": "palpasi_payudara",
+      "values": ["Tidak nyeri, tidak ada indurasi maupun fluktuasi"]
+    },
+    { "tool": "pemeriksaan_payudara", "param": "inspeksi_payudara", "values": ["Simetris, kulit tidak kemerahan"] }
+  ],
+  "differentials": [
+    {
+      "id": "mastitis",
+      "howToDistinguish": "Mastitis: area payudara merah, hangat, nyeri, demam — perlu antibiotik.",
+      "mustNotMiss": true,
+      "excludeBy": { "tools": ["pemeriksaan_payudara", "tanda_vital"] }
+    },
+    {
+      "id": "kandidiasis_mulut",
+      "howToDistinguish": "Kandidiasis puting & mulut bayi: nyeri menusuk menetap, bayi plak putih di mulut — obati ibu & bayi.",
+      "excludeBy": { "topics": ["karakter"] }
+    }
+  ],
+  "keyFindings": [
+    "Puting lecet/fisura nyeri saat menyusui pada minggu pertama–kedua",
+    "Posisi & pelekatan salah (bayi hanya mengisap puting)",
+    "Tanpa tanda mastitis"
+  ],
+  "teachingPoints": [
+    "Pelekatan baik: dagu menempel payudara, mulut terbuka lebar, bibir bawah terlipat keluar, sebagian besar areola bawah masuk mulut bayi."
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "WHO. Mastitis: causes and management (2000)",
+      "Kemenkes RI. Pedoman Konseling Menyusui"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "karakter", "kebiasaan", "keparahan", "keluhan_lain"],
+    "exams": [{ "tool": "pemeriksaan_payudara", "role": "kunci", "reason": "Puting, tanda mastitis." }],
+    "tests": [],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Perbaiki posisi & pelekatan, perawatan puting; kontrol 3–5 hari; kembali bila demam/payudara merah."
+    }
+  ],
+  "management": [
+    "Konseling posisi & pelekatan menyusui; mulai dari payudara yang tidak/kurang lecet.",
+    "Oleskan ASI akhir ke puting & biarkan kering; hindari sabun/alkohol; lanolin murni bila tersedia.",
+    "Bila sangat nyeri, istirahatkan puting 24 jam & perah ASI dengan tangan; analgesik (parasetamol).",
+    "Kandida: krim mikonazol pada puting + nistatin oral untuk bayi."
+  ],
+  "approach": ["Amati proses menyusui (posisi & pelekatan).", "Inspeksi puting & singkirkan mastitis/kandida."]
+}

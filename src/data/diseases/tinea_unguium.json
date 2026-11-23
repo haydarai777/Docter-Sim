@@ -1,0 +1,141 @@
+{
+  "id": "tinea_unguium",
+  "name": "Tinea unguium (onikomikosis)",
+  "aliases": ["Jamur kuku", "Onikomikosis", "Kuku rusak karena jamur"],
+  "system": "Kulit & kelamin",
+  "skdiLevel": "4A",
+  "danger": "rendah",
+  "prevalenceWeight": 0.7,
+  "summary": "Infeksi dermatofita pada kuku, tersering kuku kaki orang dewasa/lansia: kuku menebal, kekuningan/keputihan, rapuh, onikolisis, hiperkeratosis subungual; sering bersama tinea pedis. KOH dari debris subungual positif. Terapi oral lama (terbinafin 12 minggu kuku kaki) atau topikal untuk kasus ringan; angka kambuh tinggi.",
+  "presentationDay": [90, 720],
+  "demographics": { "ageBands": [{ "min": 25, "max": 44, "weight": 2 }, { "min": 45, "max": 75, "weight": 4 }], "maleRatio": 0.55 },
+  "traits": [{ "id": "tinea_pedis_menyertai", "probability": 0.6 }, { "id": "dm_curiga", "probability": 0.12 }],
+  "traitLabels": { "tinea_pedis_menyertai": "Tinea pedis menyertai.", "dm_curiga": "Diabetes menyertai." },
+  "symptoms": [{ "id": "kuku_rusak", "probability": 1 }, { "id": "gatal_kulit", "probability": 0.3 }],
+  "chiefComplaint": { "primary": ["kuku_rusak"] },
+  "clueSymptoms": ["gatal_kulit"],
+  "misattributions": ["kuku tua", "kurang kalsium", "kena benturan"],
+  "fears": ["kuku lepas", "menular"],
+  "anamnesis": {
+    "onset": [
+      {
+        "text": "Sudah {lamaSakit} lebih, Dok, kuku jempol kaki tebal dan kuning, makin lama makin rapuh.",
+        "clue": "Kronik progresif"
+      }
+    ],
+    "kebiasaan": [{ "text": "Seharian pakai sepatu tertutup, kaki keringatan, Dok.", "clue": "Sepatu tertutup & lembap" }],
+    "riwayat_penyakit": [
+      {
+        "text": "Sela jari kaki saya juga sering gatal mengelupas, Dok.",
+        "when": { "traits": ["tinea_pedis_menyertai"] },
+        "clue": "Tinea pedis menyertai"
+      },
+      { "text": "Saya kencing manis, Dok.", "when": { "traits": ["dm_curiga"] }, "clue": "DM" },
+      { "text": "Saya sehat-sehat saja, Dok.", "when": { "notTraits": ["tinea_pedis_menyertai", "dm_curiga"] } }
+    ],
+    "karakter": [
+      {
+        "text": "Nggak ada garis hitam di kuku, Dok, cuma kuning keruh dan bawahnya banyak serpihan.",
+        "clue": "Tanpa pita pigmen (bukan melanoma)"
+      }
+    ],
+    "lokasi": [{ "text": "Di kuku jempol dan telunjuk kaki, Dok, kanan dan kiri." }]
+  },
+  "findings": [
+    {
+      "tool": "status_dermatologis",
+      "param": "efloresensi",
+      "when": { "traits": ["tinea_pedis_menyertai"] },
+      "values": ["Maserasi & skuama sela jari IV–V"]
+    },
+    { "tool": "gula_darah", "param": "gds", "when": { "traits": ["dm_curiga"] }, "range": [210, 290] },
+    {
+      "tool": "status_dermatologis",
+      "param": "rambut_kuku",
+      "diagnostic": true,
+      "values": ["Kuku ibu jari kaki kanan & kiri menebal, kekuningan, rapuh, onikolisis dengan hiperkeratosis subungual"]
+    },
+    { "tool": "status_dermatologis", "param": "lokasi", "values": ["Kuku jari I–II kaki kanan & kiri"] },
+    {
+      "tool": "kerokan_koh",
+      "param": "hasil",
+      "probability": 0.85,
+      "diagnostic": true,
+      "values": ["Hifa bersepta pada debris subungual (+)"]
+    }
+  ],
+  "differentials": [
+    {
+      "id": "melanoma_subungual",
+      "howToDistinguish": "Melanoma subungual: pita coklat-hitam yang melebar, pigmen meluas ke lipatan kuku — rujuk biopsi.",
+      "mustNotMiss": true,
+      "excludeBy": { "topics": ["karakter"], "tools": ["status_dermatologis"] }
+    },
+    {
+      "id": "psoriasis",
+      "howToDistinguish": "Psoriasis kuku: pitting, oil drop, lesi psoriasis di kulit; KOH negatif.",
+      "excludeBy": { "tools": ["status_dermatologis", "kerokan_koh"] }
+    },
+    {
+      "id": "kandidosis_kutis",
+      "howToDistinguish": "Onikomikosis kandida/paronikia: lipatan kuku bengkak merah, sering kuku tangan pada pekerjaan basah.",
+      "excludeBy": { "tools": ["status_dermatologis"] }
+    }
+  ],
+  "keyFindings": [
+    "Kuku menebal, kekuningan, rapuh, hiperkeratosis subungual",
+    "Tinea pedis menyertai, sepatu tertutup",
+    "KOH debris subungual positif"
+  ],
+  "teachingPoints": ["Periksa fungsi hati sebelum & selama terapi terbinafin/itrakonazol jangka panjang bila ada risiko."],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Probabilitas gejala & temuan adalah estimasi pengembang; mohon diverifikasi dokter."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasilitas Pelayanan Kesehatan Tingkat Pertama (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis bagi Dokter Spesialis Dermatologi dan Venereologi Indonesia (2021)"
+    ]
+  },
+  "plan": {
+    "keyTopics": ["onset", "kebiasaan", "riwayat_penyakit", "karakter", "keluhan_lain"],
+    "exams": [{ "tool": "status_dermatologis", "role": "kunci", "reason": "Kuku & sela jari." }],
+    "tests": [{ "tool": "kerokan_koh", "role": "kunci", "reason": "Hifa pada debris subungual." }],
+    "unnecessary": [
+      { "tool": "ct_abdomen", "reason": "CT-scan mahal dan tidak diindikasikan untuk keluhan ini." },
+      { "tool": "usg_abdomen", "reason": "Tidak ada kecurigaan kelainan organ intraabdomen." },
+      { "tool": "rontgen_thorax", "reason": "Tidak ada keluhan atau temuan paru/jantung." },
+      { "tool": "foto_bno", "reason": "Tidak ada kecurigaan batu saluran kemih." },
+      { "tool": "usg_obstetri", "reason": "Tidak ada kecurigaan kehamilan atau kelainan pelvis." },
+      { "tool": "rontgen_ekstremitas", "reason": "Tidak ada cedera tulang/sendi." },
+      { "tool": "usg_superfisial", "reason": "Tidak ada benjolan jaringan lunak yang perlu dicitrakan." },
+      { "tool": "cd4", "reason": "CD4 hanya untuk pasien HIV yang sudah terdiagnosis." },
+      { "tool": "profil_besi", "reason": "Mahal dan tidak menjawab keluhan ini." },
+      { "tool": "fungsi_tiroid", "reason": "Tidak ada kecurigaan gangguan tiroid." },
+      { "tool": "igm_leptospira", "reason": "Tidak ada demam akut dengan riwayat paparan banjir/tikus." },
+      { "tool": "igm_anti_hav", "reason": "Tidak ada kecurigaan hepatitis akut." },
+      { "tool": "serologi_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "ns1_dengue", "reason": "Tidak ada demam akut yang mengarah ke dengue." },
+      { "tool": "tubex", "reason": "Tidak ada demam lama yang mengarah ke tifoid." },
+      { "tool": "hba1c", "reason": "HbA1c tidak membantu diagnosis keluhan ini." },
+      { "tool": "tcm_tb", "reason": "Tidak ada gejala yang mengarah ke TB." },
+      { "tool": "swab_antigen", "reason": "Tidak ada gejala infeksi saluran napas akut." },
+      { "tool": "tes_h_pylori", "reason": "Tidak ada keluhan dispepsia." }
+    ],
+    "optional": [
+      { "tool": "fungsi_hati", "reason": "Sebelum terapi oral jangka panjang bila ada risiko gangguan hati." },
+      { "tool": "gula_darah", "reason": "Skrining DM." }
+    ]
+  },
+  "disposition": [
+    {
+      "value": "rawat_jalan",
+      "reason": "Terbinafin oral 12 minggu atau topikal (ringan), potong kuku, obati tinea pedis; kontrol bulanan."
+    }
+  ],
+  "management": [
+    "Terbinafin 250 mg/hari 12 minggu (kuku kaki) / 6 minggu (kuku tangan) atau itrakonazol pulse.",
+    "Kasus ringan (< 50% kuku, tanpa matriks): siklopiroks/amorolfin topikal.",
+    "Potong & kikir kuku pendek, kaki kering, sepatu berventilasi; obati tinea pedis."
+  ],
+  "approach": ["KOH sebelum terapi lama; singkirkan melanoma subungual & psoriasis."]
+}

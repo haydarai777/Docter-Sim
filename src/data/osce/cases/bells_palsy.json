@@ -1,0 +1,130 @@
+{
+  "disease": "bells_palsy",
+  "setting": "Puskesmas",
+  "station": "Saraf — nyeri kepala, wajah & pusing",
+  "therapy": {
+    "items": [
+      {
+        "id": "steroid",
+        "label": "Kortikosteroid oral",
+        "role": "utama",
+        "reason": "Idealnya < 72 jam onset; mempercepat pemulihan.",
+        "options": [
+          {
+            "drug": "prednison",
+            "label": "Prednison 60 mg/hari (1 mg/kgBB) selama 5 hari lalu tapering off",
+            "schedules": ["rutin"],
+            "dose": [50, 60],
+            "timesPerDay": [1, 1],
+            "days": [5, 10]
+          },
+          {
+            "drug": "metilprednisolon",
+            "label": "Metilprednisolon 48 mg/hari selama 5 hari lalu tapering off",
+            "schedules": ["rutin"],
+            "forms": ["metilprednisolon-tab16"],
+            "dose": [40, 48],
+            "timesPerDay": [1, 1],
+            "days": [5, 10]
+          }
+        ]
+      },
+      {
+        "id": "pelumas",
+        "label": "Perlindungan mata",
+        "role": "pendukung",
+        "reason": "Mata tidak menutup sempurna → risiko keratitis paparan.",
+        "options": [
+          {
+            "drug": "air_mata_buatan",
+            "label": "Air mata buatan 1 tetes 4–6 × sehari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [4, 6],
+            "days": [14, 30]
+          }
+        ]
+      },
+      {
+        "id": "antivirus",
+        "label": "Antivirus",
+        "role": "opsional",
+        "reason": "Dipertimbangkan pada kasus berat, bersama steroid.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 5 × 400 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [5, 5],
+            "days": [7, 10]
+          }
+        ]
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "mata", "text": "Lindungi mata: plester/kacamata saat tidur", "kind": "benar" },
+    { "id": "latihan", "text": "Latihan otot wajah di depan cermin, pijat, fisioterapi", "kind": "benar" },
+    {
+      "id": "gula",
+      "text": "Periksa gula darah sebelum/selama steroid",
+      "kind": "benar",
+      "when": { "traits": ["dm_curiga"] }
+    },
+    {
+      "id": "tusuk",
+      "text": "Pijat keras/tusuk-tusuk wajah dengan jarum agar saraf 'terbuka'",
+      "kind": "berbahaya",
+      "why": "Cedera & infeksi; tidak bermanfaat."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini Bell's palsy: kelumpuhan saraf wajah sesisi, bukan stroke",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat steroid diminum pagi sesudah makan dan diturunkan bertahap sesuai jadwal",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "es",
+      "text": "Steroid dapat menaikkan gula darah & mengganggu lambung",
+      "kind": "benar",
+      "category": "efek_samping"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera ke IGD bila muncul kelemahan tangan/kaki, bicara pelo, atau penglihatan ganda",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 1 minggu; sebagian besar pulih dalam 3–6 bulan",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "angin",
+      "text": "Penyakit ini pasti kambuh bila terkena angin malam",
+      "kind": "pengecoh",
+      "category": "pencegahan",
+      "why": "Paparan angin bukan penyebab pasti."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSSI. Panduan Praktik Klinis Neurologi (2016)"
+    ]
+  }
+}

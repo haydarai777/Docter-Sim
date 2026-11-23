@@ -1,0 +1,122 @@
+{
+  "disease": "cracked_nipple",
+  "setting": "Puskesmas",
+  "station": "Obstetri — nifas & menyusui",
+  "therapy": {
+    "items": [
+      {
+        "id": "antijamur",
+        "label": "Antijamur topikal puting",
+        "role": "utama",
+        "reason": "Kandida puting.",
+        "options": [
+          {
+            "drug": "mikonazol_krim",
+            "label": "Mikonazol 2% krim dioles tipis di puting setelah menyusui 2–4 × sehari selama 2 minggu",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 4],
+            "days": [14, 14]
+          }
+        ],
+        "when": { "traits": ["kandida_puting"] }
+      },
+      {
+        "id": "nistatin_bayi",
+        "label": "Nistatin oral untuk bayi",
+        "role": "pendukung",
+        "reason": "Mencegah infeksi ulang ibu–bayi.",
+        "options": [
+          {
+            "drug": "nistatin",
+            "label": "Nistatin suspensi 1 mL (100.000 IU) dioles di mulut bayi 4 × sehari selama 7–14 hari",
+            "schedules": ["rutin"],
+            "dose": [100000, 200000],
+            "timesPerDay": [4, 4],
+            "days": [7, 14]
+          }
+        ],
+        "when": { "traits": ["kandida_puting"] }
+      },
+      {
+        "id": "analgesik",
+        "label": "Analgesik",
+        "role": "opsional",
+        "reason": "Nyeri saat menyusui.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ]
+      }
+    ],
+    "note": "Tanpa infeksi kandida: tidak memerlukan obat — perbaiki pelekatan."
+  },
+  "nonPharm": [
+    {
+      "id": "pelekatan",
+      "text": "Konseling posisi & pelekatan; mulai dari payudara yang kurang lecet",
+      "kind": "benar"
+    },
+    { "id": "asi", "text": "Oleskan ASI akhir ke puting & biarkan kering", "kind": "benar" },
+    {
+      "id": "istirahat",
+      "text": "Bila sangat nyeri istirahatkan puting 24 jam & perah ASI dengan tangan",
+      "kind": "benar"
+    },
+    {
+      "id": "sabun",
+      "text": "Hentikan sabun/alkohol pada puting",
+      "kind": "benar",
+      "when": { "traits": ["pakai_sabun"] }
+    },
+    {
+      "id": "stop_asi",
+      "text": "Berhenti menyusui dan beralih ke susu formula",
+      "kind": "berbahaya",
+      "why": "ASI eksklusif terhenti; puting lecet dapat diatasi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Puting lecet, paling sering karena posisi & pelekatan menyusui yang kurang tepat",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Kunci pengobatan adalah perbaikan pelekatan; obat bila ada infeksi jamur",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila payudara merah bengkak nyeri disertai demam (mastitis)",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    { "id": "kontrol", "text": "Kontrol 3–7 hari untuk evaluasi menyusui", "kind": "benar", "category": "kontrol" },
+    {
+      "id": "alkohol",
+      "text": "Bersihkan puting dengan alkohol sebelum menyusui",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Kulit makin kering & pecah."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "Kemenkes RI. Buku Saku Pelayanan Kesehatan Ibu di Fasilitas Kesehatan Dasar dan Rujukan (2023)"
+    ]
+  }
+}

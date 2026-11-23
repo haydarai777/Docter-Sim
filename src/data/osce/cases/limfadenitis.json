@@ -1,0 +1,176 @@
+{
+  "disease": "limfadenitis",
+  "setting": "Puskesmas",
+  "station": "Penyakit Dalam — demam & infeksi",
+  "therapy": {
+    "items": [
+      {
+        "id": "ab",
+        "label": "Antibiotik antistafilokokus/streptokokus",
+        "role": "utama",
+        "reason": "Limfadenitis bakteri akut.",
+        "options": [
+          {
+            "drug": "dikloksasilin",
+            "label": "Dikloksasilin 4 × 500 mg selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          },
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 2 × 500 mg selama 10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-kap500"],
+            "dose": [500, 500],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "amoksisilin_klavulanat",
+            "label": "Amoksisilin-klavulanat 3 × 625 mg selama 10 hari",
+            "schedules": ["rutin"],
+            "dose": [625, 625],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "klindamisin",
+            "label": "Klindamisin 3 × 300 mg selama 10 hari",
+            "schedules": ["rutin"],
+            "forms": ["klindamisin-kap300"],
+            "dose": [300, 300],
+            "timesPerDay": [3, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "ab_anak",
+        "label": "Antibiotik (anak)",
+        "role": "utama",
+        "reason": "Limfadenitis bakteri akut.",
+        "options": [
+          {
+            "drug": "sefadroksil",
+            "label": "Sefadroksil 15 mg/kgBB/kali 2 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "forms": ["sefadroksil-syr125"],
+            "dosePerKg": [12, 18],
+            "timesPerDay": [2, 2],
+            "days": [7, 10]
+          },
+          {
+            "drug": "eritromisin",
+            "label": "Eritromisin 10–12,5 mg/kgBB/kali 4 × sehari selama 10 hari",
+            "schedules": ["rutin"],
+            "forms": ["eritromisin-syr200"],
+            "dosePerKg": [9, 14],
+            "timesPerDay": [4, 4],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "analgesik_dewasa",
+        "label": "Analgesik-antipiretik",
+        "role": "pendukung",
+        "reason": "Nyeri & demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          },
+          {
+            "drug": "ibuprofen",
+            "label": "Ibuprofen 3 × 400 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "forms": ["ibuprofen-tab400"],
+            "dose": [400, 400],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          },
+          {
+            "drug": "asam_mefenamat",
+            "label": "Asam mefenamat 3 × 500 mg sesudah makan",
+            "schedules": ["prn", "rutin"],
+            "dose": [500, 500],
+            "timesPerDay": [3, 3],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "analgesik_anak",
+        "label": "Analgesik-antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Nyeri & demam.",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kompres", "text": "Kompres hangat pada benjolan", "kind": "benar" },
+    { "id": "fokus", "text": "Obati fokus infeksi (rawat luka, gigi, tonsil)", "kind": "benar" },
+    { "id": "insisi", "text": "Insisi & drainase abses", "kind": "benar", "when": { "traits": ["abses"] } },
+    {
+      "id": "pencet",
+      "text": "Pijat/pencet benjolan agar cepat kempis",
+      "kind": "berbahaya",
+      "why": "Penyebaran infeksi."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini radang kelenjar getah bening karena infeksi di sekitarnya",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    { "id": "obat", "text": "Antibiotik diminum sampai habis 10 hari", "kind": "benar", "category": "pengobatan" },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila benjolan makin besar/merah meluas, demam tinggi, atau sulit menelan/bernapas",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol 3 hari; bila tidak mengecil dalam 2–4 minggu perlu evaluasi (TB/keganasan)",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "stop_dini",
+      "text": "Obat boleh dihentikan begitu keluhan berkurang",
+      "kind": "berbahaya",
+      "category": "pengobatan",
+      "why": "Terapi tidak tuntas → kambuh/resistansi."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": ["Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)"]
+  }
+}

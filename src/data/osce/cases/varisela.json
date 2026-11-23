@@ -1,0 +1,235 @@
+{
+  "disease": "varisela",
+  "setting": "Puskesmas",
+  "station": "Kulit — infeksi virus & ruam demam",
+  "therapy": {
+    "items": [
+      {
+        "id": "antivirus",
+        "label": "Antivirus",
+        "role": "utama",
+        "reason": "Remaja/dewasa (cenderung berat), < 72 jam.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 5 × 800 mg selama 7 hari",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-tab800"],
+            "dose": [800, 800],
+            "timesPerDay": [5, 5],
+            "days": [7, 7]
+          }
+        ],
+        "when": { "traits": ["dewasa"] }
+      },
+      {
+        "id": "antivirus_anak",
+        "label": "Antivirus (anak)",
+        "role": "opsional",
+        "reason": "Anak sehat: dipertimbangkan < 24 jam/berisiko.",
+        "options": [
+          {
+            "drug": "asiklovir",
+            "label": "Asiklovir 20 mg/kgBB/kali 4 × sehari selama 5 hari (maks. 800 mg/kali)",
+            "schedules": ["rutin"],
+            "forms": ["asiklovir-syr200"],
+            "dosePerKg": [15, 22],
+            "timesPerDay": [4, 4],
+            "days": [5, 7]
+          }
+        ],
+        "when": { "notTraits": ["dewasa"], "ageMax": 11 }
+      },
+      {
+        "id": "antipiretik",
+        "label": "Antipiretik",
+        "role": "pendukung",
+        "reason": "Demam (parasetamol, bukan aspirin/ibuprofen).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 3–4 × 500–1000 mg bila nyeri/demam",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-tab500"],
+            "dose": [500, 1000],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antipiretik_anak",
+        "label": "Antipiretik (anak)",
+        "role": "pendukung",
+        "reason": "Demam (parasetamol, bukan aspirin/ibuprofen).",
+        "options": [
+          {
+            "drug": "parasetamol",
+            "label": "Parasetamol 10–15 mg/kgBB/kali, 3–4 × sehari bila demam/nyeri",
+            "schedules": ["prn", "rutin"],
+            "forms": ["parasetamol-syr", "parasetamol-drop"],
+            "dosePerKg": [10, 15],
+            "timesPerDay": [3, 4],
+            "days": [3, 5]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "antihistamin_dewasa",
+        "label": "Antihistamin",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-tab10"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "loratadin",
+            "label": "Loratadin 1 × 10 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [10, 10],
+            "timesPerDay": [1, 1],
+            "days": [5, 14]
+          },
+          {
+            "drug": "ctm",
+            "label": "CTM 3 × 4 mg",
+            "schedules": ["rutin", "prn"],
+            "dose": [4, 4],
+            "timesPerDay": [2, 3],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMin": 12 }
+      },
+      {
+        "id": "antihistamin_anak",
+        "label": "Antihistamin (anak)",
+        "role": "opsional",
+        "reason": "Gatal.",
+        "options": [
+          {
+            "drug": "setirizin",
+            "label": "Setirizin sirup 0,25 mg/kgBB/kali, 1–2 × sehari (2–5 th: 2,5 mg; 6–11 th: 5 mg)",
+            "schedules": ["rutin", "prn"],
+            "forms": ["setirizin-syr"],
+            "dosePerKg": [0.15, 0.35],
+            "timesPerDay": [1, 2],
+            "days": [5, 14]
+          }
+        ],
+        "when": { "ageMax": 11 }
+      },
+      {
+        "id": "ab_topikal",
+        "label": "Antibiotik topikal",
+        "role": "utama",
+        "reason": "Infeksi bakteri sekunder.",
+        "options": [
+          {
+            "drug": "mupirosin",
+            "label": "Mupirosin 2% salep 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          },
+          {
+            "drug": "asam_fusidat",
+            "label": "Asam fusidat 2% krim 3 × sehari selama 7–10 hari",
+            "schedules": ["rutin"],
+            "dose": [1, 1],
+            "timesPerDay": [2, 3],
+            "days": [7, 10]
+          }
+        ],
+        "when": { "traits": ["infeksi_sekunder"] }
+      }
+    ],
+    "avoid": [
+      { "drugs": ["aspirin_rendah"], "reason": "Aspirin berisiko sindrom Reye pada varisela.", "severity": "kritis" },
+      {
+        "groups": ["ibuprofen"],
+        "reason": "Ibuprofen pada varisela anak meningkatkan risiko infeksi kulit berat.",
+        "severity": "salah",
+        "when": { "ageMax": 11 }
+      },
+      {
+        "groups": ["steroid"],
+        "reason": "Kortikosteroid sistemik memicu varisela berat/diseminata.",
+        "severity": "kritis"
+      }
+    ]
+  },
+  "nonPharm": [
+    { "id": "kuku", "text": "Potong kuku, jangan digaruk/dipecah; tetap mandi", "kind": "benar" },
+    {
+      "id": "isolasi",
+      "text": "Isolasi sampai semua lesi berkrusta; jauhkan dari ibu hamil/bayi/imunokompromais",
+      "kind": "benar"
+    },
+    { "id": "bedak", "text": "Bedak salisil/losion kalamin untuk gatal", "kind": "benar" },
+    {
+      "id": "ramuan",
+      "text": "Oleskan ramuan/abu dapur pada lepuh",
+      "kind": "berbahaya",
+      "why": "Infeksi sekunder & parut."
+    }
+  ],
+  "education": [
+    {
+      "id": "dx",
+      "text": "Ini cacar air (varisela), infeksi virus yang sangat menular",
+      "kind": "benar",
+      "category": "diagnosis"
+    },
+    {
+      "id": "obat",
+      "text": "Obat penurun panas parasetamol; obat gatal bila perlu",
+      "kind": "benar",
+      "category": "pengobatan"
+    },
+    {
+      "id": "bahaya",
+      "text": "Segera kembali bila sesak, kejang, sangat mengantuk, lepuh berdarah/bernanah luas, atau demam tinggi menetap",
+      "kind": "benar",
+      "category": "tanda_bahaya"
+    },
+    {
+      "id": "kontrol",
+      "text": "Kontrol bila muncul tanda bahaya atau lesi belum berkrusta setelah 1 minggu",
+      "kind": "benar",
+      "category": "kontrol"
+    },
+    {
+      "id": "cegah",
+      "text": "Vaksin varisela untuk anggota keluarga yang belum pernah cacar",
+      "kind": "benar",
+      "category": "pencegahan"
+    },
+    {
+      "id": "tidak_mandi",
+      "text": "Penderita cacar tidak boleh mandi sampai sembuh",
+      "kind": "pengecoh",
+      "category": "pengobatan",
+      "why": "Mandi tetap dianjurkan untuk mencegah infeksi sekunder."
+    }
+  ],
+  "review": {
+    "status": "BELUM_DITINJAU_DOKTER",
+    "notes": ["Kunci jawaban latihan OSCE; dosis wajib diverifikasi dengan pedoman terbaru sebelum dipakai klinis."],
+    "references": [
+      "Kemenkes RI. Panduan Praktik Klinis bagi Dokter di Fasyankes Primer (KMK HK.01.07/MENKES/1186/2022)",
+      "PERDOSKI. Panduan Praktik Klinis Dermatologi dan Venereologi (2021)",
+      "IDAI. Pedoman Pelayanan Medis — Varisela"
+    ]
+  }
+}
